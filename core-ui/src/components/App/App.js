@@ -17,6 +17,7 @@ import ApplicationDetails from 'components/Applications/ApplicationDetails/Appli
 import ApiDetails from 'components/Apis/ApiDetails/ApiDetails';
 import EditEventApi from 'components/Apis/EditEventApi/EditEventApi';
 import EditApi from 'components/Apis/EditApi/EditApi';
+import ApiPackageDetails from 'components/ApiPackages/ApiPackageDetails/ApiPackageDetails';
 
 export default function App() {
   return (
@@ -35,23 +36,28 @@ export default function App() {
           component={RoutedApplicationDetails}
         />
         <Route
+          path="/application/:applicationId/apiPackage/:apiPackageId"
           exact
-          path="/application/:appId/api/:apiId"
+          render={RoutedApiPackageDetails}
+        />
+        <Route
+          exact
+          path="/application/:appId/apiPackage/:apiPackageId/api/:apiId"
           component={RoutedApiDetails}
         />
         <Route
           exact
-          path="/application/:appId/api/:apiId/edit"
+          path="/application/:appId/apiPackage/:apiPackageId/api/:apiId/edit"
           component={RoutedEditApi}
         />
         <Route
           exact
-          path="/application/:appId/eventApi/:eventApiId"
+          path="/application/:appId/apiPackage/:apiPackageId/eventApi/:eventApiId"
           component={RoutedEventApiDetails}
         />
         <Route
           exact
-          path="/application/:appId/eventApi/:eventApiId/edit"
+          path="/application/:appId/apiPackage/:apiPackageId/eventApi/:eventApiId/edit"
           component={RoutedEditEventApi}
         />
 
@@ -88,18 +94,40 @@ function RoutedApplicationDetails({ match }) {
   return <ApplicationDetails appId={match.params.appId} />;
 }
 
+function RoutedApiPackageDetails({ match }) {
+  return (
+    <ApiPackageDetails
+      applicationId={match.params.applicationId}
+      apiPackageId={match.params.apiPackageId}
+    />
+  );
+}
+
 function RoutedApiDetails({ match }) {
-  return <ApiDetails appId={match.params.appId} apiId={match.params.apiId} />;
+  return (
+    <ApiDetails
+      appId={match.params.appId}
+      apiPackageId={match.params.apiPackageId}
+      apiId={match.params.apiId}
+    />
+  );
 }
 
 function RoutedEditApi({ match }) {
-  return <EditApi appId={match.params.appId} apiId={match.params.apiId} />;
+  return (
+    <EditApi
+      appId={match.params.appId}
+      apiPackageId={match.params.apiPackageId}
+      apiId={match.params.apiId}
+    />
+  );
 }
 
 function RoutedEventApiDetails({ match }) {
   return (
     <ApiDetails
       appId={match.params.appId}
+      apiPackageId={match.params.apiPackageId}
       eventApiId={match.params.eventApiId}
     />
   );
@@ -109,6 +137,7 @@ function RoutedEditEventApi({ match }) {
   return (
     <EditEventApi
       appId={match.params.appId}
+      apiPackageId={match.params.apiPackageId}
       eventApiId={match.params.eventApiId}
     />
   );
