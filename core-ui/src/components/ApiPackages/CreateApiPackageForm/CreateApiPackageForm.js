@@ -8,6 +8,7 @@ import { FormLabel, FormItem } from 'fundamental-react';
 import { useMutation } from '@apollo/react-hooks';
 import { CREATE_API_PACKAGE } from 'gql/mutations';
 import { GET_APPLICATION_COMPASS } from 'gql/queries';
+import { CompassGqlContext } from 'index';
 
 CreateApiPackageForm.propTypes = {
   applicationId: PropTypes.string.isRequired,
@@ -15,7 +16,7 @@ CreateApiPackageForm.propTypes = {
   onChange: PropTypes.func,
   onError: PropTypes.func,
   onCompleted: PropTypes.func,
-  setCustomValid: PropTypes.func,
+  // setCustomValid: PropTypes.func,
 };
 
 export default function CreateApiPackageForm({
@@ -24,9 +25,11 @@ export default function CreateApiPackageForm({
   onChange,
   onCompleted,
   onError,
-  setCustomValid,
+  // setCustomValid,
 }) {
+  const compassGqlClient = React.useContext(CompassGqlContext);
   const [createApiPackage] = useMutation(CREATE_API_PACKAGE, {
+    client: compassGqlClient,
     refetchQueries: () => [
       { query: GET_APPLICATION_COMPASS, variables: { id: applicationId } },
     ],
@@ -34,16 +37,17 @@ export default function CreateApiPackageForm({
 
   const name = React.useRef();
   const description = React.useRef();
-  const [requestInputSchema, setRequestInputSchema] = React.useState({});
+  const [requestInputSchema] = React.useState({});
+  // const [requestInputSchema, setRequestInputSchema] = React.useState({});
 
-  const handleSchemaChange = schema => {
-    try {
-      setRequestInputSchema(JSON.parse(schema));
-      setCustomValid(true);
-    } catch (e) {
-      setCustomValid(false);
-    }
-  };
+  // const handleSchemaChange = schema => {
+  //   try {
+  //     setRequestInputSchema(JSON.parse(schema));
+  //     setCustomValid(true);
+  //   } catch (e) {
+  //     setCustomValid(false);
+  //   }
+  // };
 
   const handleFormSubmit = async () => {
     const apiName = name.current.value;
