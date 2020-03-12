@@ -34,9 +34,9 @@ function setupLocalStorageVariables() {
 }
 
 preloadingStrategy(async () => {
-  builder.addEventListeners(() => {
+  builder.addEventListeners(async () => {
     const kymaClient = createKymaApolloClient();
-    const compassClient = createCompassApolloClient();
+    const compassClient = await createCompassApolloClient();
 
     setupLocalStorageVariables();
 

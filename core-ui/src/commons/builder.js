@@ -8,18 +8,18 @@ class Builder {
   backendModules = [];
 
   addEventListeners(callback) {
-    LuigiClient.addInitListener(e => {
+    LuigiClient.addInitListener(async e => {
       this.setCurrentContext(e);
-      callback();
+      await callback();
     });
 
-    LuigiClient.addContextUpdateListener(e => {
+    LuigiClient.addContextUpdateListener(async e => {
       if (!e.namespaceId) {
         return;
       }
       if (e.namespaceId !== this.currentEnvironmentId) {
         this.setCurrentContext(e);
-        callback();
+        await callback();
       }
     });
   }

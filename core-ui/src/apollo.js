@@ -8,6 +8,8 @@ import { getMainDefinition } from 'apollo-utilities';
 import { getApiUrl as getURL } from '@kyma-project/common';
 import builder from './commons/builder';
 import { SubscriptionClient } from 'subscriptions-transport-ws';
+import { withScalars } from 'apollo-link-scalars';
+import { introspectSchema, makeRemoteExecutableSchema } from 'graphql-tools';
 
 const errorLink = onError(
   ({ operation, response, graphQLErrors, networkError }) => {
@@ -25,7 +27,7 @@ const errorLink = onError(
   },
 );
 
-export function createCompassApolloClient() {
+export async function createCompassApolloClient() {
   const graphqlApiUrl = getURL('compassApiUrl');
 
   //TODO: should be removed once management plane API is able to resolve tenant from token
@@ -39,12 +41,31 @@ export function createCompassApolloClient() {
     },
   });
 
+  const scalarsLink = await createScalarsLink(httpLink);
+
   return new ApolloClient({
-    link: ApolloLink.from([errorLink, httpLink]),
+    link: ApolloLink.from([errorLink, scalarsLink, httpLink]),
     cache: new InMemoryCache({
       dataIdFromObject: object => object.name || null,
     }),
   });
+}
+
+async function createScalarsLink(httpLink) {
+  const typesMap = {
+    Labels: {
+      serialize: parsed => JSON.stringify(parsed),
+      parseValue: raw => JSON.parse(raw),
+    },
+  };
+
+  const schema = await introspectSchema(httpLink);
+  const executableSchema = makeRemoteExecutableSchema({
+    schema,
+    httpLink,
+  });
+
+  return withScalars({ schema: executableSchema, typesMap });
 }
 
 export function createKymaApolloClient() {
