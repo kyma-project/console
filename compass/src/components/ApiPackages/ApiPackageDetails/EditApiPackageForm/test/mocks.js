@@ -16,6 +16,7 @@ export const updateApiPackageMock = {
         name: 'api-package-name-2',
         description: 'api-package-description-2',
         instanceAuthRequestInputSchema: '{}',
+        defaultInstanceAuth: null,
       },
     },
   },
@@ -41,6 +42,7 @@ export const refetchApiPackageMock = {
       application: {
         id: 'app-id',
         name: 'app-name',
+        defaultInstanceAuth: null,
         package: {
           id: 'package-id',
           name: 'api-package-name-2',

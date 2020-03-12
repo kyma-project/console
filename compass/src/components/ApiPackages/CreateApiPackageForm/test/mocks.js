@@ -10,6 +10,7 @@ export const createApiPackageMock = {
         name: 'api-package-name',
         description: 'api-package-description',
         instanceAuthRequestInputSchema: '{}',
+        defaultInstanceAuth: null,
       },
     },
   },
