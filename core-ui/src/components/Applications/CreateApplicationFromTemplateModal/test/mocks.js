@@ -71,6 +71,7 @@ export const compassApplicationRefetchQuery = {
             id: '1',
             name: 'app-name-2',
             providerName: 'providerName',
+            packages: [],
           },
         ],
       },
