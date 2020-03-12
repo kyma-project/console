@@ -3,14 +3,14 @@ import PropTypes from 'prop-types';
 import LuigiClient from '@kyma-project/luigi-client';
 import './EventList.scss';
 
-import CreateEventApiForm from 'components/Api/CreateEventApiForm/CreateEventApiForm';
-import { GenericList, handleDelete } from 'react-shared';
-import ModalWithForm from 'shared/components/ModalWithForm/ModalWithForm.container';
+import CreateEventForm from 'components/Apis/CreateEventForm/CreateEventForm';
+import { GenericList, handleDelete, useNotification } from 'react-shared';
+import ModalWithForm from 'components/ModalWithForm/ModalWithForm';
 
 import { useMutation } from '@apollo/react-hooks';
-import { DELETE_EVENT_DEFINITION } from 'components/Api/gql';
-import { GET_API_PACKAGE } from 'components/ApiPackages/gql';
-import { SEND_NOTIFICATION } from 'gql';
+import { DELETE_EVENT_DEFINITION } from 'gql/mutations';
+import { GET_API_PACKAGE } from 'gql/queries';
+import { CompassGqlContext } from 'index';
 
 EventList.propTypes = {
   applicationId: PropTypes.string.isRequired,
@@ -23,24 +23,14 @@ export default function EventList({
   apiPackageId,
   eventDefinitions,
 }) {
-  const [sendNotification] = useMutation(SEND_NOTIFICATION);
+  const notificationManager = useNotification();
+  const compassGqlClient = React.useContext(CompassGqlContext);
   const [deleteEventDefinition] = useMutation(DELETE_EVENT_DEFINITION, {
+    client: compassGqlClient,
     refetchQueries: () => [
       { query: GET_API_PACKAGE, variables: { applicationId, apiPackageId } },
     ],
   });
-
-  function showDeleteSuccessNotification(apiName) {
-    sendNotification({
-      variables: {
-        content: `Deleted API "${apiName}".`,
-        title: `${apiName}`,
-        color: '#359c46',
-        icon: 'accept',
-        instanceName: apiName,
-      },
-    });
-  }
 
   function navigateToDetails(entry) {
     LuigiClient.linkManager().navigate(`eventApi/${entry.id}/edit`);
@@ -72,7 +62,10 @@ export default function EventList({
           entry.id,
           entry.name,
           () => deleteEventDefinition({ variables: { id: entry.id } }),
-          () => showDeleteSuccessNotification(entry.name),
+          () =>
+            notificationManager.notifySuccess({
+              content: `Deleted Event "${entry.name}".`,
+            }),
         ),
     },
   ];
@@ -81,10 +74,8 @@ export default function EventList({
     <ModalWithForm
       title="Add Event Definition"
       button={{ glyph: 'add', text: '' }}
-      confirmText="Create"
-      modalClassName="create-event-api-modal"
       renderForm={props => (
-        <CreateEventApiForm
+        <CreateEventForm
           applicationId={applicationId}
           apiPackageId={apiPackageId}
           {...props}

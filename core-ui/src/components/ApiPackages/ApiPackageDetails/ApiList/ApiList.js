@@ -3,14 +3,14 @@ import PropTypes from 'prop-types';
 import LuigiClient from '@kyma-project/luigi-client';
 import './ApiList.scss';
 
-import CreateApiForm from 'components/Api/CreateApiForm/CreateApiForm';
-import { GenericList, handleDelete } from 'react-shared';
-import ModalWithForm from 'shared/components/ModalWithForm/ModalWithForm.container';
+import CreateApiForm from 'components/Apis/CreateApiForm/CreateApiForm';
+import { GenericList, handleDelete, useNotification } from 'react-shared';
+import ModalWithForm from 'components/ModalWithForm/ModalWithForm';
 
 import { useMutation } from '@apollo/react-hooks';
-import { DELETE_API_DEFINITION } from 'components/Api/gql';
-import { GET_API_PACKAGE } from '../../gql';
-import { SEND_NOTIFICATION } from 'gql';
+import { DELETE_API_DEFINITION } from 'gql/mutations';
+import { GET_API_PACKAGE } from 'gql/queries';
+import { CompassGqlContext } from 'index';
 
 ApiList.propTypes = {
   applicationId: PropTypes.string.isRequired,
@@ -23,24 +23,14 @@ export default function ApiList({
   apiPackageId,
   apiDefinitions,
 }) {
-  const [sendNotification] = useMutation(SEND_NOTIFICATION);
+  const notificationManager = useNotification();
+  const compassGqlClient = React.useContext(CompassGqlContext);
   const [deleteApiDefinition] = useMutation(DELETE_API_DEFINITION, {
+    client: compassGqlClient,
     refetchQueries: () => [
       { query: GET_API_PACKAGE, variables: { applicationId, apiPackageId } },
     ],
   });
-
-  function showDeleteSuccessNotification(apiName) {
-    sendNotification({
-      variables: {
-        content: `Deleted API "${apiName}".`,
-        title: `${apiName}`,
-        color: '#359c46',
-        icon: 'accept',
-        instanceName: apiName,
-      },
-    });
-  }
 
   function navigateToDetails(entry) {
     LuigiClient.linkManager().navigate(`api/${entry.id}/edit`);
@@ -72,7 +62,10 @@ export default function ApiList({
           entry.id,
           entry.name,
           () => deleteApiDefinition({ variables: { id: entry.id } }),
-          () => showDeleteSuccessNotification(entry.name),
+          () =>
+            notificationManager.notifySuccess({
+              content: `Deleted API "${entry.name}".`,
+            }),
         ),
     },
   ];
@@ -81,8 +74,6 @@ export default function ApiList({
     <ModalWithForm
       title="Add API Definition"
       button={{ glyph: 'add', text: '' }}
-      confirmText="Create"
-      modalClassName="create-api-modal"
       renderForm={props => (
         <CreateApiForm
           applicationId={applicationId}

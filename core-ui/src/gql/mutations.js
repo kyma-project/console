@@ -270,16 +270,16 @@ export const DELETE_EVENT_DEFINITION = gql`
 `;
 
 export const ADD_API_DEFINITION = gql`
-  mutation addAPI($applicationId: ID!, $in: APIDefinitionInput!) {
-    addAPIDefinition(applicationID: $applicationId, in: $in) {
+  mutation addAPI($apiPackageId: ID!, $in: APIDefinitionInput!) {
+    addAPIDefinitionToPackage(packageID: $apiPackageId, in: $in) {
       name
     }
   }
 `;
 
 export const ADD_EVENT_DEFINITION = gql`
-  mutation addEventDefinition($applicationId: ID!, $in: EventDefinitionInput!) {
-    addEventDefinition(applicationID: $applicationId, in: $in) {
+  mutation addEventDefinition($apiPackageId: ID!, $in: EventDefinitionInput!) {
+    addEventDefinitionToPackage(packageID: $apiPackageId, in: $in) {
       name
     }
   }
@@ -306,6 +306,14 @@ export const UPDATE_EVENT_DEFINITION = gql`
 export const REGISTER_APPLICATION_FROM_TEMPLATE = gql`
   mutation registerApplicationFromTemplate($in: ApplicationFromTemplateInput!) {
     registerApplicationFromTemplate(in: $in) {
+      name
+    }
+  }
+`;
+
+export const UPDATE_API_PACKAGE = gql`
+  mutation updatePackage($id: ID!, $in: PackageUpdateInput!) {
+    updatePackage(id: $id, in: $in) {
       name
     }
   }

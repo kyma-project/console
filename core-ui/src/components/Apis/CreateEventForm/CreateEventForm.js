@@ -10,9 +10,10 @@ import EventApiForm from '../Forms/EventApiForm';
 import { useMutation } from 'react-apollo';
 import { ADD_EVENT_DEFINITION } from 'gql/mutations';
 import { CompassGqlContext } from 'index';
-import { GET_APPLICATION_COMPASS } from 'gql/queries';
+import { GET_API_PACKAGE } from 'gql/queries';
 
 CreateEventForm.propTypes = {
+  apiPackageId: PropTypes.string.isRequired,
   applicationId: PropTypes.string.isRequired,
   formElementRef: CustomPropTypes.ref,
   onChange: PropTypes.func.isRequired,
@@ -21,6 +22,7 @@ CreateEventForm.propTypes = {
 };
 
 export default function CreateEventForm({
+  apiPackageId,
   applicationId,
   formElementRef,
   onChange,
@@ -30,8 +32,8 @@ export default function CreateEventForm({
   const compassGqlClient = React.useContext(CompassGqlContext);
   const [addEventApi] = useMutation(ADD_EVENT_DEFINITION, {
     client: compassGqlClient,
-    refetchQueries: [
-      { query: GET_APPLICATION_COMPASS, variables: { id: applicationId } },
+    refetchQueries: () => [
+      { query: GET_API_PACKAGE, variables: { applicationId, apiPackageId } },
     ],
   });
 
@@ -79,7 +81,7 @@ export default function CreateEventForm({
     try {
       await addEventApi({
         variables: {
-          applicationId,
+          apiPackageId,
           in: eventApiData,
         },
       });

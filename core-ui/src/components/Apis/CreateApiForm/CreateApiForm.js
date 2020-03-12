@@ -19,9 +19,10 @@ import ApiForm from '../Forms/ApiForm';
 import { useMutation } from 'react-apollo';
 import { ADD_API_DEFINITION } from 'gql/mutations';
 import { CompassGqlContext } from 'index';
-import { GET_APPLICATION_COMPASS } from 'gql/queries';
+import { GET_API_PACKAGE } from 'gql/queries';
 
 CreateApiForm.propTypes = {
+  apiPackageId: PropTypes.string.isRequired,
   applicationId: PropTypes.string.isRequired,
   formElementRef: CustomPropTypes.ref,
   onChange: PropTypes.func.isRequired,
@@ -30,6 +31,7 @@ CreateApiForm.propTypes = {
 };
 
 export default function CreateApiForm({
+  apiPackageId,
   applicationId,
   formElementRef,
   onChange,
@@ -39,8 +41,8 @@ export default function CreateApiForm({
   const compassGqlClient = React.useContext(CompassGqlContext);
   const [addApi] = useMutation(ADD_API_DEFINITION, {
     client: compassGqlClient,
-    refetchQueries: [
-      { query: GET_APPLICATION_COMPASS, variables: { id: applicationId } },
+    refetchQueries: () => [
+      { query: GET_API_PACKAGE, variables: { applicationId, apiPackageId } },
     ],
   });
 
@@ -112,7 +114,7 @@ export default function CreateApiForm({
     try {
       await addApi({
         variables: {
-          applicationId,
+          apiPackageId,
           in: apiData,
         },
       });
