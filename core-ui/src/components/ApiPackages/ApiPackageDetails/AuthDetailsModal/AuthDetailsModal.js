@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import JSONEditor from 'components/Shared/JSONEditor';
+import { JSONEditor } from 'react-shared';
 import { FormLabel } from 'fundamental-react';
 import { Modal } from 'react-shared';
 
