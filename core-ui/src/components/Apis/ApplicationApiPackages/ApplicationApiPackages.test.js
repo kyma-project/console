@@ -3,6 +3,23 @@ import ApplicationApiPackages from './ApplicationApiPackages';
 import { MockedProvider } from '@apollo/react-testing';
 import React from 'react';
 
+jest.mock('@kyma-project/common', () => ({
+  getApiUrl: () => 'kyma.local',
+}));
+
+jest.mock('index', () => {
+  return {
+    CompassGqlContext: {},
+  };
+});
+
+jest.mock('@kyma-project/luigi-client', () => ({
+  uxManager: () => ({
+    addBackdrop: () => {},
+    removeBackdrop: () => {},
+  }),
+}));
+
 const mockApiPackages = [
   {
     name: 'package one',
