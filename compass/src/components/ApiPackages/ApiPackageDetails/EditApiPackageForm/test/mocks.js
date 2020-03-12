@@ -5,6 +5,7 @@ export const apiPackageMock = {
   name: 'api-package-1',
   description: 'desc',
   instanceAuthRequestInputSchema: '{}',
+  defaultInstanceAuth: null,
 };
 
 export const updateApiPackageMock = {
@@ -17,6 +18,88 @@ export const updateApiPackageMock = {
         description: 'api-package-description-2',
         instanceAuthRequestInputSchema: '{}',
         defaultInstanceAuth: null,
+      },
+    },
+  },
+  result: {
+    data: {
+      updatePackage: {
+        name: 'package',
+      },
+    },
+  },
+};
+
+export const oAuthDataMock = {
+  clientId: 'clientId',
+  clientSecret: 'clientSecret',
+  url: 'https://test',
+};
+
+export const oAuthDataNewMock = {
+  clientId: 'clientId2',
+  clientSecret: 'clientSecret2',
+  url: 'https://test2',
+};
+
+export const apiPackageWithOAuthMock = {
+  id: 'package-id',
+  name: 'name',
+  description: 'description',
+  instanceAuthRequestInputSchema: '{}',
+  defaultInstanceAuth: { credential: oAuthDataMock },
+};
+
+export const updateApiPackageWithOAuthMock = {
+  request: {
+    query: UPDATE_API_PACKAGE,
+    variables: {
+      id: 'package-id',
+      in: {
+        name: 'name',
+        description: 'description',
+        instanceAuthRequestInputSchema: '{}',
+        defaultInstanceAuth: { credential: { oauth: oAuthDataNewMock } },
+      },
+    },
+  },
+  result: {
+    data: {
+      updatePackage: {
+        name: 'package',
+      },
+    },
+  },
+};
+
+export const basicDataMock = {
+  username: 'username',
+  password: 'password',
+};
+
+export const basicDataNewMock = {
+  username: 'username2',
+  password: 'password2',
+};
+
+export const apiPackageWithBasicMock = {
+  id: 'package-id',
+  name: 'name',
+  description: 'description',
+  instanceAuthRequestInputSchema: '{}',
+  defaultInstanceAuth: { credential: basicDataMock },
+};
+
+export const updateApiPackageWithBasicMock = {
+  request: {
+    query: UPDATE_API_PACKAGE,
+    variables: {
+      id: 'package-id',
+      in: {
+        name: 'name',
+        description: 'description',
+        instanceAuthRequestInputSchema: '{}',
+        defaultInstanceAuth: { credential: { basic: basicDataNewMock } },
       },
     },
   },
