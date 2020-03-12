@@ -8,6 +8,7 @@ import PropTypes from 'prop-types';
 
 import { useQuery } from '@apollo/react-hooks';
 import { GET_API_PACKAGE } from './../gql';
+import { CompassGqlContext } from 'index';
 
 ApiPackageDetails.propTypes = {
   applicationId: PropTypes.string.isRequired,
@@ -15,7 +16,9 @@ ApiPackageDetails.propTypes = {
 };
 
 export default function ApiPackageDetails({ applicationId, apiPackageId }) {
+  const compassGqlClient = React.useContext(CompassGqlContext);
   const { data, error, loading } = useQuery(GET_API_PACKAGE, {
+    client: compassGqlClient,
     variables: { applicationId, apiPackageId },
     fetchPolicy: 'cache-and-network',
   });

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { CustomPropTypes } from 'react-shared';
 
 import { FormLabel, FormItem } from 'fundamental-react';
-// import { JSONEditor } from 'react-shared';
+import { JSONEditor } from 'react-shared';
 
 import { useMutation } from '@apollo/react-hooks';
 import { CREATE_API_PACKAGE } from 'gql/mutations';
@@ -16,7 +16,7 @@ CreateApiPackageForm.propTypes = {
   onChange: PropTypes.func,
   onError: PropTypes.func,
   onCompleted: PropTypes.func,
-  // setCustomValid: PropTypes.func,
+  setCustomValid: PropTypes.func,
 };
 
 export default function CreateApiPackageForm({
@@ -25,7 +25,7 @@ export default function CreateApiPackageForm({
   onChange,
   onCompleted,
   onError,
-  // setCustomValid,
+  setCustomValid,
 }) {
   const compassGqlClient = React.useContext(CompassGqlContext);
   const [createApiPackage] = useMutation(CREATE_API_PACKAGE, {
@@ -37,17 +37,16 @@ export default function CreateApiPackageForm({
 
   const name = React.useRef();
   const description = React.useRef();
-  const [requestInputSchema] = React.useState({});
-  // const [requestInputSchema, setRequestInputSchema] = React.useState({});
+  const [requestInputSchema, setRequestInputSchema] = React.useState({});
 
-  // const handleSchemaChange = schema => {
-  //   try {
-  //     setRequestInputSchema(JSON.parse(schema));
-  //     setCustomValid(true);
-  //   } catch (e) {
-  //     setCustomValid(false);
-  //   }
-  // };
+  const handleSchemaChange = schema => {
+    try {
+      setRequestInputSchema(JSON.parse(schema));
+      setCustomValid(true);
+    } catch (e) {
+      setCustomValid(false);
+    }
+  };
 
   const handleFormSubmit = async () => {
     const apiName = name.current.value;
@@ -98,11 +97,11 @@ export default function CreateApiPackageForm({
       </FormItem>
 
       <FormLabel>Request input schema</FormLabel>
-      {/* <JSONEditor
+      <JSONEditor
         aria-label="schema-editor"
         onChangeText={handleSchemaChange}
         text={JSON.stringify(requestInputSchema, null, 2)}
-      /> */}
+      />
     </form>
   );
 }
