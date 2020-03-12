@@ -21,6 +21,17 @@ jest.mock('@kyma-project/common', () => ({
   getApiUrl: () => 'kyma.local',
 }));
 
+jest.mock('@kyma-project/luigi-client', () => ({
+  getEventData: () => ({
+    environmentId: mockNamespace,
+  }),
+  linkManager: () => ({
+    fromClosestContext: () => ({
+      navigate: mockNavigate,
+    }),
+  }),
+}));
+
 describe('CreateApiRule', () => {
   it('Renders basic component', async () => {
     const { queryByText, queryAllByRole, getAllByLabelText } = render(
