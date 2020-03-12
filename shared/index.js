@@ -17,7 +17,7 @@ export {
   ResourceNotFound,
 } from './components/ResourceNotFound/ResourceNotFound';
 export { StatusBadge } from './components/StatusBadge/StatusBadge';
-
+export { TextFormItem } from './components/TextFormItem/TextFormItem';
 import CustomPropTypes from './typechecking/CustomPropTypes';
 
 export * from './forms';
@@ -26,6 +26,7 @@ export * from './contexts/ApplicationContext';
 export * from './utils/apollo';
 export * from './contexts/NotificationContext';
 export * from './components/GenericList/actionHandlers/simpleDelete';
+export * from './components/CredentialForms';
 export * from './constants/constants';
 
 export {

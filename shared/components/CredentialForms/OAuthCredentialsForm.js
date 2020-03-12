@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { CustomPropTypes } from 'react-shared';
-import TextFormItem from './../../../Shared/TextFormItem';
+import CustomPropTypes from '../../typechecking/CustomPropTypes';
+import { TextFormItem } from '../TextFormItem/TextFormItem';
 
 export const CREDENTIAL_TYPE_OAUTH = 'OAuth';
 
@@ -16,7 +16,7 @@ OAuthCredentialsForm.propTypes = {
   defaultValues: PropTypes.object,
 };
 
-export default function OAuthCredentialsForm({ refs, defaultValues }) {
+export function OAuthCredentialsForm({ refs, defaultValues }) {
   return (
     <section className="fd-has-margin-top-medium">
       <TextFormItem

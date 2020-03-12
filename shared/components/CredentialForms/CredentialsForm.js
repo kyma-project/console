@@ -1,12 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Dropdown } from 'components/Shared/Dropdown/Dropdown';
+import { Dropdown } from '../Dropdown/Dropdown';
 
-import OAuthCredentialsForm, {
+import {
+  OAuthCredentialsForm,
   CREDENTIAL_TYPE_OAUTH,
   oAuthRefPropTypes,
 } from './OAuthCredentialsForm';
-import BasicCredentialsForm, {
+import {
+  BasicCredentialsForm,
   CREDENTIAL_TYPE_BASIC,
   basicRefPropTypes,
 } from './BasicCredentialsForm';
@@ -24,7 +26,7 @@ CredentialsForm.propTypes = {
   }),
 };
 
-export default function CredentialsForm({
+export function CredentialsForm({
   credentialRefs,
   credentialType,
   setCredentialType,

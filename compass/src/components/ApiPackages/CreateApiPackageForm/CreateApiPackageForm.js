@@ -1,14 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { CustomPropTypes, getRefsValues } from 'react-shared';
+import {
+  CustomPropTypes,
+  getRefsValues,
+  TextFormItem,
+  CredentialsForm,
+  CREDENTIAL_TYPE_NONE,
+} from 'react-shared';
 import { Tab, TabGroup, FormLabel, FormSet } from 'fundamental-react';
 import { useMutation } from '@apollo/react-hooks';
 
-import TextFormItem from './../../Shared/TextFormItem';
 import JSONEditor from './../../Shared/JSONEditor';
-import CredentialsForm, {
-  CREDENTIAL_TYPE_NONE,
-} from 'components/Api/Forms/CredentialForms/CredentialsForm'; // TODO: Move to shared
 import { CREATE_API_PACKAGE } from './../gql';
 import { GET_APPLICATION } from 'components/Application/gql';
 
