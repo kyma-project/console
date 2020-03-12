@@ -89,8 +89,8 @@ export default function EditApiPackageForm({
       });
       onCompleted(apiName, 'API Package update successfully');
     } catch (error) {
-      console.warn(error);
-      onError('Cannot update API Package');
+      console.warn(error.message);
+      onError('Cannot update API Package', error.message);
     }
   };
 

@@ -4,10 +4,11 @@ import { ControlledModal } from './../Modal/ControlledModal';
 import { Button } from 'fundamental-react/Button';
 import LuigiClient from '@kyma-project/luigi-client';
 import { useMutationObserver } from 'react-shared';
+import { SEND_NOTIFICATION } from 'gql';
+import { useMutation } from 'react-apollo';
 
 const ModalWithForm = ({
   performRefetch,
-  sendNotification,
   title,
   button,
   confirmText,
@@ -18,6 +19,7 @@ const ModalWithForm = ({
   const [isOpen, setOpen] = useState(false);
   const [isValid, setValid] = useState(initialIsValid);
   const [customValid, setCustomValid] = useState(true);
+  const [sendNotification] = useMutation(SEND_NOTIFICATION);
   const formElementRef = useRef(null);
 
   const handleFormChanged = e => {
