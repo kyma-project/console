@@ -59,7 +59,8 @@ export default function AssignEntityToScenarioModal({
   React.useEffect(() => {
     setAssignedEntities(originalEntities);
     allEntitiesQuery.refetch();
-  }, [originalEntities, allEntitiesQuery]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [originalEntities]);
 
   if (allEntitiesQuery.loading) {
     return (
