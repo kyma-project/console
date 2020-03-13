@@ -60,6 +60,13 @@ export default function EditApiHeader({
     );
   };
 
+  const getApiPath = () => {
+    const isApi = 'targetURL' in api;
+    return `/details/${application.id}/apiPackage/${apiPackage.id}/${
+      isApi ? 'api' : 'eventApi'
+    }/${api.id}`;
+  };
+
   const breadcrumbItems = [
     { name: 'Applications', path: '/' },
     { name: application.name, path: `/details/${application.id}` },
@@ -67,6 +74,7 @@ export default function EditApiHeader({
       name: apiPackage.name,
       path: `/details/${application.id}/apiPackage/${apiPackage.id}`,
     },
+    { name: api.name, path: getApiPath() },
     { name: '' },
   ];
 
