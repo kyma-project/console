@@ -28,8 +28,17 @@ export default function ApiPackageDetails({ applicationId, apiPackageId }) {
   if (error) return <p>{`Error! ${error.message}`}</p>;
 
   const application = data.application;
-  const apiPackage = application.package;
+  if (!application) {
+    return (
+      <ResourceNotFound
+        resource="Application"
+        breadcrumb="Applications"
+        path="/"
+      />
+    );
+  }
 
+  const apiPackage = application.package;
   if (!apiPackage) {
     return (
       <ResourceNotFound resource="Package" breadcrumb="Application" path="/" />
