@@ -57,14 +57,16 @@ const ApplicationDetails = ({ appId }) => {
       variables: kymaQuery.variables,
       updateQuery: (prev, { subscriptionData }) => {
         const data = subscriptionData.data.applicationEvent;
-        if (data.type === 'DELETE' && data.application.id === appId) {
-          setApp({ id: appId });
-          return;
+        if (data.application.name === app.name) {
+          if (data.type === 'DELETE') {
+            setApp({ id: appId });
+            return;
+          }
+          setApp({
+            ...app,
+            ...data.application,
+          });
         }
-        setApp({
-          ...app,
-          ...data.application,
-        });
       },
     });
   }, [kymaQuery, compassQuery, app, appId]);
