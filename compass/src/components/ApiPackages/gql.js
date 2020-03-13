@@ -40,10 +40,12 @@ export const GET_API_PACKAGE = gql`
               clientId
               clientSecret
               url
+              __typename
             }
             ... on BasicCredentialData {
               username
               password
+              __typename
             }
           }
         }

@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {
   CustomPropTypes,
-  getRefsValues,
   TextFormItem,
   CredentialsForm,
   CREDENTIAL_TYPE_NONE,
@@ -13,6 +12,7 @@ import { useMutation } from '@apollo/react-hooks';
 import JSONEditor from './../../Shared/JSONEditor';
 import { CREATE_API_PACKAGE } from './../gql';
 import { GET_APPLICATION } from 'components/Application/gql';
+import { getCredentialsRefsValue } from '../ApiPackagesHelpers';
 
 CreateApiPackageForm.propTypes = {
   applicationId: PropTypes.string.isRequired,
@@ -66,15 +66,7 @@ export default function CreateApiPackageForm({
 
   const handleFormSubmit = async () => {
     const apiName = name.current.value;
-    const oAuthValues = getRefsValues(credentialRefs.oAuth);
-    const basicValues = getRefsValues(credentialRefs.basic);
-    let credentials = null;
-    if (oAuthValues && Object.keys(oAuthValues).length !== 0) {
-      credentials = { credential: { oauth: oAuthValues } };
-    }
-    if (basicValues && Object.keys(basicValues).length !== 0) {
-      credentials = { credential: { basic: basicValues } };
-    }
+    const credentials = getCredentialsRefsValue(credentialRefs);
     const input = {
       name: apiName,
       description: description.current.value,

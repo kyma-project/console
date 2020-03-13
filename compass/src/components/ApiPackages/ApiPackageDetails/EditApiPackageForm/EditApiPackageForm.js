@@ -1,17 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useMutation } from '@apollo/react-hooks';
-import {
-  CustomPropTypes,
-  getRefsValues,
-  TextFormItem,
-  CREDENTIAL_TYPE_NONE,
-  CREDENTIAL_TYPE_OAUTH,
-  CREDENTIAL_TYPE_BASIC,
-  CredentialsForm,
-} from 'react-shared';
+import { CustomPropTypes, TextFormItem, CredentialsForm } from 'react-shared';
 import { FormLabel, Tab, TabGroup, FormSet } from 'fundamental-react';
 
+import {
+  inferCredentialType,
+  inferDefaultCredentials,
+  getCredentialsRefsValue,
+} from '../../ApiPackagesHelpers';
 import JSONEditor from '../../../Shared/JSONEditor';
 import { UPDATE_API_PACKAGE, GET_API_PACKAGE } from './../../gql';
 
@@ -63,11 +60,11 @@ export default function EditApiPackageForm({
   const credentials =
     apiPackage.defaultInstanceAuth && apiPackage.defaultInstanceAuth.credential;
   const [credentialsType, setCredentialsType] = React.useState(
-    credentials
-      ? credentials.url
-        ? CREDENTIAL_TYPE_OAUTH
-        : CREDENTIAL_TYPE_BASIC
-      : CREDENTIAL_TYPE_NONE,
+    inferCredentialType(credentials),
+  );
+  const defaultCredentials = inferDefaultCredentials(
+    credentialsType,
+    credentials,
   );
 
   const handleSchemaChange = schema => {
@@ -81,14 +78,7 @@ export default function EditApiPackageForm({
 
   const handleFormSubmit = async () => {
     const apiName = name.current.value;
-    const oAuthValues = getRefsValues(credentialRefs.oAuth);
-    const basicValues = getRefsValues(credentialRefs.basic);
-    let creds = null;
-    if (oAuthValues && Object.keys(oAuthValues).length !== 0) {
-      creds = { credential: { oauth: oAuthValues } };
-    } else if (basicValues && Object.keys(basicValues).length !== 0) {
-      creds = { credential: { basic: basicValues } };
-    }
+    const creds = getCredentialsRefsValue(credentialRefs);
     const input = {
       name: apiName,
       description: description.current.value,
@@ -108,20 +98,6 @@ export default function EditApiPackageForm({
       onError('Cannot update API Package', error.message);
     }
   };
-
-  const defaultCredentials = credentials
-    ? credentials.url
-      ? {
-          oAuth: {
-            ...credentials,
-          },
-        }
-      : {
-          basic: {
-            ...credentials,
-          },
-        }
-    : null;
 
   return (
     <form ref={formElementRef} onChange={onChange} onSubmit={handleFormSubmit}>
