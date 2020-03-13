@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { CustomPropTypes } from 'react-shared';
-
-import TextFormItem from './../../Shared/TextFormItem';
+import { CustomPropTypes, TextFormItem } from 'react-shared';
 
 ApiForm.propTypes = {
   formValues: PropTypes.shape({

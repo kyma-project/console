@@ -18,6 +18,10 @@ export const GET_API_DATA = gql`
                 clientSecret
                 url
               }
+              ... on BasicCredentialData {
+                username
+                password
+              }
             }
           }
           spec {

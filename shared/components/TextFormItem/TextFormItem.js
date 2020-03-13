@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { FormItem, FormLabel } from 'fundamental-react';
-import { CustomPropTypes } from 'react-shared';
+import CustomPropTypes from '../../typechecking/CustomPropTypes';
 
 TextFormItem.propTypes = {
   inputKey: PropTypes.string.isRequired,
@@ -17,7 +17,7 @@ TextFormItem.defaultProps = {
   type: 'text',
 };
 
-export default function TextFormItem({
+export function TextFormItem({
   inputKey,
   required,
   label,

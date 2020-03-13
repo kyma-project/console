@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { PageHeader, handleDelete } from 'react-shared';
 import { Button } from 'fundamental-react';
 import RequestInputSchemaModal from '../RequestInputSchemaModal/RequestInputSchemaModal';
-import ModalWithForm from 'shared/components/ModalWithForm/ModalWithForm.component';
+import ModalWithForm from 'shared/components/ModalWithForm/ModalWithForm';
 import EditApiPackageForm from './../EditApiPackageForm/EditApiPackageForm';
 import './ApiPackageDetailsHeader.scss';
 
@@ -57,7 +57,6 @@ export default function ApiPackageDetailsHeader({ apiPackage, application }) {
   const breadcrumbItems = [
     { name: 'Applications', path: '/applications', fromContext: 'tenant' },
     { name: application.name, path: '/', fromContext: 'application' },
-    { name: apiPackage.name, path: '/' },
     { name: '' },
   ];
 

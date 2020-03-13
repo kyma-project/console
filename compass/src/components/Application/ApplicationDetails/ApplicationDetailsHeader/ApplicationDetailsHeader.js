@@ -10,7 +10,7 @@ import { handleDelete } from 'react-shared';
 import PanelEntry from '../../../../shared/components/PanelEntry/PanelEntry.component';
 import '../../../../shared/styles/header.scss';
 
-import ModalWithForm from './../../../../shared/components/ModalWithForm/ModalWithForm.container';
+import ModalWithForm from './../../../../shared/components/ModalWithForm/ModalWithForm';
 import UpdateApplicationForm from './../UpdateApplicationForm/UpdateApplicationForm.container';
 import ConnectApplicationModal from './../ConnectApplicationModal/ConnectApplicationModal.container';
 
@@ -20,12 +20,6 @@ function navigateToApplications() {
   LuigiClient.linkManager()
     .fromContext('tenant')
     .navigate(`/applications`);
-}
-
-function navigateToApplication(id) {
-  LuigiClient.linkManager()
-    .fromContext('tenant')
-    .navigate(`/applications/details/${id}`);
 }
 
 class ApplicationDetailsHeader extends React.Component {
@@ -52,11 +46,6 @@ class ApplicationDetailsHeader extends React.Component {
                 name="Applications"
                 url="#"
                 onClick={navigateToApplications}
-              />
-              <Breadcrumb.Item
-                name={name}
-                url="#"
-                onClick={() => navigateToApplication(id)}
               />
               <Breadcrumb.Item />
             </Breadcrumb>

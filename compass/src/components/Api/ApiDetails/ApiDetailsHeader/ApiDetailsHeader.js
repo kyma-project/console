@@ -30,7 +30,6 @@ class ApiDetailsHeader extends React.Component {
       { name: 'Applications', path: '/applications', fromContext: 'tenant' },
       { name: application.name, path: '/', fromContext: 'application' },
       { name: apiPackage.name, path: '/', fromContext: 'api-package' },
-      { name: api.name, path: '/' },
       { name: '' },
     ];
 
