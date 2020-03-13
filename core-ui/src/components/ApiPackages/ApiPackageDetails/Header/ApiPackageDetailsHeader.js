@@ -47,7 +47,6 @@ export default function ApiPackageDetailsHeader({ apiPackage, application }) {
   const breadcrumbItems = [
     { name: 'Applications', path: '/applications', fromContext: 'tenant' },
     { name: application.name, path: '/', fromContext: 'application' },
-    { name: apiPackage.name, path: '/' },
     { name: '' },
   ];
 

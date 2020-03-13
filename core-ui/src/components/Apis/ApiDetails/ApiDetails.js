@@ -27,13 +27,6 @@ const DocumentationComponent = ({ content, type }) => (
 );
 
 const ApiDetailsHeader = ({ api, apiPackage, application, actions }) => {
-  const getApiPath = () => {
-    const isApi = 'targetURL' in api;
-    return `/details/${application.id}/apiPackage/${apiPackage.id}/${
-      isApi ? 'api' : 'eventApi'
-    }/${api.id}`;
-  };
-
   const breadcrumbItems = [
     { name: 'Applications', path: '/' },
     { name: application.name, path: `/details/${application.id}` },
@@ -41,7 +34,6 @@ const ApiDetailsHeader = ({ api, apiPackage, application, actions }) => {
       name: apiPackage.name,
       path: `/details/${application.id}/apiPackage/${apiPackage.id}`,
     },
-    { name: api.name, path: getApiPath() },
     { name: '' },
   ];
 
