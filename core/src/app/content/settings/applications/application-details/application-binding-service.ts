@@ -73,7 +73,7 @@ export class ApplicationBindingService {
       }
     }`;
     const variables = { application };
-    
+
     return this.graphQLClientService.gqlQuery(query, variables);
   }
 
@@ -81,6 +81,9 @@ export class ApplicationBindingService {
     const query = `query Application($namespace: String!){
       applications(namespace: $namespace) {
         name
+        compassMetadata {
+          applicationId
+        }
       }
     }`;
     const variables = { namespace };

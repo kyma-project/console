@@ -166,12 +166,15 @@ export class NamespaceDetailsComponent implements OnInit, OnDestroy {
       .navigate('services');
   }
 
-  public navigateToApplications(applicationName = null) {
-    LuigiClient.linkManager().navigate(
-      applicationName
-        ? '/home/cmf-apps/details/' + applicationName
-        : '/home/cmf-apps'
-    );
+  public navigateToApplications(application = null) {
+    const enableAPIPackages = AppConfig.enableAPIPackages === 'true';
+    const appsNodeRoute = enableAPIPackages?'cmf-applications':'cmf-apps';
+    if(application) {
+      const appDetailsRef = enableAPIPackages?application.compassMetadata.applicationId:application.name;
+      LuigiClient.linkManager().navigate(`/home/${appsNodeRoute}/details/${appDetailsRef}`);
+    } else {
+      LuigiClient.linkManager().navigate(`/home/${appsNodeRoute}`);
+    }
   }
 
   public deleteNamespace() {
