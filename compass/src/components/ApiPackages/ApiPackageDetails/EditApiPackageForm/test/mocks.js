@@ -34,6 +34,7 @@ export const oAuthDataMock = {
   clientId: 'clientId',
   clientSecret: 'clientSecret',
   url: 'https://test',
+  __typename: 'OAuthCredentialData',
 };
 
 export const oAuthDataNewMock = {
@@ -75,6 +76,7 @@ export const updateApiPackageWithOAuthMock = {
 export const basicDataMock = {
   username: 'username',
   password: 'password',
+  __typename: 'BasicCredentialData',
 };
 
 export const basicDataNewMock = {
