@@ -6,6 +6,7 @@ import EventList from './EventList/EventList';
 import AuthList from './AuthList/AuthList';
 
 import { ResourceNotFound } from 'react-shared';
+import { TabGroup, Tab } from 'fundamental-react';
 
 import { useQuery } from '@apollo/react-hooks';
 import { GET_API_PACKAGE } from 'gql/queries';
@@ -48,17 +49,23 @@ export default function ApiPackageDetails({ applicationId, apiPackageId }) {
   return (
     <>
       <Header apiPackage={apiPackage} application={application} />
-      <AuthList auths={apiPackage.instanceAuths} />
-      <ApiList
-        apiDefinitions={apiPackage.apiDefinitions.data}
-        applicationId={application.id}
-        apiPackageId={apiPackage.id}
-      />
-      <EventList
-        eventDefinitions={apiPackage.eventDefinitions.data}
-        applicationId={application.id}
-        apiPackageId={apiPackage.id}
-      />
+      <TabGroup>
+        <Tab key="api-list" id="api-list" title="API Package Content">
+          <ApiList
+            apiDefinitions={apiPackage.apiDefinitions.data}
+            applicationId={application.id}
+            apiPackageId={apiPackage.id}
+          />
+          <EventList
+            eventDefinitions={apiPackage.eventDefinitions.data}
+            applicationId={application.id}
+            apiPackageId={apiPackage.id}
+          />
+        </Tab>
+        <Tab key="auth-data" id="auth-data" title="Auth data">
+          <AuthList auths={apiPackage.instanceAuths} />
+        </Tab>
+      </TabGroup>
     </>
   );
 }

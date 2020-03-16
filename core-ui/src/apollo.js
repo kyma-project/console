@@ -1,5 +1,8 @@
 import { ApolloClient } from 'apollo-client';
-import { InMemoryCache } from 'apollo-cache-inmemory';
+import {
+  InMemoryCache,
+  IntrospectionFragmentMatcher,
+} from 'apollo-cache-inmemory';
 import { HttpLink } from 'apollo-link-http';
 import { onError } from 'apollo-link-error';
 import { ApolloLink } from 'apollo-link';
@@ -26,6 +29,14 @@ const errorLink = onError(
 );
 
 export function createCompassApolloClient() {
+  const fragmentMatcher = new IntrospectionFragmentMatcher({
+    introspectionQueryResultData: {
+      __schema: {
+        types: [],
+      },
+    },
+  });
+
   const graphqlApiUrl = getURL('compassApiUrl');
 
   //TODO: should be removed once management plane API is able to resolve tenant from token
@@ -42,6 +53,7 @@ export function createCompassApolloClient() {
   return new ApolloClient({
     link: ApolloLink.from([errorLink, httpLink]),
     cache: new InMemoryCache({
+      fragmentMatcher,
       dataIdFromObject: object => object.name || null,
     }),
   });
