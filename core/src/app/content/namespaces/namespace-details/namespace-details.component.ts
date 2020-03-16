@@ -68,9 +68,9 @@ export class NamespaceDetailsComponent implements OnInit, OnDestroy {
         });
       });
 
-    LuigiClient.linkManager().pathExists('/home/cmf-applications').then(
-      pathExists => this.useLegacyRouteToApplicationView = !pathExists
-    )
+    LuigiClient.linkManager()
+      .pathExists('/home/cmf-applications')
+      .then(pathExists => (this.useLegacyRouteToApplicationView = !pathExists));
   }
 
   public ngOnDestroy() {
@@ -172,20 +172,31 @@ export class NamespaceDetailsComponent implements OnInit, OnDestroy {
   }
 
   private isLegacyApplication(application) {
-    return !application.compassMetadata || !application.compassMetadata.applicationId || application.compassMetadata.applicationId=== '';
+    return (
+      !application.compassMetadata ||
+      !application.compassMetadata.applicationId ||
+      application.compassMetadata.applicationId === ''
+    );
   }
 
   public navigateToApplications(application?) {
-    const appsNodeRoute = this.useLegacyRouteToApplicationView?'cmf-apps':'cmf-applications';
-    if(application) {
-      if (!this.isLegacyApplication(application) && !this.useLegacyRouteToApplicationView) {
-        LuigiClient.linkManager().navigate(`/home/cmf-applications/details/${application.compassMetadata.applicationId}`);
+    const appsNodeRoute = this.useLegacyRouteToApplicationView
+      ? 'cmf-apps'
+      : 'cmf-applications';
+    let path = `/home/${appsNodeRoute}`;
+
+    if (application) {
+      if (
+        !this.isLegacyApplication(application) &&
+        !this.useLegacyRouteToApplicationView
+      ) {
+        path = `/home/cmf-applications/details/${application.compassMetadata.applicationId}`;
       } else {
-        LuigiClient.linkManager().navigate(`/home/cmf-apps/details/${application.name}`);
+        path = `/home/cmf-apps/details/${application.name}`;
       }
-    } else {
-      LuigiClient.linkManager().navigate(`/home/${appsNodeRoute}`);
     }
+
+    LuigiClient.linkManager().navigate(path);
   }
 
   public deleteNamespace() {
