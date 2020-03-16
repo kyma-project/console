@@ -1,17 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { CustomPropTypes, getRefsValues, FileInput } from 'react-shared';
-import {
-  TabGroup,
-  Tab,
-  FormSet,
-  FormItem,
-  FormLabel,
-  FormSelect,
-} from 'fundamental-react';
-import CredentialsForm, {
-  CREDENTIAL_TYPE_NONE,
-} from '../Forms/CredentialForms/CredentialsForm';
+import { FormSet, FormItem, FormLabel, FormSelect } from 'fundamental-react';
 
 import { createApiData, verifyApiFile } from '../ApiHelpers';
 
@@ -48,10 +38,6 @@ export default function CreateApiForm({
 
   const [specProvided, setSpecProvided] = React.useState(false);
 
-  const [credentialsType, setCredentialsType] = React.useState(
-    CREDENTIAL_TYPE_NONE,
-  );
-
   const formValues = {
     name: React.useRef(null),
     description: React.useRef(null),
@@ -66,14 +52,6 @@ export default function CreateApiForm({
     data: '',
     format: null,
   });
-
-  const credentialRefs = {
-    oAuth: {
-      clientId: React.useRef(null),
-      clientSecret: React.useRef(null),
-      url: React.useRef(null),
-    },
-  };
 
   const verifyFile = async file => {
     const form = formElementRef.current;
@@ -99,17 +77,11 @@ export default function CreateApiForm({
     e.preventDefault();
 
     const basicApiData = getRefsValues(formValues);
-    const credentials = { oAuth: getRefsValues(credentialRefs.oAuth) };
     const specData = specProvided
       ? { ...spec, type: apiTypeRef.current.value }
       : null;
 
-    const apiData = createApiData(
-      basicApiData,
-      specData,
-      credentials,
-      credentialsType,
-    );
+    const apiData = createApiData(basicApiData, specData);
 
     try {
       await addApi({
@@ -132,54 +104,41 @@ export default function CreateApiForm({
       onSubmit={handleFormSubmit}
       style={{ height: '600px', width: '400px' }}
     >
-      <TabGroup>
-        <Tab key="api-data" id="api-data" title="API data">
-          <FormSet>
-            <ApiForm formValues={formValues} />
-            <p
-              className="link fd-has-margin-bottom-s clear-underline"
-              onClick={() => setSpecProvided(!specProvided)}
-            >
-              {specProvided ? 'Remove specification' : 'Add specification'}
-            </p>
-            {specProvided && (
-              <>
-                <FormItem>
-                  <FormLabel htmlFor="api-type">Type</FormLabel>
-                  <FormSelect
-                    id="api-type"
-                    ref={apiTypeRef}
-                    defaultValue="OPEN_API"
-                  >
-                    <option value="OPEN_API">Open API</option>
-                    <option value="ODATA">OData</option>
-                  </FormSelect>
-                </FormItem>
-                <FormItem>
-                  <FileInput
-                    inputRef={fileRef}
-                    fileInputChanged={verifyFile}
-                    availableFormatsMessage={
-                      'Available file types: JSON, YAML, XML'
-                    }
-                    required
-                    acceptedFileFormats=".yml,.yaml,.json,.xml"
-                  />
-                </FormItem>
-              </>
-            )}
-          </FormSet>
-        </Tab>
-        <Tab key="credentials" id="credentials" title="Credentials">
-          <FormSet>
-            <CredentialsForm
-              credentialRefs={credentialRefs}
-              credentialType={credentialsType}
-              setCredentialType={setCredentialsType}
-            />
-          </FormSet>
-        </Tab>
-      </TabGroup>
+      <FormSet>
+        <ApiForm formValues={formValues} />
+        <p
+          className="link fd-has-margin-bottom-s clear-underline"
+          onClick={() => setSpecProvided(!specProvided)}
+        >
+          {specProvided ? 'Remove specification' : 'Add specification'}
+        </p>
+        {specProvided && (
+          <>
+            <FormItem>
+              <FormLabel htmlFor="api-type">Type</FormLabel>
+              <FormSelect
+                id="api-type"
+                ref={apiTypeRef}
+                defaultValue="OPEN_API"
+              >
+                <option value="OPEN_API">Open API</option>
+                <option value="ODATA">OData</option>
+              </FormSelect>
+            </FormItem>
+            <FormItem>
+              <FileInput
+                inputRef={fileRef}
+                fileInputChanged={verifyFile}
+                availableFormatsMessage={
+                  'Available file types: JSON, YAML, XML'
+                }
+                required
+                acceptedFileFormats=".yml,.yaml,.json,.xml"
+              />
+            </FormItem>
+          </>
+        )}
+      </FormSet>
     </form>
   );
 }

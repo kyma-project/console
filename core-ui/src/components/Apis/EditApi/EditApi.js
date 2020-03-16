@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { Panel, TabGroup, Tab, Button } from 'fundamental-react';
 import EditApiHeader from '../EditApiHeader/EditApiHeader';
 import ApiForm from '../Forms/ApiForm';
-import CredentialsForm from '../Forms/CredentialForms/CredentialsForm';
 import './EditApi.scss';
 
 import { GET_API_DEFININTION } from 'gql/queries';
@@ -19,11 +18,7 @@ import {
   useNotification,
   ResourceNotFound,
 } from 'react-shared';
-import {
-  createApiData,
-  inferCredentialType,
-  verifyApiInput,
-} from '../ApiHelpers';
+import { createApiData, verifyApiInput } from '../ApiHelpers';
 import ApiEditorForm from '../Forms/ApiEditorForm';
 
 EditApi.propTypes = {
@@ -64,23 +59,11 @@ function EditApi({ apiId, originalApi, apiPackage, application }) {
     originalApi.spec ? originalApi.spec.data : '',
   );
 
-  const [credentialsType, setCredentialsType] = React.useState(
-    inferCredentialType(originalApi.defaultAuth),
-  );
-
   const formValues = {
     name: React.useRef(null),
     description: React.useRef(null),
     group: React.useRef(null),
     targetURL: React.useRef(null),
-  };
-
-  const credentialRefs = {
-    oAuth: {
-      clientId: React.useRef(null),
-      clientSecret: React.useRef(null),
-      url: React.useRef(null),
-    },
   };
 
   const revalidateForm = () =>
@@ -93,13 +76,7 @@ function EditApi({ apiId, originalApi, apiPackage, application }) {
     const specData = specProvided
       ? { data: specText, format, type: apiType }
       : null;
-    const credentialsData = { oAuth: getRefsValues(credentialRefs.oAuth) };
-    const apiData = createApiData(
-      basicData,
-      specData,
-      credentialsData,
-      credentialsType,
-    );
+    const apiData = createApiData(basicData, specData);
 
     try {
       await updateApiDefinition({
@@ -123,10 +100,6 @@ function EditApi({ apiId, originalApi, apiPackage, application }) {
     setSpecText(text);
     revalidateForm();
   };
-
-  const defaultCredentials = originalApi.defaultAuth
-    ? { oAuth: { ...originalApi.defaultAuth.credential } }
-    : null;
 
   return (
     <>
@@ -207,26 +180,6 @@ function EditApi({ apiId, originalApi, apiPackage, application }) {
                     revalidateForm={revalidateForm}
                   />
                 )}
-              </Panel.Body>
-            </Panel>
-          </Tab>
-          <Tab key="credentials" id="credentials" title="Credentials">
-            <Panel>
-              <Panel.Header>
-                <p className="fd-has-type-1">Credentials</p>
-              </Panel.Header>
-              <Panel.Body>
-                <CredentialsForm
-                  credentialRefs={credentialRefs}
-                  credentialType={credentialsType}
-                  setCredentialType={type => {
-                    setCredentialsType(type);
-                    setTimeout(() => {
-                      revalidateForm();
-                    });
-                  }}
-                  defaultValues={defaultCredentials}
-                />
               </Panel.Body>
             </Panel>
           </Tab>
