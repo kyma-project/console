@@ -84,12 +84,11 @@ export default function ScenarioApplications({ updateApplicationsCount }) {
     );
   };
 
-  const headerRenderer = () => ['Name', 'Total APIs'];
+  const headerRenderer = () => ['Name', 'Packages'];
 
   const rowRenderer = application => [
     application.name,
-    application.apiDefinitions.totalCount +
-      application.eventDefinitions.totalCount,
+    application.packages.totalCount,
   ];
 
   const actions = [
