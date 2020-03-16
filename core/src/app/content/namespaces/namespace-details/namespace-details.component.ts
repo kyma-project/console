@@ -186,6 +186,7 @@ export class NamespaceDetailsComponent implements OnInit, OnDestroy {
     let path = `/home/${appsNodeRoute}`;
 
     if (application) {
+      // tslint:disable-next-line:prefer-conditional-expression
       if (
         !this.isLegacyApplication(application) &&
         !this.useLegacyRouteToApplicationView
