@@ -6,6 +6,10 @@ import EditApiPackageForm from '../EditApiPackageForm';
 import {
   apiPackageMock,
   updateApiPackageMock,
+  basicCredentialsMock,
+  updateApiPackageWithBasicMock,
+  oAuthCredentialsMock,
+  updateApiPackageWithOAuthMock,
   refetchApiPackageMock,
 } from './mocks';
 
@@ -26,11 +30,9 @@ jest.mock('react-shared', () => ({
 
 describe('EditApiPackageForm', () => {
   it('Fills the form with API Package data', async () => {
-    console.warn = jest.fn(); // componentWillUpdate on JSONEditorComponent
-
     const formRef = React.createRef();
 
-    const { queryByLabelText } = render(
+    const { queryByLabelText, getByText, queryByText } = render(
       <MockedProvider
         mocks={[updateApiPackageMock, refetchApiPackageMock]}
         addTypename={false}
@@ -54,11 +56,12 @@ describe('EditApiPackageForm', () => {
     const descriptionField = queryByLabelText('Description');
     expect(descriptionField).toBeInTheDocument();
     expect(descriptionField.value).toBe(apiPackageMock.description);
+
+    fireEvent.click(getByText('Credentials'));
+    expect(queryByText('None')).toBeInTheDocument();
   });
 
-  it('Sends request and shows notification on form submit', async () => {
-    console.warn = jest.fn(); // componentWillUpdate on JSONEditorComponent
-
+  it('Sends request and shows notification on form submit with no credentials', async () => {
     const formRef = React.createRef();
     const completedCallback = jest.fn();
 
@@ -84,6 +87,89 @@ describe('EditApiPackageForm', () => {
     });
     fireEvent.change(getByLabelText('Description'), {
       target: { value: 'api-package-description-2' },
+    });
+
+    // simulate form submit from outside
+    formRef.current.dispatchEvent(new Event('submit'));
+
+    await wait(() => expect(completedCallback).toHaveBeenCalled());
+  });
+
+  it('Sends request and shows notification on form submit with Basic credentials', async () => {
+    console.error = jest.fn(); // Warning: `NaN` is an invalid value for the `left` css style property.
+
+    const formRef = React.createRef();
+    const completedCallback = jest.fn();
+
+    const { getByLabelText, getByText } = render(
+      <MockedProvider
+        mocks={[updateApiPackageWithBasicMock, refetchApiPackageMock]}
+        addTypename={false}
+      >
+        <EditApiPackageForm
+          applicationId="app-id"
+          apiPackage={apiPackageMock}
+          formElementRef={formRef}
+          onChange={() => {}}
+          onCompleted={completedCallback}
+          onError={() => {}}
+          setCustomValid={() => {}}
+        />
+      </MockedProvider>,
+    );
+
+    fireEvent.click(getByText('Credentials')); // select tab
+    fireEvent.click(getByText('None')); // open dropdown
+    fireEvent.click(getByText('Basic')); // select basic credentials
+
+    fireEvent.change(getByLabelText(/Username/), {
+      target: { value: basicCredentialsMock.username },
+    });
+    fireEvent.change(getByLabelText(/Password/), {
+      target: { value: basicCredentialsMock.password },
+    });
+
+    // simulate form submit from outside
+    formRef.current.dispatchEvent(new Event('submit'));
+
+    await wait(() => expect(completedCallback).toHaveBeenCalled());
+  });
+
+  it('Sends request and shows notification on form submit with OAuth credentials', async () => {
+    console.error = jest.fn(); // Warning: `NaN` is an invalid value for the `left` css style property.
+
+    const formRef = React.createRef();
+    const completedCallback = jest.fn();
+
+    const { getByLabelText, getByText } = render(
+      <MockedProvider
+        mocks={[updateApiPackageWithOAuthMock, refetchApiPackageMock]}
+        addTypename={false}
+      >
+        <EditApiPackageForm
+          applicationId="app-id"
+          apiPackage={apiPackageMock}
+          formElementRef={formRef}
+          onChange={() => {}}
+          onCompleted={completedCallback}
+          onError={() => {}}
+          setCustomValid={() => {}}
+        />
+      </MockedProvider>,
+    );
+
+    fireEvent.click(getByText('Credentials')); // select tab
+    fireEvent.click(getByText('None')); // open dropdown
+    fireEvent.click(getByText('OAuth')); // select oAuth credentials
+
+    fireEvent.change(getByLabelText(/Client ID/), {
+      target: { value: oAuthCredentialsMock.clientId },
+    });
+    fireEvent.change(getByLabelText(/Client Secret/), {
+      target: { value: oAuthCredentialsMock.clientSecret },
+    });
+    fireEvent.change(getByLabelText(/Url/), {
+      target: { value: oAuthCredentialsMock.url },
     });
 
     // simulate form submit from outside

@@ -36,15 +36,12 @@ export default function EditApiPackageForm({
   const compassGqlClient = React.useContext(CompassGqlContext);
   const [updateApiPackage] = useMutation(UPDATE_API_PACKAGE, {
     client: compassGqlClient,
-    refetchQueries: () => {
-      console.log('refetch');
-      return [
-        {
-          query: GET_API_PACKAGE,
-          variables: { applicationId, apiPackageId: apiPackage.id },
-        },
-      ];
-    },
+    refetchQueries: () => [
+      {
+        query: GET_API_PACKAGE,
+        variables: { applicationId, apiPackageId: apiPackage.id },
+      },
+    ],
   });
 
   const name = React.useRef();
