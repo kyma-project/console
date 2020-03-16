@@ -175,7 +175,7 @@ export class NamespaceDetailsComponent implements OnInit, OnDestroy {
     return !application.compassMetadata || !application.compassMetadata.applicationId || application.compassMetadata.applicationId=== '';
   }
 
-  public navigateToApplications(application = null) {
+  public navigateToApplications(application?) {
     const appsNodeRoute = this.useLegacyRouteToApplicationView?'cmf-apps':'cmf-applications';
     if(application) {
       if (!this.isLegacyApplication(application) && !this.useLegacyRouteToApplicationView) {
