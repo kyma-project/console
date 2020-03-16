@@ -43,6 +43,7 @@ export class NamespaceDetailsComponent implements OnInit, OnDestroy {
       name: 'Unbind'
     }
   ];
+  private useLegacyRouteToApplicationView = true;
   entryEventHandler = this.getEntryEventHandler();
 
   constructor(
@@ -66,6 +67,10 @@ export class NamespaceDetailsComponent implements OnInit, OnDestroy {
           this.getApplications(this.id);
         });
       });
+
+    LuigiClient.linkManager().pathExists('/home/cmf-applications').then(
+      pathExists => this.useLegacyRouteToApplicationView = !pathExists
+    )
   }
 
   public ngOnDestroy() {
@@ -166,12 +171,18 @@ export class NamespaceDetailsComponent implements OnInit, OnDestroy {
       .navigate('services');
   }
 
+  private isLegacyApplication(application) {
+    return !application.compassMetadata || !application.compassMetadata.applicationId || application.compassMetadata.applicationId=== '';
+  }
+
   public navigateToApplications(application = null) {
-    const enableAPIPackages = AppConfig.enableAPIPackages === 'true';
-    const appsNodeRoute = enableAPIPackages?'cmf-applications':'cmf-apps';
+    const appsNodeRoute = this.useLegacyRouteToApplicationView?'cmf-apps':'cmf-applications';
     if(application) {
-      const appDetailsRef = enableAPIPackages?application.compassMetadata.applicationId:application.name;
-      LuigiClient.linkManager().navigate(`/home/${appsNodeRoute}/details/${appDetailsRef}`);
+      if (!this.isLegacyApplication(application) && !this.useLegacyRouteToApplicationView) {
+        LuigiClient.linkManager().navigate(`/home/cmf-applications/details/${application.compassMetadata.applicationId}`);
+      } else {
+        LuigiClient.linkManager().navigate(`/home/cmf-apps/details/${application.name}`);
+      }
     } else {
       LuigiClient.linkManager().navigate(`/home/${appsNodeRoute}`);
     }
