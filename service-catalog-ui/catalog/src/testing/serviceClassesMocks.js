@@ -241,7 +241,7 @@ const serviceClassWithoutPlans = {
   name: clusterServiceClass1Name,
   displayName: 'test123',
   externalName: 'test-service123',
-  labels: { 'documentation-per-plan': 'true', provisionOnlyOnce: 'true' },
+  labels: { [DOCUMENTATION_PER_PLAN_LABEL]: 'true', provisionOnlyOnce: 'true' },
   plans: [],
 };
 
@@ -249,7 +249,7 @@ const serviceClassWithPlans = {
   name: clusterServiceClass1Name,
   displayName: 'test123',
   externalName: 'test-service123',
-  labels: { 'documentation-per-plan': 'true', provisionOnlyOnce: 'true' },
+  labels: { [DOCUMENTATION_PER_PLAN_LABEL]: 'true', provisionOnlyOnce: 'true' },
   plans: [
     {
       name: 'p1',

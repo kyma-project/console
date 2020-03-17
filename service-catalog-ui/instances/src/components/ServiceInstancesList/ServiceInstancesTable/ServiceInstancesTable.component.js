@@ -21,6 +21,7 @@ import {
   getResourceDisplayName,
   backendModuleExists,
 } from '../../../commons/helpers';
+import { DOCUMENTATION_PER_PLAN_LABEL } from '../../../variables';
 
 const deleteButton = <Button compact option="light" glyph="delete" />;
 
@@ -54,7 +55,7 @@ export class ServiceInstancesTable extends Component {
   goToServiceClassDetails = serviceClass => {
     if (
       serviceClass.labels &&
-      serviceClass.labels['documentation-per-plan'] === 'true'
+      serviceClass.labels[DOCUMENTATION_PER_PLAN_LABEL] === 'true'
     ) {
       LuigiClient.linkManager()
         .fromContext('namespaces')
@@ -129,7 +130,7 @@ export class ServiceInstancesTable extends Component {
               const serviceClassDocsPerPlan =
                 instance.serviceClass &&
                 instance.serviceClass.labels &&
-                instance.serviceClass.labels['documentation-per-plan'] ===
+                instance.serviceClass.labels[DOCUMENTATION_PER_PLAN_LABEL] ===
                   'true';
               const planDisplayName = getResourceDisplayName(plan);
 

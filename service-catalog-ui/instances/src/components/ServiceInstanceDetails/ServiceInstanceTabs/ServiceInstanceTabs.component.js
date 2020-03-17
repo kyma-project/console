@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 import LuigiClient from '@kyma-project/luigi-client';
 
 import { GenericDocumentation } from '@kyma-project/generic-documentation';
-
-export const DOCUMENTATION_PER_PLAN_LABEL = 'documentation-per-plan';
+import { DOCUMENTATION_PER_PLAN_LABEL } from '../../../variables';
 
 const tabRouteHandler = {
   determineSelectedTab: function(tabList) {
@@ -23,7 +22,10 @@ const tabRouteHandler = {
 
 const ServiceInstanceTabs = ({ serviceClass, currentPlan }) => {
   const { labels } = serviceClass;
-  const isAPIpackage = labels[DOCUMENTATION_PER_PLAN_LABEL] === 'true';
+  const isAPIpackage =
+    labels &&
+    labels[DOCUMENTATION_PER_PLAN_LABEL] &&
+    labels[DOCUMENTATION_PER_PLAN_LABEL] === 'true';
 
   const assetGroup = isAPIpackage
     ? currentPlan.assetGroup || currentPlan.clusterAssetGroup

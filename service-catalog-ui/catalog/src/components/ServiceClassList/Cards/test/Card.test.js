@@ -1,17 +1,13 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import {
-  render,
-  waitForDomChange,
-  queryAllByRole,
-  queryByText,
-  getByLabelText,
-} from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { Icon } from 'fundamental-react';
+
 import Card from '../Card.component';
 import { InstancesIndicator } from '../InstancesIndicator';
 import { Labels } from '../Labels';
 import { CardImage, CardContent } from '../styled';
+import { DOCUMENTATION_PER_PLAN_LABEL } from '../../../../shared/constants';
 
 const mock = {
   title: 'Some title',
@@ -122,7 +118,7 @@ describe('Card.component', () => {
     const { queryByLabelText } = render(
       <Card
         {...mock}
-        labels={{ 'documentation-per-plan': 'true' }}
+        labels={{ [DOCUMENTATION_PER_PLAN_LABEL]: 'true' }}
         onClick={onCLick}
       />,
     );

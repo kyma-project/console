@@ -124,7 +124,10 @@ export default function ServiceClassDetails({ name, plan }) {
     setCurrentPlan(plans.find(p => p.name === e.target.value));
   }
 
-  const isAPIpackage = labels[DOCUMENTATION_PER_PLAN_LABEL] === 'true';
+  const isAPIpackage =
+    labels &&
+    labels[DOCUMENTATION_PER_PLAN_LABEL] &&
+    labels[DOCUMENTATION_PER_PLAN_LABEL] === 'true';
   if (isAPIpackage && !currentPlan) {
     const planToSet = plans.find(p => p.name === plan);
     if (planToSet) setCurrentPlan(planToSet);

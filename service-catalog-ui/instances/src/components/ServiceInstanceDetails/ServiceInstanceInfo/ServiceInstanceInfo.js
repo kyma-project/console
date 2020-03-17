@@ -2,7 +2,10 @@ import React from 'react';
 import LuigiClient from '@kyma-project/luigi-client';
 import Grid from 'styled-components-grid';
 import { getResourceDisplayName } from '../../../commons/helpers';
-import { serviceInstanceConstants } from '../../../variables';
+import {
+  serviceInstanceConstants,
+  DOCUMENTATION_PER_PLAN_LABEL,
+} from '../../../variables';
 
 import { Modal, PanelBody, Label, Panel } from '@kyma-project/react-components';
 
@@ -24,7 +27,8 @@ const ServiceInstanceInfo = ({ serviceInstance }) => {
   const serviceClassDocsPerPlan =
     serviceInstance.serviceClass &&
     serviceInstance.serviceClass.labels &&
-    serviceInstance.serviceClass.labels['documentation-per-plan'] === 'true';
+    serviceInstance.serviceClass.labels[DOCUMENTATION_PER_PLAN_LABEL] ===
+      'true';
 
   const goToServiceClassDetails = name => {
     if (serviceClassDocsPerPlan) {
