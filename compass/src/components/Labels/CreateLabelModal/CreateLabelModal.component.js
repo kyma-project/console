@@ -42,6 +42,11 @@ export default class CreateLabelModal extends React.Component {
 
     if (labelAlreadyExists) {
       this.setState({ nameError: 'Label with this name already exists.' });
+    } else if (!/^[a-zA-Z0-9_]*$/.test(name)) {
+      this.setState({
+        nameError:
+          'Label name may contain only alphanumeric characters and underscore.',
+      });
     } else {
       this.setState({ nameError: '' });
     }

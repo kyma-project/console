@@ -1,18 +1,5 @@
 import gql from 'graphql-tag';
 
-export const GET_APPLICATIONS = gql`
-  query {
-    applications {
-      data {
-        id
-        name
-        providerName
-        description
-      }
-    }
-  }
-`;
-
 export const GET_APPLICATION = gql`
   query Application($id: ID!) {
     application(id: $id) {
@@ -22,6 +9,7 @@ export const GET_APPLICATION = gql`
       name
       labels
       healthCheckURL
+      integrationSystemID
       status {
         condition
       }

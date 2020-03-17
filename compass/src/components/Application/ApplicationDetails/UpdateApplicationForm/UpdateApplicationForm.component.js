@@ -13,7 +13,6 @@ const formProps = {
 
 const gqlProps = {
   updateApplication: PropTypes.func.isRequired,
-  applicationsQuery: PropTypes.object.isRequired,
 };
 
 UpdateApplicationForm.propTypes = {
@@ -31,7 +30,6 @@ export default function UpdateApplicationForm({
   onError,
 
   updateApplication,
-  applicationsQuery,
 }) {
   const formValues = {
     name: React.useRef(null),
@@ -39,38 +37,12 @@ export default function UpdateApplicationForm({
     description: React.useRef(null),
   };
 
-  const applicationAlreadyExists = name =>
-    applicationsQuery.applications.data.map(app => app.name).includes(name);
-
-  if (applicationsQuery.loading) {
-    return <p>Loading...</p>;
-  }
-  if (applicationsQuery.error) {
-    return <p>{`Error! ${applicationsQuery.error.message}`}</p>;
-  }
-
-  const onFormChange = formEvent => {
-    const name = formValues.name.current ? formValues.name.current.value : '';
-
-    if (name !== application.name) {
-      formValues.name.current.setCustomValidity(
-        applicationAlreadyExists(name)
-          ? 'Application with this name already exists.'
-          : '',
-      );
-    }
-
-    onChange(formEvent);
-  };
-
   const handleFormSubmit = async e => {
     e.preventDefault();
 
-    const name = formValues.name.current.value;
     const description = formValues.description.current.value;
     const providerName = formValues.providerName.current.value;
     if (
-      name === application.name &&
       description === application.description &&
       providerName === application.providerName
     ) {
@@ -79,12 +51,12 @@ export default function UpdateApplicationForm({
 
     try {
       await updateApplication(application.id, {
-        name,
         providerName,
         description,
         healthCheckURL: application.healthCheckURL,
+        integrationSystemID: application.integrationSystemID,
       });
-      onCompleted(name, 'Application updated successfully');
+      onCompleted(application.name, 'Application updated successfully');
     } catch (e) {
       console.warn(e);
       onError(`Error occurred while updating Application`, e.message || ``);
@@ -92,21 +64,7 @@ export default function UpdateApplicationForm({
   };
 
   return (
-    <form
-      onChange={onFormChange}
-      ref={formElementRef}
-      onSubmit={handleFormSubmit}
-    >
-      <FormLabel htmlFor="application-name">Name</FormLabel>
-      <input
-        className="fd-has-margin-bottom-small"
-        type="text"
-        id="application-name"
-        ref={formValues.name}
-        defaultValue={application.name}
-        placeholder="Application name"
-        required
-      />
+    <form onChange={onChange} ref={formElementRef} onSubmit={handleFormSubmit}>
       <FormLabel htmlFor="provider-name">Provider Name</FormLabel>
       <input
         className="fd-has-margin-bottom-small"
