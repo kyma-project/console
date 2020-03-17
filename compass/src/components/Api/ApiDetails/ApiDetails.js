@@ -19,16 +19,6 @@ import {
 import './ApiDetails.scss';
 
 const ApiDetails = ({ apiId, eventApiId, applicationId, apiPackageId }) => {
-  console.log(
-    'apiId',
-    apiId,
-    'eventApiId',
-    eventApiId,
-    'applicationId',
-    applicationId,
-    'apiPackageId',
-    apiPackageId,
-  );
   const queryApi = useQuery(GET_API_DEFININTION, {
     variables: {
       applicationId: applicationId,
