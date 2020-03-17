@@ -31,6 +31,8 @@ pre-build-image:
 
 .PHONY: pull-licenses
 pull-licenses:
+	echo "path:"
+	echo $(LICENSE_PULLER_PATH)
 ifdef LICENSE_PULLER_PATH
 	bash $(LICENSE_PULLER_PATH) --dirs-to-pulling="../,../common,../components/react,../components/shared"
 else
