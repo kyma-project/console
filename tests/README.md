@@ -44,7 +44,7 @@ npm run test
 
 By default, the commands from the **Run all tests** section allow you to run all available tests. To run only the selected ones, change the value of the `testRegex` field in the [`package.json`](package.json) file. These are the available tests to run:
 
-- `console-basic-test` for `core` view
+- `applications-test` and `expose-api-test` for `core` view
 - `catalog-ui-test` for `service-catalog` and `instances` views
 - `docs-ui-test` for `content` view
 - `lambda-ui-test` for `lambda` view

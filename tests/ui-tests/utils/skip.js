@@ -10,6 +10,18 @@ function describeIf(condition, name, _test) {
   }
 }
 
+function testIf(condition, name, fn) {
+  return test(name, async () => {
+    if (!condition) {
+      return () => {
+        console.log(`Condition not satisfied. Skipping test ${name}...`);
+      };
+    }
+    return fn();
+  });
+}
+
 module.exports = {
   describeIf,
+  testIf,
 };
