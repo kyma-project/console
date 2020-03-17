@@ -1,4 +1,5 @@
-import { UPDATE_API_PACKAGE, GET_API_PACKAGE } from './../../../gql';
+import { GET_API_PACKAGE } from 'gql/queries';
+import { UPDATE_API_PACKAGE } from 'gql/mutations';
 
 export const apiPackageMock = {
   id: 'package-id',

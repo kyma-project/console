@@ -1,4 +1,4 @@
-import { CREATE_API_PACKAGE } from './../../gql';
+import { CREATE_API_PACKAGE } from 'gql/mutations';
 import { GET_APPLICATION_COMPASS } from 'gql/queries';
 
 export const createApiPackageMock = {

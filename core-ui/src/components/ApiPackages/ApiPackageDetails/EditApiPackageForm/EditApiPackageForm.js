@@ -6,7 +6,8 @@ import { FormLabel, FormItem } from 'fundamental-react';
 import { JSONEditor } from 'react-shared';
 
 import { useMutation } from '@apollo/react-hooks';
-import { UPDATE_API_PACKAGE, GET_API_PACKAGE } from './../../gql';
+import { GET_API_PACKAGE } from 'gql/queries';
+import { UPDATE_API_PACKAGE } from 'gql/mutations';
 import { CompassGqlContext } from 'index';
 
 EditApiPackageForm.propTypes = {
