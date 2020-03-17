@@ -13,7 +13,7 @@ let token = ''; // eslint-disable-line no-unused-vars
 
 const namespaceInstaller = new NamespaceManager(config.testNamespace);
 
-describe('Expose API test', () => {
+describe('Console basic test', () => {
   beforeAll(async () => {
     try {
       await namespaceInstaller.createIfDoesntExist();

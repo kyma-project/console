@@ -10,7 +10,6 @@ common.setRandomNamespaceName();
 let page, browser;
 let token = ''; // eslint-disable-line no-unused-vars
 
-// TODO: Move application tests to a separate file
 const REQUIRED_MODULE = 'application';
 
 describeIf(
