@@ -23,9 +23,7 @@ const tabRouteHandler = {
 const ServiceInstanceTabs = ({ serviceClass, currentPlan }) => {
   const { labels } = serviceClass;
   const isAPIpackage =
-    labels &&
-    labels[DOCUMENTATION_PER_PLAN_LABEL] &&
-    labels[DOCUMENTATION_PER_PLAN_LABEL] === 'true';
+    labels && labels[DOCUMENTATION_PER_PLAN_LABEL] === 'true';
 
   const assetGroup = isAPIpackage
     ? currentPlan.assetGroup || currentPlan.clusterAssetGroup

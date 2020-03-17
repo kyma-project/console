@@ -14,7 +14,6 @@ const Cards = ({ items }) => {
   const goToDetails = item => {
     const documentationPerPlan =
       item.labels &&
-      item.labels[DOCUMENTATION_PER_PLAN_LABEL] &&
       isStringValueEqualToTrue(item.labels[DOCUMENTATION_PER_PLAN_LABEL]);
 
     if (!documentationPerPlan) {
