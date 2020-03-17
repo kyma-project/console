@@ -98,7 +98,7 @@ header.sticky {
   z-index: 1;
 }
 
-.fd-form__label[aria-required=true]::after {
+.fd-form__label[aria-required='true']::after {
   content: '';
 }
 
@@ -111,10 +111,11 @@ li {
   min-width: 400px;
 }
 
-.fd-dropdown[fullwidth=true] {
+.fd-dropdown[fullwidth='true'] {
   width: 100%;
 
-  .fd-popper__body, .fd-popover {
+  .fd-popper__body,
+  .fd-popover {
     width: 100%;
   }
 
@@ -131,6 +132,15 @@ li {
 
     &::before {
       content: unset;
+    }
+  }
+}
+
+.fd-badge {
+  &.fd-badge--filled {
+    &.fd-badge--success {
+      background-color: var(--fd-color-positive);
+      --fd-badge-color: var(--fd-color-neutral-1);
     }
   }
 }
