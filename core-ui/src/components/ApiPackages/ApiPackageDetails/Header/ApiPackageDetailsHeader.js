@@ -11,10 +11,8 @@ import './ApiPackageDetailsHeader.scss';
 import { CompassGqlContext } from 'index';
 
 import { useMutation } from '@apollo/react-hooks';
-import {
-  GET_API_PACKAGE,
-  DELETE_API_PACKAGE,
-} from 'components/ApiPackages/gql';
+import { GET_API_PACKAGE } from 'gql/queries';
+import { DELETE_API_PACKAGE } from 'gql/mutations';
 
 ApiPackageDetailsHeader.propTypes = {
   apiPackage: PropTypes.object.isRequired,
