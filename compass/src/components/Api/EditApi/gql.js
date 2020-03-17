@@ -1,56 +1,5 @@
 import gql from 'graphql-tag';
 
-export const GET_API_DATA = gql`
-  query Application($id: ID!) {
-    application(id: $id) {
-      id
-      name
-      apiDefinitions {
-        data {
-          id
-          name
-          description
-          targetURL
-          defaultAuth {
-            credential {
-              ... on OAuthCredentialData {
-                clientId
-                clientSecret
-                url
-              }
-              ... on BasicCredentialData {
-                username
-                password
-              }
-            }
-          }
-          spec {
-            data
-            format
-            type
-          }
-          group
-        }
-        totalCount
-      }
-      eventDefinitions {
-        data {
-          id
-          name
-          description
-          spec {
-            data
-            format
-            type
-          }
-          group
-        }
-        totalCount
-      }
-    }
-  }
-`;
-
 export const UPDATE_API_DEFINITION = gql`
   mutation updateAPIDefinition($id: ID!, $in: APIDefinitionInput!) {
     updateAPIDefinition(id: $id, in: $in) {
