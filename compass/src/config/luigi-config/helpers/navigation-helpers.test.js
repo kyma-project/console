@@ -22,6 +22,6 @@ describe('getTenantNames', () => {
     const options = getTenantNames([tenant]);
 
     expect(options).toHaveLength(1);
-    expect(options[0].pathVariable).toEqual(tenant.id);
+    expect(options[0].pathValue).toEqual(tenant.id);
   });
 });
