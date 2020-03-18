@@ -15,4 +15,13 @@ describe('getTenantNames', () => {
     expect(options[1].label).toEqual(tenants[0].name);
     expect(options[2].label).toEqual(tenants[2].name);
   });
+
+  it('routes to tenant home page by default', () => {
+    const tenant = { name: 'tenant', id: '1234' };
+
+    const options = getTenantNames([tenant]);
+
+    expect(options).toHaveLength(1);
+    expect(options[0].pathVariable).toEqual(tenant.id);
+  });
 });
