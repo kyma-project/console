@@ -11,17 +11,8 @@ describe('getTenantNames', () => {
     const options = getTenantNames(tenants);
 
     expect(options).toHaveLength(3);
-    expect(options[0]).toEqual({
-      label: tenants[1].name,
-      pathValue: tenants[1].id,
-    });
-    expect(options[1]).toEqual({
-      label: tenants[0].name,
-      pathValue: tenants[0].id,
-    });
-    expect(options[2]).toEqual({
-      label: tenants[2].name,
-      pathValue: tenants[2].id,
-    });
+    expect(options[0].label).toEqual(tenants[1].name);
+    expect(options[1].label).toEqual(tenants[0].name);
+    expect(options[2].label).toEqual(tenants[2].name);
   });
 });
