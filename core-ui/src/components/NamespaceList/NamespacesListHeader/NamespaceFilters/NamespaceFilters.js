@@ -53,7 +53,6 @@ export default function NamespaceFilters({ filters, updateFilters }) {
       body={popoverBody}
       control={popoverControl}
       placement="bottom"
-      noArrow
     />
   );
 }
