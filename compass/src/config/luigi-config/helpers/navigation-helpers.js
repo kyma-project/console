@@ -77,5 +77,5 @@ export const getTenantNames = tenants => {
       pathValue: alternativePath || tenant.id,
     };
   });
-  return tenantNames;
+  return tenantNames.sort((a, b) => a.label.localeCompare(b.label));
 };
