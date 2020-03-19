@@ -3,30 +3,25 @@ import { getServiceClass } from '../components/ServiceClassDetails/queries';
 import { getServiceClassPlans } from '../components/ServiceClassPlansList/queries';
 import { createServiceInstance } from '../components/ServiceClassDetails/CreateInstanceModal/mutations';
 import {
-  clusterServiceClass1,
-  clusterServiceClass2,
-  serviceClass1,
-  clusterServiceClass1Name,
-  clusterServiceClassDetails,
-  clusterServiceClass3,
-  serviceClass2,
-  serviceClassWithoutPlans,
-  serviceClassWithPlans,
-  serviceClass_APIrule_many_plans,
+  mockServiceClass,
+  mockPlan,
+  planWithImagePullPolicy,
 } from './serviceClassesMocks';
 import { filterExtensions } from '../variables';
+import { DOCUMENTATION_PER_PLAN_LABEL } from '../shared/constants';
 
 export const mockEnvironmentId = 'testnamespace';
 
-const otherParams = {
-  externalServiceClassName: clusterServiceClassDetails.externalName,
-  externalPlanName: clusterServiceClassDetails.plans[0].externalName,
-  classClusterWide: true, // is calculated by component
-  planClusterWide: true, // is calculated by component
+const otherRequestParams = {
+  externalServiceClassName: mockServiceClass(1).externalName,
+  externalPlanName: planWithImagePullPolicy.externalName,
+  classClusterWide: false, // is calculated by component
+  planClusterWide: false, // is calculated by component
   labels: [],
   parameterSchema: { imagePullPolicy: 'IfNotPresent' },
 };
 
+// getAllServiceClasses query
 export const allServiceClassesQuery = {
   request: {
     query: getAllServiceClasses,
@@ -36,76 +31,29 @@ export const allServiceClassesQuery = {
   },
   result: {
     data: {
-      clusterServiceClasses: [clusterServiceClass1, clusterServiceClass2],
-      serviceClasses: [serviceClass1],
+      clusterServiceClasses: [1, 2, 3, 4].map(n => mockServiceClass(n, true)), // all clusterServiceClasses are addons
+      serviceClasses: [1, 2, 3].map(n => mockServiceClass(n, false, [], true)), // all serviceClasses are services
     },
   },
 };
 
-export const moreThanAllServiceClassesQuery = {
-  request: {
-    query: getAllServiceClasses,
-    variables: {
-      namespace: mockEnvironmentId,
-    },
-  },
-  result: {
-    data: {
-      clusterServiceClasses: [
-        clusterServiceClass1,
-        clusterServiceClass2,
-        clusterServiceClass3,
-      ],
-      serviceClasses: [serviceClass1, serviceClass2],
-    },
-  },
-};
-
-export const serviceClassQuery = {
+//getServiceClass query
+export const serviceClassWithPlans = {
   request: {
     query: getServiceClass,
     variables: {
       namespace: mockEnvironmentId,
-      name: clusterServiceClass1Name,
+      name: mockServiceClass(1, true).name,
       fileExtensions: filterExtensions,
     },
   },
   result: {
     data: {
-      clusterServiceClass: clusterServiceClassDetails,
+      clusterServiceClass: mockServiceClass(1, true, [
+        mockPlan(1, true),
+        mockPlan(2, true),
+      ]),
       serviceClass: null,
-    },
-  },
-};
-
-export const serviceClassPlansQuery = {
-  request: {
-    query: getServiceClassPlans,
-    variables: {
-      namespace: mockEnvironmentId,
-      name: clusterServiceClass1Name,
-    },
-  },
-  result: {
-    data: {
-      clusterServiceClass: null,
-      serviceClass: serviceClassWithPlans,
-    },
-  },
-};
-
-export const serviceClassNoPlansQuery = {
-  request: {
-    query: getServiceClassPlans,
-    variables: {
-      namespace: mockEnvironmentId,
-      name: clusterServiceClass1Name,
-    },
-  },
-  result: {
-    data: {
-      clusterServiceClass: null,
-      serviceClass: serviceClassWithoutPlans,
     },
   },
 };
@@ -115,33 +63,69 @@ export const serviceClassAPIruleQuery = {
     query: getServiceClass,
     variables: {
       namespace: mockEnvironmentId,
-      name: serviceClass_APIrule_many_plans.name,
+      name: mockServiceClass(1, false).name,
       fileExtensions: filterExtensions,
     },
   },
   result: {
     data: {
       clusterServiceClass: null,
-      serviceClass: serviceClass_APIrule_many_plans,
+      serviceClass: {
+        ...mockServiceClass(1, false, [mockPlan(1), mockPlan(2)]),
+        labels: { [DOCUMENTATION_PER_PLAN_LABEL]: 'true' },
+      },
     },
   },
 };
 
-export const createServiceInstanceSuccessfulMock = () => {
+//getServiceClassPlans query
+export const serviceClassPlansQuery = {
+  request: {
+    query: getServiceClassPlans,
+    variables: {
+      namespace: mockEnvironmentId,
+      name: mockServiceClass(1).name,
+    },
+  },
+  result: {
+    data: {
+      clusterServiceClass: null,
+      serviceClass: mockServiceClass(1, false, [mockPlan(1), mockPlan(2)]),
+    },
+  },
+};
+
+export const serviceClassNoPlansQuery = {
+  request: {
+    query: getServiceClassPlans,
+    variables: {
+      namespace: mockEnvironmentId,
+      name: mockServiceClass(1).name,
+    },
+  },
+  result: {
+    data: {
+      clusterServiceClass: null,
+      serviceClass: mockServiceClass(1),
+    },
+  },
+};
+
+export const createServiceInstanceSuccessfulMock = name => {
   return {
     request: {
       query: createServiceInstance,
       variables: {
         namespace: mockEnvironmentId,
-        name: clusterServiceClass1Name,
-        ...otherParams,
+        name,
+        ...otherRequestParams,
       },
     },
     result: jest.fn().mockReturnValue({
       data: {
         createServiceInstance: {
           namespace: mockEnvironmentId,
-          name: clusterServiceClass1Name,
+          name,
           parameters: {},
         },
       },
@@ -149,23 +133,24 @@ export const createServiceInstanceSuccessfulMock = () => {
   };
 };
 
-export const createServiceInstanceNoPlanSpecSuccessfulMock = () => {
-  const { parameterSchema, ...params } = otherParams;
+export const createServiceInstanceNoPlanSpecSuccessfulMock = name => {
+  const { parameterSchema, ...params } = otherRequestParams;
   return {
     request: {
       query: createServiceInstance,
       variables: {
         namespace: mockEnvironmentId,
-        name: clusterServiceClass1Name,
+        name,
         parameterSchema: {},
         ...params,
+        externalPlanName: mockPlan(1).externalName,
       },
     },
     result: jest.fn().mockReturnValue({
       data: {
         createServiceInstance: {
           namespace: mockEnvironmentId,
-          name: clusterServiceClass1Name,
+          name,
           parameters: {},
         },
       },
@@ -173,13 +158,13 @@ export const createServiceInstanceNoPlanSpecSuccessfulMock = () => {
   };
 };
 
-export const createServiceInstanceErrorMock = () => ({
+export const createServiceInstanceErrorMock = name => ({
   request: {
     query: createServiceInstance,
     variables: {
       namespace: mockEnvironmentId,
-      name: clusterServiceClass1Name,
-      ...otherParams,
+      name,
+      ...otherRequestParams,
     },
   },
   error: new Error('Instace already exists'),
