@@ -9,7 +9,7 @@ import {
 } from '../../../testing/queriesMocks';
 import {
   clusterServiceClass1Name,
-  serviceClassWithAPIrule,
+  serviceClass_APIrule_many_plans,
 } from '../../../testing/serviceClassesMocks';
 import ServiceClassDetails, { PlanSelector } from '../ServiceClassDetails';
 import { Spinner } from '../../../react-shared';
@@ -83,7 +83,7 @@ describe('Service Class Details UI', () => {
         <MockedProvider mocks={[serviceClassAPIruleQuery]}>
           <ServiceClassDetails
             plan="non-existing"
-            name={serviceClassWithAPIrule.name}
+            name={serviceClass_APIrule_many_plans.name}
           />
         </MockedProvider>,
       );
@@ -99,11 +99,11 @@ describe('Service Class Details UI', () => {
     });
 
     it('Shows API package icon and breadcrumb when the label is present', async () => {
-      const { queryByLabelText, queryByText } = render(
+      const { queryByLabelText, queryByText, debug } = render(
         <MockedProvider mocks={[serviceClassAPIruleQuery]}>
           <ServiceClassDetails
-            plan={serviceClassWithAPIrule.plans[0].name}
-            name={serviceClassWithAPIrule.name}
+            plan={serviceClass_APIrule_many_plans.plans[0].name}
+            name={serviceClass_APIrule_many_plans.name}
           />
         </MockedProvider>,
       );
@@ -111,7 +111,9 @@ describe('Service Class Details UI', () => {
       await wait(() => {
         expect(queryByLabelText('docs-per-plan-icon')).toBeInTheDocument();
         expect(
-          queryByText(`${serviceClassWithAPIrule.displayName} - Plans list`),
+          queryByText(
+            `${serviceClass_APIrule_many_plans.displayName} - Plans list`,
+          ),
         ).toBeInTheDocument();
       });
     });
@@ -119,14 +121,16 @@ describe('Service Class Details UI', () => {
     it("Doesn't show API package icon or breadcrumb when label isn't present", async () => {
       const { queryByLabelText, queryByText } = render(
         <MockedProvider mocks={[serviceClassQuery]}>
-          <ServiceClassDetails name={serviceClassWithAPIrule.name} />
+          <ServiceClassDetails name={serviceClass_APIrule_many_plans.name} />
         </MockedProvider>,
       );
 
       await wait(() => {
         expect(queryByLabelText('docs-per-plan-icon')).not.toBeInTheDocument();
         expect(
-          queryByText(`${serviceClassWithAPIrule.displayName} - Plans list`),
+          queryByText(
+            `${serviceClass_APIrule_many_plans.displayName} - Plans list`,
+          ),
         ).not.toBeInTheDocument();
       });
     });

@@ -71,7 +71,7 @@ const serviceClass2 = {
   __typename: 'ServiceClass',
 };
 
-const serviceClassWithAPIrule = {
+const serviceClass_APIrule_many_plans = {
   activated: false,
   description: 'Description 2',
   displayName: 'serviceClass displayName2',
@@ -90,6 +90,12 @@ const serviceClassWithAPIrule = {
     {
       displayName: 'Plan1',
       externalName: 'plan1',
+      name: 'test-plan',
+      __typename: 'ServicePlan',
+    },
+    {
+      displayName: 'Plan2',
+      externalName: 'plan2',
       name: 'test-plan',
       __typename: 'ServicePlan',
     },
@@ -315,7 +321,7 @@ export {
   clusterServiceClass1Name,
   clusterServiceClassDetails,
   clusterServiceClassDetailsNoPlanSpec,
-  serviceClassWithAPIrule,
+  serviceClass_APIrule_many_plans,
   serviceClassWithoutPlans,
   serviceClassWithPlans,
   assetGroupWithManyAssets,
