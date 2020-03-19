@@ -1,0 +1,11 @@
+{
+  "name": "smoke-tests",
+  "description": "Smoke tests for Console",
+  "scripts": {
+    "test": "testcafe chrome ./tests/login.js",
+    "test:headless": "testcafe chrome:headless ./tests/login.js"
+  },
+  "devDependencies": {
+    "testcafe": "^1.8.3"
+  }
+}
