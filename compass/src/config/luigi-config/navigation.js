@@ -1,3 +1,4 @@
+import LuigiClient from '@kyma-project/luigi-client';
 import {
   fetchTenants,
   getToken,
@@ -20,6 +21,13 @@ const getTenantName = tenantId => {
   return match ? match.name : null;
 };
 
+const openTenantSearch = () => {
+  LuigiClient.setTargetOrigin(window.origin);
+  LuigiClient.linkManager()
+    .withParams({ path: encodeURIComponent(window.location.pathname) })
+    .openAsModal('/tenant-search', { title: 'Search tenants', size: 's' });
+};
+
 const navigation = {
   nodes: () => [
     {
@@ -31,6 +39,23 @@ const navigation = {
         idToken: token,
       },
       viewGroup: 'compass',
+    },
+    {
+      viewGroup: 'compass',
+      pathSegment: 'preload',
+      viewUrl: compassMfUrl + '/preload',
+    },
+    {
+      hideSideNav: true,
+      hideFromNav: true,
+      pathSegment: 'tenant-search',
+      label: 'Tenant Search',
+      viewUrl: compassMfUrl + '/tenant-search',
+      context: {
+        idToken: token,
+        tenants: tenants.length > 0 ? tenants : getTenantsFromCache(),
+      },
+      viewGroup: 'compass-search-tenants',
     },
     {
       hideSideNav: true,
@@ -194,6 +219,17 @@ const navigation = {
     lazyloadOptions: true,
     options: () => getTenantNames(tenants),
     fallbackLabelResolver: tenantId => getTenantName(tenantId),
+    actions: [
+      {
+        label: 'Search tenants...',
+        clickHandler: openTenantSearch,
+      },
+    ],
+  },
+  viewGroupSettings: {
+    'compass-search-tenants': {
+      preloadUrl: compassMfUrl + '/preload',
+    },
   },
 };
 

@@ -16,6 +16,7 @@ import MetadataDefinitions from './components/MetadataDefinitions/MetadataDefini
 import MetadataDefinitionDetails from './components/MetadataDefinitions/MetadataDefinitionDetails/MetadataDefinitionDetails.container';
 import ApiDetails from './components/Api/ApiDetails/ApiDetails';
 import ApiPackageDetails from 'components/ApiPackages/ApiPackageDetails/ApiPackageDetails';
+import TenantSearch from 'components/TenantSearch/TenantSearch';
 
 const NOTIFICATION_VISIBILITY_TIME = 5000;
 
@@ -53,7 +54,15 @@ class App extends React.Component {
         <Notification {...notification} onClick={this.clearNotification} />
         <Router>
           <Switch>
+            <Route
+              path="/preload"
+              component={() => {
+                console.log('load?');
+                return null;
+              }}
+            />
             <Route path="/" exact component={Overview} />
+            <Route path="/tenant-search" exact component={TenantSearch} />
             <Route path="/runtimes" exact component={Runtimes} />
             <Route
               path="/runtime/:id"
