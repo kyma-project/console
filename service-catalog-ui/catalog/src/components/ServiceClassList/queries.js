@@ -9,6 +9,9 @@ const serviceClassesQGL = `
   providerDisplayName
   tags
   labels
+  plans{
+    name
+  }
 `;
 
 export const getAllServiceClasses = gql`

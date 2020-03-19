@@ -16,15 +16,19 @@ const Cards = ({ items }) => {
       item.labels &&
       isStringValueEqualToTrue(item.labels[DOCUMENTATION_PER_PLAN_LABEL]);
 
-    if (!documentationPerPlan) {
-      return LuigiClient.linkManager()
-        .fromClosestContext()
-        .navigate(`details/${item.name}`);
+    let path = `details/${item.name}`;
+
+    if (documentationPerPlan) {
+      if (item.plans.length > 1) {
+        path = `details/${item.name}/plans`;
+      } else {
+        path = `details/${item.name}/plan/${item.plans[0].name}`;
+      }
     }
 
-    return LuigiClient.linkManager()
+    LuigiClient.linkManager()
       .fromClosestContext()
-      .navigate(`details/${item.name}/plans`);
+      .navigate(path);
   };
 
   return items.map(item => (
