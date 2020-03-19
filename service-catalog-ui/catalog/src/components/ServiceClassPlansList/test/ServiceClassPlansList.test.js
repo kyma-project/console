@@ -13,13 +13,8 @@ import {
   serviceClassNoPlansQuery,
   mockEnvironmentId,
 } from '../../../testing/queriesMocks';
-import {
-  clusterServiceClass1Name,
-  serviceClassWithPlans,
-  assetGroupWithManyAssets,
-} from '../../../testing/serviceClassesMocks';
+import { assetGroupWithManyAssets } from '../../../testing/serviceClassesMocks';
 
-const mockName = clusterServiceClass1Name;
 const mockNavigate = jest.fn();
 const mockShowConfirmationModal = jest.fn(() => Promise.resolve());
 

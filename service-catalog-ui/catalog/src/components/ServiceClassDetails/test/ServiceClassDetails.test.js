@@ -3,15 +3,10 @@ import { MockedProvider } from '@apollo/react-testing';
 import { mount } from 'enzyme';
 import { render, wait, fireEvent } from '@testing-library/react';
 import {
-  serviceClassQuery,
   serviceClassAPIruleQuery,
   mockEnvironmentId,
   serviceClassWithPlans,
 } from '../../../testing/queriesMocks';
-import {
-  clusterServiceClass1Name,
-  serviceClass_APIrule_many_plans,
-} from '../../../testing/serviceClassesMocks';
 import ServiceClassDetails, { PlanSelector } from '../ServiceClassDetails';
 import { Spinner } from '../../../react-shared';
 import { componentUpdate } from '../../../testing';

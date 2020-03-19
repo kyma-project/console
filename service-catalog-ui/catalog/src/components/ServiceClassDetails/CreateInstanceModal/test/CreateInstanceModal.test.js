@@ -5,23 +5,17 @@ import { MockedProvider } from '@apollo/react-testing';
 import { render } from '@testing-library/react';
 import { componentUpdate } from '../../../../testing';
 import {
-  clusterServiceClassDetails,
-  clusterServiceClass1Name,
-  clusterServiceClassDetailsNoPlanSpec,
   mockServiceClass,
   mockPlan,
   planWithImagePullPolicy,
 } from '../../../../testing/serviceClassesMocks';
-
 import {
   createServiceInstanceSuccessfulMock,
   createServiceInstanceErrorMock,
   mockEnvironmentId,
   createServiceInstanceNoPlanSpecSuccessfulMock,
 } from '../../../../testing/queriesMocks';
-
 import CreateInstanceModal from '../CreateInstanceModal.component';
-import gql from 'graphql-tag';
 
 const onCompleted = jest.fn();
 const onError = jest.fn();

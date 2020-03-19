@@ -5,18 +5,11 @@ import {
   allServiceClassesQuery,
   mockEnvironmentId,
 } from '../../../testing/queriesMocks';
-import {
-  clusterServiceClass1Name,
-  clusterServiceClass3,
-  clusterServiceClass1,
-  serviceClass1,
-} from '../../../testing/serviceClassesMocks';
 import { Spinner, Tab } from '@kyma-project/react-components';
 import ServiceClassList from '../ServiceClassList';
 import { componentUpdate } from '../../../testing';
 import { Search } from '@kyma-project/react-components';
 import { Identifier } from 'fundamental-react';
-import Cards from '../Cards/Cards.component';
 
 const mockNavigate = jest.fn();
 
