@@ -6,6 +6,7 @@ import {
   serviceClassQuery,
   serviceClassAPIruleQuery,
   mockEnvironmentId,
+  serviceClassWithPlans,
 } from '../../../testing/queriesMocks';
 import {
   clusterServiceClass1Name,
@@ -49,11 +50,13 @@ afterAll(() => {
   consoleWarn.mockReset();
 });
 
-describe('Service Class Details UI', () => {
+fdescribe('Service Class Details UI', () => {
   it('Shows loading indicator only when data is not yet loaded', async () => {
     const component = mount(
-      <MockedProvider mocks={[serviceClassQuery]}>
-        <ServiceClassDetails name={clusterServiceClass1Name} />
+      <MockedProvider mocks={[serviceClassWithPlans]}>
+        <ServiceClassDetails
+          name={serviceClassWithPlans.result.data.clusterServiceClass.name}
+        />
       </MockedProvider>,
     );
 
@@ -66,8 +69,10 @@ describe('Service Class Details UI', () => {
 
   it('Displays service class details ', async () => {
     const component = mount(
-      <MockedProvider mocks={[serviceClassQuery]}>
-        <ServiceClassDetails name={clusterServiceClass1Name} />
+      <MockedProvider mocks={[serviceClassWithPlans]}>
+        <ServiceClassDetails
+          name={serviceClassWithPlans.result.data.clusterServiceClass.name}
+        />
       </MockedProvider>,
     );
     await componentUpdate(component);
@@ -83,7 +88,7 @@ describe('Service Class Details UI', () => {
         <MockedProvider mocks={[serviceClassAPIruleQuery]}>
           <ServiceClassDetails
             plan="non-existing"
-            name={serviceClass_APIrule_many_plans.name}
+            name={serviceClassAPIruleQuery.result.data.serviceClass.name}
           />
         </MockedProvider>,
       );
@@ -99,11 +104,13 @@ describe('Service Class Details UI', () => {
     });
 
     it('Shows API package icon and breadcrumb when the label is present', async () => {
-      const { queryByLabelText, queryByText, debug } = render(
+      const { queryByLabelText, queryByText } = render(
         <MockedProvider mocks={[serviceClassAPIruleQuery]}>
           <ServiceClassDetails
-            plan={serviceClass_APIrule_many_plans.plans[0].name}
-            name={serviceClass_APIrule_many_plans.name}
+            plan={
+              serviceClassAPIruleQuery.result.data.serviceClass.plans[0].name
+            }
+            name={serviceClassAPIruleQuery.result.data.serviceClass.name}
           />
         </MockedProvider>,
       );
@@ -112,26 +119,26 @@ describe('Service Class Details UI', () => {
         expect(queryByLabelText('docs-per-plan-icon')).toBeInTheDocument();
         expect(
           queryByText(
-            `${serviceClass_APIrule_many_plans.displayName} - Plans list`,
+            `${serviceClassAPIruleQuery.result.data.serviceClass.displayName} - Plans list`,
           ),
         ).toBeInTheDocument();
       });
     });
 
+    it.todo("Shows no breadcrumb when there's one plan");
+
     it("Doesn't show API package icon or breadcrumb when label isn't present", async () => {
       const { queryByLabelText, queryByText } = render(
-        <MockedProvider mocks={[serviceClassQuery]}>
-          <ServiceClassDetails name={serviceClass_APIrule_many_plans.name} />
+        <MockedProvider mocks={[serviceClassWithPlans]}>
+          <ServiceClassDetails
+            name={serviceClassWithPlans.result.data.clusterServiceClass.name}
+          />
         </MockedProvider>,
       );
 
       await wait(() => {
         expect(queryByLabelText('docs-per-plan-icon')).not.toBeInTheDocument();
-        expect(
-          queryByText(
-            `${serviceClass_APIrule_many_plans.displayName} - Plans list`,
-          ),
-        ).not.toBeInTheDocument();
+        expect(queryByText(`Plans list`)).not.toBeInTheDocument();
       });
     });
     describe('PlanSelector', () => {
