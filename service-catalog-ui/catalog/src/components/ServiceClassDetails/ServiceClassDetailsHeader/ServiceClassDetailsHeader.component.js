@@ -29,6 +29,7 @@ const ServiceClassDetailsHeader = ({
   serviceClassName,
   isAPIpackage,
   planSelector,
+  plansCount,
 }) => {
   const goToList = () => {
     LuigiClient.linkManager()
@@ -55,7 +56,7 @@ const ServiceClassDetailsHeader = ({
             url="#"
             onClick={goToList}
           />
-          {isAPIpackage && serviceClassName && (
+          {isAPIpackage && serviceClassName && plansCount > 1 && (
             <Breadcrumb.Item
               name={`${serviceClassDisplayName} - Plans list`}
               url="#"
