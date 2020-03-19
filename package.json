@@ -90,7 +90,7 @@
     "gulp": "^4.0.1",
     "gulp-clean": "^0.4.0",
     "gulp-watch": "^5.0.1",
-    "handlebars": "^4.5.2",
+    "handlebars": "^4.7.3",
     "jest": "^24.8.0",
     "jsdom-worker-fix": "^0.1.8",
     "kind-of": "^6.0.3",
