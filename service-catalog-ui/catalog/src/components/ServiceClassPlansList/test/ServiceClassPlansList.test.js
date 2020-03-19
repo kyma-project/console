@@ -45,7 +45,9 @@ describe('ServiceClassPlans', () => {
   it('Renders empty list', async () => {
     const { container, queryByRole } = render(
       <MockedProvider addTypename={false} mocks={[serviceClassNoPlansQuery]}>
-        <ServiceClassPlansList name={mockName} />
+        <ServiceClassPlansList
+          name={serviceClassNoPlansQuery.request.variables.name}
+        />
       </MockedProvider>,
     );
     await waitForDomChange(container);
@@ -86,28 +88,33 @@ describe('ServiceClassPlans', () => {
   });
 
   it('Renders some elements', async () => {
-    const serviceClassPlans = serviceClassWithPlans.plans;
+    const serviceClassPlans =
+      serviceClassPlansQuery.result.data.serviceClass.plans;
     const { container, queryByRole } = render(
       <MockedProvider addTypename={false} mocks={[serviceClassPlansQuery]}>
-        <ServiceClassPlansList name={mockName} />
+        <ServiceClassPlansList
+          name={serviceClassPlansQuery.request.variables.name}
+        />
       </MockedProvider>,
     );
 
     await waitForDomChange(container);
-
     const table = queryByRole('table');
     expect(table).toBeInTheDocument();
-    expect(queryAllByRole(table, 'row')).toHaveLength(2);
+    expect(queryAllByRole(table, 'row')).toHaveLength(serviceClassPlans.length);
     serviceClassPlans.forEach(plan => {
       expect(queryByText(table, plan.displayName)).toBeInTheDocument();
     });
   });
 
   it('Clicking on element navigates to its details', async () => {
-    const serviceClassPlans = serviceClassWithPlans.plans;
+    const serviceClassPlans =
+      serviceClassPlansQuery.result.data.serviceClass.plans;
     const { container, getByText } = render(
       <MockedProvider addTypename={false} mocks={[serviceClassPlansQuery]}>
-        <ServiceClassPlansList name={mockName} />
+        <ServiceClassPlansList
+          name={serviceClassPlansQuery.request.variables.name}
+        />
       </MockedProvider>,
     );
 
@@ -115,7 +122,7 @@ describe('ServiceClassPlans', () => {
 
     getByText(serviceClassPlans[1].displayName).click();
     expect(mockNavigate).toHaveBeenCalledWith(
-      `details/${serviceClassPlans[1].relatedServiceClassName}/plan/${serviceClassPlans[1].name}`,
+      `details/${serviceClassPlansQuery.result.data.serviceClass.name}/plan/${serviceClassPlans[1].name}`,
     );
   });
 
