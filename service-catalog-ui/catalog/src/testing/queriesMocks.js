@@ -58,7 +58,7 @@ export const serviceClassWithPlans = {
   },
 };
 
-export const serviceClassAPIruleQuery = {
+export const serviceClassAPIruleQuery = plans => ({
   request: {
     query: getServiceClass,
     variables: {
@@ -71,12 +71,12 @@ export const serviceClassAPIruleQuery = {
     data: {
       clusterServiceClass: null,
       serviceClass: {
-        ...mockServiceClass(1, false, [mockPlan(1), mockPlan(2)]),
+        ...mockServiceClass(1, false, plans),
         labels: { [DOCUMENTATION_PER_PLAN_LABEL]: 'true' },
       },
     },
   },
-};
+});
 
 //getServiceClassPlans query
 export const serviceClassPlansQuery = {
