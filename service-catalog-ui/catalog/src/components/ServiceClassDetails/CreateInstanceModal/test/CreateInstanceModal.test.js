@@ -8,6 +8,9 @@ import {
   clusterServiceClassDetails,
   clusterServiceClass1Name,
   clusterServiceClassDetailsNoPlanSpec,
+  mockServiceClass,
+  mockPlan,
+  planWithImagePullPolicy,
 } from '../../../../testing/serviceClassesMocks';
 
 import {
@@ -18,6 +21,7 @@ import {
 } from '../../../../testing/queriesMocks';
 
 import CreateInstanceModal from '../CreateInstanceModal.component';
+import gql from 'graphql-tag';
 
 const onCompleted = jest.fn();
 const onError = jest.fn();
@@ -53,7 +57,7 @@ describe('CreateInstanceModal', () => {
       <MockedProvider>
         <CreateInstanceModal
           checkInstanceExistQuery={{ serviceInstances: [] }}
-          item={clusterServiceClassDetails}
+          item={mockServiceClass(1, false, [mockPlan(1)])}
           formElementRef={{ current: null }}
           jsonSchemaFormRef={{ current: null }}
           onChange={onChange}
@@ -67,11 +71,12 @@ describe('CreateInstanceModal', () => {
   });
 
   it('Shows filled instance name input, predefined dropdowns and does not allow to submit form', async () => {
+    const mockService = mockServiceClass(1, false, [planWithImagePullPolicy]);
     const component = mount(
       <MockedProvider>
         <CreateInstanceModal
           checkInstanceExistQuery={{ serviceInstances: [] }}
-          item={clusterServiceClassDetails}
+          item={mockService}
           formElementRef={{ current: null }}
           jsonSchemaFormRef={{ current: null }}
           onChange={onChange}
@@ -93,7 +98,7 @@ describe('CreateInstanceModal', () => {
     const instancePlanInput = component.find(instancePlanSelector);
     expect(instancePlanInput.exists()).toEqual(true);
     expect(instancePlanInput.instance().value).toEqual(
-      clusterServiceClassDetails.plans[0].name,
+      mockService.plans[0].name,
     );
     expect(instancePlanInput.props().children.length).toEqual(1);
 
@@ -120,7 +125,7 @@ describe('CreateInstanceModal', () => {
       <MockedProvider>
         <CreateInstanceModal
           checkInstanceExistQuery={{ serviceInstances: [] }}
-          item={clusterServiceClassDetails}
+          item={mockServiceClass(1, false, [planWithImagePullPolicy])}
           formElementRef={{ current: null }}
           jsonSchemaFormRef={{ current: null }}
           onChange={onChange}
@@ -148,13 +153,15 @@ describe('CreateInstanceModal', () => {
   it('Creates instance with plan spec', async () => {
     const ref = React.createRef();
 
-    const gqlMock = createServiceInstanceSuccessfulMock();
+    const mockService = mockServiceClass(1, false, [planWithImagePullPolicy]);
+
+    const gqlMock = createServiceInstanceSuccessfulMock(mockService.name);
 
     const component = mount(
       <MockedProvider mocks={[gqlMock]} addTypename={false}>
         <CreateInstanceModal
           checkInstanceExistQuery={{ serviceInstances: [] }}
-          item={clusterServiceClassDetails}
+          item={mockService}
           formElementRef={ref}
           jsonSchemaFormRef={{ current: null }}
           onChange={onChange}
@@ -168,10 +175,8 @@ describe('CreateInstanceModal', () => {
     await componentUpdate(component);
 
     const instanceNameInput = component.find('input#instanceName');
-    instanceNameInput.instance().value = clusterServiceClass1Name;
-    expect(instanceNameInput.instance().value).toEqual(
-      clusterServiceClass1Name,
-    );
+    instanceNameInput.instance().value = mockService.name;
+    expect(instanceNameInput.instance().value).toEqual(mockService.name);
 
     await componentUpdate(component);
     await componentUpdate(component);
@@ -186,20 +191,21 @@ describe('CreateInstanceModal', () => {
     expect(onCompleted).toHaveBeenCalled();
     expect(onError).not.toHaveBeenCalled();
     expect(mockNavigate).toHaveBeenCalledWith(
-      `cmf-instances/details/${clusterServiceClass1Name}`,
+      `cmf-instances/details/${mockService.name}`,
     );
   });
 
   it('Shows error notification if an error occured', async () => {
     const ref = React.createRef();
+    const mockService = mockServiceClass(1, true, [mockPlan(1, true)]);
 
-    const gqlMock = createServiceInstanceErrorMock();
+    const gqlMock = createServiceInstanceErrorMock(mockService.name);
 
     const component = mount(
       <MockedProvider mocks={[gqlMock]} addTypename={false}>
         <CreateInstanceModal
           checkInstanceExistQuery={{ serviceInstances: [] }}
-          item={clusterServiceClassDetails}
+          item={mockService}
           formElementRef={ref}
           jsonSchemaFormRef={{ current: null }}
           onChange={onChange}
@@ -213,10 +219,8 @@ describe('CreateInstanceModal', () => {
     await componentUpdate(component);
 
     const instanceNameInput = component.find('input#instanceName');
-    instanceNameInput.instance().value = clusterServiceClass1Name;
-    expect(instanceNameInput.instance().value).toEqual(
-      clusterServiceClass1Name,
-    );
+    instanceNameInput.instance().value = mockService.name;
+    expect(instanceNameInput.instance().value).toEqual(mockService.name);
 
     await componentUpdate(component);
     await componentUpdate(component);
@@ -232,14 +236,16 @@ describe('CreateInstanceModal', () => {
 
   it('Create instance with empty plan spec', async () => {
     const ref = React.createRef();
-
-    const gqlMock = createServiceInstanceNoPlanSpecSuccessfulMock();
+    const mockService = mockServiceClass(1, false, [mockPlan(1, false)]);
+    const gqlMock = createServiceInstanceNoPlanSpecSuccessfulMock(
+      mockService.name,
+    );
 
     const component = mount(
       <MockedProvider mocks={[gqlMock]} addTypename={false}>
         <CreateInstanceModal
           checkInstanceExistQuery={{ serviceInstances: [] }}
-          item={clusterServiceClassDetailsNoPlanSpec}
+          item={mockService}
           formElementRef={ref}
           jsonSchemaFormRef={{ current: null }}
           onChange={onChange}
@@ -253,10 +259,8 @@ describe('CreateInstanceModal', () => {
     await componentUpdate(component);
 
     const instanceNameInput = component.find('input#instanceName');
-    instanceNameInput.instance().value = clusterServiceClass1Name;
-    expect(instanceNameInput.instance().value).toEqual(
-      clusterServiceClass1Name,
-    );
+    instanceNameInput.instance().value = mockService.name;
+    expect(instanceNameInput.instance().value).toEqual(mockService.name);
 
     await componentUpdate(component);
     await componentUpdate(component);
@@ -271,7 +275,7 @@ describe('CreateInstanceModal', () => {
     expect(onCompleted).toHaveBeenCalled();
     expect(onError).not.toHaveBeenCalled();
     expect(mockNavigate).toHaveBeenCalledWith(
-      `cmf-instances/details/${clusterServiceClass1Name}`,
+      `cmf-instances/details/${mockService.name}`,
     );
   });
 
@@ -286,11 +290,12 @@ describe('CreateInstanceModal', () => {
     });
 
     it('Shows the preselected plan name', () => {
+      const mockService = mockServiceClass(1, false, [testPlan]);
       const { queryByText } = render(
         <MockedProvider mocks={[gqlMock]} addTypename={false}>
           <CreateInstanceModal
             checkInstanceExistQuery={{ serviceInstances: [] }}
-            item={clusterServiceClassDetails}
+            item={mockService}
             formElementRef={{ current: null }}
             jsonSchemaFormRef={{ current: null }}
             onChange={onChange}
@@ -304,11 +309,12 @@ describe('CreateInstanceModal', () => {
     });
 
     it("Doesn't render the plan selection", () => {
+      const mockService = mockServiceClass(1, false, [testPlan]);
       const { queryByLabelText } = render(
         <MockedProvider mocks={[gqlMock]} addTypename={false}>
           <CreateInstanceModal
             checkInstanceExistQuery={{ serviceInstances: [] }}
-            item={clusterServiceClassDetails}
+            item={mockService}
             formElementRef={{ current: null }}
             jsonSchemaFormRef={{ current: null }}
             onChange={onChange}
