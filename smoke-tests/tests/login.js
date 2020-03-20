@@ -27,3 +27,12 @@ test('2', async t => {
     .expect(Selector('.fd-side-nav__link').withText('Applications').exists)
     .ok();
 });
+
+test('3', async t => {
+  const iframe = await Selector('.iframeContainer').child(0);
+  await t
+    .useRole(regularAccUser)
+    .switchToIframe(iframe)
+    .expect(Selector('.fd-panel').withText('Namespaces').exists)
+    .ok();
+});
