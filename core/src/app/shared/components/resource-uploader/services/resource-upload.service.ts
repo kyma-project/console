@@ -1,4 +1,4 @@
-import * as LuigiClient from '@kyma-project/luigi-client';
+import * as LuigiClient from '@luigi-project/client';
 import { Injectable, OnDestroy } from '@angular/core';
 import { forkJoin, Observable, Subscription } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -74,11 +74,11 @@ export class ResourceUploadService implements OnDestroy {
       case 'v1':
         return `${AppConfig.k8sApiServerUrl}namespaces/${
           this.currentNamespaceId
-        }/${resource}`;
+          }/${resource}`;
       default:
         return `${AppConfig.k8sServerUrl}/apis/${
           fileContent.apiVersion
-        }/namespaces/${this.currentNamespaceId}/${resource}`;
+          }/namespaces/${this.currentNamespaceId}/${resource}`;
     }
   }
 

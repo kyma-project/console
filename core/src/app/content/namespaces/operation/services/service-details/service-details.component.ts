@@ -5,7 +5,7 @@ import { AppConfig } from '../../../../../app.config';
 import { ComponentCommunicationService } from '../../../../../shared/services/component-communication.service';
 import { CurrentNamespaceService } from '../../../services/current-namespace.service';
 import { Subscription } from 'rxjs';
-import LuigiClient from '@kyma-project/luigi-client';
+import LuigiClient from '@luigi-project/client';
 import { EMPTY_TEXT } from 'shared/constants/constants';
 
 @Component({
@@ -43,7 +43,7 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
 
           this.serviceDetailsUrl = `${AppConfig.k8sApiServerUrl}namespaces/${
             this.currentNamespaceId
-          }/services/${this.serviceName}`;
+            }/services/${this.serviceName}`;
 
           this.fetchData(this.serviceDetailsUrl).subscribe(
             res => {

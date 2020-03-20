@@ -7,7 +7,7 @@ import * as _ from 'lodash';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { GraphQLClientService } from '../../../shared/services/graphql-client-service';
-import LuigiClient from '@kyma-project/luigi-client';
+import LuigiClient from '@luigi-project/client';
 
 @Injectable()
 export class NamespacesService {

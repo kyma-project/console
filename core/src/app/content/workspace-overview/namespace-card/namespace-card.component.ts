@@ -2,7 +2,7 @@ import { Component, Input, Injector, OnInit, OnDestroy } from '@angular/core';
 import { Namespace } from '../../../shared/datamodel/k8s/namespace';
 import { ComponentCommunicationService } from '../../../shared/services/component-communication.service';
 import { Subscription } from 'rxjs';
-import LuigiClient from '@kyma-project/luigi-client';
+import LuigiClient from '@luigi-project/client';
 
 @Component({
   selector: 'namespace-card',

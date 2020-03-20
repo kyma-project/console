@@ -1,4 +1,4 @@
-import * as LuigiClient from '@kyma-project/luigi-client';
+import * as LuigiClient from '@luigi-project/client';
 import { Injectable } from '@angular/core';
 import {
   HttpRequest,
@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
-  constructor(private router: Router) {}
+  constructor(private router: Router) { }
 
   intercept(
     request: HttpRequest<any>,
@@ -30,7 +30,7 @@ export class TokenInterceptor implements HttpInterceptor {
 
     return next.handle(request).pipe(
       tap(
-        (event: HttpEvent<any>) => {},
+        (event: HttpEvent<any>) => { },
         (err: any) => {
           return err;
         }

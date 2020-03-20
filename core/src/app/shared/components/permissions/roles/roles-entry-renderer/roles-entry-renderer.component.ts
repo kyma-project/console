@@ -2,7 +2,7 @@ import { Component, Injector } from '@angular/core';
 import { AbstractKubernetesEntryRendererComponent } from '../../../../../content/namespaces/operation/abstract-kubernetes-entry-renderer.component';
 import { ActivatedRoute, Params } from '@angular/router';
 import { map } from 'rxjs/operators';
-import LuigiClient from '@kyma-project/luigi-client';
+import LuigiClient from '@luigi-project/client';
 
 @Component({
   templateUrl: './roles-entry-renderer.component.html'

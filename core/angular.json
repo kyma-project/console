@@ -21,7 +21,9 @@
             "tsConfig": "src/tsconfig.app.json",
             "polyfills": "src/polyfills.ts",
             "stylePreprocessorOptions": {
-              "includePaths": ["src/styles"]
+              "includePaths": [
+                "src/styles"
+              ]
             },
             "assets": [
               "src/assets",
@@ -31,7 +33,7 @@
               "src/logout.html",
               {
                 "glob": "**",
-                "input": "./node_modules/@kyma-project/luigi-core",
+                "input": "./node_modules/@luigi-project/core",
                 "output": "luigi-core"
               },
               {
@@ -40,7 +42,9 @@
                 "output": "/"
               }
             ],
-            "styles": ["src/styles.scss"]
+            "styles": [
+              "src/styles.scss"
+            ]
           },
           "configurations": {
             "production": {
@@ -93,17 +97,21 @@
         "test": {
           "builder": "@angular-builders/custom-webpack:karma",
           "options": {
-              "customWebpackConfig": {
-                        "path": "./extra-webpack.config.js"
-                     },
+            "customWebpackConfig": {
+              "path": "./extra-webpack.config.js"
+            },
             "preserveSymlinks": true,
             "main": "src/test.ts",
             "karmaConfig": "./karma.conf.js",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "src/tsconfig.spec.json",
-            "styles": ["src/styles.scss"],
+            "styles": [
+              "src/styles.scss"
+            ],
             "stylePreprocessorOptions": {
-              "includePaths": ["src/styles"]
+              "includePaths": [
+                "src/styles"
+              ]
             },
             "assets": [
               "src/assets",
@@ -120,7 +128,9 @@
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": ["src/tsconfig.spec.json"],
+            "tsConfig": [
+              "src/tsconfig.spec.json"
+            ],
             "exclude": []
           }
         }

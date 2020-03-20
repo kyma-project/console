@@ -6,7 +6,7 @@ import {
   TemplateRef
 } from '@angular/core';
 import { NamespacesService } from '../services/namespaces.service';
-import LuigiClient from '@kyma-project/luigi-client';
+import LuigiClient from '@luigi-project/client';
 import { ModalService, ModalRef } from 'fundamental-ngx';
 import { DEFAULT_MODAL_CONFIG } from 'shared/constants/constants';
 
@@ -51,7 +51,7 @@ export class NamespaceCreateComponent {
   constructor(
     private namespacesService: NamespacesService,
     private modalService: ModalService
-  ) {}
+  ) { }
 
   public createNamespace() {
     this.namespacesService

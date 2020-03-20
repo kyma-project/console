@@ -2,7 +2,7 @@ import { Component, Injector, OnDestroy, OnInit } from '@angular/core';
 import { AbstractKubernetesEntryRendererComponent } from '../../../operation/abstract-kubernetes-entry-renderer.component';
 import { ComponentCommunicationService } from '../../../../../shared/services/component-communication.service';
 import { Subscription } from 'rxjs';
-import LuigiClient from '@kyma-project/luigi-client';
+import LuigiClient from '@luigi-project/client';
 import { GenericHelpersService } from '../../../../../shared/services/generic-helpers.service';
 import { AppConfig } from '../../../../../app.config';
 

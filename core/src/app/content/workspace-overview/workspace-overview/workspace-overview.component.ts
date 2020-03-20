@@ -15,7 +15,7 @@ import {
   Namespace,
   INamespace
 } from '../../../shared/datamodel/k8s/namespace';
-import LuigiClient from '@kyma-project/luigi-client';
+import LuigiClient from '@luigi-project/client';
 import { NamespacesService } from '../../namespaces/services/namespaces.service';
 import { DataConverter, Filter, GenericListComponent } from 'app/generic-list';
 import { ConfirmationModalComponent } from '../../../shared/components/confirmation-modal/confirmation-modal.component';
@@ -124,9 +124,9 @@ export class WorkspaceOverviewComponent extends GenericListComponent
                     this.infoModal.show(
                       'Error',
                       'There was an error trying to delete namespace ' +
-                        (entry.name || entry.getName()) +
-                        ': ' +
-                        (err.error.message || err.message || err)
+                      (entry.name || entry.getName()) +
+                      ': ' +
+                      (err.error.message || err.message || err)
                     );
                   },
                   () => {
@@ -134,7 +134,7 @@ export class WorkspaceOverviewComponent extends GenericListComponent
                   }
                 );
             },
-            () => {}
+            () => { }
           );
       }
     };

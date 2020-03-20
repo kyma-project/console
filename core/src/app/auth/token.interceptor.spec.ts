@@ -1,4 +1,4 @@
-import * as LuigiClient from '@kyma-project/luigi-client';
+import * as LuigiClient from '@luigi-project/client';
 import { TestBed, inject } from '@angular/core/testing';
 import {
   HttpClientTestingModule,
@@ -115,7 +115,7 @@ describe('TokenInterceptor', () => {
 
       // given
       http.get('/api').subscribe(
-        response => {},
+        response => { },
         error => {
           // then
           expect(error).toBeTruthy();

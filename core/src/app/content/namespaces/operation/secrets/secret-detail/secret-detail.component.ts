@@ -6,7 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { InformationModalComponent } from '../../../../../shared/components/information-modal/information-modal.component';
 import { ComponentCommunicationService } from '../../../../../shared/services/component-communication.service';
 import { Subscription } from 'rxjs';
-import LuigiClient from '@kyma-project/luigi-client';
+import LuigiClient from '@luigi-project/client';
 
 @Component({
   selector: 'app-secret-detail',
@@ -48,7 +48,7 @@ export class SecretDetailComponent implements OnInit, OnDestroy {
   prepareUrl(): string {
     return `${AppConfig.k8sApiServerUrl}namespaces/${
       this.currentNamespaceId
-    }/secrets/${this.secretName}`;
+      }/secrets/${this.secretName}`;
   }
 
   fetchSecretDetails(url) {

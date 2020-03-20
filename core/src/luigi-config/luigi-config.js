@@ -9,6 +9,7 @@ import { communication } from './communication';
 import { config } from './config';
 import { navigation, getNavigationData, resolveNavigationNodes } from './navigation/navigation-data-init';
 import { onQuotaExceed } from './luigi-event-handlers';
+import OpenIdConnect from '@luigi-project/plugin-auth-oidc';
 
 
 function getFreshKeys() {
@@ -23,6 +24,7 @@ const luigiConfig = {
   auth: {
     use: 'openIdConnect',
     openIdConnect: {
+      idpProvider: OpenIdConnect,
       authority: 'https://dex.' + config.domain,
       client_id: 'console',
       scope:
@@ -30,11 +32,11 @@ const luigiConfig = {
       automaticSilentRenew: true,
       loadUserInfo: false,
       logoutUrl: 'logout.html',
-      userInfoFn:(authSettings, authData)=>{
+      userInfoFn: (authSettings, authData) => {
         return new Promise((resolve) => {
           const userInfo = {};
           try {
-            const data  = parseJWT(authData.idToken)
+            const data = parseJWT(authData.idToken)
             userInfo.name = data.name
             userInfo.email = data.email
           } catch (err) {
@@ -49,7 +51,7 @@ const luigiConfig = {
           const oidsUserStore = JSON.parse(sessionStorage.getItem(oidcUserStoreKey));
           oidsUserStore.profile = undefined;
           sessionStorage.setItem(oidcUserStoreKey, JSON.stringify(oidsUserStore));
-        } catch(e) {
+        } catch (e) {
           console.error("Error parsing oidc user data", e);
         }
       }
@@ -106,7 +108,7 @@ const luigiConfig = {
   lifecycleHooks: {
     luigiAfterInit: () => {
       const token = getToken()
-      if(token){
+      if (token) {
         getNavigationData().then(
           response => {
             resolveNavigationNodes(response[0]);
