@@ -53,7 +53,7 @@ describe('ServiceClassList UI', () => {
 
     expect(component.find(Spinner)).toHaveLength(0);
 
-    //  expectKnownConsoleWarnings();
+    expectKnownConsoleWarnings();
   });
 
   it('Add-Ons tab has proper counter', async () => {
