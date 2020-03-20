@@ -19,13 +19,14 @@ const SearchInput = ({ filter, setFilter }) => (
 const TenantList = ({ tenants, chooseTenant }) => (
   <ListGroup className="fd-has-margin-top-s">
     {tenants.map(tenant => (
-      <ListGroup.Item role="row" key={tenant.id}>
-        {/* <p className="link list-item" onClick={() => chooseTenant(tenant)}>
-      <span>{tenant.name}</span> <span>{`(${tenant.id})`}</span>
-    </p> */}
-        <p className="link" onClick={() => chooseTenant(tenant)}>
-          {`${tenant.name} (${tenant.id})`}
-        </p>
+      <ListGroup.Item
+        role="row"
+        key={tenant.id}
+        onClick={() => chooseTenant(tenant)}
+        className="list-item"
+      >
+        <span className="link">{tenant.name}</span>
+        <span className="fd-has-color-text-3">{tenant.id}</span>
       </ListGroup.Item>
     ))}
   </ListGroup>

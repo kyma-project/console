@@ -1,7 +1,10 @@
 .tenant-search { 
     .list-item {
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+
+        > * {
+            cursor: pointer;
+        }
     }
 }

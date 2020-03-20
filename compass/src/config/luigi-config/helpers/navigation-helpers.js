@@ -1,3 +1,5 @@
+import sanitizeHtml from 'sanitize-html';
+
 const regex = new RegExp('^/tenant/(.*?)/(.*)(?:/.*)?');
 
 export const getAlternativePath = (tenantName, fromPath) => {
@@ -79,4 +81,19 @@ export const getTenantNames = tenants => {
     };
   });
   return tenantNames.sort((a, b) => a.label.localeCompare(b.label));
+};
+
+export const customOptionsRenderer = opt => {
+  // we have to manually find selected tenant by id, as Luigi distinguishes
+  // "options" by their labels (which may not be unique)
+  const currentTenantId = opt.id.substring(0, opt.id.indexOf('/'));
+
+  const isSelected =
+    currentTenantId && !!window.location.pathname.match(currentTenantId);
+
+  const label = sanitizeHtml(opt.label);
+
+  return `<a href="javascript:void(0)" class="fd-menu__item ${
+    isSelected ? 'is-selected' : ''
+  } svelte-1ldh2pm" title="${label}">${label}</a>`;
 };

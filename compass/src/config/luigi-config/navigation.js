@@ -4,6 +4,7 @@ import {
   getToken,
   getTenantNames,
   getTenantsFromCache,
+  customOptionsRenderer,
 } from './helpers/navigation-helpers';
 
 const compassMfUrl = window.clusterConfig.microfrontendContentUrl;
@@ -41,6 +42,8 @@ const navigation = {
       viewGroup: 'compass',
     },
     {
+      hideSideNav: true,
+      hideFromNav: true,
       viewGroup: 'compass',
       pathSegment: 'preload',
       viewUrl: compassMfUrl + '/preload',
@@ -225,6 +228,7 @@ const navigation = {
         clickHandler: openTenantSearch,
       },
     ],
+    customOptionsRenderer,
   },
   viewGroupSettings: {
     'compass-search-tenants': {
