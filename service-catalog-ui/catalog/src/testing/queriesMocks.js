@@ -31,8 +31,8 @@ export const allServiceClassesQuery = {
   },
   result: {
     data: {
-      clusterServiceClasses: [1, 2, 3, 4].map(n => mockServiceClass(n, true)), // all clusterServiceClasses are addons
-      serviceClasses: [1, 2, 3].map(n => mockServiceClass(n, false, [], true)), // all serviceClasses are services
+      clusterServiceClasses: [1, 2, 3, 4].map(n => mockServiceClass(n, true)), // all clusterServiceClasses are addons to make testing easier
+      serviceClasses: [1, 2, 3].map(n => mockServiceClass(n, false, [], true)), // all serviceClasses are services to make testing easier
     },
   },
 };
