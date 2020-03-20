@@ -33,6 +33,6 @@ test('3', async t => {
   await t
     .useRole(regularAccUser)
     .switchToIframe(iframe)
-    .expect(Selector('.fd-panel').withText('Namespaces').exists)
+    .expect(Selector('.fd-button').withText('Add new namespace').exists)
     .ok();
 });
