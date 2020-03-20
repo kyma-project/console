@@ -2,30 +2,35 @@ import React from 'react';
 import TenantSearch from '../TenantSearch';
 import { render, fireEvent } from '@testing-library/react';
 
+const mockedTenants = [
+  {
+    name: 'tenant-1',
+    id: 'id-1',
+  },
+  {
+    name: 'tenant-2',
+    id: 'id-2',
+  },
+];
+
 const mockNavigate = jest.fn();
 jest.mock('@kyma-project/luigi-client', () => ({
-  getContext: () => ({
-    tenants: [
-      {
-        name: 'tenant-1',
-        id: 'id-1',
-      },
-      {
-        name: 'tenant-2',
-        id: 'id-2',
-      },
-    ],
-  }),
+  getContext: () => ({ tenants: mockedTenants }),
   getNodeParams: () => ({ parentPath: '/' }),
   linkManager: () => ({ navigate: mockNavigate }),
 }));
 
 describe('TenantSearch', () => {
-  it('Renders list of tenants and focuses search field', async () => {
-    const { queryByRole, queryAllByRole } = render(<TenantSearch />);
+  it('Renders list of tenants', async () => {
+    const { queryAllByRole } = render(<TenantSearch />);
+
+    expect(queryAllByRole('row')).toHaveLength(mockedTenants.length);
+  });
+
+  it('Focuses search field on load', async () => {
+    const { queryByRole } = render(<TenantSearch />);
 
     expect(queryByRole('search')).toHaveFocus();
-    expect(queryAllByRole('row')).toHaveLength(2);
   });
 
   it('Filters list by tenant name', async () => {

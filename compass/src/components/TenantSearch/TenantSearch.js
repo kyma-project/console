@@ -5,13 +5,13 @@ import { ListGroup, Panel } from 'fundamental-react';
 import { getAlternativePath } from 'config/luigi-config/helpers/navigation-helpers';
 import './TenantSearch.scss';
 
-const Search = ({ filter, setFilter }) => (
+const SearchInput = ({ filter, setFilter }) => (
   <input
     autoFocus
     role="search"
     placeholder="Search tenants..."
     value={filter}
-    onChange={e => setFilter(e.target.value.trim())}
+    onChange={e => setFilter(e.target.value)}
     type="text"
   />
 );
@@ -21,7 +21,7 @@ const TenantList = ({ tenants, chooseTenant }) => (
     {tenants.map(tenant => (
       <ListGroup.Item role="row" key={tenant.id}>
         {/* <p className="link list-item" onClick={() => chooseTenant(tenant)}>
-      <span>{tenant.name}{tenant.name}{tenant.name}{tenant.name}{tenant.name}</span> <span>{`(${tenant.id})`}</span>
+      <span>{tenant.name}</span> <span>{`(${tenant.id})`}</span>
     </p> */}
         <p className="link" onClick={() => chooseTenant(tenant)}>
           {`${tenant.name} (${tenant.id})`}
@@ -44,7 +44,7 @@ export default function TenantSearch() {
   };
 
   const getFilteredTenants = () => {
-    if (!filter) {
+    if (!filter.trim()) {
       return tenants;
     }
     return tenants.filter(
@@ -54,7 +54,7 @@ export default function TenantSearch() {
 
   return (
     <Panel className="fd-has-padding-s tenant-search">
-      <Search filter={filter} setFilter={setFilter} />
+      <SearchInput filter={filter} setFilter={setFilter} />
       <TenantList tenants={getFilteredTenants()} chooseTenant={chooseTenant} />
     </Panel>
   );

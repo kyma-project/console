@@ -57,7 +57,7 @@ class App extends React.Component {
             <Route
               path="/preload"
               component={() => {
-                console.log('load?');
+                console.log('load? the same log shows up in core-ui');
                 return null;
               }}
             />
