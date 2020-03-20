@@ -1,8 +1,8 @@
 import React from 'react';
 import { MockedProvider } from '@apollo/react-testing';
 import {
-  validApplicationsQueryMock,
-  invalidApplicationsQueryMock,
+  validApplicationUpdateMock,
+  invalidApplicationUpdateMock,
   applicationMock,
 } from './mock';
 import { render, fireEvent } from '@testing-library/react';
@@ -21,51 +21,14 @@ describe('UpdateApplicationForm UI', () => {
       expect(console.warn.mock.calls[0][0]).toMatchSnapshot();
     }
   });
-  const emptyRef = { current: null };
-
-  it('Displays "loading" when there is no gql response', async () => {
-    const { container } = render(
-      <MockedProvider addTypename={false}>
-        <UpdateApplicationForm
-          formElementRef={emptyRef}
-          onChange={() => {}}
-          onCompleted={() => {}}
-          onError={() => {}}
-          application={applicationMock}
-        />
-      </MockedProvider>,
-    );
-    expect(container.textContent).toBe('Loading...');
-    await wait(0); // just to shut up the infamous act() warning
-  });
-
-  it('Displays error in error state', async () => {
-    const { container } = render(
-      <MockedProvider
-        addTypename={false}
-        mocks={[invalidApplicationsQueryMock]}
-      >
-        <UpdateApplicationForm
-          formElementRef={emptyRef}
-          onChange={() => {}}
-          onCompleted={() => {}}
-          onError={() => {}}
-          application={applicationMock}
-        />
-      </MockedProvider>,
-    );
-    expect(container.textContent).toBe('Loading...');
-
-    await wait(0); // wait for response
-
-    expect(container.textContent).toBe('Error! Network error: Query error');
-  });
 
   it('Renders form after load', async () => {
+    const formRef = React.createRef();
+
     const { queryByPlaceholderText } = render(
-      <MockedProvider addTypename={false} mocks={[validApplicationsQueryMock]}>
+      <MockedProvider addTypename={false} mocks={[validApplicationUpdateMock]}>
         <UpdateApplicationForm
-          formElementRef={emptyRef}
+          formElementRef={formRef}
           onChange={() => {}}
           onCompleted={() => {}}
           onError={() => {}}
@@ -74,61 +37,77 @@ describe('UpdateApplicationForm UI', () => {
       </MockedProvider>,
     );
 
-    await wait(0); // wait for response
+    const providerField = queryByPlaceholderText('Provider name');
+    expect(providerField).toBeInTheDocument();
+    expect(providerField.value).toBe(applicationMock.providerName);
 
-    expect(queryByPlaceholderText('Application name')).toBeInTheDocument();
-    expect(
-      queryByPlaceholderText('Application description'),
-    ).toBeInTheDocument();
+    const descriptionField = queryByPlaceholderText('Application description');
+    expect(descriptionField).toBeInTheDocument();
+    expect(descriptionField.value).toBe(applicationMock.description);
   });
 
-  it('Displays validation messages', async () => {
-    const { queryByPlaceholderText } = render(
-      <MockedProvider addTypename={false} mocks={[validApplicationsQueryMock]}>
+  it('Sends request and shows notification on form submit', async () => {
+    const formRef = React.createRef();
+    const completedCallback = jest.fn();
+
+    const { getByLabelText } = render(
+      <MockedProvider addTypename={false} mocks={[validApplicationUpdateMock]}>
         <UpdateApplicationForm
-          formElementRef={emptyRef}
+          formElementRef={formRef}
           onChange={() => {}}
-          onCompleted={() => {}}
+          onCompleted={completedCallback}
           onError={() => {}}
           application={applicationMock}
         />
       </MockedProvider>,
     );
 
-    await wait(0); // wait for response
-
-    const nameInput = queryByPlaceholderText('Application name');
-
-    // initial state
-    expect(nameInput.validationMessage).toBeFalsy();
-
-    // duplicate app name
-    fireEvent.change(nameInput, {
-      target: {
-        value: 'app2',
-      },
+    fireEvent.change(getByLabelText('Provider Name'), {
+      target: { value: 'new-provider' },
+    });
+    fireEvent.change(getByLabelText('Description'), {
+      target: { value: 'new-desc' },
     });
 
-    expect(nameInput.validationMessage).toEqual(
-      'Application with this name already exists.',
+    // simulate form submit from outside
+    formRef.current.dispatchEvent(new Event('submit'));
+
+    await wait(0);
+
+    expect(completedCallback).toHaveBeenCalled();
+  });
+
+  it('Displays error notification when mutation fails', async () => {
+    const formRef = React.createRef();
+    const errorCallback = jest.fn();
+
+    const { getByLabelText } = render(
+      <MockedProvider
+        addTypename={false}
+        mocks={[invalidApplicationUpdateMock]}
+      >
+        <UpdateApplicationForm
+          formElementRef={formRef}
+          onChange={() => {}}
+          onCompleted={() => {}}
+          onError={errorCallback}
+          application={applicationMock}
+        />
+      </MockedProvider>,
     );
 
-    // empty
-
-    fireEvent.change(nameInput, {
-      target: {
-        value: '',
-      },
+    fireEvent.change(getByLabelText('Provider Name'), {
+      target: { value: 'new-provider' },
+    });
+    fireEvent.change(getByLabelText('Description'), {
+      target: { value: 'new-desc' },
     });
 
-    expect(nameInput.validationMessage).toEqual('Constraints not satisfied');
+    // simulate form submit from outside
+    formRef.current.dispatchEvent(new Event('submit'));
 
-    // valid name
-    fireEvent.change(nameInput, {
-      target: {
-        value: 'app3',
-      },
-    });
-    expect(nameInput.validationMessage).toBeFalsy();
+    await wait(0);
+
+    expect(errorCallback).toHaveBeenCalled();
   });
 });

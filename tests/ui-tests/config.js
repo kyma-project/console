@@ -33,4 +33,5 @@ module.exports = {
     : false,
   kubeConfigPath: process.env.KUBECONFIG ? process.env.KUBECONFIG : undefined,
   loggingEnabled: process.env.LOGGING_ENABLED || false,
+  apiPackagesEnabled: process.env.API_PACKAGES_ENABLED || false,
 };

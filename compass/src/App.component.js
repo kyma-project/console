@@ -14,7 +14,7 @@ import ScenarioDetails from './components/Scenarios/ScenarioDetails/ScenarioDeta
 import ApplicationDetails from './components/Application/ApplicationDetails/ApplicationDetails.container';
 import MetadataDefinitions from './components/MetadataDefinitions/MetadataDefinitions.container';
 import MetadataDefinitionDetails from './components/MetadataDefinitions/MetadataDefinitionDetails/MetadataDefinitionDetails.container';
-import ApiDetails from './components/Api/ApiDetails/ApiDetails.container';
+import ApiDetails from './components/Api/ApiDetails/ApiDetails';
 import ApiPackageDetails from 'components/ApiPackages/ApiPackageDetails/ApiPackageDetails';
 
 const NOTIFICATION_VISIBILITY_TIME = 5000;

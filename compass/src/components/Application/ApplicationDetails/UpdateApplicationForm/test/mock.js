@@ -1,40 +1,50 @@
-import { GET_APPLICATIONS, UPDATE_APPLICATION } from '../../../gql';
+import { UPDATE_APPLICATION } from '../../../gql';
 
 export const applicationMock = {
-  name: 'app1',
-  description: 'desc1',
+  id: '1',
+  name: 'app',
+  providerName: 'provider',
+  description: 'desc',
   healthCheckURL: 'http://healthCheckURL',
+  integrationSystemID: 'intsys',
 };
 
-export const validApplicationsQueryMock = {
+export const validApplicationUpdateMock = {
   request: {
-    query: GET_APPLICATIONS,
+    query: UPDATE_APPLICATION,
+    variables: {
+      id: '1',
+      in: {
+        providerName: 'new-provider',
+        description: 'new-desc',
+        healthCheckURL: 'http://healthCheckURL',
+        integrationSystemID: 'intsys',
+      },
+    },
   },
   result: {
     data: {
-      applications: {
-        data: [
-          {
-            id: '1',
-            providerName: 'provider',
-            name: 'app1',
-            description: 'desc1',
-          },
-          {
-            id: '2',
-            providerName: 'provider',
-            name: 'app2',
-            description: 'desc2',
-          },
-        ],
+      updateApplication: {
+        id: '1',
+        name: 'app',
+        providerName: 'new-provider',
       },
     },
   },
 };
 
-export const invalidApplicationsQueryMock = {
+export const invalidApplicationUpdateMock = {
   request: {
-    query: GET_APPLICATIONS,
+    query: UPDATE_APPLICATION,
+    variables: {
+      id: '1',
+      in: {
+        providerName: 'new-provider',
+        description: 'new-desc',
+        healthCheckURL: 'http://healthCheckURL',
+        integrationSystemID: 'intsys',
+      },
+    },
   },
   error: new Error('Query error'),
 };

@@ -1,6 +1,7 @@
+const regex = new RegExp('^/tenant/(.*?)/(.*)(?:/.*)?');
+
 const getAlternativePath = tenantName => {
   const currentPath = window.location.pathname;
-  const regex = new RegExp('^/tenant/(.*?)/(.*)(?:/.*)?');
   const match = currentPath.match(regex);
   if (match) {
     const tenant = match[1];
@@ -77,5 +78,5 @@ export const getTenantNames = tenants => {
       pathValue: alternativePath || tenant.id,
     };
   });
-  return tenantNames;
+  return tenantNames.sort((a, b) => a.label.localeCompare(b.label));
 };
