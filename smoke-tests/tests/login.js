@@ -1,11 +1,15 @@
 import { Selector, Role } from 'testcafe';
+import config from '../config';
 
+const address = `${
+  config.localdev ? 'http://console-dev' : 'https://console'
+}.${config.domain}`;
 const regularAccUser = Role(
-  'https://console.pijany.hasselhoff.ga',
+  address,
   async t => {
     await t
-      .typeText('#login', 'admin@kyma.cx')
-      .typeText('#password', 'baywatch')
+      .typeText('#login', config.login)
+      .typeText('#password', config.password)
       .click('#submit-login')
       .wait(5000); // check https://github.com/DevExpress/testcafe/issues/2475
   },
