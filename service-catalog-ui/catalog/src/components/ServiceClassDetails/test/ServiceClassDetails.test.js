@@ -47,7 +47,7 @@ afterAll(() => {
   consoleWarn.mockReset();
 });
 
-fdescribe('Service Class Details UI', () => {
+describe('Service Class Details UI', () => {
   it('Shows loading indicator only when data is not yet loaded', async () => {
     const component = mount(
       <MockedProvider mocks={[serviceClassWithPlans]}>
