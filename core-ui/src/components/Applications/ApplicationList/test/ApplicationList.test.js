@@ -59,7 +59,7 @@ describe('ApplicationList', () => {
       const table = queryByRole('table');
       expect(table).toBeInTheDocument();
       expect(queryAllByRole(table, 'row')).toHaveLength(2);
-      expect(queryByText(table, 'No entries found')).toBeInTheDocument();
+      expect(queryByText(table, 'Resources not found.')).toBeInTheDocument();
     });
   });
 

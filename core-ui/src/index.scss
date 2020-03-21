@@ -81,6 +81,39 @@ body {
   }
 }
 
+.fd-modal {
+  .fd-modal__footer {
+    button {
+      margin-left: 6px;
+    }
+  }
+}
+
+.fd-modal--xl-size {
+  .modal-demo-bg {
+    min-width: 1036px;
+  }
+
+  .fd-modal, .fd-modal__content, .fd-modal__body {
+    min-width: 1036px;
+  }
+
+  .fd-modal__body {
+    max-height: calc(100vh - 184px);
+  }
+
+  @media (max-width: 1100px) {
+    .modal-demo-bg {
+      min-width: 100%;
+      padding: 0 32px;
+    }
+
+    .fd-modal, .fd-modal__content, .fd-modal__body {
+      min-width: 100%;
+    }
+  }
+} 
+
 .action-bar-wrapper {
   @media (min-width: 500px) {
     display: flex;

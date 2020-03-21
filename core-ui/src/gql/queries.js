@@ -53,6 +53,7 @@ export const GET_LAMBDA = gql`
     function(name: $name, namespace: $namespace) {
       name
       namespace
+      UID
       labels
       runtime
       size

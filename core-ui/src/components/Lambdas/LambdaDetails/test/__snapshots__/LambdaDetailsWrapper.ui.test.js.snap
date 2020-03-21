@@ -5,6 +5,7 @@ exports[`LambdaDetailsWrapper Renders with an error in no lambdaName is provided
   function(name: $name, namespace: $namespace) {
     name
     namespace
+    UID
     labels
     runtime
     size

@@ -109,12 +109,7 @@ export const ServiceBindingsService = ({ lambdaName, children }) => {
       .then(() =>
         handleDeleteServiceBindingUsage(serviceBindingUsage, refetchLambda),
       )
-      .catch(e => {
-        notificationManager.notifyError({
-          content: `Problem with Luigi: ${e.message}`,
-          autoClose: false,
-        });
-      });
+      .catch(() => {});
   }
 
   function prepareServiceBindingUsageParameters({

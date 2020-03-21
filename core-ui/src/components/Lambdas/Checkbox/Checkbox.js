@@ -38,6 +38,10 @@ const Checkbox = React.forwardRef(
       inputEl && (inputEl.current.indeterminate = indeterminate);
     });
 
+    useEffect(() => {
+      setChecked(initialChecked);
+    }, [initialChecked]);
+
     return (
       <FormItem {...props} disabled={disabled} isInline={inline} ref={ref}>
         <FormLabel {...labelProps} disabled={disabled}>

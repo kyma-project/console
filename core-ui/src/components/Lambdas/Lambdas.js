@@ -19,11 +19,16 @@ import LambdaStatusBadge from '../../shared/components/LambdaStatusBadge/LambdaS
 import { REFETCH_TIMEOUT } from '../../shared/constants';
 import { PageHeader } from 'react-shared';
 
+import { TOOLBAR } from './constants';
+
 function CreateLambdaModal() {
   return (
     <ModalWithForm
       title="Create new lambda"
-      button={{ text: 'Create lambda', option: 'light' }}
+      button={{
+        glyph: 'add',
+        text: 'Create lambda',
+      }}
       id="add-lambda-modal"
       renderForm={props => <CreateLambdaForm {...props} />}
     />
@@ -112,12 +117,7 @@ export default function Lambdas() {
           handleError(e, name);
         }
       })
-      .catch(e => {
-        notificationManager.notifyError({
-          content: `Problem with Luigi: ${e.message}`,
-          autoClose: false,
-        });
-      });
+      .catch(() => {});
   };
 
   const actions = [
@@ -128,9 +128,7 @@ export default function Lambdas() {
       },
     },
   ];
-
   const headerRenderer = () => ['Name', 'Runtime', 'Labels', 'Status'];
-
   const rowRenderer = item => [
     <span
       className="link"
@@ -144,15 +142,21 @@ export default function Lambdas() {
     <LambdaStatusBadge status={item.status} />,
   ];
 
+  const headerActions = <CreateLambdaModal />;
+
   return (
     <>
-      <PageHeader title="Lambdas" />
+      <PageHeader
+        title={TOOLBAR.TITLE}
+        description={TOOLBAR.DESCRIPTION}
+        actions={headerActions}
+      />
       <GenericList
         actions={actions}
         entries={data.functions}
         headerRenderer={headerRenderer}
         rowRenderer={rowRenderer}
-        extraHeaderContent={<CreateLambdaModal />}
+        showSearchSuggestion={false}
       />
     </>
   );

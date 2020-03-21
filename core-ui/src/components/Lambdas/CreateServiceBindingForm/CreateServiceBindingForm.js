@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { FormItem, FormLabel, FormInput } from 'fundamental-react';
 
-import { Spinner } from 'react-shared';
-
 import Checkbox from '../Checkbox/Checkbox';
 
 import { useServiceBindings } from '../LambdaDetails/Tabs/Configuration/ServiceBindings/ServiceBindingsService';
@@ -18,8 +16,6 @@ export default function CreateServiceBindingForm({
   serviceInstances = [],
   refetchLambda,
   refetchInstances,
-  serviceInstanceError = null,
-  serviceInstanceLoading = false,
   onChange,
   formElementRef,
   setValidity = () => void 0,
@@ -97,18 +93,6 @@ export default function CreateServiceBindingForm({
     };
 
     await createServiceBinding(parameters, refetchLambda);
-  }
-
-  if (serviceInstanceError) {
-    return <p>Error! {serviceInstanceError.message}</p>;
-  }
-  if (serviceInstanceLoading) {
-    return <Spinner />;
-  }
-  if (!serviceInstances.length) {
-    return (
-      <p>No Service Instances available. Create a Service Instance first.</p>
-    );
   }
 
   const serviceInstancesNames = serviceInstances.map(service => (
@@ -195,6 +179,4 @@ CreateServiceBindingForm.propTypes = {
   onCompleted: PropTypes.func,
   onError: PropTypes.func,
   formElementRef: PropTypes.shape({ current: PropTypes.any }).isRequired,
-  serviceInstanceError: PropTypes.object,
-  serviceInstanceLoading: PropTypes.bool,
 };

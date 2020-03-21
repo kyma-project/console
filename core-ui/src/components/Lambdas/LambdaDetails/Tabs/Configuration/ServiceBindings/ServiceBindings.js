@@ -1,7 +1,7 @@
 import React from 'react';
 import LuigiClient from '@kyma-project/luigi-client';
 
-import { GenericList } from 'react-shared';
+import { GenericList, Spinner } from 'react-shared';
 
 import { useQuery } from '@apollo/react-hooks';
 import { GET_SERVICE_INSTANCES } from 'gql/queries';
@@ -28,10 +28,25 @@ function CreateLambdaModal({ serviceBindingUsages = [], refetchLambda }) {
     fetchPolicy: 'no-cache',
   });
 
+  let content = null;
+  if (error) {
+    content = <p>Error! {error.message}</p>;
+  }
+  if (!content && loading) {
+    content = <Spinner />;
+  }
+
   const notInjectedServiceInstances = filterServiceInstances(
     serviceInstances,
     serviceBindingUsages,
   );
+  if (!content && !notInjectedServiceInstances.length) {
+    content = (
+      <p>
+        No Service Instances available to bind. Create a Service Instance first.
+      </p>
+    );
+  }
 
   return (
     <ModalWithForm
@@ -40,19 +55,18 @@ function CreateLambdaModal({ serviceBindingUsages = [], refetchLambda }) {
         glyph: 'add',
         text: 'Create Service Binding',
         option: 'light',
-        compact: true,
       }}
       id="add-service-binding-modal"
-      renderForm={props => (
-        <CreateServiceBindingForm
-          {...props}
-          serviceInstances={notInjectedServiceInstances}
-          refetchLambda={refetchLambda}
-          refetchInstances={refetchInstances}
-          serviceInstanceError={error}
-          serviceInstanceLoading={loading}
-        />
-      )}
+      renderForm={props =>
+        content || (
+          <CreateServiceBindingForm
+            {...props}
+            serviceInstances={notInjectedServiceInstances}
+            refetchLambda={refetchLambda}
+            refetchInstances={refetchInstances}
+          />
+        )
+      }
     />
   );
 }
@@ -60,7 +74,7 @@ function CreateLambdaModal({ serviceBindingUsages = [], refetchLambda }) {
 const ServiceBindings = ({ serviceBindingUsages = [], refetchLambda }) => {
   const { deleteServiceBindingUsage } = useServiceBindings();
 
-  const renderEnvs = bindingUsage => {
+  const retrieveEnvs = bindingUsage => {
     let envPrefix = '';
     if (bindingUsage.parameters && bindingUsage.parameters.envPrefix) {
       envPrefix = bindingUsage.parameters.envPrefix.name || '';
@@ -69,18 +83,20 @@ const ServiceBindings = ({ serviceBindingUsages = [], refetchLambda }) => {
     const secretData =
       bindingUsage.serviceBinding.secret &&
       bindingUsage.serviceBinding.secret.data;
+
     const envs = Object.keys(secretData || {});
     if (!secretData || !envs.length) {
-      return null;
+      return [];
     }
 
+    return envs.map(env => `${envPrefix}${env}`);
+  };
+
+  const renderEnvs = bindingUsage => {
     return (
       <>
-        {envs.map(env => (
-          <div key={env}>
-            {envPrefix}
-            {env}
-          </div>
+        {bindingUsage.envs.map(env => (
+          <div key={env}>{env}</div>
         ))}
       </>
     );
@@ -96,10 +112,26 @@ const ServiceBindings = ({ serviceBindingUsages = [], refetchLambda }) => {
   ];
   const headerRenderer = () => ['Instance', 'Environment Variable Names'];
   const rowRenderer = bindingUsage => [
-    <span data-test-id="service-instance-name">
+    <span
+      className="link"
+      data-test-id="service-instance-name"
+      onClick={() =>
+        LuigiClient.linkManager()
+          .fromContext('namespaces')
+          .navigate(
+            `cmf-instances/details/${bindingUsage.serviceBinding.serviceInstanceName}`,
+          )
+      }
+    >
       {bindingUsage.serviceBinding.serviceInstanceName}
     </span>,
     renderEnvs(bindingUsage),
+  ];
+  const textSearchProperties = [
+    'serviceBinding.serviceInstanceName',
+    'serviceBinding.secret.data',
+    'parameters.envPrefix.name',
+    'envs',
   ];
 
   const createLambdaModal = (
@@ -109,13 +141,20 @@ const ServiceBindings = ({ serviceBindingUsages = [], refetchLambda }) => {
     />
   );
 
+  const performedBindingUsages = serviceBindingUsages.map(usage => ({
+    ...usage,
+    envs: retrieveEnvs(usage),
+  }));
+
   return (
     <GenericList
       title="Service Bindings"
-      showSearchField={false}
+      showSearchField={true}
+      textSearchProperties={textSearchProperties}
+      showSearchSuggestion={false}
       extraHeaderContent={createLambdaModal}
       actions={actions}
-      entries={serviceBindingUsages}
+      entries={performedBindingUsages}
       headerRenderer={headerRenderer}
       rowRenderer={rowRenderer}
     />
