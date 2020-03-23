@@ -4,7 +4,7 @@ import {
   testIfBackendModuleExists,
   getIframe,
   adminUser,
-  address,
+  ADRESS,
 } from '../helpers';
 
 fixture`Getting Started`;
@@ -33,7 +33,7 @@ testIfBackendModuleExists(
       .useRole(adminUser)
       .expect(Selector('.fd-side-nav__link').withText('Applications').exists)
       .ok()
-      .navigateTo(`${address}/home/cmf-apps`);
+      .navigateTo(`${ADRESS}/home/cmf-apps`);
 
     const iframe = await getIframe();
 

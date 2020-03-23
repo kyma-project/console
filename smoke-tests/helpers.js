@@ -19,12 +19,12 @@ export async function getIframe() {
     .filterVisible();
 }
 
-export const address = `${
+export const ADRESS = `${
   config.localdev ? 'http://console-dev' : 'https://console'
 }.${config.domain}`;
 
 export const adminUser = Role(
-  address,
+  ADRESS,
   async t => {
     await t
       .typeText('#login', config.login)
@@ -47,13 +47,13 @@ export async function waitForAuthInStorage(
 ) {
   const timeoutPromise = new Promise((resolve, reject) =>
     setTimeout(function() {
-      reject(new Error('Login response timeout exceeded')); //TODO
+      reject(new Error('Login response timeout exceeded'));
     }, maxTimeout),
   );
   const keyInStoragePromise = new Promise(async (resolve, reject) =>
     setInterval(async () => {
       const pathname = await getPathnameFn();
-      if (pathname === '/home/workspace') resolve();
+      if (pathname === '/home/workspace') resolve(); // the login process succeded which means the user is redirected to the main view
     }, checkInterval),
   );
   return Promise.race([timeoutPromise, keyInStoragePromise]);
