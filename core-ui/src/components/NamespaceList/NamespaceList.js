@@ -110,7 +110,7 @@ export default function NamespaceList() {
   });
 
   useEffect(() => {
-    subscribeToMore({
+    return subscribeToMore({
       variables: {
         showSystemNamespaces: storage.shouldShowSystemNamespaces(),
         withInactiveStatus: true,
