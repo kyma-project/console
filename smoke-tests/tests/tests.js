@@ -7,7 +7,7 @@ import {
   ADRESS,
 } from '../helpers';
 
-fixture`Getting Started`;
+fixture`Console tests`;
 
 test('Luigi navigation is rendered', async t => {
   await t
@@ -22,6 +22,15 @@ test('Namespaces view is rendered', async t => {
     .useRole(adminUser)
     .switchToIframe(iframe)
     .expect(Selector('.fd-button').withText('Add new namespace').exists)
+    .ok();
+});
+
+test('Namespace `default` card is on the Namespaces list', async t => {
+  const iframe = await getIframe();
+  await t
+    .useRole(adminUser)
+    .switchToIframe(iframe)
+    .expect(Selector('.fd-panel__title').withText('default').exists)
     .ok();
 });
 
@@ -40,6 +49,27 @@ testIfBackendModuleExists(
     await t
       .switchToIframe(iframe)
       .expect(Selector('.fd-button').withText(/.*create application.*/i).exists)
+      .ok();
+  },
+);
+
+testIfBackendModuleExists(
+  'Catalog view is rendered',
+  'Service-Catalog',
+  async t => {
+    await t
+      .useRole(adminUser)
+      .navigateTo(`${ADRESS}/home/namespaces/default/cmf-service-catalog`);
+
+    const iframe = await getIframe();
+
+    await t
+      .expect(Selector('.fd-side-nav__link').withText('Catalog').exists)
+      .ok()
+      .switchToIframe(iframe)
+      .expect(
+        Selector('.fd-action-bar__title').withText('Service Catalog').exists,
+      )
       .ok();
   },
 );

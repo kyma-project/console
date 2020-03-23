@@ -3,5 +3,8 @@ module.exports = {
   password: process.env.PASSWORD || 'nimda123',
   domain: process.env.DOMAIN || 'kyma.local',
   localdev: process.env.LOCAL_DEV || false,
-  backendModules: process.env.BACKENDMODULES || ['Applications'],
+  backendModules: process.env.BACKENDMODULES || [
+    'Applications',
+    'Service-Catalog',
+  ],
 };
