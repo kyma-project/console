@@ -25,7 +25,10 @@ const getTenantName = tenantId => {
 const openTenantSearch = () => {
   LuigiClient.setTargetOrigin(window.origin);
   LuigiClient.linkManager()
-    .withParams({ parentPath: encodeURIComponent(window.location.pathname) })
+    .withParams({
+      parentPath: encodeURIComponent(window.location.pathname),
+      token: getToken(),
+    })
     .openAsModal('/tenant-search', { title: 'Search tenants', size: 's' });
 };
 

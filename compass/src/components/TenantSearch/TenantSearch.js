@@ -1,6 +1,7 @@
 import React from 'react';
 import LuigiClient from '@kyma-project/luigi-client';
 
+import fetchTenants from './fetchTenants';
 import { ListGroup, Panel } from 'fundamental-react';
 import { getAlternativePath } from 'config/luigi-config/helpers/navigation-helpers';
 import './TenantSearch.scss';
@@ -33,14 +34,20 @@ const TenantList = ({ tenants, chooseTenant }) => (
 );
 
 export default function TenantSearch() {
-  const tenants = LuigiClient.getContext().tenants;
   const [filter, setFilter] = React.useState('');
+  const { parentPath, token } = LuigiClient.getNodeParams();
+  const [tenants, setTenants] = React.useState(
+    LuigiClient.getContext().tenants || [],
+  );
+  React.useEffect(() => {
+    if (!tenants.length) {
+      fetchTenants(token).then(setTenants);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const chooseTenant = tenant => {
-    const parentPath = decodeURIComponent(
-      LuigiClient.getNodeParams().parentPath,
-    );
-    const path = getAlternativePath(tenant.id, parentPath);
+    const path = getAlternativePath(tenant.id, decodeURIComponent(parentPath));
     LuigiClient.linkManager().navigate(`/tenant/${path || tenant.id}`);
   };
 
