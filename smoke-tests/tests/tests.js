@@ -36,7 +36,7 @@ test('Namespace `default` card is on the Namespaces list', async t => {
 
 testIfBackendModuleExists(
   'Applications view is rendered',
-  'Applications',
+  'apiPackagesEnabled',
   async t => {
     await t
       .useRole(adminUser)
@@ -55,7 +55,7 @@ testIfBackendModuleExists(
 
 testIfBackendModuleExists(
   'Catalog view is rendered',
-  'Service-Catalog',
+  'serciceCatalogEnabled',
   async t => {
     await t
       .useRole(adminUser)

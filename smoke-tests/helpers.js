@@ -6,7 +6,7 @@ export const testIfBackendModuleExists = (
   backendModuleName,
   testToRun,
 ) => {
-  if (config.backendModules.includes(backendModuleName)) {
+  if (config[backendModuleName]) {
     test(testName, testToRun);
   } else {
     test.skip(testName, testToRun);

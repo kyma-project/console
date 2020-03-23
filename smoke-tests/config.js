@@ -3,8 +3,6 @@ module.exports = {
   password: process.env.PASSWORD || 'nimda123',
   domain: process.env.DOMAIN || 'kyma.local',
   localdev: process.env.LOCAL_DEV || false,
-  backendModules: process.env.BACKENDMODULES || [
-    'Applications',
-    'Service-Catalog',
-  ],
+  apiPackagesEnabled: process.env.API_PACKAGES_ENABLED || true,
+  serciceCatalogEnabled: process.env.CATALOG_ENABLED || true,
 };
