@@ -8,4 +8,4 @@ RUN npm install
 LABEL source git@github.com:kyma-project/console.git
 COPY . .
 
-RUN npm run test:headless
+RUN npm run test:cluster

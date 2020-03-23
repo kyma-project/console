@@ -55,7 +55,7 @@ testIfBackendModuleExists(
 
 testIfBackendModuleExists(
   'Catalog view is rendered',
-  'serciceCatalogEnabled',
+  'serviceCatalogEnabled',
   async t => {
     await t
       .useRole(adminUser)
