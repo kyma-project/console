@@ -44,13 +44,6 @@ const navigation = {
     {
       hideSideNav: true,
       hideFromNav: true,
-      viewGroup: 'compass',
-      pathSegment: 'preload',
-      viewUrl: compassMfUrl + '/preload',
-    },
-    {
-      hideSideNav: true,
-      hideFromNav: true,
       pathSegment: 'tenant-search',
       label: 'Tenant Search',
       viewUrl: compassMfUrl + '/tenant-search',
@@ -229,11 +222,6 @@ const navigation = {
       },
     ],
     customOptionsRenderer,
-  },
-  viewGroupSettings: {
-    'compass-search-tenants': {
-      preloadUrl: compassMfUrl + '/preload',
-    },
   },
 };
 

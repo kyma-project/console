@@ -54,13 +54,6 @@ class App extends React.Component {
         <Notification {...notification} onClick={this.clearNotification} />
         <Router>
           <Switch>
-            <Route
-              path="/preload"
-              component={() => {
-                console.log('load? the same log shows up in core-ui');
-                return null;
-              }}
-            />
             <Route path="/" exact component={Overview} />
             <Route path="/tenant-search" exact component={TenantSearch} />
             <Route path="/runtimes" exact component={Runtimes} />
