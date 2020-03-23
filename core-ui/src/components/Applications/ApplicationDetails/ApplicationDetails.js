@@ -51,7 +51,7 @@ const ApplicationDetails = ({ appId }) => {
 
   useEffect(() => {
     if (!kymaQuery.subscribeToMore || !app.name) return;
-    kymaQuery.subscribeToMore({
+    return kymaQuery.subscribeToMore({
       document: APPLICATIONS_EVENT_SUBSCRIPTION,
       variables: kymaQuery.variables,
       updateQuery: (prev, { subscriptionData }) => {
