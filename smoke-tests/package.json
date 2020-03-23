@@ -2,8 +2,8 @@
   "name": "smoke-tests",
   "description": "Smoke tests for Console",
   "scripts": {
-    "test": "testcafe chrome ./tests/tests.js",
-    "test:headless": "testcafe chrome:headless ./tests/tests.js"
+    "test": "testcafe chrome tests/tests.js",
+    "test:headless": "testcafe chrome:headless tests/tests.js"
   },
   "devDependencies": {
     "testcafe": "^1.8.3"
