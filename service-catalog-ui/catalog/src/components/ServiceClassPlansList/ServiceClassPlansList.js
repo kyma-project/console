@@ -27,7 +27,11 @@ const goToDetails = (item, serviceClassId) => {
 export const DocTypesList = ({ plan }) => (
   <>
     {Array.from(getPlanDocTypes(plan).entries()).map(([type, count]) => (
-      <div key={type} aria-label="doc-type-badge" className="doc-type-badge">
+      <div
+        key={type}
+        aria-label="doc-type-badge"
+        className="doc-type-badge dont-break-words"
+      >
         <Tooltip
           title={
             count > 1
@@ -102,13 +106,16 @@ export default function ServiceClassPlansList({ name }) {
   const headerRenderer = () => ['', ''];
 
   const rowRenderer = item => [
-    <span
-      className="link link--bold"
-      data-test-id="plan-name"
-      onClick={() => goToDetails(item, serviceClass.name)}
-    >
-      {getResourceDisplayName(item)}
-    </span>,
+    <div>
+      <span
+        className="link link--bold"
+        data-test-id="plan-name"
+        onClick={() => goToDetails(item, serviceClass.name)}
+      >
+        {getResourceDisplayName(item)}
+      </span>
+      <p>{item.description}</p>
+    </div>,
     <DocTypesList plan={item} />,
   ];
 

@@ -37,6 +37,10 @@ body {
   background-color: #f3f4f5;
 }
 
+.dont-break-words {
+  word-break: keep-all;
+}
+
 .empty-list {
   width: 100%;
   font-family: '72';
