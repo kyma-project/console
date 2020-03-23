@@ -51,9 +51,10 @@ testIfBackendModuleExists(
     const iframe = await Selector('.iframeContainer')
       .child('iframe')
       .filterVisible();
+
     await t
       .switchToIframe(iframe)
-      .expect(Selector('.fd-action-bar__title').withText('Applications').exists) //why not button?!
+      .expect(Selector('.fd-button').withText(/.*create application.*/i).exists)
       .ok();
   },
 );
