@@ -2,8 +2,8 @@
   "name": "ui-tests",
   "description": "Smoke tests for Console",
   "scripts": {
-    "test": "LOCAL_DEV=true PASSWORD=$(kubectl get secret admin-user -n kyma-system -o jsonpath='{.data.password}' | base64 -D) testcafe chromium tests/tests.js",
-    "test:headless": "LOCAL_DEV=true PASSWORD=$(kubectl get secret admin-user -n kyma-system -o jsonpath='{.data.password}' | base64 -D) testcafe chromium:headless tests/tests.js",
+    "test": "LOCAL_DEV=true PASSWORD=$(kubectl get secret admin-user -n kyma-system -o jsonpath='{.data.password}' | base64 -D) testcafe chrome tests/tests.js",
+    "test:headless": "LOCAL_DEV=true PASSWORD=$(kubectl get secret admin-user -n kyma-system -o jsonpath='{.data.password}' | base64 -D) testcafe chrome:headless tests/tests.js",
     "test:cluster": "testcafe chromium:headless tests/tests.js"
   },
   "devDependencies": {

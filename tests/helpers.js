@@ -13,11 +13,11 @@ export const testIfBackendModuleExists = (
   }
 };
 
-export async function getIframe() {
+export const getIframe = async () => {
   return Selector('.iframeContainer')
     .child('iframe')
     .filterVisible();
-}
+};
 
 export const ADRESS = `${
   config.localDev ? 'http://console-dev' : 'https://console'
@@ -30,7 +30,7 @@ export const adminUser = Role(
       .typeText('#login', config.login)
       .typeText('#password', config.password)
       .click('#submit-login');
-    await waitForAuthInStorage(3000, getPathname(t));
+    await waitForAuth(3000, getPathname(t));
   },
   { preserveUrl: true },
 );
@@ -40,11 +40,7 @@ const getPathname = t =>
     boundTestRun: t,
   });
 
-export async function waitForAuthInStorage(
-  maxTimeout,
-  getPathnameFn,
-  checkInterval = 100,
-) {
+const waitForAuth = async (maxTimeout, getPathnameFn, checkInterval = 100) => {
   const timeoutPromise = new Promise((resolve, reject) =>
     setTimeout(function() {
       reject(new Error('Login response timeout exceeded'));
@@ -57,4 +53,4 @@ export async function waitForAuthInStorage(
     }, checkInterval),
   );
   return Promise.race([timeoutPromise, keyInStoragePromise]);
-}
+};
