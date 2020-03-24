@@ -39,9 +39,15 @@ export default function TenantSearch() {
   const [tenants, setTenants] = React.useState(
     LuigiClient.getContext().tenants || [],
   );
+  const [error, setError] = React.useState('');
+
   React.useEffect(() => {
     if (!tenants.length) {
-      fetchTenants(token).then(setTenants);
+      fetchTenants(token)
+        .then(setTenants)
+        .catch(e =>
+          setError(`Error: tenants could not be loaded: ${e.message}`),
+        );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -63,6 +69,7 @@ export default function TenantSearch() {
   return (
     <Panel className="fd-has-padding-s tenant-search">
       <SearchInput filter={filter} setFilter={setFilter} />
+      {error && <p className="fd-has-color-status-3">{error}</p>}
       <TenantList tenants={getFilteredTenants()} chooseTenant={chooseTenant} />
     </Panel>
   );
