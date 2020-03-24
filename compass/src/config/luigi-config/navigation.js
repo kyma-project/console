@@ -54,7 +54,7 @@ const navigation = {
         idToken: token,
         tenants: tenants.length > 0 ? tenants : getTenantsFromCache(),
       },
-      viewGroup: 'compass-search-tenants',
+      viewGroup: 'compass',
     },
     {
       hideSideNav: true,
