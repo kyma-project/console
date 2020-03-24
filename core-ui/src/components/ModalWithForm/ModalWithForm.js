@@ -16,10 +16,11 @@ const ModalWithForm = ({
   opened,
   customCloseAction,
   modalOpeningComponent,
+  initialIsValid,
   ...props
 }) => {
   const [isOpen, setOpen] = useState(false);
-  const [isValid, setValid] = useState(false);
+  const [isValid, setValid] = useState(initialIsValid);
   const [customValid, setCustomValid] = useState(true);
   const formElementRef = useRef(null);
   const notificationManager = useNotification();
@@ -175,9 +176,11 @@ ModalWithForm.propTypes = {
   renderForm: PropTypes.func.isRequired,
   opened: PropTypes.bool,
   customCloseAction: PropTypes.func,
+  initialIsValid: PropTypes.bool,
 };
 ModalWithForm.defaultProps = {
   performRefetch: () => {},
+  initialIsValid: false,
 };
 
 export default ModalWithForm;

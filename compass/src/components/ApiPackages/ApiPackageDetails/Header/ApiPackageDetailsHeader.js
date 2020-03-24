@@ -79,6 +79,7 @@ export default function ApiPackageDetailsHeader({ apiPackage, application }) {
         title="Edit Package"
         button={{ text: 'Edit', option: 'light' }}
         confirmText="Edit"
+        initialIsValid={true}
         renderForm={props => (
           <EditApiPackageForm
             applicationId={application.id}
