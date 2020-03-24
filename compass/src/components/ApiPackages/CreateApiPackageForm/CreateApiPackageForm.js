@@ -56,9 +56,11 @@ export default function CreateApiPackageForm({
   );
 
   const handleSchemaChange = schema => {
+    const isNonNullObject = o => typeof o === 'object' && !!o;
     try {
-      setRequestInputSchema(JSON.parse(schema));
-      setCustomValid(true);
+      const parsedSchema = JSON.parse(schema);
+      setRequestInputSchema(parsedSchema);
+      setCustomValid(isNonNullObject(parsedSchema));
     } catch (e) {
       setCustomValid(false);
     }
