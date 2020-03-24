@@ -20,7 +20,7 @@ export async function getIframe() {
 }
 
 export const ADRESS = `${
-  config.localdev ? 'http://console-dev' : 'https://console'
+  config.localDev ? 'http://console-dev' : 'https://console'
 }.${config.domain}`;
 
 export const adminUser = Role(
