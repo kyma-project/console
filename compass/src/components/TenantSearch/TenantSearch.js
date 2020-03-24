@@ -33,12 +33,9 @@ const TenantList = ({ tenants, chooseTenant }) => (
   </ListGroup>
 );
 
-export default function TenantSearch() {
+export function TenantSearch({ parentPath, token, _tenants }) {
   const [filter, setFilter] = React.useState('');
-  const { parentPath, token } = LuigiClient.getNodeParams();
-  const [tenants, setTenants] = React.useState(
-    LuigiClient.getContext().tenants || [],
-  );
+  const [tenants, setTenants] = React.useState(_tenants);
   const [error, setError] = React.useState('');
 
   React.useEffect(() => {
@@ -53,7 +50,7 @@ export default function TenantSearch() {
   }, []);
 
   const chooseTenant = tenant => {
-    const path = getAlternativePath(tenant.id, decodeURIComponent(parentPath));
+    const path = getAlternativePath(tenant.id, parentPath);
     LuigiClient.linkManager().navigate(`/tenant/${path || tenant.id}`);
   };
 
@@ -72,5 +69,17 @@ export default function TenantSearch() {
       {error && <p className="fd-has-color-status-3">{error}</p>}
       <TenantList tenants={getFilteredTenants()} chooseTenant={chooseTenant} />
     </Panel>
+  );
+}
+
+export default function TenantSearchWrapper() {
+  const { tenants, idToken } = LuigiClient.getContext();
+
+  return (
+    <TenantSearch
+      token={idToken}
+      _tenants={tenants}
+      parentPath={document.referrer}
+    />
   );
 }

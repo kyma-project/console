@@ -16,7 +16,6 @@ const mockedTenants = [
 const mockNavigate = jest.fn();
 jest.mock('@kyma-project/luigi-client', () => ({
   getContext: () => ({ tenants: mockedTenants }),
-  getNodeParams: () => ({ parentPath: '/' }),
   linkManager: () => ({ navigate: mockNavigate }),
 }));
 
