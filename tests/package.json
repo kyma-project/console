@@ -4,7 +4,8 @@
   "scripts": {
     "test": "LOCAL_DEV=true PASSWORD=$(kubectl get secret admin-user -n kyma-system -o jsonpath='{.data.password}' | base64 -D) testcafe chrome tests/tests.js",
     "test:headless": "LOCAL_DEV=true PASSWORD=$(kubectl get secret admin-user -n kyma-system -o jsonpath='{.data.password}' | base64 -D) testcafe chrome:headless tests/tests.js",
-    "test:cluster": "testcafe chrome:headless tests/tests.js --disable-page-caching"
+    "test:cluster": "testcafe chromium:headless tests/tests.js --disable-page-caching",
+    "test:cluster_chrome": "testcafe chrome:headless tests/tests.js --disable-page-caching"
   },
   "devDependencies": {
     "testcafe": "^1.8.3"
