@@ -38,16 +38,19 @@ export function createCompassApolloClient() {
   });
 
   const graphqlApiUrl = getURL('compassApiUrl');
-
-  //TODO: should be removed once management plane API is able to resolve tenant from token
   const tenant = getURL('compassDefaultTenant');
+
+  const headers = {
+    authorization: builder.getBearerToken() || null,
+  };
+
+  if (tenant && tenant !== '') {
+    headers.tenant = tenant;
+  }
 
   const httpLink = new HttpLink({
     uri: graphqlApiUrl,
-    headers: {
-      authorization: builder.getBearerToken() || null,
-      tenant,
-    },
+    headers,
   });
 
   return new ApolloClient({
