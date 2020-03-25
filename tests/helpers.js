@@ -32,9 +32,6 @@ export const adminUser = Role(
       .click('#submit-login')
       .wait(5000);
 
-    console.log(
-      `Trying to login to '${ADRESS}' cluster with login '${config.login}' and password '${config.password}'...`,
-    );
     // await waitForAuth(5000, getPathname(t));
   },
   { preserveUrl: true },
