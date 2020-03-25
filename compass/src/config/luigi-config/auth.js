@@ -1,3 +1,5 @@
+import OpenIdConnect from '@luigi-project/plugin-auth-oidc';
+
 const domain =
   (window.clusterConfig && window.clusterConfig['domain']) || 'kyma.local';
 
@@ -8,6 +10,7 @@ const clientId = authClusterConfig
 const auth = {
   use: 'openIdConnect',
   openIdConnect: {
+    idpProvider: OpenIdConnect,
     authority: authClusterConfig
       ? authClusterConfig['authority']
       : `https://dex.${domain}`,

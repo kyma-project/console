@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Counter } from 'fundamental-react/Badge';
-import LuigiClient from '@kyma-project/luigi-client';
+import LuigiClient from '@luigi-project/client';
 import { Popover, Menu, Button } from 'fundamental-react';
 
 import {

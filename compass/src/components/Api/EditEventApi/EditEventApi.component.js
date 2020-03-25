@@ -1,5 +1,5 @@
 import React from 'react';
-import LuigiClient from '@kyma-project/luigi-client';
+import LuigiClient from '@luigi-project/client';
 import PropTypes from 'prop-types';
 
 import { Panel, TabGroup, Tab, Button } from 'fundamental-react';

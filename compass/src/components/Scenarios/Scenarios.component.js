@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { GenericList } from 'react-shared';
-import LuigiClient from '@kyma-project/luigi-client';
+import LuigiClient from '@luigi-project/client';
 
 import CreateScenarios from './CreateScenario/CreateScenarioModal/CreateScenarioModal.container';
 import EnititesForScenarioCount from './EnititesForScenarioCount';

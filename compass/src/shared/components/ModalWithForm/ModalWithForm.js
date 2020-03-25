@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { ControlledModal } from '../Modal/ControlledModal';
 import { Button } from 'fundamental-react/Button';
-import LuigiClient from '@kyma-project/luigi-client';
+import LuigiClient from '@luigi-project/client';
 import { useMutationObserver } from 'react-shared';
 import { SEND_NOTIFICATION } from 'gql';
 import { useMutation } from 'react-apollo';

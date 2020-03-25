@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import LuigiClient from '@kyma-project/luigi-client';
+import LuigiClient from '@luigi-project/client';
 
 import { GenericList, handleDelete } from 'react-shared';
 import CreateLabelModal from '../Labels/CreateLabelModal/CreateLabelModal.container';

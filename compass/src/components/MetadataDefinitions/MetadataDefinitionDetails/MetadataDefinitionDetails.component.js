@@ -10,7 +10,7 @@ import {
   PanelActions,
   Input,
 } from '@kyma-project/react-components';
-import LuigiClient from '@kyma-project/luigi-client';
+import LuigiClient from '@luigi-project/client';
 
 import '../../../shared/styles/header.scss';
 import ResourceNotFound from '../../Shared/ResourceNotFound.component';

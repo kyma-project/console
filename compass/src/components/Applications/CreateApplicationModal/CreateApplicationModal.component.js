@@ -3,7 +3,7 @@ import equal from 'deep-equal';
 import PropTypes from 'prop-types';
 import { Modal } from 'react-shared';
 import { Input } from '@kyma-project/react-components';
-import LuigiClient from '@kyma-project/luigi-client';
+import LuigiClient from '@luigi-project/client';
 
 import MultiChoiceList from '../../Shared/MultiChoiceList/MultiChoiceList.component';
 

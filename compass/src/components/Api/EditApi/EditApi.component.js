@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import LuigiClient from '@kyma-project/luigi-client';
+import LuigiClient from '@luigi-project/client';
 
 import { Panel, TabGroup, Tab, Button } from 'fundamental-react';
 import EditApiHeader from './../EditApiHeader/EditApiHeader.container';
