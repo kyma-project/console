@@ -23,10 +23,8 @@
     "lint-check": "prettier --config ../../.prettierrc --check \"./src/**/*.{js,jsx,ts,tsx,html,css,json}\""
   },
   "dependencies": {
-    "file-loader": "^1.1.11",
     "fundamental-react": "0.5.0",
     "polished": "^1.8.1",
-    "react-scrollbar": "^0.5.4",
     "styled-components-modifiers": "^1.0.1"
   },
   "devDependencies": {
@@ -44,6 +42,7 @@
     "enzyme": "^3.1.0",
     "enzyme-adapter-react-16": "^1.0.2",
     "handlebars": "^4.7.3",
+    "file-loader": "^1.1.11",
     "fiori-fundamentals": "1.5.3",
     "fontfaceobserver": "^2.0.13",
     "jest": "^21.2.1",
@@ -52,6 +51,7 @@
     "raf": "^3.4.0",
     "react-jsonschema-form": "1.7.0",
     "react-modal": "^3.5.1",
+    "react-scrollbar": "^0.5.4",
     "react-styleguidist": "^8.0.6",
     "react-test-renderer": "^16.0.0",
     "style-loader": "^0.20.2",
