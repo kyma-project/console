@@ -29,12 +29,13 @@ export const adminUser = Role(
     await t
       .typeText('#login', config.login)
       .typeText('#password', config.password)
-      .click('#submit-login');
+      .click('#submit-login')
+      .wait(5000);
 
     console.log(
       `Trying to login to '${ADRESS}' cluster with login '${config.login}' and password '${config.password}'...`,
     );
-    await waitForAuth(10000, getPathname(t));
+    // await waitForAuth(5000, getPathname(t));
   },
   { preserveUrl: true },
 );

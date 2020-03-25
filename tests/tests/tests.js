@@ -17,18 +17,20 @@ test('Luigi navigation is rendered', async t => {
 });
 
 test('Namespaces view is rendered', async t => {
+  await t.useRole(adminUser);
+
   const iframe = await getIframe();
   await t
-    .useRole(adminUser)
     .switchToIframe(iframe)
     .expect(Selector('.fd-button').withText('Add new namespace').exists)
     .ok();
 });
 
 test('Namespace `default` card is on the Namespaces list', async t => {
+  await t.useRole(adminUser);
+
   const iframe = await getIframe();
   await t
-    .useRole(adminUser)
     .switchToIframe(iframe)
     .expect(Selector('.fd-panel__title').withText('default').exists)
     .ok();
