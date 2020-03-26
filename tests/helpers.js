@@ -30,9 +30,10 @@ export const adminUser = Role(
     await t
       .typeText('#login', config.login)
       .typeText('#password', config.password)
-      .click('#submit-login');
+      .click('#submit-login')
+      .wait(5000);
 
-    await waitForAuth(5000, getPathname(t));
+    // await waitForAuth(5000, getPathname(t));
   },
   { preserveUrl: true },
 );
