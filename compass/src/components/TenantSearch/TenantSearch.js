@@ -55,8 +55,8 @@ export function TenantSearch({ parentPath, token, _tenants }) {
   };
 
   const getFilteredTenants = () => {
-    const searchPhrase = filter.toLowerCase().trim();
-    if (!searchPhrase) {
+    const searchPhrase = filter.toLowerCase();
+    if (!searchPhrase.trim()) {
       return tenants;
     }
     return tenants.filter(
