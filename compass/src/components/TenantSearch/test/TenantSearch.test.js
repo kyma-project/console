@@ -14,7 +14,7 @@ const mockedTenants = [
 ];
 
 const mockNavigate = jest.fn();
-jest.mock('@kyma-project/luigi-client', () => ({
+jest.mock('@luigi-project/client', () => ({
   getContext: () => ({ tenants: mockedTenants }),
   linkManager: () => ({ navigate: mockNavigate }),
 }));

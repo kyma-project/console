@@ -1,5 +1,5 @@
 import React from 'react';
-import LuigiClient from '@kyma-project/luigi-client';
+import LuigiClient from '@luigi-project/client';
 
 import fetchTenants from './fetchTenants';
 import { ListGroup, Panel } from 'fundamental-react';
