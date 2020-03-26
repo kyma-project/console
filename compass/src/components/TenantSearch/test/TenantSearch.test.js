@@ -4,11 +4,11 @@ import { render, fireEvent } from '@testing-library/react';
 
 const mockedTenants = [
   {
-    name: 'tenant-1',
+    name: 'Tenant-1',
     id: 'id-1',
   },
   {
-    name: 'tenant-2',
+    name: 'Tenant-2',
     id: 'id-2',
   },
 ];
@@ -32,7 +32,7 @@ describe('TenantSearch', () => {
     expect(queryByRole('search')).toHaveFocus();
   });
 
-  it('Filters list by tenant name', async () => {
+  it('Filters list by tenant name, case-insensitive', async () => {
     const { getByRole, queryByText } = render(<TenantSearch />);
 
     fireEvent.change(getByRole('search'), {
@@ -50,14 +50,14 @@ describe('TenantSearch', () => {
       target: { value: 'id-2' },
     });
 
-    expect(queryByText(/tenant-1/)).not.toBeInTheDocument();
-    expect(queryByText(/tenant-2/)).toBeInTheDocument();
+    expect(queryByText(/Tenant-1/)).not.toBeInTheDocument();
+    expect(queryByText(/Tenant-2/)).toBeInTheDocument();
   });
 
   it('Fires navigation event when user clicks tenant entry', async () => {
     const { getByText } = render(<TenantSearch />);
 
-    fireEvent.click(getByText(/tenant-1/));
+    fireEvent.click(getByText(/Tenant-1/));
 
     expect(mockNavigate).toHaveBeenCalled();
   });
