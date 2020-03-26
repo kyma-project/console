@@ -34,3 +34,26 @@ export const adminUser = Role(
   },
   { preserveUrl: true },
 );
+
+export const loginUsingDex = async t => {
+  if (Selector('#login').exists) {
+    console.log('One login method detected...');
+  } else {
+    console.log(
+      'Multiple login methods detected, choosing the email method...',
+    );
+    await chooseEmail();
+  }
+  console.log('Trying to log in using email...');
+  await t.useRole(adminUser);
+};
+
+const chooseEmail = async t => {
+  try {
+    await Selector('span')
+      .withText('Log in with Email')
+      .click();
+  } catch (e) {
+    console.log("Couldn't choose the email method to login.");
+  }
+};

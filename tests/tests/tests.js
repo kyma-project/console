@@ -4,14 +4,16 @@ import {
   testIfBackendModuleExists,
   getIframe,
   adminUser,
+  loginUsingDex,
   ADRESS,
 } from '../helpers';
 
 fixture`Console tests`;
 
 test('Luigi navigation is rendered', async t => {
+  await loginUsingDex(t);
+
   await t
-    .useRole(adminUser)
     .expect(Selector('.fd-side-nav__item').withText('Namespaces').exists)
     .ok();
 });
