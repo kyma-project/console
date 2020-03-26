@@ -1,5 +1,6 @@
 import config from './config';
 import { Selector, Role, ClientFunction } from 'testcafe';
+import { setAsyncInterval, clearAsyncInterval } from './asyncInterval';
 
 export const testIfBackendModuleExists = (
   testName,
@@ -29,11 +30,17 @@ export const adminUser = Role(
     await t
       .typeText('#login', config.login)
       .typeText('#password', config.password)
-      .click('#submit-login')
-      .wait(5000);
+      .click('#submit-login');
+
+    await waitForAuth(5000, getPathname(t));
   },
   { preserveUrl: true },
 );
+
+const getPathname = t =>
+  ClientFunction(() => window.location.pathname).with({
+    boundTestRun: t,
+  });
 
 export const loginUsingDex = async t => {
   if (Selector('#login').exists) {
@@ -56,4 +63,22 @@ const chooseEmail = async t => {
   } catch (e) {
     console.log("Couldn't choose the email method to login.");
   }
+};
+
+const waitForAuth = async (maxTimeout, getPathnameFn, checkInterval = 100) => {
+  const timeoutPromise = new Promise((resolve, reject) =>
+    setTimeout(function() {
+      reject(new Error('Login response timeout exceeded'));
+    }, maxTimeout),
+  );
+  const keyInStoragePromise = new Promise(async resolve => {
+    const i = setAsyncInterval(async () => {
+      const pathname = await getPathnameFn();
+      if (pathname === '/home/workspace') {
+        clearAsyncInterval(i);
+        resolve(); // the login process succeded which means the user is redirected to the main view
+      }
+    }, checkInterval);
+  });
+  return Promise.race([timeoutPromise, keyInStoragePromise]);
 };
