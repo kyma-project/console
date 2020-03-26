@@ -1,8 +1,10 @@
+import LuigiClient from '@kyma-project/luigi-client';
 import {
   fetchTenants,
   getToken,
   getTenantNames,
   getTenantsFromCache,
+  customOptionsRenderer,
 } from './helpers/navigation-helpers';
 
 const compassMfUrl = window.clusterConfig.microfrontendContentUrl;
@@ -20,6 +22,14 @@ const getTenantName = tenantId => {
   return match ? match.name : null;
 };
 
+const openTenantSearch = () => {
+  LuigiClient.setTargetOrigin(window.origin);
+  LuigiClient.linkManager().openAsModal('/tenant-search', {
+    title: 'Search tenants',
+    size: 's',
+  });
+};
+
 const navigation = {
   nodes: () => [
     {
@@ -29,6 +39,18 @@ const navigation = {
       viewUrl: compassMfUrl,
       context: {
         idToken: token,
+      },
+      viewGroup: 'compass',
+    },
+    {
+      hideSideNav: true,
+      hideFromNav: true,
+      pathSegment: 'tenant-search',
+      label: 'Tenant Search',
+      viewUrl: compassMfUrl + '/tenant-search',
+      context: {
+        idToken: token,
+        tenants: tenants.length > 0 ? tenants : getTenantsFromCache(),
       },
       viewGroup: 'compass',
     },
@@ -194,6 +216,13 @@ const navigation = {
     lazyloadOptions: true,
     options: () => getTenantNames(tenants),
     fallbackLabelResolver: tenantId => getTenantName(tenantId),
+    actions: [
+      {
+        label: 'Search tenants...',
+        clickHandler: openTenantSearch,
+      },
+    ],
+    customOptionsRenderer,
   },
 };
 

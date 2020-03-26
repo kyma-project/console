@@ -8,6 +8,7 @@
     "@luigi-project/plugin-auth-oidc": "v1.0.0-next.1",
     "jsoneditor": "^6.2.1",
     "react-ace": "^7.0.4",
+    "sanitize-html": "^1.22.1",
     "xml-js": "^1.6.11"
   },
   "scripts": {
