@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import Grid from 'styled-components-grid';
 import LuigiClient from '@kyma-project/luigi-client';
 import { Button, Modal } from '@kyma-project/react-components';
-import { List, Item, Bold, Text } from './styled';
+import { List, Item, Bold, Text, SecretKey } from './styled';
 
 class SecretDataModal extends React.Component {
   constructor(props) {
@@ -23,7 +23,7 @@ class SecretDataModal extends React.Component {
       <Grid key={key}>
         <Grid.Unit size={0.25}>
           <Item>
-            <Bold>{key}</Bold>
+            <SecretKey>{key}</SecretKey>
           </Item>
         </Grid.Unit>
         <Grid.Unit size={0.75}>
