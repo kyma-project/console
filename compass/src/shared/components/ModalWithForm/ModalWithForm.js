@@ -123,6 +123,7 @@ const ModalWithForm = ({
         formElementRef,
         isValid,
         setCustomValid: isValid => {
+          // revalidate rest of the form
           setValid(formElementRef.current.checkValidity());
           setCustomValid(isValid);
         },
