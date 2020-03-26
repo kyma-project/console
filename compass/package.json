@@ -6,6 +6,7 @@
     "@kyma-project/luigi-core": "^0.7.6",
     "jsoneditor": "^6.2.1",
     "react-ace": "^7.0.4",
+    "sanitize-html": "^1.22.1",
     "xml-js": "^1.6.11"
   },
   "scripts": {

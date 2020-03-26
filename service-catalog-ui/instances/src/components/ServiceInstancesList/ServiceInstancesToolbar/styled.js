@@ -68,4 +68,17 @@ export const Panel = styled(UnstyledPanel)`
 export const SearchWrapper = styled.div`
   max-width: 640px;
   flex: 1 0 auto;
+  .fd-search-input {
+    width: 100%;
+  }
+  .fd-input {
+    background-color: var(--fd-forms-background-color);
+    border-color: var(--fd-forms-border-color);
+    border-radius: 4px;
+    color: var(--fd-color-text-1);
+    &:focus {
+      box-shadow: 0 0 0 1px var(--fd-color-action-focus);
+      --fd-forms-border-color: var(--fd-color-action-focus);
+    }
+  }
 `;
