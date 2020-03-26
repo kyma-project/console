@@ -31,28 +31,6 @@ export const adminUser = Role(
       .typeText('#password', config.password)
       .click('#submit-login')
       .wait(5000);
-
-    // await waitForAuth(5000, getPathname(t));
   },
   { preserveUrl: true },
 );
-
-const getPathname = t =>
-  ClientFunction(() => window.location.pathname).with({
-    boundTestRun: t,
-  });
-
-const waitForAuth = async (maxTimeout, getPathnameFn, checkInterval = 100) => {
-  const timeoutPromise = new Promise((resolve, reject) =>
-    setTimeout(function() {
-      reject(new Error('Login response timeout exceeded'));
-    }, maxTimeout),
-  );
-  const keyInStoragePromise = new Promise(async (resolve, reject) =>
-    setInterval(async () => {
-      const pathname = await getPathnameFn();
-      if (pathname === '/home/workspace') resolve(); // the login process succeded which means the user is redirected to the main view
-    }, checkInterval),
-  );
-  return Promise.race([timeoutPromise, keyInStoragePromise]);
-};
