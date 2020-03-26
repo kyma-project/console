@@ -8,7 +8,24 @@ const clientId = authClusterConfig
   ? authClusterConfig['client_id']
   : 'compass-ui';
 
-export default function createAuth(dexMetadata) {
+async function fetchDexMetadata() {
+  const domain =
+    (window.clusterConfig && window.clusterConfig['domain']) ||
+    'pijany.hasselhoff.ga';
+
+  try {
+    const response = await fetch(
+      `https://dex.${domain}/.well-known/openid-configuration`,
+    );
+    return await response.json();
+  } catch (e) {
+    alert('Cannot fetch dex metadata');
+    console.error('cannot fetch dex metadata', e);
+  }
+}
+
+export default async function createAuth() {
+  const dexMetadata = await fetchDexMetadata();
   return {
     use: 'openIdConnect',
     openIdConnect: {
