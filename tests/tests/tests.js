@@ -12,7 +12,7 @@ fixture`Console tests`.page(ADRESS);
 let role;
 
 test('Luigi navigation is rendered', async t => {
-  role = await chooseLoginRole(t);
+  role = await chooseLoginRole(t); //no 'beforeAll' hook yet..
   await t.useRole(role);
 
   await t

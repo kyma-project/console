@@ -1,6 +1,5 @@
 import config from './config';
-import { Selector, Role, ClientFunction } from 'testcafe';
-import { setAsyncInterval, clearAsyncInterval } from './asyncInterval';
+import { Selector, Role } from 'testcafe';
 
 export const testIfBackendModuleExists = (
   testName,
@@ -75,27 +74,4 @@ export const chooseLoginRole = async t => {
     testrole = adminUserMultipleLoginMethods;
   }
   return testrole;
-};
-
-const getPathname = t =>
-  ClientFunction(() => window.location.pathname).with({
-    boundTestRun: t,
-  });
-
-const waitForAuth = async (maxTimeout, getPathnameFn, checkInterval = 100) => {
-  const timeoutPromise = new Promise((resolve, reject) =>
-    setTimeout(function() {
-      reject(new Error('Login response timeout exceeded'));
-    }, maxTimeout),
-  );
-  const keyInStoragePromise = new Promise(async resolve => {
-    const i = setAsyncInterval(async () => {
-      const pathname = await getPathnameFn();
-      if (pathname === '/home/workspace') {
-        clearAsyncInterval(i);
-        resolve(); // the login process succeded which means the user is redirected to the main view
-      }
-    }, checkInterval);
-  });
-  return Promise.race([timeoutPromise, keyInStoragePromise]);
 };
