@@ -1,27 +1,11 @@
 import config from './config';
 import { Selector, Role } from 'testcafe';
 
-export const testIfBackendModuleExists = (
-  testName,
-  backendModuleName,
-  testToRun,
-) => {
-  if (config[backendModuleName]) {
+export const testIf = (condition, testName, testToRun) => {
+  if (condition) {
     test(testName, testToRun);
   } else {
     test.skip(testName, testToRun);
-  }
-};
-
-export const skipIfBackendModuleExists = (
-  testName,
-  backendModuleName,
-  testToRun,
-) => {
-  if (config[backendModuleName]) {
-    test.skip(testName, testToRun);
-  } else {
-    test(testName, testToRun);
   }
 };
 
