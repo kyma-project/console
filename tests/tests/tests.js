@@ -49,7 +49,6 @@ skipIfBackendModuleExists(
       .navigateTo(`${ADRESS}/home/cmf-apps`);
 
     const iframe = await getIframe();
-
     await t
       .switchToIframe(iframe)
       .expect(Selector('.fd-button').withText(/.*create application.*/i).exists)
@@ -66,7 +65,6 @@ testIfBackendModuleExists(
       .navigateTo(`${ADRESS}/home/namespaces/default/cmf-service-catalog`);
 
     const iframe = await getIframe();
-
     await t
       .expect(Selector('.fd-side-nav__link').withText('Catalog').exists)
       .ok()
