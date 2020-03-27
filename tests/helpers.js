@@ -44,3 +44,11 @@ const chooseLoginRole = async t => {
     await t.click(Selector('.dex-btn-icon--local'));
   }
 };
+
+export const toBoolean = value => {
+  if (typeof value === 'boolean') {
+    return value;
+  } else {
+    return value === 'true';
+  }
+};
