@@ -3,15 +3,16 @@ import { Selector } from 'testcafe';
 import {
   testIfBackendModuleExists,
   getIframe,
-  adminUser,
-  loginUsingDex,
+  chooseLoginRole,
   ADRESS,
 } from '../helpers';
 
-fixture`Console tests`.page`${ADRESS}`;
+fixture`Console tests`.page(ADRESS);
+let role;
 
 test('Luigi navigation is rendered', async t => {
-  await loginUsingDex(t);
+  role = await chooseLoginRole(t);
+  await t.useRole(role);
 
   await t
     .expect(Selector('.fd-side-nav__item').withText('Namespaces').exists)
@@ -19,7 +20,7 @@ test('Luigi navigation is rendered', async t => {
 });
 
 test('Namespaces view is rendered', async t => {
-  await t.useRole(adminUser);
+  await t.useRole(role);
 
   const iframe = await getIframe();
   await t
@@ -29,7 +30,7 @@ test('Namespaces view is rendered', async t => {
 });
 
 test('Namespace `default` card is on the Namespaces list', async t => {
-  await t.useRole(adminUser);
+  await t.useRole(role);
 
   const iframe = await getIframe();
   await t
@@ -43,7 +44,7 @@ testIfBackendModuleExists(
   'apiPackagesEnabled',
   async t => {
     await t
-      .useRole(adminUser)
+      .useRole(role)
       .expect(Selector('.fd-side-nav__link').withText('Applications').exists)
       .ok()
       .navigateTo(`${ADRESS}/home/cmf-apps`);
@@ -62,7 +63,7 @@ testIfBackendModuleExists(
   'serviceCatalogEnabled',
   async t => {
     await t
-      .useRole(adminUser)
+      .useRole(role)
       .navigateTo(`${ADRESS}/home/namespaces/default/cmf-service-catalog`);
 
     const iframe = await getIframe();

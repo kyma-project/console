@@ -24,7 +24,7 @@ export const ADRESS = `${
   config.localDev ? 'http://console-dev' : 'https://console'
 }.${config.domain}`;
 
-export const adminUser = Role(
+export const adminUserOnlyDex = Role(
   ADRESS,
   async t => {
     await t
@@ -32,31 +32,42 @@ export const adminUser = Role(
       .typeText('#password', config.password)
       .click('#submit-login')
       .wait(5000);
-
-    // await waitForAuth(5000, getPathname(t));
   },
   { preserveUrl: true },
 );
 
-export const loginUsingDex = async t => {
+export const adminUserMultipleLoginMethods = Role(
+  ADRESS,
+  async t => {
+    await t.click(Selector('.dex-btn-icon--local'));
+    await t
+      .typeText('#login', config.login)
+      .typeText('#password', config.password)
+      .click('#submit-login')
+      .wait(5000);
+  },
+  { preserveUrl: true },
+);
+
+export const chooseLoginRole = async t => {
+  let testrole = adminUserOnlyDex;
   try {
-    await Selector('#ldogin').visible; //'exists' doesn't really wait for the selector..
+    await Selector('#login').visible; //'exists' doesn't really wait for the selector..
     console.log('One login method detected...');
   } catch (e) {
     console.log(
       'Multiple login methods detected, choosing the email method...',
     );
-    await chooseEmail();
+    await chooseEmail(t);
+    testrole = adminUserMultipleLoginMethods;
   }
-  console.log('Trying to log in using email...');
-  await t.useRole(adminUser);
+  console.log('Trying to login using email...');
+  return testrole;
 };
 
 const chooseEmail = async t => {
   try {
-    await Selector('span')
-      .withText('Log in with Email')
-      .click();
+    await t.click(Selector('.dex-btn-icon--local'));
   } catch (e) {
     console.log("Couldn't choose the email method to login");
   }
