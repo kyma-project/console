@@ -2,6 +2,7 @@ import { Selector } from 'testcafe';
 
 import {
   testIfBackendModuleExists,
+  skipIfBackendModuleExists,
   getIframe,
   chooseLoginRole,
   ADRESS,
@@ -39,7 +40,7 @@ test('Namespace `default` card is on the Namespaces list', async t => {
     .ok();
 });
 
-testIfBackendModuleExists(
+skipIfBackendModuleExists(
   'Applications view is rendered',
   'apiPackagesEnabled',
   async t => {

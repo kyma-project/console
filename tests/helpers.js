@@ -14,6 +14,18 @@ export const testIfBackendModuleExists = (
   }
 };
 
+export const skipIfBackendModuleExists = (
+  testName,
+  backendModuleName,
+  testToRun,
+) => {
+  if (config[backendModuleName]) {
+    test.skip(testName, testToRun);
+  } else {
+    test(testName, testToRun);
+  }
+};
+
 export const getIframe = async () => {
   return Selector('.iframeContainer')
     .child('iframe')
