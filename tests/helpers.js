@@ -27,6 +27,7 @@ export const ADRESS = `${
 export const adminUserOnlyDex = Role(
   ADRESS,
   async t => {
+    console.log('Trying to login using email...');
     await t
       .typeText('#login', config.login)
       .typeText('#password', config.password)
@@ -40,6 +41,7 @@ export const adminUserMultipleLoginMethods = Role(
   ADRESS,
   async t => {
     await t.click(Selector('.dex-btn-icon--local'));
+    console.log('Trying to login using email...');
     await t
       .typeText('#login', config.login)
       .typeText('#password', config.password)
@@ -58,19 +60,9 @@ export const chooseLoginRole = async t => {
     console.log(
       'Multiple login methods detected, choosing the email method...',
     );
-    await chooseEmail(t);
     testrole = adminUserMultipleLoginMethods;
   }
-  console.log('Trying to login using email...');
   return testrole;
-};
-
-const chooseEmail = async t => {
-  try {
-    await t.click(Selector('.dex-btn-icon--local'));
-  } catch (e) {
-    console.log("Couldn't choose the email method to login");
-  }
 };
 
 const getPathname = t =>
