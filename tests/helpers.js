@@ -38,15 +38,11 @@ export const adminUser = Role(
   { preserveUrl: true },
 );
 
-const getPathname = t =>
-  ClientFunction(() => window.location.pathname).with({
-    boundTestRun: t,
-  });
-
 export const loginUsingDex = async t => {
-  if (Selector('#login').exists) {
+  try {
+    await Selector('#ldogin').visible; //'exists' doesn't really wait for the selector..
     console.log('One login method detected...');
-  } else {
+  } catch (e) {
     console.log(
       'Multiple login methods detected, choosing the email method...',
     );
@@ -62,9 +58,14 @@ const chooseEmail = async t => {
       .withText('Log in with Email')
       .click();
   } catch (e) {
-    console.log("Couldn't choose the email method to login.");
+    console.log("Couldn't choose the email method to login");
   }
 };
+
+const getPathname = t =>
+  ClientFunction(() => window.location.pathname).with({
+    boundTestRun: t,
+  });
 
 const waitForAuth = async (maxTimeout, getPathnameFn, checkInterval = 100) => {
   const timeoutPromise = new Promise((resolve, reject) =>

@@ -8,7 +8,7 @@ import {
   ADRESS,
 } from '../helpers';
 
-fixture`Console tests`;
+fixture`Console tests`.page`${ADRESS}`;
 
 test('Luigi navigation is rendered', async t => {
   await loginUsingDex(t);
