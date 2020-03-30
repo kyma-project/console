@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@luigi-project/core": "v1.0.0-next.1",
-    "@luigi-project/client": "v1.0.0-next.1",
-    "@luigi-project/plugin-auth-oidc": "v1.0.0-next.1",
+    "@luigi-project/core": "1.0.0",
+    "@luigi-project/client": "1.0.0",
+    "@luigi-project/plugin-auth-oidc": "1.0.0",
     "jsoneditor": "^6.2.1",
     "react-ace": "^7.0.4",
     "sanitize-html": "^1.22.1",
