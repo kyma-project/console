@@ -3,18 +3,16 @@ import { MockedProvider } from '@apollo/react-testing';
 import { mount } from 'enzyme';
 import { render, wait, fireEvent } from '@testing-library/react';
 import {
-  serviceClassQuery,
   serviceClassAPIruleQuery,
+  serviceClassAPIruleQueryNoPlans,
   mockEnvironmentId,
+  serviceClassWithPlans,
 } from '../../../testing/queriesMocks';
-import {
-  clusterServiceClass1Name,
-  serviceClassWithAPIrule,
-} from '../../../testing/serviceClassesMocks';
 import ServiceClassDetails, { PlanSelector } from '../ServiceClassDetails';
 import { Spinner } from '../../../react-shared';
 import { componentUpdate } from '../../../testing';
 import ServiceClassDetailsHeader from '../ServiceClassDetailsHeader/ServiceClassDetailsHeader.component';
+import { mockPlan } from 'testing/serviceClassesMocks';
 
 const mockNavigate = jest.fn();
 const mockAddBackdrop = jest.fn();
@@ -52,8 +50,10 @@ afterAll(() => {
 describe('Service Class Details UI', () => {
   it('Shows loading indicator only when data is not yet loaded', async () => {
     const component = mount(
-      <MockedProvider mocks={[serviceClassQuery]}>
-        <ServiceClassDetails name={clusterServiceClass1Name} />
+      <MockedProvider mocks={[serviceClassWithPlans]}>
+        <ServiceClassDetails
+          name={serviceClassWithPlans.result.data.clusterServiceClass.name}
+        />
       </MockedProvider>,
     );
 
@@ -66,8 +66,10 @@ describe('Service Class Details UI', () => {
 
   it('Displays service class details ', async () => {
     const component = mount(
-      <MockedProvider mocks={[serviceClassQuery]}>
-        <ServiceClassDetails name={clusterServiceClass1Name} />
+      <MockedProvider mocks={[serviceClassWithPlans]}>
+        <ServiceClassDetails
+          name={serviceClassWithPlans.result.data.clusterServiceClass.name}
+        />
       </MockedProvider>,
     );
     await componentUpdate(component);
@@ -79,11 +81,12 @@ describe('Service Class Details UI', () => {
 
   describe('API packages', () => {
     it('Shows error when the provided plan name is wrong', async () => {
+      const query = serviceClassAPIruleQuery([]);
       render(
-        <MockedProvider mocks={[serviceClassAPIruleQuery]}>
+        <MockedProvider mocks={[query]}>
           <ServiceClassDetails
             plan="non-existing"
-            name={serviceClassWithAPIrule.name}
+            name={query.result.data.serviceClass.name}
           />
         </MockedProvider>,
       );
@@ -99,11 +102,12 @@ describe('Service Class Details UI', () => {
     });
 
     it('Shows API package icon and breadcrumb when the label is present', async () => {
+      const query = serviceClassAPIruleQuery([mockPlan(1), mockPlan(2)]);
       const { queryByLabelText, queryByText } = render(
-        <MockedProvider mocks={[serviceClassAPIruleQuery]}>
+        <MockedProvider mocks={[query]}>
           <ServiceClassDetails
-            plan={serviceClassWithAPIrule.plans[0].name}
-            name={serviceClassWithAPIrule.name}
+            plan={query.result.data.serviceClass.plans[0].name}
+            name={query.result.data.serviceClass.name}
           />
         </MockedProvider>,
       );
@@ -111,23 +115,42 @@ describe('Service Class Details UI', () => {
       await wait(() => {
         expect(queryByLabelText('docs-per-plan-icon')).toBeInTheDocument();
         expect(
-          queryByText(`${serviceClassWithAPIrule.displayName} - Plans list`),
+          queryByText(
+            `${query.result.data.serviceClass.displayName} - Plans list`,
+          ),
         ).toBeInTheDocument();
+      });
+    });
+
+    it("Shows no breadcrumb when there's only one plan", async () => {
+      const query = serviceClassAPIruleQuery([mockPlan(1)]);
+      const { queryByLabelText, queryByText } = render(
+        <MockedProvider mocks={[query]}>
+          <ServiceClassDetails
+            plan={query.result.data.serviceClass.plans[0].name}
+            name={query.result.data.serviceClass.name}
+          />
+        </MockedProvider>,
+      );
+
+      await wait(() => {
+        expect(queryByLabelText('docs-per-plan-icon')).toBeInTheDocument();
+        expect(queryByText(`Plans list`)).not.toBeInTheDocument();
       });
     });
 
     it("Doesn't show API package icon or breadcrumb when label isn't present", async () => {
       const { queryByLabelText, queryByText } = render(
-        <MockedProvider mocks={[serviceClassQuery]}>
-          <ServiceClassDetails name={serviceClassWithAPIrule.name} />
+        <MockedProvider mocks={[serviceClassWithPlans]}>
+          <ServiceClassDetails
+            name={serviceClassWithPlans.result.data.clusterServiceClass.name}
+          />
         </MockedProvider>,
       );
 
       await wait(() => {
         expect(queryByLabelText('docs-per-plan-icon')).not.toBeInTheDocument();
-        expect(
-          queryByText(`${serviceClassWithAPIrule.displayName} - Plans list`),
-        ).not.toBeInTheDocument();
+        expect(queryByText(`Plans list`)).not.toBeInTheDocument();
       });
     });
     describe('PlanSelector', () => {

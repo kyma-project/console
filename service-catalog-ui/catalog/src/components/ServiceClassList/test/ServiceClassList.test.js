@@ -4,20 +4,12 @@ import { mount } from 'enzyme';
 import {
   allServiceClassesQuery,
   mockEnvironmentId,
-  moreThanAllServiceClassesQuery,
 } from '../../../testing/queriesMocks';
-import {
-  clusterServiceClass1Name,
-  clusterServiceClass3,
-  clusterServiceClass1,
-  serviceClass1,
-} from '../../../testing/serviceClassesMocks';
 import { Spinner, Tab } from '@kyma-project/react-components';
 import ServiceClassList from '../ServiceClassList';
 import { componentUpdate } from '../../../testing';
 import { Search } from '@kyma-project/react-components';
 import { Identifier } from 'fundamental-react';
-import Cards from '../Cards/Cards.component';
 
 const mockNavigate = jest.fn();
 
@@ -43,6 +35,11 @@ afterAll(() => {
   consoleWarn.mockReset();
 });
 describe('ServiceClassList UI', () => {
+  const component = mount(
+    <MockedProvider mocks={[allServiceClassesQuery]}>
+      <ServiceClassList />
+    </MockedProvider>,
+  );
   it('Shows loading indicator only when data is not yet loaded', async () => {
     const component = mount(
       <MockedProvider mocks={[]}>
@@ -59,39 +56,40 @@ describe('ServiceClassList UI', () => {
     expectKnownConsoleWarnings();
   });
 
-  it('Displays classes with their corresponding names on the add-ons/services list', async () => {
-    const component = mount(
-      <MockedProvider mocks={[allServiceClassesQuery]}>
-        <ServiceClassList />
-      </MockedProvider>,
+  it('Add-Ons tab has proper counter', async () => {
+    await componentUpdate(component);
+    const addOnsTab = component.find(Tab).at(0);
+    expect(addOnsTab.find(Identifier).text()).toEqual(
+      allServiceClassesQuery.result.data.serviceClasses.length.toString(),
     );
 
-    await componentUpdate(component);
+    expectKnownConsoleWarnings();
+  });
 
-    expect(
-      component
-        .find(Tab)
-        .at(0)
-        .find(Identifier)
-        .text(),
-    ).toEqual('2');
-    expect(
-      component
-        .find(Tab)
-        .at(1)
-        .find(Identifier)
-        .text(),
-    ).toEqual('1');
+  it('Services tab has proper counter', async () => {
+    await componentUpdate(component);
+    const servicesTab = component.find(Tab).at(1);
+    expect(servicesTab.find(Identifier).text()).toEqual(
+      allServiceClassesQuery.result.data.clusterServiceClasses.length.toString(),
+    );
+
+    expectKnownConsoleWarnings();
+  });
+
+  it('Displays classes with their corresponding names on the add-ons/services list', async () => {
+    await componentUpdate(component);
 
     const addonsCards = component.find('.fd-tile__title');
 
     expect(addonsCards.exists()).toBe(true);
-    expect(addonsCards).toHaveLength(2);
+    expect(addonsCards).toHaveLength(
+      allServiceClassesQuery.result.data.serviceClasses.length,
+    );
     expect(addonsCards.at(0).text()).toEqual(
-      allServiceClassesQuery.result.data.clusterServiceClasses[0].displayName,
+      allServiceClassesQuery.result.data.serviceClasses[0].displayName,
     );
     expect(addonsCards.at(1).text()).toEqual(
-      allServiceClassesQuery.result.data.clusterServiceClasses[1].displayName,
+      allServiceClassesQuery.result.data.serviceClasses[1].displayName,
     );
 
     component
@@ -106,10 +104,12 @@ describe('ServiceClassList UI', () => {
     const servicesCards = component.find('.fd-tile__title');
 
     expect(servicesCards.exists()).toBe(true);
-    expect(servicesCards).toHaveLength(1);
+    expect(servicesCards).toHaveLength(
+      allServiceClassesQuery.result.data.clusterServiceClasses.length,
+    );
 
     expect(servicesCards.at(0).text()).toEqual(
-      allServiceClassesQuery.result.data.serviceClasses[0].displayName,
+      allServiceClassesQuery.result.data.clusterServiceClasses[0].displayName,
     );
 
     expectKnownConsoleWarnings();
@@ -134,7 +134,7 @@ describe('ServiceClassList UI', () => {
     await componentUpdate(component);
 
     expect(mockNavigate).toHaveBeenCalledWith(
-      `details/${clusterServiceClass1Name}`,
+      `details/${allServiceClassesQuery.result.data.serviceClasses[0].name}`,
     );
 
     expectKnownConsoleWarnings();
@@ -143,12 +143,12 @@ describe('ServiceClassList UI', () => {
 
 describe('Search classes by name', () => {
   const component = mount(
-    <MockedProvider mocks={[moreThanAllServiceClassesQuery]}>
+    <MockedProvider mocks={[allServiceClassesQuery]}>
       <ServiceClassList />
     </MockedProvider>,
   );
 
-  it('Set search text', async () => {
+  it('Set search text gives no error', async () => {
     await componentUpdate(component);
     const search = component.find(Search).find('input');
     expect(search.exists()).toBe(true);
@@ -156,83 +156,40 @@ describe('Search classes by name', () => {
 
     expectKnownConsoleWarnings();
   });
-
-  it('Add-Ons tab has proper counter', async () => {
-    await componentUpdate(component);
-    const addOnsTab = component.find(Tab).at(0);
-    expect(addOnsTab.find(Identifier).text()).toEqual('2');
-
-    expectKnownConsoleWarnings();
-  });
-
-  it('Add-Ons tab shows only matching items', async () => {
-    const addOnsTab = component.find(Tab).at(0);
-    addOnsTab
-      .find('div')
-      .first()
-      .simulate('click');
-    await componentUpdate(component);
-    expect(component.find(Cards).prop('items')).toEqual([
-      clusterServiceClass1,
-      clusterServiceClass3,
-    ]);
-
-    expectKnownConsoleWarnings();
-  });
-
-  it('Services tab has proper counter', () => {
-    const servicesTab = component.find(Tab).at(1);
-    expect(servicesTab.find(Identifier).text()).toEqual('1');
-
-    expectKnownConsoleWarnings();
-  });
-
-  it('Services tab shows only matching items', async () => {
-    const servicesTab = component.find(Tab).at(1);
-    servicesTab
-      .find('div')
-      .first()
-      .simulate('click');
-    await componentUpdate(component);
-    expect(component.find(Cards).prop('items')).toEqual([serviceClass1]);
-
-    expectKnownConsoleWarnings();
-  });
 });
 
 describe('Search classes by other attributes', () => {
   const component = mount(
-    <MockedProvider mocks={[moreThanAllServiceClassesQuery]}>
+    <MockedProvider mocks={[allServiceClassesQuery]}>
       <ServiceClassList />
     </MockedProvider>,
   );
 
   it('By provider', async () => {
+    const searchedClass = allServiceClassesQuery.result.data.serviceClasses[0];
     await componentUpdate(component);
     const search = component.find(Search).find('input');
-    search.simulate('change', { target: { value: 'provider1' } });
+    search.simulate('change', {
+      target: { value: searchedClass.providerDisplayName },
+    });
     await componentUpdate(component);
 
     const addOnsTab = component.find(Tab).at(0);
     expect(addOnsTab.find(Identifier).text()).toEqual('1');
 
-    const servicesTab = component.find(Tab).at(1);
-    expect(servicesTab.find(Identifier).text()).toEqual('1');
-
     expectKnownConsoleWarnings();
   });
 
   it('By description', async () => {
+    const searchedClass = allServiceClassesQuery.result.data.serviceClasses[0];
+
     await componentUpdate(component);
     const search = component.find(Search).find('input');
-    search.simulate('change', { target: { value: 'description 1' } });
+    search.simulate('change', { target: { value: searchedClass.description } });
     await componentUpdate(component);
 
     const addOnsTab = component.find(Tab).at(0);
-    expect(addOnsTab.find(Identifier).text()).toEqual('2');
-
-    const servicesTab = component.find(Tab).at(1);
-    expect(servicesTab.find(Identifier).text()).toEqual('1');
+    expect(addOnsTab.find(Identifier).text()).toEqual('1');
 
     expectKnownConsoleWarnings();
   });

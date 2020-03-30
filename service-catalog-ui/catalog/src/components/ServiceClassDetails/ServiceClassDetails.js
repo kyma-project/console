@@ -177,6 +177,7 @@ export default function ServiceClassDetails({ name, plan }) {
             />
           )
         }
+        plansCount={plans.length}
         serviceClassName={name}
       >
         {isAPIpackage && (

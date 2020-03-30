@@ -11,7 +11,7 @@ export default function ApplicationStatus({ application }) {
           <Badge disabled modifier="filled">
             {STATUSES.NOT_INSTALLED}
           </Badge>
-          <InlineHelp text="This application is not active for your Tenant. You can edit it, but you can't bind it to a Namespace." />
+          <InlineHelp text="This application is not active for your Runtime. You can edit it, but you can't bind it to a Namespace." />
         </p>
       );
     case 'SERVING':

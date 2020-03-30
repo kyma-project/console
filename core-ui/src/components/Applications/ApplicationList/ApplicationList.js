@@ -68,7 +68,7 @@ export default function ApplicationList() {
 
   useEffect(() => {
     if (!kymaAppsQuery.subscribeToMore) return;
-    kymaAppsQuery.subscribeToMore({
+    return kymaAppsQuery.subscribeToMore({
       document: APPLICATIONS_EVENT_SUBSCRIPTION,
       updateQuery: (prev, { subscriptionData }) => {
         return handleApplicationEvent(

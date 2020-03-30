@@ -9,6 +9,7 @@ const serviceClassGQL = `
 
 const plansGQL = `
   name
+  description
   displayName
   externalName
   clusterAssetGroup{

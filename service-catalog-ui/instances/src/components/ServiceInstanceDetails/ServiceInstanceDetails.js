@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import { createBrowserHistory } from 'history';
@@ -43,65 +43,71 @@ export default function ServiceInstanceDetails({ match }) {
     },
   );
 
-  subscribeToMore({
-    variables: {
-      namespace: builder.getCurrentEnvironmentId(),
-    },
-    document: SERVICE_BINDING_EVENT_SUBSCRIPTION,
-    updateQuery: (prev, { subscriptionData }) => {
-      if (
-        !subscriptionData.data ||
-        !subscriptionData.data.serviceBindingEvent
-      ) {
-        return prev;
-      }
+  useEffect(() => {
+    return subscribeToMore({
+      variables: {
+        namespace: builder.getCurrentEnvironmentId(),
+      },
+      document: SERVICE_BINDING_EVENT_SUBSCRIPTION,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (
+          !subscriptionData.data ||
+          !subscriptionData.data.serviceBindingEvent
+        ) {
+          return prev;
+        }
 
-      return handleServiceBindingEvent(
-        prev,
-        subscriptionData.data.serviceBindingEvent,
-      );
-    },
-  });
+        return handleServiceBindingEvent(
+          prev,
+          subscriptionData.data.serviceBindingEvent,
+        );
+      },
+    });
+  }, [subscribeToMore]);
 
-  subscribeToMore({
-    variables: {
-      namespace: builder.getCurrentEnvironmentId(),
-    },
-    document: SERVICE_BINDING_USAGE_EVENT_SUBSCRIPTION,
-    updateQuery: (prev, { subscriptionData }) => {
-      if (
-        !subscriptionData.data ||
-        !subscriptionData.data.serviceBindingUsageEvent
-      ) {
-        return prev;
-      }
+  useEffect(() => {
+    return subscribeToMore({
+      variables: {
+        namespace: builder.getCurrentEnvironmentId(),
+      },
+      document: SERVICE_BINDING_USAGE_EVENT_SUBSCRIPTION,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (
+          !subscriptionData.data ||
+          !subscriptionData.data.serviceBindingUsageEvent
+        ) {
+          return prev;
+        }
 
-      return handleServiceBindingUsageEvent(
-        prev,
-        subscriptionData.data.serviceBindingUsageEvent,
-      );
-    },
-  });
+        return handleServiceBindingUsageEvent(
+          prev,
+          subscriptionData.data.serviceBindingUsageEvent,
+        );
+      },
+    });
+  }, [subscribeToMore]);
 
-  subscribeToMore({
-    variables: {
-      namespace: builder.getCurrentEnvironmentId(),
-    },
-    document: SERVICE_INSTANCE_EVENT_SUBSCRIPTION,
-    updateQuery: (prev, { subscriptionData }) => {
-      if (
-        !subscriptionData.data ||
-        !subscriptionData.data.serviceInstanceEvent
-      ) {
-        return prev;
-      }
+  useEffect(() => {
+    return subscribeToMore({
+      variables: {
+        namespace: builder.getCurrentEnvironmentId(),
+      },
+      document: SERVICE_INSTANCE_EVENT_SUBSCRIPTION,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (
+          !subscriptionData.data ||
+          !subscriptionData.data.serviceInstanceEvent
+        ) {
+          return prev;
+        }
 
-      return handleInstanceEventOnDetails(
-        prev,
-        subscriptionData.data.serviceInstanceEvent,
-      );
-    },
-  });
+        return handleInstanceEventOnDetails(
+          prev,
+          subscriptionData.data.serviceInstanceEvent,
+        );
+      },
+    });
+  }, [subscribeToMore]);
 
   const [deleteServiceInstanceMutation] = useMutation(deleteServiceInstance);
 
