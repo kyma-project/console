@@ -7,13 +7,11 @@ import { navigation, getNavigationData, resolveNavigationNodes } from './navigat
 import { onQuotaExceed } from './luigi-event-handlers';
 
 
-function getFreshKeys() {
+(function getFreshKeys() {
   // manually re-fetching keys, since this is a major pain point
   // until dex has possibility of no-cache
   return fetch('https://dex.' + config.domain + '/keys', { cache: 'no-cache' });
-}
-
-getFreshKeys()
+})();
 
 (async () => {
   const luigiConfig = {

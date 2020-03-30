@@ -4,7 +4,7 @@ import { parseJWT, getPreviousLocation } from './navigation/navigation-helpers';
 
 async function fetchDexMetadata() {
     const domain =
-      (window.clusterConfig && window.clusterConfig['domain']) || 'pijany.hasselhoff.ga';
+      (window.clusterConfig && window.clusterConfig['domain']) || 'kyma.local';
   
     try {
       const response = await fetch(`https://dex.${domain}/.well-known/openid-configuration`);
