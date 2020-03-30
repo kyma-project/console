@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import Grid from 'styled-components-grid';
 import LuigiClient from '@kyma-project/luigi-client';
 import { Button, Modal } from '@kyma-project/react-components';
-import { List, Item, Bold, Text, SecretKey } from './styled';
+import { List, Item, Bold, Text, SecretKey, CenterVertically } from './styled';
 
 class SecretDataModal extends React.Component {
   constructor(props) {
@@ -21,15 +21,17 @@ class SecretDataModal extends React.Component {
   populateItems = (data, encoded) => {
     return Object.entries(data).map(([key, value]) => (
       <Grid key={key}>
-        <Grid.Unit size={0.25}>
+        <Grid.Unit size={0.45}>
           <Item>
             <SecretKey>{key}</SecretKey>
           </Item>
         </Grid.Unit>
-        <Grid.Unit size={0.75}>
-          <Item data-e2e-id={`secret-${encoded ? 'encoded' : 'decoded'}`}>
-            {encoded ? this.randomizeAsterisks(data[key]) : value}
-          </Item>
+        <Grid.Unit size={0.55}>
+          <CenterVertically>
+            <Item data-e2e-id={`secret-${encoded ? 'encoded' : 'decoded'}`}>
+              {encoded ? this.randomizeAsterisks(data[key]) : value}
+            </Item>
+          </CenterVertically>
         </Grid.Unit>
       </Grid>
     ));

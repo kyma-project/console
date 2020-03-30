@@ -48,3 +48,9 @@ export const SecretKey = styled.span`
   margin-right: 8px;
   margin-bottom: 8px;
 `;
+
+export const CenterVertically = styled.div`
+  height: 100%;
+  display: flex;
+  align-items: center;
+`;
