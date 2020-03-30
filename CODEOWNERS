@@ -4,10 +4,10 @@
 /catalog/ @akucharska @dariadomagala @y-kkamil @parostatkiem @kwiatekus @Wawrzyn321
 /instances/ @akucharska @dariadomagala @y-kkamil @parostatkiem @kwiatekus @Wawrzyn321
 /brokers/ @akucharska @dariadomagala @y-kkamil @parostatkiem @kwiatekus @Wawrzyn321
-/content/ @michal-hudy @aerfio @m00g3n @magicmatatjahu
+/content/ @michal-hudy @aerfio @m00g3n @magicmatatjahu @pPrecel
 /compass/ @dariadomagala @y-kkamil @akucharska @parostatkiem @kwiatekus @Wawrzyn321
 /components/angular/ @dariadomagala @y-kkamil @akucharska @parostatkiem @kwiatekus @Wawrzyn321
-/components/react/ @michal-hudy @aerfio @m00g3n @magicmatatjahu @akucharska @dariadomagala @y-kkamil @parostatkiem @kwiatekus @Wawrzyn321
+/components/react/ @michal-hudy @aerfio @m00g3n @magicmatatjahu @pPrecel @akucharska @dariadomagala @y-kkamil @parostatkiem @kwiatekus @Wawrzyn321
 /core/ @dariadomagala @y-kkamil @parostatkiem @akucharska @kwiatekus @Wawrzyn321
 /tests/ @akucharska @dariadomagala @y-kkamil @parostatkiem @kwiatekus @Wawrzyn321
 /lambda/ @dariadomagala @y-kkamil @parostatkiem @akucharska @kwiatekus @Wawrzyn321
@@ -16,4 +16,4 @@
 *.md @kazydek @klaudiagrz @tomekpapiernik @bszwarc @mmitoraj @majakurcius @alexandra-simeonova
 
 # Owners of config file for MILV - milv.config.yaml
-milv.config.yaml @michal-hudy @aerfio @m00g3n @magicmatatjahu
+milv.config.yaml @michal-hudy @aerfio @m00g3n @magicmatatjahu @pPrecel
