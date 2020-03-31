@@ -11,6 +11,7 @@
 /core/ @dariadomagala @y-kkamil @parostatkiem @akucharska @kwiatekus @Wawrzyn321
 /tests/ @akucharska @dariadomagala @y-kkamil @parostatkiem @kwiatekus @Wawrzyn321
 /lambda/ @dariadomagala @y-kkamil @parostatkiem @akucharska @kwiatekus @Wawrzyn321
+/core-ui/src/components/Lambdas/ @michal-hudy @aerfio @m00g3n @pPrecel @magicmatatjahu
 
 # Owners of all .md files in the repository
 *.md @kazydek @klaudiagrz @tomekpapiernik @bszwarc @mmitoraj @majakurcius @alexandra-simeonova
