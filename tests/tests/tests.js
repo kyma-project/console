@@ -1,6 +1,13 @@
 import { Selector } from 'testcafe';
 
-import { testIf, getIframe, ADRESS, adminUser, toBoolean } from '../helpers';
+import {
+  testIf,
+  switchToFrame,
+  ADRESS,
+  adminUser,
+  toBoolean,
+  retry,
+} from '../helpers';
 import config from '../config';
 
 fixture`Console tests`.page(ADRESS);
@@ -16,21 +23,27 @@ test('Luigi navigation is rendered', async t => {
 test('Namespaces view is rendered', async t => {
   await t.useRole(adminUser);
 
-  const iframe = await getIframe();
-  await t
-    .switchToIframe(iframe)
-    .expect(Selector('.fd-button').withText('Add new namespace').exists)
-    .ok();
+  const testframe = async t => {
+    return await t
+      .expect(Selector('.fd-button').withText('Add new namespace').exists)
+      .ok();
+  };
+
+  await retry(t, switchToFrame, 5);
+  await retry(t, testframe, 5);
 });
 
 test('Namespace `default` card is on the Namespaces list', async t => {
   await t.useRole(adminUser);
 
-  const iframe = await getIframe();
-  await t
-    .switchToIframe(iframe)
-    .expect(Selector('.fd-panel__title').withText('default').exists)
-    .ok();
+  const testframe = async t => {
+    return await t
+      .expect(Selector('.fd-panel__title').withText('default').exists)
+      .ok();
+  };
+
+  await retry(t, switchToFrame, 5);
+  await retry(t, testframe, 5);
 });
 
 testIf(
@@ -43,11 +56,16 @@ testIf(
       .ok()
       .navigateTo(`${ADRESS}/home/cmf-apps`);
 
-    const iframe = await getIframe();
-    await t
-      .switchToIframe(iframe)
-      .expect(Selector('.fd-button').withText(/.*create application.*/i).exists)
-      .ok();
+    const testframe = async t => {
+      return await t
+        .expect(
+          Selector('.fd-button').withText(/.*create application.*/i).exists,
+        )
+        .ok();
+    };
+
+    await retry(t, switchToFrame, 5);
+    await retry(t, testframe, 5);
   },
 );
 
@@ -57,16 +75,19 @@ testIf(
   async t => {
     await t
       .useRole(adminUser)
-      .navigateTo(`${ADRESS}/home/namespaces/default/cmf-service-catalog`);
-
-    const iframe = await getIframe();
-    await t
+      .navigateTo(`${ADRESS}/home/namespaces/default/cmf-service-catalog`)
       .expect(Selector('.fd-side-nav__link').withText('Catalog').exists)
-      .ok()
-      .switchToIframe(iframe)
-      .expect(
-        Selector('.fd-action-bar__title').withText('Service Catalog').exists,
-      )
       .ok();
+
+    const testframe = async t => {
+      return await t
+        .expect(
+          Selector('.fd-action-bar__title').withText('Service Catalog').exists,
+        )
+        .ok();
+    };
+
+    await retry(t, switchToFrame, 5);
+    await retry(t, testframe, 5);
   },
 );

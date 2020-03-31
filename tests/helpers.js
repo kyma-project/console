@@ -9,10 +9,26 @@ export const testIf = (condition, testName, testToRun) => {
   }
 };
 
-export const getIframe = async () => {
+const getIframe = async () => {
   return Selector('.iframeContainer')
     .child('iframe')
     .filterVisible();
+};
+
+export const switchToFrame = async t => {
+  const iframe = await getIframe();
+  await t.switchToIframe(iframe);
+};
+
+export const retry = async (t, func, n) => {
+  try {
+    await func(t);
+    return;
+  } catch (err) {
+    console.log(`Retries left: ${n - 1}`);
+    if (n === 1) throw err;
+    return await retry(t, func, n - 1);
+  }
 };
 
 export const ADRESS = `${
