@@ -30,7 +30,13 @@ const performOnClick = item => {
   return linkManager.withParams(item.params).navigate(item.path);
 };
 
-export const PageHeader = ({ title, breadcrumbItems, actions, children }) => (
+export const PageHeader = ({
+  title,
+  description,
+  breadcrumbItems,
+  actions,
+  children,
+}) => (
   <Panel className="page-header">
     <Panel.Header>
       <section className="header-wrapper">
@@ -52,7 +58,7 @@ export const PageHeader = ({ title, breadcrumbItems, actions, children }) => (
           </section>
         ) : null}
 
-        <Panel.Head title={title} />
+        <Panel.Head title={title} description={description} />
         <section className="column-wrapper"> {children}</section>
       </section>
 
@@ -64,6 +70,7 @@ PageHeader.Column = Column;
 
 PageHeader.propTypes = {
   title: PropTypes.string.isRequired,
+  description: PropTypes.string,
   breadcrumbItems: PropTypes.arrayOf(
     PropTypes.shape({
       name: PropTypes.string.isRequired,
@@ -76,4 +83,5 @@ PageHeader.propTypes = {
 
 PageHeader.defaultProps = {
   breadcrumbItems: [],
+  description: '',
 };

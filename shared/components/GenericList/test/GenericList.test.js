@@ -1,14 +1,20 @@
 import React from 'react';
-import { GenericList } from '../GenericList';
-
 import 'core-js/es/array/flat-map';
 import { render, fireEvent, queryByText } from '@testing-library/react';
 
+import { GenericList } from '../GenericList';
+import { MESSAGES } from '../constants';
+
 describe('GenericList', () => {
-  const defaultNotFoundText = 'No entries found';
+  const defaultNotFoundText = MESSAGES.NOT_FOUND;
 
   const mockHeaderRenderer = entries => ['Id', 'Name', 'description'];
   const mockEntryRenderer = entry => [entry.id, entry.name, entry.description];
+  const mockCollapseEntryRenderer = entry => ({
+    cells: [entry.id, entry.name, entry.description],
+    collapseContent: <td colSpan="4">{entry.name}</td>,
+    showCollapseControl: entry.id !== '3',
+  });
 
   const mockEntries = [
     { id: '1', name: 'first_entry', description: 'testdescription1' },
@@ -25,7 +31,7 @@ describe('GenericList', () => {
         rowRenderer={() => []}
       />,
     );
-    await getByText(defaultNotFoundText);
+    expect(await getByText(defaultNotFoundText)).toBeInTheDocument();
   });
 
   it('Renders custom notFoundMessage props', async () => {
@@ -39,7 +45,7 @@ describe('GenericList', () => {
         notFoundMessage={notFoundMessage}
       />,
     );
-    await getByText(notFoundMessage);
+    expect(await getByText(notFoundMessage)).toBeInTheDocument();
   });
 
   it('Renders title', async () => {
@@ -52,7 +58,7 @@ describe('GenericList', () => {
         rowRenderer={() => []}
       />,
     );
-    await getByText(title);
+    expect(await getByText(title)).toBeInTheDocument();
   });
 
   describe('Actions', () => {
@@ -141,7 +147,34 @@ describe('GenericList', () => {
       />,
     );
 
-    expect(await queryByText(mockEntries[0].name)).toBeTruthy();
+    expect(await queryByText(mockEntries[0].name)).toBeInTheDocument();
+  });
+
+  it('Renders collapse entries', async () => {
+    const { getByText, getAllByTestId } = render(
+      <GenericList
+        entries={mockEntries}
+        headerRenderer={mockHeaderRenderer}
+        rowRenderer={mockCollapseEntryRenderer}
+      />,
+    );
+
+    mockEntries.forEach(entry =>
+      Object.keys(entry).forEach(key => getByText(entry[key])),
+    );
+
+    let foundCollapseButtons = await getAllByTestId('collapse-button-close');
+    expect(foundCollapseButtons).toHaveLength(2);
+
+    fireEvent.click(foundCollapseButtons[0]);
+
+    foundCollapseButtons = await getAllByTestId('collapse-button-close');
+    expect(foundCollapseButtons).toHaveLength(1);
+    foundCollapseButtons = await getAllByTestId('collapse-button-open');
+    expect(foundCollapseButtons).toHaveLength(1);
+
+    const foundCollapseContents = await getAllByTestId('collapse-content');
+    expect(foundCollapseContents).toHaveLength(1);
   });
 
   it('Renders headers', async () => {
@@ -155,6 +188,7 @@ describe('GenericList', () => {
 
     mockHeaderRenderer().forEach(async header => await getByText(header));
   });
+
   it("Doesn't render header with showHeader set to false", async () => {
     const { queryAllByRole } = render(
       <GenericList
@@ -181,7 +215,7 @@ describe('GenericList', () => {
       />,
     );
 
-    await getByText(content);
+    expect(await getByText(content)).toBeInTheDocument();
   });
 
   describe('Search', () => {
@@ -194,10 +228,10 @@ describe('GenericList', () => {
         />,
       );
 
-      await getByRole('search');
+      expect(await getByRole('search')).toBeInTheDocument();
     });
 
-    it("Desn't show search field when showSearchField is set to false", async () => {
+    it("Doesn't show search field when showSearchField is set to false", async () => {
       const { queryByRole } = render(
         <GenericList
           entries={mockEntries}
@@ -254,16 +288,16 @@ describe('GenericList', () => {
       expect(await queryAllByRole('row')).toHaveLength(2); // header + one row
     });
 
-    it('Shows no entries message when there are no results', async () => {
+    it('Shows any search result message when there are no results', async () => {
       const searchText = "Do you really can't find it?";
-      const notFoundMessage = 'Yes, sorry';
+      const anySearchResultMessage = 'Yes, sorry';
 
       const { queryAllByRole, getByLabelText, getByText } = render(
         <GenericList
           entries={mockEntries}
           headerRenderer={mockHeaderRenderer}
           rowRenderer={mockEntryRenderer}
-          notFoundMessage={notFoundMessage} // because the default text is the same as the one displayed by Search suggestions
+          anySearchResultMessage={anySearchResultMessage}
         />,
       );
 
@@ -272,8 +306,38 @@ describe('GenericList', () => {
       const searchInput = await getByLabelText('search-input');
       fireEvent.change(searchInput, { target: { value: searchText } });
 
-      expect(await queryAllByRole('row')).toHaveLength(2); // header + NotFoundMessage dedicated row
-      await getByText(notFoundMessage);
+      expect(await queryAllByRole('row')).toHaveLength(2); // header + AnySearchResultMessage dedicated row
+      expect(await getByText(anySearchResultMessage)).toBeInTheDocument();
+    });
+
+    it('Shows server error message if dataError prop is true', async () => {
+      const serverErrorMessage = 'Pico bello';
+
+      const { queryAllByRole, getByText } = render(
+        <GenericList
+          entries={[]}
+          headerRenderer={mockHeaderRenderer}
+          rowRenderer={mockEntryRenderer}
+          serverDataError={true}
+          serverErrorMessage={serverErrorMessage}
+        />,
+      );
+
+      expect(await queryAllByRole('row')).toHaveLength(2); // header + ServerErrorMessage dedicated row
+      expect(await getByText(serverErrorMessage)).toBeInTheDocument();
+    });
+
+    it('Shows Spinner if dataLoading prop is true', async () => {
+      const { getByTestId } = render(
+        <GenericList
+          entries={[]}
+          headerRenderer={mockHeaderRenderer}
+          rowRenderer={mockEntryRenderer}
+          serverDataLoading={true}
+        />,
+      );
+
+      expect(await getByTestId('fd-spinner')).toBeTruthy();
     });
   });
 });

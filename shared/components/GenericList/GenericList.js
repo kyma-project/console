@@ -1,67 +1,38 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import SearchInput from './SearchInput';
 import { Panel } from 'fundamental-react/Panel';
-import { filterEntries } from './helpers';
+
+import SearchInput from './SearchInput';
 import ListActions from '../ListActions/ListActions';
+import { Spinner } from '../Spinner/Spinner';
+import { HeaderRenderer, RowRenderer, BodyFallback } from './components';
+
+import { filterEntries } from './helpers';
+import { MESSAGES } from './constants';
+
 import './GenericList.scss';
 
-const NotFoundMessage = ({ children }) => (
-  <td colSpan="100%">
-    <p className="not-found-message">{children}</p>
-  </td>
-);
-
-const HeaderRenderer = ({ entries, actions, headerRenderer }) => {
-  let emptyColumn = [];
-  if (actions.length) {
-    emptyColumn = [<th key="actions-column" aria-label="actions-column"></th>];
-  }
-  return [headerRenderer().map(h => <th key={h}>{h}</th>), ...emptyColumn];
-};
-
-const RowRenderer = ({
-  entry,
-  actions,
-  rowRenderer,
-  actionsStandaloneItems,
-}) => {
-  const filteredActions = actions.filter(a =>
-    a.skipAction ? !a.skipAction(entry) : true,
-  );
-
-  const cells = rowRenderer(entry).map((cell, id) => <td key={id}>{cell}</td>);
-  const actionsCell = (
-    <td>
-      <ListActions
-        actions={filteredActions}
-        entry={entry}
-        standaloneItems={actionsStandaloneItems}
-      />
-    </td>
-  );
-
-  return (
-    <>
-      {cells}
-      {!!filteredActions.length && actionsCell}
-    </>
-  );
-};
-
 export const GenericList = ({
-  entries,
+  entries = [],
   actions,
   title,
   headerRenderer,
   rowRenderer,
   notFoundMessage,
+  anySearchResultMessage,
+  serverErrorMessage,
   extraHeaderContent,
   showSearchField,
   textSearchProperties,
+  showSearchSuggestion,
+  showSearchControl,
   actionsStandaloneItems,
   testid,
-  showHeader = true,
+  showRootHeader,
+  showHeader,
+  serverDataError,
+  serverDataLoading,
+  hasExternalMargin,
 }) => {
   const [filteredEntries, setFilteredEntries] = useState(entries);
   const [searchQuery, setSearchQuery] = useState('');
@@ -80,18 +51,69 @@ export const GenericList = ({
           filteredEntries={filteredEntries}
           handleQueryChange={setSearchQuery}
           suggestionProperties={textSearchProperties}
+          showSuggestion={showSearchSuggestion}
+          showSearchControl={showSearchControl}
+          disabled={!entries.length}
         />
       )}
       {extraHeaderContent}
     </section>
   );
 
+  const renderTableBody = () => {
+    if (serverDataError) {
+      return (
+        <BodyFallback>
+          <p>{serverErrorMessage}</p>
+        </BodyFallback>
+      );
+    }
+
+    if (serverDataLoading) {
+      return (
+        <BodyFallback>
+          <Spinner />
+        </BodyFallback>
+      );
+    }
+
+    if (!filteredEntries.length) {
+      if (searchQuery) {
+        return (
+          <BodyFallback>
+            <p>{anySearchResultMessage}</p>
+          </BodyFallback>
+        );
+      }
+      return (
+        <BodyFallback>
+          <p>{notFoundMessage}</p>
+        </BodyFallback>
+      );
+    }
+
+    return filteredEntries.map((e, index) => (
+      <RowRenderer
+        key={e.id || e.name || index}
+        entry={e}
+        actions={actions}
+        actionsStandaloneItems={actionsStandaloneItems}
+        rowRenderer={rowRenderer}
+      />
+    ));
+  };
+
   return (
-    <Panel className="fd-has-margin-m generic-list" data-testid={testid}>
-      <Panel.Header className="fd-has-padding-xs">
-        <Panel.Head title={title} />
-        <Panel.Actions>{headerActions}</Panel.Actions>
-      </Panel.Header>
+    <Panel
+      className={`${hasExternalMargin ? 'fd-has-margin-m' : ''} generic-list`}
+      data-testid={testid}
+    >
+      {showRootHeader && (
+        <Panel.Header className="fd-has-padding-xs">
+          <Panel.Head title={title} />
+          <Panel.Actions>{headerActions}</Panel.Actions>
+        </Panel.Header>
+      )}
 
       <Panel.Body>
         <table className="fd-table">
@@ -106,24 +128,7 @@ export const GenericList = ({
               </tr>
             </thead>
           )}
-          <tbody>
-            {filteredEntries.length ? (
-              filteredEntries.map((e, index) => (
-                <tr role="row" key={e.id || e.name || index}>
-                  <RowRenderer
-                    entry={e}
-                    actions={actions}
-                    actionsStandaloneItems={actionsStandaloneItems}
-                    rowRenderer={rowRenderer}
-                  />
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <NotFoundMessage>{notFoundMessage}</NotFoundMessage>
-              </tr>
-            )}
-          </tbody>
+          <tbody>{renderTableBody()}</tbody>
         </table>
       </Panel.Body>
     </Panel>
@@ -149,16 +154,33 @@ GenericList.propTypes = {
   extraHeaderContent: PropTypes.node,
   showSearchField: PropTypes.bool,
   notFoundMessage: PropTypes.string,
+  anySearchResultMessage: PropTypes.string,
+  serverErrorMessage: PropTypes.string,
   textSearchProperties: PropTypes.arrayOf(PropTypes.string.isRequired),
+  showSearchSuggestion: PropTypes.bool,
+  showSearchControl: PropTypes.bool,
   actionsStandaloneItems: PropTypes.number,
   testid: PropTypes.string,
+  showRootHeader: PropTypes.bool,
   showHeader: PropTypes.bool,
+  serverDataError: PropTypes.any,
+  serverDataLoading: PropTypes.bool,
+  hasExternalMargin: PropTypes.bool,
 };
 
 GenericList.defaultProps = {
-  notFoundMessage: 'No entries found',
+  notFoundMessage: MESSAGES.NOT_FOUND,
+  anySearchResultMessage: MESSAGES.ANY_SEARCH_RESULT,
+  serverErrorMessage: MESSAGES.SERVER_ERROR,
   actions: [],
-  showSearchField: true,
   textSearchProperties: ['name', 'description'],
+  showSearchField: true,
+  showSearchControl: true,
+  showRootHeader: true,
   showHeader: true,
+  showSearchSuggestion: true,
+  showSearchControl: true,
+  serverDataError: null,
+  serverDataLoading: false,
+  hasExternalMargin: true,
 };

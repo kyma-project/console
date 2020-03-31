@@ -1,33 +1,85 @@
 import React from 'react';
-import renderer from 'react-test-renderer';
+import { render, fireEvent } from '@testing-library/react';
 import ModalWithForm from '../ModalWithForm';
 
+jest.mock('@kyma-project/luigi-client', () => {
+  return {
+    uxManager: () => ({
+      addBackdrop: () => {},
+      removeBackdrop: () => {},
+    }),
+  };
+});
+
 describe('ModalWithForm', () => {
-  it('Renders with minimal props', () => {
-    const component = renderer.create(
+  const buttonText = 'Open';
+
+  it('Renders title', () => {
+    const title = 'Modal';
+    const { getByText } = render(
       <ModalWithForm
-        title=""
+        title={title}
         performRefetch={() => {}}
         sendNotification={() => {}}
-        button={{ text: '' }}
-        renderForm={() => <span></span>}
+        button={{ text: buttonText }}
+        renderForm={() => null}
       />,
     );
-    let tree = component.toJSON();
-    expect(tree).toMatchSnapshot();
+
+    const button = getByText(buttonText);
+    expect(button).toBeInTheDocument();
+    fireEvent.click(button);
+
+    expect(getByText(title)).toBeInTheDocument();
   });
 
-  it('Renders child component', () => {
-    const component = renderer.create(
+  it('Renders form component', () => {
+    const text = 'foo bar';
+    const { getByText } = render(
       <ModalWithForm
         title=""
         performRefetch={() => {}}
         sendNotification={() => {}}
-        button={{ text: '' }}
-        renderForm={() => <span>test</span>}
+        button={{ text: buttonText }}
+        renderForm={() => <span>{text}</span>}
       />,
     );
-    let tree = component.toJSON();
-    expect(tree).toMatchSnapshot();
+
+    const button = getByText(buttonText);
+    expect(button).toBeInTheDocument();
+    fireEvent.click(button);
+
+    expect(getByText(text)).toBeInTheDocument();
+  });
+
+  it('should show tooltip on hover confirm button if invalidPopupMessage prop is passes', () => {
+    const text = 'foo bar';
+    const message = 'popup message';
+    const confirmText = 'Create';
+
+    const { getByText } = render(
+      <ModalWithForm
+        title=""
+        performRefetch={() => {}}
+        sendNotification={() => {}}
+        button={{ text: buttonText }}
+        renderForm={() => <span>{text}</span>}
+        invalidPopupMessage={message}
+        confirmText={confirmText}
+      />,
+    );
+
+    const button = getByText(buttonText);
+    expect(button).toBeInTheDocument();
+    fireEvent.click(button);
+
+    const confirmButton = getByText(confirmText);
+    expect(confirmButton).toBeInTheDocument();
+
+    fireEvent.mouseEnter(confirmButton);
+    const tooltip = document.querySelector(
+      `[data-original-title="${message}"]`,
+    );
+    expect(tooltip).toBeInTheDocument();
   });
 });
