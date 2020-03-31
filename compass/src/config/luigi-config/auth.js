@@ -10,8 +10,7 @@ const clientId = authClusterConfig
 
 async function fetchDexMetadata() {
   const domain =
-    (window.clusterConfig && window.clusterConfig['domain']) ||
-    'pijany.hasselhoff.ga';
+    (window.clusterConfig && window.clusterConfig['domain']) || 'kyma.local';
 
   try {
     const response = await fetch(
