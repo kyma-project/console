@@ -4,6 +4,8 @@ import { act } from '@testing-library/react';
 import 'jsdom-worker-fix';
 import '@testing-library/jest-dom/extend-expect';
 
+global.INJECTED_CLUSTER_CONFIG = {};
+
 var nodeCrypto = require('crypto');
 global.crypto = {
   getRandomValues: function(buffer) {

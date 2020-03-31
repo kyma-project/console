@@ -1,24 +1,6 @@
 import sanitizeHtml from 'sanitize-html';
-
-const regex = new RegExp('^/tenant/(.*?)/(.*)(?:/.*)?');
-
-export const getAlternativePath = (tenantName, fromPath) => {
-  const currentPath = fromPath || window.location.pathname;
-  const match = currentPath.match(regex);
-  if (match) {
-    const tenant = match[1];
-    const path = match[2];
-    if (tenant === tenantName) {
-      // the same tenant, leave path as it is
-      return `${tenantName}/${path}`;
-    } else {
-      // other tenant, get back to context as applications or runtimes
-      const contextOnlyPath = path.split('/')[0];
-      return `${tenantName}/${contextOnlyPath}`;
-    }
-  }
-  return null;
-};
+import { clusterConfig } from './../clusterConfig';
+import { getAlternativePath } from './getAlternativePath';
 
 export const getToken = () => {
   let token = null;
@@ -59,7 +41,8 @@ export const getTenantsFromCache = () =>
   JSON.parse(sessionStorage.getItem('tenants')) || [];
 
 const fetchFromGraphql = async data => {
-  const url = window.clusterConfig.compassApiUrl;
+  const url = clusterConfig.compassApiUrl;
+
   const response = await fetch(url, {
     method: 'POST',
     cache: 'no-cache',

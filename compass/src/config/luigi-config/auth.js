@@ -1,21 +1,10 @@
 import OpenIdConnect from '@luigi-project/plugin-auth-oidc';
-
-const domain =
-  (window.clusterConfig && window.clusterConfig['domain']) || 'kyma.local';
-
-const authClusterConfig = window.clusterConfig && window.clusterConfig.auth;
-const clientId = authClusterConfig
-  ? authClusterConfig['client_id']
-  : 'compass-ui';
+import { clusterConfig } from './clusterConfig';
 
 async function fetchDexMetadata() {
-  const domain =
-    (window.clusterConfig && window.clusterConfig['domain']) || 'kyma.local';
-
+  const idpUrl = clusterConfig['defaultIdpIssuer'];
   try {
-    const response = await fetch(
-      `https://dex.${domain}/.well-known/openid-configuration`,
-    );
+    const response = await fetch(`${idpUrl}/.well-known/openid-configuration`);
     return await response.json();
   } catch (e) {
     alert('Cannot fetch dex metadata');
@@ -24,6 +13,13 @@ async function fetchDexMetadata() {
 }
 
 export default async function createAuth() {
+  const domain = clusterConfig['domain'];
+
+  const authClusterConfig = clusterConfig.auth;
+  const clientId = authClusterConfig
+    ? authClusterConfig['client_id']
+    : 'compass-ui';
+
   const dexMetadata = await fetchDexMetadata();
   return {
     use: 'openIdConnect',

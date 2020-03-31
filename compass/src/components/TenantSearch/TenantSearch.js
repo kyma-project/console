@@ -3,7 +3,7 @@ import LuigiClient from '@luigi-project/client';
 
 import fetchTenants from './fetchTenants';
 import { ListGroup, Panel } from 'fundamental-react';
-import { getAlternativePath } from 'config/luigi-config/helpers/navigation-helpers';
+import { getAlternativePath } from '../../config/luigi-config/helpers/getAlternativePath';
 import './TenantSearch.scss';
 
 const SearchInput = ({ filter, setFilter }) => (

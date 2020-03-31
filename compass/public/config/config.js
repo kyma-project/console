@@ -1,3 +1,2 @@
-window.clusterConfig = {
-  compassApiUrl: 'https://compass-gateway.kyma.local/director/graphql',
-};
+// Intentionally empty
+// This file should be replaced by a ConfigMap inside a Kubernetes cluster

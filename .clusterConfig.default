@@ -25,6 +25,7 @@ REACT_APP_addOnsModuleUrl="http://$REACT_APP_localDomain:8004"
 REACT_APP_lambdasModuleUrl="http://$REACT_APP_localDomain:4201"
 REACT_APP_coreModuleUrl="http://$REACT_APP_localDomain:8889"
 REACT_APP_logsModuleUrl="http://$REACT_APP_localDomain:8005"
+REACT_APP_compassModuleUrl="http://$REACT_APP_localDomain:8888"
 
 REACT_APP_HELM_BROKER_REPO_URL_PREFIXES="https://|git::|github.com/|bitbucket.org/|http://"
 

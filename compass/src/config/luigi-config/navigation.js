@@ -1,4 +1,5 @@
 import LuigiClient from '@luigi-project/client';
+import { clusterConfig } from './clusterConfig';
 import {
   fetchTenants,
   getToken,
@@ -7,8 +8,7 @@ import {
   customOptionsRenderer,
 } from './helpers/navigation-helpers';
 
-const compassMfUrl = window.clusterConfig.microfrontendContentUrl;
-
+const compassMfUrl = clusterConfig.compassModuleUrl;
 const token = getToken();
 let tenants = [];
 
