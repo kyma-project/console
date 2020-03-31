@@ -9,14 +9,10 @@ export const testIf = (condition, testName, testToRun) => {
   }
 };
 
-const getIframe = async () => {
-  return Selector('.iframeContainer')
+export const switchToFrame = async t => {
+  const iframe = await Selector('.iframeContainer')
     .child('iframe')
     .filterVisible();
-};
-
-export const switchToFrame = async t => {
-  const iframe = await getIframe();
   await t.switchToIframe(iframe);
 };
 

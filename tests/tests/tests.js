@@ -29,8 +29,8 @@ test('Namespaces view is rendered', async t => {
       .ok();
   };
 
-  await retry(t, switchToFrame, 5);
-  await retry(t, testframe, 5);
+  await retry(t, switchToFrame, 6);
+  await retry(t, testframe, 6);
 });
 
 test('Namespace `default` card is on the Namespaces list', async t => {
@@ -42,8 +42,8 @@ test('Namespace `default` card is on the Namespaces list', async t => {
       .ok();
   };
 
-  await retry(t, switchToFrame, 5);
-  await retry(t, testframe, 5);
+  await retry(t, switchToFrame, 6);
+  await retry(t, testframe, 6);
 });
 
 testIf(
@@ -64,8 +64,8 @@ testIf(
         .ok();
     };
 
-    await retry(t, switchToFrame, 5);
-    await retry(t, testframe, 5);
+    await retry(t, switchToFrame, 6);
+    await retry(t, testframe, 6);
   },
 );
 
@@ -87,7 +87,7 @@ testIf(
         .ok();
     };
 
-    await retry(t, switchToFrame, 5);
-    await retry(t, testframe, 5);
+    await retry(t, switchToFrame, 6);
+    await retry(t, testframe, 6);
   },
 );
