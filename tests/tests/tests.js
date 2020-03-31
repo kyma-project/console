@@ -50,8 +50,9 @@ testIf(
   !toBoolean(config.apiPackagesEnabled),
   'Applications view is rendered',
   async t => {
+    await t.useRole(adminUser);
+
     await t
-      .useRole(adminUser)
       .expect(Selector('.fd-side-nav__link').withText('Applications').exists)
       .ok()
       .navigateTo(`${ADRESS}/home/cmf-apps`);
@@ -75,7 +76,9 @@ testIf(
   async t => {
     await t
       .useRole(adminUser)
-      .navigateTo(`${ADRESS}/home/namespaces/default/cmf-service-catalog`)
+      .navigateTo(`${ADRESS}/home/namespaces/default/cmf-service-catalog`);
+
+    await t
       .expect(Selector('.fd-side-nav__link').withText('Catalog').exists)
       .ok();
 
