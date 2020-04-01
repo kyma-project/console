@@ -23,7 +23,7 @@ describe('ServiceBindings', () => {
       </MockedProvider>,
     );
 
-    expect(getByText('Resources not found.')).toBeInTheDocument();
+    expect(getByText('No entries found')).toBeInTheDocument();
     await wait();
   });
 
@@ -37,7 +37,7 @@ describe('ServiceBindings', () => {
       </MockedProvider>,
     );
 
-    expect(queryByText('Resources not found.')).not.toBeInTheDocument();
+    expect(queryByText('No entries found')).not.toBeInTheDocument();
     await wait();
   });
 });

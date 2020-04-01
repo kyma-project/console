@@ -76,7 +76,7 @@ describe('ApiRules', () => {
     const table = queryByRole('table');
     expect(table).toBeInTheDocument();
     expect(queryAllByRole(table, 'row')).toHaveLength(2);
-    expect(queryByText(table, 'Resources not found.')).toBeInTheDocument();
+    expect(queryByText(table, 'No entries found')).toBeInTheDocument();
   });
 
   it('Shows loading status', async () => {

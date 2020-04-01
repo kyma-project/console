@@ -30,7 +30,7 @@ describe('ApplicationList', () => {
     await wait(() => {
       const table = queryByRole('table');
       expect(table).toBeInTheDocument();
-      expect(queryByText('Resources not found.')).toBeInTheDocument();
+      expect(queryByText('No entries found')).toBeInTheDocument();
     });
   });
 
