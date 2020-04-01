@@ -42,14 +42,14 @@ describe('EventTriggersWrapper + EventTriggers', () => {
   );
 
   it('should render Spinner', async () => {
-    const { getByTestId } = render(
+    const { getByLabelText } = render(
       withApolloMockProvider({
         component: <EventTriggersWrapper lambda={lambdaMock} />,
         mocks: [subscriptionMock],
       }),
     );
 
-    expect(getByTestId('fd-spinner')).toBeInTheDocument();
+    expect(getByLabelText('Loading')).toBeInTheDocument();
     await wait();
   });
 
