@@ -37,7 +37,7 @@ export default function SearchInput({
           key="no-entries"
           className="fd-menu__item fd-menu__item--no-entries"
         >
-          {MESSAGES.ANY_SEARCH_RESULT}
+          {MESSAGES.NO_SEARCH_RESULT}
         </li>
       );
     }
