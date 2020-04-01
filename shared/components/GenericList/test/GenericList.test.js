@@ -288,16 +288,16 @@ describe('GenericList', () => {
       expect(await queryAllByRole('row')).toHaveLength(2); // header + one row
     });
 
-    it('Shows any search result message when there are no results', async () => {
+    it('Shows no search result message when there are no results', async () => {
       const searchText = "Do you really can't find it?";
-      const anySearchResultMessage = 'Yes, sorry';
+      const noSearchResultMessage = 'Yes, sorry';
 
       const { queryAllByRole, getByLabelText, getByText } = render(
         <GenericList
           entries={mockEntries}
           headerRenderer={mockHeaderRenderer}
           rowRenderer={mockEntryRenderer}
-          anySearchResultMessage={anySearchResultMessage}
+          noSearchResultMessage={noSearchResultMessage}
         />,
       );
 
@@ -306,8 +306,8 @@ describe('GenericList', () => {
       const searchInput = await getByLabelText('search-input');
       fireEvent.change(searchInput, { target: { value: searchText } });
 
-      expect(await queryAllByRole('row')).toHaveLength(2); // header + AnySearchResultMessage dedicated row
-      expect(await getByText(anySearchResultMessage)).toBeInTheDocument();
+      expect(await queryAllByRole('row')).toHaveLength(2); // header + NoSearchResultMessage dedicated row
+      expect(await getByText(noSearchResultMessage)).toBeInTheDocument();
     });
 
     it('Shows server error message if dataError prop is true', async () => {
@@ -328,7 +328,7 @@ describe('GenericList', () => {
     });
 
     it('Shows Spinner if dataLoading prop is true', async () => {
-      const { getByTestId } = render(
+      const { getByLabelText } = render(
         <GenericList
           entries={[]}
           headerRenderer={mockHeaderRenderer}
@@ -337,7 +337,7 @@ describe('GenericList', () => {
         />,
       );
 
-      expect(await getByTestId('fd-spinner')).toBeTruthy();
+      expect(await getByLabelText('Loading')).toBeInTheDocument();
     });
   });
 });

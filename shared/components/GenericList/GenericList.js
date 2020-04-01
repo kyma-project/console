@@ -19,7 +19,7 @@ export const GenericList = ({
   headerRenderer,
   rowRenderer,
   notFoundMessage,
-  anySearchResultMessage,
+  noSearchResultMessage,
   serverErrorMessage,
   extraHeaderContent,
   showSearchField,
@@ -81,7 +81,7 @@ export const GenericList = ({
       if (searchQuery) {
         return (
           <BodyFallback>
-            <p>{anySearchResultMessage}</p>
+            <p>{noSearchResultMessage}</p>
           </BodyFallback>
         );
       }
@@ -154,7 +154,7 @@ GenericList.propTypes = {
   extraHeaderContent: PropTypes.node,
   showSearchField: PropTypes.bool,
   notFoundMessage: PropTypes.string,
-  anySearchResultMessage: PropTypes.string,
+  noSearchResultMessage: PropTypes.string,
   serverErrorMessage: PropTypes.string,
   textSearchProperties: PropTypes.arrayOf(PropTypes.string.isRequired),
   showSearchSuggestion: PropTypes.bool,
@@ -170,7 +170,7 @@ GenericList.propTypes = {
 
 GenericList.defaultProps = {
   notFoundMessage: MESSAGES.NOT_FOUND,
-  anySearchResultMessage: MESSAGES.ANY_SEARCH_RESULT,
+  noSearchResultMessage: MESSAGES.NO_SEARCH_RESULT,
   serverErrorMessage: MESSAGES.SERVER_ERROR,
   actions: [],
   textSearchProperties: ['name', 'description'],
