@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import * as LuigiClient from '@kyma-project/luigi-client';
+import * as LuigiClient from '@luigi-project/client';
 import { LuigiClientService } from 'shared/services/luigi-client.service';
 
 @Component({
@@ -10,7 +10,7 @@ import { LuigiClientService } from 'shared/services/luigi-client.service';
 export class DeploymentHeaderRendererComponent implements OnInit {
   public showBoundServices: boolean;
 
-  constructor(private luigiClientService: LuigiClientService) {}
+  constructor(private luigiClientService: LuigiClientService) { }
 
   ngOnInit() {
     this.showBoundServices =

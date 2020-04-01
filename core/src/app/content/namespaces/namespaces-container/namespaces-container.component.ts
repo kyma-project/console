@@ -18,7 +18,7 @@ import { CurrentNamespaceService } from '../services/current-namespace.service';
 import { NamespacesService } from '../services/namespaces.service';
 import { InformationModalComponent } from '../../../shared/components/information-modal/information-modal.component';
 import { ComponentCommunicationService } from '../../../shared/services/component-communication.service';
-import * as LuigiClient from '@kyma-project/luigi-client';
+import * as LuigiClient from '@luigi-project/client';
 
 const fadeInAnimation = trigger('fadeInAnimation', [
   state('1', style({ opacity: 1 })),

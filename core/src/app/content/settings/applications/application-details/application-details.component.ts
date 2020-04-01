@@ -11,7 +11,7 @@ import * as _ from 'lodash';
 import { InformationModalComponent } from '../../../../shared/components/information-modal/information-modal.component';
 import { Copy2ClipboardModalComponent } from '../../../../shared/components/copy2clipboard-modal/copy2clipboard-modal.component';
 import { EditApplicationModalComponent } from '../edit-application-modal/edit-application-modal.component';
-import LuigiClient from '@kyma-project/luigi-client';
+import LuigiClient from '@luigi-project/client';
 import { EMPTY_TEXT } from 'shared/constants/constants';
 import { ConfirmationModalComponent } from 'shared/components/confirmation-modal/confirmation-modal.component';
 
@@ -165,14 +165,14 @@ export class ApplicationDetailsComponent implements OnInit, OnDestroy {
         res => {
           res
             ? this.fetchModal.show(
-                'URL to connect Application',
-                res.connectorService.url,
-                'Copy the following URL and use it at the external system that you would like to connect to:'
-              )
+              'URL to connect Application',
+              res.connectorService.url,
+              'Copy the following URL and use it at the external system that you would like to connect to:'
+            )
             : this.infoModal.show(
-                'Error',
-                'There is no URL available to connect your external systems to the Application'
-              );
+              'Error',
+              'There is no URL available to connect your external systems to the Application'
+            );
         },
         err => {
           this.infoModal.show('Error', err);
@@ -197,13 +197,13 @@ export class ApplicationDetailsComponent implements OnInit, OnDestroy {
               this.infoModal.show(
                 'Error',
                 `There was an error while deleting application ${
-                  this.application.name
+                this.application.name
                 }: ${err}`
               );
             }
           );
       })
-      .catch(() => {});
+      .catch(() => { });
   }
 
   hasType(entries, type) {

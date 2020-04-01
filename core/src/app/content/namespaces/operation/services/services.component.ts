@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Subscription } from 'rxjs';
-import LuigiClient from '@kyma-project/luigi-client';
+import LuigiClient from '@luigi-project/client';
 
 import { AppConfig } from '../../../../app.config';
 import { CurrentNamespaceService } from '../../services/current-namespace.service';
@@ -48,7 +48,7 @@ export class ServicesComponent extends AbstractKubernetesElementListComponent
 
         const url = `${AppConfig.k8sApiServerUrl}namespaces/${
           this.currentNamespaceId
-        }/services`;
+          }/services`;
         this.source = new KubernetesDataProvider(url, converter, this.http);
         this.entryRenderer = ServicesEntryRendererComponent;
         this.headerRenderer = ServicesHeaderRendererComponent;
@@ -84,7 +84,7 @@ export class ServicesComponent extends AbstractKubernetesElementListComponent
   public getResourceUrl(kind: string, entry: any): string {
     return `${AppConfig.k8sApiServerUrl}namespaces/${
       this.currentNamespaceId
-    }/services/${entry.getId()}`;
+      }/services/${entry.getId()}`;
   }
 
   public ngOnDestroy() {

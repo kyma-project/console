@@ -195,7 +195,7 @@ class CreateCredentialsModal extends React.Component {
 
     const title = (
       <>
-        <span>{'Bind Application'}</span>
+        <span>{'Create Credentials'}</span>
         <InfoButton
           content={bindingVariables.serviceBinding}
           orientation="bottom"

@@ -9,7 +9,7 @@ import { SecretsHeaderRendererComponent } from './secrets-header-renderer/secret
 import { ComponentCommunicationService } from '../../../../shared/services/component-communication.service';
 import { DataConverter } from 'app/generic-list';
 import { Subscription } from 'rxjs';
-import LuigiClient from '@kyma-project/luigi-client';
+import LuigiClient from '@luigi-project/client';
 import { ISecret, Secret } from 'shared/datamodel/k8s/secret';
 import { IEmptyListData } from 'shared/datamodel';
 
@@ -46,7 +46,7 @@ export class SecretsComponent extends AbstractKubernetesElementListComponent
         this.currentNamespaceId = namespaceId;
         const url = `${AppConfig.k8sApiServerUrl}namespaces/${
           this.currentNamespaceId
-        }/secrets`;
+          }/secrets`;
         this.source = new KubernetesDataProvider(url, converter, this.http);
         this.entryRenderer = SecretsEntryRendererComponent;
         this.headerRenderer = SecretsHeaderRendererComponent;
@@ -72,7 +72,7 @@ export class SecretsComponent extends AbstractKubernetesElementListComponent
   getResourceUrl(kind: string, entry: any): string {
     return `${AppConfig.k8sApiServerUrl}namespaces/${
       this.currentNamespaceId
-    }/secrets/${entry.getId()}`;
+      }/secrets/${entry.getId()}`;
   }
 
   public ngOnDestroy() {

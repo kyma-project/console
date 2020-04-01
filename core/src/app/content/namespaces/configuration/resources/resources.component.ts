@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ResourceUploaderModalComponent } from 'shared/components/resource-uploader/resource-uploader-modal/resource-uploader-modal.component';
 import { map } from 'rxjs/operators';
 
-import * as luigiClient from '@kyma-project/luigi-client';
+import * as luigiClient from '@luigi-project/client';
 
 @Component({
   selector: 'app-resources',
@@ -15,7 +15,7 @@ export class ResourcesComponent implements OnInit {
   public limitRangesTabExpanded: boolean;
   public resourceQuotasTabExpanded: boolean;
 
-  constructor() {}
+  constructor() { }
 
   ngOnInit() {
     const selectedTab = luigiClient.getNodeParams().selectedTab;

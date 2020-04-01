@@ -6,7 +6,7 @@ import { AbstractGraphqlElementListComponent } from '../abstract-graphql-element
 import { PodsEntryRendererComponent } from './pods-entry-renderer/pods-entry-renderer.component';
 import { PodsHeaderRendererComponent } from './pods-header-renderer/pods-header-renderer.component';
 
-import * as luigiClient from '@kyma-project/luigi-client';
+import * as luigiClient from '@luigi-project/client';
 import { GraphQLClientService } from 'shared/services/graphql-client-service';
 
 
@@ -90,7 +90,7 @@ export class PodsComponent extends AbstractGraphqlElementListComponent
       luigiClient
         .linkManager()
         .withParams(nodeParams)
-        .openAsModal('/home/cmf-logs', {title: `Logs from ${entry.name}`});
+        .openAsModal('/home/cmf-logs', { title: `Logs from ${entry.name}` });
     };
     return handler;
   }

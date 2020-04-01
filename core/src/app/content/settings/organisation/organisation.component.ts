@@ -3,7 +3,7 @@ import { AppConfig } from '../../../app.config';
 import { HttpClient } from '@angular/common/http';
 import * as FileSaver from 'file-saver';
 import { SHOW_SYSTEM_NAMESPACES_CHANGED_EVENT } from './../../../shared/constants/constants';
-import LuigiClient from '@kyma-project/luigi-client';
+import LuigiClient from '@luigi-project/client';
 
 @Component({
   selector: 'app-organisation',

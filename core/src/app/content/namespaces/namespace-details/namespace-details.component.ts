@@ -10,7 +10,7 @@ import { HttpClient } from '@angular/common/http';
 import { ComponentCommunicationService } from '../../../shared/services/component-communication.service';
 import { Observable, of, Subscription } from 'rxjs';
 import { ApplicationBindingService } from '../../settings/applications/application-details/application-binding-service';
-import * as LuigiClient from '@kyma-project/luigi-client';
+import * as LuigiClient from '@luigi-project/client';
 import { ConfirmationModalComponent } from 'shared/components/confirmation-modal/confirmation-modal.component';
 import { NamespaceEditComponent } from '../namespace-edit/namespace-edit.component';
 
@@ -221,6 +221,6 @@ export class NamespaceDetailsComponent implements OnInit, OnDestroy {
             }
           );
       })
-      .catch(() => {});
+      .catch(() => { });
   }
 }

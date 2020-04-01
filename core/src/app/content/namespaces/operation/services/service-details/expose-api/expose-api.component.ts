@@ -10,7 +10,7 @@ import * as _ from 'lodash';
 import { InformationModalComponent } from 'shared/components/information-modal/information-modal.component';
 import { Copy2ClipboardModalComponent } from 'shared/components/copy2clipboard-modal/copy2clipboard-modal.component';
 import { finalize, map } from 'rxjs/operators';
-import * as LuigiClient from '@kyma-project/luigi-client';
+import * as LuigiClient from '@luigi-project/client';
 import { GenericHelpersService } from '../../../../../../shared/services/generic-helpers.service';
 import { ConfirmationModalComponent } from 'shared/components/confirmation-modal/confirmation-modal.component';
 
@@ -67,7 +67,7 @@ export class ExposeApiComponent implements OnInit, OnDestroy {
     private http: HttpClient,
     private idpPresetsService: IdpPresetsService,
     private genericHelpers: GenericHelpersService
-  ) {}
+  ) { }
 
   public validateDetails() {
     this.clearInputErrors();
@@ -156,7 +156,7 @@ export class ExposeApiComponent implements OnInit, OnDestroy {
             this.infoModal.show(
               'Error',
               `There was an error trying to update ${this.apiName} API: ${
-                err.message
+              err.message
               }`
             );
           }
@@ -188,7 +188,7 @@ export class ExposeApiComponent implements OnInit, OnDestroy {
           }
         );
       })
-      .catch(() => {});
+      .catch(() => { });
   }
 
   public ngOnInit() {

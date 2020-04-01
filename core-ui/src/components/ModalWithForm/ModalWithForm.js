@@ -148,7 +148,11 @@ const ModalWithForm = ({
         {renderForm({
           formElementRef,
           isValid,
-          setCustomValid,
+          setCustomValid: isValid => {
+            // revalidate rest of the form
+            setValid(formElementRef.current.checkValidity());
+            setCustomValid(isValid);
+          },
           onChange: handleFormChanged,
           onError: handleFormError,
           onCompleted: handleFormSuccess,

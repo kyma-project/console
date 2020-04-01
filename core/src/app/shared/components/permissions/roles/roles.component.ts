@@ -7,7 +7,7 @@ import { CurrentNamespaceService } from 'namespaces/services/current-namespace.s
 import { ComponentCommunicationService } from 'shared/services/component-communication.service';
 import { RolesEntryRendererComponent } from './roles-entry-renderer/roles-entry-renderer.component';
 import { RolesHeaderRendererComponent } from './roles-header-renderer/roles-header-renderer.component';
-import LuigiClient from '@kyma-project/luigi-client';
+import LuigiClient from '@luigi-project/client';
 import { IEmptyListData } from 'shared/datamodel';
 
 @Component({
@@ -58,7 +58,7 @@ export class RolesComponent extends AbstractKubernetesElementListComponent
             this.currentNamespaceId = namespaceId;
             const rolesUrl = `${AppConfig.k8sApiServerUrl_rbac}namespaces/${
               this.currentNamespaceId
-            }/roles`;
+              }/roles`;
             this.source = new KubernetesDataProvider(
               rolesUrl,
               converter,
@@ -89,11 +89,11 @@ export class RolesComponent extends AbstractKubernetesElementListComponent
     if (this.activeTab === 'roles') {
       return `${AppConfig.k8sApiServerUrl_rbac}namespaces/${
         this.currentNamespaceId
-      }/roles/${entry.metadata.name}`;
+        }/roles/${entry.metadata.name}`;
     } else {
       return `${AppConfig.k8sApiServerUrl_rbac}clusterroles/${
         entry.metadata.name
-      }`;
+        }`;
     }
   }
 

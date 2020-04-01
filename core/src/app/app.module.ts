@@ -124,7 +124,7 @@ import { WebSocketLink } from './ws';
 import { GenericHelpersService } from './shared/services/generic-helpers.service';
 import { UrlLinkComponent } from 'shared/components/url-link/url-link.component';
 
-import * as LuigiClient from '@kyma-project/luigi-client';
+import * as LuigiClient from '@luigi-project/client';
 
 @NgModule({
   declarations: [
@@ -288,7 +288,7 @@ export class AppModule {
     let apolloClientInitialized = false;
 
     LuigiClient.addContextUpdateListener(e => {
-      if(e.idToken && !apolloClientInitialized){
+      if (e.idToken && !apolloClientInitialized) {
         // Create an http link:
         const http = httpLink.create({
           uri: AppConfig.graphqlApiUrl

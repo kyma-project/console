@@ -1,5 +1,5 @@
 import { Directive, Input, OnChanges, SimpleChanges } from '@angular/core';
-import * as luigiClient from '@kyma-project/luigi-client';
+import * as luigiClient from '@luigi-project/client';
 
 @Directive({
   selector: '[luigiClientCommunication]'
@@ -7,7 +7,7 @@ import * as luigiClient from '@kyma-project/luigi-client';
 export class LuigiClientCommunicationDirective implements OnChanges {
   @Input() isActive: boolean;
 
-  constructor() {}
+  constructor() { }
   ngOnChanges(changes: SimpleChanges) {
     if (changes.isActive && !changes.isActive.firstChange) {
       if (changes.isActive.currentValue) {

@@ -5,7 +5,7 @@ import { AbstractGraphqlElementListComponent } from '../../operation/abstract-gr
 
 import { ComponentCommunicationService } from 'shared/services/component-communication.service';
 
-import LuigiClient from '@kyma-project/luigi-client';
+import LuigiClient from '@luigi-project/client';
 import { IEmptyListData } from 'shared/datamodel';
 import { GraphQLClientService } from 'shared/services/graphql-client-service';
 import { CurrentNamespaceService } from 'namespaces/services/current-namespace.service';

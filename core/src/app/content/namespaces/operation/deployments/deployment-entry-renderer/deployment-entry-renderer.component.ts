@@ -1,5 +1,5 @@
 import { Component, Injector, OnInit, OnDestroy } from '@angular/core';
-import * as LuigiClient from '@kyma-project/luigi-client';
+import * as LuigiClient from '@luigi-project/client';
 
 import { CurrentNamespaceService } from 'namespaces/services/current-namespace.service';
 import { AbstractKubernetesEntryRendererComponent } from '../../abstract-kubernetes-entry-renderer.component';
@@ -75,7 +75,7 @@ export class DeploymentEntryRendererComponent
   goToServiceInstanceDetails(serviceInstanceId: string) {
     LuigiClient.linkManager().navigate(
       `/home/namespaces/${
-        this.currentNamespaceId
+      this.currentNamespaceId
       }/cmf-instances/details/${serviceInstanceId}`
     );
   }

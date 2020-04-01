@@ -29,12 +29,15 @@ export function createApolloClient(tenant, token) {
     uri: COMPASS_GRAPHQL_ENDPOINT,
   });
   const authLink = setContext((_, { headers }) => {
+    const headersVal = {
+      ...headers,
+      authorization: token,
+    };
+    if (tenant && tenant !== '') {
+      headersVal.tenant = tenant;
+    }
     return {
-      headers: {
-        ...headers,
-        tenant,
-        authorization: token,
-      },
+      headers: headersVal,
     };
   });
   const authHttpLink = authLink.concat(httpLink);

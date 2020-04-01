@@ -54,7 +54,8 @@ export const ServicePlanButton = styled.span`
 `;
 
 export const JSONCode = styled.code`
-  width: 100%;
+  max-width: 70vw;
+  display: inline-block;
   white-space: pre-wrap;
   white-space: -moz-pre-wrap;
   white-space: -o-pre-wrap;

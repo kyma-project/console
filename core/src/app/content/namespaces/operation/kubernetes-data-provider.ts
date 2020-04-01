@@ -12,7 +12,7 @@ import {
 } from 'app/generic-list';
 import { Observable } from 'rxjs';
 import { catchError, map, publishReplay, refCount } from 'rxjs/operators';
-import LuigiClient from '@kyma-project/luigi-client';
+import LuigiClient from '@luigi-project/client';
 
 export class KubernetesDataProvider<S extends any, T extends any>
   implements DataProvider {
@@ -25,7 +25,7 @@ export class KubernetesDataProvider<S extends any, T extends any>
     private resourceUrl: string,
     private dataConverter: DataConverter<S, T>,
     private http: HttpClient
-  ) {}
+  ) { }
 
   getData(
     pageNumber: number,
@@ -112,7 +112,7 @@ export class KubernetesDataProvider<S extends any, T extends any>
   getSystemNamespaces() {
     const showSystemNamespaces = localStorage.getItem('console.showSystemNamespaces') && localStorage.getItem('console.showSystemNamespaces') === 'true';
 
-    if (!showSystemNamespaces) { 
+    if (!showSystemNamespaces) {
       LuigiClient.addInitListener(eventData => {
         this.namespacesToHide = eventData && eventData.systemNamespaces ? eventData.systemNamespaces : [];
       });
@@ -123,7 +123,7 @@ export class KubernetesDataProvider<S extends any, T extends any>
     if (!(item instanceof Namespace)) {
       return true;
     }
-    
+
     const shouldBeHidden = this.namespacesToHide ? this.namespacesToHide.some((namespaceToHide) => {
       return namespaceToHide === item.metadata.name;
     }) : false;

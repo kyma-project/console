@@ -3,11 +3,10 @@ import { config } from './config';
 import { parseJWT, getPreviousLocation } from './navigation/navigation-helpers';
 
 async function fetchDexMetadata() {
-    const domain =
-      (window.clusterConfig && window.clusterConfig['domain']) || 'kyma.local';
+    const idpUrl = config.defaultIdpIssuer;
   
     try {
-      const response = await fetch(`https://dex.${domain}/.well-known/openid-configuration`);
+      const response = await fetch(`${idpUrl}/.well-known/openid-configuration`);
       return await response.json();
     }
     catch (e) {

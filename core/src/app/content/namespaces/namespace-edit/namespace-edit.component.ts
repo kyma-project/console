@@ -6,7 +6,7 @@ import {
   TemplateRef
 } from '@angular/core';
 import { NamespacesService } from '../services/namespaces.service';
-import LuigiClient from '@kyma-project/luigi-client';
+import LuigiClient from '@luigi-project/client';
 import { ComponentCommunicationService } from '../../../shared/services/component-communication.service';
 import { ModalService, ModalRef } from 'fundamental-ngx';
 import { NamespaceInfo } from '../namespace-info';
@@ -36,7 +36,7 @@ export class NamespaceEditComponent {
     private namespacesService: NamespacesService,
     private communicationService: ComponentCommunicationService,
     private modalService: ModalService
-  ) {}
+  ) { }
 
   public editNamespace() {
     this.namespacesService
