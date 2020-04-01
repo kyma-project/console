@@ -19,6 +19,12 @@ class Console {
       : 'https://lambdas-ui.' + config.domain;
   }
 
+  getCoreUIFrameUrl() {
+    return config.localdev
+      ? config.devLambdasUrl
+      : 'https://core-ui.' + config.domain;
+  }
+
   getConsole() {
     return config.localdev
       ? config.devConsoleUrl

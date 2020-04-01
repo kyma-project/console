@@ -22,7 +22,7 @@
     "request": "^2.88.0"
   },
   "jest": {
-    "testRegex": "/tests/(console-basic-test|applications-test|docs-ui-test|logging-test).jsx?$",
+    "testRegex": "/tests/(smoke).jsx?$",
     "setupTestFrameworkScriptFile": "<rootDir>/jest-setup.js"
   }
 }
