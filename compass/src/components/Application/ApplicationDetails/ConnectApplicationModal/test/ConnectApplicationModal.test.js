@@ -1,54 +1,18 @@
 import React from 'react';
 import { MockedProvider } from '@apollo/react-testing';
-import { validMock } from './mock';
-import { render, waitForDomChange, fireEvent } from '@testing-library/react';
-import ConnectApplicationModal from '../ConnectApplicationModal.container';
+import { validMock, errorMock } from './mock';
+import { render, waitForDomChange } from '@testing-library/react';
+import ConnectApplication from '../ConnectApplication';
 
-describe('ConnectApplicationModal Container', () => {
-  const openModal = getByRoleFn => {
-    const modalOpeningButton = getByRoleFn('button'); //get the only button around
-    expect(modalOpeningButton.textContent).toBe('Connect Application'); // make sure this is the right one
-    fireEvent.click(modalOpeningButton);
-  };
-
-  it('Modal is initially closed and opens after button click', async () => {
-    const { queryByLabelText, getByRole } = render(
+describe('ConnectApplication', () => {
+  it('loads connection data on render', async () => {
+    const { queryByLabelText } = render(
       <MockedProvider addTypename={false} mocks={validMock}>
-        <ConnectApplicationModal applicationId="app-id" />
+        <ConnectApplication applicationId="app-id" />
       </MockedProvider>,
     );
 
-    expect(queryByLabelText('Connect Application')).not.toBeInTheDocument();
-    openModal(getByRole);
-    await waitForDomChange();
-
-    expect(queryByLabelText('Connect Application')).toBeInTheDocument();
-  });
-
-  it('Modal handles "loading" state after open', () => {
-    const { queryAllByRole, getByRole } = render(
-      <MockedProvider addTypename={false} mocks={validMock}>
-        <ConnectApplicationModal applicationId="app-id" />
-      </MockedProvider>,
-    );
-
-    openModal(getByRole);
-
-    const loadings = queryAllByRole('textbox');
-    expect(loadings).toHaveLength(2);
-
-    expect(loadings[0]).toHaveValue('Loading...');
-    expect(loadings[1]).toHaveValue('Loading...');
-  });
-
-  it('Modal displays values got in response', async () => {
-    const { getByLabelText, getByRole } = render(
-      <MockedProvider addTypename={false} mocks={validMock}>
-        <ConnectApplicationModal applicationId="app-id" />
-      </MockedProvider>,
-    );
-
-    openModal(getByRole);
+    // wait for data to load
     await waitForDomChange();
 
     const {
@@ -56,11 +20,34 @@ describe('ConnectApplicationModal Container', () => {
       legacyConnectorURL,
     } = validMock[0].result.data.requestOneTimeTokenForApplication;
 
-    expect(
-      getByLabelText('Data to connect Application (base64 encoded)'),
-    ).toHaveValue(rawEncoded);
-    expect(getByLabelText('Legacy connector URL')).toHaveValue(
-      legacyConnectorURL,
+    const rawEncodedInput = queryByLabelText(
+      'Data to connect Application (base64 encoded)',
     );
-  }, 10000);
+    expect(rawEncodedInput).toBeInTheDocument();
+    expect(rawEncodedInput).toHaveValue(rawEncoded);
+
+    const connectorUrlInput = queryByLabelText('Legacy connector URL');
+    expect(connectorUrlInput).toBeInTheDocument();
+    expect(connectorUrlInput).toHaveValue(legacyConnectorURL);
+  });
+
+  it('displays error on failure', async () => {
+    // ignore error logged by component to console
+    console.warn = () => {};
+
+    const { queryByLabelText, queryByText } = render(
+      <MockedProvider addTypename={false} mocks={errorMock}>
+        <ConnectApplication applicationId="app-id" />
+      </MockedProvider>,
+    );
+
+    // wait for error to show
+    await waitForDomChange();
+
+    expect(queryByLabelText('Token')).not.toBeInTheDocument();
+    expect(queryByLabelText('Connector URL')).not.toBeInTheDocument();
+
+    const errorMessage = errorMock[0].error.message;
+    expect(queryByText(new RegExp(errorMessage))).toBeInTheDocument();
+  });
 });

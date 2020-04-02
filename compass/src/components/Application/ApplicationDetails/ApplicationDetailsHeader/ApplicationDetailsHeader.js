@@ -12,7 +12,7 @@ import '../../../../shared/styles/header.scss';
 
 import ModalWithForm from './../../../../shared/components/ModalWithForm/ModalWithForm';
 import UpdateApplicationForm from './../UpdateApplicationForm/UpdateApplicationForm.container';
-import ConnectApplicationModal from './../ConnectApplicationModal/ConnectApplicationModal.container';
+import ConnectApplicationModal from './../ConnectApplicationModal/ConnectApplicationModal';
 
 import { ApplicationQueryContext } from './../ApplicationDetails.component';
 

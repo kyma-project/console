@@ -11,12 +11,13 @@ import {
   FormMessage,
   FormTextarea,
 } from 'fundamental-react';
-import './ConnectApplicationModal.scss';
-import { Modal } from 'react-shared';
+import './ConnectApplication.scss';
+
+import { useMutation } from '@apollo/react-hooks';
+import { CONNECT_APPLICATION } from 'components/Application/gql';
 
 ConnectApplicationModal.propTypes = {
   applicationId: PropTypes.string.isRequired,
-  connectApplicationMutation: PropTypes.func.isRequired,
 };
 
 const FormEntry = ({ caption, name, value }) => (
@@ -37,28 +38,28 @@ const FormEntry = ({ caption, name, value }) => (
   </FormItem>
 );
 
-export default function ConnectApplicationModal({
-  applicationId,
-  connectApplicationMutation,
-}) {
+export default function ConnectApplicationModal({ applicationId }) {
+  const [connectApplicationMutation] = useMutation(CONNECT_APPLICATION);
   const [error, setError] = React.useState('');
   const [connectionData, setConnectionData] = React.useState({});
 
-  const connectApplication = async id => {
-    try {
-      const { data } = await connectApplicationMutation(id);
-      setConnectionData(data.requestOneTimeTokenForApplication);
-    } catch (e) {
-      console.warn(e);
-      setError(e.message || 'Error!');
+  React.useEffect(() => {
+    async function connectApplication(id) {
+      try {
+        const { data } = await connectApplicationMutation({
+          variables: { id },
+        });
+        setConnectionData(data.requestOneTimeTokenForApplication);
+      } catch (e) {
+        console.warn(e);
+        setError(e.message || 'Error!');
+      }
     }
-  };
+    connectApplication(applicationId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  const clearConnectionData = () => {
-    setConnectionData({}); // reset token
-  };
-
-  const modalContent = error ? (
+  const content = error ? (
     <FormMessage type="error">{error}</FormMessage>
   ) : (
     <FormSet>
@@ -75,26 +76,5 @@ export default function ConnectApplicationModal({
     </FormSet>
   );
 
-  return (
-    <>
-      <Modal
-        modalOpeningComponent={
-          <Button
-            option="emphasized"
-            onClick={() => connectApplication(applicationId)}
-            data-test-id="open-modal"
-          >
-            Connect Application
-          </Button>
-        }
-        title="Connect Application"
-        confirmText="Close"
-        onHide={clearConnectionData}
-      >
-        <section className="connect-application__content">
-          {modalContent}
-        </section>
-      </Modal>
-    </>
-  );
+  return <section className="connect-application__content">{content}</section>;
 }
