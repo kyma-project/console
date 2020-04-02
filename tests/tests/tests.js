@@ -25,18 +25,7 @@ test('Namespaces view is rendered', async t => {
   const testframe = async t => {
     return await t
       .expect(Selector('.fd-button').withText('Add new namespace').exists)
-      .ok();
-  };
-
-  await retry(t, switchToFrame, 6);
-  await retry(t, testframe, 6);
-});
-
-test('Namespace `default` card is on the Namespaces list', async t => {
-  await t.useRole(adminUser);
-
-  const testframe = async t => {
-    return await t
+      .ok()
       .expect(Selector('.fd-panel__title').withText('default').exists)
       .ok();
   };
@@ -49,17 +38,16 @@ testIf(
   !toBoolean(config.apiPackagesEnabled),
   'Applications view is rendered',
   async t => {
+    const nav = navLinkSelector('Applications');
     await t.useRole(adminUser);
     await t
-      .expect(navLinkSelector('cmf-apps_applications').exists)
+      .expect(nav.exists)
       .ok()
-      .navigateTo(`${ADRESS}/home/cmf-apps`);
+      .click(nav);
 
     const testframe = async t => {
       return await t
-        .expect(
-          Selector('.fd-button').withText(/.*create application.*/i).exists,
-        )
+        .expect(Selector('button').withText(/.*create application.*/i).exists)
         .ok();
     };
 

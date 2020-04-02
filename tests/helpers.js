@@ -15,7 +15,7 @@ export const switchToFrame = async t => {
 };
 
 export const navLinkSelector = testId => {
-  return Selector('a').withAttribute('data-testid', testId);
+  return Selector('a').withText(testId);
 };
 
 export const retry = async (t, func, n) => {
