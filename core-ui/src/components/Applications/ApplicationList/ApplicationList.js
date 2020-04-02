@@ -90,7 +90,6 @@ export default function ApplicationList() {
       if (!localAppEntry) return; // got a Kyma app that has not been registered in Compass
 
       localAppEntry.status = kymaApp.status || STATUSES.INSTALLED;
-      localAppEntry.enabledInNamespaces = kymaApp.enabledInNamespaces;
     });
   }
 
@@ -116,13 +115,7 @@ export default function ApplicationList() {
     },
   ];
 
-  const headerRenderer = () => [
-    'Name',
-    'Provider name',
-    'Status',
-    'Bound namespaces',
-    'Packages',
-  ];
+  const headerRenderer = () => ['Name', 'Provider name', 'Status', 'Packages'];
 
   const rowRenderer = item => {
     return [
@@ -135,13 +128,6 @@ export default function ApplicationList() {
       </span>,
       item.providerName || EMPTY_TEXT_PLACEHOLDER,
       <ApplicationStatus application={item} />,
-      Array.isArray(item.enabledInNamespaces) && item.enabledInNamespaces.length
-        ? item.enabledInNamespaces.map(n => (
-            <Badge key={n} className="fd-has-margin-right-tiny">
-              {n}
-            </Badge>
-          ))
-        : EMPTY_TEXT_PLACEHOLDER,
       <Counter>{item.packages.totalCount}</Counter>,
     ];
   };

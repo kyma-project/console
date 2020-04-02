@@ -170,7 +170,6 @@ export const GET_KYMA_APPLICATIONS = gql`
   query KymaApplications {
     applications {
       name
-      enabledInNamespaces
       status
     }
   }
