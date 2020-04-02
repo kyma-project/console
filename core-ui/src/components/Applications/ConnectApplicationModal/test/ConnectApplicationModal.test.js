@@ -3,15 +3,13 @@ import { MockedProvider } from '@apollo/react-testing';
 import { validMock, errorMock } from './mock';
 import { render, waitForDomChange, fireEvent } from '@testing-library/react';
 import ConnectApplicationModal from '../ConnectApplicationModal';
-import { createMockLink } from 'react-shared';
 
 jest.mock('index', () => ({ CompassGqlContext: {} }));
 
 describe('ConnectApplicationModal', () => {
   it('opens modal', async () => {
-    const { link } = createMockLink([validMock]);
     const { queryByLabelText, queryByText } = render(
-      <MockedProvider addTypename={false} link={link}>
+      <MockedProvider addTypename={false} mocks={[validMock]}>
         <ConnectApplicationModal applicationId="app-id" />
       </MockedProvider>,
     );
@@ -19,11 +17,17 @@ describe('ConnectApplicationModal', () => {
     // modal should be initially closed
     expect(queryByLabelText('Connect Application')).not.toBeInTheDocument();
 
+    console.time('t1');
     const modalOpeningComponent = queryByText('Connect');
+    console.log('1 find connect');
+    console.timeEnd('t1');
     expect(modalOpeningComponent).toBeInTheDocument();
 
     // open modal
+    console.time('t1');
     fireEvent.click(modalOpeningComponent);
+    console.log('1 click');
+    console.timeEnd('t1');
 
     await waitForDomChange();
 
@@ -32,15 +36,21 @@ describe('ConnectApplicationModal', () => {
   }, 10000);
 
   it('loads connection data', async () => {
-    const { link } = createMockLink([validMock]);
     const { getByText, queryByLabelText } = render(
-      <MockedProvider addTypename={false} link={link}>
+      <MockedProvider addTypename={false} mocks={[validMock]}>
         <ConnectApplicationModal applicationId="app-id" />
       </MockedProvider>,
     );
 
+    console.time('t2');
+    const p = getByText('Connect');
+    console.log('2 get');
+    console.timeEnd('t2');
     // open modal
-    fireEvent.click(getByText('Connect'));
+    console.time('t2');
+    fireEvent.click(p);
+    console.log('2 click');
+    console.timeEnd('t2');
     await waitForDomChange();
 
     const {
@@ -63,15 +73,21 @@ describe('ConnectApplicationModal', () => {
     // ignore error logged by component to console
     console.warn = () => {};
 
-    const { link } = createMockLink([errorMock]);
     const { getByText, queryByLabelText, queryByText } = render(
-      <MockedProvider addTypename={false} link={link}>
+      <MockedProvider addTypename={false} mocks={[errorMock]}>
         <ConnectApplicationModal applicationId="app-id" />
       </MockedProvider>,
     );
 
+    console.time('t3');
+    const p = getByText('Connect');
+    console.log('3 get');
+    console.timeEnd('t3');
     // open modal
-    fireEvent.click(getByText('Connect'));
+    console.time('t3');
+    fireEvent.click(p);
+    console.log('3 click');
+    console.timeEnd('t3');
     await waitForDomChange();
 
     expect(queryByLabelText('Token')).not.toBeInTheDocument();
