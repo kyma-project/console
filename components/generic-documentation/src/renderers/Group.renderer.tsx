@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StickyContainer, Sticky } from 'react-sticky';
 import {
   Source,
@@ -39,10 +39,10 @@ export const GroupRenderer: React.FunctionComponent<GroupRendererProps> = ({
 }) => {
   const [currentApi, setCurrentApi] = currentApiState;
   useEffect(() => {
-    // console.log(sources);
     if (!currentApi && sources.length && sources[0].type !== 'mock')
       setCurrentApi(sources[0]);
   }, [currentApi, sources]);
+
   if (
     (!sources || !sources.length) &&
     (!additionalTabs || !additionalTabs.length)
@@ -83,14 +83,7 @@ export const GroupRenderer: React.FunctionComponent<GroupRendererProps> = ({
     markdownDefinition.possibleTypes.includes(source.type),
   );
 
-  // const openApiSources = getSourcesOfType(
-  //   sources,
-  //   openApiDefinition.possibleTypes,
-  // );
-  // const asyncApiSources = getSourcesOfType(sources, asyncApiTypes);
-  // const odataSources = getSourcesOfType(sources, odataTypes);
-
-  const tabs =
+  const additionalTabsFragment =
     additionalTabs &&
     additionalTabs.map(tab => (
       <Tab label={tab.label} id={tab.id} key={tab.id}>
@@ -137,7 +130,7 @@ export const GroupRenderer: React.FunctionComponent<GroupRendererProps> = ({
           {currentApi && <SingleAPIcontent source={currentApi} />}
         </Tab>
       )}
-      {tabs}
+      {additionalTabsFragment}
     </Tabs>
   );
 };
@@ -173,20 +166,29 @@ const ApiSelector: React.FunctionComponent<{
   onApiSelect: (api: Source) => void;
   selectedApi: Source;
 }> = ({ sources, onApiSelect, selectedApi }) => {
-  const sortedSources = sources.sort(sortByType);
-  console.log('rendering api selector');
+  const [searchText, setSearchText] = useState('');
+  const sortedSources = sources
+    .filter((s: Source) => s.type.includes(searchText))
+    .sort(sortByType);
+
+  function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
+    setSearchText(e.target.value);
+  }
 
   return (
     <Combobox
-      onClick={(e: MouseEvent) => e.stopPropagation()}
+      onClick={(e: React.MouseEvent<HTMLElement>) => {
+        const a = e.target as HTMLElement; // not sure why but it's needed, thank you typescript!
+        if (a.tagName === 'INPUT' || a.tagName === 'BUTTON')
+          e.stopPropagation(); // avoid closing the dropdown due to the "opening" click ∞
+      }}
       menu={
         <List>
           {sortedSources.map((s: Source, id) => (
             <a
+              aria-label="api-"
               href="#"
-              onClick={e => {
-                onApiSelect(s);
-              }}
+              onClick={e => onApiSelect(s)}
               className="fd-menu__item"
               key={s.rawContent}
             >
@@ -199,7 +201,7 @@ const ApiSelector: React.FunctionComponent<{
         </List>
       }
       placeholder={(selectedApi && selectedApi.type) || 'Select API'} //TODO: use displayName
-      // inputProps={{ value: selectedApi.type }}
+      inputProps={{ onChange: handleInputChange }}
     />
   );
 };
