@@ -72,7 +72,8 @@ testIf(
 
     //WHEN
     await retry(t, switchToActiveFrame, 3);
-    t.click(Selector('.fd-panel__title').withText('default'))
+    await t
+      .click(Selector('.fd-panel__title').withText('default'))
       .switchToMainWindow()
       .click(catalogLink);
 
