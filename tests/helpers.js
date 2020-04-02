@@ -9,13 +9,14 @@ export const testIf = (condition, testName, testToRun) => {
   }
 };
 
-export const switchToFrame = async t => {
-  const iframe = await Selector('iframe', { visibilityCheck: true });
-  await t.switchToIframe(iframe);
+export const switchToActiveFrame = t => {
+  return t.switchToIframe(
+    Selector('iframe', { visibilityCheck: true, timeout: 20000 }),
+  );
 };
 
-export const leftNavLinkSelectorByText = text => {
-  return Selector('nav a').withText(text);
+export const leftNavLinkSelector = text => {
+  return Selector('nav.fd-side-nav a').withText(text);
 };
 
 export const retry = async (t, func, n) => {

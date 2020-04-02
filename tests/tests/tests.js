@@ -2,24 +2,32 @@ import { Selector } from 'testcafe';
 
 import {
   testIf,
-  switchToFrame,
-  ADRESS,
+  switchToActiveFrame,
   adminUser,
   toBoolean,
   retry,
-  leftNavLinkSelectorByText,
+  leftNavLinkSelector,
 } from '../helpers';
 import config from '../config';
 
-fixture`Console tests`.page(ADRESS);
+fixture`Console UI Smoke tests`;
 
 test('Luigi navigation is rendered', async t => {
+  //GIVEN
   await t.useRole(adminUser);
-  await t.expect(leftNavLinkSelectorByText('Namespaces').exists).ok();
+
+  //AND
+  const namespacesLink = leftNavLinkSelector('Namespaces');
+
+  //THEN
+  await t.expect(namespacesLink.exists).ok();
 });
 
 test('Namespaces view is rendered', async t => {
+  //GIVEN
   await t.useRole(adminUser);
+
+  //THEN
   const testframe = async t => {
     return await t
       .expect(Selector('.fd-button').withText('Add new namespace').exists)
@@ -27,30 +35,30 @@ test('Namespaces view is rendered', async t => {
       .expect(Selector('.fd-panel__title').withText('default').exists)
       .ok();
   };
-
-  await retry(t, switchToFrame, 6);
-  await retry(t, testframe, 6);
+  await retry(t, switchToActiveFrame, 3);
+  await retry(t, testframe, 3);
 });
 
 testIf(
   !toBoolean(config.apiPackagesEnabled),
   'Applications view is rendered',
   async t => {
-    const nav = leftNavLinkSelectorByText('Applications');
-    await t.useRole(adminUser);
+    //GIVEN
+    const applicationLink = leftNavLinkSelector('Applications');
     await t
-      .expect(nav.exists)
-      .ok()
-      .click(nav);
+      .useRole(adminUser)
 
+      //WHEN
+      .click(applicationLink);
+
+    //THEN
+    await retry(t, switchToActiveFrame, 3);
     const testframe = async t => {
       return await t
         .expect(Selector('button').withText(/.*create application.*/i).exists)
         .ok();
     };
-
-    await retry(t, switchToFrame, 6);
-    await retry(t, testframe, 6);
+    await retry(t, testframe, 3);
   },
 );
 
@@ -58,14 +66,18 @@ testIf(
   toBoolean(config.serviceCatalogEnabled),
   'Catalog view is rendered',
   async t => {
-    await t
-      .useRole(adminUser)
-      .navigateTo(`${ADRESS}/home/namespaces/default/cmf-service-catalog`);
+    //GIVEN
+    await t.useRole(adminUser);
+    const catalogLink = leftNavLinkSelector('Catalog');
 
-    await t
-      .expect(Selector('.fd-side-nav__link').withText('Catalog').exists)
-      .ok();
+    //WHEN
+    await retry(t, switchToActiveFrame, 3);
+    t.click(Selector('.fd-panel__title').withText('default'))
+      .switchToMainWindow()
+      .click(catalogLink);
 
+    //THEN
+    await retry(t, switchToActiveFrame, 3);
     const testframe = async t => {
       return await t
         .expect(
@@ -73,8 +85,6 @@ testIf(
         )
         .ok();
     };
-
-    await retry(t, switchToFrame, 6);
     await retry(t, testframe, 6);
   },
 );
