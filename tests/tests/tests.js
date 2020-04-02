@@ -7,6 +7,7 @@ import {
   adminUser,
   toBoolean,
   retry,
+  navLinkSelector,
 } from '../helpers';
 import config from '../config';
 
@@ -14,7 +15,6 @@ fixture`Console tests`.page(ADRESS);
 
 test('Luigi navigation is rendered', async t => {
   await t.useRole(adminUser);
-
   await t
     .expect(Selector('.fd-side-nav__item').withText('Namespaces').exists)
     .ok();
@@ -22,7 +22,6 @@ test('Luigi navigation is rendered', async t => {
 
 test('Namespaces view is rendered', async t => {
   await t.useRole(adminUser);
-
   const testframe = async t => {
     return await t
       .expect(Selector('.fd-button').withText('Add new namespace').exists)
@@ -51,9 +50,8 @@ testIf(
   'Applications view is rendered',
   async t => {
     await t.useRole(adminUser);
-
     await t
-      .expect(Selector('.fd-side-nav__link').withText('Applications').exists)
+      .expect(navLinkSelector('cmf-apps_applications').exists)
       .ok()
       .navigateTo(`${ADRESS}/home/cmf-apps`);
 

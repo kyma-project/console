@@ -10,10 +10,12 @@ export const testIf = (condition, testName, testToRun) => {
 };
 
 export const switchToFrame = async t => {
-  const iframe = await Selector('.iframeContainer')
-    .child('iframe')
-    .filterVisible();
+  const iframe = await Selector('iframe', { visibilityCheck: true });
   await t.switchToIframe(iframe);
+};
+
+export const navLinkSelector = testId => {
+  return Selector('a').withAttribute('data-testid', testId);
 };
 
 export const retry = async (t, func, n) => {
@@ -29,7 +31,7 @@ export const retry = async (t, func, n) => {
 
 export const ADRESS = `${
   config.localDev ? 'http://console-dev' : 'https://console'
-}.${config.domain}`;
+}.${config.domain}${config.localDev ? ':4200' : ''}`;
 
 export const adminUser = Role(
   ADRESS,
