@@ -14,8 +14,8 @@ export const switchToFrame = async t => {
   await t.switchToIframe(iframe);
 };
 
-export const navLinkSelector = testId => {
-  return Selector('a').withText(testId);
+export const leftNavLinkSelectorByText = text => {
+  return Selector('nav a').withText(text);
 };
 
 export const retry = async (t, func, n) => {

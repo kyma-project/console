@@ -7,7 +7,7 @@ import {
   adminUser,
   toBoolean,
   retry,
-  navLinkSelector,
+  leftNavLinkSelectorByText,
 } from '../helpers';
 import config from '../config';
 
@@ -15,9 +15,7 @@ fixture`Console tests`.page(ADRESS);
 
 test('Luigi navigation is rendered', async t => {
   await t.useRole(adminUser);
-  await t
-    .expect(Selector('.fd-side-nav__item').withText('Namespaces').exists)
-    .ok();
+  await t.expect(leftNavLinkSelectorByText('Namespaces').exists).ok();
 });
 
 test('Namespaces view is rendered', async t => {
@@ -38,7 +36,7 @@ testIf(
   !toBoolean(config.apiPackagesEnabled),
   'Applications view is rendered',
   async t => {
-    const nav = navLinkSelector('Applications');
+    const nav = leftNavLinkSelectorByText('Applications');
     await t.useRole(adminUser);
     await t
       .expect(nav.exists)
