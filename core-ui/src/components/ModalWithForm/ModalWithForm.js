@@ -44,7 +44,7 @@ const ModalWithForm = ({
 
   function handleFormChanged(e) {
     setValid(formElementRef.current.checkValidity()); // general form validity
-    if (!e.target) {
+    if (!e || !e.target) {
       return;
     }
 

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {
   Menu,
   Dropdown,
@@ -8,14 +9,13 @@ import {
   FormLabel,
   FormInput,
 } from 'fundamental-react';
-import { useNotification, Modal } from 'react-shared';
 
 import { CompassGqlContext } from 'index';
 import { GET_TEMPLATES, GET_COMPASS_APPLICATIONS } from 'gql/queries';
 import { REGISTER_APPLICATION_FROM_TEMPLATE } from 'gql/mutations';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 
-import './CreateApplicationFromTemplateModal.scss';
+import './CreateApplicationFromTemplateForm.scss';
 
 const PlaceholderInput = ({
   placeholder: { name, description, value },
@@ -34,7 +34,19 @@ const PlaceholderInput = ({
   </FormItem>
 );
 
-export default function CreateApplicationFromTemplateModal() {
+CreateApplicationFromTemplateForm.propTypes = {
+  onChange: PropTypes.func,
+  onCompleted: PropTypes.func,
+  onError: PropTypes.func,
+  formElementRef: PropTypes.shape({ current: PropTypes.any }).isRequired,
+};
+
+export default function CreateApplicationFromTemplateForm({
+  onChange,
+  onCompleted,
+  onError,
+  formElementRef,
+}) {
   const compassGqlClient = React.useContext(CompassGqlContext);
   const templatesQuery = useQuery(GET_TEMPLATES, {
     fetchPolicy: 'cache-and-network',
@@ -47,8 +59,6 @@ export default function CreateApplicationFromTemplateModal() {
       refetchQueries: [{ query: GET_COMPASS_APPLICATIONS }],
     },
   );
-  const notificationManager = useNotification();
-
   const [template, setTemplate] = React.useState(null);
   const [placeholders, setPlaceholders] = React.useState([]);
 
@@ -59,8 +69,9 @@ export default function CreateApplicationFromTemplateModal() {
         value: '',
       }));
       setPlaceholders(placeholders);
+      onChange(); // revalidate form against new fields
     }
-  }, [template]);
+  }, [template, onChange]);
 
   const AvailableTemplatesList = ({ data, error, loading }) => {
     if (error || loading) {
@@ -102,13 +113,47 @@ export default function CreateApplicationFromTemplateModal() {
     }
   };
 
+  const handleFormSubmit = async () => {
+    const placeholdersValues = Array.from(
+      Object.values(placeholders).map(placeholder => ({
+        placeholder: placeholder.name,
+        value: placeholder.value,
+      })),
+    );
+
+    try {
+      const result = await registerApplicationFromTemplate({
+        variables: {
+          in: {
+            templateName: template.name,
+            values: placeholdersValues,
+          },
+        },
+      });
+      const name = result.data.registerApplicationFromTemplate.name;
+      onCompleted(`Application "${name}" created successfully`);
+    } catch (e) {
+      console.warn(e);
+      let message = e.message;
+      if (e.message.match('Object is not unique')) {
+        message = 'Application with that name already exists';
+      }
+      onError(`Could not unbind Namespace due to an error: ${message}`);
+    }
+  };
+
   const content = (
-    <section className="create-application__template-form">
+    <form
+      ref={formElementRef}
+      onChange={onChange}
+      onSubmit={handleFormSubmit}
+      className="create-application__template-form"
+    >
       <Dropdown fullwidth="true">
         <Popover
           body={<AvailableTemplatesList {...templatesQuery} />}
           control={
-            <Button className="fd-dropdown__control">
+            <Button className="fd-dropdown__control" typeAttr="button">
               {dropdownControlText()}
             </Button>
           }
@@ -132,60 +177,8 @@ export default function CreateApplicationFromTemplateModal() {
           />
         ))}
       </section>
-    </section>
+    </form>
   );
 
-  const addApplication = async () => {
-    const placeholdersValues = Array.from(
-      Object.values(placeholders).map(placeholder => ({
-        placeholder: placeholder.name,
-        value: placeholder.value,
-      })),
-    );
-
-    try {
-      const result = await registerApplicationFromTemplate({
-        variables: {
-          in: {
-            templateName: template.name,
-            values: placeholdersValues,
-          },
-        },
-      });
-
-      const name = result.data.registerApplicationFromTemplate.name;
-      notificationManager.notifySuccess({
-        content: `Application "${name}" created successfully`,
-      });
-    } catch (e) {
-      console.warn(e);
-      let message = e.message;
-      if (e.message.match('Object is not unique')) {
-        message = 'Application with that name already exists';
-      }
-      notificationManager.notifyError({
-        content: `Could not unbind Namespace due to an error: ${message}`,
-      });
-    }
-  };
-
-  const arePlaceholdersFilled = Object.values(placeholders).every(
-    placeholder => placeholder.value,
-  );
-
-  return (
-    <Modal
-      modalOpeningComponent={<Menu.Item>From template</Menu.Item>}
-      title="Create application from template"
-      confirmText="Create"
-      onConfirm={addApplication}
-      disabledConfirm={!template || !arePlaceholdersFilled}
-      onHide={() => {
-        setTemplate(null);
-        setPlaceholders([]);
-      }}
-    >
-      {content}
-    </Modal>
-  );
+  return content;
 }

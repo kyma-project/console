@@ -18,7 +18,7 @@ import { Counter } from 'fundamental-react/Badge';
 import { useNotification } from 'react-shared';
 import ModalWithForm from '../../ModalWithForm/ModalWithForm';
 import RegisterApplicationForm from '../RegisterApplication/RegisterApplicationForm';
-import CreateApplicationFromTemplateModal from './../CreateApplicationFromTemplateModal/CreateApplicationFromTemplateModal';
+import CreateApplicationFromTemplateForm from './../CreateApplicationFromTemplateForm/CreateApplicationFromTemplateForm';
 import './ApplicationList.scss';
 import ApplicationStatus, {
   STATUSES,
@@ -169,13 +169,21 @@ export default function ApplicationList() {
     />
   );
 
+  const RegisterAppFromTemplate = () => (
+    <ModalWithForm
+      title="Create application from template"
+      modalOpeningComponent={<Menu.Item>From template</Menu.Item>}
+      renderForm={props => <CreateApplicationFromTemplateForm {...props} />}
+    />
+  );
+
   const extraHeaderContent = (
     <Popover
       body={
         <Menu>
           <Menu.List>
             <RegisterApp />
-            <CreateApplicationFromTemplateModal />
+            <RegisterAppFromTemplate />
           </Menu.List>
         </Menu>
       }

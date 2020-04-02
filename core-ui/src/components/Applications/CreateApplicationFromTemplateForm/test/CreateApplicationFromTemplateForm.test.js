@@ -1,5 +1,5 @@
 import React from 'react';
-import CreateApplicationFromTemplateModal from '../CreateApplicationFromTemplateModal';
+import CreateApplicationFromTemplateForm from '../CreateApplicationFromTemplateForm';
 import {
   render,
   fireEvent,
@@ -19,7 +19,7 @@ jest.mock('@kyma-project/common', () => ({
 
 jest.mock('index', () => ({ CompassGqlContext: {} }));
 
-describe('CreateApplicationFromTemplateModal', () => {
+describe('CreateApplicationFromTemplateForm', () => {
   //Warning: `NaN` is an invalid value for the `left` css style property.
   console.error = jest.fn();
 
@@ -27,26 +27,17 @@ describe('CreateApplicationFromTemplateModal', () => {
     console.error.mockReset();
   });
 
-  async function expandTemplateList(queryByText) {
-    fireEvent.click(queryByText('From template'));
-    // wait for modal to open and template list to load
-    await waitForDomChange();
-    // click to expand the list of templates
-    fireEvent.click(queryByText('Choose template'));
-  }
-
   it('Loads list of available templates', async () => {
     const { queryByText } = render(
       <MockedProvider mocks={[getAppTemplatesQuery]} addTypename={false}>
-        <CreateApplicationFromTemplateModal
-          applicationsQuery={{}}
-          modalOpeningComponent={<button>From template</button>}
+        <CreateApplicationFromTemplateForm
+          formElementRef={{ current: null }}
+          onChange={() => {}}
+          onCompleted={() => {}}
+          onError={() => {}}
         />
       </MockedProvider>,
     );
-
-    // open modal
-    fireEvent.click(queryByText('From template'));
 
     // loading templates
     expect(queryByText('Choose template (loading...)')).toBeInTheDocument();
@@ -59,28 +50,33 @@ describe('CreateApplicationFromTemplateModal', () => {
     fireEvent.click(chooseTemplateButton);
     expect(queryByText('template-no-placeholders')).toBeInTheDocument();
     expect(queryByText('template-with-placeholders')).toBeInTheDocument();
-  }, 10000); // to prevent MockedProvider timeouting
+  });
 
   it('Renders choosen template placeholders', async () => {
     const { queryByText, queryByLabelText } = render(
       <MockedProvider mocks={[getAppTemplatesQuery]} addTypename={false}>
-        <CreateApplicationFromTemplateModal
-          applicationsQuery={{}}
-          modalOpeningComponent={<button>From template</button>}
+        <CreateApplicationFromTemplateForm
+          formElementRef={{ current: null }}
+          onChange={() => {}}
+          onCompleted={() => {}}
+          onError={() => {}}
         />
       </MockedProvider>,
     );
 
-    await expandTemplateList(queryByText);
+    await waitForDomChange();
+    fireEvent.click(queryByText('Choose template'));
 
     // choose template
     fireEvent.click(queryByText('template-with-placeholders'));
 
     expect(queryByLabelText('placeholder-1-description')).toBeInTheDocument();
     expect(queryByLabelText('placeholder-2-description')).toBeInTheDocument();
-  }, 10000); // to prevent MockedProvider timeouting
+  });
 
-  it('Manages form validity and submits valid form', async () => {
+  it('Sends request on form submit', async () => {
+    const formRef = React.createRef();
+
     const { queryByText, queryByLabelText } = render(
       <MockedProvider
         mocks={[
@@ -91,20 +87,20 @@ describe('CreateApplicationFromTemplateModal', () => {
         addTypename={false}
         resolvers={{}}
       >
-        <CreateApplicationFromTemplateModal
-          applicationsQuery={{ refetch: () => {} }}
-          modalOpeningComponent={<button>From template</button>}
+        <CreateApplicationFromTemplateForm
+          formElementRef={formRef}
+          onChange={() => {}}
+          onCompleted={() => {}}
+          onError={() => {}}
         />
       </MockedProvider>,
     );
 
-    await expandTemplateList(queryByText);
+    await waitForDomChange();
+    fireEvent.click(queryByText('Choose template'));
 
     // choose template
     fireEvent.click(queryByText('template-with-placeholders'));
-
-    const createButton = queryByText('Create');
-    expect(createButton).toBeDisabled();
 
     // fill form to enable 'Save' button
     fireEvent.change(queryByLabelText('placeholder-1-description'), {
@@ -113,14 +109,12 @@ describe('CreateApplicationFromTemplateModal', () => {
     fireEvent.change(queryByLabelText('placeholder-2-description'), {
       target: { value: '2' },
     });
-    await waitForDomChange();
 
-    expect(createButton).not.toBeDisabled();
-
-    fireEvent.click(createButton);
+    // simulate form submit from outside
+    formRef.current.dispatchEvent(new Event('submit'));
 
     await wait(() => {
       expect(registerApplicationMutation.result).toHaveBeenCalled();
     });
-  }, 10000); // to prevent MockedProvider timeouting
+  });
 });
