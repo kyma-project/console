@@ -20,14 +20,6 @@ import {
   asyncApiDefinition,
 } from '../constants';
 
-function existFiles(sources: Source[], types: string[]) {
-  return sources.find(source => types.includes(source.type));
-}
-
-function getSourcesOfType(sources: Source[], types: string[]): Source[] {
-  return sources.filter(source => types.includes(source.type)).sort();
-}
-
 export enum TabsLabels {
   DOCUMENTATION = 'Documentation',
   CONSOLE = 'Console',
@@ -58,12 +50,16 @@ export const GroupRenderer: React.FunctionComponent<GroupRendererProps> = ({
     return null;
   }
 
+  const nonMarkdownSources = sources.filter(
+    (s: Source) => !markdownDefinition.possibleTypes.includes(s.type),
+  );
+
   const apiTabHeader = (
     <ApiTabHeader>
       <span>Selected an API to display:</span>
       <ApiSelector
         onApiSelect={setCurrentApi}
-        sources={sources}
+        sources={nonMarkdownSources}
         selectedApi={currentApi}
       />
     </ApiTabHeader>
@@ -83,7 +79,9 @@ export const GroupRenderer: React.FunctionComponent<GroupRendererProps> = ({
   const onInitTabs = (): string =>
     luigiClient.getNodeParams().selectedTab || '';
 
-  const markdownsExists = existFiles(sources, markdownDefinition.possibleTypes);
+  const markdownsExists = sources.some(source =>
+    markdownDefinition.possibleTypes.includes(source.type),
+  );
 
   // const openApiSources = getSourcesOfType(
   //   sources,
@@ -134,11 +132,11 @@ export const GroupRenderer: React.FunctionComponent<GroupRendererProps> = ({
           </MarkdownWrapper>
         </Tab>
       )}
-
-      <Tab label={apiTabHeader} id="apis">
-        {currentApi && <SingleAPIcontent source={currentApi} />}
-      </Tab>
-
+      {!!nonMarkdownSources.length && (
+        <Tab label={apiTabHeader} id="apis">
+          {currentApi && <SingleAPIcontent source={currentApi} />}
+        </Tab>
+      )}
       {tabs}
     </Tabs>
   );
@@ -149,7 +147,7 @@ function sortByType(source1: Source, source2: Source): number {
     source1.type.localeCompare(source2.type) ||
     source1.rawContent.localeCompare(source2.rawContent)
   );
-  // TODO:  || source1.displayName.localeCompare(source2.displayName)
+  // TODO:  || source1.displayName.localeCompare(source2.displayName) instead of rawContent
 }
 
 const BadgeForType: React.FunctionComponent<{ type: string }> = ({ type }) => {
@@ -200,7 +198,7 @@ const ApiSelector: React.FunctionComponent<{
           ))}
         </List>
       }
-      placeholder={(selectedApi && selectedApi.type) || 'Select API'} //use displayName
+      placeholder={(selectedApi && selectedApi.type) || 'Select API'} //TODO: use displayName
       // inputProps={{ value: selectedApi.type }}
     />
   );
