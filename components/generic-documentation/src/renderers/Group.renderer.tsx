@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { StickyContainer, Sticky } from 'react-sticky';
 import {
   Source,
@@ -10,15 +10,15 @@ import { Grid, Tabs, Tab, TabProps } from '@kyma-project/components';
 
 import { HeadersNavigation } from '../render-engines/markdown/headers-toc';
 import { MarkdownWrapper } from '../styled';
-import {
-  markdownTypes,
-  odataTypes,
-  asyncApiTypes,
-  openApiTypes,
-} from '../constants';
+
 import { SingleAPIcontent } from './SingleAPIcontent';
 import { Combobox, List, ListItem, ApiTabHeader } from './styledOther';
 import { Badge } from 'fundamental-react';
+import {
+  markdownDefinition,
+  odataDefinition,
+  asyncApiDefinition,
+} from '../constants';
 
 function existFiles(sources: Source[], types: string[]) {
   return sources.find(source => types.includes(source.type));
@@ -83,11 +83,14 @@ export const GroupRenderer: React.FunctionComponent<GroupRendererProps> = ({
   const onInitTabs = (): string =>
     luigiClient.getNodeParams().selectedTab || '';
 
-  const markdownsExists = existFiles(sources, markdownTypes);
+  const markdownsExists = existFiles(sources, markdownDefinition.possibleTypes);
 
-  const openApiSources = getSourcesOfType(sources, openApiTypes);
-  const asyncApiSources = getSourcesOfType(sources, asyncApiTypes);
-  const odataSources = getSourcesOfType(sources, odataTypes);
+  // const openApiSources = getSourcesOfType(
+  //   sources,
+  //   openApiDefinition.possibleTypes,
+  // );
+  // const asyncApiSources = getSourcesOfType(sources, asyncApiTypes);
+  // const odataSources = getSourcesOfType(sources, odataTypes);
 
   const tabs =
     additionalTabs &&
@@ -112,7 +115,9 @@ export const GroupRenderer: React.FunctionComponent<GroupRendererProps> = ({
               <StickyContainer>
                 <Grid.Row>
                   <Grid.Unit df={9} sm={12} className="grid-unit-content">
-                    <RenderedContent sourceTypes={markdownTypes} />
+                    <RenderedContent
+                      sourceTypes={markdownDefinition.possibleTypes}
+                    />
                   </Grid.Unit>
                   <Grid.Unit df={3} sm={0} className="grid-unit-navigation">
                     <Sticky>
@@ -131,13 +136,7 @@ export const GroupRenderer: React.FunctionComponent<GroupRendererProps> = ({
       )}
 
       <Tab label={apiTabHeader} id="apis">
-        {currentApi && (
-          <SingleAPIcontent
-            apiLabel={TabsLabels.CONSOLE}
-            apiClassName="custom-odata-styling"
-            source={currentApi}
-          />
-        )}
+        {currentApi && <SingleAPIcontent source={currentApi} />}
       </Tab>
 
       {tabs}
@@ -156,15 +155,15 @@ function sortByType(source1: Source, source2: Source): number {
 const BadgeForType: React.FunctionComponent<{ type: string }> = ({ type }) => {
   let badgeType: 'success' | 'warning' | 'error' | undefined = undefined;
 
-  if (odataTypes.includes(type)) {
+  if (odataDefinition.possibleTypes.includes(type)) {
     badgeType = 'warning';
   }
 
-  if (asyncApiTypes.includes(type)) {
+  if (asyncApiDefinition.possibleTypes.includes(type)) {
     badgeType = 'success';
   }
 
-  if (markdownTypes.includes(type)) {
+  if (markdownDefinition.possibleTypes.includes(type)) {
     badgeType = 'error';
   }
 

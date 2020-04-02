@@ -9,10 +9,10 @@ import {
   Sources,
 } from '@kyma-project/documentation-component';
 import {
-  markdownTypes,
-  openApiTypes,
-  asyncApiTypes,
-  odataTypes,
+  markdownDefinition,
+  openApiDefinition,
+  asyncApiDefinition,
+  odataDefinition,
 } from '../constants';
 
 type AG = ClusterAssetGroup | AssetGroup;
@@ -34,9 +34,9 @@ export class DocsLoader {
   async fetchAssets(): Promise<void> {
     await Promise.all([
       await this.setDocumentation(),
-      await this.setSpecification(openApiTypes),
-      await this.setSpecification(asyncApiTypes),
-      await this.setSpecification(odataTypes),
+      await this.setSpecification(openApiDefinition.possibleTypes),
+      await this.setSpecification(asyncApiDefinition.possibleTypes),
+      await this.setSpecification(odataDefinition.possibleTypes),
     ]);
   }
 
@@ -96,7 +96,7 @@ export class DocsLoader {
     return await fetch(file.url)
       .then(response => response.text())
       .then(text => {
-        if (markdownTypes.includes(type)) {
+        if (markdownDefinition.possibleTypes.includes(type)) {
           return this.serializeMarkdownFile(file, text);
         }
 
@@ -158,7 +158,7 @@ export class DocsLoader {
   }
 
   private extractDocumentation(): File[] {
-    const markdownAssets = this.extractAssets(markdownTypes);
+    const markdownAssets = this.extractAssets(markdownDefinition.possibleTypes);
 
     let data: File[] = [];
     if (markdownAssets) {
