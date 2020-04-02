@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Content, Renderers } from '@kyma-project/documentation-component';
 
 import { GroupRenderer } from '../renderers';
@@ -13,8 +13,13 @@ export const CatalogUILayout: React.FunctionComponent<CatalogUILayoutProps> = ({
   renderers,
   additionalTabs,
 }) => {
+  const currentApiState = useState();
   renderers.group = (otherProps: any) => (
-    <GroupRenderer {...otherProps} additionalTabs={additionalTabs} />
+    <GroupRenderer
+      {...otherProps}
+      currentApiState={currentApiState}
+      additionalTabs={additionalTabs}
+    />
   );
 
   return (

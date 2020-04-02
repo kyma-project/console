@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { StickyContainer, Sticky } from 'react-sticky';
 import {
   Source,
@@ -17,6 +17,8 @@ import {
   openApiTypes,
 } from '../constants';
 import { SingleAPIcontent } from './SingleAPIcontent';
+import { Combobox, List, ListItem, ApiTabHeader } from './styledOther';
+import { Badge } from 'fundamental-react';
 
 function existFiles(sources: Source[], types: string[]) {
   return sources.find(source => types.includes(source.type));
@@ -34,19 +36,38 @@ export enum TabsLabels {
 }
 
 export interface GroupRendererProps extends GroupRendererComponent {
+  currentApiState: [Source, (s: Source) => void];
   additionalTabs?: TabProps[];
 }
 
 export const GroupRenderer: React.FunctionComponent<GroupRendererProps> = ({
   sources,
   additionalTabs,
+  currentApiState,
 }) => {
+  const [currentApi, setCurrentApi] = currentApiState;
+  useEffect(() => {
+    // console.log(sources);
+    if (!currentApi && sources.length && sources[0].type !== 'mock')
+      setCurrentApi(sources[0]);
+  }, [currentApi, sources]);
   if (
     (!sources || !sources.length) &&
     (!additionalTabs || !additionalTabs.length)
   ) {
     return null;
   }
+
+  const apiTabHeader = (
+    <ApiTabHeader>
+      <span>Selected an API to display:</span>
+      <ApiSelector
+        onApiSelect={setCurrentApi}
+        sources={sources}
+        selectedApi={currentApi}
+      />
+    </ApiTabHeader>
+  );
 
   const onChangeTab = (id: string): void => {
     try {
@@ -109,46 +130,79 @@ export const GroupRenderer: React.FunctionComponent<GroupRendererProps> = ({
         </Tab>
       )}
 
-      {openApiSources.map((source: Source, id: number) => {
-        const label =
-          TabsLabels.CONSOLE + (openApiSources.length > 1 ? ` ${id + 1}` : '');
-        return (
-          <Tab key={label} label={label} id={label}>
-            <SingleAPIcontent
-              apiLabel={TabsLabels.CONSOLE}
-              apiClassName="custom-open-api-styling"
-              source={source}
-            />
-          </Tab>
-        );
-      })}
-      {asyncApiSources.map((source: Source, id: number) => {
-        const label =
-          TabsLabels.EVENTS + (asyncApiSources.length > 1 ? ` ${id + 1}` : '');
-        return (
-          <Tab key={label} label={label} id={label}>
-            <SingleAPIcontent
-              apiLabel={TabsLabels.EVENTS}
-              apiClassName="custom-async-api-styling"
-              source={source}
-            />
-          </Tab>
-        );
-      })}
-      {odataSources.map((source: Source, id: number) => {
-        const label =
-          TabsLabels.ODATA + (odataSources.length > 1 ? ` ${id + 1}` : '');
-        return (
-          <Tab key={label} label={label} id={label}>
-            <SingleAPIcontent
-              apiLabel={TabsLabels.ODATA}
-              apiClassName="custom-odata-styling"
-              source={source}
-            />
-          </Tab>
-        );
-      })}
+      <Tab label={apiTabHeader} id="apis">
+        {currentApi && (
+          <SingleAPIcontent
+            apiLabel={TabsLabels.CONSOLE}
+            apiClassName="custom-odata-styling"
+            source={currentApi}
+          />
+        )}
+      </Tab>
+
       {tabs}
     </Tabs>
+  );
+};
+
+function sortByType(source1: Source, source2: Source): number {
+  return (
+    source1.type.localeCompare(source2.type) ||
+    source1.rawContent.localeCompare(source2.rawContent)
+  );
+  // TODO:  || source1.displayName.localeCompare(source2.displayName)
+}
+
+const BadgeForType: React.FunctionComponent<{ type: string }> = ({ type }) => {
+  let badgeType: 'success' | 'warning' | 'error' | undefined = undefined;
+
+  if (odataTypes.includes(type)) {
+    badgeType = 'warning';
+  }
+
+  if (asyncApiTypes.includes(type)) {
+    badgeType = 'success';
+  }
+
+  if (markdownTypes.includes(type)) {
+    badgeType = 'error';
+  }
+
+  return <Badge type={badgeType}>{type}</Badge>;
+};
+
+const ApiSelector: React.FunctionComponent<{
+  sources: Source[];
+  onApiSelect: (api: Source) => void;
+  selectedApi: Source;
+}> = ({ sources, onApiSelect, selectedApi }) => {
+  const sortedSources = sources.sort(sortByType);
+  console.log('rendering api selector');
+
+  return (
+    <Combobox
+      onClick={(e: MouseEvent) => e.stopPropagation()}
+      menu={
+        <List>
+          {sortedSources.map((s: Source, id) => (
+            <a
+              href="#"
+              onClick={e => {
+                onApiSelect(s);
+              }}
+              className="fd-menu__item"
+              key={s.rawContent}
+            >
+              <ListItem>
+                <BadgeForType type={s.type} />
+                {s.type} {id}
+              </ListItem>
+            </a>
+          ))}
+        </List>
+      }
+      placeholder={(selectedApi && selectedApi.type) || 'Select API'} //use displayName
+      // inputProps={{ value: selectedApi.type }}
+    />
   );
 };
