@@ -39,8 +39,9 @@ export const GroupRenderer: React.FunctionComponent<GroupRendererProps> = ({
 }) => {
   const [currentApi, setCurrentApi] = currentApiState;
   useEffect(() => {
-    if (!currentApi && sources.length && sources[0].type !== 'mock')
+    if (!currentApi && sources.length && sources[0].type !== 'mock') {
       setCurrentApi(sources[0]);
+    }
   }, [currentApi, sources]);
 
   if (
@@ -144,7 +145,7 @@ function sortByType(source1: Source, source2: Source): number {
 }
 
 const BadgeForType: React.FunctionComponent<{ type: string }> = ({ type }) => {
-  let badgeType: 'success' | 'warning' | 'error' | undefined = undefined;
+  let badgeType: 'success' | 'warning' | 'error' | undefined;
 
   if (odataDefinition.possibleTypes.includes(type)) {
     badgeType = 'warning';
@@ -179,8 +180,9 @@ const ApiSelector: React.FunctionComponent<{
     <Combobox
       onClick={(e: React.MouseEvent<HTMLElement>) => {
         const a = e.target as HTMLElement; // not sure why but it's needed, thank you typescript!
-        if (a.tagName === 'INPUT' || a.tagName === 'BUTTON')
+        if (a.tagName === 'INPUT' || a.tagName === 'BUTTON') {
           e.stopPropagation(); // avoid closing the dropdown due to the "opening" click ∞
+        }
       }}
       menu={
         <List>
@@ -200,7 +202,7 @@ const ApiSelector: React.FunctionComponent<{
           ))}
         </List>
       }
-      placeholder={(selectedApi && selectedApi.type) || 'Select API'} //TODO: use displayName
+      placeholder={(selectedApi && selectedApi.type) || 'Select API'} // TODO: use displayName
       inputProps={{ onChange: handleInputChange }}
     />
   );

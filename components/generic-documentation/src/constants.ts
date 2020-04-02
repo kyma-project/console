@@ -26,8 +26,8 @@ export const odataDefinition: ApiDefinition = {
 
 export const RELATIVE_LINKS_DISABLED = 'Relative links is disabled';
 
-export type ApiDefinition = {
+export interface ApiDefinition {
   possibleTypes: string[];
   stylingClassName?: string;
   styledComponent?: StyledComponent<any, any, {}, never>;
-};
+}
