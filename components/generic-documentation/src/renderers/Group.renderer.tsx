@@ -40,9 +40,18 @@ export const GroupRenderer: React.FunctionComponent<GroupRendererProps> = ({
   const [currentApi, setCurrentApi] = currentApiState;
   useEffect(() => {
     if (!currentApi && sources.length && sources[0].type !== 'mock') {
+      // a "mock" source is loaded at first, before the real data arrives
       setCurrentApi(sources[0]);
     }
   }, [currentApi, sources]);
+
+  // useEffect(() => {
+  //   const currentParams = luigiClient.getNodeParams();
+  //   luigiClient
+  //     .linkManager()
+  //     .withParams({ ...currentParams, selectedApi: currentApi.displayName })
+  //     .navigate('');
+  // }, [currentApi]);
 
   if (
     (!sources || !sources.length) &&
@@ -57,7 +66,7 @@ export const GroupRenderer: React.FunctionComponent<GroupRendererProps> = ({
 
   const apiTabHeader = (
     <ApiTabHeader>
-      <span>Selected an API to display:</span>
+      <span>Displayed API:</span>
       <ApiSelector
         onApiSelect={setCurrentApi}
         sources={nonMarkdownSources}
