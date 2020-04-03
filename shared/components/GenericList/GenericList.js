@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Panel } from 'fundamental-react/Panel';
+import { Panel, Pagination } from 'fundamental-react';
 
 import SearchInput from './SearchInput';
 import ListActions from '../ListActions/ListActions';
@@ -33,6 +33,7 @@ export const GenericList = ({
   serverDataError,
   serverDataLoading,
   hasExternalMargin,
+  pagination,
 }) => {
   const [filteredEntries, setFilteredEntries] = useState(entries);
   const [searchQuery, setSearchQuery] = useState('');
@@ -131,11 +132,28 @@ export const GenericList = ({
           <tbody>{renderTableBody()}</tbody>
         </table>
       </Panel.Body>
+      {!!pagination && (
+        <Panel.Footer>
+          <Pagination
+            itemsTotal={pagination.totalCount}
+            initialPage={pagination.currentPage}
+            itemsPerPage={pagination.itemsPerPage}
+            onClick={pagination.onPageChange}
+          />
+        </Panel.Footer>
+      )}
     </Panel>
   );
 };
 
 GenericList.Actions = ListActions;
+
+const PaginationProps = PropTypes.shape({
+  totalCount: PropTypes.number.isRequired,
+  itemsPerPage: PropTypes.number.isRequired,
+  currentPage: PropTypes.number.isRequired,
+  onPageChange: PropTypes.func.isRequired,
+});
 
 GenericList.propTypes = {
   title: PropTypes.string,
@@ -166,6 +184,7 @@ GenericList.propTypes = {
   serverDataError: PropTypes.any,
   serverDataLoading: PropTypes.bool,
   hasExternalMargin: PropTypes.bool,
+  pagination: PaginationProps,
 };
 
 GenericList.defaultProps = {
