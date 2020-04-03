@@ -2,14 +2,12 @@ aliases:
     default-reviewers:
     - parostatkiem
     - Wawrzyn321
-    - y-kkamil
     - dariadomagala
     - akucharska
     - sjanota
     default-approvers:
     - parostatkiem
     - kwiatekus
-    - y-kkamil
     - dariadomagala
     - akucharska
     content-ui-reviewers:
