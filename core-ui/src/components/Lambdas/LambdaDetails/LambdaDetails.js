@@ -5,6 +5,8 @@ import { useMutation } from '@apollo/react-hooks';
 import { TabGroup, Tab } from 'fundamental-react';
 import LabelSelectorInput from '../../LabelSelectorInput/LabelSelectorInput';
 
+import { useLogsView } from './useLogsView';
+
 import { UPDATE_LAMBDA } from '../../../gql/mutations';
 import LambdaDetailsHeader from './LambdaDetailsHeader/LambdaDetailsHeader';
 
@@ -48,10 +50,13 @@ export default function LambdaDetails({ lambda, refetchLambda }) {
   const namespace = LuigiClient.getEventData().environmentId;
   const selectedTabName =
     LuigiClient.getNodeParams().selectedTab || 'Configuration';
+
   useEffect(() => {
     const selectedTabIndex = selectedTabName === 'Configuration' ? 0 : 1;
     setSelectedTabIndex(selectedTabIndex);
   }, [selectedTabName]);
+
+  useLogsView(lambda.name, lambda.namespace, selectedTabName);
 
   async function updateLambda() {
     if (!formRef.current.checkValidity()) {

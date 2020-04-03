@@ -22,8 +22,12 @@ export default function LogsContainer() {
     const params = LuigiClient.getNodeParams();
     delete params.compact;
     const labels = [];
-    for (var paramName in params) {
-      labels.push(`${paramName}="${params[paramName]}"`);
+    for (let paramName in params) {
+      if (params[paramName].startsWith('~')) {
+        labels.push(`${paramName}=~"${params[paramName].slice(1)}"`);
+      } else {
+        labels.push(`${paramName}="${params[paramName]}"`);
+      }
     }
     return labels;
   }
