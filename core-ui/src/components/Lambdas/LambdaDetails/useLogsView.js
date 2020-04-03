@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import LuigiClient from '@kyma-project/luigi-client';
 
+const CMF_LOGS_PATH = '/home/cmf-logs';
+
 export const useLogsView = (name, namespace, selectedTabName) => {
   const [logsViewExists, setLogViewExists] = useState(false);
 
@@ -12,13 +14,13 @@ export const useLogsView = (name, namespace, selectedTabName) => {
     });
 
     linkManager
-      .pathExists('/home/cmf-logs')
+      .pathExists(CMF_LOGS_PATH)
       .then(exists => setLogViewExists(exists));
 
     let logsViewHandle;
 
     if (logsViewExists) {
-      logsViewHandle = linkManager.openAsSplitView('/home/cmf-logs', {
+      logsViewHandle = linkManager.openAsSplitView(CMF_LOGS_PATH, {
         title: 'Logs',
         size: 40,
         collapsed: true,
