@@ -1,12 +1,6 @@
 import styled from 'styled-components';
 import { ComboboxInput, Menu } from 'fundamental-react';
 
-export const Logo = styled.img`
-   {
-    height: 1.7em;
-  }
-`;
-
 export const ListItem = styled.span`
    {
     justify-items: start;
