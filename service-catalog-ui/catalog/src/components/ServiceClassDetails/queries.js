@@ -31,6 +31,7 @@ const assetGroupQGL = `
     name
     parameters
     type
+    displayName
     files(filterExtensions: $filterExtensions) {
       url
       metadata
