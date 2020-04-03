@@ -13,7 +13,7 @@ export const CatalogUILayout: React.FunctionComponent<CatalogUILayoutProps> = ({
   renderers,
   additionalTabs,
 }) => {
-  const currentApiState = useState(luigiClient.getNodeParams().selectedApi); // won't work untill displayName is done
+  const currentApiState = useState(luigiClient.getNodeParams().selectedApi); // will be undefined until displayName is done
 
   renderers.group = (otherProps: any) => (
     <GroupRenderer
