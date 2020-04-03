@@ -15,7 +15,8 @@ export const useLogsView = (name, namespace, selectedTabName) => {
 
     linkManager
       .pathExists(CMF_LOGS_PATH)
-      .then(exists => setLogViewExists(exists));
+      .then(exists => setLogViewExists(exists))
+      .catch(() => setLogViewExists(false));
 
     let logsViewHandle;
 
