@@ -15,6 +15,15 @@ jest.mock('@kyma-project/luigi-client', () => {
       addBackdrop: () => {},
       removeBackdrop: () => {},
     }),
+    linkManager: () => ({
+      withParams: () => ({
+        pathExists: e => Promise.resolve(true),
+        openAsSplitView: () => ({
+          collapse: () => {},
+          expand: () => {},
+        }),
+      }),
+    }),
   };
 });
 
