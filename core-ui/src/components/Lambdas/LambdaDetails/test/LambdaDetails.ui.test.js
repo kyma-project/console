@@ -17,7 +17,7 @@ jest.mock('@kyma-project/luigi-client', () => {
     }),
     linkManager: () => ({
       withParams: () => ({
-        pathExists: e => Promise.resolve(true),
+        pathExists: () => Promise.resolve(true),
         openAsSplitView: () => ({
           collapse: () => {},
           expand: () => {},

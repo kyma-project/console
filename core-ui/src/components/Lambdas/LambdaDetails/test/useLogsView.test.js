@@ -6,19 +6,20 @@ const nameButtonTestID = 'name-button-id';
 const namespaceButtonTestID = 'namespace-button-id';
 const tabButtonTestID = 'tab-button-id';
 
-const mockAsync = jest.fn(() => Promise.resolve(true));
+const mockPathExists = jest.fn(() => Promise.resolve(true));
 const mockCollapse = jest.fn();
 const mockExpand = jest.fn();
+const mockOpenAsSplitView = jest.fn(() => ({
+  collapse: mockCollapse,
+  expand: mockExpand,
+}));
 
 jest.mock('@kyma-project/luigi-client', () => {
   return {
     linkManager: () => ({
       withParams: () => ({
-        pathExists: mockAsync,
-        openAsSplitView: () => ({
-          collapse: mockCollapse,
-          expand: mockExpand,
-        }),
+        pathExists: mockPathExists,
+        openAsSplitView: mockOpenAsSplitView,
       }),
     }),
   };
@@ -57,22 +58,20 @@ const TestComponent = () => {
   );
 };
 
-describe('useStateWithCallback', () => {
+describe('useLogsView', () => {
   afterEach(() => {
     jest.clearAllMocks();
-    mockAsync.mockReset();
-    mockCollapse.mockReset();
-    mockExpand.mockReset();
   });
 
-  it('works the same as useState without callback', async () => {
+  it('correctly calls mocked functions', async () => {
     const { findByTestId, unmount } = render(<TestComponent />);
 
     const nsButton = await findByTestId(namespaceButtonTestID);
     const tabButton = await findByTestId(tabButtonTestID);
-    expect(mockAsync).toHaveBeenCalledTimes(2);
+    expect(mockPathExists).toHaveBeenCalledTimes(2);
     expect(mockCollapse).toHaveBeenCalledTimes(1);
     expect(mockExpand).toHaveBeenCalledTimes(0);
+    expect(mockOpenAsSplitView).toHaveBeenCalledTimes(1);
 
     expect(nsButton.textContent).toEqual('test-namespace');
 
@@ -80,9 +79,10 @@ describe('useStateWithCallback', () => {
       fireEvent.click(nsButton);
     });
 
-    expect(mockAsync).toHaveBeenCalledTimes(3);
+    expect(mockPathExists).toHaveBeenCalledTimes(3);
     expect(mockCollapse).toHaveBeenCalledTimes(3);
     expect(mockExpand).toHaveBeenCalledTimes(0);
+    expect(mockOpenAsSplitView).toHaveBeenCalledTimes(2);
     expect(nsButton.textContent).toEqual('test-namespace-1');
 
     expect(tabButton.textContent).toEqual('Configuration');
@@ -90,26 +90,14 @@ describe('useStateWithCallback', () => {
       fireEvent.click(tabButton);
     });
 
-    expect(mockAsync).toHaveBeenCalledTimes(4);
+    expect(mockPathExists).toHaveBeenCalledTimes(4);
     expect(mockCollapse).toHaveBeenCalledTimes(4);
     expect(mockExpand).toHaveBeenCalledTimes(1);
     expect(tabButton.textContent).toEqual('test');
+    expect(mockOpenAsSplitView).toHaveBeenCalledTimes(3);
 
     unmount();
 
     expect(mockCollapse).toHaveBeenCalledTimes(5);
   });
-
-  //   it('works the same as useState with callback', async () => {
-  //     const { findByTestId } = render(<TestComponent useCallback={true} />);
-
-  //     let countValue = await findByTestId(countValueTestID);
-  //     expect(countValue.textContent).toEqual('0');
-
-  //     const button = await findByTestId(buttonTestID);
-  //     fireEvent.click(button);
-
-  //     countValue = await findByTestId(countValueTestID);
-  //     expect(countValue.textContent).toEqual('2');
-  //   });
 });
