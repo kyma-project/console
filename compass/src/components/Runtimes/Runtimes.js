@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import LuigiClient from '@luigi-project/client';
 
 import {
@@ -11,8 +11,11 @@ import ScenariosDisplay from './../Shared/ScenariosDisplay/ScenariosDisplay';
 import { useQuery } from 'react-apollo';
 import { GET_RUNTIMES } from './gql';
 import InfiniteScroll from './InfiniteScroll';
+import { Panel } from 'fundamental-react';
+import SearchInput from './SearchInput';
 
 const Runtimes = () => {
+  const [searchQuery, setSearchQuery] = useState('');
   // const { data, loading, error } = useQuery(GET_RUNTIMES, {
   //   fetchPolicy: 'cache-and-network',
   // });
@@ -40,24 +43,23 @@ const Runtimes = () => {
 
   // if (loading) return 'Loading...';
   // if (error) return `Error! ${error.message}`;
-
   return (
-    <InfiniteScroll />
-    // <>
-    //   <PageHeader title="Runtimes" />
-    //   <GenericList
-    //     entries={data.runtimes.data.slice(0, 10)}
-    //     headerRenderer={headerRenderer}
-    //     rowRenderer={rowRenderer}
-    //     pagination={{
-    //       totalCount: data.runtimes.totalCount,
-    //       itemsPerPage: 10,
-    //       currentPage: 1,
-    //       onPageChange: pageNumber =>
-    //         console.log('Page changed to', pageNumber),
-    //     }}
-    //   />
-    // </>
+    <>
+      <PageHeader title="Runtimes" />
+      <Panel className="fd-has-margin-m">
+        <Panel.Header className="fd-has-padding-xs">
+          <Panel.Actions>
+            <SearchInput
+              searchQuery={searchQuery}
+              handleQueryChange={setSearchQuery}
+            />
+          </Panel.Actions>
+        </Panel.Header>
+        <Panel.Body className="fd-has-padding-none">
+          <InfiniteScroll searchQuery={searchQuery} />
+        </Panel.Body>
+      </Panel>
+    </>
   );
 };
 

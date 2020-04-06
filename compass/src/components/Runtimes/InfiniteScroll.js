@@ -1,11 +1,13 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useQuery } from 'react-apollo';
 import { GET_RUNTIMES } from './gql';
 
-const InfiniteScroll = () => {
+const InfiniteScroll = ({ searchQuery }) => {
   const [cursor, setCursor] = useState(null);
   const [nextCursor, setNextCursor] = useState(null);
   const [entries, setEntries] = useState([]);
+  const [canScrollMore, setCanScrollMore] = useState(true);
+
   const { loading, error } = useQuery(GET_RUNTIMES, {
     fetchPolicy: 'cache-and-network',
     variables: {
@@ -15,9 +17,12 @@ const InfiniteScroll = () => {
       setEntries(prev => [...prev, ...rsp.runtimes.data]);
       if (rsp.runtimes.pageInfo.hasNextPage) {
         setNextCursor(rsp.runtimes.pageInfo.endCursor);
-      }
+        if (!canScrollMore) setCanScrollMore(true);
+      } else if (canScrollMore) setCanScrollMore(false);
     },
   });
+
+  console.log(searchQuery);
 
   function handleScroll(ev) {
     const {
@@ -39,22 +44,37 @@ const InfiniteScroll = () => {
   if (error) return `Error! ${error.message}`;
 
   return (
-    <table className="fd-table">
-      <thead className="fd-table__header">
-        <tr className="fd-table__row">
-          <th className="fd-table__cell" scope="col">
-            Name
-          </th>
-        </tr>
-      </thead>
-      <tbody className="fd-table__body">
-        {entries.map(r => (
-          <tr className="fd-table__row" key={r.id}>
-            <td className="fd-table__cell">{r.name}</td>
+    <>
+      <table className="fd-table">
+        <thead className="fd-table__header">
+          <tr className="fd-table__row">
+            <th className="fd-table__cell" scope="col">
+              Name
+            </th>
           </tr>
-        ))}
-      </tbody>
-    </table>
+        </thead>
+        <tbody className="fd-table__body">
+          {entries.map(r => (
+            <tr className="fd-table__row" key={r.id}>
+              <td className="fd-table__cell">{r.name}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      <div className="fd-has-text-align-center fd-has-padding-bottom-xs">
+        {!!loading && <Spinner />}
+        {!canScrollMore && 'No more runtimes'}
+      </div>
+    </>
+  );
+};
+
+const Spinner = () => {
+  return (
+    <div className="fd-spinner" aria-hidden="false" aria-label="Loading">
+      <div className="fd-spinner__body"></div>
+    </div>
   );
 };
 
