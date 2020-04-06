@@ -16,7 +16,7 @@ To run UI tests inside a container in the cluster using a Chromium browser, use 
 npm run test:cluster
 ```
 
-To run UI tests inside a container in the cluster using Firefox browser, use this command:
+To run UI tests inside a container in the cluster using a Firefox browser, use this command:
 
 ``` bash
 npm run test:cluster_firefox
