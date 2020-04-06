@@ -4,24 +4,26 @@ import { GET_RUNTIMES } from './gql';
 
 const InfiniteScroll = ({ searchQuery }) => {
   const [cursor, setCursor] = useState(null);
-  const [nextCursor, setNextCursor] = useState(null);
   const [entries, setEntries] = useState([]);
-  const [canScrollMore, setCanScrollMore] = useState(true);
 
-  const { loading, error } = useQuery(GET_RUNTIMES, {
+  const { data, loading, error } = useQuery(GET_RUNTIMES, {
     fetchPolicy: 'cache-and-network',
     variables: {
       after: cursor,
     },
     onCompleted: rsp => {
-      const { data, pageInfo } = rsp.runtimes;
-      setEntries(prev => [...prev, ...data]);
-      setCanScrollMore(pageInfo.hasNextPage);
-      if (pageInfo.hasNextPage) {
-        setNextCursor(pageInfo.endCursor);
-      }
+      const { data: newEntries } = rsp.runtimes;
+      setEntries(prev => [...prev, ...newEntries]);
     },
   });
+
+  useEffect(() => {
+    document.addEventListener('scroll', handleScroll);
+
+    return () => document.removeEventListener('scroll', handleScroll);
+  });
+
+  const canScrollMore = loading || data.runtimes.totalCount > entries.length;
 
   function handleScroll(ev) {
     const {
@@ -30,15 +32,11 @@ const InfiniteScroll = ({ searchQuery }) => {
       clientHeight,
     } = ev.target.scrollingElement;
     if (scrollHeight - scrollTop === clientHeight) {
-      setCursor(nextCursor);
+      setCursor(data.runtimes.pageInfo.endCursor);
     }
   }
 
-  useEffect(() => {
-    document.addEventListener('scroll', handleScroll);
-
-    return () => document.removeEventListener('scroll', handleScroll);
-  });
+  console.log('render');
 
   if (error) return `Error! ${error.message}`;
 
