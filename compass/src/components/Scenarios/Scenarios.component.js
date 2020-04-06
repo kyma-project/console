@@ -4,13 +4,8 @@ import { GenericList } from 'react-shared';
 import LuigiClient from '@luigi-project/client';
 
 import CreateScenarios from './CreateScenario/CreateScenarioModal/CreateScenarioModal.container';
-import EnititesForScenarioCount from './EnititesForScenarioCount';
+import EnititesForScenarioCounter from './EntitiesForScenarioCounter/EnititesForScenarioCounter';
 import { PageHeader } from 'react-shared';
-
-import {
-  GET_APPLICATIONS_FOR_SCENARIO,
-  GET_RUNTIMES_FOR_SCENARIO,
-} from './gql';
 
 class Scenarios extends React.Component {
   navigateToScenario(scenarioName) {
@@ -26,15 +21,13 @@ class Scenarios extends React.Component {
     >
       {scenario.name}
     </span>,
-    <EnititesForScenarioCount
+    <EnititesForScenarioCounter
       scenarioName={scenario.name}
       entityType="runtimes"
-      query={GET_RUNTIMES_FOR_SCENARIO}
     />,
-    <EnititesForScenarioCount
+    <EnititesForScenarioCounter
       scenarioName={scenario.name}
       entityType="applications"
-      query={GET_APPLICATIONS_FOR_SCENARIO}
     />,
   ];
 
