@@ -10,7 +10,7 @@ To install dependencies, run the `npm install` command.
 
 ## Development
 
-To run UI tests inside a container in the cluster using Chromium browser, use this command:
+To run UI tests inside a container in the cluster using a Chromium browser, use this command:
 
 ``` bash
 npm run test:cluster
