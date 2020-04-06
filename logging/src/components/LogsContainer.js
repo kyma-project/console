@@ -14,7 +14,7 @@ export default function LogsContainer() {
   );
 
   function isCompact() {
-    const params = LuigiClient.getNodeParams();
+    var params = LuigiClient.getNodeParams();
     return !!params.compact;
   }
 
@@ -22,12 +22,8 @@ export default function LogsContainer() {
     const params = LuigiClient.getNodeParams();
     delete params.compact;
     const labels = [];
-    for (let paramName in params) {
-      // if (params[paramName].startsWith('~')) {
-      //   labels.push(`${paramName}=~"${params[paramName].slice(1)}"`);
-      // } else {
+    for (var paramName in params) {
       labels.push(`${paramName}="${params[paramName]}"`);
-      // }
     }
     return labels;
   }
