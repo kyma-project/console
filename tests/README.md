@@ -28,7 +28,7 @@ To run UI tests during development against `http://console-dev.kyma.local:4200`,
 npm run test
 ```
 
-To run UI tests during development against `http://console-dev.kyma.local:4200` using headless browser, use this command:
+To run UI tests during development against `http://console-dev.kyma.local:4200` using a headless browser, use this command:
 
 ``` bash
 npm run test:headless
