@@ -29,16 +29,26 @@ export interface GroupRendererProps extends GroupRendererComponent {
   additionalTabs?: TabProps[];
 }
 
+const getNonMarkdown = (allSources: Source[]) =>
+  allSources.filter(
+    (s: Source) => !markdownDefinition.possibleTypes.includes(s.type),
+  );
+
 export const GroupRenderer: React.FunctionComponent<GroupRendererProps> = ({
   sources,
   additionalTabs,
   currentApiState,
 }) => {
   const [currentApi, setCurrentApi] = currentApiState;
+
+  const nonMarkdownSources = getNonMarkdown(sources);
+
   useEffect(() => {
-    if (!currentApi && sources.length && sources[0].type !== 'mock') {
+    if (currentApi) return;
+
+    if (nonMarkdownSources.length && nonMarkdownSources[0].type !== 'mock') {
       // a "mock" source is loaded at first, before the real data arrives
-      setCurrentApi(sources[0]);
+      setCurrentApi(nonMarkdownSources[0]);
     }
   }, [currentApi, sources]);
 
@@ -56,10 +66,6 @@ export const GroupRenderer: React.FunctionComponent<GroupRendererProps> = ({
   ) {
     return null;
   }
-
-  const nonMarkdownSources = sources.filter(
-    (s: Source) => !markdownDefinition.possibleTypes.includes(s.type),
-  );
 
   const apiTabHeader = (
     <ApiTabHeader>
