@@ -9,33 +9,45 @@ export const useLogsView = (name, namespace, selectedTabName) => {
   useEffect(() => {
     const linkManager = LuigiClient.linkManager().withParams({
       namespace: namespace,
-      instance: `~${name}-.+`,
+      function: name,
       compact: 'true',
     });
 
-    linkManager
-      .pathExists(CMF_LOGS_PATH)
-      .then(exists => setLogViewExists(exists))
-      .catch(() => setLogViewExists(false));
+    checkLogsViewExists(linkManager, setLogViewExists);
 
     let logsViewHandle;
 
     if (logsViewExists) {
-      logsViewHandle = linkManager.openAsSplitView(CMF_LOGS_PATH, {
-        title: 'Logs',
-        size: 40,
-        collapsed: true,
-      });
-
-      if (selectedTabName === 'Configuration') {
-        logsViewHandle.collapse();
-      } else {
-        logsViewHandle.expand();
-      }
+      logsViewHandle = openLogsView(linkManager, selectedTabName);
     }
 
     return () => {
-      !!logsViewHandle && logsViewHandle.collapse();
+      !!logsViewHandle && logsViewExists && logsViewHandle.collapse();
     };
   }, [namespace, name, selectedTabName, logsViewExists]);
+};
+
+const checkLogsViewExists = async (manager, setViewExists) => {
+  try {
+    const exists = await manager.pathExists(CMF_LOGS_PATH);
+    setViewExists(exists);
+  } catch (err) {
+    console.error(err);
+    setViewExists(false);
+  }
+};
+
+const openLogsView = (manager, tabName) => {
+  const logsViewHandle = manager.openAsSplitView(CMF_LOGS_PATH, {
+    title: 'Logs',
+    size: 40,
+    collapsed: true,
+  });
+
+  if (tabName === 'Configuration') {
+    logsViewHandle.collapse();
+  } else {
+    logsViewHandle.expand();
+  }
+  return logsViewHandle;
 };
