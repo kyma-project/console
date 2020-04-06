@@ -1,25 +1,5 @@
 import gql from 'graphql-tag';
 
-export const REGISTER_RUNTIME = gql`
-  mutation RegisterRuntime($in: RuntimeInput!) {
-    registerRuntime(in: $in) {
-      id
-      name
-      labels
-    }
-  }
-`;
-
-export const UNREGISTER_RUNTIME = gql`
-  mutation UnregisterRuntime($id: ID!) {
-    unregisterRuntime(id: $id) {
-      id
-      name
-      labels
-    }
-  }
-`;
-
 // TODO: add filtering, pagination etc.
 export const GET_RUNTIMES = gql`
   query {
@@ -33,6 +13,7 @@ export const GET_RUNTIMES = gql`
         }
         labels
       }
+      totalCount
     }
   }
 `;

@@ -17,14 +17,4 @@ export default compose(
       };
     },
   }),
-  graphql(UNREGISTER_RUNTIME, {
-    props: ({ mutate }) => ({
-      unregisterRuntime: id =>
-        mutate({
-          variables: {
-            id: id,
-          },
-        }),
-    }),
-  }),
 )(RuntimeDetails);

@@ -8,7 +8,6 @@ import '../../../../shared/styles/header.scss';
 class RuntimeDetailsHeader extends React.Component {
   PropTypes = {
     runtime: PropTypes.object.isRequired,
-    unregisterRuntime: PropTypes.func.isRequired,
   };
 
   navigateToRuntimesList = () => {
