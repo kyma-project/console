@@ -1,40 +1,41 @@
 import React from 'react';
 
-import { TabsLabels } from './Group.renderer';
-
-import { StyledOData, StyledAsyncAPI } from './styled';
-import { StyledSwagger } from '../render-engines/open-api/styles';
 import { Source } from '@kyma-project/documentation-component';
 
-function getStyledAPIComponent(apiType: TabsLabels): React.ElementType {
-  switch (apiType) {
-    case TabsLabels.CONSOLE:
-      return StyledSwagger;
-    case TabsLabels.EVENTS:
-      return StyledAsyncAPI;
-    case TabsLabels.ODATA:
-      return StyledOData;
-    default:
-      return StyledSwagger;
-  }
-}
+import {
+  ApiDefinition,
+  openApiDefinition,
+  odataDefinition,
+  markdownDefinition,
+  asyncApiDefinition,
+} from '../constants';
 
-export interface SingleAPIcontent {
-  apiLabel: TabsLabels;
-  apiClassName: string;
-  source: Source;
-}
-
-export const SingleAPIcontent: React.FunctionComponent<SingleAPIcontent> = ({
-  apiLabel = TabsLabels.CONSOLE,
-  apiClassName = 'custom-open-api-styling',
-  source,
-}) => {
-  const StyledComponent = getStyledAPIComponent(apiLabel);
-
+function getApiDefinitionOfType(type: string): ApiDefinition {
   return (
-    <StyledComponent className={apiClassName}>
-      <>{source.data ? source.data.renderedContent : null}</>
-    </StyledComponent>
+    [
+      markdownDefinition,
+      openApiDefinition,
+      asyncApiDefinition,
+      odataDefinition,
+    ].find((definition: ApiDefinition) =>
+      definition.possibleTypes.includes(type),
+    ) || openApiDefinition
   );
+}
+
+export const SingleAPIcontent: React.FunctionComponent<{
+  source: Source;
+}> = ({ source }) => {
+  const apiDefinition = getApiDefinitionOfType(source.type);
+  const Wrapper = apiDefinition.styledComponent;
+
+  if (Wrapper) {
+    return (
+      <Wrapper className={apiDefinition.stylingClassName}>
+        <>{source.data ? source.data.renderedContent : null}</>
+      </Wrapper>
+    );
+  } else {
+    return <>{source.data ? source.data.renderedContent : null}</>;
+  }
 };
