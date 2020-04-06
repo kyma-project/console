@@ -2,9 +2,14 @@ import OpenIdConnect from '@luigi-project/plugin-auth-oidc';
 import { clusterConfig } from './clusterConfig';
 
 async function fetchDexMetadata() {
-  const idpUrl = clusterConfig['defaultIdpIssuer'];
+  console.log(clusterConfig);
+  const domain = clusterConfig['domain'];
+  console.log(domain, `https://dex.${domain}/.well-known/openid-configuration`);
+
   try {
-    const response = await fetch(`${idpUrl}/.well-known/openid-configuration`);
+    const response = await fetch(
+      `https://dex.${domain}/.well-known/openid-configuration`,
+    );
     return await response.json();
   } catch (e) {
     alert('Cannot fetch dex metadata');
