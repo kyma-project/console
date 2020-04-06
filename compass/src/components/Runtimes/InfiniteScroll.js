@@ -14,15 +14,14 @@ const InfiniteScroll = ({ searchQuery }) => {
       after: cursor,
     },
     onCompleted: rsp => {
-      setEntries(prev => [...prev, ...rsp.runtimes.data]);
-      if (rsp.runtimes.pageInfo.hasNextPage) {
-        setNextCursor(rsp.runtimes.pageInfo.endCursor);
-        if (!canScrollMore) setCanScrollMore(true);
-      } else if (canScrollMore) setCanScrollMore(false);
+      const { data, pageInfo } = rsp.runtimes;
+      setEntries(prev => [...prev, ...data]);
+      setCanScrollMore(pageInfo.hasNextPage);
+      if (pageInfo.hasNextPage) {
+        setNextCursor(pageInfo.endCursor);
+      }
     },
   });
-
-  console.log(searchQuery);
 
   function handleScroll(ev) {
     const {
