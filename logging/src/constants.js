@@ -18,7 +18,7 @@ export const DEFAULT_PERIOD = PERIODS[2];
 
 export const LOG_LABEL_CATEGORIES = [
   'namespace',
-  // 'function', // temporarily disable it as knative logging works differently
+  'lambda',
   'container',
   'app',
   'chart',
