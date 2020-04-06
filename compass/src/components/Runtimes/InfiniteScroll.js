@@ -31,12 +31,11 @@ const InfiniteScroll = ({ searchQuery }) => {
       scrollTop,
       clientHeight,
     } = ev.target.scrollingElement;
-    if (scrollHeight - scrollTop === clientHeight) {
+    const hasReachedBottom = scrollHeight - scrollTop === clientHeight;
+    if (hasReachedBottom && data.runtimes.pageInfo.hasNextPage) {
       setCursor(data.runtimes.pageInfo.endCursor);
     }
   }
-
-  console.log('render');
 
   if (error) return `Error! ${error.message}`;
 
