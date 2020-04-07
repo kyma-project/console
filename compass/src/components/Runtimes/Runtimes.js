@@ -16,33 +16,7 @@ import SearchInput from './SearchInput';
 
 const Runtimes = () => {
   const [searchQuery, setSearchQuery] = useState('');
-  // const { data, loading, error } = useQuery(GET_RUNTIMES, {
-  //   fetchPolicy: 'cache-and-network',
-  // });
-  // const headerRenderer = () => ['Name', 'Description', 'Scenarios', 'Status'];
 
-  // const rowRenderer = runtime => [
-  //   <span
-  //     className="link"
-  //     onClick={() =>
-  //       LuigiClient.linkManager().navigate(`details/${runtime.id}`)
-  //     }
-  //   >
-  //     {runtime.name}
-  //   </span>,
-  //   runtime.description ? runtime.description : EMPTY_TEXT_PLACEHOLDER,
-  //   <ScenariosDisplay scenarios={runtime.labels.scenarios || []} />,
-  //   <StatusBadge
-  //     status={
-  //       runtime.status && runtime.status.condition
-  //         ? runtime.status.condition
-  //         : 'UNKNOWN'
-  //     }
-  //   />,
-  // ];
-
-  // if (loading) return 'Loading...';
-  // if (error) return `Error! ${error.message}`;
   return (
     <>
       <PageHeader title="Runtimes" />
