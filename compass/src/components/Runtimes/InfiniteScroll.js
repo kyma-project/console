@@ -23,6 +23,8 @@ const InfiniteScroll = ({ searchQuery }) => {
     return () => document.removeEventListener('scroll', handleScroll);
   });
 
+  if (error) return `Error! ${error.message}`;
+
   const canScrollMore = loading || data.runtimes.totalCount > entries.length;
 
   function handleScroll(ev) {
@@ -36,8 +38,6 @@ const InfiniteScroll = ({ searchQuery }) => {
       setCursor(data.runtimes.pageInfo.endCursor);
     }
   }
-
-  if (error) return `Error! ${error.message}`;
 
   return (
     <>

@@ -1,6 +1,5 @@
 import gql from 'graphql-tag';
 
-// TODO: add filtering, pagination etc.
 export const GET_RUNTIMES = gql`
   query GetRuntimes($after: PageCursor) {
     runtimes(first: 30, after: $after) {
