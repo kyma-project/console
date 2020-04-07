@@ -2,11 +2,12 @@
 
 exports[`InstancesIndicator Renders with instances and no provision only once 1`] = `
 <div
-  class="fd-panel__actions instances-indicator"
+  class="instances-indicator"
 >
   <div
-    class="sc-jqCOkK fzAxWh"
-    type="default"
+    class=""
+    style="display:inline"
+    title="This Service Class is provisioned 3 times."
   >
     <div
       class="instances-indicator--general active"
@@ -19,11 +20,12 @@ exports[`InstancesIndicator Renders with instances and no provision only once 1`
 
 exports[`InstancesIndicator Renders with instances and provision only once 1`] = `
 <div
-  class="fd-panel__actions instances-indicator"
+  class="instances-indicator"
 >
   <div
-    class="sc-jqCOkK fzAxWh"
-    type="default"
+    class=""
+    style="display:inline"
+    title="You can provision this Service Class only once in a given Namespace. It is already provisioned in this Namespace."
   >
     <div
       class="instances-indicator--general active provision-once"
@@ -36,17 +38,18 @@ exports[`InstancesIndicator Renders with instances and provision only once 1`] =
 
 exports[`InstancesIndicator Renders without instances and no provision only once 1`] = `
 <div
-  class="fd-panel__actions instances-indicator"
+  class="instances-indicator"
 />
 `;
 
 exports[`InstancesIndicator Renders without instances and provision only once 1`] = `
 <div
-  class="fd-panel__actions instances-indicator"
+  class="instances-indicator"
 >
   <div
-    class="sc-jqCOkK fzAxWh"
-    type="default"
+    class=""
+    style="display:inline"
+    title="You can provision this Service Class only once in a given Namespace."
   >
     <div
       class="instances-indicator--general provision-once"

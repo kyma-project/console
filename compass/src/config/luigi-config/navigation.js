@@ -1,12 +1,14 @@
+import LuigiClient from '@luigi-project/client';
+import { clusterConfig } from './clusterConfig';
 import {
   fetchTenants,
   getToken,
   getTenantNames,
   getTenantsFromCache,
+  customOptionsRenderer,
 } from './helpers/navigation-helpers';
 
-const compassMfUrl = window.clusterConfig.microfrontendContentUrl;
-
+const compassMfUrl = clusterConfig.compassModuleUrl;
 const token = getToken();
 let tenants = [];
 
@@ -20,6 +22,14 @@ const getTenantName = tenantId => {
   return match ? match.name : null;
 };
 
+const openTenantSearch = () => {
+  LuigiClient.setTargetOrigin(window.origin);
+  LuigiClient.linkManager().openAsModal('/tenant-search', {
+    title: 'Search tenants',
+    size: 's',
+  });
+};
+
 const navigation = {
   nodes: () => [
     {
@@ -29,6 +39,18 @@ const navigation = {
       viewUrl: compassMfUrl,
       context: {
         idToken: token,
+      },
+      viewGroup: 'compass',
+    },
+    {
+      hideSideNav: true,
+      hideFromNav: true,
+      pathSegment: 'tenant-search',
+      label: 'Tenant Search',
+      viewUrl: compassMfUrl + '/tenant-search',
+      context: {
+        idToken: token,
+        tenants: tenants.length > 0 ? tenants : getTenantsFromCache(),
       },
       viewGroup: 'compass',
     },
@@ -70,7 +92,6 @@ const navigation = {
               pathSegment: 'applications',
               label: 'Applications',
               viewUrl: compassMfUrl + '/applications',
-              navigationContext: 'applications',
               children: [
                 {
                   pathSegment: 'details',
@@ -81,42 +102,57 @@ const navigation = {
                       navigationContext: 'application',
                       children: [
                         {
-                          pathSegment: 'api',
+                          pathSegment: 'apiPackage',
                           children: [
                             {
-                              pathSegment: ':apiId',
+                              pathSegment: ':apiPackageId',
                               viewUrl:
                                 compassMfUrl +
-                                '/application/:applicationId/api/:apiId',
-                              navigationContext: 'api',
+                                '/application/:applicationId/apiPackage/:apiPackageId',
+                              navigationContext: 'api-package',
+                              label: 'Api Package Details',
                               children: [
                                 {
-                                  pathSegment: 'edit',
-                                  label: 'Edit Api',
-                                  viewUrl:
-                                    compassMfUrl +
-                                    '/application/:applicationId/api/:apiId/edit',
+                                  pathSegment: 'api',
+                                  children: [
+                                    {
+                                      pathSegment: ':apiId',
+                                      viewUrl:
+                                        compassMfUrl +
+                                        '/application/:applicationId/apiPackage/:apiPackageId/api/:apiId',
+                                      navigationContext: 'api',
+                                      children: [
+                                        {
+                                          pathSegment: 'edit',
+                                          label: 'Edit Api',
+                                          viewUrl:
+                                            compassMfUrl +
+                                            '/application/:applicationId/apiPackage/:apiPackageId/api/:apiId/edit',
+                                        },
+                                      ],
+                                    },
+                                  ],
                                 },
-                              ],
-                            },
-                          ],
-                        },
-                        {
-                          pathSegment: 'eventApi',
-                          children: [
-                            {
-                              pathSegment: ':eventApiId',
-                              viewUrl:
-                                compassMfUrl +
-                                '/application/:applicationId/eventApi/:eventApiId',
-                              navigationContext: 'eventApi',
-                              children: [
                                 {
-                                  pathSegment: 'edit',
-                                  label: 'Edit Api',
-                                  viewUrl:
-                                    compassMfUrl +
-                                    '/application/:applicationId/eventApi/:eventApiId/edit',
+                                  pathSegment: 'eventApi',
+                                  children: [
+                                    {
+                                      pathSegment: ':eventApiId',
+                                      viewUrl:
+                                        compassMfUrl +
+                                        '/application/:applicationId/apiPackage/:apiPackageId/eventApi/:eventApiId',
+                                      navigationContext: 'event-api',
+                                      children: [
+                                        {
+                                          pathSegment: 'edit',
+                                          label: 'Edit Api',
+                                          viewUrl:
+                                            compassMfUrl +
+                                            '/application/:applicationId/apiPackage/:apiPackageId/eventApi/:eventApiId/edit',
+                                        },
+                                      ],
+                                    },
+                                  ],
                                 },
                               ],
                             },
@@ -180,6 +216,13 @@ const navigation = {
     lazyloadOptions: true,
     options: () => getTenantNames(tenants),
     fallbackLabelResolver: tenantId => getTenantName(tenantId),
+    actions: [
+      {
+        label: 'Search tenants...',
+        clickHandler: openTenantSearch,
+      },
+    ],
+    customOptionsRenderer,
   },
 };
 

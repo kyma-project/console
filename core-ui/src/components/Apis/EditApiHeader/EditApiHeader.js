@@ -12,6 +12,7 @@ import { CompassGqlContext } from 'index';
 
 EditApiHeader.propTypes = {
   api: PropTypes.object.isRequired,
+  apiPackage: PropTypes.object.isRequired,
   application: PropTypes.object.isRequired,
   saveChanges: PropTypes.func.isRequired,
   canSaveChanges: PropTypes.bool.isRequired,
@@ -25,6 +26,7 @@ function navigateToApplication(application) {
 
 export default function EditApiHeader({
   api,
+  apiPackage,
   application,
   saveChanges,
   canSaveChanges,
@@ -60,12 +62,18 @@ export default function EditApiHeader({
 
   const getApiPath = () => {
     const isApi = 'targetURL' in api;
-    return `/details/${application.id}/${isApi ? 'api' : 'eventApi'}/${api.id}`;
+    return `/details/${application.id}/apiPackage/${apiPackage.id}/${
+      isApi ? 'api' : 'eventApi'
+    }/${api.id}`;
   };
 
   const breadcrumbItems = [
     { name: 'Applications', path: '/' },
     { name: application.name, path: `/details/${application.id}` },
+    {
+      name: apiPackage.name,
+      path: `/details/${application.id}/apiPackage/${apiPackage.id}`,
+    },
     { name: api.name, path: getApiPath() },
     { name: '' },
   ];

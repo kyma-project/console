@@ -1,18 +1,5 @@
 import gql from 'graphql-tag';
 
-export const GET_APPLICATIONS = gql`
-  query {
-    applications {
-      data {
-        id
-        name
-        providerName
-        description
-      }
-    }
-  }
-`;
-
 export const GET_APPLICATION = gql`
   query Application($id: ID!) {
     application(id: $id) {
@@ -22,91 +9,28 @@ export const GET_APPLICATION = gql`
       name
       labels
       healthCheckURL
+      integrationSystemID
       status {
         condition
       }
-      apiDefinitions {
+      packages {
         data {
           id
           name
           description
-          targetURL
-          spec {
-            data
-            format
-            type
+          defaultInstanceAuth {
+            credential {
+              __typename
+            }
           }
-          group
-        }
-        totalCount
-      }
-      eventDefinitions {
-        data {
-          id
-          name
-          description
-          spec {
-            data
-            format
-            type
+          apiDefinitions {
+            totalCount
           }
-          group
+          eventDefinitions {
+            totalCount
+          }
         }
-        totalCount
       }
-    }
-  }
-`;
-
-export const ADD_API = gql`
-  mutation addAPI($applicationID: ID!, $in: APIDefinitionInput!) {
-    addAPIDefinition(applicationID: $applicationID, in: $in) {
-      id
-      name
-      description
-      targetURL
-      spec {
-        data
-        format
-        type
-      }
-      group
-    }
-  }
-`;
-
-export const ADD_EVENT_API = gql`
-  mutation addEventDefinition($applicationID: ID!, $in: EventDefinitionInput!) {
-    addEventDefinition(applicationID: $applicationID, in: $in) {
-      id
-      name
-      description
-      spec {
-        data
-        format
-        type
-      }
-      group
-    }
-  }
-`;
-
-export const DELETE_API = gql`
-  mutation deleteAPI($id: ID!) {
-    deleteAPIDefinition(id: $id) {
-      id
-      name
-      description
-    }
-  }
-`;
-
-export const DELETE_EVENT_API = gql`
-  mutation deleteEventAPI($id: ID!) {
-    deleteEventDefinition(id: $id) {
-      id
-      name
-      description
     }
   }
 `;

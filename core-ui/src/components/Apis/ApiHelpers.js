@@ -1,7 +1,5 @@
 import jsyaml from 'js-yaml';
 import xmlJS from 'xml-js';
-import { CREDENTIAL_TYPE_NONE } from './Forms/CredentialForms/CredentialsForm';
-import { CREDENTIAL_TYPE_OAUTH } from './Forms/CredentialForms/OAuthCredentialsForm';
 
 function isYAML(file) {
   return file.name.endsWith('.yaml') || file.name.endsWith('.yml');
@@ -39,21 +37,10 @@ function parseXML(textData) {
   return parsed;
 }
 
-export function createApiData(
-  basicApiData,
-  specData,
-  credentials,
-  credentialsType,
-) {
-  let defaultAuth = null;
-  if (credentialsType === CREDENTIAL_TYPE_OAUTH) {
-    defaultAuth = { credential: { oauth: credentials.oAuth } };
-  }
-
+export function createApiData(basicApiData, specData) {
   return {
     ...basicApiData,
     spec: specData,
-    defaultAuth,
   };
 }
 
@@ -215,13 +202,4 @@ export function getApiDisplayName(api) {
     default:
       return null;
   }
-}
-
-export function inferCredentialType(auth) {
-  if (auth) {
-    if (auth.credential.__typename === 'OAuthCredentialData') {
-      return CREDENTIAL_TYPE_OAUTH;
-    }
-  }
-  return CREDENTIAL_TYPE_NONE;
 }

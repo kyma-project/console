@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StickyContainer, Sticky } from 'react-sticky';
 import {
   Source,
@@ -10,20 +10,14 @@ import { Grid, Tabs, Tab, TabProps } from '@kyma-project/components';
 
 import { HeadersNavigation } from '../render-engines/markdown/headers-toc';
 import { MarkdownWrapper } from '../styled';
-import {
-  markdownTypes,
-  openApiTypes,
-  asyncApiTypes,
-  odataTypes,
-} from '../constants';
-import { StyledOData, StyledAsyncAPI } from './styled';
-import { StyledSwagger } from '../render-engines/open-api/styles';
 
-function existFiles(sources: Source[], types: string[]) {
-  return sources.find(source => types.includes(source.type));
-}
+import { SingleAPIcontent } from './SingleAPIcontent';
+import { ApiTabHeader } from './helpers/styled';
+import ApiSelector from './helpers/ApiSelector';
 
-enum TabsLabels {
+import { markdownDefinition } from '../constants';
+
+export enum TabsLabels {
   DOCUMENTATION = 'Documentation',
   CONSOLE = 'Console',
   EVENTS = 'Events',
@@ -31,19 +25,58 @@ enum TabsLabels {
 }
 
 export interface GroupRendererProps extends GroupRendererComponent {
+  currentApiState: [Source, (s: Source) => void];
   additionalTabs?: TabProps[];
 }
+
+const getNonMarkdown = (allSources: Source[]) =>
+  allSources.filter(
+    (s: Source) => !markdownDefinition.possibleTypes.includes(s.type),
+  );
 
 export const GroupRenderer: React.FunctionComponent<GroupRendererProps> = ({
   sources,
   additionalTabs,
+  currentApiState,
 }) => {
+  const [currentApi, setCurrentApi] = currentApiState;
+
+  const nonMarkdownSources = getNonMarkdown(sources);
+
+  useEffect(() => {
+    if (currentApi) return;
+
+    if (nonMarkdownSources.length && nonMarkdownSources[0].type !== 'mock') {
+      // a "mock" source is loaded at first, before the real data arrives
+      setCurrentApi(nonMarkdownSources[0]);
+    }
+  }, [currentApi, sources]);
+
+  // useEffect(() => {
+  //   const currentParams = luigiClient.getNodeParams();
+  //   luigiClient
+  //     .linkManager()
+  //     .withParams({ ...currentParams, selectedApi: currentApi.displayName })
+  //     .navigate('');
+  // }, [currentApi]);
+
   if (
     (!sources || !sources.length) &&
     (!additionalTabs || !additionalTabs.length)
   ) {
     return null;
   }
+
+  const apiTabHeader = (
+    <ApiTabHeader>
+      <span>Displayed API:</span>
+      <ApiSelector
+        onApiSelect={setCurrentApi}
+        sources={nonMarkdownSources}
+        selectedApi={currentApi}
+      />
+    </ApiTabHeader>
+  );
 
   const onChangeTab = (id: string): void => {
     try {
@@ -59,12 +92,11 @@ export const GroupRenderer: React.FunctionComponent<GroupRendererProps> = ({
   const onInitTabs = (): string =>
     luigiClient.getNodeParams().selectedTab || '';
 
-  const markdownsExists = existFiles(sources, markdownTypes);
-  const openApiExists = existFiles(sources, openApiTypes);
-  const asyncApiExists = existFiles(sources, asyncApiTypes);
-  const odataExists = existFiles(sources, odataTypes);
+  const markdownsExists = sources.some(source =>
+    markdownDefinition.possibleTypes.includes(source.type),
+  );
 
-  const tabs =
+  const additionalTabsFragment =
     additionalTabs &&
     additionalTabs.map(tab => (
       <Tab label={tab.label} id={tab.id} key={tab.id}>
@@ -87,7 +119,9 @@ export const GroupRenderer: React.FunctionComponent<GroupRendererProps> = ({
               <StickyContainer>
                 <Grid.Row>
                   <Grid.Unit df={9} sm={12} className="grid-unit-content">
-                    <RenderedContent sourceTypes={markdownTypes} />
+                    <RenderedContent
+                      sourceTypes={markdownDefinition.possibleTypes}
+                    />
                   </Grid.Unit>
                   <Grid.Unit df={3} sm={0} className="grid-unit-navigation">
                     <Sticky>
@@ -104,28 +138,12 @@ export const GroupRenderer: React.FunctionComponent<GroupRendererProps> = ({
           </MarkdownWrapper>
         </Tab>
       )}
-      {openApiExists && (
-        <Tab label={TabsLabels.CONSOLE} id={TabsLabels.CONSOLE}>
-          <StyledSwagger className="custom-open-api-styling">
-            <RenderedContent sourceTypes={openApiTypes} />
-          </StyledSwagger>
+      {!!nonMarkdownSources.length && (
+        <Tab label={apiTabHeader} id="apis">
+          {currentApi && <SingleAPIcontent source={currentApi} />}
         </Tab>
       )}
-      {asyncApiExists && (
-        <Tab label={TabsLabels.EVENTS} id={TabsLabels.EVENTS}>
-          <StyledAsyncAPI className="custom-async-api-styling">
-            <RenderedContent sourceTypes={asyncApiTypes} />
-          </StyledAsyncAPI>
-        </Tab>
-      )}
-      {odataExists && (
-        <Tab label={TabsLabels.ODATA} id={TabsLabels.ODATA}>
-          <StyledOData className="custom-odata-styling">
-            <RenderedContent sourceTypes={odataTypes} />
-          </StyledOData>
-        </Tab>
-      )}
-      {tabs}
+      {additionalTabsFragment}
     </Tabs>
   );
 };

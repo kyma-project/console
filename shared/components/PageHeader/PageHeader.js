@@ -15,7 +15,28 @@ const Column = ({ title, children, columnSpan = 1 }) => (
   </div>
 );
 
-export const PageHeader = ({ title, breadcrumbItems, actions, children }) => (
+const performOnClick = item => {
+  if (!item.path) {
+    return null;
+  }
+  const linkManager = item.fromContext
+    ? LuigiClient.linkManager().fromContext(item.fromContext)
+    : LuigiClient.linkManager().fromClosestContext();
+
+  if (!item.params) {
+    return linkManager.navigate(item.path);
+  }
+
+  return linkManager.withParams(item.params).navigate(item.path);
+};
+
+export const PageHeader = ({
+  title,
+  description,
+  breadcrumbItems,
+  actions,
+  children,
+}) => (
   <Panel className="page-header">
     <Panel.Header>
       <section className="header-wrapper">
@@ -29,13 +50,7 @@ export const PageHeader = ({ title, breadcrumbItems, actions, children }) => (
                     key={item.name}
                     name={item.name}
                     url="#"
-                    onClick={() =>
-                      item.path
-                        ? LuigiClient.linkManager()
-                            .fromClosestContext()
-                            .navigate(item.path)
-                        : null
-                    }
+                    onClick={() => performOnClick(item)}
                   />
                 );
               })}
@@ -43,7 +58,7 @@ export const PageHeader = ({ title, breadcrumbItems, actions, children }) => (
           </section>
         ) : null}
 
-        <Panel.Head title={title} />
+        <Panel.Head title={title} description={description} />
         <section className="column-wrapper"> {children}</section>
       </section>
 
@@ -55,14 +70,18 @@ PageHeader.Column = Column;
 
 PageHeader.propTypes = {
   title: PropTypes.string.isRequired,
+  description: PropTypes.string,
   breadcrumbItems: PropTypes.arrayOf(
     PropTypes.shape({
       name: PropTypes.string.isRequired,
       path: PropTypes.string,
+      params: PropTypes.object,
+      fromContext: PropTypes.string,
     }),
   ),
 };
 
 PageHeader.defaultProps = {
   breadcrumbItems: [],
+  description: '',
 };

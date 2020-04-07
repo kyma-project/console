@@ -1,24 +1,59 @@
-const domain =
-  (window.clusterConfig && window.clusterConfig['domain']) || 'kyma.local';
+import OpenIdConnect from '@luigi-project/plugin-auth-oidc';
+import { clusterConfig } from './clusterConfig';
 
-const authClusterConfig = window.clusterConfig && window.clusterConfig.auth;
+async function fetchDexMetadata() {
+  const idpUrl = clusterConfig['defaultIdpIssuer'];
+  try {
+    const response = await fetch(`${idpUrl}/.well-known/openid-configuration`);
+    return await response.json();
+  } catch (e) {
+    alert('Cannot fetch dex metadata');
+    console.error('cannot fetch dex metadata', e);
+  }
+}
 
-const auth = {
-  use: 'openIdConnect',
-  openIdConnect: {
-    authority: authClusterConfig
-      ? authClusterConfig['authority']
-      : `https://dex.${domain}`,
-    client_id: authClusterConfig
-      ? authClusterConfig['client_id']
-      : 'compass-ui',
-    scope: authClusterConfig
-      ? authClusterConfig['scope']
-      : 'audience:server:client_id:compass-ui openid profile email groups',
-    loadUserInfo: false,
-    logoutUrl: '/logout.html',
-  },
-  storage: 'sessionStorage',
-};
+export default async function createAuth() {
+  const domain = clusterConfig['domain'];
 
-export default auth;
+  const authClusterConfig = clusterConfig.auth;
+  const clientId = authClusterConfig
+    ? authClusterConfig['client_id']
+    : 'compass-ui';
+
+  const dexMetadata = await fetchDexMetadata();
+  return {
+    use: 'openIdConnect',
+    openIdConnect: {
+      metadata: {
+        ...dexMetadata,
+        end_session_endpoint: 'logout.html',
+      },
+      idpProvider: OpenIdConnect,
+      authority: authClusterConfig
+        ? authClusterConfig['authority']
+        : `https://dex.${domain}`,
+      client_id: clientId,
+      scope: authClusterConfig
+        ? authClusterConfig['scope']
+        : 'audience:server:client_id:compass-ui openid profile email groups',
+      loadUserInfo: false,
+      logoutUrl: '/logout.html',
+      profileStorageInterceptorFn: () => {
+        try {
+          const oidcUserStoreKey = `oidc.user:https://dex.${domain}:${clientId}`;
+          const oidsUserStore = JSON.parse(
+            sessionStorage.getItem(oidcUserStoreKey),
+          );
+          oidsUserStore.profile = undefined;
+          sessionStorage.setItem(
+            oidcUserStoreKey,
+            JSON.stringify(oidsUserStore),
+          );
+        } catch (e) {
+          console.error('Error parsing oidc user data', e);
+        }
+      },
+    },
+    storage: 'sessionStorage',
+  };
+}

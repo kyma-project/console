@@ -6,6 +6,9 @@
     "@kyma-project/luigi-core": "^0.6.4",
     "@monaco-editor/react": "^2.0.0",
     "ace-builds": "^1.4.8",
+    "dompurify": "^2.0.8",
+    "markdown-it": "^10.0.0",
+    "openapi-sampler": "^1.0.0-beta.15",
     "react-ace": "^8.0.0",
     "xml-js": "^1.6.11"
   },

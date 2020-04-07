@@ -1,25 +1,55 @@
 import gql from 'graphql-tag';
 
-export const GET_APPLICATION_WITH_API_DEFINITIONS = gql`
-  query Application($applicationId: ID!) {
+export const ADD_API_DEFINITION = gql`
+  mutation addAPIDefinition($apiPackageId: ID!, $in: APIDefinitionInput!) {
+    addAPIDefinitionToPackage(packageID: $apiPackageId, in: $in) {
+      id
+      name
+      description
+      targetURL
+      spec {
+        data
+        format
+        type
+      }
+      group
+    }
+  }
+`;
+
+export const ADD_EVENT_DEFINITION = gql`
+  mutation addEventDefinition($apiPackageId: ID!, $in: EventDefinitionInput!) {
+    addEventDefinitionToPackage(packageID: $apiPackageId, in: $in) {
+      id
+      name
+      description
+      spec {
+        data
+        format
+        type
+      }
+      group
+    }
+  }
+`;
+
+export const GET_API_DEFININTION = gql`
+  query apiDefinition(
+    $applicationId: ID!
+    $apiPackageId: ID!
+    $apiDefinitionId: ID!
+  ) {
     application(id: $applicationId) {
       name
       id
-      apiDefinitions {
-        data {
+      package(id: $apiPackageId) {
+        id
+        name
+        apiDefinition(id: $apiDefinitionId) {
           id
           name
           description
           targetURL
-          defaultAuth {
-            credential {
-              ... on OAuthCredentialData {
-                clientId
-                clientSecret
-                url
-              }
-            }
-          }
           spec {
             data
             format
@@ -27,19 +57,24 @@ export const GET_APPLICATION_WITH_API_DEFINITIONS = gql`
           }
           group
         }
-        totalCount
       }
     }
   }
 `;
 
-export const GET_APPLICATION_WITH_EVENT_DEFINITIONS = gql`
-  query Application($applicationId: ID!) {
+export const GET_EVENT_DEFINITION = gql`
+  query eventDefinition(
+    $applicationId: ID!
+    $apiPackageId: ID!
+    $eventDefinitionId: ID!
+  ) {
     application(id: $applicationId) {
       name
       id
-      eventDefinitions {
-        data {
+      package(id: $apiPackageId) {
+        id
+        name
+        eventDefinition(id: $eventDefinitionId) {
           id
           name
           description
@@ -50,7 +85,6 @@ export const GET_APPLICATION_WITH_EVENT_DEFINITIONS = gql`
           }
           group
         }
-        totalCount
       }
     }
   }

@@ -1,6 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+
 import 'core-js/es/array/flat-map';
+
+import { MESSAGES } from './constants';
 
 SearchInput.propTypes = {
   searchQuery: PropTypes.string,
@@ -8,6 +11,9 @@ SearchInput.propTypes = {
   handleQueryChange: PropTypes.func.isRequired,
   suggestionProperties: PropTypes.arrayOf(PropTypes.string.isRequired)
     .isRequired,
+  showSuggestion: PropTypes.bool,
+  showSearchControl: PropTypes.bool,
+  disabled: PropTypes.bool,
 };
 
 export default function SearchInput({
@@ -15,6 +21,9 @@ export default function SearchInput({
   filteredEntries,
   handleQueryChange,
   suggestionProperties,
+  showSuggestion = true,
+  showSearchControl = true,
+  disabled = false,
 }) {
   const [isSearchHidden, setSearchHidden] = React.useState(true);
   const searchInputRef = React.useRef();
@@ -28,7 +37,7 @@ export default function SearchInput({
           key="no-entries"
           className="fd-menu__item fd-menu__item--no-entries"
         >
-          No entries found
+          {MESSAGES.NO_SEARCH_RESULT}
         </li>
       );
     }
@@ -84,7 +93,7 @@ export default function SearchInput({
     }
   };
 
-  const showControl = isSearchHidden && !searchQuery;
+  const showControl = showSearchControl && isSearchHidden && !searchQuery;
   return (
     <section className="generic-list-search" role="search">
       <div
@@ -97,6 +106,7 @@ export default function SearchInput({
               aria-label="search-input"
               ref={searchInputRef}
               type="text"
+              placeholder="Search"
               value={searchQuery}
               onBlur={() => setSearchHidden(true)}
               onFocus={() => setSearchHidden(false)}
@@ -104,7 +114,7 @@ export default function SearchInput({
               onKeyPress={checkForEscapeKey}
               className="fd-has-margin-right-tiny"
             />
-            {!!searchQuery && (
+            {!!searchQuery && showSuggestion && (
               <div
                 className="fd-popover__body fd-popover__body--no-arrow"
                 aria-hidden={isSearchHidden}
@@ -121,7 +131,10 @@ export default function SearchInput({
       </div>
       {showControl && (
         <button
-          className="fd-button--light sap-icon--search"
+          disabled={disabled}
+          className={`fd-button--light sap-icon--search ${
+            disabled ? 'is-disabled' : ''
+          }`}
           onClick={openSearchList}
           aria-label="open-search"
         />

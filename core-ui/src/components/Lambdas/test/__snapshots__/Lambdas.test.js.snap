@@ -9,6 +9,10 @@ exports[`Lambdas Renders with error in no query is mocked 1`] = `
     runtime
     size
     status
+    serviceBindingUsages {
+      name
+      __typename
+    }
     __typename
   }
 }

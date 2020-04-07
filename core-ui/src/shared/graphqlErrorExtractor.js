@@ -1,7 +1,7 @@
 export default function extractGraphQlErrors(exception) {
-  const { graphQLErrors, networkError } = exception;
-
   try {
+    const { graphQLErrors, networkError } = exception;
+
     let errorToDisplay = [];
     if (networkError) {
       errorToDisplay = networkError.result.errors
@@ -12,6 +12,9 @@ export default function extractGraphQlErrors(exception) {
     }
     return errorToDisplay;
   } catch (e) {
+    if (exception && exception.message) {
+      return exception.message;
+    }
     return exception;
   }
 }

@@ -8,10 +8,7 @@ export const exampleCompassApp = {
   name: exampleAppName,
   providerName: 'test-provider-name',
   description: 'test-description',
-  apiDefinitions: {
-    data: [],
-  },
-  eventDefinitions: {
+  packages: {
     data: [],
   },
 };

@@ -1,46 +1,20 @@
 import React from 'react';
 import { MockedProvider } from '@apollo/react-testing';
 import { validMock, errorMock } from './mock';
-import { render, waitForDomChange, fireEvent } from '@testing-library/react';
-import ConnectApplicationModal from '../ConnectApplicationModal';
-import { createMockLink } from 'react-shared';
+import { render, waitForDomChange } from '@testing-library/react';
+import ConnectApplication from '../ConnectApplication';
 
 jest.mock('index', () => ({ CompassGqlContext: {} }));
 
-describe('ConnectApplicationModal', () => {
-  it('opens modal', async () => {
-    const { link } = createMockLink([validMock]);
-    const { queryByLabelText, queryByText } = render(
-      <MockedProvider addTypename={false} link={link}>
-        <ConnectApplicationModal applicationId="app-id" />
+describe('ConnectApplication', () => {
+  it('loads connection data on render', async () => {
+    const { queryByLabelText } = render(
+      <MockedProvider addTypename={false} mocks={[validMock]}>
+        <ConnectApplication applicationId="app-id" />
       </MockedProvider>,
     );
 
-    // modal should be initially closed
-    expect(queryByLabelText('Connect Application')).not.toBeInTheDocument();
-
-    const modalOpeningComponent = queryByText('Connect');
-    expect(modalOpeningComponent).toBeInTheDocument();
-
-    // open modal
-    fireEvent.click(modalOpeningComponent);
-
-    await waitForDomChange();
-
-    // modal is opened
-    expect(queryByLabelText('Connect Application')).toBeInTheDocument();
-  }, 10000);
-
-  it('loads connection data', async () => {
-    const { link } = createMockLink([validMock]);
-    const { getByText, queryByLabelText } = render(
-      <MockedProvider addTypename={false} link={link}>
-        <ConnectApplicationModal applicationId="app-id" />
-      </MockedProvider>,
-    );
-
-    // open modal
-    fireEvent.click(getByText('Connect'));
+    // wait for data to load
     await waitForDomChange();
 
     const {
@@ -57,21 +31,19 @@ describe('ConnectApplicationModal', () => {
     const connectorUrlInput = queryByLabelText('Legacy connector URL');
     expect(connectorUrlInput).toBeInTheDocument();
     expect(connectorUrlInput).toHaveValue(legacyConnectorURL);
-  }, 10000);
+  });
 
   it('displays error on failure', async () => {
     // ignore error logged by component to console
     console.warn = () => {};
 
-    const { link } = createMockLink([errorMock]);
-    const { getByText, queryByLabelText, queryByText } = render(
-      <MockedProvider addTypename={false} link={link}>
-        <ConnectApplicationModal applicationId="app-id" />
+    const { queryByLabelText, queryByText } = render(
+      <MockedProvider addTypename={false} mocks={[errorMock]}>
+        <ConnectApplication applicationId="app-id" />
       </MockedProvider>,
     );
 
-    // open modal
-    fireEvent.click(getByText('Connect'));
+    // wait for error to show
     await waitForDomChange();
 
     expect(queryByLabelText('Token')).not.toBeInTheDocument();
@@ -79,5 +51,5 @@ describe('ConnectApplicationModal', () => {
 
     const errorMessage = errorMock.error.message;
     expect(queryByText(new RegExp(errorMessage))).toBeInTheDocument();
-  }, 10000);
+  });
 });

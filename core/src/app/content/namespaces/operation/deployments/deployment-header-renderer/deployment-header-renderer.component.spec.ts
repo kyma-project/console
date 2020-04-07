@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import * as LuigiClient from '@kyma-project/luigi-client';
+import * as LuigiClient from '@luigi-project/client';
 import { DeploymentHeaderRendererComponent } from './deployment-header-renderer.component';
 import { LuigiClientService } from 'shared/services/luigi-client.service';
 

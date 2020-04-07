@@ -4,10 +4,9 @@ import PropTypes from 'prop-types';
 import { Panel, TabGroup, Tab, Button } from 'fundamental-react';
 import EditApiHeader from '../EditApiHeader/EditApiHeader';
 import ApiForm from '../Forms/ApiForm';
-import CredentialsForm from '../Forms/CredentialForms/CredentialsForm';
 import './EditApi.scss';
 
-import { GET_APPLICATION_WITH_API_DEFINITIONS } from 'gql/queries';
+import { GET_API_DEFININTION } from 'gql/queries';
 import { UPDATE_API_DEFINITION } from 'gql/mutations';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import { CompassGqlContext } from 'index';
@@ -19,20 +18,17 @@ import {
   useNotification,
   ResourceNotFound,
 } from 'react-shared';
-import {
-  createApiData,
-  inferCredentialType,
-  verifyApiInput,
-} from '../ApiHelpers';
+import { createApiData, verifyApiInput } from '../ApiHelpers';
 import ApiEditorForm from '../Forms/ApiEditorForm';
 
 EditApi.propTypes = {
   apiId: PropTypes.string.isRequired,
   originalApi: PropTypes.object.isRequired,
+  apiPackage: PropTypes.object.isRequired,
   application: PropTypes.object.isRequired,
 };
 
-function EditApi({ apiId, originalApi, application }) {
+function EditApi({ apiId, originalApi, apiPackage, application }) {
   const compassGqlClient = React.useContext(CompassGqlContext);
   const notificationManager = useNotification();
 
@@ -40,8 +36,12 @@ function EditApi({ apiId, originalApi, application }) {
     client: compassGqlClient,
     refetchQueries: () => [
       {
-        query: GET_APPLICATION_WITH_API_DEFINITIONS,
-        variables: { applicationId: application.id },
+        query: GET_API_DEFININTION,
+        variables: {
+          applicationId: application.id,
+          apiPackageId: apiPackage.id,
+          apiDefinitionId: originalApi.id,
+        },
       },
     ],
   });
@@ -59,23 +59,11 @@ function EditApi({ apiId, originalApi, application }) {
     originalApi.spec ? originalApi.spec.data : '',
   );
 
-  const [credentialsType, setCredentialsType] = React.useState(
-    inferCredentialType(originalApi.defaultAuth),
-  );
-
   const formValues = {
     name: React.useRef(null),
     description: React.useRef(null),
     group: React.useRef(null),
     targetURL: React.useRef(null),
-  };
-
-  const credentialRefs = {
-    oAuth: {
-      clientId: React.useRef(null),
-      clientSecret: React.useRef(null),
-      url: React.useRef(null),
-    },
   };
 
   const revalidateForm = () =>
@@ -88,13 +76,7 @@ function EditApi({ apiId, originalApi, application }) {
     const specData = specProvided
       ? { data: specText, format, type: apiType }
       : null;
-    const credentialsData = { oAuth: getRefsValues(credentialRefs.oAuth) };
-    const apiData = createApiData(
-      basicData,
-      specData,
-      credentialsData,
-      credentialsType,
-    );
+    const apiData = createApiData(basicData, specData);
 
     try {
       await updateApiDefinition({
@@ -119,14 +101,11 @@ function EditApi({ apiId, originalApi, application }) {
     revalidateForm();
   };
 
-  const defaultCredentials = originalApi.defaultAuth
-    ? { oAuth: { ...originalApi.defaultAuth.credential } }
-    : null;
-
   return (
     <>
       <EditApiHeader
         api={originalApi}
+        apiPackage={apiPackage}
         application={application}
         saveChanges={saveChanges}
         canSaveChanges={formValid}
@@ -204,26 +183,6 @@ function EditApi({ apiId, originalApi, application }) {
               </Panel.Body>
             </Panel>
           </Tab>
-          <Tab key="credentials" id="credentials" title="Credentials">
-            <Panel>
-              <Panel.Header>
-                <p className="fd-has-type-1">Credentials</p>
-              </Panel.Header>
-              <Panel.Body>
-                <CredentialsForm
-                  credentialRefs={credentialRefs}
-                  credentialType={credentialsType}
-                  setCredentialType={type => {
-                    setCredentialsType(type);
-                    setTimeout(() => {
-                      revalidateForm();
-                    });
-                  }}
-                  defaultValues={defaultCredentials}
-                />
-              </Panel.Body>
-            </Panel>
-          </Tab>
         </TabGroup>
       </form>
     </>
@@ -233,20 +192,20 @@ function EditApi({ apiId, originalApi, application }) {
 EditApiWrapper.propTypes = {
   apiId: PropTypes.string.isRequired,
   appId: PropTypes.string.isRequired,
+  apiPackageId: PropTypes.string.isRequired,
 };
 
-export default function EditApiWrapper({ apiId, appId }) {
+export default function EditApiWrapper({ apiId, appId, apiPackageId }) {
   const compassGqlClient = React.useContext(CompassGqlContext);
-  const { loading, data, error } = useQuery(
-    GET_APPLICATION_WITH_API_DEFINITIONS,
-    {
-      client: compassGqlClient,
-      fetchPolicy: 'cache-and-network',
-      variables: {
-        applicationId: appId,
-      },
+  const { loading, data, error } = useQuery(GET_API_DEFININTION, {
+    client: compassGqlClient,
+    fetchPolicy: 'cache-and-network',
+    variables: {
+      applicationId: appId,
+      apiPackageId,
+      apiDefinitionId: apiId,
     },
-  );
+  });
 
   if (loading) {
     return <p>Loading...</p>;
@@ -255,10 +214,10 @@ export default function EditApiWrapper({ apiId, appId }) {
     return <p>Error! ${error.message}</p>;
   }
 
-  // there's no getApiById query
-  const originalApi = data.application.apiDefinitions.data.find(
-    api => api.id === apiId,
-  );
+  const originalApi =
+    data.application &&
+    data.application.package &&
+    data.application.package.apiDefinition;
 
   if (!originalApi) {
     return (
@@ -275,6 +234,7 @@ export default function EditApiWrapper({ apiId, appId }) {
       apiId={apiId}
       originalApi={originalApi}
       application={data.application}
+      apiPackage={data.application.package}
     />
   );
 }

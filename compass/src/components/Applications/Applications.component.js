@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Counter } from 'fundamental-react/Badge';
-import LuigiClient from '@kyma-project/luigi-client';
+import LuigiClient from '@luigi-project/client';
 import { Popover, Menu, Button } from 'fundamental-react';
 
 import {
@@ -25,8 +25,7 @@ class Applications extends React.Component {
     'Provider name',
     'Description',
     'Scenarios',
-    'API Definitions',
-    'Event Definitions',
+    'Packages',
     'Status',
   ];
 
@@ -44,8 +43,8 @@ class Applications extends React.Component {
       : EMPTY_TEXT_PLACEHOLDER,
     application.description ? application.description : EMPTY_TEXT_PLACEHOLDER,
     <ScenariosDisplay scenarios={application.labels.scenarios || []} />,
-    <Counter>{application.apiDefinitions.totalCount}</Counter>,
-    <Counter>{application.eventDefinitions.totalCount}</Counter>,
+    <Counter>{application.packages.totalCount}</Counter>,
+
     <StatusBadge
       status={
         application.status && application.status.condition

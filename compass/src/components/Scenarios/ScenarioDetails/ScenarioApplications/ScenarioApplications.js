@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import LuigiClient from '@kyma-project/luigi-client';
+import LuigiClient from '@luigi-project/client';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 
 import { GenericList } from 'react-shared';
@@ -41,7 +41,7 @@ export default function ScenarioApplications({ updateApplicationsCount }) {
     return <p>Loading...</p>;
   }
   if (error) {
-    return <p>`Error! ${error.message}`;</p>;
+    return <p>{`Error! ${error.message}`}</p>;
   }
 
   updateApplicationsCount(applicationsForScenario.applications.totalCount);
@@ -84,12 +84,11 @@ export default function ScenarioApplications({ updateApplicationsCount }) {
     );
   };
 
-  const headerRenderer = () => ['Name', 'Total APIs'];
+  const headerRenderer = () => ['Name', 'Packages'];
 
   const rowRenderer = application => [
     application.name,
-    application.apiDefinitions.totalCount +
-      application.eventDefinitions.totalCount,
+    application.packages.totalCount,
   ];
 
   const actions = [

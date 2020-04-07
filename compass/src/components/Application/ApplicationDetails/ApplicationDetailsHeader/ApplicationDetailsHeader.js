@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import LuigiClient from '@kyma-project/luigi-client';
+import LuigiClient from '@luigi-project/client';
 
 import { ActionBar, Badge } from 'fundamental-react';
 import { Button, Breadcrumb, PanelGrid } from '@kyma-project/react-components';
@@ -10,9 +10,9 @@ import { handleDelete } from 'react-shared';
 import PanelEntry from '../../../../shared/components/PanelEntry/PanelEntry.component';
 import '../../../../shared/styles/header.scss';
 
-import ModalWithForm from './../../../../shared/components/ModalWithForm/ModalWithForm.container';
+import ModalWithForm from './../../../../shared/components/ModalWithForm/ModalWithForm';
 import UpdateApplicationForm from './../UpdateApplicationForm/UpdateApplicationForm.container';
-import ConnectApplicationModal from './../ConnectApplicationModal/ConnectApplicationModal.container';
+import ConnectApplicationModal from './../ConnectApplicationModal/ConnectApplicationModal';
 
 import { ApplicationQueryContext } from './../ApplicationDetails.component';
 
@@ -66,9 +66,13 @@ class ApplicationDetailsHeader extends React.Component {
                   confirmText="Update"
                   initialIsValid={true}
                   performRefetch={applicationQuery.refetch}
-                >
-                  <UpdateApplicationForm application={this.props.application} />
-                </ModalWithForm>
+                  renderForm={props => (
+                    <UpdateApplicationForm
+                      application={this.props.application}
+                      {...props}
+                    />
+                  )}
+                />
               )}
             </ApplicationQueryContext.Consumer>
             <Button

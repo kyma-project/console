@@ -1,7 +1,7 @@
 import React from 'react';
 import classnames from 'classnames';
-import { Tooltip } from '@kyma-project/react-components';
-import { PanelActions } from '@kyma-project/react-components';
+import { Tooltip } from '../../../react-shared';
+
 import { isStringValueEqualToTrue } from '../../../commons/helpers';
 import './InstancesIndicator.scss';
 
@@ -29,10 +29,10 @@ export function InstancesIndicator({ numberOfInstances, labels }) {
     labels.provisionOnlyOnce &&
     isStringValueEqualToTrue(labels.provisionOnlyOnce);
   return (
-    <PanelActions className="instances-indicator">
+    <div className="instances-indicator">
       {isProvisionedOnlyOnce && (
         <Tooltip
-          content={
+          title={
             numberOfInstances > 0
               ? tooltipDescription.provisionOnlyOnceActive
               : tooltipDescription.provisionOnlyOnce
@@ -49,7 +49,7 @@ export function InstancesIndicator({ numberOfInstances, labels }) {
       )}
       {!isProvisionedOnlyOnce && numberOfInstances > 0 && (
         <Tooltip
-          content={`${
+          title={`${
             tooltipDescription.instancesTooltipInfo
           } ${numberOfInstances} ${
             numberOfInstances > 1
@@ -65,6 +65,6 @@ export function InstancesIndicator({ numberOfInstances, labels }) {
           </CardIndicatorGeneral>
         </Tooltip>
       )}
-    </PanelActions>
+    </div>
   );
 }

@@ -15,8 +15,18 @@ export const mockCompassAppsEmpty = {
   },
 };
 export const exampleCompassApps = [
-  { id: '1', name: 'tets-app-1', providerName: 'tets-provider-1' },
-  { id: '2', name: 'tets-app-2', providerName: 'tets-provider-2' },
+  {
+    id: '1',
+    name: 'tets-app-1',
+    providerName: 'tets-provider-1',
+    packages: { totalCount: 1 },
+  },
+  {
+    id: '2',
+    name: 'tets-app-2',
+    providerName: 'tets-provider-2',
+    packages: { totalCount: 2 },
+  },
 ];
 
 export const exampleKymaApps = [

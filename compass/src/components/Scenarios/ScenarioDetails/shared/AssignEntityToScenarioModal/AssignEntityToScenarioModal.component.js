@@ -1,5 +1,5 @@
 import React from 'react';
-import LuigiClient from '@kyma-project/luigi-client';
+import LuigiClient from '@luigi-project/client';
 import PropTypes from 'prop-types';
 
 import { Modal } from 'react-shared';
@@ -59,7 +59,8 @@ export default function AssignEntityToScenarioModal({
   React.useEffect(() => {
     setAssignedEntities(originalEntities);
     allEntitiesQuery.refetch();
-  }, [originalEntities, allEntitiesQuery]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [originalEntities]);
 
   if (allEntitiesQuery.loading) {
     return (

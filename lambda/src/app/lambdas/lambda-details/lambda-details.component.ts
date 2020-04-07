@@ -55,8 +55,6 @@ import { EventTrigger } from '../../shared/datamodel/event-trigger';
 import { EventTriggerWithSchema } from '../../shared/datamodel/event-trigger-with-schema';
 import { EventActivationsService } from '../../event-activations/event-activations.service';
 import { EventActivation } from '../../shared/datamodel/k8s/event-activation';
-import { Subscription } from '../../shared/datamodel/k8s/subscription';
-import { SubscriptionsService } from '../../subscriptions/subscriptions.service';
 import { EventTriggerChooserComponent } from './event-trigger-chooser/event-trigger-chooser.component';
 import { HttpTriggerComponent } from './http-trigger/http-trigger.component';
 
@@ -196,7 +194,6 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
     private lambdaDetailsService: LambdaDetailsService,
     private serviceBindingUsagesService: ServiceBindingUsagesService,
     private serviceBindingsService: ServiceBindingsService,
-    private subscriptionsService: SubscriptionsService,
     private triggersService: TriggersService,
     private cdr: ChangeDetectorRef,
     protected route: ActivatedRoute,
@@ -273,21 +270,23 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
                   // Can be a valid 404 error when api is not found of a function
                 },
               );
-            this.subscriptionsService
-              .getSubscriptions(this.namespace, this.token, {
-                labelSelector: `Function=${lambdaName}`,
-              })
+            this.triggersService
+              .getTriggersForLambda(this.namespace, this.token, lambdaName)
               .subscribe(resp => {
-                resp.items.forEach(sub => {
-                  const evTrigger: EventTrigger = {
-                    eventType: sub.spec.event_type,
-                    version: sub.spec.event_type_version,
-                    sourceId: sub.spec.source_id,
-                  };
-                  this.selectedTriggers.push(evTrigger);
-                  this.existingEventTriggers.push(evTrigger);
+                resp.items.forEach(trig => {
+                  if(trig && trig.spec && trig.spec.filter && trig.spec.filter.attributes) {
+                    const trigAttributes = trig.spec.filter.attributes;
+                    const evTrigger: EventTrigger = {
+                      eventType: trigAttributes.type,
+                      version: trigAttributes.eventtypeversion,
+                      sourceId: trigAttributes.source,
+                    };
+                    this.selectedTriggers.push(evTrigger);
+                    this.existingEventTriggers.push(evTrigger);
+                  }
                 });
-              });
+              }
+            );
           } else {
             this.title = 'Create Lambda Function';
             this.lambda = this.lambdaDetailsService.initializeLambda();
@@ -700,15 +699,13 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
   }
 
   manageEventTriggers() {
-    const createSubscriptionRequests: Array<Observable<Subscription>> = [];
-    const deleteSubscriptionRequests: Array<Observable<Subscription>> = [];
     const createKTriggerRequests: Array<Observable<any>> = [];
     const deleteKTriggerRequests: Array<Observable<any>> = [];
-    this.selectedTriggers.forEach(trigger => {
-      if (trigger.eventType !== 'http') {
-        if (this.isEventTriggerNew(trigger as EventTrigger)) {
+    this.selectedTriggers.forEach(trig => {
+      if (trig.eventType !== 'http') {
+        if (this.isEventTriggerNew(trig as EventTrigger)) {
 
-          const triggerName = `lambda-${this.lambda.metadata.name}-${trigger.eventType}-${trigger.version}`.toLowerCase();
+          const triggerName = `lambda-${this.lambda.metadata.name}-${trig.eventType}-${trig.version}`.toLowerCase();
           const triggerUUID = uuid5(triggerName, NAMESPACE);
 
           const lambdaInternalEndpoint = `http://${this.lambda.metadata.name}.${this.namespace}:8080/`;
@@ -717,9 +714,9 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
           kTrigger.metadata['namespace'] = this.namespace;
           kTrigger.metadata.labels['Function'] = this.lambda.metadata.name;
           kTrigger.spec.subscriber['uri'] = lambdaInternalEndpoint;
-          kTrigger.spec.filter.attributes['type'] = trigger.eventType;
-          kTrigger.spec.filter.attributes['source'] = trigger.sourceId;
-          kTrigger.spec.filter.attributes['eventtypeversion'] = trigger.version;
+          kTrigger.spec.filter.attributes['type'] = trig.eventType;
+          kTrigger.spec.filter.attributes['source'] = trig.sourceId;
+          kTrigger.spec.filter.attributes['eventtypeversion'] = trig.version;
           const triggerReq = this.triggersService
             .createTrigger(kTrigger, this.token)
             .pipe(
@@ -728,40 +725,10 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
               }),
             );
           createKTriggerRequests.push(triggerReq);
-
-          const sub = this.subscriptionsService.initializeSubscription();
-          sub.metadata.name = triggerName;
-          sub.metadata.namespace = this.namespace;
-          sub.metadata.labels['Function'] = this.lambda.metadata.name;
-          sub.spec.endpoint = lambdaInternalEndpoint;
-          sub.spec.event_type = trigger.eventType;
-          sub.spec.event_type_version = trigger.version;
-          sub.spec.source_id = trigger.sourceId;
-          const req = this.subscriptionsService
-            .createSubscription(sub, this.token)
-            .pipe(
-              catchError(err => {
-                return observableOf(err);
-              }),
-            );
-          createSubscriptionRequests.push(req);
         }
       }
     });
     this.getEventTriggersToBeRemoved().forEach(et => {
-      const req = this.subscriptionsService
-        .deleteSubscription(
-          `lambda-${this.lambda.metadata.name}-${et.eventType}-${et.version}`.toLowerCase(),
-          this.namespace,
-          this.token,
-        )
-        .pipe(
-          catchError(err => {
-            return observableOf(err);
-          }),
-        );
-      deleteSubscriptionRequests.push(req);
-
       const removeTriggerReq = this.triggersService
       .deleteTrigger(
         uuid5(`lambda-${this.lambda.metadata.name}-${et.eventType}-${et.version}`.toLowerCase(), NAMESPACE),
@@ -776,8 +743,8 @@ export class LambdaDetailsComponent implements OnInit, OnDestroy {
       deleteKTriggerRequests.push(removeTriggerReq);
     });
     this.executeCreateAndDeleteSubscriptionRequests(
-      createSubscriptionRequests.concat(createKTriggerRequests),
-      deleteSubscriptionRequests.concat(deleteKTriggerRequests),
+      createKTriggerRequests,
+      deleteKTriggerRequests,
     );
   }
 

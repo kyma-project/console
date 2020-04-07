@@ -58,6 +58,64 @@ export const DELETE_LAMBDA = gql`
   }
 `;
 
+export const CREATE_SERVICE_BINDING = gql`
+  mutation createServiceBinding(
+    $serviceInstanceName: String!
+    $namespace: String!
+    $parameters: JSON
+  ) {
+    createServiceBinding(
+      serviceInstanceName: $serviceInstanceName
+      namespace: $namespace
+      parameters: $parameters
+    ) {
+      name
+    }
+  }
+`;
+
+export const CREATE_SERVICE_BINDING_USAGE = gql`
+  mutation createServiceBindingUsage(
+    $createServiceBindingUsageInput: CreateServiceBindingUsageInput
+    $namespace: String!
+  ) {
+    createServiceBindingUsage(
+      createServiceBindingUsageInput: $createServiceBindingUsageInput
+      namespace: $namespace
+    ) {
+      name
+    }
+  }
+`;
+
+export const DELETE_SERVICE_BINDING_USAGE = gql`
+  mutation deleteServiceBindingUsage(
+    $serviceBindingUsageName: String!
+    $namespace: String!
+  ) {
+    deleteServiceBindingUsage(
+      serviceBindingUsageName: $serviceBindingUsageName
+      namespace: $namespace
+    ) {
+      name
+    }
+  }
+`;
+
+export const DELETE_SERVICE_BINDING_USAGES = gql`
+  mutation deleteServiceBindingUsages(
+    $serviceBindingUsageNames: [String!]!
+    $namespace: String!
+  ) {
+    deleteServiceBindingUsages(
+      serviceBindingUsageNames: $serviceBindingUsageNames
+      namespace: $namespace
+    ) {
+      name
+    }
+  }
+`;
+
 export const CREATE_NAMESPACE = gql`
   mutation createNamespace($name: String!, $labels: Labels) {
     createNamespace(name: $name, labels: $labels) {
@@ -179,6 +237,22 @@ export const UNBIND_NAMESPACE = gql`
   }
 `;
 
+export const DELETE_API_PACKAGE = gql`
+  mutation deletePackage($id: ID!) {
+    deletePackage(id: $id) {
+      id
+    }
+  }
+`;
+
+export const CREATE_API_PACKAGE = gql`
+  mutation addPackage($applicationId: ID!, $in: PackageCreateInput!) {
+    addPackage(applicationID: $applicationId, in: $in) {
+      name
+    }
+  }
+`;
+
 export const DELETE_API_DEFINITION = gql`
   mutation deleteApi($id: ID!) {
     deleteAPIDefinition(id: $id) {
@@ -196,16 +270,16 @@ export const DELETE_EVENT_DEFINITION = gql`
 `;
 
 export const ADD_API_DEFINITION = gql`
-  mutation addAPI($applicationId: ID!, $in: APIDefinitionInput!) {
-    addAPIDefinition(applicationID: $applicationId, in: $in) {
+  mutation addAPI($apiPackageId: ID!, $in: APIDefinitionInput!) {
+    addAPIDefinitionToPackage(packageID: $apiPackageId, in: $in) {
       name
     }
   }
 `;
 
 export const ADD_EVENT_DEFINITION = gql`
-  mutation addEventDefinition($applicationId: ID!, $in: EventDefinitionInput!) {
-    addEventDefinition(applicationID: $applicationId, in: $in) {
+  mutation addEventDefinition($apiPackageId: ID!, $in: EventDefinitionInput!) {
+    addEventDefinitionToPackage(packageID: $apiPackageId, in: $in) {
       name
     }
   }
@@ -232,6 +306,14 @@ export const UPDATE_EVENT_DEFINITION = gql`
 export const REGISTER_APPLICATION_FROM_TEMPLATE = gql`
   mutation registerApplicationFromTemplate($in: ApplicationFromTemplateInput!) {
     registerApplicationFromTemplate(in: $in) {
+      name
+    }
+  }
+`;
+
+export const UPDATE_API_PACKAGE = gql`
+  mutation updatePackage($id: ID!, $in: PackageUpdateInput!) {
+    updatePackage(id: $id, in: $in) {
       name
     }
   }

@@ -3,7 +3,7 @@ import { AppConfig } from '../../../app.config';
 import { HttpClient } from '@angular/common/http';
 import * as FileSaver from 'file-saver';
 import { SHOW_SYSTEM_NAMESPACES_CHANGED_EVENT } from './../../../shared/constants/constants';
-import LuigiClient from '@kyma-project/luigi-client';
+import LuigiClient from '@luigi-project/client';
 
 @Component({
   selector: 'app-organisation',
@@ -16,6 +16,7 @@ export class OrganisationComponent implements OnInit {
   public showSystemNamespaces = false;
   public showExperimentalViews = false;
   public showDeprecatedViews = false;
+  public shouldShowNamespacesToggle = true;
 
   constructor(private http: HttpClient) {
     this.showExperimentalViews =
@@ -38,10 +39,18 @@ export class OrganisationComponent implements OnInit {
     this.orgId = AppConfig.orgId;
     this.orgName = AppConfig.orgName;
 
+    const groups = LuigiClient.getNodeParams().groups;
+    this.shouldShowNamespacesToggle = this.isVisibleForCurrentGroup(groups);
+
     if (localStorage.getItem('console.showSystemNamespaces')) {
       this.showSystemNamespaces =
         localStorage.getItem('console.showSystemNamespaces') === 'true';
     }
+  }
+
+  public isVisibleForCurrentGroup(groups) {
+    if (!Array.isArray(groups)) { return true };
+    return groups.includes(AppConfig.runtimeAdminGroupName);
   }
 
   public toggleSystemNamespaceVisibility() {
@@ -49,7 +58,6 @@ export class OrganisationComponent implements OnInit {
       'console.showSystemNamespaces',
       this.showSystemNamespaces.toString()
     );
-    this.refreshContextSwitcher();
 
     window.parent.postMessage(
       {
@@ -70,15 +78,8 @@ export class OrganisationComponent implements OnInit {
   }
 
   private toggleViewVisibilityPreference(key: string) {
-    localStorage.setItem(`console.${key}`
-      ,
-      this[key].toString()
-    );
+    localStorage.setItem(`console.${key}`, this[key].toString());
     this.refreshLeftNavigation();
-  }
-
-  private refreshContextSwitcher() {
-    window.parent.postMessage({ msg: 'luigi.refresh-context-switcher' }, '*');
   }
 
   private refreshLeftNavigation() {

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import LuigiClient from '@kyma-project/luigi-client';
+import LuigiClient from '@luigi-project/client';
 
 import { PageHeader, StatusBadge, EMPTY_TEXT_PLACEHOLDER } from 'react-shared';
 import '../../../../shared/styles/header.scss';

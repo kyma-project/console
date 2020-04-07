@@ -14,10 +14,11 @@ import handleApplicationEvent from './wsHandler';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import { CompassGqlContext } from 'index';
 import { Popover, Menu, Button, Badge } from 'fundamental-react';
+import { Counter } from 'fundamental-react/Badge';
 import { useNotification } from 'react-shared';
 import ModalWithForm from '../../ModalWithForm/ModalWithForm';
 import RegisterApplicationForm from '../RegisterApplication/RegisterApplicationForm';
-import CreateApplicationFromTemplateModal from './../CreateApplicationFromTemplateModal/CreateApplicationFromTemplateModal';
+import CreateApplicationFromTemplateForm from './../CreateApplicationFromTemplateForm/CreateApplicationFromTemplateForm';
 import './ApplicationList.scss';
 import ApplicationStatus, {
   STATUSES,
@@ -37,6 +38,7 @@ export default function ApplicationList() {
   const [applicationList, setApplicationList] = useState([]);
   const {
     data: compassQueryResult,
+
     error,
     loading,
     refetch: refetchCompassQuery,
@@ -66,7 +68,7 @@ export default function ApplicationList() {
 
   useEffect(() => {
     if (!kymaAppsQuery.subscribeToMore) return;
-    kymaAppsQuery.subscribeToMore({
+    return kymaAppsQuery.subscribeToMore({
       document: APPLICATIONS_EVENT_SUBSCRIPTION,
       updateQuery: (prev, { subscriptionData }) => {
         return handleApplicationEvent(
@@ -119,6 +121,7 @@ export default function ApplicationList() {
     'Provider name',
     'Status',
     'Bound namespaces',
+    'Packages',
   ];
 
   const rowRenderer = item => {
@@ -139,6 +142,7 @@ export default function ApplicationList() {
             </Badge>
           ))
         : EMPTY_TEXT_PLACEHOLDER,
+      <Counter>{item.packages.totalCount}</Counter>,
     ];
   };
 
@@ -165,13 +169,21 @@ export default function ApplicationList() {
     />
   );
 
+  const RegisterAppFromTemplate = () => (
+    <ModalWithForm
+      title="Create application from template"
+      modalOpeningComponent={<Menu.Item>From template</Menu.Item>}
+      renderForm={props => <CreateApplicationFromTemplateForm {...props} />}
+    />
+  );
+
   const extraHeaderContent = (
     <Popover
       body={
         <Menu>
           <Menu.List>
             <RegisterApp />
-            <CreateApplicationFromTemplateModal />
+            <RegisterAppFromTemplate />
           </Menu.List>
         </Menu>
       }

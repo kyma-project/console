@@ -1,12 +1,14 @@
 import settings from './settings';
 import navigation from './navigation';
-import auth from './auth';
+import createAuth from './auth';
 
-Luigi.setConfig({
-  navigation,
-  auth,
-  routing: {
-    useHashRouting: false,
-  },
-  settings,
-});
+(async () => {
+  Luigi.setConfig({
+    navigation,
+    auth: await createAuth(),
+    routing: {
+      useHashRouting: false,
+    },
+    settings,
+  });
+})();

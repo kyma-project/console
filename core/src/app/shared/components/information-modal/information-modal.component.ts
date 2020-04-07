@@ -1,7 +1,7 @@
 import { Component, Input, ViewChild, TemplateRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { ModalService, ModalRef } from 'fundamental-ngx';
-import LuigiClient from '@kyma-project/luigi-client';
+import LuigiClient from '@luigi-project/client';
 
 @Component({
   selector: 'app-information-modal',
@@ -20,7 +20,7 @@ export class InformationModalComponent {
   public constructor(
     private router: Router,
     private modalService: ModalService
-  ) {}
+  ) { }
 
   public show(title?: string, message?: string, redirectUrl?: string) {
     if (title) {

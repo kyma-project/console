@@ -1,28 +1,14 @@
 {
   "name": "ui-tests",
-  "version": "0.1.3",
-  "description": "UI Integration tests for the Kyma ",
-  "main": "index.js",
+  "description": "Smoke tests for Console",
   "scripts": {
-    "test": "LOCAL_DEV=true OUTSIDE_CLUSTER=true PASSWORD=$(kubectl get secret admin-user -n kyma-system -o jsonpath='{.data.password}' | base64 -D) jest -i --forceExit --detectOpenHandles",
-    "test:cluster": "jest -i --forceExit --detectOpenHandles",
-    "test:cluster-outside": "OUTSIDE_CLUSTER=true PASSWORD=$(kubectl get secret admin-user -n kyma-system -o jsonpath='{.data.password}' | base64 -D) jest -i --forceExit --detectOpenHandles",
-    "test:watch": "LOCAL_DEV=true jest --watch",
-    "test:watch:cluster": "jest --watch"
+    "test": "LOCAL_DEV=true PASSWORD=$(kubectl get secret admin-user -n kyma-system -o jsonpath='{.data.password}' | base64 -D) testcafe chrome tests/tests.js",
+    "test:headless": "LOCAL_DEV=true PASSWORD=$(kubectl get secret admin-user -n kyma-system -o jsonpath='{.data.password}' | base64 -D) testcafe chrome:headless tests/tests.js",
+    "test:cluster": "testcafe chromium:headless tests/tests.js",
+    "test:cluster_firefox": "testcafe firefox:headless tests/tests.js",
+    "test:cluster_chrome": "testcafe chrome:headless tests/tests.js"
   },
   "devDependencies": {
-    "@kubernetes/client-node": "^0.8.0",
-    "babel-core": "^6.26.3",
-    "babel-jest": "^23.6.0",
-    "babel-preset-env": "^1.7.0",
-    "faker": "^4.1.0",
-    "jest": "^23.6.0",
-    "promise-retry": "^1.1.1",
-    "puppeteer": "^1.17.0",
-    "request": "^2.88.0"
-  },
-  "jest": {
-    "testRegex": "/tests/(console-basic-test|docs-ui-test|logging-test).jsx?$",
-    "setupTestFrameworkScriptFile": "<rootDir>/jest-setup.js"
+    "testcafe": "^1.8.3"
   }
 }

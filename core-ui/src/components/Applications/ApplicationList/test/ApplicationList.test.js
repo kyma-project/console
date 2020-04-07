@@ -158,6 +158,9 @@ describe('ApplicationList', () => {
         expect(
           queryByText(exampleCompassApps[i].providerName),
         ).toBeInTheDocument();
+        expect(
+          queryByText(exampleCompassApps[i].packages.totalCount.toString()),
+        ).toBeInTheDocument();
       });
     });
   });

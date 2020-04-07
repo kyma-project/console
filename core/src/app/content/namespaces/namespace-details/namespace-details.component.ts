@@ -10,7 +10,7 @@ import { HttpClient } from '@angular/common/http';
 import { ComponentCommunicationService } from '../../../shared/services/component-communication.service';
 import { Observable, of, Subscription } from 'rxjs';
 import { ApplicationBindingService } from '../../settings/applications/application-details/application-binding-service';
-import * as LuigiClient from '@kyma-project/luigi-client';
+import * as LuigiClient from '@luigi-project/client';
 import { ConfirmationModalComponent } from 'shared/components/confirmation-modal/confirmation-modal.component';
 import { NamespaceEditComponent } from '../namespace-edit/namespace-edit.component';
 
@@ -43,6 +43,7 @@ export class NamespaceDetailsComponent implements OnInit, OnDestroy {
       name: 'Unbind'
     }
   ];
+  private useLegacyRouteToApplicationView = true;
   entryEventHandler = this.getEntryEventHandler();
 
   constructor(
@@ -66,6 +67,10 @@ export class NamespaceDetailsComponent implements OnInit, OnDestroy {
           this.getApplications(this.id);
         });
       });
+
+    LuigiClient.linkManager()
+      .pathExists('/home/cmf-applications')
+      .then(pathExists => (this.useLegacyRouteToApplicationView = !pathExists));
   }
 
   public ngOnDestroy() {
@@ -166,12 +171,33 @@ export class NamespaceDetailsComponent implements OnInit, OnDestroy {
       .navigate('services');
   }
 
-  public navigateToApplications(applicationName = null) {
-    LuigiClient.linkManager().navigate(
-      applicationName
-        ? '/home/cmf-apps/details/' + applicationName
-        : '/home/cmf-apps'
+  private isLegacyApplication(application) {
+    return (
+      !application.compassMetadata ||
+      !application.compassMetadata.applicationId ||
+      application.compassMetadata.applicationId === ''
     );
+  }
+
+  public navigateToApplications(application?) {
+    const appsNodeRoute = this.useLegacyRouteToApplicationView
+      ? 'cmf-apps'
+      : 'cmf-applications';
+    let path = `/home/${appsNodeRoute}`;
+
+    if (application) {
+      // tslint:disable-next-line:prefer-conditional-expression
+      if (
+        !this.isLegacyApplication(application) &&
+        !this.useLegacyRouteToApplicationView
+      ) {
+        path = `/home/cmf-applications/details/${application.compassMetadata.applicationId}`;
+      } else {
+        path = `/home/cmf-apps/details/${application.name}`;
+      }
+    }
+
+    LuigiClient.linkManager().navigate(path);
   }
 
   public deleteNamespace() {
@@ -185,7 +211,6 @@ export class NamespaceDetailsComponent implements OnInit, OnDestroy {
           .deleteNamespace(this.namespace.getLabel())
           .subscribe(
             () => {
-              this.refreshContextSwitcher();
               LuigiClient.linkManager().navigate('/home');
             },
             err => {
@@ -196,11 +221,6 @@ export class NamespaceDetailsComponent implements OnInit, OnDestroy {
             }
           );
       })
-      .catch(() => {});
+      .catch(() => { });
   }
-
-  private refreshContextSwitcher() {
-    window.parent.postMessage({ msg: 'luigi.refresh-context-switcher' }, '*');
-  }
-
 }

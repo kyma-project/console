@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ConfirmationModalComponent } from '../confirmation-modal/confirmation-modal.component';
 import { map } from 'rxjs/operators';
 
-import * as luigiClient from '@kyma-project/luigi-client';
+import * as luigiClient from '@luigi-project/client';
 
 @Component({
   selector: 'app-permissions',

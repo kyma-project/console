@@ -6,7 +6,7 @@ import {
   TemplateRef
 } from '@angular/core';
 import { NamespacesService } from '../services/namespaces.service';
-import LuigiClient from '@kyma-project/luigi-client';
+import LuigiClient from '@luigi-project/client';
 import { ModalService, ModalRef } from 'fundamental-ngx';
 import { DEFAULT_MODAL_CONFIG } from 'shared/constants/constants';
 
@@ -51,7 +51,7 @@ export class NamespaceCreateComponent {
   constructor(
     private namespacesService: NamespacesService,
     private modalService: ModalService
-  ) {}
+  ) { }
 
   public createNamespace() {
     this.namespacesService
@@ -61,7 +61,6 @@ export class NamespaceCreateComponent {
           const handleSuccess = () => {
             this.isActive = false;
             this.modalService.dismissAll();
-            this.refreshContextSwitcher();
             this.navigateToDetails(this.namespaceName);
           };
 
@@ -71,7 +70,6 @@ export class NamespaceCreateComponent {
                 handleSuccess();
               },
               err => {
-                this.refreshContextSwitcher();
                 this.err = `Namespace has been created, but there was an error while creating Limits: ${err}`;
               }
             );
@@ -81,7 +79,6 @@ export class NamespaceCreateComponent {
                 handleSuccess();
               },
               err => {
-                this.refreshContextSwitcher();
                 this.err = `Namespace has been created, but there was an error while creating Resource Quota: ${err}`;
               }
             );
@@ -91,7 +88,6 @@ export class NamespaceCreateComponent {
                 handleSuccess();
               },
               err => {
-                this.refreshContextSwitcher();
                 this.err = `Namespace has been created, but there was an error while creating Limit Range: ${err}`;
               }
             );
@@ -211,10 +207,6 @@ export class NamespaceCreateComponent {
     LuigiClient.linkManager().navigate(
       `/home/namespaces/${namespaceName}/details`
     );
-  }
-
-  private refreshContextSwitcher() {
-    window.parent.postMessage({ msg: 'luigi.refresh-context-switcher' }, '*');
   }
 
   public validateRegex() {

@@ -1,26 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import LuigiClient from '@kyma-project/luigi-client';
+import LuigiClient from '@luigi-project/client';
 
 import { Panel, TabGroup, Tab, Button } from 'fundamental-react';
 import EditApiHeader from './../EditApiHeader/EditApiHeader.container';
 import ResourceNotFound from 'components/Shared/ResourceNotFound.component';
 import ApiForm from '../Forms/ApiForm';
-import CredentialsForm from './../Forms/CredentialForms/CredentialsForm';
 import { Dropdown } from 'components/Shared/Dropdown/Dropdown';
 import './EditApi.scss';
 
 import { getRefsValues, useMutationObserver } from 'react-shared';
-import {
-  createApiData,
-  inferCredentialType,
-  verifyApiInput,
-} from './../ApiHelpers';
+import { createApiData, verifyApiInput } from './../ApiHelpers';
 import ApiEditorForm from '../Forms/ApiEditorForm';
 
 const commonPropTypes = {
   apiId: PropTypes.string.isRequired,
   applicationId: PropTypes.string.isRequired, // used in container file
+  apiPackageId: PropTypes.string.isRequired, // used in container file
   updateApiDefinition: PropTypes.func.isRequired,
   sendNotification: PropTypes.func.isRequired,
 };
@@ -28,12 +24,14 @@ const commonPropTypes = {
 EditApi.propTypes = {
   originalApi: PropTypes.object.isRequired,
   applicationName: PropTypes.string.isRequired,
+  apiPackageName: PropTypes.string.isRequired,
   ...commonPropTypes,
 };
 
 function EditApi({
   originalApi,
   applicationName,
+  apiPackageName,
   apiId,
   updateApiDefinition,
   sendNotification,
@@ -51,23 +49,11 @@ function EditApi({
     originalApi.spec ? originalApi.spec.data : '',
   );
 
-  const [credentialsType, setCredentialsType] = React.useState(
-    inferCredentialType(originalApi.defaultAuth),
-  );
-
   const formValues = {
     name: React.useRef(null),
     description: React.useRef(null),
     group: React.useRef(null),
     targetURL: React.useRef(null),
-  };
-
-  const credentialRefs = {
-    oAuth: {
-      clientId: React.useRef(null),
-      clientSecret: React.useRef(null),
-      url: React.useRef(null),
-    },
   };
 
   const revalidateForm = () =>
@@ -80,13 +66,7 @@ function EditApi({
     const specData = specProvided
       ? { data: specText, format, type: apiType }
       : null;
-    const credentialsData = { oAuth: getRefsValues(credentialRefs.oAuth) };
-    const apiData = createApiData(
-      basicData,
-      specData,
-      credentialsData,
-      credentialsType,
-    );
+    const apiData = createApiData(basicData, specData);
 
     try {
       await updateApiDefinition(apiId, apiData);
@@ -116,15 +96,12 @@ function EditApi({
     revalidateForm();
   };
 
-  const defaultCredentials = originalApi.defaultAuth
-    ? { oAuth: { ...originalApi.defaultAuth.credential } }
-    : null;
-
   return (
     <>
       <EditApiHeader
         api={originalApi}
         applicationName={applicationName}
+        apiPackageName={apiPackageName}
         saveChanges={saveChanges}
         canSaveChanges={formValid}
       />
@@ -201,26 +178,6 @@ function EditApi({
               </Panel.Body>
             </Panel>
           </Tab>
-          <Tab key="credentials" id="credentials" title="Credentials">
-            <Panel>
-              <Panel.Header>
-                <p className="fd-has-type-1">Credentials</p>
-              </Panel.Header>
-              <Panel.Body>
-                <CredentialsForm
-                  credentialRefs={credentialRefs}
-                  credentialType={credentialsType}
-                  setCredentialType={type => {
-                    setCredentialsType(type);
-                    setTimeout(() => {
-                      revalidateForm();
-                    });
-                  }}
-                  defaultValues={defaultCredentials}
-                />
-              </Panel.Body>
-            </Panel>
-          </Tab>
         </TabGroup>
       </form>
     </>
@@ -242,10 +199,10 @@ export default function EditApiWrapper(props) {
     return <p>`Error! ${dataQuery.error.message}`</p>;
   }
 
-  // there's no getApiById query
-  const originalApi = dataQuery.application.apiDefinitions.data.find(
-    api => api.id === props.apiId,
-  );
+  const originalApi =
+    dataQuery.application &&
+    dataQuery.application.package &&
+    dataQuery.application.package.apiDefinition;
 
   if (!originalApi) {
     return (
@@ -263,6 +220,7 @@ export default function EditApiWrapper(props) {
       {...props}
       originalApi={originalApi}
       applicationName={dataQuery.application.name}
+      apiPackageName={dataQuery.application.package.name}
     />
   );
 }

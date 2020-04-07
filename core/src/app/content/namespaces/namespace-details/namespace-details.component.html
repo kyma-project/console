@@ -130,18 +130,18 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let namespace of applications">
+          <tr *ngFor="let application of applications">
             <td>
               <a
                 href="javascript:void(null)"
-                (click)="navigateToApplications(namespace.name)"
+                (click)="navigateToApplications(application)"
                 class="fd-has-font-weight-bold"
-                >{{ namespace.name }}</a
+                >{{ application.name }}</a
               >
             </td>
             <td class="y-fd-table--col-1">
               <y-list-actions
-                [entry]="namespace"
+                [entry]="application"
                 [entryEventHandler]="entryEventHandler"
                 [actions]="actions"
               >

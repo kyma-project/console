@@ -1,21 +1,6 @@
-const getAlternativePath = tenantName => {
-  const currentPath = window.location.pathname;
-  const regex = new RegExp('^/tenant/(.*?)/(.*)(?:/.*)?');
-  const match = currentPath.match(regex);
-  if (match) {
-    const tenant = match[1];
-    const path = match[2];
-    if (tenant == tenantName) {
-      // the same tenant, leave path as it is
-      return `${tenantName}/${path}`;
-    } else {
-      // other tenant, get back to context as applications or runtimes
-      const contextOnlyPath = path.split('/')[0];
-      return `${tenantName}/${contextOnlyPath}`;
-    }
-  }
-  return null;
-};
+import sanitizeHtml from 'sanitize-html';
+import { clusterConfig } from './../clusterConfig';
+import { getAlternativePath } from './getAlternativePath';
 
 export const getToken = () => {
   let token = null;
@@ -56,7 +41,8 @@ export const getTenantsFromCache = () =>
   JSON.parse(sessionStorage.getItem('tenants')) || [];
 
 const fetchFromGraphql = async data => {
-  const url = window.clusterConfig.compassApiUrl;
+  const url = clusterConfig.compassApiUrl;
+
   const response = await fetch(url, {
     method: 'POST',
     cache: 'no-cache',
@@ -77,5 +63,20 @@ export const getTenantNames = tenants => {
       pathValue: alternativePath || tenant.id,
     };
   });
-  return tenantNames;
+  return tenantNames.sort((a, b) => a.label.localeCompare(b.label));
+};
+
+export const customOptionsRenderer = opt => {
+  // we have to manually find selected tenant by id, as Luigi distinguishes
+  // "options" by their labels (which may not be unique)
+  const currentTenantId = opt.id.substring(0, opt.id.indexOf('/'));
+
+  const isSelected =
+    currentTenantId && !!window.location.pathname.match(currentTenantId);
+
+  const label = sanitizeHtml(opt.label);
+
+  return `<a href="javascript:void(0)" class="fd-menu__item ${
+    isSelected ? 'is-selected' : ''
+  } svelte-1ldh2pm" title="${label}">${label}</a>`;
 };

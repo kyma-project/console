@@ -6,7 +6,7 @@ import { Subscription } from 'rxjs';
 import { AppConfig } from '../../../../app.config';
 import { CurrentNamespaceService } from '../../../../content/namespaces/services/current-namespace.service';
 import { finalize } from 'rxjs/operators';
-import LuigiClient from '@kyma-project/luigi-client';
+import LuigiClient from '@luigi-project/client';
 import { EMPTY_TEXT } from 'shared/constants/constants';
 
 @Component({
@@ -30,7 +30,7 @@ export class RoleDetailsComponent implements OnInit, OnDestroy {
     private currentNamespaceService: CurrentNamespaceService,
     private route: ActivatedRoute,
     private location: Location
-  ) {}
+  ) { }
 
   public ngOnInit() {
     this.route.data.subscribe(routeData => {
@@ -46,7 +46,7 @@ export class RoleDetailsComponent implements OnInit, OnDestroy {
               this.roleName = params['name'];
               const url = `${AppConfig.k8sApiServerUrl_rbac}namespaces/${
                 this.currentNamespaceId
-              }/roles/${this.roleName}`;
+                }/roles/${this.roleName}`;
               this.fetchDetails(url);
             });
           });
@@ -55,7 +55,7 @@ export class RoleDetailsComponent implements OnInit, OnDestroy {
           this.roleName = params['name'];
           const url = `${AppConfig.k8sApiServerUrl_rbac}clusterroles/${
             this.roleName
-          }`;
+            }`;
           this.fetchDetails(url);
         });
       }

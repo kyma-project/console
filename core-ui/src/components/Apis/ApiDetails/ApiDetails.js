@@ -8,32 +8,9 @@ import LuigiClient from '@kyma-project/luigi-client';
 
 import { PageHeader, ResourceNotFound } from 'react-shared';
 import { getApiType, getApiDisplayName } from '../ApiHelpers';
-import {
-  GET_APPLICATION_WITH_EVENT_DEFINITIONS,
-  GET_APPLICATION_WITH_API_DEFINITIONS,
-} from 'gql/queries';
+import { GET_API_DEFININTION, GET_EVENT_DEFINITION } from 'gql/queries';
 import { CompassGqlContext } from 'index';
 import './ApiDetails.scss';
-
-export const getApiDataFromQuery = (applicationQuery, apiId, eventApiId) => {
-  if (!applicationQuery) return;
-  const rawApisForApplication = apiId
-    ? applicationQuery.apiDefinitions
-    : applicationQuery.eventDefinitions;
-
-  if (
-    rawApisForApplication &&
-    rawApisForApplication.data &&
-    rawApisForApplication.data.length
-  ) {
-    const apisForApplication = rawApisForApplication.data;
-    const idToLookFor = apiId || eventApiId;
-
-    return apisForApplication.find(a => a.id === idToLookFor);
-  } else {
-    return null;
-  }
-};
 
 const DocumentationComponent = ({ content, type }) => (
   <GenericComponent
@@ -49,12 +26,17 @@ const DocumentationComponent = ({ content, type }) => (
   />
 );
 
-const ApiDetailsHeader = ({ api, application, actions }) => {
+const ApiDetailsHeader = ({ api, apiPackage, application, actions }) => {
   const breadcrumbItems = [
     { name: 'Applications', path: '/' },
     { name: application.name, path: `/details/${application.id}` },
+    {
+      name: apiPackage.name,
+      path: `/details/${application.id}/apiPackage/${apiPackage.id}`,
+    },
     { name: '' },
   ];
+
   return (
     <PageHeader
       breadcrumbItems={breadcrumbItems}
@@ -68,20 +50,24 @@ const ApiDetailsHeader = ({ api, application, actions }) => {
   );
 };
 
-const ApiDetails = ({ apiId, eventApiId, appId }) => {
+const ApiDetails = ({ apiId, eventApiId, appId, apiPackageId }) => {
   const compassGqlClient = React.useContext(CompassGqlContext);
 
-  const queryApi = useQuery(GET_APPLICATION_WITH_API_DEFINITIONS, {
+  const queryApi = useQuery(GET_API_DEFININTION, {
     variables: {
       applicationId: appId,
+      apiPackageId,
+      apiDefinitionId: apiId,
     },
     fetchPolicy: 'cache-and-network',
     client: compassGqlClient,
     skip: !apiId,
   });
-  const queryEventApi = useQuery(GET_APPLICATION_WITH_EVENT_DEFINITIONS, {
+  const queryEventApi = useQuery(GET_EVENT_DEFINITION, {
     variables: {
       applicationId: appId,
+      apiPackageId,
+      eventDefinitionId: eventApiId,
     },
     fetchPolicy: 'cache-and-network',
     client: compassGqlClient,
@@ -110,7 +96,8 @@ const ApiDetails = ({ apiId, eventApiId, appId }) => {
     return `Error! ${error.message}`;
   }
 
-  const api = getApiDataFromQuery(data.application, apiId, eventApiId);
+  const api =
+    data.application.package[apiId ? 'apiDefinition' : 'eventDefinition'];
   if (!api) {
     const resourceType = apiId ? 'API Definition' : 'Event Definition';
     return (
@@ -138,6 +125,7 @@ const ApiDetails = ({ apiId, eventApiId, appId }) => {
     <>
       <ApiDetailsHeader
         application={data.application}
+        apiPackage={data.application.package}
         api={api}
         actions={<EditButton />}
       />
@@ -161,6 +149,7 @@ ApiDetails.propTypes = {
   apiId: PropTypes.string,
   eventApiId: PropTypes.string,
   appId: PropTypes.string.isRequired,
+  apiPackageId: PropTypes.string.isRequired,
 };
 
 export default ApiDetails;

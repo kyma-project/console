@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Modal, Button } from 'fundamental-react';
 import LuigiClient from '@kyma-project/luigi-client';
-import { useNotification } from 'react-shared';
+import { useNotification, Tooltip } from 'react-shared';
 
 //TODO: move this component to a shared "place"
 
@@ -11,14 +11,17 @@ const ModalWithForm = ({
   sendNotification,
   title,
   button,
+  confirmText,
   renderForm,
   opened,
   customCloseAction,
   modalOpeningComponent,
+  invalidPopupMessage,
   ...props
 }) => {
   const [isOpen, setOpen] = useState(false);
   const [isValid, setValid] = useState(false);
+  const [customValid, setCustomValid] = useState(true);
   const formElementRef = useRef(null);
   const notificationManager = useNotification();
 
@@ -41,7 +44,7 @@ const ModalWithForm = ({
 
   function handleFormChanged(e) {
     setValid(formElementRef.current.checkValidity()); // general form validity
-    if (!e.target) {
+    if (!e || !e.target) {
       return;
     }
 
@@ -100,13 +103,47 @@ const ModalWithForm = ({
     }
   }
 
+  function renderConfirmButton() {
+    const disabled = !isValid || !customValid;
+    const button = (
+      <Button
+        disabled={disabled}
+        aria-disabled={disabled}
+        onClick={handleFormSubmit}
+        option="emphasized"
+      >
+        {confirmText}
+      </Button>
+    );
+
+    if (invalidPopupMessage && disabled) {
+      return (
+        <Tooltip
+          title={invalidPopupMessage}
+          position="top"
+          trigger="mouseenter"
+          tippyProps={{
+            distance: 16,
+          }}
+        >
+          {button}
+        </Tooltip>
+      );
+    }
+    return button;
+  }
+
   return (
     <div>
       <div onClick={() => setOpenStatus(true)}>
         {modalOpeningComponent ? (
           modalOpeningComponent
         ) : (
-          <Button glyph={button.glyph || null} option={button.option}>
+          <Button
+            glyph={button.glyph || null}
+            option={button.option}
+            compact={button.compact || false}
+          >
             {button.text}
           </Button>
         )}
@@ -124,13 +161,7 @@ const ModalWithForm = ({
             >
               Cancel
             </Button>
-            <Button
-              aria-disabled={!isValid}
-              onClick={handleFormSubmit}
-              option="emphasized"
-            >
-              Create
-            </Button>
+            {renderConfirmButton()}
           </>
         }
         onClose={() => {
@@ -141,10 +172,17 @@ const ModalWithForm = ({
         {renderForm({
           formElementRef,
           isValid,
+          setCustomValid: isValid => {
+            // revalidate rest of the form
+            setValid(formElementRef.current.checkValidity());
+            setCustomValid(isValid);
+          },
           onChange: handleFormChanged,
           onError: handleFormError,
           onCompleted: handleFormSuccess,
           performManualSubmit: handleFormSubmit,
+          setValidity: setValid,
+          isOpen,
         })}
       </Modal>
     </div>
@@ -154,18 +192,24 @@ const ModalWithForm = ({
 ModalWithForm.propTypes = {
   performRefetch: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
+  confirmText: PropTypes.string,
   button: PropTypes.exact({
     text: PropTypes.string.isRequired,
     glyph: PropTypes.string,
+    compact: PropTypes.bool,
     option: PropTypes.oneOf(['emphasized', 'light']),
   }),
   modalOpeningComponent: PropTypes.node,
   renderForm: PropTypes.func.isRequired,
   opened: PropTypes.bool,
   customCloseAction: PropTypes.func,
+  invalidPopupMessage: PropTypes.string,
 };
+
 ModalWithForm.defaultProps = {
   performRefetch: () => {},
+  confirmText: 'Create',
+  invalidPopupMessage: '',
 };
 
 export default ModalWithForm;

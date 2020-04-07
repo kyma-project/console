@@ -3,6 +3,8 @@ import Cards from '../Cards.component';
 import React from 'react';
 import { shallow } from 'enzyme';
 import Card from '../Card.component';
+import { mockServiceClass, mockPlan } from 'testing/serviceClassesMocks';
+import { DOCUMENTATION_PER_PLAN_LABEL } from 'shared/constants';
 
 const mockNavigate = jest.fn();
 jest.mock('@kyma-project/luigi-client', () => ({
@@ -60,7 +62,14 @@ afterAll(() => {
 describe('Cards.component', () => {
   const component = shallow(<Cards items={mock} />);
   const cards = component.find(Card);
-  expect(cards).toHaveLength(3);
+
+  afterEach(() => {
+    mockNavigate.mockReset();
+  });
+
+  it('Renders proper number of cards', () => {
+    expect(cards).toHaveLength(3);
+  });
 
   it('Renders first card correctly', () => {
     expect(cards.at(0).prop('title')).toEqual(mock[0].displayName);
@@ -68,6 +77,7 @@ describe('Cards.component', () => {
     expect(cards.at(0).prop('description')).toEqual(mock[0].description);
     expect(cards.at(0).prop('imageUrl')).toEqual(mock[0].imageUrl);
     expect(cards.at(0).prop('labels')).toEqual(mock[0].labels);
+
     expect(cards.at(0).prop('numberOfInstances')).toEqual(
       mock[0].instances.length,
     );
@@ -95,11 +105,39 @@ describe('Cards.component', () => {
     );
   });
 
-  it('clicking triggers onClick ', () => {
+  it('clicking triggers onClick for non-APIpackage', () => {
     const component = shallow(<Cards items={mock} />);
     const card = component.find(Card).at(0);
     expect(card.exists()).toBe(true);
     card.prop('onClick')();
     expect(mockNavigate).toHaveBeenCalledWith(`details/${mock[0].name}`);
+  });
+
+  it('clicking triggers onClick for APIpackage with one plan', () => {
+    const mockService = {
+      ...mockServiceClass(1, false, [mockPlan(1)]),
+      labels: { [DOCUMENTATION_PER_PLAN_LABEL]: 'true' },
+    };
+    const component = shallow(<Cards items={[mockService]} />);
+    const card = component.find(Card).at(0);
+    expect(card.exists()).toBe(true);
+    card.prop('onClick')();
+    expect(mockNavigate).toHaveBeenCalledWith(
+      `details/${mockService.name}/plan/${mockPlan(1).name}`,
+    );
+  });
+
+  it('clicking triggers onClick for APIpackage with many plans', () => {
+    const mockService = {
+      ...mockServiceClass(1, false, [mockPlan(1), mockPlan(2)]),
+      labels: { [DOCUMENTATION_PER_PLAN_LABEL]: 'true' },
+    };
+    const component = shallow(<Cards items={[mockService]} />);
+    const card = component.find(Card).at(0);
+    expect(card.exists()).toBe(true);
+    card.prop('onClick')();
+    expect(mockNavigate).toHaveBeenCalledWith(
+      `details/${mockService.name}/plans`,
+    );
   });
 });

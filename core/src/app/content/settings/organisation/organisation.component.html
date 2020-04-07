@@ -57,7 +57,7 @@
       </fd-panel-body>
     </fd-panel>
 
-    <fd-panel class="y-fd-panel">
+    <fd-panel *ngIf="shouldShowNamespacesToggle" class="y-fd-panel">
       <fd-panel-header>
         <fd-panel-head>
           <h2 fd-panel-title>Namespaces settings</h2>

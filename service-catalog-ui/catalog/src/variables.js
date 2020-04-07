@@ -24,7 +24,9 @@ export const serviceClassConstants = {
   errorServiceClassesList:
     'An error occurred while loading Service Classes List',
   errorServiceClassDetails:
-    'An error occurred while loading Service Classes List',
+    'An error occurred while loading Service Classes Details',
+  errorServiceClassPlansList:
+    'An error occurred while loading Service Classes Variants List',
 
   //service class list tabs indices
   addonsIndex: 0,
@@ -44,4 +46,5 @@ export const serviceClassTileTitles = {
   support: 'Support',
   description: 'Description',
   tags: 'Tags',
+  plans: 'Selected plan',
 };

@@ -14,7 +14,9 @@ import ScenarioDetails from './components/Scenarios/ScenarioDetails/ScenarioDeta
 import ApplicationDetails from './components/Application/ApplicationDetails/ApplicationDetails.container';
 import MetadataDefinitions from './components/MetadataDefinitions/MetadataDefinitions.container';
 import MetadataDefinitionDetails from './components/MetadataDefinitions/MetadataDefinitionDetails/MetadataDefinitionDetails.container';
-import ApiDetails from './components/Api/ApiDetails/ApiDetails.container';
+import ApiDetails from './components/Api/ApiDetails/ApiDetails';
+import ApiPackageDetails from 'components/ApiPackages/ApiPackageDetails/ApiPackageDetails';
+import TenantSearch from 'components/TenantSearch/TenantSearch';
 
 const NOTIFICATION_VISIBILITY_TIME = 5000;
 
@@ -53,6 +55,7 @@ class App extends React.Component {
         <Router>
           <Switch>
             <Route path="/" exact component={Overview} />
+            <Route path="/tenant-search" exact component={TenantSearch} />
             <Route path="/runtimes" exact component={Runtimes} />
             <Route
               path="/runtime/:id"
@@ -70,22 +73,27 @@ class App extends React.Component {
               )}
             />
             <Route
-              path="/application/:applicationId/api/:apiId"
+              path="/application/:applicationId/apiPackage/:apiPackageId"
+              exact
+              render={RoutedApiPackageDetails}
+            />
+            <Route
+              path="/application/:applicationId/apiPackage/:apiPackageId/api/:apiId"
               exact
               render={RoutedApiDetails}
             />
             <Route
-              path="/application/:applicationId/api/:apiId/edit"
+              path="/application/:applicationId/apiPackage/:apiPackageId/api/:apiId/edit"
               exact
               render={RoutedEditApi}
             />
             <Route
-              path="/application/:applicationId/eventApi/:eventApiId"
+              path="/application/:applicationId/apiPackage/:apiPackageId/eventApi/:eventApiId"
               exact
               render={RoutedEventApiDetails}
             />
             <Route
-              path="/application/:applicationId/eventApi/:eventApiId/edit"
+              path="/application/:applicationId/apiPackage/:apiPackageId/eventApi/:eventApiId/edit"
               exact
               render={RoutedEditEventApi}
             />
@@ -112,10 +120,20 @@ class App extends React.Component {
   }
 }
 
+function RoutedApiPackageDetails({ match }) {
+  return (
+    <ApiPackageDetails
+      applicationId={match.params.applicationId}
+      apiPackageId={match.params.apiPackageId}
+    />
+  );
+}
+
 function RoutedApiDetails({ match }) {
   return (
     <ApiDetails
       applicationId={match.params.applicationId}
+      apiPackageId={match.params.apiPackageId}
       apiId={match.params.apiId}
     />
   );
@@ -125,6 +143,7 @@ function RoutedEditApi({ match }) {
   return (
     <EditApi
       apiId={match.params.apiId}
+      apiPackageId={match.params.apiPackageId}
       applicationId={match.params.applicationId}
     />
   );
@@ -134,6 +153,7 @@ function RoutedEventApiDetails({ match }) {
   return (
     <ApiDetails
       applicationId={match.params.applicationId}
+      apiPackageId={match.params.apiPackageId}
       eventApiId={match.params.eventApiId}
     />
   );
@@ -143,6 +163,7 @@ function RoutedEditEventApi({ match }) {
   return (
     <EditEventApi
       eventApiId={match.params.eventApiId}
+      apiPackageId={match.params.apiPackageId}
       applicationId={match.params.applicationId}
     />
   );

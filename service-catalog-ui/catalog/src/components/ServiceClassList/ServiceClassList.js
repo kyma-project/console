@@ -9,7 +9,7 @@ import {
   Tooltip,
   instancesTabUtils,
 } from '@kyma-project/react-components';
-import { Counter } from 'fundamental-react';
+import { Identifier } from 'fundamental-react';
 
 import { getAllServiceClasses } from './queries';
 import { serviceClassConstants } from '../../variables';
@@ -44,9 +44,11 @@ const handleTabChange = ({ defaultActiveTabIndex }) => {
 
 const status = (data, id) => {
   return (
-    <StatusesList>
-      <StatusWrapper key={id}>
-        <Counter data-e2e-id={id}>{data}</Counter>
+    <StatusesList key={id}>
+      <StatusWrapper>
+        <Identifier size="xxs" data-e2e-id={id}>
+          {data}
+        </Identifier>
       </StatusWrapper>
     </StatusesList>
   );

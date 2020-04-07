@@ -19,22 +19,37 @@ function getTabElementsIndicator(instancesCount) {
   );
 }
 
-const ServiceClassTabs = ({ serviceClass }) => {
-  const assetGroup =
-    serviceClass && (serviceClass.assetGroup || serviceClass.clusterAssetGroup);
+function filterServiceInstances(instances, currentPlan) {
+  if (!currentPlan) {
+    return instances;
+  }
 
-  const additionalTabs = serviceClass.instances.length
+  return instances.filter(instance => {
+    const servicePlan =
+      (instance && (instance.servicePlan || instance.clusterServicePlan)) || [];
+    return servicePlan.name === currentPlan.name;
+  });
+}
+
+const ServiceClassTabs = ({ serviceClass, currentPlan }) => {
+  const assetGroup = currentPlan
+    ? currentPlan.assetGroup || currentPlan.clusterAssetGroup
+    : serviceClass.assetGroup || serviceClass.clusterAssetGroup;
+
+  const instances = currentPlan
+    ? filterServiceInstances(serviceClass.instances, currentPlan)
+    : serviceClass.instances;
+
+  const additionalTabs = instances.length
     ? [
         {
           label: (
             <>
               <span>{serviceClassConstants.instancesTabText}</span>
-              {getTabElementsIndicator(serviceClass.instances.length)}
+              {getTabElementsIndicator(instances.length)}
             </>
           ),
-          children: (
-            <ServiceClassInstancesTable tableData={serviceClass.instances} />
-          ),
+          children: <ServiceClassInstancesTable tableData={instances} />,
           id: serviceClassConstants.instancesTabText,
         },
       ]
@@ -51,6 +66,7 @@ const ServiceClassTabs = ({ serviceClass }) => {
 
 ServiceClassTabs.propTypes = {
   serviceClass: PropTypes.object.isRequired,
+  currentPlan: PropTypes.object,
 };
 
 export default ServiceClassTabs;

@@ -18,7 +18,7 @@ export const NotificationProvider = ({
 
   function notify(notificationProps, visibilityTime = defaultVisibilityTime) {
     setState({ isOpen: true, notificationProps });
-    if (notificationProps.autoClose) {
+    if (notificationProps.autoClose && visibilityTime !== 0) {
       setTimeout(() => {
         closeNotification();
       }, visibilityTime);

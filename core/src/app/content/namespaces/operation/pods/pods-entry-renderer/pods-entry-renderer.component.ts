@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs';
 import { ComponentCommunicationService } from '../../../../../shared/services/component-communication.service';
 import { EMPTY_TEXT } from 'shared/constants/constants';
 
-import * as luigiClient from '@kyma-project/luigi-client';
+import * as luigiClient from '@luigi-project/client';
 
 @Component({
   selector: 'app-pods-entry-renderer',
@@ -51,7 +51,7 @@ export class PodsEntryRendererComponent
   }
 
   ngOnDestroy() {
-    if(this.communicationServiceSubscription) {
+    if (this.communicationServiceSubscription) {
       this.communicationServiceSubscription.unsubscribe();
     }
   }

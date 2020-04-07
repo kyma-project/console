@@ -90,10 +90,7 @@ export const GET_APPLICATIONS_FOR_SCENARIO = gql`
         name
         id
         labels
-        apiDefinitions {
-          totalCount
-        }
-        eventDefinitions {
+        packages {
           totalCount
         }
       }

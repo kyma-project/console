@@ -1,11 +1,29 @@
 {
   "rules": {
-    "quotemark": [true, "single", "avoid-escape"],
-    "angular-whitespace": [true, "check-interpolation", "check-semicolon"],
+    "quotemark": [
+      true,
+      "single",
+      "avoid-escape"
+    ],
+    "angular-whitespace": [
+      true,
+      "check-interpolation",
+      "check-semicolon"
+    ],
     "banana-in-box": true,
     "templates-no-negated-async": true,
-    "directive-selector": [true, "attribute", "", "camelCase"],
-    "component-selector": [true, "element", "", "kebab-case"],
+    "directive-selector": [
+      true,
+      "attribute",
+      "",
+      "camelCase"
+    ],
+    "component-selector": [
+      true,
+      "element",
+      "",
+      "kebab-case"
+    ],
     "use-input-property-decorator": true,
     "use-output-property-decorator": true,
     "use-host-property-decorator": false,
@@ -18,7 +36,6 @@
     "no-forward-ref": true,
     "no-unused-css": true,
     "no-focused-tests": true,
-
     "use-life-cycle-interface": true,
     "contextual-life-cycle": true,
     "trackBy-function": false,
@@ -45,17 +62,29 @@
       "namespaces",
       "app",
       "fundamental-ngx"
-  
     ],
-    "no-implicit-dependencies": [true, 
-        ["shared", "namespaces", "app",
-          "@kyma-project/luigi-client","apollo-cache-inmemory",
-          "apollo-utilities",
-          "graphql-tag","subscriptions-transport-ws"
-        ]
-      ],
+    "no-implicit-dependencies": [
+      true,
+      [
+        "shared",
+        "namespaces",
+        "app",
+        "@luigi-project/client",
+        "apollo-cache-inmemory",
+        "apollo-utilities",
+        "graphql-tag",
+        "subscriptions-transport-ws"
+      ]
+    ],
     "interface-name": false
   },
-  "rulesDirectory": ["node_modules/codelyzer"],
-  "extends": ["tslint:latest", "tslint-angular", "tslint-config-prettier", "tslint-jasmine-rules"]
+  "rulesDirectory": [
+    "node_modules/codelyzer"
+  ],
+  "extends": [
+    "tslint:latest",
+    "tslint-angular",
+    "tslint-config-prettier",
+    "tslint-jasmine-rules"
+  ]
 }

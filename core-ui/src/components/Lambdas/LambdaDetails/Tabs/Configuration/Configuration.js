@@ -1,50 +1,67 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Panel, FormItem, FormLabel } from 'fundamental-react';
+import LuigiClient from '@kyma-project/luigi-client';
 
-const ConfigurationTab = ({
-  lambda,
-  formRef,
-  sizeRef,
-  runtimeRef,
-  LabelsEditor,
-}) => {
+import ConfigurationForm from './ConfigurationForm/ConfigurationForm';
+import ServiceBindingsWrapper from './ServiceBindings/ServiceBindingsWrapper';
+import EventTriggersWrapper from './EventTriggers/EventTriggersWrapper';
+
+const BACKEND_MODULES = {
+  SERVICE_CATALOG: 'servicecatalog',
+  SERVICE_CATALOG_ADDONS: 'servicecatalogaddons',
+  APPLICATION: 'application',
+  EVENTING: 'eventing',
+};
+
+const backendModulesExist = (
+  existingBackendModules = [],
+  backendModules = [],
+) => {
+  if (!existingBackendModules.length || !backendModules.length) {
+    return false;
+  }
+
+  for (const backendModule of backendModules) {
+    if (!existingBackendModules.includes(backendModule)) {
+      return false;
+    }
+  }
+
+  return true;
+};
+
+const ConfigurationTab = props => {
+  const backendModules = LuigiClient.getEventData().backendModules;
+
+  const serviceBindings = backendModulesExist(backendModules, [
+    BACKEND_MODULES.SERVICE_CATALOG,
+    BACKEND_MODULES.SERVICE_CATALOG_ADDONS,
+  ]) ? (
+    <ServiceBindingsWrapper
+      lambda={props.lambda}
+      refetchLambda={props.refetchLambda}
+    />
+  ) : null;
+
+  const eventTriggers = backendModulesExist(backendModules, [
+    BACKEND_MODULES.APPLICATION,
+    BACKEND_MODULES.EVENTING,
+  ]) ? (
+    <EventTriggersWrapper lambda={props.lambda} />
+  ) : null;
+
   return (
-    <Panel className="fd-has-margin-medium">
-      <Panel.Header>
-        <Panel.Head title="General Configuration" />
-      </Panel.Header>
-      <Panel.Body>
-        <form onSubmit={e => e.preventDefault()} ref={formRef}>
-          {LabelsEditor}
-          <FormItem>
-            <FormLabel htmlFor="lambdaSize">Size*</FormLabel>
-            <select id="lambdaSize" defaultValue={lambda.size} ref={sizeRef}>
-              <option value="S">S</option>
-              <option value="M">M</option>
-              <option value="L">L</option>
-            </select>
-          </FormItem>
-
-          <FormItem>
-            <FormLabel htmlFor="lambdaRuntime">Runtime*</FormLabel>
-            <select
-              id="lambdaRuntime"
-              defaultValue={lambda.runtime}
-              ref={runtimeRef}
-            >
-              <option value="nodejs6">Nodejs 6</option>
-              <option value="nodejs8">Nodejs 8</option>
-            </select>
-          </FormItem>
-        </form>
-      </Panel.Body>
-    </Panel>
+    <>
+      <ConfigurationForm {...props} />
+      {eventTriggers}
+      {serviceBindings}
+    </>
   );
 };
 
 ConfigurationTab.propTypes = {
   lambda: PropTypes.object.isRequired,
+  refetchLambda: PropTypes.func.isRequired,
   formRef: PropTypes.shape({ current: PropTypes.any }).isRequired,
   sizeRef: PropTypes.shape({ current: PropTypes.any }).isRequired,
   runtimeRef: PropTypes.shape({ current: PropTypes.any }).isRequired,

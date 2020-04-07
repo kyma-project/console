@@ -3,7 +3,7 @@ import { AbstractKubernetesEntryRendererComponent } from 'namespaces/operation/a
 import { ApplicationsService } from '../services/applications.service';
 import { ComponentCommunicationService } from 'shared/services/component-communication.service';
 import { Subscription } from 'rxjs';
-import LuigiClient from '@kyma-project/luigi-client';
+import LuigiClient from '@luigi-project/client';
 import { EMPTY_TEXT } from 'shared/constants/constants';
 import { EnabledMappingServices } from 'shared/datamodel/enabled-mapping-services';
 

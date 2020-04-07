@@ -38,6 +38,9 @@ export const StatusWrapper = styled.li`
   &:first-child {
     margin-left: 0;
   }
+  .fd-badge {
+    padding: 1px 3px;
+  }
 `;
 
 export const EmptyList = styled.div`

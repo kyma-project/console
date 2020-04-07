@@ -11,7 +11,7 @@ import { ApplicationsHeaderRendererComponent } from './applications-header-rende
 import { CurrentNamespaceService } from '../../namespaces/services/current-namespace.service';
 import { ComponentCommunicationService } from '../../../shared/services/component-communication.service';
 import { CreateApplicationModalComponent } from './create-application-modal/create-application-modal.component';
-import LuigiClient from '@kyma-project/luigi-client';
+import LuigiClient from '@luigi-project/client';
 import { IEmptyListData } from 'shared/datamodel';
 import { AbstractGraphqlElementListComponent } from 'namespaces/operation/abstract-graphql-element-list.component';
 import { GraphQLClientService } from 'shared/services/graphql-client-service';

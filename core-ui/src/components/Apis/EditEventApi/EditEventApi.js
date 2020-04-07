@@ -14,7 +14,7 @@ import {
 } from 'react-shared';
 import './EditEventApi.scss';
 
-import { GET_APPLICATION_WITH_EVENT_DEFINITIONS } from 'gql/queries';
+import { GET_EVENT_DEFINITION } from 'gql/queries';
 import { UPDATE_EVENT_DEFINITION } from 'gql/mutations';
 import { CompassGqlContext } from 'index';
 import { useQuery, useMutation } from '@apollo/react-hooks';
@@ -22,10 +22,16 @@ import { useQuery, useMutation } from '@apollo/react-hooks';
 EditEventApi.propTypes = {
   eventApiId: PropTypes.string.isRequired,
   originalEventApi: PropTypes.object.isRequired,
+  apiPackage: PropTypes.object.isRequired,
   application: PropTypes.object.isRequired,
 };
 
-function EditEventApi({ eventApiId, originalEventApi, application }) {
+function EditEventApi({
+  eventApiId,
+  originalEventApi,
+  apiPackage,
+  application,
+}) {
   const compassGqlClient = React.useContext(CompassGqlContext);
   const notificationManager = useNotification();
 
@@ -33,8 +39,12 @@ function EditEventApi({ eventApiId, originalEventApi, application }) {
     client: compassGqlClient,
     refetchQueries: () => [
       {
-        query: GET_APPLICATION_WITH_EVENT_DEFINITIONS,
-        variables: { applicationId: application.id },
+        query: GET_EVENT_DEFINITION,
+        variables: {
+          applicationId: application.id,
+          apiPackageId: apiPackage.id,
+          eventDefinitionId: originalEventApi.id,
+        },
       },
     ],
   });
@@ -91,6 +101,7 @@ function EditEventApi({ eventApiId, originalEventApi, application }) {
     <>
       <EditApiHeader
         api={originalEventApi}
+        apiPackage={apiPackage}
         application={application}
         saveChanges={saveChanges}
         canSaveChanges={formValid}
@@ -171,20 +182,24 @@ function EditEventApi({ eventApiId, originalEventApi, application }) {
 EditEventApiWrapper.propTypes = {
   appId: PropTypes.string.isRequired,
   eventApiId: PropTypes.string.isRequired,
+  apiPackageId: PropTypes.string.isRequired,
 };
 
-export default function EditEventApiWrapper({ appId, eventApiId }) {
+export default function EditEventApiWrapper({
+  appId,
+  eventApiId,
+  apiPackageId,
+}) {
   const compassGqlClient = React.useContext(CompassGqlContext);
-  const { loading, data, error } = useQuery(
-    GET_APPLICATION_WITH_EVENT_DEFINITIONS,
-    {
-      client: compassGqlClient,
-      fetchPolicy: 'cache-and-network',
-      variables: {
-        applicationId: appId,
-      },
+  const { loading, data, error } = useQuery(GET_EVENT_DEFINITION, {
+    client: compassGqlClient,
+    fetchPolicy: 'cache-and-network',
+    variables: {
+      applicationId: appId,
+      apiPackageId,
+      eventDefinitionId: eventApiId,
     },
-  );
+  });
 
   if (loading) {
     return <p>Loading...</p>;
@@ -193,11 +208,10 @@ export default function EditEventApiWrapper({ appId, eventApiId }) {
     return <p>Error! ${error.message}</p>;
   }
 
-  // there's no getEventApiById query
-  const originalEventApi = data.application.eventDefinitions.data.find(
-    eventApi => eventApi.id === eventApiId,
-  );
-
+  const originalEventApi =
+    data.application &&
+    data.application.package &&
+    data.application.package.eventDefinition;
   if (!originalEventApi) {
     return (
       <ResourceNotFound
@@ -213,6 +227,7 @@ export default function EditEventApiWrapper({ appId, eventApiId }) {
       eventApiId={eventApiId}
       originalEventApi={originalEventApi}
       application={data.application}
+      apiPackage={data.application.package}
     />
   );
 }
