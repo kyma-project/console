@@ -6,6 +6,7 @@ export interface Metadata {
 export interface File {
   url: string;
   metadata: Metadata;
+  displayName?: string;
   parameters?: {
     disableRelativeLinks?: boolean;
   };
@@ -16,6 +17,7 @@ export interface ClusterAsset {
   parameters: Metadata;
   type: string;
   files: File[];
+  displayName?: string;
   status: AssetStatus;
 }
 

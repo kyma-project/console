@@ -11,9 +11,11 @@ import { Source } from '@kyma-project/documentation-component';
 function sortByType(source1: Source, source2: Source): number {
   return (
     source1.type.localeCompare(source2.type) ||
+    (source1.data &&
+      source2.data &&
+      source1.data.displayName.localeCompare(source2.data.displayName)) ||
     source1.rawContent.localeCompare(source2.rawContent)
   );
-  // TODO:  || source1.displayName.localeCompare(source2.displayName) instead of rawContent
 }
 
 const BadgeForType: React.FunctionComponent<{ type: string }> = ({ type }) => {
@@ -68,13 +70,16 @@ const ApiSelector: React.FunctionComponent<{
             >
               <ListItem>
                 <BadgeForType type={s.type} />
-                {s.type} {id}
+                {s.data && s.data.displayName} {id}
               </ListItem>
             </a>
           ))}
         </List>
       }
-      placeholder={(selectedApi && selectedApi.type) || 'Select API'} // TODO: use displayName
+      placeholder={
+        (selectedApi && selectedApi.data && selectedApi.data.displayName) ||
+        'Select API'
+      }
       inputProps={{ onChange: handleInputChange }}
     />
   );

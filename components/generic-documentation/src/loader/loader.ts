@@ -105,6 +105,7 @@ export class DocsLoader {
             type,
             rawContent: text,
             data: {
+              displayName: file.displayName,
               frontmatter: file.metadata,
               url: file.url,
             },
@@ -216,7 +217,11 @@ export class DocsLoader {
     const files =
       assets &&
       assets
-        .map(asset => asset.files && asset.files[0])
+        .map(asset => {
+          const newFile = asset.files && asset.files[0];
+          newFile.displayName = asset.displayName || '';
+          return newFile;
+        })
         .filter(a => a)
         .sort(this.sortByURL);
 
