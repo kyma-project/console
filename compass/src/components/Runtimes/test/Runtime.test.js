@@ -22,6 +22,8 @@ describe('Runtimes', () => {
     MOCK_GET_RUNTIMES.result.data.runtimes.data.forEach(runtime => {
       expectRuntime(test, runtime);
     });
+
+    expect(test.queryByText('No more runtimes')).not.toBeInTheDocument();
   });
 
   it('Renders additional runtiems when scrolled to bottom', async () => {
@@ -36,15 +38,7 @@ describe('Runtimes', () => {
 
     await waitForDomChange();
 
-    fireEvent.scroll(window.document, {
-      target: {
-        scrollingElement: {
-          scrollHeight: 800,
-          scrollTop: 200,
-          clientHeight: 600,
-        },
-      },
-    });
+    fireScrollEvent(true);
 
     await waitForDomChange();
 
@@ -68,15 +62,7 @@ describe('Runtimes', () => {
 
     await waitForDomChange();
 
-    fireEvent.scroll(window.document, {
-      target: {
-        scrollingElement: {
-          scrollHeight: 900,
-          scrollTop: 200,
-          clientHeight: 600,
-        },
-      },
-    });
+    fireScrollEvent(false);
 
     await waitForDomChange();
 
@@ -88,7 +74,28 @@ describe('Runtimes', () => {
     });
   });
 
-  test.todo('Stop loading additional runtimes when there are no more runtimes');
+  it('Stop loading additional runtimes when there are no more runtimes', async () => {
+    const test = render(
+      <MockedProvider
+        mocks={[MOCK_GET_RUNTIMES, MOCK_GET_ADDITIONAL_RUNTIMES]}
+        addTypename={false}
+      >
+        <Runtimes />
+      </MockedProvider>,
+    );
+
+    await waitForDomChange();
+
+    fireScrollEvent(true);
+
+    await waitForDomChange();
+
+    fireScrollEvent(false);
+
+    await waitForDomChange();
+
+    expect(test.queryByText('No more runtimes')).toBeInTheDocument();
+  });
 });
 
 function expectRuntime({ queryByText }, runtime) {
@@ -97,6 +104,18 @@ function expectRuntime({ queryByText }, runtime) {
 
 function expectNoRuntime({ queryByText }, runtime) {
   expect(queryByText(runtime.name)).not.toBeInTheDocument();
+}
+
+function fireScrollEvent(isBottom) {
+  fireEvent.scroll(window.document, {
+    target: {
+      scrollingElement: {
+        scrollHeight: isBottom ? 800 : 900,
+        scrollTop: 200,
+        clientHeight: 600,
+      },
+    },
+  });
 }
 
 function generateRuntimes(fromId, toId) {
