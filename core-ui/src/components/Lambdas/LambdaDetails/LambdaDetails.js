@@ -5,7 +5,7 @@ import { useMutation } from '@apollo/react-hooks';
 import { TabGroup, Tab } from 'fundamental-react';
 import LabelSelectorInput from '../../LabelSelectorInput/LabelSelectorInput';
 
-import { useLogsView } from './useLogsView';
+import { useLogsView } from '../helpers/misc/useLogsView';
 
 import { UPDATE_LAMBDA } from '../../../gql/mutations';
 import LambdaDetailsHeader from './LambdaDetailsHeader/LambdaDetailsHeader';

@@ -89,11 +89,11 @@ describe('useLogsView', () => {
     act(() => {
       fireEvent.click(tabButton);
     });
+    expect(tabButton.textContent).toEqual('test');
 
     expect(mockPathExists).toHaveBeenCalledTimes(4);
     expect(mockCollapse).toHaveBeenCalledTimes(4);
     expect(mockExpand).toHaveBeenCalledTimes(1);
-    expect(tabButton.textContent).toEqual('test');
     expect(mockOpenAsSplitView).toHaveBeenCalledTimes(3);
 
     unmount();
