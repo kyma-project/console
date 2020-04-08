@@ -1,16 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { useQuery } from 'react-apollo';
-import { GET_RUNTIMES } from './gql';
 import PropTypes from 'prop-types';
 
-const InfiniteScroll = ({ searchQuery, headerRenderer, rowRenderer }) => {
+const InfiniteList = ({
+  query,
+  queryVariables,
+  headerRenderer,
+  rowRenderer,
+  noMoreScrollMessage,
+}) => {
   const [cursor, setCursor] = useState(null);
   const [entries, setEntries] = useState([]);
 
-  const { data, loading, error } = useQuery(GET_RUNTIMES, {
+  const { data, loading, error } = useQuery(query, {
     fetchPolicy: 'cache-and-network',
     variables: {
       after: cursor,
+      ...queryVariables,
     },
     onCompleted: rsp => {
       const { data: newEntries } = rsp.runtimes;
@@ -67,7 +73,7 @@ const InfiniteScroll = ({ searchQuery, headerRenderer, rowRenderer }) => {
 
       <div className="fd-has-text-align-center fd-has-padding-bottom-xs">
         {!!loading && <Spinner />}
-        {!canScrollMore && 'No more runtimes'}
+        {!canScrollMore && noMoreScrollMessage}
       </div>
     </>
   );
@@ -81,9 +87,20 @@ const Spinner = () => {
   );
 };
 
-export default InfiniteScroll;
+export default InfiniteList;
 
-InfiniteScroll.propTypes = {
+InfiniteList.propTypes = {
+  query: PropTypes.shape({
+    data: PropTypes.object,
+    loading: PropTypes.bool,
+    error: PropTypes.object,
+  }).isRequired,
+  queryVariables: PropTypes.object,
   headerRenderer: PropTypes.func.isRequired,
   rowRenderer: PropTypes.func.isRequired,
+  noMoreScrollMessage: PropTypes.string,
+};
+
+InfiniteList.defaultProps = {
+  noMoreScrollMessage: 'No more data',
 };
