@@ -18,7 +18,9 @@ describe('Runtimes', () => {
       expectRuntime(test, runtime);
     });
 
-    expect(test.queryByText('No more runtimes')).not.toBeInTheDocument();
+    expect(
+      test.queryByText('No more runtimes to show'),
+    ).not.toBeInTheDocument();
     expectNumberOfRows(test, [MOCK_GET_RUNTIMES]);
   });
 
@@ -46,7 +48,7 @@ describe('Runtimes', () => {
     });
 
     expectNumberOfRows(test, [MOCK_GET_RUNTIMES, MOCK_GET_ADDITIONAL_RUNTIMES]);
-    expect(test.queryByText('No more runtimes')).toBeInTheDocument();
+    expect(test.queryByText('No more runtimes to show')).toBeInTheDocument();
   });
 
   it('Do nothing when scrolled not to bottom', async () => {
@@ -88,7 +90,7 @@ describe('Runtimes', () => {
     fireScrollEvent(true);
 
     expectNumberOfRows(test, [MOCK_GET_RUNTIMES, MOCK_GET_ADDITIONAL_RUNTIMES]);
-    expect(test.queryByText('No more runtimes')).toBeInTheDocument();
+    expect(test.queryByText('No more runtimes to show')).toBeInTheDocument();
   });
 });
 
