@@ -30,3 +30,25 @@ export const GET_EVENT_TRIGGERS = gql`
     }
   }
 `;
+
+export const GET_SERVICE_INSTANCES = gql`
+  query ServiceInstances($namespace: String!, $status: InstanceStatusType) {
+    serviceInstances(namespace: $namespace, status: $status) {
+      name
+      bindable
+      servicePlan {
+        bindingCreateParameterSchema
+      }
+      serviceBindings {
+        items {
+          name
+          parameters
+          secret {
+            name
+            data
+          }
+        }
+      }
+    }
+  }
+`;

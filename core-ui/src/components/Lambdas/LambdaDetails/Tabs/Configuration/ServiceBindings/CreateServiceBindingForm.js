@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { FormItem, FormLabel, FormInput } from 'fundamental-react';
+import { FormItem, FormLabel, FormInput, Alert } from 'fundamental-react';
 
-import Checkbox from '../Checkbox/Checkbox';
+import Checkbox from 'components/Lambdas/Checkbox/Checkbox';
 
-import { useServiceBindings } from '../LambdaDetails/Tabs/Configuration/ServiceBindings/ServiceBindingsService';
+import { useServiceBindings } from './ServiceBindingsService';
+
+import { SERVICE_BINDINGS_PANEL } from 'components/Lambdas/constants';
 
 const checkBoxInputProps = {
   style: {
@@ -14,8 +16,9 @@ const checkBoxInputProps = {
 
 export default function CreateServiceBindingForm({
   serviceInstances = [],
+  setPopupModalMessage = () => void 0,
   refetchLambda,
-  refetchInstances,
+  refetchServiceInstances = () => void 0,
   onChange,
   formElementRef,
   setValidity = () => void 0,
@@ -36,9 +39,9 @@ export default function CreateServiceBindingForm({
 
   useEffect(() => {
     if (isOpen) {
-      refetchInstances();
+      refetchServiceInstances();
     }
-  }, [isOpen, refetchInstances]);
+  }, [isOpen, refetchServiceInstances]);
 
   useEffect(() => {
     if (!serviceInstanceName) {
@@ -57,11 +60,19 @@ export default function CreateServiceBindingForm({
 
   useEffect(() => {
     if (!serviceInstanceName) {
+      setPopupModalMessage(
+        SERVICE_BINDINGS_PANEL.CREATE_MODAL.CONFIRM_BUTTON.POPUP_MESSAGES
+          .NO_SERVICE_INSTANCE_SELECTED,
+      );
       setValidity(false);
       return;
     }
 
     if (!createCredentials && !existingCredentials) {
+      setPopupModalMessage(
+        SERVICE_BINDINGS_PANEL.CREATE_MODAL.CONFIRM_BUTTON.POPUP_MESSAGES
+          .NO_SECRET_SELECTED,
+      );
       setValidity(false);
       return;
     }
@@ -72,6 +83,7 @@ export default function CreateServiceBindingForm({
     createCredentials,
     existingCredentials,
     setValidity,
+    setPopupModalMessage,
   ]);
 
   useEffect(() => {
@@ -92,6 +104,7 @@ export default function CreateServiceBindingForm({
       existingCredentials: existingCredentials || undefined,
     };
 
+    refetchServiceInstances();
     await createServiceBinding(parameters, refetchLambda);
   }
 
@@ -101,6 +114,12 @@ export default function CreateServiceBindingForm({
     </option>
   ));
 
+  const noSecretsFound = (
+    <Alert dismissible={false} type="information">
+      {SERVICE_BINDINGS_PANEL.FORM.NO_SECRETS_FOUND}
+    </Alert>
+  );
+
   return (
     <form
       ref={formElementRef}
@@ -109,7 +128,7 @@ export default function CreateServiceBindingForm({
       onSubmit={handleFormSubmit}
     >
       <FormItem key="serviceInstanceName">
-        <FormLabel htmlFor="serviceInstanceName">Service Instance*</FormLabel>
+        <FormLabel htmlFor="serviceInstanceName">Service Instance</FormLabel>
         <select
           id="serviceInstanceName"
           value={serviceInstanceName}
@@ -162,12 +181,7 @@ export default function CreateServiceBindingForm({
               </select>
             </FormItem>
           ) : null}
-          {!createCredentials && !secrets.length ? (
-            <p>
-              No Secrets available. Create new Secret to bind the Service
-              Instance.
-            </p>
-          ) : null}
+          {!createCredentials && !secrets.length ? noSecretsFound : null}
         </>
       )}
     </form>

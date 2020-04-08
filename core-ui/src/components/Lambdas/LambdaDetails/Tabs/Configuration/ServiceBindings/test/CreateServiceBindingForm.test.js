@@ -3,7 +3,7 @@ import renderer from 'react-test-renderer';
 import { mount } from 'enzyme';
 import { MockedProvider } from '@apollo/react-testing';
 
-import { componentUpdate } from '../../../../testing';
+import { componentUpdate } from 'testing';
 
 import CreateServiceBindingForm from '../CreateServiceBindingForm';
 
@@ -95,15 +95,12 @@ describe('CreateServiceBindingForm', () => {
     ).toEqual(true);
   });
 
-  it('Creates lambda properly', async () => {
-    const refetchQuery = jest.fn();
-
+  it('Creates Service Binding properly', async () => {
     const component = mount(
       <MockedProvider>
         <CreateServiceBindingForm
           formElementRef={{ current: null }}
           serviceInstances={serviceInstances}
-          refetchQuery={refetchQuery}
         />
       </MockedProvider>,
     );
@@ -131,7 +128,6 @@ describe('CreateServiceBindingForm', () => {
         <CreateServiceBindingForm
           formElementRef={{ current: null }}
           serviceInstances={serviceInstances}
-          refetchQuery={refetchQuery}
         />
       </MockedProvider>,
     );
@@ -170,14 +166,11 @@ describe('CreateServiceBindingForm', () => {
   });
 
   it('Uncheck createCredentials checkbox and check render of existingCredentials select - enable form submit', async () => {
-    const refetchQuery = jest.fn();
-
     const component = mount(
       <MockedProvider>
         <CreateServiceBindingForm
           formElementRef={{ current: null }}
           serviceInstances={serviceInstances}
-          refetchQuery={refetchQuery}
         />
       </MockedProvider>,
     );

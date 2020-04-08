@@ -58,10 +58,10 @@ export default function CreateEventTriggerForm({
         name={event.uniqueID}
         onChange={_ => onSetCheckedEvents(event)}
       />,
-      <span data-test-id="event-trigger-type">{event.eventType}</span>,
-      <span data-test-id="event-trigger-version">{event.version}</span>,
-      <span data-test-id="event-trigger-source">{event.source}</span>,
-      <span data-test-id="event-trigger-description">{event.description}</span>,
+      <span>{event.eventType || '*'}</span>,
+      <span>{event.version || '*'}</span>,
+      <span>{event.source || '*'}</span>,
+      <span>{event.description || '-'}</span>,
     ],
     collapseContent: (
       <>

@@ -4,16 +4,10 @@ import PropTypes from 'prop-types';
 import { ServiceBindingsService } from './ServiceBindingsService';
 import ServiceBindings from './ServiceBindings';
 
-export default function ServiceBindingsWrapper({
-  lambda: { name, serviceBindingUsages = [] },
-  refetchLambda,
-}) {
+export default function ServiceBindingsWrapper({ lambda, refetchLambda }) {
   return (
-    <ServiceBindingsService lambdaName={name}>
-      <ServiceBindings
-        serviceBindingUsages={serviceBindingUsages}
-        refetchLambda={refetchLambda}
-      />
+    <ServiceBindingsService lambdaName={lambda.name}>
+      <ServiceBindings lambda={lambda} refetchLambda={refetchLambda} />
     </ServiceBindingsService>
   );
 }

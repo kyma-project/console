@@ -5,6 +5,8 @@ import { mocks, lambda, serviceBindingUsage } from './gqlMocks';
 
 import ServiceBindingsWrapper from '../ServiceBindingsWrapper';
 
+import { SERVICE_BINDINGS_PANEL } from 'components/Lambdas/constants';
+
 jest.mock('@kyma-project/luigi-client', () => {
   return {
     getEventData: () => ({ environmentId: 'testnamespace' }),
@@ -23,7 +25,9 @@ describe('ServiceBindingsWrapper', () => {
       </MockedProvider>,
     );
 
-    expect(getByText('No entries found')).toBeInTheDocument();
+    expect(
+      getByText(SERVICE_BINDINGS_PANEL.LIST.ERRORS.RESOURCES_NOT_FOUND),
+    ).toBeInTheDocument();
     await wait();
   });
 
@@ -42,7 +46,9 @@ describe('ServiceBindingsWrapper', () => {
       </MockedProvider>,
     );
 
-    expect(queryByText('No entries found')).not.toBeInTheDocument();
+    expect(
+      queryByText(SERVICE_BINDINGS_PANEL.LIST.ERRORS.RESOURCES_NOT_FOUND),
+    ).not.toBeInTheDocument();
     await wait();
   });
 });

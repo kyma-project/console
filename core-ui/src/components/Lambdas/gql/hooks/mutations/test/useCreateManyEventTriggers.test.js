@@ -71,7 +71,7 @@ describe('useCreateManyEventTriggers', () => {
     );
 
     const message = formatMessage(
-      GQL_MUTATIONS.CREATE_MANY_TRIGGERS.ERROR_MESSAGE,
+      GQL_MUTATIONS.CREATE_TRIGGERS.ERROR_MESSAGE_SINGLE,
       {
         lambdaName: lambdaMock.name,
         error: `Network error: ${TESTING_STATE.ERROR}`,
@@ -109,7 +109,7 @@ describe('useCreateManyEventTriggers', () => {
 
     await wait(() => {
       expect(
-        getByText(GQL_MUTATIONS.CREATE_MANY_TRIGGERS.SUCCESS_MESSAGE),
+        getByText(GQL_MUTATIONS.CREATE_TRIGGERS.SUCCESS_MESSAGE_SINGLE),
       ).toBeInTheDocument();
     });
   });

@@ -5,6 +5,8 @@ import { mocks, serviceBindingUsage } from './gqlMocks';
 
 import ServiceBindings from '../ServiceBindings';
 
+import { SERVICE_BINDINGS_PANEL } from 'components/Lambdas/constants';
+
 jest.mock('@kyma-project/luigi-client', () => {
   return {
     getEventData: () => ({ environmentId: 'testnamespace' }),
@@ -19,11 +21,13 @@ describe('ServiceBindings', () => {
   it('Render with minimal props', async () => {
     const { getByText } = render(
       <MockedProvider mocks={mocks}>
-        <ServiceBindings serviceBindingUsages={[]} refetchLambda={() => {}} />
+        <ServiceBindings lambda={{}} refetchLambda={() => {}} />
       </MockedProvider>,
     );
 
-    expect(getByText('No entries found')).toBeInTheDocument();
+    expect(
+      getByText(SERVICE_BINDINGS_PANEL.LIST.ERRORS.RESOURCES_NOT_FOUND),
+    ).toBeInTheDocument();
     await wait();
   });
 
@@ -31,7 +35,9 @@ describe('ServiceBindings', () => {
     const { queryByText } = render(
       <MockedProvider mocks={mocks}>
         <ServiceBindings
-          serviceBindingUsages={[serviceBindingUsage]}
+          lambda={{
+            serviceBindingUsages: [serviceBindingUsage],
+          }}
           refetchLambda={() => {}}
         />
       </MockedProvider>,

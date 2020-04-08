@@ -6,34 +6,41 @@ import { Tooltip } from 'react-shared';
 import ModalWithForm from 'components/ModalWithForm/ModalWithForm';
 import CreateEventTriggerForm from 'components/Lambdas/CreateEventTriggerForm/CreateEventTriggerForm';
 
-import { EVENT_TRIGGERS_PANEL } from '../../../../constants';
+import { EVENT_TRIGGERS_PANEL } from 'components/Lambdas/constants';
 
 export default function CreateEventTriggerModal({
   lambda,
+  queryError,
   availableEvents = [],
 }) {
   const availableEventsExist = availableEvents.length;
   const button = (
-    <Button glyph="add" option="light" disabled={!availableEventsExist}>
+    <Button
+      glyph="add"
+      option="light"
+      disabled={Boolean(queryError || !availableEventsExist)}
+    >
       {EVENT_TRIGGERS_PANEL.ADD_MODAL.OPEN_BUTTON.TEXT}
     </Button>
   );
-  const modalOpeningComponent = availableEventsExist ? (
-    button
-  ) : (
-    <Tooltip
-      title={
-        EVENT_TRIGGERS_PANEL.ADD_MODAL.OPEN_BUTTON.NOT_ENTRIES_POPUP_MESSAGE
-      }
-      position="top"
-      trigger="mouseenter"
-      tippyProps={{
-        distance: 16,
-      }}
-    >
-      {button}
-    </Tooltip>
-  );
+
+  let modalOpeningComponent = button;
+  if (!queryError && !availableEventsExist) {
+    modalOpeningComponent = (
+      <Tooltip
+        title={
+          EVENT_TRIGGERS_PANEL.ADD_MODAL.OPEN_BUTTON.NOT_ENTRIES_POPUP_MESSAGE
+        }
+        position="top"
+        trigger="mouseenter"
+        tippyProps={{
+          distance: 16,
+        }}
+      >
+        {button}
+      </Tooltip>
+    );
+  }
 
   return (
     <ModalWithForm

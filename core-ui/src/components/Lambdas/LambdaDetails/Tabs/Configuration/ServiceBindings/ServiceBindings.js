@@ -1,77 +1,17 @@
 import React from 'react';
 import LuigiClient from '@kyma-project/luigi-client';
 
-import { GenericList, Spinner } from 'react-shared';
-
-import { useQuery } from '@apollo/react-hooks';
-import { GET_SERVICE_INSTANCES } from 'gql/queries';
+import { GenericList } from 'react-shared';
 
 import { useServiceBindings } from './ServiceBindingsService';
 
-import { filterServiceInstances } from './helpers';
+import CreateServiceBindingModal from './CreateServiceBindingModal';
 
-import ModalWithForm from 'components/ModalWithForm/ModalWithForm';
-import CreateServiceBindingForm from 'components/Lambdas/CreateServiceBindingForm/CreateServiceBindingForm';
+import { SERVICE_BINDINGS_PANEL, ERRORS } from 'components/Lambdas/constants';
 
-function CreateLambdaModal({ serviceBindingUsages = [], refetchLambda }) {
-  const namespace = LuigiClient.getEventData().environmentId;
-  const {
-    data: { serviceInstances = [] },
-    error,
-    loading,
-    refetch: refetchInstances,
-  } = useQuery(GET_SERVICE_INSTANCES, {
-    variables: {
-      namespace,
-      status: 'RUNNING',
-    },
-    fetchPolicy: 'no-cache',
-  });
+import './ServiceBindings.scss';
 
-  let content = null;
-  if (error) {
-    content = <p>Error! {error.message}</p>;
-  }
-  if (!content && loading) {
-    content = <Spinner />;
-  }
-
-  const notInjectedServiceInstances = filterServiceInstances(
-    serviceInstances,
-    serviceBindingUsages,
-  );
-  if (!content && !notInjectedServiceInstances.length) {
-    content = (
-      <p>
-        No Service Instances available to bind. Create a Service Instance first.
-      </p>
-    );
-  }
-
-  return (
-    <ModalWithForm
-      title="Create new Service Binding"
-      button={{
-        glyph: 'add',
-        text: 'Create Service Binding',
-        option: 'light',
-      }}
-      id="add-service-binding-modal"
-      renderForm={props =>
-        content || (
-          <CreateServiceBindingForm
-            {...props}
-            serviceInstances={notInjectedServiceInstances}
-            refetchLambda={refetchLambda}
-            refetchInstances={refetchInstances}
-          />
-        )
-      }
-    />
-  );
-}
-
-const ServiceBindings = ({ serviceBindingUsages = [], refetchLambda }) => {
+export default function ServiceBindings({ lambda = {}, refetchLambda }) {
   const { deleteServiceBindingUsage } = useServiceBindings();
 
   const retrieveEnvs = bindingUsage => {
@@ -134,31 +74,33 @@ const ServiceBindings = ({ serviceBindingUsages = [], refetchLambda }) => {
     'envs',
   ];
 
-  const createLambdaModal = (
-    <CreateLambdaModal
-      serviceBindingUsages={serviceBindingUsages}
-      refetchLambda={refetchLambda}
-    />
+  const createServiceBindingModal = (
+    <CreateServiceBindingModal lambda={lambda} refetchLambda={refetchLambda} />
   );
 
-  const performedBindingUsages = serviceBindingUsages.map(usage => ({
-    ...usage,
-    envs: retrieveEnvs(usage),
-  }));
+  const performedBindingUsages = (lambda.serviceBindingUsages || []).map(
+    usage => ({
+      ...usage,
+      envs: retrieveEnvs(usage),
+    }),
+  );
 
   return (
     <GenericList
-      title="Service Bindings"
-      showSearchField={true}
+      title={SERVICE_BINDINGS_PANEL.LIST.TITLE}
       textSearchProperties={textSearchProperties}
+      showSearchField={true}
       showSearchSuggestion={false}
-      extraHeaderContent={createLambdaModal}
+      extraHeaderContent={createServiceBindingModal}
       actions={actions}
       entries={performedBindingUsages}
       headerRenderer={headerRenderer}
       rowRenderer={rowRenderer}
+      notFoundMessage={SERVICE_BINDINGS_PANEL.LIST.ERRORS.RESOURCES_NOT_FOUND}
+      noSearchResultMessage={
+        SERVICE_BINDINGS_PANEL.LIST.ERRORS.NOT_MATCHING_SEARCH_QUERY
+      }
+      serverErrorMessage={ERRORS.SERVER}
     />
   );
-};
-
-export default ServiceBindings;
+}

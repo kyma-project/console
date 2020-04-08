@@ -10,7 +10,7 @@ import { GQL_QUERIES } from 'components/Lambdas/constants';
 import extractGraphQlErrors from 'shared/graphqlErrorExtractor';
 
 export const useEventActivationsQuery = ({ namespace }) => {
-  const [events, seEvents] = useState([]);
+  const [events, setEvents] = useState([]);
   const notificationManager = useNotification();
 
   const { data, error, loading } = useQuery(GET_EVENT_ACTIVATIONS, {
@@ -23,7 +23,7 @@ export const useEventActivationsQuery = ({ namespace }) => {
   useEffect(() => {
     if (data && data.eventActivations) {
       const events = extractEventsFromEventActivations(data.eventActivations);
-      seEvents(events);
+      setEvents(events);
     }
   }, [data]);
 

@@ -1,9 +1,7 @@
-import { filterServiceInstances } from '../helpers';
+import { filterServiceInstances } from '../filterServiceInstances';
 
-describe('Service Bindings helpers - filterServiceInstances', () => {
+describe('filterServiceInstances', () => {
   it('Should filter properly Service Instances', () => {
-    const lambdaName = 'lambdaName';
-
     const serviceInstance_1 = {
       name: 'serviceInstance_1',
       bindable: true,

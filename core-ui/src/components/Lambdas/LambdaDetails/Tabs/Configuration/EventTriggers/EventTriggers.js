@@ -11,6 +11,23 @@ import { EVENT_TRIGGERS_PANEL, ERRORS } from '../../../../constants';
 
 import CreateEventTriggerModal from './CreateEventTriggerModal';
 
+function EventTriggerSource({ source }) {
+  if (!source) {
+    return <span>*</span>;
+  }
+
+  return (
+    <span
+      className="link"
+      onClick={() =>
+        LuigiClient.linkManager().navigate(`/home/cmf-apps/details/${source}`)
+      }
+    >
+      {source}
+    </span>
+  );
+}
+
 export default function EventTriggers({
   lambda,
   eventTriggers = [],
@@ -41,22 +58,10 @@ export default function EventTriggers({
   ];
   const rowRenderer = eventTrigger => ({
     cells: [
-      <span data-testid="event-trigger-type">{eventTrigger.eventType}</span>,
-      <span data-testid="event-trigger-version">{eventTrigger.version}</span>,
-      <span
-        className="link"
-        data-testid="event-trigger-source"
-        onClick={() =>
-          LuigiClient.linkManager().navigate(
-            `/home/cmf-apps/details/${eventTrigger.source}`,
-          )
-        }
-      >
-        {eventTrigger.source}
-      </span>,
-      <span data-testid="event-trigger-description">
-        {eventTrigger.description}
-      </span>,
+      <span>{eventTrigger.eventType || '*'}</span>,
+      <span>{eventTrigger.version || '*'}</span>,
+      <EventTriggerSource source={eventTrigger.source} />,
+      <span>{eventTrigger.description || '-'}</span>,
     ],
     collapseContent: (
       <>
@@ -79,6 +84,7 @@ export default function EventTriggers({
   const createEventTrigger = (
     <CreateEventTriggerModal
       lambda={lambda}
+      queryError={serverDataError}
       availableEvents={availableEvents}
     />
   );
@@ -97,8 +103,10 @@ export default function EventTriggers({
         rowRenderer={rowRenderer}
         serverDataError={serverDataError}
         serverDataLoading={serverDataLoading}
-        notFoundMessage={ERRORS.RESOURCES_NOT_FOUND}
-        anySearchResultMessage={ERRORS.NOT_MATCHING_SEARCH_QUERY}
+        notFoundMessage={EVENT_TRIGGERS_PANEL.LIST.ERRORS.RESOURCES_NOT_FOUND}
+        noSearchResultMessage={
+          EVENT_TRIGGERS_PANEL.LIST.ERRORS.NOT_MATCHING_SEARCH_QUERY
+        }
         serverErrorMessage={ERRORS.SERVER}
       />
     </div>

@@ -25,19 +25,20 @@ export const useCreateManyEventTriggers = ({
     CREATE_MANY_EVENT_TRIGGERS,
   );
 
-  function handleError(error) {
+  function handleError(error, isSingleTrigger) {
     const errorToDisplay = extractGraphQlErrors(error);
 
-    const message = formatMessage(
-      GQL_MUTATIONS.CREATE_MANY_TRIGGERS.ERROR_MESSAGE,
-      {
-        lambdaName: lambda.name,
-        error: errorToDisplay,
-      },
-    );
+    const message = isSingleTrigger
+      ? GQL_MUTATIONS.CREATE_TRIGGERS.ERROR_MESSAGE_SINGLE
+      : GQL_MUTATIONS.CREATE_TRIGGERS.ERROR_MESSAGE_MANY;
+
+    const formattedMessage = formatMessage(message, {
+      lambdaName: lambda.name,
+      error: errorToDisplay,
+    });
 
     notificationManager.notifyError({
-      content: message,
+      content: formattedMessage,
       autoClose: false,
     });
   }
@@ -45,21 +46,30 @@ export const useCreateManyEventTriggers = ({
   function prepareEventTriggersInput(events) {
     const subscriber = createSubscriberRef(lambda);
 
-    return events.map(event => ({
-      namespace: lambda.namespace,
-      broker: TRIGGER_SUBSCRIBER.BROKER,
-      filterAttributes: {
-        type: event.eventType,
-        eventtypeversion: event.version,
-        source: event.source,
-      },
-      subscriber,
-    }));
+    return events.map(event => {
+      const trigger = {
+        namespace: lambda.namespace,
+        broker: TRIGGER_SUBSCRIBER.BROKER,
+        filterAttributes: {
+          type: event.eventType,
+          source: event.source,
+        },
+        subscriber,
+      };
+
+      // version doesn't have to be
+      if (event.version) {
+        trigger.filterAttributes.eventtypeversion = event.version;
+      }
+
+      return trigger;
+    });
   }
 
   async function createManyEventTriggers(events) {
     const ownerRef = createOwnerRef(lambda);
     const triggers = prepareEventTriggersInput(events);
+    const isSingleTrigger = triggers.length === 1;
 
     try {
       const response = await createManyEventTriggersMutation({
@@ -70,15 +80,19 @@ export const useCreateManyEventTriggers = ({
       });
 
       if (response.error) {
-        handleError(response.error);
+        handleError(response.error, isSingleTrigger);
         return;
       }
 
+      const message = isSingleTrigger
+        ? GQL_MUTATIONS.CREATE_TRIGGERS.SUCCESS_MESSAGE_SINGLE
+        : GQL_MUTATIONS.CREATE_TRIGGERS.SUCCESS_MESSAGE_MANY;
+
       notificationManager.notifySuccess({
-        content: GQL_MUTATIONS.CREATE_MANY_TRIGGERS.SUCCESS_MESSAGE,
+        content: message,
       });
     } catch (err) {
-      handleError(err);
+      handleError(err, isSingleTrigger);
     }
   }
 
