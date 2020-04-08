@@ -7,7 +7,7 @@ const InfiniteList = ({
   queryVariables,
   headerRenderer,
   rowRenderer,
-  noMoreScrollMessage,
+  noMoreEntriesMessage,
 }) => {
   const [cursor, setCursor] = useState(null);
   const [entries, setEntries] = useState([]);
@@ -73,7 +73,7 @@ const InfiniteList = ({
 
       <div className="fd-has-text-align-center fd-has-padding-bottom-xs">
         {!!loading && <Spinner />}
-        {!canScrollMore && noMoreScrollMessage}
+        {!canScrollMore && noMoreEntriesMessage}
       </div>
     </>
   );
@@ -98,9 +98,9 @@ InfiniteList.propTypes = {
   queryVariables: PropTypes.object,
   headerRenderer: PropTypes.func.isRequired,
   rowRenderer: PropTypes.func.isRequired,
-  noMoreScrollMessage: PropTypes.string,
+  noMoreEntriesMessage: PropTypes.string,
 };
 
 InfiniteList.defaultProps = {
-  noMoreScrollMessage: 'No more data',
+  noMoreEntriesMessage: 'No more data',
 };

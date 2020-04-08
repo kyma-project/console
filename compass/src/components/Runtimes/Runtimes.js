@@ -42,7 +42,7 @@ const Runtimes = () => {
           <InfiniteList
             query={GET_RUNTIMES}
             searchQuery={searchQuery}
-            noMoreScrollMessage="No more runtimes to show"
+            noMoreEntriesMessage="No more runtimes to show"
             headerRenderer={runtimeHeaderRenderer}
             rowRenderer={runtimeRowRenderer}
           />
