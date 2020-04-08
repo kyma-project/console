@@ -70,7 +70,7 @@ const ApiSelector: React.FunctionComponent<{
             >
               <ListItem>
                 <BadgeForType type={s.type} />
-                {s.data && s.data.displayName} {id}
+                {s.data && s.data.displayName}
               </ListItem>
             </a>
           ))}

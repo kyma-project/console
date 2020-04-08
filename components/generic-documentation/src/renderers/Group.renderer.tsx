@@ -16,7 +16,7 @@ import { ApiTabHeader } from './helpers/styled';
 import ApiSelector from './helpers/ApiSelector';
 
 import { markdownDefinition } from '../constants';
-
+var _ = require('lodash');
 export enum TabsLabels {
   DOCUMENTATION = 'Documentation',
   CONSOLE = 'Console',
@@ -40,25 +40,55 @@ export const GroupRenderer: React.FunctionComponent<GroupRendererProps> = ({
   currentApiState,
 }) => {
   const [currentApi, setCurrentApi] = currentApiState;
-
   const nonMarkdownSources = getNonMarkdown(sources);
 
   useEffect(() => {
     if (currentApi) return;
-
+    const apiNameFromURL = _.unescape([
+      luigiClient.getNodeParams().selectedApi,
+    ]);
+    if (apiNameFromURL) {
+      const matchedSource = sources.find(
+        (s: Source) => s.data && s.data.displayName === apiNameFromURL,
+      );
+      if (matchedSource) {
+        setCurrentApi(matchedSource);
+        return;
+      }
+    }
     if (nonMarkdownSources.length && nonMarkdownSources[0].type !== 'mock') {
       // a "mock" source is loaded at first, before the real data arrives
       setCurrentApi(nonMarkdownSources[0]);
     }
   }, [currentApi, sources]);
 
-  // useEffect(() => {
-  //   const currentParams = luigiClient.getNodeParams();
-  //   luigiClient
-  //     .linkManager()
-  //     .withParams({ ...currentParams, selectedApi: currentApi.displayName })
-  //     .navigate('');
-  // }, [currentApi]);
+  useEffect(() => {
+    if (!currentApi || !currentApi.data || !currentApi.data.displayName) return;
+    const currentParams = luigiClient.getNodeParams();
+
+    if (currentParams.selectedTab !== 'apis') {
+      if (!currentParams.selectedApi) {
+        return;
+      }
+      return luigiClient
+        .linkManager()
+        .withParams({ selectedTab: currentParams.selectedTab })
+        .navigate('');
+    }
+    if (
+      currentParams.selectedApi &&
+      currentApi.data.displayName === _.unescape([currentParams.selectedApi])
+    ) {
+      return;
+    }
+    luigiClient
+      .linkManager()
+      .withParams({
+        ...currentParams,
+        selectedApi: currentApi.data && currentApi.data.displayName,
+      })
+      .navigate('');
+  }, [currentApi]);
 
   if (
     (!sources || !sources.length) &&
@@ -89,8 +119,9 @@ export const GroupRenderer: React.FunctionComponent<GroupRendererProps> = ({
     }
   };
 
-  const onInitTabs = (): string =>
-    luigiClient.getNodeParams().selectedTab || '';
+  const onInitTabs = (): string => {
+    return luigiClient.getNodeParams().selectedTab || '';
+  };
 
   const markdownsExists = sources.some(source =>
     markdownDefinition.possibleTypes.includes(source.type),
