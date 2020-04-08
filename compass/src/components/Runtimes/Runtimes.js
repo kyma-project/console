@@ -7,6 +7,7 @@ import { GET_RUNTIMES } from './gql';
 import InfiniteList from './InfiniteList';
 import { Panel } from 'fundamental-react';
 import SearchInput from './SearchInput';
+import LuigiClient from '@luigi-project/client';
 
 const runtimeHeaderRenderer = () => [
   'Name',
@@ -16,7 +17,15 @@ const runtimeHeaderRenderer = () => [
 ];
 
 const runtimeRowRenderer = r => [
-  ['name', r.name],
+  [
+    'name',
+    <span
+      className="link"
+      onClick={() => LuigiClient.linkManager().navigate(`details/${r.id}`)}
+    >
+      {r.name}
+    </span>,
+  ],
   ['desc', r.description || '-'],
   ['scenarios', <ScenariosDisplay scenarios={r.labels.scenarios || []} />],
   [
