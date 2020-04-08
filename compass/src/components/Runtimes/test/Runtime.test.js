@@ -94,6 +94,11 @@ describe('Runtimes', () => {
 
 function expectRuntime({ queryByText }, runtime) {
   expect(queryByText(runtime.name)).toBeInTheDocument();
+  expect(queryByText(runtime.description)).toBeInTheDocument();
+  runtime.labels.scenarios.forEach(s => {
+    expect(queryByText(s)).toBeInTheDocument();
+  });
+  expect(queryByText(runtime.status.condition)).toBeInTheDocument();
 }
 
 function expectNumberOfRows({ queryAllByRole }, mocks) {
@@ -121,9 +126,9 @@ function generateRuntimes(fromId, toId) {
     name: `runtime-${id + fromId}`,
     id: `${id + fromId}`,
     description: `blablabla-${id + fromId}`,
-    labels: {},
+    labels: { scenarios: [`my-scenario-${id + fromId}`] },
     status: {
-      condition: 'INITIAL',
+      condition: `status-${id + fromId}`,
     },
   }));
 }

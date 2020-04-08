@@ -32,8 +32,30 @@ const Runtimes = () => {
         <Panel.Body className="fd-has-padding-none">
           <InfiniteScroll
             searchQuery={searchQuery}
-            headerRenderer={() => ['Name']}
-            rowRenderer={r => [['name', r.name]]}
+            headerRenderer={() => [
+              'Name',
+              'Description',
+              'Scenarios',
+              'Status',
+            ]}
+            rowRenderer={r => [
+              ['name', r.name],
+              ['desc', r.description || '-'],
+              [
+                'scenarios',
+                <ScenariosDisplay scenarios={r.labels.scenarios || []} />,
+              ],
+              [
+                'status',
+                <StatusBadge
+                  status={
+                    r.status && r.status.condition
+                      ? r.status.condition
+                      : 'UNKNOWN'
+                  }
+                />,
+              ],
+            ]}
           />
         </Panel.Body>
       </Panel>
