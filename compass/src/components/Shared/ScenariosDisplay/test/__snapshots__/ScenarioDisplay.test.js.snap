@@ -5,20 +5,17 @@ exports[`ScenariosDisplay Renders custom class name 1`] = `
   className="class-name"
 >
   <span
-    className="fd-token y-fd-token y-fd-token--no-button fd-has-margin-right-tiny sc-jbKcbu hnJCGk"
-    role="button"
+    className="fd-badge fd-badge--filled fd-has-margin-right-tiny fd-has-background-color-background-1 fd-has-color-text-3"
   >
     a
   </span>
   <span
-    className="fd-token y-fd-token y-fd-token--no-button fd-has-margin-right-tiny sc-jbKcbu hnJCGk"
-    role="button"
+    className="fd-badge fd-badge--filled fd-has-margin-right-tiny fd-has-background-color-background-1 fd-has-color-text-3"
   >
     b
   </span>
   <span
-    className="fd-token y-fd-token y-fd-token--no-button fd-has-margin-right-tiny sc-jbKcbu hnJCGk"
-    role="button"
+    className="fd-badge fd-badge--filled fd-has-margin-right-tiny fd-has-background-color-background-1 fd-has-color-text-3"
   >
     c
   </span>
@@ -40,20 +37,17 @@ exports[`ScenariosDisplay Renders default placeholder when there are no scenario
 exports[`ScenariosDisplay Renders scenario list 1`] = `
 <span>
   <span
-    className="fd-token y-fd-token y-fd-token--no-button fd-has-margin-right-tiny sc-jbKcbu hnJCGk"
-    role="button"
+    className="fd-badge fd-badge--filled fd-has-margin-right-tiny fd-has-background-color-background-1 fd-has-color-text-3"
   >
     a
   </span>
   <span
-    className="fd-token y-fd-token y-fd-token--no-button fd-has-margin-right-tiny sc-jbKcbu hnJCGk"
-    role="button"
+    className="fd-badge fd-badge--filled fd-has-margin-right-tiny fd-has-background-color-background-1 fd-has-color-text-3"
   >
     b
   </span>
   <span
-    className="fd-token y-fd-token y-fd-token--no-button fd-has-margin-right-tiny sc-jbKcbu hnJCGk"
-    role="button"
+    className="fd-badge fd-badge--filled fd-has-margin-right-tiny fd-has-background-color-background-1 fd-has-color-text-3"
   >
     c
   </span>
