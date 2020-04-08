@@ -28,6 +28,7 @@ export const assetGroupGql = `
     name
     parameters
     type
+    displayName
     files {
       url
       metadata
