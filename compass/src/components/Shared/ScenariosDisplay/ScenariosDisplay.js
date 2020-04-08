@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Token } from '@kyma-project/react-components';
+import { Badge } from 'fundamental-react';
 import { EMPTY_TEXT_PLACEHOLDER } from '../../../shared/constants';
 
 ScenariosDisplay.propTypes = {
@@ -25,12 +25,13 @@ export default function ScenariosDisplay({
   return (
     <span className={className}>
       {scenarios.map(scenario => (
-        <Token
+        <Badge
           key={scenario}
-          className="y-fd-token y-fd-token--no-button fd-has-margin-right-tiny"
+          className="fd-has-margin-right-tiny fd-has-background-color-background-1 fd-has-color-text-1"
+          modifier="filled"
         >
           {scenario}
-        </Token>
+        </Badge>
       ))}
     </span>
   );
