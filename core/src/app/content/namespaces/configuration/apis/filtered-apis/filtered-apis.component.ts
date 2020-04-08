@@ -18,7 +18,7 @@ import { Observable } from 'apollo-link';
 export class FilteredApisComponent extends AbstractGraphqlElementListComponent
   implements OnDestroy, OnInit {
   public resourceKind = 'Api';
-  public deleteMutationName = 'API';
+  public deleteMutationName = 'APIRule';
   public emptyListData: IEmptyListData = this.getBasicEmptyListData('APIs', {
     headerTitle: false,
     namespaceSuffix: false
@@ -61,33 +61,37 @@ export class FilteredApisComponent extends AbstractGraphqlElementListComponent
     );
   }
   getGraphqlQueryForList() {
-    return `query Api($namespace: String!, $serviceName: String) {
-      apis(namespace: $namespace, serviceName: $serviceName) {
+    return `query APIRules($namespace: String!, $serviceName: String) {
+      APIRules(namespace: $namespace, serviceName: $serviceName) {
         name
-        hostname
         service {
-          name
+          host
+          port
         }
-        authenticationPolicies {
-          type
-          issuer
+        status {
+          apiRuleStatus {
+            code
+            desc
+          }
         }
       }
     }`;
   }
 
   getGraphqlSubscriptionsForList() {
-    return `subscription Api($namespace: String!, $serviceName: String) {
-      apiEvent(namespace: $namespace, serviceName: $serviceName) {
-        api {
+    return `subscription APIRules($namespace: String!, $serviceName: String) {
+      apiRuleEvent(namespace: $namespace, serviceName: $serviceName) {
+        apiRule {
           name
-          hostname
           service {
-            name
+            host
+            port
           }
-          authenticationPolicies {
-            type
-            issuer
+          status {
+            apiRuleStatus {
+              code
+              desc
+            }
           }
         }
         type

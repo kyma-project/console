@@ -17,6 +17,7 @@ jest.mock('@kyma-project/luigi-client', () => ({
   getEventData: () => ({
     environmentId: mockNamespace,
   }),
+  getNodeParams: () => ({}),
 }));
 
 describe('ApiRuleForm', () => {

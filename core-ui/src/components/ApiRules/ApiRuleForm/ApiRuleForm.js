@@ -59,6 +59,12 @@ export default function ApiRuleForm({
   const namespace = LuigiClient.getEventData().environmentId;
   const [rules, setRules] = useState(apiRule.rules);
   const [isValid, setValid] = useState(false);
+  const { serviceName, port } = LuigiClient.getNodeParams();
+
+  if (serviceName && port) {
+    apiRule.service.name = serviceName;
+    apiRule.service.port = port;
+  }
 
   const servicesQueryResult = useQuery(GET_SERVICES, {
     variables: {

@@ -30,6 +30,7 @@ jest.mock('@kyma-project/luigi-client', () => ({
       navigate: mockNavigate,
     }),
   }),
+  getNodeParams: () => ({}),
 }));
 
 describe('CreateApiRule', () => {

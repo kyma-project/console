@@ -1,31 +1,24 @@
-<tr [ngClass]="{ disabled: disabled === true }">
-  <td class="fd-has-font-weight-bold">
-    <a
-      href="javascript:void(null)"
-      (click)="navigateToDetails(entry.service.name, entry.name)"
-      data-e2e-id="exposed-api-name"
-    >
-      {{ entry.name }}
-    </a>
-  </td>
-  <td>
-    <app-url-link url="{{ url }}"></app-url-link>
-  </td>
-  <td>
-    <span
-      fd-badge
-      [status]="isSecured(entry) ? 'success' : 'warning'"
-      [modifier]="'filled'"
-      data-e2e-id="exposed-api-secured"
-      >{{ isSecured(entry) ? 'Yes' : 'No' }}</span
-    >
-  </td>
-  <td data-e2e-id="exposed-api-idp">{{ isSecured(entry) ? getIDP(entry) : emptyText }}</td>
-  <td class="fd-has-float-right">
-    <y-list-actions
-      [entry]="entry"
-      [entryEventHandler]="entryEventHandler"
-      [actions]="actions"
-    ></y-list-actions>
-  </td>
+<tr>
+    <td class="fd-has-font-weight-bold">
+        <a href="javascript:void(null)" (click)="navigateToDetails(entry.name)" data-e2e-id="exposed-api-name">
+            {{ entry.name }}
+        </a>
+    </td>
+    <td>
+        {{entry.service.host}}
+    </td>
+    <td>
+        {{entry.service.port}}
+    </td>
+    <td>
+        <span fd-badge [status]="statusBadgeType" (mouseover)="showStatusDescription=true" (mouseout)="showStatusDescription=false">
+            {{entry.status.apiRuleStatus.code}}
+        </span>
+        <app-tooltip position="left" width="300px" *ngIf="showStatusTooltip">
+            {{entry.status.apiRuleStatus.desc}}
+        </app-tooltip>
+    </td>
+    <td class="fd-has-float-right">
+        <y-list-actions [entry]="entry" [entryEventHandler]="entryEventHandler" [actions]="actions"></y-list-actions>
+    </td>
 </tr>

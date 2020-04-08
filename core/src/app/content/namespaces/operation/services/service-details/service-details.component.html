@@ -82,9 +82,6 @@
                 <span>{{ serviceDetails.metadata.name }}.{{ serviceDetails.metadata.namespace }}:{{ port.port }}
                   {{ port.protocol }}</span>
                 <br>
-                <span>{{ serviceDetails.metadata.name }}.{{ serviceDetails.metadata.namespace }}:{{ port.nodePort || 0 }}
-                  {{ port.protocol }}</span>
-                <br>
               </ng-container>
             </td>
           </tr>
@@ -98,7 +95,7 @@
   <fd-panel class="y-fd-panel">
     <fd-panel-header>
       <fd-panel-head>
-        <h2 fd-panel-title>Exposed APIs</h2>
+        <h2 fd-panel-title>Exposed API Rules</h2>
       </fd-panel-head>
       <fd-panel-actions>
         <button fd-button [options]="'light'" [glyph]="'add'" (click)="openExposeApi()"

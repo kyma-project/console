@@ -17,9 +17,21 @@ export class FilteredApisEntryRendererComponent
   implements OnDestroy, OnInit {
   public emptyText = EMPTY_TEXT;
   public disabled = false;
-  public url: string = this.genericHelpers.getURL({
-    host: this.entry.hostname
-  });
+  public showStatusDescription = false;
+  // public url: string = this.genericHelpers.getURL({
+  //   host: this.entry.hostname
+  // });
+
+  get showStatusTooltip() {
+    return this.entry.status.apiRuleStatus.code !== 'OK' && this.showStatusDescription;
+  }
+
+  get statusBadgeType() {
+    return this.entry.status.apiRuleStatus.code === 'OK'
+      ? 'success'
+      : 'error'
+  }
+
   private communicationServiceSubscription: Subscription;
 
   constructor(
@@ -66,9 +78,9 @@ export class FilteredApisEntryRendererComponent
       : 'Other';
   }
 
-  public navigateToDetails(serviceName, apiName) {
+  public navigateToDetails(apiName) {
     LuigiClient.linkManager()
-      .fromContext('services')
-      .navigate(`details/${serviceName}/apis/details/${apiName}`);
+      .fromContext('namespaces')
+      .navigate(`cmf-apirules/details/${apiName}`);
   }
 }

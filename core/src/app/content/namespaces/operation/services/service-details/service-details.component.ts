@@ -90,7 +90,13 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
   }
 
   public openExposeApi() {
-    LuigiClient.linkManager().navigate(`apis/create`);
+    LuigiClient.linkManager()
+      .fromContext('namespaces')
+      .withParams({
+        serviceName: this.serviceName,
+        port: this.serviceDetails.spec.ports[0].port,
+      })
+      .navigate('cmf-apirules/create');
   }
 
   public navigateToList() {

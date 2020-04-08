@@ -78,11 +78,6 @@ export class OrganisationComponent implements OnInit {
   }
 
   private toggleViewVisibilityPreference(key: string) {
-    localStorage.setItem(`console.${key}`, this[key].toString());
-    this.refreshLeftNavigation();
-  }
-
-  private refreshLeftNavigation() {
-    LuigiClient.sendCustomMessage({ id: 'console.toggleExperimental' });
+    localStorage.setItem(`console.${key}`, this[key]);
   }
 }

@@ -64,7 +64,7 @@ export class ServicesComponent extends AbstractKubernetesElementListComponent
   getEntryEventHandler() {
     const handler = super.getEntryEventHandler();
     handler.exposeApi = (entry: any) => {
-      this.navigateToCreate(entry.metadata.name);
+      this.navigateToCreate(entry);
     };
     return handler;
   }
@@ -73,8 +73,14 @@ export class ServicesComponent extends AbstractKubernetesElementListComponent
     LuigiClient.linkManager().navigate(`details/${entry.metadata.name}`);
   }
 
-  public navigateToCreate(serviceName) {
-    LuigiClient.linkManager().navigate(`details/${serviceName}/apis/create`);
+  public navigateToCreate(entry) {
+    LuigiClient.linkManager()
+      .fromContext('namespaces')
+      .withParams({
+        serviceName: entry.metadata.name,
+        port: entry.spec.ports[0].port,
+      })
+      .navigate('cmf-apirules/create');
   }
 
   public createNewElement() {
