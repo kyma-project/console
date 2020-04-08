@@ -88,7 +88,7 @@ sudo sed -i '' "/.$HOST/d" /etc/hosts
 
 
 # add new cluster->localhost binding to hosts file
-echo "127.0.0.1 console-dev.$DOMAIN localhost"| sudo tee -a /etc/hosts
+echo "127.0.0.1 console-dev.$DOMAIN compass-dev.$DOMAIN localhost"| sudo tee -a /etc/hosts
 
 echo "Added ClusterConfig to Console"
 echo ""

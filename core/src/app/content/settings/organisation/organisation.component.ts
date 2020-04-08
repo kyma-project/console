@@ -15,6 +15,7 @@ export class OrganisationComponent implements OnInit {
   public orgName: string;
   public showSystemNamespaces = false;
   public showExperimentalViews = false;
+  public shouldShowNamespacesToggle = true;
 
   constructor(private http: HttpClient) {
     this.showExperimentalViews =
@@ -35,10 +36,18 @@ export class OrganisationComponent implements OnInit {
     this.orgId = AppConfig.orgId;
     this.orgName = AppConfig.orgName;
 
+    const groups = LuigiClient.getNodeParams().groups;
+    this.shouldShowNamespacesToggle = this.isVisibleForCurrentGroup(groups);
+
     if (localStorage.getItem('console.showSystemNamespaces')) {
       this.showSystemNamespaces =
         localStorage.getItem('console.showSystemNamespaces') === 'true';
     }
+  }
+
+  public isVisibleForCurrentGroup(groups) {
+    if (!Array.isArray(groups)) { return true };
+    return groups.includes(AppConfig.runtimeAdminGroupName);
   }
 
   public toggleSystemNamespaceVisibility() {

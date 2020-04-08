@@ -21,6 +21,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "../../node_modules/.bin/tsc && npm run copy-assets-open-api",
+    "watch": "../../node_modules/.bin/tsc -p tsconfig.dev.json --watch",
     "type-check": "../../node_modules/.bin/tsc --noEmit",
     "copy-assets-open-api": "cp -r ./src/render-engines/open-api/styles/assets ./dist/render-engines/open-api/styles/assets"
   }
