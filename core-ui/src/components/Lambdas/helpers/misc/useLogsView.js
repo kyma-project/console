@@ -9,7 +9,7 @@ export const useLogsView = (name, namespace, selectedTabName) => {
   useEffect(() => {
     const linkManager = LuigiClient.linkManager().withParams({
       namespace: namespace,
-      lambda: name,
+      function: name,
       compact: 'true',
     });
 
