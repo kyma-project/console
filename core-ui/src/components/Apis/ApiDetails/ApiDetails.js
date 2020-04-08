@@ -11,6 +11,7 @@ import { getApiType, getApiDisplayName } from '../ApiHelpers';
 import { GET_API_DEFININTION, GET_EVENT_DEFINITION } from 'gql/queries';
 import { CompassGqlContext } from 'index';
 import './ApiDetails.scss';
+import { convert } from 'asyncapi-converter';
 
 const DocumentationComponent = ({ content, type }) => (
   <GenericComponent
@@ -98,6 +99,20 @@ const ApiDetails = ({ apiId, eventApiId, appId, apiPackageId }) => {
 
   const api =
     data.application.package[apiId ? 'apiDefinition' : 'eventDefinition'];
+
+  let specToShow = api.spec.data;
+
+  if (eventApiId) {
+    try {
+      const parsedSpec = JSON.parse(specToShow);
+      if (parsedSpec.asyncapi && parsedSpec.asyncapi.startsWith('1.')) {
+        specToShow = convert(specToShow, '2.0.0');
+      }
+    } catch (e) {
+      console.error('Error parsing async api spec', e);
+    }
+  }
+
   if (!api) {
     const resourceType = apiId ? 'API Definition' : 'Event Definition';
     return (
@@ -130,10 +145,7 @@ const ApiDetails = ({ apiId, eventApiId, appId, apiPackageId }) => {
         actions={<EditButton />}
       />
       {api.spec ? (
-        <DocumentationComponent
-          type={getApiType(api)}
-          content={api.spec.data}
-        />
+        <DocumentationComponent type={getApiType(api)} content={specToShow} />
       ) : (
         <Panel className="fd-has-margin-large">
           <Panel.Body className="fd-has-text-align-center fd-has-type-4">
