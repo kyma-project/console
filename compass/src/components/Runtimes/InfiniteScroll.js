@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useQuery } from 'react-apollo';
 import { GET_RUNTIMES } from './gql';
+import PropTypes from 'prop-types';
 
-const InfiniteScroll = ({ searchQuery }) => {
+const InfiniteScroll = ({ searchQuery, headerRenderer, rowRenderer }) => {
   const [cursor, setCursor] = useState(null);
   const [entries, setEntries] = useState([]);
 
@@ -44,15 +45,21 @@ const InfiniteScroll = ({ searchQuery }) => {
       <table className="fd-table">
         <thead className="fd-table__header">
           <tr className="fd-table__row">
-            <th className="fd-table__cell" scope="col">
-              Name
-            </th>
+            {headerRenderer().map((h, index) => (
+              <th className="fd-table__cell" scope="col" key={h || index}>
+                {h}
+              </th>
+            ))}
           </tr>
         </thead>
         <tbody className="fd-table__body">
           {entries.map(r => (
             <tr className="fd-table__row" key={r.id}>
-              <td className="fd-table__cell">{r.name}</td>
+              {rowRenderer(r).map(([key, value]) => (
+                <td className="fd-table__cell" key={key}>
+                  {value}
+                </td>
+              ))}
             </tr>
           ))}
         </tbody>
@@ -75,3 +82,8 @@ const Spinner = () => {
 };
 
 export default InfiniteScroll;
+
+InfiniteScroll.propTypes = {
+  headerRenderer: PropTypes.func.isRequired,
+  rowRenderer: PropTypes.func.isRequired,
+};

@@ -30,7 +30,11 @@ const Runtimes = () => {
           </Panel.Actions>
         </Panel.Header>
         <Panel.Body className="fd-has-padding-none">
-          <InfiniteScroll searchQuery={searchQuery} />
+          <InfiniteScroll
+            searchQuery={searchQuery}
+            headerRenderer={() => ['Name']}
+            rowRenderer={r => [['name', r.name]]}
+          />
         </Panel.Body>
       </Panel>
     </>
