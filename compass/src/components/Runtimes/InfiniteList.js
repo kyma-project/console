@@ -13,7 +13,7 @@ const InfiniteList = ({
   const [entries, setEntries] = useState([]);
 
   const { data, loading, error } = useQuery(query, {
-    fetchPolicy: 'cache-and-network',
+    fetchPolicy: 'network-only',
     variables: {
       after: cursor,
       ...queryVariables,
