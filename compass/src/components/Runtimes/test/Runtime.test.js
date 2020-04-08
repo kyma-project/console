@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-  render,
-  wait,
-  waitForDomChange,
-  fireEvent,
-} from '@testing-library/react';
+import { render, waitForDomChange, fireEvent } from '@testing-library/react';
 import Runtimes from '../Runtimes';
 import { MockedProvider } from '@apollo/react-testing';
 import { GET_RUNTIMES } from '../gql';
@@ -24,6 +19,7 @@ describe('Runtimes', () => {
     });
 
     expect(test.queryByText('No more runtimes')).not.toBeInTheDocument();
+    expectNumberOfRows(test, [MOCK_GET_RUNTIMES]);
   });
 
   it('Renders additional runtiems when scrolled to bottom', async () => {
@@ -48,6 +44,9 @@ describe('Runtimes', () => {
     MOCK_GET_ADDITIONAL_RUNTIMES.result.data.runtimes.data.forEach(runtime => {
       expectRuntime(test, runtime);
     });
+
+    expectNumberOfRows(test, [MOCK_GET_RUNTIMES, MOCK_GET_ADDITIONAL_RUNTIMES]);
+    expect(test.queryByText('No more runtimes')).toBeInTheDocument();
   });
 
   it('Do nothing when scrolled not to bottom', async () => {
@@ -64,14 +63,10 @@ describe('Runtimes', () => {
 
     fireScrollEvent(false);
 
-    await waitForDomChange();
-
     MOCK_GET_RUNTIMES.result.data.runtimes.data.forEach(runtime => {
       expectRuntime(test, runtime);
     });
-    MOCK_GET_ADDITIONAL_RUNTIMES.result.data.runtimes.data.forEach(runtime => {
-      expectNoRuntime(test, runtime);
-    });
+    expectNumberOfRows(test, [MOCK_GET_RUNTIMES]);
   });
 
   it('Stop loading additional runtimes when there are no more runtimes', async () => {
@@ -90,10 +85,9 @@ describe('Runtimes', () => {
 
     await waitForDomChange();
 
-    fireScrollEvent(false);
+    fireScrollEvent(true);
 
-    await waitForDomChange();
-
+    expectNumberOfRows(test, [MOCK_GET_RUNTIMES, MOCK_GET_ADDITIONAL_RUNTIMES]);
     expect(test.queryByText('No more runtimes')).toBeInTheDocument();
   });
 });
@@ -102,8 +96,12 @@ function expectRuntime({ queryByText }, runtime) {
   expect(queryByText(runtime.name)).toBeInTheDocument();
 }
 
-function expectNoRuntime({ queryByText }, runtime) {
-  expect(queryByText(runtime.name)).not.toBeInTheDocument();
+function expectNumberOfRows({ queryAllByRole }, mocks) {
+  const loadedRows = mocks.reduce(
+    (acc, mock) => acc + mock.result.data.runtimes.data.length,
+    1, // include header row
+  );
+  expect(queryAllByRole('row')).toHaveLength(loadedRows);
 }
 
 function fireScrollEvent(isBottom) {
