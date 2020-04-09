@@ -28,7 +28,10 @@ export default function EventTriggersWrapper({ lambda }) {
     lambda,
   });
 
-  const [availableEvents, usedEvents] = serializeEvents(events, eventTriggers);
+  const { availableEvents, usedEvents } = serializeEvents({
+    events,
+    eventTriggers,
+  });
 
   return (
     <EventTriggers

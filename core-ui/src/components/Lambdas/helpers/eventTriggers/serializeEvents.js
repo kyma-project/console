@@ -1,4 +1,4 @@
-export function serializeEvents(events = [], eventTriggers = []) {
+export function serializeEvents({ events = [], eventTriggers = [] }) {
   if (!events.length) {
     const usedEvents = eventTriggers.map(event => {
       const filterAttributes = event.filterAttributes;
@@ -10,13 +10,17 @@ export function serializeEvents(events = [], eventTriggers = []) {
       };
     });
 
-    return [[], usedEvents];
+    return {
+      availableEvents: [],
+      usedEvents,
+    };
   }
 
   const availableEvents = [];
   const usedEvents = [];
 
   events.forEach(event => {
+    let usedEvent = false;
     for (const trigger of eventTriggers) {
       const filterAttributes = trigger.filterAttributes;
 
@@ -29,10 +33,13 @@ export function serializeEvents(events = [], eventTriggers = []) {
           ...event,
           ...trigger,
         });
-        return;
+        usedEvent = true;
       }
     }
-    availableEvents.push(event);
+
+    if (!usedEvent) {
+      availableEvents.push(event);
+    }
   });
 
   eventTriggers.forEach(trigger => {
@@ -55,5 +62,8 @@ export function serializeEvents(events = [], eventTriggers = []) {
     }
   });
 
-  return [availableEvents, usedEvents];
+  return {
+    availableEvents,
+    usedEvents,
+  };
 }
