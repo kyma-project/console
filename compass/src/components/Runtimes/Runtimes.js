@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext } from 'react';
 
 import { PageHeader, StatusBadge, ApplicationContext } from 'react-shared';
 import ScenariosDisplay from './../Shared/ScenariosDisplay/ScenariosDisplay';
@@ -6,7 +6,6 @@ import ScenariosDisplay from './../Shared/ScenariosDisplay/ScenariosDisplay';
 import { GET_RUNTIMES } from './gql';
 import InfiniteList from './InfiniteList';
 import { Panel } from 'fundamental-react';
-import SearchInput from './SearchInput';
 import LuigiClient from '@luigi-project/client';
 
 const runtimeHeaderRenderer = () => [
@@ -38,22 +37,15 @@ const runtimeRowRenderer = r => [
 
 const Runtimes = () => {
   const { tenantId } = useContext(ApplicationContext);
-  const [searchQuery, setSearchQuery] = useState('');
 
   return (
     <>
       <PageHeader title="Runtimes" />
       <Panel className="fd-has-margin-m">
-        <Panel.Header className="fd-has-padding-xs">
-          <Panel.Actions>
-            <SearchInput handleQueryChange={setSearchQuery} />
-          </Panel.Actions>
-        </Panel.Header>
         <Panel.Body className="fd-has-padding-none">
           <InfiniteList
             key={tenantId} // force rerender on tenant change
             query={GET_RUNTIMES}
-            searchQuery={searchQuery}
             noMoreEntriesMessage="No more runtimes to show"
             headerRenderer={runtimeHeaderRenderer}
             rowRenderer={runtimeRowRenderer}
