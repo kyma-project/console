@@ -1,5 +1,3 @@
-import { formatMessage } from './helpers/misc';
-
 export const BUTTONS = {
   CANCEL: 'Cancel',
   DELETE: 'Delete',
