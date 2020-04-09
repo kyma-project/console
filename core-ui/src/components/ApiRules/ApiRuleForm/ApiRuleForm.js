@@ -195,6 +195,7 @@ export default function ApiRuleForm({
                     <ServicesDropdown
                       _ref={formValues.service}
                       defaultValue={apiRule.service}
+                      serviceName={serviceName}
                       {...servicesQueryResult}
                     />
                   </LayoutGrid>

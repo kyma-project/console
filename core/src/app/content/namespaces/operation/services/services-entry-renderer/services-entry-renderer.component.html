@@ -7,17 +7,11 @@
   <td>{{ entry.spec.clusterIP }}</td>
   <td>
     <ng-container *ngFor="let port of entry.spec.ports">
-      <span>
+      <p>
         {{ entry.metadata.name }}.{{ entry.metadata.namespace }}:
         {{ port.port }}
         {{ port.protocol }}
-      </span>
-
-      <span>
-        {{ entry.metadata.name }}.{{ entry.metadata.namespace }}:
-        {{ port.nodePort || 0 }}
-        {{ port.protocol }}
-      </span>
+      </p>
     </ng-container>
   </td>
   <td>{{ entry.metadata.creationTimestamp | timeAgo }}</td>

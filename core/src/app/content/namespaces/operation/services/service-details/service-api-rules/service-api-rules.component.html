@@ -1,0 +1,41 @@
+<table fd-table>
+  <thead fd-table-header>
+    <tr>
+      <th>Name</th>
+      <th class="y-fd-table--col-4">Host</th>
+      <th class="y-fd-table--col-1">Port</th>
+      <th>Status</th>
+      <th class="y-fd-table--col-1"></th>
+    </tr>
+  </thead>
+  <tbody fd-table-body>
+    <tr *ngFor="let apiRule of apiRules" fd-table-row>
+      <td class="fd-has-font-weight-bold">
+        <a href="javascript:void(null)" (click)="navigateToDetails(apiRule.name)">
+          {{ apiRule.name }}
+        </a>
+      </td>
+      <td>
+        {{ apiRule.service.host }}
+      </td>
+      <td>
+        {{ apiRule.service.port }}
+      </td>
+      <td>
+        <span fd-badge [status]="statusBadgeType" (mouseover)="showStatusDescription=true"
+          (mouseout)="showStatusDescription=false">
+          {{ apiRule.status.apiRuleStatus.code }}
+        </span>
+        <app-tooltip position="left" width="300px" *ngIf="showStatusTooltip">
+          {{ apiRule.status.apiRuleStatus.desc }}
+        </app-tooltip>
+      </td>
+      <td class="fd-has-float-right">
+        <y-list-actions [entry]="apiRule" [entryEventHandler]="entryEventHandler" [actions]="actions"></y-list-actions>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<app-confirmation-modal #confirmationModal></app-confirmation-modal>
+<app-information-modal #infoModal></app-information-modal>

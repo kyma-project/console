@@ -5,7 +5,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { ClipboardModule } from 'ngx-clipboard';
 import { ApisComponent } from './content/namespaces/configuration/apis/apis.component';
-import { FilteredApisComponent } from './content/namespaces/configuration/apis/filtered-apis/filtered-apis.component';
 import { EventService } from './content/settings/applications/application-details/services/event.service';
 import { ApplicationsService } from './content/settings/applications/services/applications.service';
 
@@ -30,8 +29,6 @@ import { NamespaceCardComponent } from './content/workspace-overview/namespace-c
 import { TimeAgoPipe } from 'time-ago-pipe';
 import { ApiDefinitionEntryRendererComponent } from './content/namespaces/configuration/apis/api-definition-entry-renderer/api-definition-entry-renderer.component';
 import { ApiDefinitionHeaderRendererComponent } from './content/namespaces/configuration/apis/api-definition-header-renderer/api-definition-header-renderer.component';
-import { FilteredApisEntryRendererComponent } from './content/namespaces/configuration/apis/filtered-apis/filtered-apis-entry-renderer/filtered-apis-entry-renderer.component';
-import { FilteredApisHeaderRendererComponent } from './content/namespaces/configuration/apis/filtered-apis/filtered-apis-header-renderer/filtered-apis-header-renderer.component';
 import { NamespaceDetailsComponent } from './content/namespaces/namespace-details/namespace-details.component';
 import { DeploymentEntryRendererComponent } from './content/namespaces/operation/deployments/deployment-entry-renderer/deployment-entry-renderer.component';
 import { DeploymentHeaderRendererComponent } from './content/namespaces/operation/deployments/deployment-header-renderer/deployment-header-renderer.component';
@@ -123,6 +120,7 @@ import { AppConfig } from './app.config';
 import { WebSocketLink } from './ws';
 import { GenericHelpersService } from './shared/services/generic-helpers.service';
 import { UrlLinkComponent } from 'shared/components/url-link/url-link.component';
+import { ServiceApiRulesComponent } from './content/namespaces/operation/services/service-details/service-api-rules/service-api-rules.component';
 
 import * as LuigiClient from '@luigi-project/client';
 
@@ -176,11 +174,8 @@ import * as LuigiClient from '@luigi-project/client';
     ResourceUploaderComponent,
     ExposeApiComponent,
     ApisComponent,
-    FilteredApisComponent,
     ApiDefinitionEntryRendererComponent,
     ApiDefinitionHeaderRendererComponent,
-    FilteredApisEntryRendererComponent,
-    FilteredApisHeaderRendererComponent,
     Copy2ClipboardModalComponent,
     PermissionsComponent,
     RoleDetailsComponent,
@@ -213,7 +208,8 @@ import * as LuigiClient from '@luigi-project/client';
     TooltipComponent,
     LuigiClientCommunicationDirective,
     FilterAllOnSelectedDirective,
-    UrlLinkComponent
+    UrlLinkComponent,
+    ServiceApiRulesComponent
   ],
   imports: [
     BrowserModule,
@@ -265,8 +261,6 @@ import * as LuigiClient from '@luigi-project/client';
     ApplicationsEntryRendererComponent,
     ApiDefinitionEntryRendererComponent,
     ApiDefinitionHeaderRendererComponent,
-    FilteredApisEntryRendererComponent,
-    FilteredApisHeaderRendererComponent,
     BindingHeaderRendererComponent,
     BindingEntryRendererComponent,
     RolesHeaderRendererComponent,
