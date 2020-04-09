@@ -42,7 +42,7 @@ export const GQL_MUTATIONS = {
     ERROR_MESSAGE_MANY: `Error while creating Event Triggers for "{lambdaName}" Lambda: {error}`,
   },
   DELETE_TRIGGER: {
-    SUCCESS_MESSAGE: `Event Trigger is successfully removed`,
+    SUCCESS_MESSAGE: `Event Trigger was successfully removed`,
     ERROR_MESSAGE: `Error while deleting "{triggerName}" Event Trigger for "{lambdaName}" Lambda: {error}`,
     CONFIRM_MODAL: {
       TITLE: `Remove Event Trigger`,
