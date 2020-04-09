@@ -4,10 +4,10 @@ export const BUTTONS = {
 };
 
 export const ERRORS = {
-  SERVER: 'Server error. Please contact the admin of the cluster.',
-  RESOURCES_NOT_FOUND: 'There are no resources for this lambda.',
+  SERVER: 'Server error. Contact your cluster admin.',
+  RESOURCES_NOT_FOUND: 'There are no resources available for this lambda.',
   NOT_MATCHING_SEARCH_QUERY: "Couldn't find resources matching this query.",
-  NOT_MATCHING_FILTERS: "Couldn't find resources matching this filters.",
+  NOT_MATCHING_FILTERS: "Couldn't find resources matching these filters.",
 };
 
 export const TOOLBAR = {
@@ -38,7 +38,7 @@ export const GQL_MUTATIONS = {
   CREATE_TRIGGERS: {
     SUCCESS_MESSAGE_SINGLE: `Event Trigger created successfully`,
     SUCCESS_MESSAGE_MANY: `Event Triggers created successfully`,
-    ERROR_MESSAGE_SINGLE: `Error while creating Event Trigger for "{lambdaName}" Lambda: {error}`,
+    ERROR_MESSAGE_SINGLE: `Error while creating an Event Trigger for "{lambdaName}" Lambda: {error}`,
     ERROR_MESSAGE_MANY: `Error while creating Event Triggers for "{lambdaName}" Lambda: {error}`,
   },
   DELETE_TRIGGER: {
@@ -62,7 +62,8 @@ export const EVENT_TRIGGERS_PANEL = {
   LIST: {
     TITLE: 'Event Triggers',
     ERRORS: {
-      RESOURCES_NOT_FOUND: 'There are no Event Triggers for this lambda.',
+      RESOURCES_NOT_FOUND:
+        'There are no Event Triggers available for this lambda.',
       NOT_MATCHING_SEARCH_QUERY:
         "Couldn't find Event Triggers matching this query.",
     },
@@ -85,7 +86,8 @@ export const SERVICE_BINDINGS_PANEL = {
   LIST: {
     TITLE: 'Service Bindings',
     ERRORS: {
-      RESOURCES_NOT_FOUND: 'There are no Service Bindings for this lambda.',
+      RESOURCES_NOT_FOUND:
+        'There are no Service Bindings available for this lambda.',
       NOT_MATCHING_SEARCH_QUERY:
         "Couldn't find Service Bindings matching this query.",
     },
@@ -94,19 +96,19 @@ export const SERVICE_BINDINGS_PANEL = {
     OPEN_BUTTON: {
       TEXT: 'Create Service Binding',
       NOT_ENTRIES_POPUP_MESSAGE:
-        'No Service Instances available to bind in current namespace. Create a Service Instance first.',
+        'There are no Service Instances available to bind in this Namespace. Create a Service Instance first.',
     },
     TITLE: 'Create Service Binding',
     CONFIRM_BUTTON: {
       TEXT: 'Create',
       POPUP_MESSAGES: {
-        NO_SERVICE_INSTANCE_SELECTED: 'Service Instance must be selected.',
-        NO_SECRET_SELECTED: 'Secret must be selected or created.',
+        NO_SERVICE_INSTANCE_SELECTED: 'You must select a Service Instance.',
+        NO_SECRET_SELECTED: 'You must create or select a Secret.',
       },
     },
   },
   FORM: {
     NO_SECRETS_FOUND:
-      'No Secrets available. Create new Secret to bind the Service Instance.',
+      'There are no Secrets available. Create a new Secret to bind the Service Instance.',
   },
 };
