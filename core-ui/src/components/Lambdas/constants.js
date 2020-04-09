@@ -87,7 +87,7 @@ export const SERVICE_BINDINGS_PANEL = {
     TITLE: 'Service Bindings',
     ERRORS: {
       RESOURCES_NOT_FOUND:
-        'There are no Service Bindings available for this lambda.',
+        'This lambda doesn't have any Service Bindings yet.',
       NOT_MATCHING_SEARCH_QUERY:
         "Couldn't find Service Bindings matching this query.",
     },
