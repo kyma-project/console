@@ -15,8 +15,11 @@ const mockedTenants = [
 
 const mockNavigate = jest.fn();
 jest.mock('@luigi-project/client', () => ({
-  getContext: () => ({ tenants: mockedTenants }),
   linkManager: () => ({ navigate: mockNavigate }),
+}));
+
+jest.mock('react-shared', () => ({
+  useApplicationContext: () => ({ tenants: mockedTenants }),
 }));
 
 describe('TenantSearch', () => {
