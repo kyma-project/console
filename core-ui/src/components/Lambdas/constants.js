@@ -63,7 +63,7 @@ export const EVENT_TRIGGERS_PANEL = {
     TITLE: 'Event Triggers',
     ERRORS: {
       RESOURCES_NOT_FOUND:
-        'There are no Event Triggers available for this lambda.',
+        'This lambda doesn't have any Event Triggers yet.',
       NOT_MATCHING_SEARCH_QUERY:
         "Couldn't find Event Triggers matching this query.",
     },
