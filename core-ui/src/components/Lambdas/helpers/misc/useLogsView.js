@@ -11,6 +11,7 @@ export const useLogsView = (name, namespace, selectedTabName) => {
       namespace: namespace,
       function: name,
       compact: 'true',
+      container: '~(step-executor|lambda)',
     });
 
     checkLogsViewExists(linkManager, setLogViewExists);

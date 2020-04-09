@@ -23,7 +23,11 @@ export default function LogsContainer() {
     delete params.compact;
     const labels = [];
     for (var paramName in params) {
-      labels.push(`${paramName}="${params[paramName]}"`);
+      if (params[paramName].startsWith('~')) {
+        labels.push(`${paramName}=~"${params[paramName].slice(1)}"`);
+      } else {
+        labels.push(`${paramName}="${params[paramName]}"`);
+      }
     }
     return labels;
   }
