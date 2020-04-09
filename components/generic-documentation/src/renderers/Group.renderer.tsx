@@ -16,7 +16,8 @@ import { ApiTabHeader } from './helpers/styled';
 import ApiSelector from './helpers/ApiSelector';
 
 import { markdownDefinition } from '../constants';
-var _ = require('lodash');
+import unescape from 'lodash.unescape';
+
 export enum TabsLabels {
   DOCUMENTATION = 'Documentation',
   CONSOLE = 'Console',
@@ -44,9 +45,7 @@ export const GroupRenderer: React.FunctionComponent<GroupRendererProps> = ({
 
   useEffect(() => {
     if (currentApi) return;
-    const apiNameFromURL = _.unescape([
-      luigiClient.getNodeParams().selectedApi,
-    ]);
+    const apiNameFromURL = unescape(luigiClient.getNodeParams().selectedApi);
     if (apiNameFromURL) {
       const matchedSource = sources.find(
         (s: Source) => s.data && s.data.displayName === apiNameFromURL,
@@ -77,7 +76,7 @@ export const GroupRenderer: React.FunctionComponent<GroupRendererProps> = ({
     }
     if (
       currentParams.selectedApi &&
-      currentApi.data.displayName === _.unescape([currentParams.selectedApi])
+      currentApi.data.displayName === unescape(currentParams.selectedApi)
     ) {
       return;
     }
@@ -119,9 +118,8 @@ export const GroupRenderer: React.FunctionComponent<GroupRendererProps> = ({
     }
   };
 
-  const onInitTabs = (): string => {
-    return luigiClient.getNodeParams().selectedTab || '';
-  };
+  const onInitTabs = (): string =>
+    luigiClient.getNodeParams().selectedTab || '';
 
   const markdownsExists = sources.some(source =>
     markdownDefinition.possibleTypes.includes(source.type),
