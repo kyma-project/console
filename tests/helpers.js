@@ -9,7 +9,7 @@ export const testIf = (condition, testName, testToRun) => {
   }
 };
 
-export const switchToActiveFrame = t => {
+export const findActiveFrame = t => {
   return t.switchToIframe(
     Selector('iframe', { visibilityCheck: true, timeout: 20000 }),
   );

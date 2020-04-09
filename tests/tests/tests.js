@@ -2,7 +2,7 @@ import { Selector } from 'testcafe';
 
 import {
   testIf,
-  switchToActiveFrame,
+  findActiveFrame,
   adminUser,
   toBoolean,
   retry,
@@ -15,8 +15,6 @@ fixture`Console UI Smoke tests`;
 test('Luigi navigation is rendered', async t => {
   //GIVEN
   await t.useRole(adminUser);
-
-  //AND
   const namespacesLink = leftNavLinkSelector('Namespaces');
 
   //THEN
@@ -28,15 +26,15 @@ test('Namespaces view is rendered', async t => {
   await t.useRole(adminUser);
 
   //THEN
-  const testframe = async t => {
+  await retry(t, findActiveFrame, 3);
+  const testFrame = async t => {
     return await t
       .expect(Selector('.fd-button').withText('Add new namespace').exists)
       .ok()
       .expect(Selector('.fd-panel__title').withText('default').exists)
       .ok();
   };
-  await retry(t, switchToActiveFrame, 3);
-  await retry(t, testframe, 3);
+  await retry(t, testFrame, 3);
 });
 
 testIf(
@@ -52,13 +50,13 @@ testIf(
       .click(applicationLink);
 
     //THEN
-    await retry(t, switchToActiveFrame, 3);
-    const testframe = async t => {
+    await retry(t, findActiveFrame, 3);
+    const testFrame = async t => {
       return await t
         .expect(Selector('button').withText(/.*create application.*/i).exists)
         .ok();
     };
-    await retry(t, testframe, 3);
+    await retry(t, testFrame, 3);
   },
 );
 
@@ -71,21 +69,24 @@ testIf(
     const catalogLink = leftNavLinkSelector('Catalog');
 
     //WHEN
-    await retry(t, switchToActiveFrame, 3);
-    await t
-      .click(Selector('.fd-panel__title').withText('default'))
-      .switchToMainWindow()
-      .click(catalogLink);
+    await retry(t, findActiveFrame, 3);
+    const goToCatalog = async t => {
+      return await t
+        .click(Selector('.fd-panel__title').withText('default'))
+        .switchToMainWindow()
+        .click(catalogLink);
+    };
+    await retry(t, goToCatalog, 3);
 
     //THEN
-    await retry(t, switchToActiveFrame, 3);
-    const testframe = async t => {
+    await retry(t, findActiveFrame, 3);
+    const testFrame = async t => {
       return await t
         .expect(
           Selector('.fd-action-bar__title').withText('Service Catalog').exists,
         )
         .ok();
     };
-    await retry(t, testframe, 6);
+    await retry(t, testFrame, 3);
   },
 );
