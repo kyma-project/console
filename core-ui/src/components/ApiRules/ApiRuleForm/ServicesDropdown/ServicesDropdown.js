@@ -1,8 +1,17 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
+import { CustomPropTypes } from 'react-shared';
 import { FormItem, FormLabel, FormSelect } from 'fundamental-react';
 
-const ServicesDropdown = ({ _ref, loading, data, error, defaultValue }) => {
+const ServicesDropdown = ({
+  _ref,
+  loading,
+  data,
+  error,
+  defaultValue,
+  serviceName,
+}) => {
   if (loading) {
     return 'Loading services...';
   }
@@ -14,6 +23,14 @@ const ServicesDropdown = ({ _ref, loading, data, error, defaultValue }) => {
   const defaultService = defaultValue
     ? `${defaultValue.name}:${defaultValue.port}`
     : null;
+
+  const getServices = () => {
+    if (serviceName) {
+      return data.services.filter(s => s.name === serviceName);
+    }
+    return data.services;
+  };
+
   return (
     <FormItem>
       <FormLabel htmlFor="service">Service</FormLabel>
@@ -23,7 +40,7 @@ const ServicesDropdown = ({ _ref, loading, data, error, defaultValue }) => {
         role="select"
         defaultValue={defaultService}
       >
-        {data.services.map(service =>
+        {getServices().map(service =>
           service.ports.map(port => (
             <option
               aria-label="option"
@@ -37,6 +54,15 @@ const ServicesDropdown = ({ _ref, loading, data, error, defaultValue }) => {
       </FormSelect>
     </FormItem>
   );
+};
+
+ServicesDropdown.propTypes = {
+  _ref: CustomPropTypes.ref,
+  loading: PropTypes.bool.isRequired,
+  data: PropTypes.object.isRequired,
+  error: PropTypes.object,
+  defaultValue: PropTypes.object,
+  serviceName: PropTypes.string,
 };
 
 export default ServicesDropdown;
