@@ -5,7 +5,7 @@ export const BUTTONS = {
 
 export const ERRORS = {
   SERVER: 'Server error. Contact your cluster admin.',
-  RESOURCES_NOT_FOUND: 'This lambda doesn't have any related resources yet.',
+  RESOURCES_NOT_FOUND: "This lambda doesn't have any related resources yet.",
   NOT_MATCHING_SEARCH_QUERY: "Couldn't find resources matching this query.",
   NOT_MATCHING_FILTERS: "Couldn't find resources matching these filters.",
 };
