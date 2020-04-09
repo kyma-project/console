@@ -30,6 +30,7 @@ const serviceInstance1 = {
             'a2257daa-0e26-4c61-a68d-8a7453c1b767-markdown-files-markdown-1bh3139cq9rss',
           parameters: {},
           type: 'markdown',
+          displayName: 'something',
           files: [
             {
               url: 'https://example.com/docs.yaml',
@@ -173,6 +174,7 @@ const serviceInstance2 = {
             'faebbe18-0a84-11e9-ab14-d663bd873d94-asyncapi-asyncapi-1bh3139eumhm1',
           parameters: {},
           type: 'asyncapi',
+          displayName: 'testing 1',
           files: [
             {
               url:
@@ -188,6 +190,7 @@ const serviceInstance2 = {
             'faebbe18-0a84-11e9-ab14-d663bd873d94-docs-markdown-1bh3139elqg75',
           parameters: {},
           type: 'markdown',
+          displayName: 'testing 2',
           files: [
             {
               url:
@@ -245,6 +248,7 @@ const serviceInstance2 = {
             'faebbe18-0a84-11e9-ab14-d663bd873d94-openapi-openapi-1bh3139gtjqs4',
           parameters: {},
           type: 'openapi',
+          displayName: 'testing 3',
           files: [
             {
               url:
@@ -319,6 +323,7 @@ const serviceInstance3 = {
             'faebbe18-0a84-11e9-ab14-d663bd873d94-asyncapi-asyncapi-1bh3139eumhm1',
           parameters: {},
           type: 'asyncapi',
+          displayName: 'testing a',
           files: [
             {
               url:
@@ -334,6 +339,7 @@ const serviceInstance3 = {
             'faebbe18-0a84-11e9-ab14-d663bd873d94-docs-markdown-1bh3139elqg75',
           parameters: {},
           type: 'markdown',
+          displayName: 'testing b',
           files: [
             {
               url:
@@ -391,6 +397,7 @@ const serviceInstance3 = {
             'faebbe18-0a84-11e9-ab14-d663bd873d94-openapi-openapi-1bh3139gtjqs4',
           parameters: {},
           type: 'openapi',
+          displayName: 'testing c',
           files: [
             {
               url:
