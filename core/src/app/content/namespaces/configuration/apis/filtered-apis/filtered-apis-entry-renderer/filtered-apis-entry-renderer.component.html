@@ -5,17 +5,17 @@
         </a>
     </td>
     <td>
-        {{entry.service.host}}
+        {{ entry.service.host }}
     </td>
     <td>
-        {{entry.service.port}}
+        {{ entry.service.port }}
     </td>
     <td>
         <span fd-badge [status]="statusBadgeType" (mouseover)="showStatusDescription=true" (mouseout)="showStatusDescription=false">
-            {{entry.status.apiRuleStatus.code}}
+            {{ entry.status.apiRuleStatus.code }}
         </span>
         <app-tooltip position="left" width="300px" *ngIf="showStatusTooltip">
-            {{entry.status.apiRuleStatus.desc}}
+            {{ entry.status.apiRuleStatus.desc }}
         </app-tooltip>
     </td>
     <td class="fd-has-float-right">
