@@ -35,16 +35,24 @@ const getNonMarkdown = (allSources: Source[]) =>
     (s: Source) => !markdownDefinition.possibleTypes.includes(s.type),
   );
 
+function silentRedirect(params) {
+  const NODE_PARAM_PREFIX = `~`;
+  // const url = URL(window.location);
+  console.log(window.top.location);
+}
+
 export const GroupRenderer: React.FunctionComponent<GroupRendererProps> = ({
   sources,
   additionalTabs,
   currentApiState,
 }) => {
+  console.log('render');
   const [currentApi, setCurrentApi] = currentApiState;
   const nonMarkdownSources = getNonMarkdown(sources);
 
   useEffect(() => {
     if (currentApi) return;
+
     const apiNameFromURL = unescape(luigiClient.getNodeParams().selectedApi);
     if (apiNameFromURL) {
       const matchedSource = sources.find(
@@ -62,32 +70,40 @@ export const GroupRenderer: React.FunctionComponent<GroupRendererProps> = ({
   }, [currentApi, sources]);
 
   useEffect(() => {
-    if (!currentApi || !currentApi.data || !currentApi.data.displayName) return;
-    const currentParams = luigiClient.getNodeParams();
-
-    if (currentParams.selectedTab !== 'apis') {
-      if (!currentParams.selectedApi) {
-        return;
-      }
-      return luigiClient
-        .linkManager()
-        .withParams({ selectedTab: currentParams.selectedTab })
-        .navigate('');
-    }
-    if (
-      currentParams.selectedApi &&
-      currentApi.data.displayName === unescape(currentParams.selectedApi)
-    ) {
-      return;
-    }
-    luigiClient
-      .linkManager()
-      .withParams({
-        ...currentParams,
-        selectedApi: currentApi.data && currentApi.data.displayName,
-      })
-      .navigate('');
+    if (!currentApi || !currentApi.data) return;
+    luigiClient.sendCustomMessage({
+      id: 'console.silentNavigate',
+      newParams: { selectedApi: currentApi.data.displayName },
+    });
   }, [currentApi]);
+
+  // useEffect(() => {
+  //   if (!currentApi || !currentApi.data || !currentApi.data.displayName) return;
+  //   const currentParams = luigiClient.getNodeParams();
+
+  //   if (currentParams.selectedTab !== 'apis') {
+  //     if (!currentParams.selectedApi) {
+  //       return;
+  //     }
+  //     return luigiClient
+  //       .linkManager()
+  //       .withParams({ selectedTab: currentParams.selectedTab })
+  //       .navigate('');
+  //   }
+  //   if (
+  //     currentParams.selectedApi &&
+  //     currentApi.data.displayName === unescape(currentParams.selectedApi)
+  //   ) {
+  //     return;
+  //   }
+  //   luigiClient
+  //     .linkManager()
+  //     .withParams({
+  //       ...currentParams,
+  //       selectedApi: currentApi.data && currentApi.data.displayName,
+  //     })
+  //     .navigate('');
+  // }, [currentApi]);
 
   if (
     (!sources || !sources.length) &&
