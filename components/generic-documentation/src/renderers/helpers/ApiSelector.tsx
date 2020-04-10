@@ -8,16 +8,6 @@ import {
 } from '../../constants';
 import { Source } from '@kyma-project/documentation-component';
 
-function sortByType(source1: Source, source2: Source): number {
-  return (
-    source1.type.localeCompare(source2.type) ||
-    (source1.data &&
-      source2.data &&
-      source1.data.displayName.localeCompare(source2.data.displayName)) ||
-    source1.rawContent.localeCompare(source2.rawContent)
-  );
-}
-
 const BadgeForType: React.FunctionComponent<{ type: string }> = ({ type }) => {
   let badgeType: 'success' | 'warning' | 'error' | undefined;
 
@@ -42,9 +32,10 @@ const ApiSelector: React.FunctionComponent<{
   selectedApi: Source;
 }> = ({ sources, onApiSelect, selectedApi }) => {
   const [searchText, setSearchText] = useState('');
-  const sortedSources = sources
-    .filter((s: Source) => s.type.includes(searchText))
-    .sort(sortByType);
+
+  const filteredSources = sources.filter((s: Source) =>
+    s.type.includes(searchText),
+  );
 
   function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
     setSearchText(e.target.value);
@@ -60,7 +51,7 @@ const ApiSelector: React.FunctionComponent<{
       }}
       menu={
         <List>
-          {sortedSources.map((s: Source, id) => (
+          {filteredSources.map((s: Source, id) => (
             <a
               aria-label="api-"
               href="#"

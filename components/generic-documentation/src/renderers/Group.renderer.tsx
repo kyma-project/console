@@ -36,21 +36,31 @@ const getNonMarkdown = (allSources: Source[]) =>
     (s: Source) => !markdownDefinition.possibleTypes.includes(s.type),
   );
 
+function sortByType(source1: Source, source2: Source): number {
+  return (
+    source1.type.localeCompare(source2.type) ||
+    (source1.data &&
+      source2.data &&
+      source1.data.displayName &&
+      source1.data.displayName.localeCompare(source2.data.displayName))
+  );
+}
+
 export const GroupRenderer: React.FunctionComponent<GroupRendererProps> = ({
   sources,
   additionalTabs,
   selectedApiState,
 }) => {
   const [selectedApi, setSelectedApi] = selectedApiState;
-
-  const nonMarkdownSources = getNonMarkdown(sources);
+  const sortedSources = sources.sort(sortByType);
+  const nonMarkdownSources = getNonMarkdown(sortedSources);
 
   useEffect(() => {
     if (selectedApi) return;
 
     const apiNameFromURL = unescape(luigiClient.getNodeParams().selectedApi);
     if (apiNameFromURL) {
-      const matchedSource = sources.find(
+      const matchedSource = sortedSources.find(
         (s: Source) => s.data && s.data.displayName === apiNameFromURL,
       );
       if (matchedSource) {
@@ -63,7 +73,7 @@ export const GroupRenderer: React.FunctionComponent<GroupRendererProps> = ({
       // a "mock" source is loaded at first, before the real data arrives
       setSelectedApi(nonMarkdownSources[0]);
     }
-  }, [selectedApi, sources]);
+  }, [selectedApi, sortedSources]);
 
   useEffect(() => {
     luigiClient.sendCustomMessage({
@@ -102,7 +112,7 @@ export const GroupRenderer: React.FunctionComponent<GroupRendererProps> = ({
   const handleTabInit = (): string =>
     luigiClient.getNodeParams().selectedTab || '';
 
-  const markdownsExists = sources.some(source =>
+  const markdownsExists = sortedSources.some(source =>
     markdownDefinition.possibleTypes.includes(source.type),
   );
 
