@@ -1,11 +1,15 @@
-
 import { saveCurrentLocation, getToken } from './navigation/navigation-helpers';
 import { communication } from './communication';
 import { config } from './config';
 import createAuth from './auth';
-import { navigation, getNavigationData, resolveNavigationNodes } from './navigation/navigation-data-init';
+import {
+  navigation,
+  getNavigationData,
+  resolveNavigationNodes
+} from './navigation/navigation-data-init';
 import { onQuotaExceed } from './luigi-event-handlers';
 
+export const NODE_PARAM_PREFIX = `~`;
 
 (function getFreshKeys() {
   // manually re-fetching keys, since this is a major pain point
@@ -19,7 +23,7 @@ import { onQuotaExceed } from './luigi-event-handlers';
     communication,
     navigation,
     routing: {
-      nodeParamPrefix: '~',
+      nodeParamPrefix: NODE_PARAM_PREFIX,
       skipRoutingForUrlPatterns: [/access_token=/, /id_token=/]
     },
     settings: {
@@ -31,9 +35,7 @@ import { onQuotaExceed } from './luigi-event-handlers';
             ? config.headerLogoUrl
             : '/assets/logo.svg';
         const title = config ? config.headerTitle : undefined;
-        const favicon = config
-          ? config.faviconUrl
-          : undefined;
+        const favicon = config ? config.faviconUrl : undefined;
         return {
           logo,
           title,
@@ -46,16 +48,14 @@ import { onQuotaExceed } from './luigi-event-handlers';
     },
     lifecycleHooks: {
       luigiAfterInit: () => {
-        const token = getToken()
+        const token = getToken();
         if (token) {
-          getNavigationData().then(
-            response => {
-              resolveNavigationNodes(response[0]);
-              luigiConfig.settings.sideNavFooterText = response[1];
-              Luigi.configChanged('settings');
-              Luigi.ux().hideAppLoadingIndicator();
-            }
-          )
+          getNavigationData().then(response => {
+            resolveNavigationNodes(response[0]);
+            luigiConfig.settings.sideNavFooterText = response[1];
+            Luigi.configChanged('settings');
+            Luigi.ux().hideAppLoadingIndicator();
+          });
         } else {
           saveCurrentLocation();
         }

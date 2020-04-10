@@ -1,5 +1,6 @@
 import { relogin, getToken } from './navigation/navigation-helpers';
-const NODE_PARAM_PREFIX = `~`;
+import { NODE_PARAM_PREFIX } from './luigi-config';
+
 export const communication = {
   customMessagesListeners: {
     'console.refreshNavigation': () => {
@@ -11,16 +12,8 @@ export const communication = {
       }
     },
     'console.silentNavigate': ({ newParams }) => {
-      const { search, pathname } = new URL(window.location.href);
-
-      let currentParams = {};
-      search
-        .replace('?', '') // "~a=b&~c=d"
-        .split('&') // ["~a=b","~a=b"]
-        .forEach(p => {
-          const [key, val] = p.replace(NODE_PARAM_PREFIX, '').split('=');
-          if (key) currentParams[key] = val;
-        });
+      const { search: paramsString, pathname } = new URL(window.location.href);
+      const currentParams = convertToObject(paramsString);
 
       // remove params explicitly marked for removal
       Object.keys(newParams).forEach(key => {
@@ -30,19 +23,35 @@ export const communication = {
         }
       });
 
-      const newParamsString = converToURLsearch({
+      const newParamsString = convertToURLsearch({
         ...currentParams,
         ...newParams
       });
 
-      window.history.replaceState(null, 'sdgsdg', pathname + newParamsString);
+      window.history.replaceState(
+        null,
+        window.document.title,
+        pathname + newParamsString
+      );
     }
   }
 };
 
-const converToURLsearch = params => {
+const convertToURLsearch = params => {
   const a = Object.keys(params).map(
     k => NODE_PARAM_PREFIX + k + '=' + params[k]
   );
   return '?' + a.join('&');
+};
+
+const convertToObject = paramsString => {
+  let result = {};
+  paramsString
+    .replace('?', '')
+    .split('&')
+    .forEach(p => {
+      const [key, val] = p.replace(NODE_PARAM_PREFIX, '').split('=');
+      if (key) result[key] = val;
+    });
+  return result;
 };
