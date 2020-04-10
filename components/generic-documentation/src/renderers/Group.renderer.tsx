@@ -26,10 +26,8 @@ export enum TabsLabels {
 }
 
 export interface GroupRendererProps extends GroupRendererComponent {
-  externalState: {
-    selectedApiState: [Source, (s: Source) => void];
-    selectedTabState: [string, (s: string) => void];
-  };
+  selectedApiState: [Source, (s: Source) => void];
+
   additionalTabs?: TabProps[];
 }
 
@@ -41,10 +39,9 @@ const getNonMarkdown = (allSources: Source[]) =>
 export const GroupRenderer: React.FunctionComponent<GroupRendererProps> = ({
   sources,
   additionalTabs,
-  externalState,
+  selectedApiState,
 }) => {
-  const [selectedApi, setSelectedApi] = externalState.selectedApiState;
-  const [selectedTab, setSelectedTab] = externalState.selectedTabState;
+  const [selectedApi, setSelectedApi] = selectedApiState;
 
   const nonMarkdownSources = getNonMarkdown(sources);
 
@@ -80,15 +77,6 @@ export const GroupRenderer: React.FunctionComponent<GroupRendererProps> = ({
     });
   }, [selectedApi]);
 
-  useEffect(() => {
-    luigiClient.sendCustomMessage({
-      id: 'console.silentNavigate',
-      newParams: {
-        selectedTab: selectedTab || undefined,
-      },
-    });
-  }, [selectedTab]);
-
   const apiTabHeader = (
     <ApiTabHeader>
       <span>API</span>
@@ -100,9 +88,19 @@ export const GroupRenderer: React.FunctionComponent<GroupRendererProps> = ({
     </ApiTabHeader>
   );
 
-  const handleTabChange = (tabId: string): void => {
-    setSelectedTab(tabId);
+  const handleTabChange = (id: string): void => {
+    try {
+      luigiClient
+        .linkManager()
+        .withParams({ selectedTab: id })
+        .navigate('');
+    } catch (e) {
+      console.error(e);
+    }
   };
+
+  const handleTabInit = (): string =>
+    luigiClient.getNodeParams().selectedTab || '';
 
   const markdownsExists = sources.some(source =>
     markdownDefinition.possibleTypes.includes(source.type),
@@ -118,7 +116,7 @@ export const GroupRenderer: React.FunctionComponent<GroupRendererProps> = ({
 
   return (
     <Tabs
-      active={selectedTab}
+      onInit={handleTabInit}
       onChangeTab={{
         func: handleTabChange,
         preventDefault: true,

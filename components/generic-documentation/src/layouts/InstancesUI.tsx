@@ -6,7 +6,6 @@ import {
 } from '@kyma-project/documentation-component';
 import { GroupRenderer } from '../renderers';
 import { InstancesUIWrapper } from './styled';
-import { luigiClient } from '@kyma-project/common';
 
 export interface InstancesUILayoutProps {
   renderers: Renderers;
@@ -15,13 +14,10 @@ export interface InstancesUILayoutProps {
 export const InstancesUILayout: React.FunctionComponent<
   InstancesUILayoutProps
 > = ({ renderers }) => {
-  const externalState = {
-    selectedApiState: useState<Source | undefined>(),
-    selectedTabState: useState<string>(luigiClient.getNodeParams().selectedTab),
-  };
+  const selectedApiState = useState<Source | undefined>();
 
   renderers.group = (otherProps: any) => (
-    <GroupRenderer {...otherProps} externalState={externalState} />
+    <GroupRenderer {...otherProps} selectedApiState={selectedApiState} />
   );
 
   return (
