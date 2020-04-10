@@ -26,15 +26,14 @@ test('Namespaces view is rendered', async t => {
   await t.useRole(adminUser);
 
   //THEN
-  await retry(t, findActiveFrame, 3);
-  const testFrame = async t => {
-    return await t
+  await retry(t, 3, findActiveFrame);
+  await retry(t, 3, t => {
+    return t
       .expect(Selector('.fd-button').withText('Add new namespace').exists)
       .ok()
       .expect(Selector('.fd-panel__title').withText('default').exists)
       .ok();
-  };
-  await retry(t, testFrame, 3);
+  });
 });
 
 testIf(
@@ -50,13 +49,12 @@ testIf(
       .click(applicationLink);
 
     //THEN
-    await retry(t, findActiveFrame, 3);
-    const testFrame = async t => {
-      return await t
+    await retry(t, 3, findActiveFrame);
+    await retry(t, 3, t => {
+      return t
         .expect(Selector('button').withText(/.*create application.*/i).exists)
         .ok();
-    };
-    await retry(t, testFrame, 3);
+    });
   },
 );
 
@@ -69,24 +67,22 @@ testIf(
     const catalogLink = leftNavLinkSelector('Catalog');
 
     //WHEN
-    await retry(t, findActiveFrame, 3);
-    const goToCatalog = async t => {
-      return await t
+    await retry(t, 3, findActiveFrame);
+    await retry(t, 3, t => {
+      return t
         .click(Selector('.fd-panel__title').withText('default'))
         .switchToMainWindow()
         .click(catalogLink);
-    };
-    await retry(t, goToCatalog, 3);
+    });
 
     //THEN
-    await retry(t, findActiveFrame, 3);
-    const testFrame = async t => {
-      return await t
+    await retry(t, 3, findActiveFrame);
+    await retry(t, 3, t => {
+      return t
         .expect(
           Selector('.fd-action-bar__title').withText('Service Catalog').exists,
         )
         .ok();
-    };
-    await retry(t, testFrame, 3);
+    });
   },
 );
