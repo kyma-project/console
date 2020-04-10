@@ -12,15 +12,23 @@ export const communication = {
     },
     'console.silentNavigate': ({ newParams }) => {
       const { search, pathname } = new URL(window.location.href);
-      console.log(newParams);
+
       let currentParams = {};
       search
         .replace('?', '') // "~a=b&~c=d"
         .split('&') // ["~a=b","~a=b"]
         .forEach(p => {
           const [key, val] = p.replace(NODE_PARAM_PREFIX, '').split('=');
-          currentParams[key] = val;
+          if (key) currentParams[key] = val;
         });
+
+      // remove params explicitly marked for removal
+      Object.keys(newParams).forEach(key => {
+        if (newParams[key] === undefined) {
+          delete currentParams[key];
+          delete newParams[key];
+        }
+      });
 
       const newParamsString = converToURLsearch({
         ...currentParams,

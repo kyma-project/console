@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StickyContainer, Sticky } from 'react-sticky';
 import {
   Source,
@@ -26,7 +26,10 @@ export enum TabsLabels {
 }
 
 export interface GroupRendererProps extends GroupRendererComponent {
-  currentApiState: [Source, (s: Source) => void];
+  externalState: {
+    currentApiState: [Source, (s: Source) => void];
+    currentTabState: [string, (s: string) => void];
+  };
   additionalTabs?: TabProps[];
 }
 
@@ -35,19 +38,14 @@ const getNonMarkdown = (allSources: Source[]) =>
     (s: Source) => !markdownDefinition.possibleTypes.includes(s.type),
   );
 
-function silentRedirect(params) {
-  const NODE_PARAM_PREFIX = `~`;
-  // const url = URL(window.location);
-  console.log(window.top.location);
-}
-
 export const GroupRenderer: React.FunctionComponent<GroupRendererProps> = ({
   sources,
   additionalTabs,
-  currentApiState,
+  externalState,
 }) => {
-  console.log('render');
-  const [currentApi, setCurrentApi] = currentApiState;
+  const [currentApi, setCurrentApi] = externalState.currentApiState;
+  const [currentTab, setCurrentTab] = externalState.currentTabState;
+
   const nonMarkdownSources = getNonMarkdown(sources);
 
   useEffect(() => {
@@ -63,6 +61,7 @@ export const GroupRenderer: React.FunctionComponent<GroupRendererProps> = ({
         return;
       }
     }
+
     if (nonMarkdownSources.length && nonMarkdownSources[0].type !== 'mock') {
       // a "mock" source is loaded at first, before the real data arrives
       setCurrentApi(nonMarkdownSources[0]);
@@ -70,51 +69,29 @@ export const GroupRenderer: React.FunctionComponent<GroupRendererProps> = ({
   }, [currentApi, sources]);
 
   useEffect(() => {
-    if (!currentApi || !currentApi.data) return;
     luigiClient.sendCustomMessage({
       id: 'console.silentNavigate',
-      newParams: { selectedApi: currentApi.data.displayName },
+      newParams: {
+        selectedApi:
+          currentApi && currentApi.data
+            ? currentApi.data.displayName
+            : undefined,
+      },
     });
   }, [currentApi]);
 
-  // useEffect(() => {
-  //   if (!currentApi || !currentApi.data || !currentApi.data.displayName) return;
-  //   const currentParams = luigiClient.getNodeParams();
-
-  //   if (currentParams.selectedTab !== 'apis') {
-  //     if (!currentParams.selectedApi) {
-  //       return;
-  //     }
-  //     return luigiClient
-  //       .linkManager()
-  //       .withParams({ selectedTab: currentParams.selectedTab })
-  //       .navigate('');
-  //   }
-  //   if (
-  //     currentParams.selectedApi &&
-  //     currentApi.data.displayName === unescape(currentParams.selectedApi)
-  //   ) {
-  //     return;
-  //   }
-  //   luigiClient
-  //     .linkManager()
-  //     .withParams({
-  //       ...currentParams,
-  //       selectedApi: currentApi.data && currentApi.data.displayName,
-  //     })
-  //     .navigate('');
-  // }, [currentApi]);
-
-  if (
-    (!sources || !sources.length) &&
-    (!additionalTabs || !additionalTabs.length)
-  ) {
-    return null;
-  }
+  useEffect(() => {
+    luigiClient.sendCustomMessage({
+      id: 'console.silentNavigate',
+      newParams: {
+        selectedTab: currentTab || undefined,
+      },
+    });
+  }, [currentTab]);
 
   const apiTabHeader = (
     <ApiTabHeader>
-      <span>Displayed API:</span>
+      <span>API</span>
       <ApiSelector
         onApiSelect={setCurrentApi}
         sources={nonMarkdownSources}
@@ -123,19 +100,9 @@ export const GroupRenderer: React.FunctionComponent<GroupRendererProps> = ({
     </ApiTabHeader>
   );
 
-  const onChangeTab = (id: string): void => {
-    try {
-      luigiClient
-        .linkManager()
-        .withParams({ selectedTab: id })
-        .navigate('');
-    } catch (e) {
-      console.error(e);
-    }
+  const handleTabChange = (tabId: string): void => {
+    setCurrentTab(tabId);
   };
-
-  const onInitTabs = (): string =>
-    luigiClient.getNodeParams().selectedTab || '';
 
   const markdownsExists = sources.some(source =>
     markdownDefinition.possibleTypes.includes(source.type),
@@ -151,9 +118,9 @@ export const GroupRenderer: React.FunctionComponent<GroupRendererProps> = ({
 
   return (
     <Tabs
-      onInit={onInitTabs}
+      active={currentTab}
       onChangeTab={{
-        func: onChangeTab,
+        func: handleTabChange,
         preventDefault: true,
       }}
     >

@@ -6,6 +6,7 @@ import {
 } from '@kyma-project/documentation-component';
 import { GroupRenderer } from '../renderers';
 import { CatalogUIWrapper } from './styled';
+import { luigiClient } from '@kyma-project/common';
 
 export interface CatalogUILayoutProps {
   renderers: Renderers;
@@ -16,12 +17,15 @@ export const CatalogUILayout: React.FunctionComponent<CatalogUILayoutProps> = ({
   renderers,
   additionalTabs,
 }) => {
-  const currentApiState = useState<Source | undefined>();
+  const externalState = {
+    currentApiState: useState<Source | undefined>(),
+    currentTabState: useState<string>(luigiClient.getNodeParams().selectedTab),
+  };
 
   renderers.group = (otherProps: any) => (
     <GroupRenderer
       {...otherProps}
-      currentApiState={currentApiState}
+      externalState={externalState}
       additionalTabs={additionalTabs}
     />
   );
