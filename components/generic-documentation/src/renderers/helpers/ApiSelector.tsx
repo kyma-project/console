@@ -33,8 +33,12 @@ const ApiSelector: React.FunctionComponent<{
 }> = ({ sources, onApiSelect, selectedApi }) => {
   const [searchText, setSearchText] = useState('');
 
-  const filteredSources = sources.filter((s: Source) =>
-    s.type.includes(searchText),
+  const filteredSources = sources.filter(
+    (s: Source) =>
+      (s.data &&
+        s.data.displayName &&
+        s.data.displayName.includes(searchText)) ||
+      s.type.includes(searchText),
   );
 
   function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
