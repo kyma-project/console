@@ -88,18 +88,6 @@ const ApiDetails = ({ apiId, eventApiId, applicationId, apiPackageId }) => {
   const api =
     data.application.package[apiId ? 'apiDefinition' : 'eventDefinition'];
 
-  let specToShow = api.spec.data;
-
-  if (eventApiId) {
-    try {
-      const parsedSpec = JSON.parse(specToShow);
-      if (parsedSpec.asyncapi && parsedSpec.asyncapi.startsWith('1.')) {
-        specToShow = convert(specToShow, '2.0.0');
-      }
-    } catch (e) {
-      console.error('Error parsing async api spec', e);
-    }
-  }
   if (!api) {
     const resourceType = apiId ? 'API Definition' : 'Event Definition';
     return (
@@ -110,6 +98,19 @@ const ApiDetails = ({ apiId, eventApiId, applicationId, apiPackageId }) => {
         navigationContext="application"
       />
     );
+  }
+
+  let specToShow = api.spec ? api.spec.data : undefined;
+
+  if (eventApiId && specToShow) {
+    try {
+      const parsedSpec = JSON.parse(specToShow);
+      if (parsedSpec.asyncapi && parsedSpec.asyncapi.startsWith('1.')) {
+        specToShow = convert(specToShow, '2.0.0');
+      }
+    } catch (e) {
+      console.error('Error parsing async api spec', e);
+    }
   }
 
   return (
