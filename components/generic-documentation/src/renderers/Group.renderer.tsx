@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { StickyContainer, Sticky } from 'react-sticky';
 import {
   Source,
@@ -27,8 +27,8 @@ export enum TabsLabels {
 
 export interface GroupRendererProps extends GroupRendererComponent {
   externalState: {
-    currentApiState: [Source, (s: Source) => void];
-    currentTabState: [string, (s: string) => void];
+    selectedApiState: [Source, (s: Source) => void];
+    selectedTabState: [string, (s: string) => void];
   };
   additionalTabs?: TabProps[];
 }
@@ -43,13 +43,13 @@ export const GroupRenderer: React.FunctionComponent<GroupRendererProps> = ({
   additionalTabs,
   externalState,
 }) => {
-  const [currentApi, setCurrentApi] = externalState.currentApiState;
-  const [currentTab, setCurrentTab] = externalState.currentTabState;
+  const [selectedApi, setSelectedApi] = externalState.selectedApiState;
+  const [selectedTab, setSelectedTab] = externalState.selectedTabState;
 
   const nonMarkdownSources = getNonMarkdown(sources);
 
   useEffect(() => {
-    if (currentApi) return;
+    if (selectedApi) return;
 
     const apiNameFromURL = unescape(luigiClient.getNodeParams().selectedApi);
     if (apiNameFromURL) {
@@ -57,51 +57,51 @@ export const GroupRenderer: React.FunctionComponent<GroupRendererProps> = ({
         (s: Source) => s.data && s.data.displayName === apiNameFromURL,
       );
       if (matchedSource) {
-        setCurrentApi(matchedSource);
+        setSelectedApi(matchedSource);
         return;
       }
     }
 
     if (nonMarkdownSources.length && nonMarkdownSources[0].type !== 'mock') {
       // a "mock" source is loaded at first, before the real data arrives
-      setCurrentApi(nonMarkdownSources[0]);
+      setSelectedApi(nonMarkdownSources[0]);
     }
-  }, [currentApi, sources]);
+  }, [selectedApi, sources]);
 
   useEffect(() => {
     luigiClient.sendCustomMessage({
       id: 'console.silentNavigate',
       newParams: {
         selectedApi:
-          currentApi && currentApi.data
-            ? currentApi.data.displayName
+          selectedApi && selectedApi.data
+            ? selectedApi.data.displayName
             : undefined,
       },
     });
-  }, [currentApi]);
+  }, [selectedApi]);
 
   useEffect(() => {
     luigiClient.sendCustomMessage({
       id: 'console.silentNavigate',
       newParams: {
-        selectedTab: currentTab || undefined,
+        selectedTab: selectedTab || undefined,
       },
     });
-  }, [currentTab]);
+  }, [selectedTab]);
 
   const apiTabHeader = (
     <ApiTabHeader>
       <span>API</span>
       <ApiSelector
-        onApiSelect={setCurrentApi}
+        onApiSelect={setSelectedApi}
         sources={nonMarkdownSources}
-        selectedApi={currentApi}
+        selectedApi={selectedApi}
       />
     </ApiTabHeader>
   );
 
   const handleTabChange = (tabId: string): void => {
-    setCurrentTab(tabId);
+    setSelectedTab(tabId);
   };
 
   const markdownsExists = sources.some(source =>
@@ -118,7 +118,7 @@ export const GroupRenderer: React.FunctionComponent<GroupRendererProps> = ({
 
   return (
     <Tabs
-      active={currentTab}
+      active={selectedTab}
       onChangeTab={{
         func: handleTabChange,
         preventDefault: true,
@@ -152,7 +152,7 @@ export const GroupRenderer: React.FunctionComponent<GroupRendererProps> = ({
       )}
       {!!nonMarkdownSources.length && (
         <Tab label={apiTabHeader} id="apis">
-          {currentApi && <SingleAPIcontent source={currentApi} />}
+          {selectedApi && <SingleAPIcontent source={selectedApi} />}
         </Tab>
       )}
       {additionalTabsFragment}

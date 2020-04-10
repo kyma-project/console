@@ -16,8 +16,8 @@ export const InstancesUILayout: React.FunctionComponent<
   InstancesUILayoutProps
 > = ({ renderers }) => {
   const externalState = {
-    currentApiState: useState<Source | undefined>(),
-    currentTabState: useState<string>(luigiClient.getNodeParams().selectedTab),
+    selectedApiState: useState<Source | undefined>(),
+    selectedTabState: useState<string>(luigiClient.getNodeParams().selectedTab),
   };
 
   renderers.group = (otherProps: any) => (

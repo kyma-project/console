@@ -18,8 +18,8 @@ export const CatalogUILayout: React.FunctionComponent<CatalogUILayoutProps> = ({
   additionalTabs,
 }) => {
   const externalState = {
-    currentApiState: useState<Source | undefined>(),
-    currentTabState: useState<string>(luigiClient.getNodeParams().selectedTab),
+    selectedApiState: useState<Source | undefined>(),
+    selectedTabState: useState<string>(luigiClient.getNodeParams().selectedTab),
   };
 
   renderers.group = (otherProps: any) => (
