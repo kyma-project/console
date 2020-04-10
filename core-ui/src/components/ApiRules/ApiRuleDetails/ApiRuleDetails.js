@@ -101,6 +101,11 @@ function ApiRuleDetailsHeader({ data }) {
     </a>
   );
 
+  const navigateToService = () =>
+    LuigiClient.linkManager()
+      .fromContext('namespaces')
+      .navigate(`services/details/${data.service.name}`);
+
   return (
     <PageHeader
       title={data.name}
@@ -113,7 +118,10 @@ function ApiRuleDetailsHeader({ data }) {
       }
     >
       <PageHeader.Column title="Service">
-        {`${data.service.name} (port: ${data.service.port})`}
+        <span class="link" onClick={navigateToService}>
+          {data.service.name}
+        </span>
+        {` (port: ${data.service.port})`}
       </PageHeader.Column>
       <PageHeader.Column title="Host" columnSpan="2 / 4">
         <CopiableText textToCopy={host} caption={hostCaption} />
