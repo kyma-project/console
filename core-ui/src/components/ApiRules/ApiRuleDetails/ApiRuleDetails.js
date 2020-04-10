@@ -119,9 +119,8 @@ function ApiRuleDetailsHeader({ data }) {
     >
       <PageHeader.Column title="Service">
         <span className="link" onClick={navigateToService}>
-          {data.service.name}
+          {`${data.service.name} (port: ${data.service.port})`}
         </span>
-        {` (port: ${data.service.port})`}
       </PageHeader.Column>
       <PageHeader.Column title="Host" columnSpan="2 / 4">
         <CopiableText textToCopy={host} caption={hostCaption} />
