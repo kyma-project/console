@@ -62,8 +62,7 @@ export const EVENT_TRIGGERS_PANEL = {
   LIST: {
     TITLE: 'Event Triggers',
     ERRORS: {
-      RESOURCES_NOT_FOUND:
-        "This lambda doesn't have any Event Triggers yet.",
+      RESOURCES_NOT_FOUND: "This lambda doesn't have any Event Triggers yet.",
       NOT_MATCHING_SEARCH_QUERY:
         "Couldn't find Event Triggers matching this query.",
     },
@@ -86,8 +85,7 @@ export const SERVICE_BINDINGS_PANEL = {
   LIST: {
     TITLE: 'Service Bindings',
     ERRORS: {
-      RESOURCES_NOT_FOUND:
-        "This lambda doesn't have any Service Bindings yet.",
+      RESOURCES_NOT_FOUND: "This lambda doesn't have any Service Bindings yet.",
       NOT_MATCHING_SEARCH_QUERY:
         "Couldn't find Service Bindings matching this query.",
     },
