@@ -3,7 +3,6 @@ import {
   InMemoryCache,
   IntrospectionFragmentMatcher,
 } from 'apollo-cache-inmemory';
-import { HttpLink } from 'apollo-link-http';
 import { onError } from 'apollo-link-error';
 import { ApolloLink } from 'apollo-link';
 import { split } from 'apollo-link';
@@ -11,6 +10,8 @@ import { getMainDefinition } from 'apollo-utilities';
 import { getApiUrl as getURL } from '@kyma-project/common';
 import builder from './commons/builder';
 import { SubscriptionClient } from 'subscriptions-transport-ws';
+import { createHttpLink } from 'apollo-link-http';
+import { setContext } from 'apollo-link-context';
 
 const errorLink = onError(
   ({ operation, response, graphQLErrors, networkError }) => {
@@ -40,21 +41,27 @@ export function createCompassApolloClient() {
   const graphqlApiUrl = getURL('compassApiUrl');
   const tenant = getURL('compassDefaultTenant');
 
-  const headers = {
-    authorization: builder.getBearerToken() || null,
-  };
-
-  if (tenant && tenant !== '') {
-    headers.tenant = tenant;
-  }
-
-  const httpLink = new HttpLink({
+  const httpLink = createHttpLink({
     uri: graphqlApiUrl,
-    headers,
   });
 
+  const authLink = setContext((_, { headers }) => {
+    const headersVal = {
+      ...headers,
+      authorization: builder.getBearerToken() || null,
+    };
+    if (tenant && tenant !== '') {
+      headersVal.tenant = tenant;
+    }
+    return {
+      headers: headersVal,
+    };
+  });
+  const authHttpLink = authLink.concat(httpLink);
+
   return new ApolloClient({
-    link: ApolloLink.from([errorLink, httpLink]),
+    uri: graphqlApiUrl,
+    link: ApolloLink.from([errorLink, authHttpLink]),
     cache: new InMemoryCache({
       fragmentMatcher,
       dataIdFromObject: object => object.name || null,
@@ -67,12 +74,20 @@ export function createKymaApolloClient() {
     process.env.REACT_APP_LOCAL_API ? 'graphqlApiUrlLocal' : 'graphqlApiUrl',
   );
 
-  const httpLink = new HttpLink({
+  const httpLink = createHttpLink({
     uri: graphqlApiUrl,
-    headers: {
-      authorization: builder.getBearerToken() || null,
-    },
   });
+
+  const authLink = setContext((_, { headers }) => {
+    const headersVal = {
+      ...headers,
+      authorization: builder.getBearerToken() || null,
+    };
+    return {
+      headers: headersVal,
+    };
+  });
+  const authHttpLink = authLink.concat(httpLink);
 
   const wsLink = new WebSocketLink({
     uri: getURL('subscriptionsApiUrl'),
@@ -90,10 +105,11 @@ export function createKymaApolloClient() {
       );
     },
     wsLink,
-    httpLink,
+    authHttpLink,
   );
 
   return new ApolloClient({
+    uri: graphqlApiUrl,
     link: ApolloLink.from([errorLink, link]),
     cache: new InMemoryCache({
       dataIdFromObject: object => object.name || null,
