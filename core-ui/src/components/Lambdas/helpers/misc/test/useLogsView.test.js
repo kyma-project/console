@@ -26,7 +26,7 @@ jest.mock('@kyma-project/luigi-client', () => {
 });
 
 const TestComponent = () => {
-  const [name, setName] = useState('test-name');
+  const [uid, setUid] = useState('test-uid');
   const [namespace, setNamespace] = useState('test-namespace');
   const [tab, setTab] = useState('Configuration');
 
@@ -34,10 +34,7 @@ const TestComponent = () => {
 
   return (
     <div>
-      <button
-        data-testid={nameButtonTestID}
-        onClick={() => setName(`${name}-1`)}
-      >
+      <button data-testid={nameButtonTestID} onClick={() => setUid(`${uid}-1`)}>
         {name}
       </button>
       <button

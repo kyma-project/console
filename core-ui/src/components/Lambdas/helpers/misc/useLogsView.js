@@ -3,15 +3,15 @@ import LuigiClient from '@kyma-project/luigi-client';
 
 const CMF_LOGS_PATH = '/home/cmf-logs';
 
-export const useLogsView = (name, namespace, selectedTabName) => {
+export const useLogsView = (uid, namespace, selectedTabName) => {
   const [logsViewExists, setLogViewExists] = useState(false);
 
   useEffect(() => {
     const linkManager = LuigiClient.linkManager().withParams({
       namespace: namespace,
-      function: name,
+      functionUID: uid,
       compact: 'true',
-      container: '~(step-executor|lambda)',
+      container: '~(executor|lambda)',
     });
 
     checkLogsViewExists(linkManager, setLogViewExists);
@@ -25,7 +25,7 @@ export const useLogsView = (name, namespace, selectedTabName) => {
     return () => {
       !!logsViewHandle && logsViewExists && logsViewHandle.collapse();
     };
-  }, [namespace, name, selectedTabName, logsViewExists]);
+  }, [namespace, uid, selectedTabName, logsViewExists]);
 };
 
 const checkLogsViewExists = async (manager, setViewExists) => {

@@ -56,7 +56,7 @@ export default function LambdaDetails({ lambda, refetchLambda }) {
     setSelectedTabIndex(selectedTabIndex);
   }, [selectedTabName]);
 
-  useLogsView(lambda.name, lambda.namespace, selectedTabName);
+  useLogsView(lambda.UID, lambda.namespace, selectedTabName);
 
   async function updateLambda() {
     if (!formRef.current.checkValidity()) {
