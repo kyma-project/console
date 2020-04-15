@@ -45,16 +45,16 @@ export function createCompassApolloClient() {
     uri: graphqlApiUrl,
   });
 
-  const authLink = setContext((_, { headers }) => {
-    const headersVal = {
-      ...headers,
+  const authLink = setContext((_, { oldHeaders }) => {
+    const newHeaders = {
+      ...oldHeaders,
       authorization: builder.getBearerToken() || null,
     };
     if (tenant && tenant !== '') {
-      headersVal.tenant = tenant;
+      newHeaders.tenant = tenant;
     }
     return {
-      headers: headersVal,
+      headers: newHeaders,
     };
   });
   const authHttpLink = authLink.concat(httpLink);
@@ -78,13 +78,13 @@ export function createKymaApolloClient() {
     uri: graphqlApiUrl,
   });
 
-  const authLink = setContext((_, { headers }) => {
-    const headersVal = {
-      ...headers,
+  const authLink = setContext((_, { oldHeaders }) => {
+    const newHeaders = {
+      ...oldHeaders,
       authorization: builder.getBearerToken() || null,
     };
     return {
-      headers: headersVal,
+      headers: newHeaders,
     };
   });
   const authHttpLink = authLink.concat(httpLink);
