@@ -1,6 +1,6 @@
 import React from 'react';
 import Header from './ApplicationDetailsHeader/ApplicationDetailsHeader';
-import ScenariosList from './ApplicationDetailsScenarios/ApplicationDetailsScenarios.container';
+import ScenariosList from './ApplicationDetailsScenarios/ApplicationDetailsScenarios';
 import ApplicationApiPackages from './ApplicationApiPackages/ApplicationApiPackages';
 import PropTypes from 'prop-types';
 import ResourceNotFound from '../../Shared/ResourceNotFound.component';
