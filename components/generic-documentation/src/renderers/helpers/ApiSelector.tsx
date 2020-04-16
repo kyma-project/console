@@ -49,13 +49,15 @@ const ApiSelector: React.FunctionComponent<{
     setSearchText(e.target.value);
   }
 
-  const maxApiNameLength = getApiNameLength(
-    filteredSources.reduce((prev, current) => {
-      return getApiNameLength(current) > getApiNameLength(prev)
-        ? current
-        : prev;
-    }),
-  );
+  const maxApiNameLength = filteredSources.length
+    ? getApiNameLength(
+        filteredSources.reduce((prev, current) => {
+          return getApiNameLength(current) > getApiNameLength(prev)
+            ? current
+            : prev;
+        }),
+      )
+    : 0;
 
   return (
     <Combobox
