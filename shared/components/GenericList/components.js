@@ -79,26 +79,36 @@ const CollapsedRowRenderer = ({
   key,
   entry,
   actions,
-  rowRenderer: { cells, collapseContent, showCollapseControl = true },
+  rowRenderer: {
+    cells,
+    collapseContent,
+    withCollapseControl = true,
+    showCollapseControl = true,
+  },
   actionsStandaloneItems,
 }) => {
   const [isOpen, setOpen] = useState(false);
 
-  const rowRenderer = [
-    showCollapseControl ? (
-      <Button
-        data-testid={isOpen ? 'collapse-button-open' : 'collapse-button-close'}
-        glyph={isOpen ? 'navigation-up-arrow' : 'navigation-down-arrow'}
-        option="light"
-        onClick={() => setOpen(!isOpen)}
-        compact={true}
-        typeAttr="button"
-      />
-    ) : (
-      <></>
-    ),
-    ...cells,
-  ];
+  let rowRenderer = cells;
+  if (withCollapseControl) {
+    rowRenderer = [
+      showCollapseControl ? (
+        <Button
+          data-testid={
+            isOpen ? 'collapse-button-open' : 'collapse-button-close'
+          }
+          glyph={isOpen ? 'navigation-up-arrow' : 'navigation-down-arrow'}
+          option="light"
+          onClick={() => setOpen(!isOpen)}
+          compact={true}
+          typeAttr="button"
+        />
+      ) : (
+        <></>
+      ),
+      ...cells,
+    ];
+  }
 
   const defaultRow = (
     <DefaultRowRenderer
@@ -110,14 +120,19 @@ const CollapsedRowRenderer = ({
     />
   );
 
+  let collapseRow = collapseContent && (
+    <tr role="row" className="collapse-content" data-testid="collapse-content">
+      {collapseContent}
+    </tr>
+  );
+  if (withCollapseControl) {
+    collapseRow = isOpen ? collapseRow : null;
+  }
+
   return (
     <>
       {defaultRow}
-      {isOpen ? (
-        <tr role="row" data-testid="collapse-content">
-          {collapseContent}
-        </tr>
-      ) : null}
+      {collapseRow}
     </>
   );
 };

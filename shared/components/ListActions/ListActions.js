@@ -15,6 +15,7 @@ const StandaloneAction = ({ action, entry }) => {
       option="light"
       glyph={icon}
       aria-label={action.name}
+      typeAttr="button"
     >
       {icon ? '' : action.name}
     </Button>

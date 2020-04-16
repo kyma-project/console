@@ -3,7 +3,7 @@ import LuigiClient from '@kyma-project/luigi-client';
 
 const CMF_LOGS_PATH = '/home/cmf-logs';
 
-export const useLogsView = (uid, namespace, selectedTabName) => {
+export const useLogsView = (uid, namespace) => {
   const [logsViewExists, setLogViewExists] = useState(false);
 
   useEffect(() => {
@@ -17,15 +17,14 @@ export const useLogsView = (uid, namespace, selectedTabName) => {
     checkLogsViewExists(linkManager, setLogViewExists);
 
     let logsViewHandle;
-
     if (logsViewExists) {
-      logsViewHandle = openLogsView(linkManager, selectedTabName);
+      logsViewHandle = openLogsView(linkManager);
     }
 
     return () => {
       !!logsViewHandle && logsViewExists && logsViewHandle.collapse();
     };
-  }, [namespace, uid, selectedTabName, logsViewExists]);
+  }, [namespace, uid, logsViewExists]);
 };
 
 const checkLogsViewExists = async (manager, setViewExists) => {
@@ -38,7 +37,7 @@ const checkLogsViewExists = async (manager, setViewExists) => {
   }
 };
 
-const openLogsView = (manager, tabName) => {
+const openLogsView = manager => {
   const logsViewHandle = manager.openAsSplitView(CMF_LOGS_PATH, {
     title: 'Logs',
     size: 40,

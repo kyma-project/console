@@ -7,6 +7,7 @@ import { useDeleteServiceBindingUsage } from 'components/Lambdas/gql/hooks/mutat
 
 import CreateServiceBindingModal from './CreateServiceBindingModal';
 
+import { retrieveVariablesFromBindingUsage } from 'components/Lambdas/helpers/lambdaVariables';
 import { SERVICE_BINDINGS_PANEL, ERRORS } from 'components/Lambdas/constants';
 
 import './ServiceBindings.scss';
@@ -26,24 +27,6 @@ export default function ServiceBindings({
   serverDataLoading,
 }) {
   const deleteServiceBindingUsage = useDeleteServiceBindingUsage({ lambda });
-
-  const retrieveEnvs = bindingUsage => {
-    let envPrefix = '';
-    if (bindingUsage.parameters && bindingUsage.parameters.envPrefix) {
-      envPrefix = bindingUsage.parameters.envPrefix.name || '';
-    }
-
-    const secretData =
-      bindingUsage.serviceBinding.secret &&
-      bindingUsage.serviceBinding.secret.data;
-
-    const envs = Object.keys(secretData || {});
-    if (!secretData || !envs.length) {
-      return [];
-    }
-
-    return envs.map(env => `${envPrefix}${env}`);
-  };
 
   const renderEnvs = bindingUsage => {
     return (
@@ -89,7 +72,7 @@ export default function ServiceBindings({
 
   const performedBindingUsages = serviceBindingUsages.map(usage => ({
     ...usage,
-    envs: retrieveEnvs(usage),
+    envs: retrieveVariablesFromBindingUsage(usage),
   }));
 
   return (

@@ -24,18 +24,12 @@ export const lambdaMock = {
   },
   env: [
     {
-      name: 'foo',
+      name: 'FOO',
       value: 'bar',
-      valueFrom: {
-        type: 'ConfigMap',
-        name: 'configMap',
-        key: 'KEY',
-        optional: false,
-      },
+      valueFrom: null,
     },
     {
-      name: 'pico',
-      value: 'bello',
+      name: 'PICO',
       valueFrom: {
         type: 'Secret',
         name: 'secret',

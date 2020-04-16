@@ -339,7 +339,7 @@ export const SERVICE_BINDINGS_PANEL = {
 
 export const CODE_AND_DEPENDENCIES_PANEL = {
   TABS: {
-    CODE: 'Lambda Code',
+    CODE: 'Source',
     DEPENDENCIES: 'Dependencies',
   },
   SAVE_BUTTON: {
@@ -347,6 +347,69 @@ export const CODE_AND_DEPENDENCIES_PANEL = {
     POPUP_MESSAGE: 'No changes made',
   },
   DIFF_TOGGLE: 'Diff',
+};
+
+export const ENVIRONMENT_VARIABLES_PANEL = {
+  LIST: {
+    TITLE: 'Environment Variables',
+    ERRORS: {
+      RESOURCES_NOT_FOUND:
+        "This lambda doesn't have any Environment Variables yet.",
+      NOT_MATCHING_SEARCH_QUERY:
+        "Couldn't find Environment Variables matching this query.",
+    },
+  },
+  EDIT_MODAL: {
+    TITLE: 'Edit Environment Variables',
+    OPEN_BUTTON: {
+      TEXT: 'Edit Environment Variables',
+    },
+    CONFIRM_BUTTON: {
+      TEXT: 'Save',
+      POPUP_MESSAGES: {
+        NO_ENVS_DEFINED: 'At least one Variable must be defined.',
+        COLLECTIONS_EQUAL: 'Changes in Variables are required.',
+        ERROR:
+          'At least one Variable is duplicated, has wrong name format or is empty.',
+      },
+    },
+    ADD_ENV_BUTTON: {
+      TEXT: 'Add new Variable',
+    },
+  },
+  ERRORS: {
+    EMPTY: 'Variable is empty.',
+    DUPLICATED: 'Duplicated Variable name.',
+    INVALID:
+      'Invalid Variable name: must consist of alphanumeric characters or "_" and no spaces (for example "VARIABLE_NAME").',
+  },
+  WARNINGS: {
+    TEXT: 'Warning',
+    VARIABLE_CAN_OVERRIDE_SBU:
+      'The Variable can override Variable injected by one of the created Service Bindings.',
+    SBU_CAN_BE_OVERRIDE: {
+      BY_CUSTOM_ENV: 'The Variable can be override by one of custom Variables.',
+      BY_SBU:
+        'The Variable can be override by Variable injected by one of the created Service Bindings.',
+      BY_CUSTOM_ENV_AND_SBU:
+        'The Variable can be override by one of custom Variables or Variable injected by one of the created Service Bindings.',
+    },
+  },
+  PLACEHOLDERS: {
+    VARIABLE_NAME: 'Variable Name',
+    VARIABLE_VALUE: 'Variable Value',
+  },
+  VARIABLE_TYPE: {
+    CUSTOM: {
+      TEXT: 'Custom',
+      TOOLTIP_MESSAGE: 'The Variable is provided by User.',
+    },
+    BINDING_USAGE: {
+      TEXT: 'Service Binding',
+      TOOLTIP_MESSAGE:
+        'The Variable is injected by Service Binding from "{serviceInstanceName}" Service Instance.',
+    },
+  },
 };
 
 export const FIRST_BREADCRUMB_NODE = 'Functions';
