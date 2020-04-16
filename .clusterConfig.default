@@ -9,6 +9,7 @@ REACT_APP_subscriptionsApiUrlLocal="ws://$REACT_APP_localDomain:3000/graphql"
 
 REACT_APP_compassApiUrl="https://compass-gateway.$REACT_APP_domain/director/graphql"
 REACT_APP_compassDefaultTenant="3e64ebae-38b5-46a0-b1ed-9ccee153a0ae"
+REACT_APP_compassAutomaticDefaultScenario=true
 
 REACT_APP_authRedirectUri="http://$REACT_APP_localDomain:4200"
 REACT_APP_consoleClientId="console"

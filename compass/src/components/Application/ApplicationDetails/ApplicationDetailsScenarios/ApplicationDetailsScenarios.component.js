@@ -62,15 +62,12 @@ export default function ApplicationDetailsScenarios({
 
   const rowRenderer = label => [label.scenario];
 
-  const actions =
-    scenarios && scenarios.length === 1
-      ? []
-      : [
-          {
-            name: 'Unassign',
-            handler: unassignScenario,
-          },
-        ];
+  const actions = [
+    {
+      name: 'Unassign',
+      handler: unassignScenario,
+    },
+  ];
 
   const extraHeaderContent = (
     <header>
