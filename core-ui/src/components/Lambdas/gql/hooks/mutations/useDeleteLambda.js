@@ -65,7 +65,7 @@ export const useDeleteLambda = ({ redirect = false }) => {
 
   async function deleteLambda(lambda) {
     if (!lambda) {
-      return;
+      throw Error('lambda is nil');
     }
 
     const title = formatMessage(

@@ -60,7 +60,7 @@ export const useDeleteEventTrigger = ({
 
   async function deleteEventTrigger(eventTrigger) {
     if (!eventTrigger) {
-      return;
+      throw Error('Event Trigger is nil');
     }
 
     const eventTriggerName = processTriggerName(eventTrigger);

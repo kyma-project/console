@@ -4,7 +4,7 @@ import { useNotification } from 'react-shared';
 import { UPDATE_LAMBDA } from 'components/Lambdas/gql/mutations';
 import extractGraphQlErrors from 'shared/graphqlErrorExtractor';
 
-import { formatMessage } from 'components/Lambdas/helpers/misc';
+import { formatMessage, omitTypenames } from 'components/Lambdas/helpers/misc';
 import { GQL_MUTATIONS } from 'components/Lambdas/constants';
 
 export const UPDATE_TYPE = {
@@ -86,8 +86,5 @@ export function prepareUpdateLambdaInput(lambda = {}) {
     env: lambda.env || [],
   };
 
-  // small function for omit __typename (graphql special field) field in nested objects - it breaks mutation
-  const omitTypename = (key, value) =>
-    key === '__typename' ? undefined : value;
-  return JSON.parse(JSON.stringify(preparedLambda), omitTypename);
+  return omitTypenames(preparedLambda);
 }

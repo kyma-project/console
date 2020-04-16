@@ -10,9 +10,6 @@ export default function Editor({
   setValue,
   debouncedCallback = () => void 0,
 }) {
-  // fix it
-  function diffEditorDidMount(getOriginalEditorValue, getModifiedEditorValue) {}
-
   function handleChange(_, value) {
     setValue(value);
     debouncedCallback();
@@ -28,7 +25,6 @@ export default function Editor({
         original={originalValue}
         modified={value}
         onChange={handleChange}
-        editorDidMount={diffEditorDidMount}
       />
     );
   }
