@@ -80,12 +80,27 @@ export class DocsLoader {
     const specification = this.extractSpecification(types);
 
     const newSources = (await Promise.all(
-      specification
-        .map(async file => this.fetchFile(file, types[0]).then(res => res))
-        .filter(s => s),
+      specification.map(async file =>
+        this.fetchFile(file, types[0]).then(res => res),
+      ),
     )) as SourceWithOptions[];
 
-    return newSources;
+    return newSources.map((sourceToCheck, index) => {
+      if (
+        sourceToCheck.source.data &&
+        newSources.findIndex(
+          otherSource =>
+            otherSource.source.data &&
+            sourceToCheck.source.data &&
+            otherSource.source.data.displayName ===
+              sourceToCheck.source.data.displayName,
+        ) !== index
+      ) {
+        // there's a source with the same displayName
+        sourceToCheck.source.data.displayName += ` [${index}]`;
+      }
+      return sourceToCheck;
+    });
   }
 
   private async fetchFile(
