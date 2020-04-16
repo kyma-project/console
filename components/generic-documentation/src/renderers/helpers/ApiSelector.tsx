@@ -76,7 +76,7 @@ const ApiSelector: React.FunctionComponent<{
               href="#"
               onClick={e => onApiSelect(s)}
               className="fd-menu__item"
-              key={s.rawContent}
+              key={(s.data && s.data.displayName) || s.rawContent}
             >
               <ListItem>
                 <BadgeForType type={s.type} />
