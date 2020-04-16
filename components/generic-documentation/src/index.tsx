@@ -111,6 +111,7 @@ export const GenericDocumentation: React.FunctionComponent<
   }, []);
 
   const [sources, setSources] = useState<Sources>(srcs);
+
   useEffect(() => {
     const fetchAssets = async () => {
       if (!assetGroup) {
@@ -119,12 +120,13 @@ export const GenericDocumentation: React.FunctionComponent<
 
       loader.setAssetGroup(assetGroup);
       loader.setSortServiceClassDocumentation(layout !== LayoutType.CONTENT_UI);
+
       await loader.fetchAssets();
 
       setSources(loader.getSources(layout !== LayoutType.CONTENT_UI));
     };
     fetchAssets();
-  }, [assetGroup]);
+  }, [assetGroup, setSources]);
 
   // Allow rendering additionalTabs when no sources is present
   useEffect(() => {
