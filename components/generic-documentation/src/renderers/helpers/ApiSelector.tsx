@@ -41,7 +41,7 @@ const ApiSelector: React.FunctionComponent<{
     (s: Source) =>
       (s.data &&
         s.data.displayName &&
-        s.data.displayName.includes(searchText)) ||
+        s.data.displayName.toUpperCase().includes(searchText.toUpperCase())) ||
       s.type.includes(searchText),
   );
 
