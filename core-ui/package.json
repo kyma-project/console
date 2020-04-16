@@ -11,7 +11,8 @@
     "markdown-it": "^10.0.0",
     "openapi-sampler": "^1.0.0-beta.15",
     "react-ace": "^8.0.0",
-    "xml-js": "^1.6.11"
+    "xml-js": "^1.6.11",
+    "use-debounce": "^3.4.1"
   },
   "scripts": {
     "start": "PORT=8889 ../node_modules/.bin/react-scripts start",
