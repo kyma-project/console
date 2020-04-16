@@ -8,6 +8,10 @@ import {
 } from '../../constants';
 import { Source } from '@kyma-project/documentation-component';
 
+function getApiNameLength(s: Source) {
+  return s.data && s.data.displayName ? s.data.displayName.length : 0;
+}
+
 const BadgeForType: React.FunctionComponent<{ type: string }> = ({ type }) => {
   let badgeType: 'success' | 'warning' | 'error' | undefined;
 
@@ -45,6 +49,14 @@ const ApiSelector: React.FunctionComponent<{
     setSearchText(e.target.value);
   }
 
+  const maxApiNameLength = getApiNameLength(
+    filteredSources.reduce((prev, current) => {
+      return getApiNameLength(current) > getApiNameLength(prev)
+        ? current
+        : prev;
+    }),
+  );
+
   return (
     <Combobox
       onClick={(e: React.MouseEvent<HTMLElement>) => {
@@ -53,6 +65,7 @@ const ApiSelector: React.FunctionComponent<{
           e.stopPropagation(); // avoid closing the dropdown due to the "opening" click ∞
         }
       }}
+      data-max-list-chars={maxApiNameLength}
       menu={
         <List>
           {filteredSources.map((s: Source, id) => (

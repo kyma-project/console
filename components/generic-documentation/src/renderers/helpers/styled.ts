@@ -1,12 +1,15 @@
 import styled from 'styled-components';
 import { ComboboxInput, Menu } from 'fundamental-react';
 
+const typeColumnWidth = '6em';
+const listItemColumnGap = '1em';
+const listItemPadding = '2 * 10px';
 export const ListItem = styled.span`
    {
     justify-items: start;
     display: grid;
-    grid-gap: 1em;
-    grid-template-columns: 6em auto;
+    grid-gap: ${listItemColumnGap};
+    grid-template-columns: ${typeColumnWidth} auto;
   }
 `;
 
@@ -22,7 +25,10 @@ export const ApiTabHeader = styled.div`
 export const Combobox = styled(ComboboxInput)`
    {
     flex-shrink: 0;
-    min-width: 20em;
+    min-width: calc(
+      ${props => props['data-max-list-chars'] + 'ch'} + ${typeColumnWidth} +
+        ${listItemColumnGap} + ${listItemPadding}
+    );
   }
 `;
 
