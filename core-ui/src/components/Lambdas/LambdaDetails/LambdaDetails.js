@@ -10,7 +10,7 @@ import ConfigurationTab from './Tabs/Configuration/Configuration';
 
 export default function LambdaDetails({ lambda }) {
   const [bindingUsages, setBindingUsages] = useState([]);
-  useLogsView(lambda.UID, lambda.namespace, "Code");
+  useLogsView(lambda.UID, lambda.namespace, 'Code');
 
   return (
     <>
