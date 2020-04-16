@@ -4,7 +4,7 @@ import { Button } from 'fundamental-react';
 import { Tooltip } from 'react-shared';
 
 import ModalWithForm from 'components/ModalWithForm/ModalWithForm';
-import CreateEventTriggerForm from 'components/Lambdas/CreateEventTriggerForm/CreateEventTriggerForm';
+import CreateEventTriggerForm from './CreateEventTriggerForm';
 
 import { EVENT_TRIGGERS_PANEL } from 'components/Lambdas/constants';
 

@@ -11,6 +11,15 @@ import { EVENT_TRIGGERS_PANEL, ERRORS } from '../../../../constants';
 
 import CreateEventTriggerModal from './CreateEventTriggerModal';
 
+const headerRenderer = () => [
+  '',
+  'Event',
+  'Version',
+  'Application',
+  'Description',
+];
+const textSearchProperties = ['eventType', 'version', 'source', 'description'];
+
 function EventTriggerSource({ source }) {
   if (!source) {
     return <span>*</span>;
@@ -49,13 +58,6 @@ export default function EventTriggers({
       },
     },
   ];
-  const headerRenderer = () => [
-    '',
-    'Event',
-    'Version',
-    'Application',
-    'Description',
-  ];
   const rowRenderer = eventTrigger => ({
     cells: [
       <span>{eventTrigger.eventType || '*'}</span>,
@@ -73,13 +75,8 @@ export default function EventTriggers({
       </>
     ),
     showCollapseControl: showCollapseControl(eventTrigger.schema),
+    withCollapseControl: true,
   });
-  const textSearchProperties = [
-    'eventType',
-    'version',
-    'source',
-    'description',
-  ];
 
   const createEventTrigger = (
     <CreateEventTriggerModal

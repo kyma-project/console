@@ -11,7 +11,20 @@ import { SERVICE_BINDINGS_PANEL, ERRORS } from 'components/Lambdas/constants';
 
 import './ServiceBindings.scss';
 
-export default function ServiceBindings({ lambda = {}, refetchLambda }) {
+const headerRenderer = () => ['Instance', 'Environment Variable Names'];
+const textSearchProperties = [
+  'serviceBinding.serviceInstanceName',
+  'serviceBinding.secret.data',
+  'parameters.envPrefix.name',
+  'envs',
+];
+
+export default function ServiceBindings({
+  lambda = {},
+  serviceBindingUsages = [],
+  serverDataError,
+  serverDataLoading,
+}) {
   const { deleteServiceBindingUsage } = useServiceBindings();
 
   const retrieveEnvs = bindingUsage => {
@@ -46,11 +59,10 @@ export default function ServiceBindings({ lambda = {}, refetchLambda }) {
     {
       name: 'Delete',
       handler: bindingUsage => {
-        deleteServiceBindingUsage(bindingUsage, refetchLambda);
+        deleteServiceBindingUsage(bindingUsage);
       },
     },
   ];
-  const headerRenderer = () => ['Instance', 'Environment Variable Names'];
   const rowRenderer = bindingUsage => [
     <span
       className="link"
@@ -67,23 +79,18 @@ export default function ServiceBindings({ lambda = {}, refetchLambda }) {
     </span>,
     renderEnvs(bindingUsage),
   ];
-  const textSearchProperties = [
-    'serviceBinding.serviceInstanceName',
-    'serviceBinding.secret.data',
-    'parameters.envPrefix.name',
-    'envs',
-  ];
 
   const createServiceBindingModal = (
-    <CreateServiceBindingModal lambda={lambda} refetchLambda={refetchLambda} />
+    <CreateServiceBindingModal
+      lambda={lambda}
+      serviceBindingUsages={serviceBindingUsages}
+    />
   );
 
-  const performedBindingUsages = (lambda.serviceBindingUsages || []).map(
-    usage => ({
-      ...usage,
-      envs: retrieveEnvs(usage),
-    }),
-  );
+  const performedBindingUsages = serviceBindingUsages.map(usage => ({
+    ...usage,
+    envs: retrieveEnvs(usage),
+  }));
 
   return (
     <GenericList
@@ -96,6 +103,8 @@ export default function ServiceBindings({ lambda = {}, refetchLambda }) {
       entries={performedBindingUsages}
       headerRenderer={headerRenderer}
       rowRenderer={rowRenderer}
+      serverDataError={serverDataError}
+      serverDataLoading={serverDataLoading}
       notFoundMessage={SERVICE_BINDINGS_PANEL.LIST.ERRORS.RESOURCES_NOT_FOUND}
       noSearchResultMessage={
         SERVICE_BINDINGS_PANEL.LIST.ERRORS.NOT_MATCHING_SEARCH_QUERY

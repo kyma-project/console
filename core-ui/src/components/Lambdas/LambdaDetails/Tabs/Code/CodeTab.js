@@ -1,18 +1,11 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
-const CodeTab = ({ codeEditorComponent, dependenciesComponent }) => {
+import CodeAndDependencies from './CodeAndDependencies/CodeAndDependencies';
+
+export default function CodeTab({ lambda }) {
   return (
     <>
-      {codeEditorComponent}
-      {dependenciesComponent}
+      <CodeAndDependencies lambda={lambda} />
     </>
   );
-};
-
-CodeTab.propTypes = {
-  codeEditorComponent: PropTypes.element.isRequired,
-  dependenciesComponent: PropTypes.element.isRequired,
-};
-
-export default CodeTab;
+}

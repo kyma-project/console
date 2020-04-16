@@ -12,7 +12,7 @@ import {
 import { formatMessage } from 'components/Lambdas/helpers/misc';
 import { GQL_QUERIES } from 'components/Lambdas/constants';
 
-import { useEventTriggersQuery, handleEvent } from '../useEventTriggersQuery';
+import { useEventTriggersQuery } from '../useEventTriggersQuery';
 import {
   GET_EVENT_TRIGGERS_ERROR_MOCK,
   GET_EVENT_TRIGGERS_DATA_MOCK,
@@ -97,84 +97,5 @@ describe('useEventTriggersQuery', () => {
     await wait(() => {
       expect(getByText(message)).toBeInTheDocument();
     });
-  });
-});
-
-describe('handleEvent', () => {
-  const prevTriggers = [
-    {
-      name: 'pico',
-      labels: {
-        foo: 'bar',
-      },
-    },
-    {
-      name: 'bello',
-      labels: {
-        foo: 'bar',
-      },
-    },
-    {
-      name: 'epstein',
-      labels: {
-        foo: 'bar',
-      },
-    },
-  ];
-
-  it('Checks "ADD" event handling', () => {
-    const addEvent = {
-      type: 'ADD',
-      trigger: {
-        name: '2137',
-      },
-    };
-
-    const expectedResult = [...prevTriggers, addEvent.trigger];
-    const result = handleEvent(addEvent, prevTriggers);
-    expect(result).toEqual(expectedResult);
-  });
-
-  it('Checks "UPDATE" event handling', () => {
-    let updateEvent = {
-      type: 'UPDATE',
-      trigger: {
-        name: '2137',
-        labels: {
-          foo: 'bar',
-        },
-      },
-    };
-
-    let expectedResult = [...prevTriggers, updateEvent.trigger];
-    let result = handleEvent(updateEvent, prevTriggers);
-    expect(result).toEqual(expectedResult);
-
-    updateEvent = {
-      type: 'UPDATE',
-      trigger: {
-        name: '2137',
-        labels: {
-          foo: 'foo',
-        },
-      },
-    };
-
-    expectedResult[3] = updateEvent.trigger;
-    result = handleEvent(updateEvent, prevTriggers);
-    expect(result).toEqual(expectedResult);
-  });
-
-  it('Checks "DELETE" event handling', () => {
-    const deleteEvent = {
-      type: 'DELETE',
-      trigger: {
-        name: 'epstein', // huehue
-      },
-    };
-
-    const expectedResult = [prevTriggers[0], prevTriggers[1]];
-    const result = handleEvent(deleteEvent, prevTriggers);
-    expect(result).toEqual(expectedResult);
   });
 });

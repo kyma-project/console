@@ -1,11 +1,19 @@
 import React from 'react';
 import { render, wait } from '@testing-library/react';
-import { MockedProvider } from '@apollo/react-testing';
-import { mocks, lambda, serviceBindingUsage } from './gqlMocks';
+
+import {
+  withApolloMockProvider,
+  lambdaMock,
+} from 'components/Lambdas/helpers/testing';
+
+import { SERVICE_BINDING_USAGE_EVENT_SUBSCRIPTION_MOCK } from 'components/Lambdas/gql/hooks/queries/testMocks';
 
 import ServiceBindingsWrapper from '../ServiceBindingsWrapper';
 
-import { SERVICE_BINDINGS_PANEL } from 'components/Lambdas/constants';
+import {
+  SERVICE_BINDINGS_PANEL,
+  FUNCTION_USAGE_KIND,
+} from 'components/Lambdas/constants';
 
 jest.mock('@kyma-project/luigi-client', () => {
   return {
@@ -18,37 +26,29 @@ jest.mock('@kyma-project/luigi-client', () => {
 });
 
 describe('ServiceBindingsWrapper', () => {
-  it('Render with minimal props', async () => {
-    const { getByText } = render(
-      <MockedProvider mocks={mocks}>
-        <ServiceBindingsWrapper lambda={lambda} refetchLambda={() => {}} />
-      </MockedProvider>,
+  const variables = {
+    namespace: lambdaMock.namespace,
+    resourceKind: FUNCTION_USAGE_KIND,
+    resourceName: lambdaMock.name,
+  };
+  const subscriptionMock = SERVICE_BINDING_USAGE_EVENT_SUBSCRIPTION_MOCK(
+    variables,
+  );
+
+  it('should render Spinner', async () => {
+    const { getByLabelText } = render(
+      withApolloMockProvider({
+        component: (
+          <ServiceBindingsWrapper
+            lambda={lambdaMock}
+            setBindingUsages={() => {}}
+          />
+        ),
+        mocks: [subscriptionMock],
+      }),
     );
 
-    expect(
-      getByText(SERVICE_BINDINGS_PANEL.LIST.ERRORS.RESOURCES_NOT_FOUND),
-    ).toBeInTheDocument();
-    await wait();
-  });
-
-  it('Render with serviceBindingUsages', async () => {
-    const lambdaWithSBU = {
-      ...lambda,
-      serviceBindingUsages: [serviceBindingUsage],
-    };
-
-    const { queryByText } = render(
-      <MockedProvider mocks={mocks}>
-        <ServiceBindingsWrapper
-          lambda={lambdaWithSBU}
-          refetchLambda={() => {}}
-        />
-      </MockedProvider>,
-    );
-
-    expect(
-      queryByText(SERVICE_BINDINGS_PANEL.LIST.ERRORS.RESOURCES_NOT_FOUND),
-    ).not.toBeInTheDocument();
+    expect(getByLabelText('Loading')).toBeInTheDocument();
     await wait();
   });
 });

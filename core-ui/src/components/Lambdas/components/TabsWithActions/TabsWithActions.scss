@@ -1,0 +1,40 @@
+.fd-panel-tabs {
+  position: relative;
+
+  .fd-tabs {
+    border-radius: 4px;
+    margin-bottom: 0;
+    border-bottom: 1px solid #eeeeef;
+  }
+
+  .fd-tabs__panel {
+    border-radius: 4px;
+  }
+
+  .monaco-editor, .monaco-diff-editor {
+    border-radius: 4px;
+
+    > div {
+      border-radius: 4px;
+    }
+  }
+
+  .fd-panel-tabs__actions {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 12px 16px;
+    min-height: 51px;
+    float: left;
+    margin-left: auto;
+    margin-top: -4px;
+    margin-bottom: -4px;
+    line-height: 1.33333;
+    box-sizing: border-box;
+
+    > * {
+      display: inline-block;
+      margin-left: 12px;
+    }
+  }
+}

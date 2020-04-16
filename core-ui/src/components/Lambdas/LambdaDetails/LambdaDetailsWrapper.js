@@ -1,31 +1,18 @@
 import React from 'react';
 import LuigiClient from '@kyma-project/luigi-client';
-import PropTypes from 'prop-types';
 
-import { useQuery } from '@apollo/react-hooks';
-import { GET_LAMBDA } from '../../../gql/queries';
-import { REFETCH_TIMEOUT } from '../../../shared/constants';
+import { useLambdaQuery } from 'components/Lambdas/gql/hooks/queries';
 
 import EntryNotFound from '../../EntryNotFound/EntryNotFound';
 import { Spinner } from 'react-shared';
+
 import LambdaDetails from './LambdaDetails';
 
-LambdaDetailsWrapper.propTypes = {
-  lambdaName: PropTypes.string.isRequired,
-};
-
 export default function LambdaDetailsWrapper({ lambdaName }) {
-  const namespace = LuigiClient.getEventData().environmentId;
-  const { data, error, loading, refetch: refetchLambda } = useQuery(
-    GET_LAMBDA,
-    {
-      variables: {
-        name: lambdaName,
-        namespace,
-      },
-      fetchPolicy: 'no-cache',
-    },
-  );
+  const { lambda, error, loading } = useLambdaQuery({
+    name: lambdaName,
+    namespace: LuigiClient.getEventData().environmentId,
+  });
 
   if (error) {
     return `Error! ${error.message}`;
@@ -33,15 +20,9 @@ export default function LambdaDetailsWrapper({ lambdaName }) {
   if (loading) {
     return <Spinner />;
   }
-  if (data && !data.function) {
-    setTimeout(() => {
-      refetchLambda();
-    }, REFETCH_TIMEOUT);
+  if (!lambda) {
     return <EntryNotFound entryType="Lambda" entryId={lambdaName} />;
   }
-  if (data && data.function) {
-    return (
-      <LambdaDetails lambda={data.function} refetchLambda={refetchLambda} />
-    );
-  }
+
+  return <LambdaDetails lambda={lambda} />;
 }

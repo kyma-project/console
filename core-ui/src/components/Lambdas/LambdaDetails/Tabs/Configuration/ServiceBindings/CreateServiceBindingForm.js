@@ -17,7 +17,6 @@ const checkBoxInputProps = {
 export default function CreateServiceBindingForm({
   serviceInstances = [],
   setPopupModalMessage = () => void 0,
-  refetchLambda,
   refetchServiceInstances = () => void 0,
   onChange,
   formElementRef,
@@ -105,7 +104,7 @@ export default function CreateServiceBindingForm({
     };
 
     refetchServiceInstances();
-    await createServiceBinding(parameters, refetchLambda);
+    await createServiceBinding(parameters);
   }
 
   const serviceInstancesNames = serviceInstances.map(service => (

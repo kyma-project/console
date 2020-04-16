@@ -2,8 +2,17 @@ import React from 'react';
 
 import { TESTING_STATE } from './constants';
 
-export function QueryComponent({ hook, hookInput }) {
-  const [data, error, loading] = hook(hookInput);
+export function QueryComponent({ hook, hookInput, dataProp = 'data' }) {
+  const hookData = hook(hookInput);
+
+  let data, error, loading;
+  if (Array.isArray(hookData)) {
+    [data, error, loading] = hookData;
+  } else {
+    data = hookData[dataProp];
+    error = hookData.error;
+    loading = hookData.loading;
+  }
 
   if (loading) {
     return <p>{TESTING_STATE.LOADING}</p>;

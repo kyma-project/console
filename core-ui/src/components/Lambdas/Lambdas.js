@@ -1,25 +1,16 @@
 import React from 'react';
+import LuigiClient from '@kyma-project/luigi-client';
+
+import { GenericList, PageHeader, Spinner, Labels } from 'react-shared';
+import LambdaStatusBadge from '../../shared/components/LambdaStatusBadge/LambdaStatusBadge';
+
 import ModalWithForm from '../ModalWithForm/ModalWithForm';
 import CreateLambdaForm from './CreateLambdaForm/CreateLambdaForm';
-import { useQuery, useMutation } from '@apollo/react-hooks';
-import LuigiClient from '@kyma-project/luigi-client';
-import { GET_LAMBDAS } from '../../gql/queries';
-import {
-  DELETE_LAMBDA,
-  DELETE_SERVICE_BINDING_USAGES,
-} from '../../gql/mutations';
 
-import { GenericList, useNotification } from 'react-shared';
+import { useLambdasQuery } from 'components/Lambdas/gql/hooks/queries';
+import { useDeleteLambda } from 'components/Lambdas/gql/hooks/mutations';
 
-import extractGraphQlErrors from 'shared/graphqlErrorExtractor';
-
-import builder from '../../commons/builder';
-import { Spinner, Labels } from 'react-shared';
-import LambdaStatusBadge from '../../shared/components/LambdaStatusBadge/LambdaStatusBadge';
-import { REFETCH_TIMEOUT } from '../../shared/constants';
-import { PageHeader } from 'react-shared';
-
-import { TOOLBAR } from './constants';
+import { TOOLBAR, LAMBDAS_LIST, ERRORS } from './constants';
 
 function CreateLambdaModal() {
   return (
@@ -35,19 +26,14 @@ function CreateLambdaModal() {
   );
 }
 
-export default function Lambdas() {
-  const { data, error, loading, refetch } = useQuery(GET_LAMBDAS, {
-    variables: {
-      namespace: builder.getCurrentEnvironmentId(),
-    },
-    fetchPolicy: 'no-cache',
-  });
+const headerRenderer = () => ['Name', 'Labels', 'Status'];
+const textSearchProperties = ['name', 'lambda.status.phase'];
 
-  const [deleteLambdaServiceBindingUsages] = useMutation(
-    DELETE_SERVICE_BINDING_USAGES,
-  );
-  const [deleteLambda] = useMutation(DELETE_LAMBDA);
-  const notificationManager = useNotification();
+export default function Lambdas() {
+  const { lambdas, error, loading } = useLambdasQuery({
+    namespace: LuigiClient.getEventData().environmentId,
+  });
+  const deleteLambda = useDeleteLambda({ redirect: false });
 
   if (error) {
     return `Error! ${error.message}`;
@@ -57,89 +43,26 @@ export default function Lambdas() {
     return <Spinner />;
   }
 
-  function handleError(error, name) {
-    const errorToDisplay = extractGraphQlErrors(error);
-    notificationManager.notifyError({
-      content: `Error while removing lambda ${name}: ${errorToDisplay}`,
-      autoClose: false,
-    });
-  }
-
-  const handleLambdaDelete = (lambda, refetch) => {
-    const name = lambda.name;
-    const namespace = lambda.namespace;
-
-    LuigiClient.uxManager()
-      .showConfirmationModal({
-        header: `Remove ${name}`,
-        body: `Are you sure you want to delete lambda "${name}"?`,
-        buttonConfirm: 'Delete',
-        buttonDismiss: 'Cancel',
-      })
-      .then(async () => {
-        try {
-          const deletedLambda = await deleteLambda({
-            variables: {
-              name,
-              namespace,
-            },
-          });
-
-          if (deletedLambda.error) {
-            handleError(deletedLambda.error, name);
-            return;
-          }
-
-          const serviceBindingUsageNames = (
-            lambda.serviceBindingUsages || []
-          ).map(s => s.name);
-          if (serviceBindingUsageNames.length) {
-            const deletedBindingUsages = await deleteLambdaServiceBindingUsages(
-              {
-                variables: { serviceBindingUsageNames, namespace },
-              },
-            );
-
-            if (deletedBindingUsages.error) {
-              handleError(deletedLambda.error);
-              return;
-            }
-          }
-
-          notificationManager.notifySuccess({
-            content: `Lambda ${name} deleted`,
-            autoClose: true,
-          });
-          setTimeout(() => {
-            refetch();
-          }, REFETCH_TIMEOUT);
-        } catch (e) {
-          handleError(e, name);
-        }
-      })
-      .catch(() => {});
-  };
-
   const actions = [
     {
       name: 'Delete',
-      handler: entry => {
-        handleLambdaDelete(entry, refetch);
+      handler: lambda => {
+        deleteLambda(lambda);
       },
     },
   ];
-  const headerRenderer = () => ['Name', 'Runtime', 'Labels', 'Status'];
-  const rowRenderer = item => [
+  const rowRenderer = lambda => [
     <span
       className="link"
       data-test-id="lambda-name"
-      onClick={() => LuigiClient.linkManager().navigate(`details/${item.name}`)}
+      onClick={() =>
+        LuigiClient.linkManager().navigate(`details/${lambda.name}`)
+      }
     >
-      {item.name}
+      {lambda.name}
     </span>,
-    <span>{item.runtime}</span>,
-    <Labels labels={item.labels} />,
-    <LambdaStatusBadge status={item.status} />,
+    <Labels labels={lambda.labels} />,
+    <LambdaStatusBadge status={lambda.status.phase} />,
   ];
 
   const headerActions = <CreateLambdaModal />;
@@ -153,10 +76,15 @@ export default function Lambdas() {
       />
       <GenericList
         actions={actions}
-        entries={data.functions}
+        entries={lambdas}
+        showSearchField={true}
+        showSearchSuggestion={false}
+        textSearchProperties={textSearchProperties}
         headerRenderer={headerRenderer}
         rowRenderer={rowRenderer}
-        showSearchSuggestion={false}
+        notFoundMessage={LAMBDAS_LIST.ERRORS.RESOURCES_NOT_FOUND}
+        noSearchResultMessage={LAMBDAS_LIST.ERRORS.NOT_MATCHING_SEARCH_QUERY}
+        serverErrorMessage={ERRORS.SERVER}
       />
     </>
   );

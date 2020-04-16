@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useQuery } from '@apollo/react-hooks';
+import deepEqual from 'deep-equal';
 
 import { GET_SERVICE_INSTANCES } from 'components/Lambdas/gql/queries';
 
@@ -29,9 +30,13 @@ export const useServiceInstancesQuery = ({
         data.serviceInstances,
         serviceBindingUsages,
       );
-      setServiceInstances(instances);
+
+      const equal = deepEqual(serviceInstances, instances);
+      if (!equal) {
+        setServiceInstances(instances);
+      }
     }
-  }, [data, serviceBindingUsages]);
+  }, [data, serviceBindingUsages, serviceInstances, setServiceInstances]);
 
   useEffect(() => {
     if (error) {

@@ -1,129 +1,25 @@
-import React, { useEffect, useState, useRef } from 'react';
-import PropTypes from 'prop-types';
-import LuigiClient from '@kyma-project/luigi-client';
-import { useMutation } from '@apollo/react-hooks';
+import React, { useState } from 'react';
 import { TabGroup, Tab } from 'fundamental-react';
-import LabelSelectorInput from '../../LabelSelectorInput/LabelSelectorInput';
 
 import { useLogsView } from '../helpers/misc/useLogsView';
 
-import { UPDATE_LAMBDA } from '../../../gql/mutations';
 import LambdaDetailsHeader from './LambdaDetailsHeader/LambdaDetailsHeader';
 
-import { useNotification } from 'react-shared';
 import CodeTab from './Tabs/Code/CodeTab';
-import LambdaCode from './Tabs/Code/LambdaCode';
-import LambdaDependencies from './Tabs/Code/LambdaDependencies';
 import ConfigurationTab from './Tabs/Configuration/Configuration';
 
-const exampleLambdaCode = `module.exports = { 
-  main: function (event, context) {
-
-  }
-}`;
-
-const exampleDependencies = `{ 
-  "name": "%NAME%",
-  "version": "1.0.0",
-  "dependencies": {}
-}`;
-
-export default function LambdaDetails({ lambda, refetchLambda }) {
-  const [labels, setLabels] = useState(lambda.labels);
-  const [lambdaCode, setLambdaCode] = useState(
-    lambda.content || exampleLambdaCode,
-  );
-  const [dependencies, setDependencies] = useState(
-    lambda.dependencies || exampleDependencies.replace('%NAME%', lambda.name),
-  );
-  const [selectedTabIndex, setSelectedTabIndex] = useState(0);
-  const [updateLambdaMutation] = useMutation(UPDATE_LAMBDA);
-  const notificationManager = useNotification();
-
-  const formRef = useRef(null);
-
-  const formValues = {
-    size: useRef(null),
-    runtime: useRef(null),
-  };
-
-  const namespace = LuigiClient.getEventData().environmentId;
-  const selectedTabName =
-    LuigiClient.getNodeParams().selectedTab || 'Configuration';
-
-  useEffect(() => {
-    const selectedTabIndex = selectedTabName === 'Configuration' ? 0 : 1;
-    setSelectedTabIndex(selectedTabIndex);
-  }, [selectedTabName]);
-
-  useLogsView(lambda.UID, lambda.namespace, selectedTabName);
-
-  async function updateLambda() {
-    if (!formRef.current.checkValidity()) {
-      return;
-    }
-
-    try {
-      const updatedFunction = await updateLambdaMutation({
-        variables: {
-          name: lambda.name,
-          namespace,
-          params: {
-            labels: labels || {},
-            size: formValues.size.current.value,
-            runtime: formValues.runtime.current.value,
-            content: lambdaCode,
-            dependencies,
-          },
-        },
-      });
-
-      const isSuccess =
-        updatedFunction.data &&
-        updatedFunction.data.updateFunction &&
-        updatedFunction.data.updateFunction.name === lambda.name;
-      if (isSuccess) {
-        notificationManager.notify({
-          content: `Lambda ${lambda.name} updated successfully`,
-          title: 'Success',
-          color: '#107E3E',
-          icon: 'accept',
-          autoClose: true,
-        });
-      }
-    } catch (e) {
-      notificationManager.notify({
-        content: `Error while removing lambda ${lambda.name}: ${e.message}`,
-        title: 'Error',
-        color: '#BB0000',
-        icon: 'decline',
-        autoClose: false,
-      });
-    }
-  }
-
-  function updateLabels(newLabels) {
-    setLabels(newLabels);
-  }
-
-  const onChangeTab = (_, id) => {
-    const selectedTab = id === 0 ? 'Configuration' : 'Code';
-    try {
-      LuigiClient.linkManager()
-        .withParams({ selectedTab })
-        .navigate('');
-    } catch (e) {
-      console.error(e);
-    }
-  };
+export default function LambdaDetails({ lambda }) {
+  const [bindingUsages, setBindingUsages] = useState([]);
+  useLogsView(lambda.UID, lambda.namespace, "Code");
 
   return (
     <>
-      <LambdaDetailsHeader
-        lambda={lambda}
-        handleUpdate={updateLambda}
-      ></LambdaDetailsHeader>
-      <TabGroup selectedIndex={selectedTabIndex} onTabClick={onChangeTab}>
+      <LambdaDetailsHeader lambda={lambda} />
+      <TabGroup>
+        <Tab key="lambda-code" id="lambda-code" title="Code">
+          <CodeTab lambda={lambda} bindingUsages={bindingUsages} />
+        </Tab>
+
         <Tab
           key="lambda-configuration"
           id="lambda-configuration"
@@ -131,35 +27,10 @@ export default function LambdaDetails({ lambda, refetchLambda }) {
         >
           <ConfigurationTab
             lambda={lambda}
-            refetchLambda={refetchLambda}
-            formRef={formRef}
-            sizeRef={formValues.size}
-            runtimeRef={formValues.runtime}
-            LabelsEditor={
-              <LabelSelectorInput labels={labels} onChange={updateLabels} />
-            }
-          />
-        </Tab>
-
-        <Tab key="lambda-code" id="lambda-code" title="Code">
-          <CodeTab
-            codeEditorComponent={
-              <LambdaCode code={lambdaCode} setCode={setLambdaCode} />
-            }
-            dependenciesComponent={
-              <LambdaDependencies
-                dependencies={dependencies}
-                setDependencies={setDependencies}
-              />
-            }
+            setBindingUsages={setBindingUsages}
           />
         </Tab>
       </TabGroup>
     </>
   );
 }
-
-LambdaDetails.propTypes = {
-  lambda: PropTypes.object.isRequired,
-  refetchLambda: PropTypes.func.isRequired,
-};

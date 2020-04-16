@@ -11,7 +11,6 @@ import {
   CREATE_SERVICE_BINDING_USAGE,
   DELETE_SERVICE_BINDING_USAGE,
 } from 'gql/mutations';
-import { REFETCH_TIMEOUT } from 'shared/constants';
 
 const ACTION_TYPE = {
   CREATE: 'Create',
@@ -55,10 +54,7 @@ export const ServiceBindingsService = ({ lambdaName, children }) => {
     });
   }
 
-  async function handleDeleteServiceBindingUsage(
-    serviceBindingUsage,
-    refetchLambda,
-  ) {
+  async function handleDeleteServiceBindingUsage(serviceBindingUsage) {
     const namespace = LuigiClient.getEventData().environmentId;
     const serviceBindingUsageName = serviceBindingUsage.name;
 
@@ -89,9 +85,6 @@ export const ServiceBindingsService = ({ lambdaName, children }) => {
         notificationManager.notifySuccess({
           content: `Service Binding removing...`,
         });
-        setTimeout(() => {
-          refetchLambda();
-        }, REFETCH_TIMEOUT);
       }
     } catch (err) {
       handleError(serviceBindingUsageName, err, ACTION_TYPE.DELETE);
@@ -129,15 +122,12 @@ export const ServiceBindingsService = ({ lambdaName, children }) => {
     };
   }
 
-  async function createServiceBinding(
-    {
-      serviceInstanceName,
-      serviceBindingUsageParameters,
-      createCredentials = true,
-      existingCredentials = undefined,
-    },
-    refetchLambda,
-  ) {
+  async function createServiceBinding({
+    serviceInstanceName,
+    serviceBindingUsageParameters,
+    createCredentials = true,
+    existingCredentials = undefined,
+  }) {
     const namespace = LuigiClient.getEventData().environmentId;
     let serviceBindingName = existingCredentials;
 
@@ -182,9 +172,6 @@ export const ServiceBindingsService = ({ lambdaName, children }) => {
       notificationManager.notifySuccess({
         content: `Service Binding creating...`,
       });
-      setTimeout(() => {
-        refetchLambda();
-      }, REFETCH_TIMEOUT * 5);
     } catch (err) {
       handleError(serviceInstanceName, err, ACTION_TYPE.CREATE);
     }

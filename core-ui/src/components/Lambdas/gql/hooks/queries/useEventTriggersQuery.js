@@ -9,7 +9,10 @@ import {
   useQueue,
   useStateWithCallback,
 } from 'components/Lambdas/helpers/hooks';
-import { formatMessage } from 'components/Lambdas/helpers/misc';
+import {
+  formatMessage,
+  handleSubscriptionEvent,
+} from 'components/Lambdas/helpers/misc';
 import { GQL_QUERIES } from 'components/Lambdas/constants';
 import extractGraphQlErrors from 'shared/graphqlErrorExtractor';
 
@@ -25,7 +28,13 @@ export const useEventTriggersQuery = ({
   const apolloClient = useApolloClient();
 
   function processQueue(event, done) {
-    const newTriggers = handleEvent(event, triggers);
+    const newTriggers = handleSubscriptionEvent(
+      {
+        type: event.type,
+        newItem: event.trigger,
+      },
+      triggers,
+    );
     setTriggers(newTriggers, () => {
       done();
     });
@@ -84,47 +93,3 @@ export const useEventTriggersQuery = ({
 
   return [triggers, error, loading];
 };
-
-const actions = {
-  ADD: 'ADD',
-  UPDATE: 'UPDATE',
-  DELETE: 'DELETE',
-};
-
-export function handleEvent({ type, trigger }, prevTriggers = []) {
-  function onAdd() {
-    if (!prevTriggers.find(t => t.name === trigger.name)) {
-      return [...prevTriggers, trigger];
-    }
-
-    return prevTriggers;
-  }
-
-  function onUpdate() {
-    const index = prevTriggers.findIndex(t => t.name === trigger.name);
-    if (index === -1) {
-      return [...prevTriggers, trigger];
-    }
-
-    const updatedTriggers = [...prevTriggers];
-    updatedTriggers[index] = {
-      ...trigger,
-    };
-    return updatedTriggers;
-  }
-
-  function onDelete() {
-    return prevTriggers.filter(t => t.name !== trigger.name);
-  }
-
-  switch (type) {
-    case actions.ADD:
-      return onAdd();
-    case actions.UPDATE:
-      return onUpdate();
-    case actions.DELETE:
-      return onDelete();
-    default:
-      return prevTriggers;
-  }
-}

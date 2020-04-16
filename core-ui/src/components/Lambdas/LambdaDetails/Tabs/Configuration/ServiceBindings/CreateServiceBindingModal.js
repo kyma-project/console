@@ -10,7 +10,10 @@ import CreateServiceBindingForm from './CreateServiceBindingForm';
 
 import { SERVICE_BINDINGS_PANEL } from 'components/Lambdas/constants';
 
-export default function CreateServiceBindingModal({ lambda, refetchLambda }) {
+export default function CreateServiceBindingModal({
+  lambda,
+  serviceBindingUsages,
+}) {
   const [popupModalMessage, setPopupModalMessage] = useState('');
   const {
     serviceInstances,
@@ -19,7 +22,7 @@ export default function CreateServiceBindingModal({ lambda, refetchLambda }) {
     refetchServiceInstances,
   } = useServiceInstancesQuery({
     namespace: lambda.namespace,
-    serviceBindingUsages: lambda.serviceBindingUsages,
+    serviceBindingUsages,
   });
 
   let fallbackContent = null;
@@ -64,7 +67,6 @@ export default function CreateServiceBindingModal({ lambda, refetchLambda }) {
           {...props}
           serviceInstances={serviceInstances}
           setPopupModalMessage={setPopupModalMessage}
-          refetchLambda={refetchLambda}
           refetchServiceInstances={refetchServiceInstances}
         />
       )}
