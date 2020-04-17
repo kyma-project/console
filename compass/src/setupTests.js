@@ -23,9 +23,6 @@ global.wait = async (ms = 0) => {
 };
 
 window.postMessage = jest.fn();
-window.clusterConfig = {
-  compassAutomaticDefaultScenario: false,
-};
 
 // fix UnhandledPromiseRejectionWarning: TypeError: document.createRange is not a function
 global.document.createRange = () => ({

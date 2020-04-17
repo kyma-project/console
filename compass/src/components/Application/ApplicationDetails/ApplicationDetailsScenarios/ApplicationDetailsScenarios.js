@@ -2,12 +2,12 @@ import React from 'react';
 import { useMutation } from '@apollo/react-hooks';
 import PropTypes from 'prop-types';
 import LuigiClient from '@luigi-project/client';
-import { GenericList } from 'react-shared';
+import { GenericList, useNotification } from 'react-shared';
 import ApplicationScenarioModal from './ApplicationScenarioModal.container';
 import { ApplicationQueryContext } from './../../ApplicationDetails/ApplicationDetails.component';
 
 import { SET_APPLICATION_SCENARIOS, DELETE_SCENARIO_LABEL } from '../../gql';
-import { SEND_NOTIFICATION } from '../../../../gql';
+
 ApplicationDetailsScenarios.propTypes = {
   applicationId: PropTypes.string.isRequired,
   scenarios: PropTypes.arrayOf(PropTypes.string).isRequired,
@@ -17,17 +17,18 @@ export default function ApplicationDetailsScenarios({
   applicationId,
   scenarios,
 }) {
+  const notificationManager = useNotification();
   const applicationQuery = React.useContext(ApplicationQueryContext);
-  const [sendNotification] = useMutation(SEND_NOTIFICATION);
-  const [updateScenario] = useMutation(SET_APPLICATION_SCENARIOS);
-  const [deleteScenario] = useMutation(DELETE_SCENARIO_LABEL);
-  async function handleScenarios(applicationId, scenarios) {
+  const [updateScenarios] = useMutation(SET_APPLICATION_SCENARIOS);
+  const [deleteScenarios] = useMutation(DELETE_SCENARIO_LABEL);
+  async function handleScenariosUnassign(applicationId, scenarios) {
+    console.log('handleScenariosUnassign');
     if (scenarios.length) {
-      await updateScenario({
+      await updateScenarios({
         variables: { id: applicationId, scenarios: scenarios },
       });
     } else {
-      await deleteScenario({ variables: { id: applicationId } });
+      await deleteScenarios({ variables: { id: applicationId } });
     }
   }
   async function unassignScenario(entry) {
@@ -42,19 +43,13 @@ export default function ApplicationDetailsScenarios({
       })
       .then(async () => {
         try {
-          await handleScenarios(
+          await handleScenariosUnassign(
             applicationId,
             scenarios.filter(scenario => scenario !== scenarioName),
           );
           applicationQuery.refetch();
-          sendNotification({
-            variables: {
-              content: `Scenario "${scenarioName}" removed from application.`,
-              title: `${scenarioName}`,
-              color: '#359c46',
-              icon: 'accept',
-              instanceName: scenarioName,
-            },
+          notificationManager.notifySuccess({
+            content: `Scenario "${scenarioName}" removed from application.`,
           });
         } catch (error) {
           console.warn(error);
