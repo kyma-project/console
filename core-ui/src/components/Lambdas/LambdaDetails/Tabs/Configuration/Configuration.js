@@ -4,7 +4,7 @@ import LuigiClient from '@kyma-project/luigi-client';
 
 import ServiceBindingsWrapper from './ServiceBindings/ServiceBindingsWrapper';
 import EventTriggersWrapper from './EventTriggers/EventTriggersWrapper';
-
+import { ResourcesManagement } from './ResourceManagement/ResourceManagement';
 import {
   BACKEND_MODULES,
   backendModulesExist,
@@ -32,9 +32,7 @@ const ConfigurationTab = ({ lambda, setBindingUsages }) => {
 
   return (
     <>
-      {/* <ResourcesManagement 
-        lambda={lambda}
-      /> */}
+      <ResourcesManagement lambda={lambda} />
       {eventTriggers}
       {serviceBindings}
     </>

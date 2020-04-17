@@ -110,6 +110,58 @@ export const MODALS = {
   },
 };
 
+export const RESOURCES_MANAGEMENT_PANEL = {
+  TITLE: 'Resources and Replicas',
+  EDIT_MODAL: {
+    TITLE: 'Edit Resources and Replicas Configuration',
+    OPEN_BUTTON: {
+      TEXT: {
+        EDIT: 'Edit Configuration',
+        SAVE: 'Save',
+      },
+    },
+    CONFIRM_BUTTON: {
+      TEXT: 'Save',
+    },
+  },
+  REPLICAS_MODE: {
+    MIN_NUMBER: {
+      TITLE: 'Minimum number of replicas',
+      DESCRIPTION: 'Set it to 0 to enable scale to zero',
+    },
+    MAX_NUMBER: {
+      TITLE: 'Maximum number of replicas',
+      DESCRIPTION: 'Set it to zero to disable lambda.',
+    },
+    SCALE_TO_ZERO: {
+      TITLE: 'Scale to zero',
+      DESCRIPTION: 'Enable scale to zero.',
+    },
+    FIXED: {
+      TITLE: 'Fixed replicas',
+      DESCRIPTION: 'Enable fixed replicas.',
+    },
+  },
+  RESOURCES: {
+    REQUESTS: {
+      TITLE: 'Requests Resources',
+      DESCRIPTION:
+        'Requests describes the minimum amount of compute resources required.',
+    },
+    LIMITS: {
+      TITLE: 'Limits Resources',
+      DESCRIPTION:
+        'Limits describes the maximum amount of compute resources allowed.',
+    },
+    MEMORY: {
+      TITLE: 'Memory',
+    },
+    CPU: {
+      TITLE: 'CPU',
+    },
+  },
+};
+
 export const EVENT_TRIGGERS_PANEL = {
   LIST: {
     TITLE: 'Event Triggers',
