@@ -51,11 +51,9 @@ const ApiSelector: React.FunctionComponent<{
 
   const maxApiNameLength = filteredSources.length
     ? getApiNameLength(
-        filteredSources.reduce((prev, current) => {
-          return getApiNameLength(current) > getApiNameLength(prev)
-            ? current
-            : prev;
-        }),
+        filteredSources.reduce((prev, current) =>
+          getApiNameLength(current) > getApiNameLength(prev) ? current : prev,
+        ),
       )
     : 0;
 
