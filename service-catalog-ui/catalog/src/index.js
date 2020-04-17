@@ -12,7 +12,6 @@ import App from './components/App/App';
 import builder from './commons/builder';
 
 import { createApolloClient } from './apollo';
-//
 
 preloadingStrategy(async () => {
   builder.initOrContextUpdate(() => {
