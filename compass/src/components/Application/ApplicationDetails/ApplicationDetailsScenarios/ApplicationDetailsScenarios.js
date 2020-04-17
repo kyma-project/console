@@ -11,15 +11,11 @@ import { SEND_NOTIFICATION } from '../../../../gql';
 ApplicationDetailsScenarios.propTypes = {
   applicationId: PropTypes.string.isRequired,
   scenarios: PropTypes.arrayOf(PropTypes.string).isRequired,
-  // updateScenarios: PropTypes.func.isRequired,
-  // sendNotification: PropTypes.func.isRequired,
 };
 
 export default function ApplicationDetailsScenarios({
   applicationId,
   scenarios,
-  // updateScenarios,
-  // sendNotification,
 }) {
   const applicationQuery = React.useContext(ApplicationQueryContext);
   const [sendNotification] = useMutation(SEND_NOTIFICATION);
