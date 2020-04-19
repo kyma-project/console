@@ -50,3 +50,47 @@ export const DELETE_ONE_EVENT_TRIGGER = gql`
     }
   }
 `;
+
+export const CREATE_SERVICE_BINDING = gql`
+  mutation createServiceBinding(
+    $serviceInstanceName: String!
+    $namespace: String!
+    $parameters: JSON
+  ) {
+    createServiceBinding(
+      serviceInstanceName: $serviceInstanceName
+      namespace: $namespace
+      parameters: $parameters
+    ) {
+      name
+    }
+  }
+`;
+
+export const CREATE_SERVICE_BINDING_USAGE = gql`
+  mutation createServiceBindingUsage(
+    $createServiceBindingUsageInput: CreateServiceBindingUsageInput
+    $namespace: String!
+  ) {
+    createServiceBindingUsage(
+      createServiceBindingUsageInput: $createServiceBindingUsageInput
+      namespace: $namespace
+    ) {
+      name
+    }
+  }
+`;
+
+export const DELETE_SERVICE_BINDING_USAGE = gql`
+  mutation deleteServiceBindingUsage(
+    $serviceBindingUsageName: String!
+    $namespace: String!
+  ) {
+    deleteServiceBindingUsage(
+      serviceBindingUsageName: $serviceBindingUsageName
+      namespace: $namespace
+    ) {
+      name
+    }
+  }
+`;

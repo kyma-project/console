@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import LuigiClient from '@kyma-project/luigi-client';
 
 import ServiceBindingsWrapper from './ServiceBindings/ServiceBindingsWrapper';
@@ -10,7 +9,10 @@ import {
   backendModulesExist,
 } from 'components/Lambdas/helpers/misc';
 
-const ConfigurationTab = ({ lambda, setBindingUsages }) => {
+export default function ConfigurationTab({
+  lambda,
+  setBindingUsages = () => void 0,
+}) {
   const backendModules = LuigiClient.getEventData().backendModules;
 
   const serviceBindings = backendModulesExist(backendModules, [
@@ -37,11 +39,4 @@ const ConfigurationTab = ({ lambda, setBindingUsages }) => {
       {serviceBindings}
     </>
   );
-};
-
-ConfigurationTab.propTypes = {
-  lambda: PropTypes.object.isRequired,
-  setBindingUsages: PropTypes.func.isRequired,
-};
-
-export default ConfigurationTab;
+}

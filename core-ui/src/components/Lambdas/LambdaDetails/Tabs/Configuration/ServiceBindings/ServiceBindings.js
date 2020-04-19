@@ -3,7 +3,7 @@ import LuigiClient from '@kyma-project/luigi-client';
 
 import { GenericList } from 'react-shared';
 
-import { useServiceBindings } from './ServiceBindingsService';
+import { useDeleteServiceBindingUsage } from 'components/Lambdas/gql/hooks/mutations';
 
 import CreateServiceBindingModal from './CreateServiceBindingModal';
 
@@ -25,7 +25,7 @@ export default function ServiceBindings({
   serverDataError,
   serverDataLoading,
 }) {
-  const { deleteServiceBindingUsage } = useServiceBindings();
+  const deleteServiceBindingUsage = useDeleteServiceBindingUsage({ lambda });
 
   const retrieveEnvs = bindingUsage => {
     let envPrefix = '';

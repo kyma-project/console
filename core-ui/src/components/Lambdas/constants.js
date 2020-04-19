@@ -10,16 +10,112 @@ export const ERRORS = {
   NOT_MATCHING_FILTERS: "Couldn't find resources matching these filters.",
 };
 
+export const LAMBDA_PHASES = {
+  INITIALIZING: {
+    TYPE: 'INITIALIZING',
+    TITLE: 'Initializing',
+  },
+  BUILDING: {
+    TYPE: 'BUILDING',
+    TITLE: 'Building',
+  },
+  DEPLOYING: {
+    TYPE: 'DEPLOYING',
+    TITLE: 'Deploying',
+  },
+  RUNNING: {
+    TYPE: 'RUNNING',
+    TITLE: 'Running',
+  },
+  NEW_REVISION_ERROR: {
+    TYPE: 'NEW_REVISION_ERROR',
+    TITLE: 'New Revision Error',
+    MESSAGE: `A new revision couldn't be created due to an error.`,
+  },
+  FAILED: {
+    TYPE: 'FAILED',
+    TITLE: 'Failed',
+    MESSAGE: `Function couldn't be processed.`,
+  },
+  ERROR_SUFFIX: 'Error: {error}',
+};
+
+export const LAMBDA_ERROR_PHASES = [
+  LAMBDA_PHASES.FAILED.TYPE,
+  LAMBDA_PHASES.NEW_REVISION_ERROR.TYPE,
+];
+
 export const TOOLBAR = {
-  TITLE: 'Lambdas',
+  TITLE: 'Functions',
   DESCRIPTION:
-    'Extend your applications with lambdas that you can trigger with incoming events and expose outside the cluster with API Rules.',
+    'Extend your applications with Functions that you can trigger with incoming events and expose outside the cluster with API Rules.',
 };
 
 export const LAMBDAS_LIST = {
   ERRORS: {
-    RESOURCES_NOT_FOUND: "This namespace doesn't have any Lambdas yet.",
-    NOT_MATCHING_SEARCH_QUERY: "Couldn't find Lambdas matching this query.",
+    RESOURCES_NOT_FOUND: "This Namespace doesn't have any Functions yet.",
+    NOT_MATCHING_SEARCH_QUERY: "Couldn't find Functions matching this query.",
+  },
+  CREATE_MODAL: {
+    TITLE: 'Create new Function',
+    OPEN_BUTTON: {
+      TEXT: 'Create new Function',
+    },
+    CONFIRM_BUTTON: {
+      TEXT: 'Create',
+    },
+    INPUTS: {
+      NAME: {
+        LABEL: 'Name',
+        INLINE_HELP: `The name must consist of lower case alphanumeric characters or dashes, and must start and end with an alphanumeric character (e.g. 'my-name1').`,
+      },
+      LABEL: {
+        LABEL: 'Labels',
+        INLINE_HELP: `The key/value pair should be separated by '=', consist of alphanumeric characters, '-', '_' or '.', and must start and end with an alphanumeric character. The key cannot be empty.`,
+      },
+    },
+  },
+};
+
+export const LAMBDA_DETAILS = {
+  STATUS: {
+    TITLE: 'Status',
+    ERROR: {
+      LINK: 'See error logs.',
+      MODAL: {
+        TITLE: 'Error logs from "{lambdaName}"',
+      },
+    },
+  },
+  LABELS: {
+    TITLE: 'Labels',
+    POPUP_MESSAGE: 'Edit Labels',
+    EDIT_MODAL: {
+      TITLE: 'Edit Labels',
+      CONFIRM_BUTTON: {
+        TEXT: 'Save',
+        INVALID_POPUP_MESSAGE: 'Invalid label',
+      },
+    },
+  },
+  TABS: {
+    CODE: {
+      TITLE: 'Code',
+    },
+    CONFIGURATION: {
+      TITLE: 'Configuration',
+    },
+  },
+};
+
+export const LOGS_AND_METRICS = {
+  LOGS: {
+    SPLIT_VIEW: {
+      TITLE: 'Logs',
+    },
+    MODAL: {
+      TITLE: 'Logs from "{lambdaName}"',
+    },
   },
 };
 
@@ -31,19 +127,19 @@ export const TRIGGER_SUBSCRIBER = {
 
 export const GQL_QUERIES = {
   LAMBDA: {
-    ERROR_MESSAGE: `Error while fetching "{lambdaName}" Lambda: {error}`,
+    ERROR_MESSAGE: `Error while fetching "{lambdaName}" Function: {error}`,
   },
   LAMBDAS: {
-    ERROR_MESSAGE: `Error while fetching Lambdas in "{namespace}" Namespace: {error}`,
+    ERROR_MESSAGE: `Error while fetching Functions in "{namespace}" Namespace: {error}`,
   },
   EVENT_ACTIVATIONS: {
     ERROR_MESSAGE: `Error while fetching available Events in "{namespace}" namespace: {error}`,
   },
   EVENT_TRIGGERS: {
-    ERROR_MESSAGE: `Error while fetching Event Triggers for "{lambdaName}" Lambda: {error}`,
+    ERROR_MESSAGE: `Error while fetching Event Triggers for "{lambdaName}" Function: {error}`,
   },
   SERVICE_BINDING_USAGES: {
-    ERROR_MESSAGE: `Error while fetching injected Service Binding Usages to "{lambdaName}" Lambda: {error}`,
+    ERROR_MESSAGE: `Error while fetching injected Service Binding Usages to "{lambdaName}" Function: {error}`,
   },
   SERVICE_INSTANCES: {
     ERROR_MESSAGE: `Error while fetching Service Instances: {error}`,
@@ -52,47 +148,59 @@ export const GQL_QUERIES = {
 
 export const GQL_MUTATIONS = {
   CREATE_LAMBDA: {
-    SUCCESS_MESSAGE: `"{lambdaName}" Lambda is successfully created`,
-    ERROR_MESSAGE: `Error while creating "{lambdaName}" Lambda: {error}`,
+    SUCCESS_MESSAGE: `"{lambdaName}" Function is successfully created`,
+    ERROR_MESSAGE: `Error while creating "{lambdaName}" Function: {error}`,
   },
   UPDATE_LAMBDA: {
     GENERAL_CONFIGURATION: {
-      SUCCESS_MESSAGE: `General Configuration for "{lambdaName}" Lambda are successfully updated`,
-      ERROR_MESSAGE: `Error while updating General Configuration for "{lambdaName}" Lambda: {error}`,
+      SUCCESS_MESSAGE: `General Configuration for "{lambdaName}" Function are successfully updated`,
+      ERROR_MESSAGE: `Error while updating General Configuration for "{lambdaName}" Function: {error}`,
     },
     CODE_AND_DEPENDENCIES: {
-      SUCCESS_MESSAGE: `Code and Dependencies for "{lambdaName}" Lambda are successfully updated`,
-      ERROR_MESSAGE: `Error while updating Code and Dependencies for "{lambdaName}" Lambda: {error}`,
+      SUCCESS_MESSAGE: `Code and Dependencies for "{lambdaName}" Function are successfully updated`,
+      ERROR_MESSAGE: `Error while updating Code and Dependencies for "{lambdaName}" Function: {error}`,
     },
     RESOURCES_AND_REPLICAS: {
-      SUCCESS_MESSAGE: `Resources and Replicas for "{lambdaName}" Lambda are successfully updated`,
-      ERROR_MESSAGE: `Error while updating Resources and Replicas for "{lambdaName}" Lambda: {error}`,
+      SUCCESS_MESSAGE: `Resources and Replicas for "{lambdaName}" Function are successfully updated`,
+      ERROR_MESSAGE: `Error while updating Resources and Replicas for "{lambdaName}" Function: {error}`,
     },
     VARIABLES: {
-      SUCCESS_MESSAGE: `Environment Variables for "{lambdaName}" Lambda are successfully updated`,
-      ERROR_MESSAGE: `Error while updating Environment Variables for "{lambdaName}" Lambda: {error}`,
+      SUCCESS_MESSAGE: `Environment Variables for "{lambdaName}" Function are successfully updated`,
+      ERROR_MESSAGE: `Error while updating Environment Variables for "{lambdaName}" Function: {error}`,
     },
   },
   DELETE_LAMBDA: {
-    SUCCESS_MESSAGE: `"{lambdaName}" Lambda is successfully removed`,
-    ERROR_MESSAGE: `Error while deleting "{lambdaName}" Lambda: {error}`,
+    SUCCESS_MESSAGE: `"{lambdaName}" Function is successfully removed`,
+    ERROR_MESSAGE: `Error while deleting "{lambdaName}" Function: {error}`,
     CONFIRM_MODAL: {
-      TITLE: `Remove {lambdaName} Lambda`,
-      MESSAGE: `Are you sure you want to delete "{lambdaName}" Lambda and whole related to it resources?`,
+      TITLE: `Remove {lambdaName} Function`,
+      MESSAGE: `Are you sure you want to delete "{lambdaName}" Function and whole related to it resources?`,
     },
   },
   CREATE_TRIGGERS: {
     SUCCESS_MESSAGE_SINGLE: `Event Trigger created successfully`,
     SUCCESS_MESSAGE_MANY: `Event Triggers created successfully`,
-    ERROR_MESSAGE_SINGLE: `Error while creating an Event Trigger for "{lambdaName}" Lambda: {error}`,
-    ERROR_MESSAGE_MANY: `Error while creating Event Triggers for "{lambdaName}" Lambda: {error}`,
+    ERROR_MESSAGE_SINGLE: `Error while creating an Event Trigger for "{lambdaName}" Function: {error}`,
+    ERROR_MESSAGE_MANY: `Error while creating Event Triggers for "{lambdaName}" Function: {error}`,
   },
   DELETE_TRIGGER: {
     SUCCESS_MESSAGE: `Event Trigger was successfully removed`,
-    ERROR_MESSAGE: `Error while deleting "{triggerName}" Event Trigger for "{lambdaName}" Lambda: {error}`,
+    ERROR_MESSAGE: `Error while deleting "{triggerName}" Event Trigger for "{lambdaName}" Function: {error}`,
     CONFIRM_MODAL: {
       TITLE: `Remove Event Trigger`,
-      MESSAGE: `Are you sure you want to delete "{triggerName}" Event Trigger for "{lambdaName}" Lambda?`,
+      MESSAGE: `Are you sure you want to delete "{triggerName}" Event Trigger for "{lambdaName}" Function?`,
+    },
+  },
+  CREATE_BINDING_USAGE: {
+    SUCCESS_MESSAGE: `Service Binding referencing the "{serviceInstanceName}" Service Instance was successfully created`,
+    ERROR_MESSAGE: `Couldn't create a Service Binding referencing the "{serviceInstanceName}" Service Instance due to this error: {error}`,
+  },
+  DELETE_BINDING_USAGE: {
+    SUCCESS_MESSAGE: `Service Binding referencing the "{serviceInstanceName}" Service Instance was successfully deleted`,
+    ERROR_MESSAGE: `Couldn't delete the Service Binding referencing the "{serviceInstanceName}" Service Instance due to this error: {error}`,
+    CONFIRM_MODAL: {
+      TITLE: `Delete Service Binding`,
+      MESSAGE: `Are you sure you want to delete the Service Binding referencing the "{serviceInstanceName}" Service Instance?`,
     },
   },
 };
@@ -179,7 +287,7 @@ export const EVENT_TRIGGERS_PANEL = {
   LIST: {
     TITLE: 'Event Triggers',
     ERRORS: {
-      RESOURCES_NOT_FOUND: "This lambda doesn't have any Event Triggers yet.",
+      RESOURCES_NOT_FOUND: "This Function doesn't have any Event Triggers yet.",
       NOT_MATCHING_SEARCH_QUERY:
         "Couldn't find Event Triggers matching this query.",
     },
@@ -202,7 +310,8 @@ export const SERVICE_BINDINGS_PANEL = {
   LIST: {
     TITLE: 'Service Bindings',
     ERRORS: {
-      RESOURCES_NOT_FOUND: "This lambda doesn't have any Service Bindings yet.",
+      RESOURCES_NOT_FOUND:
+        "This Function doesn't have any Service Bindings yet.",
       NOT_MATCHING_SEARCH_QUERY:
         "Couldn't find Service Bindings matching this query.",
     },
@@ -240,11 +349,15 @@ export const CODE_AND_DEPENDENCIES_PANEL = {
   DIFF_TOGGLE: 'Diff',
 };
 
-export const FUNCTION_USAGE_KIND = 'knative-service';
+export const FIRST_BREADCRUMB_NODE = 'Functions';
+
+export const FUNCTION_USAGE_KIND = 'function';
+
+export const REFETCH_LAMBDAS_TIMEOUT = 2000;
 
 export const DEFAULT_LAMBDA_CODE = `module.exports = { 
   main: function (event, context) {
-
+    return "Hello World!";
   }
 }`;
 

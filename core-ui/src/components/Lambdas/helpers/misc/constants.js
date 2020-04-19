@@ -3,4 +3,6 @@ export const BACKEND_MODULES = {
   SERVICE_CATALOG_ADDONS: 'servicecatalogaddons',
   APPLICATION: 'application',
   EVENTING: 'eventing',
+  LOGGING: 'logging-loki',
+  GRAFANA: 'grafana',
 };

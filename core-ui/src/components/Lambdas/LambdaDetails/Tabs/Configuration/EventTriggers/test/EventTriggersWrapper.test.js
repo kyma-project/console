@@ -4,6 +4,7 @@ import { render, wait } from '@testing-library/react';
 import {
   withApolloMockProvider,
   lambdaMock,
+  eventTriggerMock,
 } from 'components/Lambdas/helpers/testing';
 import { createSubscriberRef } from 'components/Lambdas/helpers/eventTriggers';
 import {
@@ -96,7 +97,16 @@ describe('EventTriggersWrapper + EventTriggers', () => {
         mocks: [
           subscriptionMock,
           GET_EVENT_ACTIVATIONS_DATA_MOCK(eventActivationsVariables),
-          GET_EVENT_TRIGGERS_DATA_MOCK(eventTriggersVariables),
+          GET_EVENT_TRIGGERS_DATA_MOCK(eventTriggersVariables, [
+            {
+              ...eventTriggerMock,
+              name: 'name1',
+            },
+            {
+              ...eventTriggerMock,
+              name: 'name2',
+            },
+          ]),
         ],
       }),
     );
@@ -105,7 +115,7 @@ describe('EventTriggersWrapper + EventTriggers', () => {
       expect(getByText(EVENT_TRIGGERS_PANEL.LIST.TITLE)).toBeInTheDocument();
       const table = queryByRole('table');
       expect(table).toBeInTheDocument();
-      expect(queryAllByRole('row')).toHaveLength(2); // header + 1 element;
+      expect(queryAllByRole('row')).toHaveLength(3); // header + 2 element;
     });
   });
 });

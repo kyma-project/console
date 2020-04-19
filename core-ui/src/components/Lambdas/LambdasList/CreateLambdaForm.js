@@ -1,10 +1,7 @@
 import React, { useRef } from 'react';
 import LuigiClient from '@kyma-project/luigi-client';
 
-import { FormItem } from 'fundamental-react';
-import { K8sNameInput } from 'react-shared';
-
-import LabelSelectorInput from '../../LabelSelectorInput/LabelSelectorInput';
+import { LambdaNameInput, LabelsInput } from 'components/Lambdas/components';
 
 import { useCreateLambda } from 'components/Lambdas/gql/hooks/mutations';
 
@@ -36,11 +33,8 @@ export default function CreateLambdaForm({ onChange, formElementRef }) {
       onChange={onChange}
       onSubmit={handleSubmit}
     >
-      <FormItem>
-        <K8sNameInput _ref={name} id="lambdaName" kind="Lambda" />
-      </FormItem>
-
-      <LabelSelectorInput labels={labels} onChange={updateLabels} />
+      <LambdaNameInput _ref={name} id="lambdaName" />
+      <LabelsInput labels={labels} onChange={updateLabels} />
     </form>
   );
 }

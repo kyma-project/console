@@ -45,10 +45,6 @@ const openLogsView = (manager, tabName) => {
     collapsed: true,
   });
 
-  if (tabName === 'Configuration') {
-    logsViewHandle.collapse();
-  } else {
-    logsViewHandle.expand();
-  }
+  logsViewHandle.collapse();
   return logsViewHandle;
 };

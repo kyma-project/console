@@ -89,12 +89,12 @@ describe('useLogsView', () => {
     expect(tabButton.textContent).toEqual('test');
 
     expect(mockPathExists).toHaveBeenCalledTimes(4);
-    expect(mockCollapse).toHaveBeenCalledTimes(4);
-    expect(mockExpand).toHaveBeenCalledTimes(1);
+    expect(mockCollapse).toHaveBeenCalledTimes(5);
+    expect(mockExpand).toHaveBeenCalledTimes(0);
     expect(mockOpenAsSplitView).toHaveBeenCalledTimes(3);
 
     unmount();
 
-    expect(mockCollapse).toHaveBeenCalledTimes(5);
+    expect(mockCollapse).toHaveBeenCalledTimes(6);
   });
 });

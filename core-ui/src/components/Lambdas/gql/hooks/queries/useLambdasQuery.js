@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNotification } from 'react-shared';
 import { useQuery, useApolloClient } from '@apollo/react-hooks';
 
@@ -18,6 +18,7 @@ import extractGraphQlErrors from 'shared/graphqlErrorExtractor';
 
 export const useLambdasQuery = ({ namespace }) => {
   const notificationManager = useNotification();
+  const [loadedData, setLoadedData] = useState(false);
   const [lambdas, setLambdas] = useStateWithCallback([]);
   const apolloClient = useApolloClient();
 
@@ -39,7 +40,7 @@ export const useLambdasQuery = ({ namespace }) => {
     namespace,
   };
 
-  const { data, error, loading } = useQuery(GET_LAMBDAS, {
+  const { data, error, loading, refetch } = useQuery(GET_LAMBDAS, {
     variables,
     fetchPolicy: 'network-only',
   });
@@ -47,8 +48,10 @@ export const useLambdasQuery = ({ namespace }) => {
   useEffect(() => {
     if (data && data.functions) {
       setLambdas(data.functions);
+      setLoadedData(true);
     }
-  }, [data, setLambdas]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data]);
 
   useEffect(() => {
     const observer = apolloClient.subscribe({
@@ -87,5 +90,7 @@ export const useLambdasQuery = ({ namespace }) => {
     lambdas,
     error,
     loading,
+    loadedData,
+    refetch,
   };
 };

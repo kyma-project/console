@@ -1,44 +1,53 @@
 import React from 'react';
-import LuigiClient from '@kyma-project/luigi-client';
-import { ActionBar, Button, Breadcrumb } from 'fundamental-react';
+
+import { Button } from 'fundamental-react';
+import { PageHeader } from 'react-shared';
 
 import { useDeleteLambda } from 'components/Lambdas/gql/hooks/mutations';
+
+import LambdaLabels from './LambdaLabels';
+import LambdaStatusCard from './LambdaStatusCard';
+
+import { BUTTONS, FIRST_BREADCRUMB_NODE } from 'components/Lambdas/constants';
+
+import './LambdaDetailsHeader.scss';
+
+const breadcrumbItems = [
+  {
+    name: FIRST_BREADCRUMB_NODE,
+    path: '/',
+  },
+  {
+    name: '',
+  },
+];
 
 export default function LambdaDetailsHeader({ lambda }) {
   const deleteLambda = useDeleteLambda({
     redirect: true,
   });
 
-  function navigateToList() {
-    LuigiClient.linkManager()
-      .fromClosestContext()
-      .navigate('');
-  }
+  const actions = (
+    <Button onClick={() => deleteLambda(lambda)} option="light" type="negative">
+      {BUTTONS.DELETE}
+    </Button>
+  );
 
   return (
-    <header className="fd-has-background-color-background-2">
-      <section className="fd-has-padding-regular fd-has-padding-bottom-none action-bar-wrapper">
-        <section>
-          <Breadcrumb>
-            <Breadcrumb.Item
-              name="Lambdas"
-              url="#"
-              onClick={() => navigateToList()}
-            />
-            <Breadcrumb.Item />
-          </Breadcrumb>
-          <ActionBar.Header title={lambda.name || 'Loading name...'} />
-        </section>
-        <ActionBar.Actions>
-          <Button
-            onClick={() => deleteLambda(lambda)}
-            option="light"
-            type="negative"
-          >
-            Delete
-          </Button>
-        </ActionBar.Actions>
-      </section>
-    </header>
+    <div className="lambda-details-header">
+      <PageHeader
+        title={lambda.name}
+        breadcrumbItems={breadcrumbItems}
+        actions={actions}
+      />
+      <div className="fd-panel-grid fd-panel-grid--3col lambda-details-header__content">
+        <div className="fd-has-grid-column-span-2">
+          <LambdaLabels lambda={lambda} />
+        </div>
+        <div className="fd-has-grid-column-span-1">
+          <LambdaStatusCard lambdaName={lambda.name} status={lambda.status} />
+        </div>
+      </div>
+    </div>
   );
 }

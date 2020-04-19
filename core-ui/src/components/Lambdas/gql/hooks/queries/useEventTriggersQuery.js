@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNotification } from 'react-shared';
 import { useQuery, useApolloClient } from '@apollo/react-hooks';
 
@@ -24,6 +24,7 @@ export const useEventTriggersQuery = ({
   },
 }) => {
   const notificationManager = useNotification();
+  const [loadedData, setLoadedData] = useState(false);
   const [triggers, setTriggers] = useStateWithCallback([]);
   const apolloClient = useApolloClient();
 
@@ -52,8 +53,9 @@ export const useEventTriggersQuery = ({
   });
 
   useEffect(() => {
-    if (data && data.triggers && !triggers.length) {
+    if (!loadedData && data && data.triggers) {
       setTriggers(data.triggers);
+      setLoadedData(true);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);

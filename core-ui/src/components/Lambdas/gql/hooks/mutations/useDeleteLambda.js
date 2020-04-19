@@ -8,7 +8,10 @@ import extractGraphQlErrors from 'shared/graphqlErrorExtractor';
 import { formatMessage } from 'components/Lambdas/helpers/misc';
 import { GQL_MUTATIONS, BUTTONS } from 'components/Lambdas/constants';
 
-export const useDeleteLambda = ({ redirect = false }) => {
+export const useDeleteLambda = ({
+  redirect = false,
+  onSuccessCallback = () => void 0,
+}) => {
   const notificationManager = useNotification();
   const [deleteLambdaMutation] = useMutation(DELETE_LAMBDA);
 
@@ -53,6 +56,9 @@ export const useDeleteLambda = ({ redirect = false }) => {
         content: message,
       });
 
+      if (onSuccessCallback && typeof onSuccessCallback === 'function') {
+        onSuccessCallback();
+      }
       if (redirect) {
         LuigiClient.linkManager()
           .fromClosestContext()
