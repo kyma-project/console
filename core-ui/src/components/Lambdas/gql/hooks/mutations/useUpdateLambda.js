@@ -38,7 +38,7 @@ export const useUpdateLambda = ({
     });
   }
 
-  async function updateLambda(updatedData) {
+  async function updateLambda(updatedData, userCallback = () => {}) {
     try {
       const params = {
         ...prepareUpdateLambdaInput(lambda),
@@ -68,8 +68,10 @@ export const useUpdateLambda = ({
       notificationManager.notifySuccess({
         content: message,
       });
+      userCallback({ ok: true });
     } catch (err) {
       handleError(err);
+      userCallback({ ok: false });
     }
   }
 

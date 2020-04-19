@@ -18,7 +18,7 @@ export function LambdaReplicas({ replicas, disabledForm, setReplicas }) {
         <Input
           disabled={disabledForm}
           noLabel
-          placeholder={'Min replicas'}
+          placeholder={'Minimum replicas'}
           type="number"
           value={replicas.min}
           onChange={e => setReplicas({ ...replicas, min: e.target.value })}

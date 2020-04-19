@@ -35,10 +35,14 @@ export function ResourcesManagement({ lambda }) {
   });
 
   function handleSave() {
-    updateLambda({
-      replicas,
-      resources,
-    });
+    const callback = ({ ok }) => {
+      if (!ok) {
+        setReplicas(defaultedReplicas);
+        setResources(defaultedResources);
+      }
+    };
+
+    updateLambda({ replicas, resources }, callback);
   }
 
   const saveText = RESOURCES_MANAGEMENT_PANEL.EDIT_MODAL.OPEN_BUTTON.TEXT.SAVE;
@@ -81,14 +85,14 @@ export function ResourcesManagement({ lambda }) {
       </Panel.Header>
       <Panel.Body className="fd-has-padding-xs">
         <LambdaReplicas
-          replicas={disabledForm ? defaultedReplicas : replicas}
+          replicas={replicas}
           disabledForm={disabledForm}
           setReplicas={setReplicas}
         />
       </Panel.Body>
       <Panel.Body className="fd-has-padding-xs">
         <LambdaResources
-          resources={disabledForm ? defaultedResources : resources}
+          resources={resources}
           disabledForm={disabledForm}
           setResources={setResources}
         />
