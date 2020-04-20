@@ -87,6 +87,7 @@ export const customOptionsRenderer = opt => {
 };
 
 export const setCurrentLocation = () => {
+  // dex redirects to /#access_token=... we don't want to store this address
   if (!window.location.hash) {
     const location = window.location.href;
     localStorage.setItem('console.location', location);
