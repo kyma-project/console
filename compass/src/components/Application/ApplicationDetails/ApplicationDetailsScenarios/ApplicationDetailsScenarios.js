@@ -2,9 +2,10 @@ import React from 'react';
 import { useMutation } from '@apollo/react-hooks';
 import PropTypes from 'prop-types';
 import LuigiClient from '@luigi-project/client';
-import { GenericList, useNotification } from 'react-shared';
-import ApplicationScenarioModal from './ApplicationScenarioModal.container';
+import { GenericList } from 'react-shared';
+import AssignScenarioModal from './../../../Shared/AssignScenario/AssignScenarioModal.container';
 import { ApplicationQueryContext } from './../../ApplicationDetails/ApplicationDetails.component';
+import { SEND_NOTIFICATION } from '../../../../gql';
 
 import { SET_APPLICATION_SCENARIOS, DELETE_SCENARIO_LABEL } from '../../gql';
 
@@ -17,20 +18,20 @@ export default function ApplicationDetailsScenarios({
   applicationId,
   scenarios,
 }) {
-  const notificationManager = useNotification();
+  const [sendNotification] = useMutation(SEND_NOTIFICATION);
   const applicationQuery = React.useContext(ApplicationQueryContext);
   const [updateScenarios] = useMutation(SET_APPLICATION_SCENARIOS);
   const [deleteScenarios] = useMutation(DELETE_SCENARIO_LABEL);
   async function handleScenariosUnassign(applicationId, scenarios) {
     console.log('handleScenariosUnassign');
     if (scenarios.length) {
-      await updateScenarios({
+      return await updateScenarios({
         variables: { id: applicationId, scenarios: scenarios },
       });
-    } else {
-      await deleteScenarios({ variables: { id: applicationId } });
     }
+    return await deleteScenarios({ variables: { id: applicationId } });
   }
+
   async function unassignScenario(entry) {
     const scenarioName = entry.scenario;
 
@@ -48,8 +49,14 @@ export default function ApplicationDetailsScenarios({
             scenarios.filter(scenario => scenario !== scenarioName),
           );
           applicationQuery.refetch();
-          notificationManager.notifySuccess({
-            content: `Scenario "${scenarioName}" removed from application.`,
+          sendNotification({
+            variables: {
+              content: `Scenario "${scenarioName}" removed from application.`,
+              title: `${scenarioName}`,
+              color: '#359c46',
+              icon: 'accept',
+              instanceName: scenarioName,
+            },
           });
         } catch (error) {
           console.warn(error);
@@ -76,11 +83,14 @@ export default function ApplicationDetailsScenarios({
 
   const extraHeaderContent = (
     <header>
-      <ApplicationScenarioModal
+      <AssignScenarioModal
         entityId={applicationId}
         scenarios={scenarios}
         notSelectedMessage={'Application is not assigned to any scenario.'}
         entityQuery={applicationQuery}
+        updateScenarios={(applicationId, scenarios) =>
+          handleScenariosUnassign(applicationId, scenarios)
+        }
       />
     </header>
   );

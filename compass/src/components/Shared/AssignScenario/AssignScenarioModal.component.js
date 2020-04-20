@@ -16,7 +16,6 @@ AssignScenarioModal.propTypes = {
   title: PropTypes.string,
 
   updateScenarios: PropTypes.func.isRequired,
-  deleteScenarios: PropTypes.func.isRequired,
   sendNotification: PropTypes.func.isRequired,
 };
 
@@ -41,7 +40,6 @@ export default function AssignScenarioModal(props) {
       scenarios,
       entityId,
       updateScenarios,
-      deleteScenarios,
       sendNotification,
       entityQuery,
     } = props;
@@ -51,12 +49,7 @@ export default function AssignScenarioModal(props) {
     }
 
     try {
-      if (currentScenarios.length) {
-        await updateScenarios(entityId, currentScenarios);
-      } else {
-        await deleteScenarios(entityId);
-      }
-
+      await updateScenarios(entityId, currentScenarios);
       entityQuery.refetch();
       sendNotification({
         variables: {
