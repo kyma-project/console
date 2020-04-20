@@ -20,8 +20,8 @@ import {
   ServiceClassHeaderTileGrid,
 } from './styled';
 
-import { serviceClassTileTitles } from '../../../variables';
-import { isStringValueEqualToTrue } from '../../../commons/helpers';
+import { serviceClassTileTitles } from '../../../../variables';
+import { isStringValueEqualToTrue } from '../../../../commons/helpers';
 import ProvisionOnlyOnceInfo from '../ProvisionOnlyOnceInfo/ProvisionOnlyOnceInfo.component';
 
 const ServiceClassInfo = ({

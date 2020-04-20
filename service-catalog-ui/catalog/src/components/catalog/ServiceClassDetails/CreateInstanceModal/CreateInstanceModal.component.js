@@ -11,9 +11,9 @@ import './CreateInstanceModal.scss';
 import {
   getResourceDisplayName,
   randomNameGenerator,
-} from '../../../commons/helpers';
+} from '../../../../commons/helpers';
 
-import { CustomPropTypes } from '../../../react-shared';
+import { CustomPropTypes } from '../../../../react-shared';
 
 const SERVICE_PLAN_SHAPE = PropTypes.shape({
   name: PropTypes.string.isRequired,

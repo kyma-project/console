@@ -3,18 +3,18 @@ import renderer from 'react-test-renderer';
 import { mount } from 'enzyme';
 import { MockedProvider } from '@apollo/react-testing';
 import { render } from '@testing-library/react';
-import { componentUpdate } from '../../../../testing';
+import { componentUpdate } from '../../../../../testing';
 import {
   mockServiceClass,
   mockPlan,
   planWithImagePullPolicy,
-} from '../../../../testing/serviceClassesMocks';
+} from '../../../../../testing/serviceClassesMocks';
 import {
   createServiceInstanceSuccessfulMock,
   createServiceInstanceErrorMock,
   mockEnvironmentId,
   createServiceInstanceNoPlanSpecSuccessfulMock,
-} from '../../../../testing/queriesMocks';
+} from '../../../../../testing/queriesMocks';
 import CreateInstanceModal from '../CreateInstanceModal.component';
 
 const onCompleted = jest.fn();

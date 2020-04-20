@@ -4,13 +4,12 @@ import { mount } from 'enzyme';
 import { render, wait, fireEvent } from '@testing-library/react';
 import {
   serviceClassAPIruleQuery,
-  serviceClassAPIruleQueryNoPlans,
   mockEnvironmentId,
   serviceClassWithPlans,
-} from '../../../testing/queriesMocks';
+} from '../../../../testing/queriesMocks';
 import ServiceClassDetails, { PlanSelector } from '../ServiceClassDetails';
-import { Spinner } from '../../../react-shared';
-import { componentUpdate } from '../../../testing';
+import { Spinner } from '../../../../react-shared';
+import { componentUpdate } from '../../../../testing';
 import ServiceClassDetailsHeader from '../ServiceClassDetailsHeader/ServiceClassDetailsHeader.component';
 import { mockPlan } from 'testing/serviceClassesMocks';
 

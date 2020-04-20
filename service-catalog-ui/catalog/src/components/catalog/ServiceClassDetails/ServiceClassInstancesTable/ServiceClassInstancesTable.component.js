@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { InstanceStatus, Table } from '@kyma-project/react-components';
 import LuigiClient from '@kyma-project/luigi-client';
 
-import { serviceClassConstants } from '../../../variables';
+import { serviceClassConstants } from '../../../../variables';
 
 import { Link, LinkButton } from './styled';
 

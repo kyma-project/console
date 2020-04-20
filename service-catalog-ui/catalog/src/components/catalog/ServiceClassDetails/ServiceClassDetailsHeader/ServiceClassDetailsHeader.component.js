@@ -11,8 +11,8 @@ import {
   HeaderWrapper,
 } from './styled';
 
-import { serviceClassConstants } from '../../../variables';
-import { isService } from '../../../commons/helpers';
+import { serviceClassConstants } from '../../../../variables';
+import { isService } from '../../../../commons/helpers';
 
 const ServiceClassDetailsHeader = ({
   creationTimestamp,
