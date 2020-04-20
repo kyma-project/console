@@ -45,8 +45,10 @@ export class ApplicationDetailsComponent implements OnInit, OnDestroy {
 
   entryEventHandler = this.getEntryEventHandler();
   @ViewChild('editbindingsmodal') editbindingsmodal: EditBindingsModalComponent;
-  @ViewChild('bindingsdetailsmodal') bindingsdetailsmodal: BindingsDetailsModalComponent;
-  @ViewChild('createbindingsmodal') createbindingsmodal: CreateBindingsModalComponent;
+  @ViewChild('bindingsdetailsmodal')
+  bindingsdetailsmodal: BindingsDetailsModalComponent;
+  @ViewChild('createbindingsmodal')
+  createbindingsmodal: CreateBindingsModalComponent;
   @ViewChild('fetchModal') fetchModal: Copy2ClipboardModalComponent;
   @ViewChild('infoModal') infoModal: InformationModalComponent;
   @ViewChild('editApplicationModal')
@@ -165,14 +167,14 @@ export class ApplicationDetailsComponent implements OnInit, OnDestroy {
         res => {
           res
             ? this.fetchModal.show(
-              'URL to connect Application',
-              res.connectorService.url,
-              'Copy the following URL and use it at the external system that you would like to connect to:'
-            )
+                'URL to connect Application',
+                res.connectorService.url,
+                'Copy the following URL and use it at the external system that you would like to connect to:'
+              )
             : this.infoModal.show(
-              'Error',
-              'There is no URL available to connect your external systems to the Application'
-            );
+                'Error',
+                'There is no URL available to connect your external systems to the Application'
+              );
         },
         err => {
           this.infoModal.show('Error', err);
@@ -196,18 +198,17 @@ export class ApplicationDetailsComponent implements OnInit, OnDestroy {
             err => {
               this.infoModal.show(
                 'Error',
-                `There was an error while deleting application ${
-                this.application.name
-                }: ${err}`
+                `There was an error while deleting application ${this.application.name}: ${err}`
               );
             }
           );
       })
-      .catch(() => { });
+      .catch(() => {});
   }
 
-  hasType(entries, type) {
-    return _.some(entries, { type });
+  getNumberOf(type: string, { entries }) {
+    return entries.filter((entry: { type: string }) => entry.type === type)
+      .length;
   }
 
   public determineClass(entry) {
