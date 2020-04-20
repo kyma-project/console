@@ -162,7 +162,7 @@ export function ResourcesManagement({ lambda }) {
             )}
             <Button
               glyph={disabledForm ? 'edit' : 'save'}
-              option={disabledForm ? 'light' : 'emphasized'}
+              option={disabledForm ? 'light' : 'default'}
               typeAttr="submit"
               disabled={!formState.isValid}
             >

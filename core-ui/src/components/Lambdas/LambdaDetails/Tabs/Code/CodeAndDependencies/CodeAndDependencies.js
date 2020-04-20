@@ -56,7 +56,7 @@ export default function CodeAndDependencies({ lambda }) {
   const button = (
     <Button
       glyph="save"
-      option="light"
+      option={disableButton ? 'light' : 'default'}
       typeAttr="button"
       disabled={disableButton}
       onClick={handleSave}
