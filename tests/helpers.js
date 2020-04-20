@@ -42,8 +42,11 @@ export const adminUser = Role(
     await t
       .typeText('#login', config.login)
       .typeText('#password', config.password)
-      .click('#submit-login')
-      .wait(5000);
+      .click('#submit-login');
+
+    await Selector('#app', {
+      timeout: 5000,
+    })();
   },
   { preserveUrl: true },
 );
