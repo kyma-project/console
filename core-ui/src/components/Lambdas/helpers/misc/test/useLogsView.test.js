@@ -88,13 +88,13 @@ describe('useLogsView', () => {
     });
     expect(tabButton.textContent).toEqual('test');
 
-    expect(mockPathExists).toHaveBeenCalledTimes(4);
-    expect(mockCollapse).toHaveBeenCalledTimes(5);
+    expect(mockPathExists).toHaveBeenCalledTimes(3);
+    expect(mockCollapse).toHaveBeenCalledTimes(3);
     expect(mockExpand).toHaveBeenCalledTimes(0);
-    expect(mockOpenAsSplitView).toHaveBeenCalledTimes(3);
+    expect(mockOpenAsSplitView).toHaveBeenCalledTimes(2);
 
     unmount();
 
-    expect(mockCollapse).toHaveBeenCalledTimes(6);
+    expect(mockCollapse).toHaveBeenCalledTimes(4);
   });
 });
