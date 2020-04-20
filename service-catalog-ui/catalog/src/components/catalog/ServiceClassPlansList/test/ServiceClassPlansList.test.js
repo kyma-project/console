@@ -7,13 +7,13 @@ import {
 } from '@testing-library/react';
 import ServiceClassPlansList, { DocTypesList } from '../ServiceClassPlansList';
 import { MockedProvider } from '@apollo/react-testing';
-import { serviceClassConstants } from '../../../variables';
+import { serviceClassConstants } from '../../../../variables';
 import {
   serviceClassPlansQuery,
   serviceClassNoPlansQuery,
   mockEnvironmentId,
-} from '../../../testing/queriesMocks';
-import { assetGroupWithManyAssets } from '../../../testing/serviceClassesMocks';
+} from '../../../../testing/queriesMocks';
+import { assetGroupWithManyAssets } from '../../../../testing/serviceClassesMocks';
 
 const mockNavigate = jest.fn();
 const mockShowConfirmationModal = jest.fn(() => Promise.resolve());

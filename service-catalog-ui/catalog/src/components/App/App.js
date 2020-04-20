@@ -5,7 +5,7 @@ import { Modal, BackendModuleDisabled } from '@kyma-project/react-components';
 import { NotificationProvider } from '../../shared/contexts/NotificationContext';
 import ServiceClassList from '../catalog/ServiceClassList/ServiceClassList';
 import ServiceClassDetails from '../ServiceClassDetails/ServiceClassDetails';
-import ServiceClassPlansList from '../ServiceClassPlansList/ServiceClassPlansList';
+import ServiceClassPlansList from '../catalog/ServiceClassPlansList/ServiceClassPlansList';
 
 import { backendModuleExists } from '../../commons/helpers';
 

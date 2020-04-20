@@ -2,11 +2,16 @@ import React from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import LuigiClient from '@kyma-project/luigi-client';
 import { getServiceClassPlans } from './queries';
-import { serviceClassConstants } from '../../variables';
+import { serviceClassConstants } from '../../../variables';
 import PropTypes from 'prop-types';
-import { Spinner, PageHeader, GenericList, Tooltip } from '../../react-shared';
-import { getResourceDisplayName, isService } from '../../commons/helpers';
-import { sortByDisplayName } from '../../shared/sorting';
+import {
+  Spinner,
+  PageHeader,
+  GenericList,
+  Tooltip,
+} from '../../../react-shared';
+import { getResourceDisplayName, isService } from '../../../commons/helpers';
+import { sortByDisplayName } from '../../../shared/sorting';
 import { Badge } from 'fundamental-react';
 import './ServiceClassPlansList.scss';
 
