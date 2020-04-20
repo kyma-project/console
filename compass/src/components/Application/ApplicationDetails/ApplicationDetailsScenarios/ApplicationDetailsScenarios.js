@@ -22,8 +22,8 @@ export default function ApplicationDetailsScenarios({
   const applicationQuery = React.useContext(ApplicationQueryContext);
   const [updateScenarios] = useMutation(SET_APPLICATION_SCENARIOS);
   const [deleteScenarios] = useMutation(DELETE_SCENARIO_LABEL);
+
   async function handleScenariosUnassign(applicationId, scenarios) {
-    console.log('handleScenariosUnassign');
     if (scenarios.length) {
       return await updateScenarios({
         variables: { id: applicationId, scenarios: scenarios },
