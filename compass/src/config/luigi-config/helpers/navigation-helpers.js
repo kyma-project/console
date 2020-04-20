@@ -86,7 +86,7 @@ export const customOptionsRenderer = opt => {
   } svelte-1ldh2pm" title="${label}">${label}</a>`;
 };
 
-const setCurrentLocation = () => {
+export const setCurrentLocation = () => {
   if (!window.location.hash) {
     const location = window.location.href;
     localStorage.setItem('console.location', location);
