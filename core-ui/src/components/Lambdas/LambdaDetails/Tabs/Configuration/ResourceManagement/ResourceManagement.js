@@ -82,7 +82,7 @@ export function ResourcesManagement({ lambda }) {
     },
   };
 
-  const { register, handleSubmit, errors, formState, reset } = useForm({
+  const { register, handleSubmit, errors, formState, setValue } = useForm({
     validationSchema: schema,
     mode: 'onChange',
     defaultValues: {
@@ -101,10 +101,20 @@ export function ResourcesManagement({ lambda }) {
     type: UPDATE_TYPE.RESOURCES_AND_REPLICAS,
   });
 
+  const resetFields = () => {
+    setValue(inputNames.replicas.min, defaultedReplicas.min);
+    setValue([inputNames.replicas.min], defaultedReplicas.min);
+    setValue([inputNames.replicas.max], defaultedReplicas.max);
+    setValue([inputNames.requests.cpu], defaultedResources.requests.cpu);
+    setValue([inputNames.limits.cpu], defaultedResources.limits.cpu);
+    setValue([inputNames.requests.memory], defaultedResources.requests.memory);
+    setValue([inputNames.limits.memory], defaultedResources.limits.memory);
+  };
+
   const onSubmit = data => {
     const callback = ({ ok }) => {
       if (!ok) {
-        reset();
+        resetFields();
       }
     };
 
@@ -143,7 +153,7 @@ export function ResourcesManagement({ lambda }) {
                 glyph="sys-cancel"
                 type="negative"
                 onClick={() => {
-                  reset();
+                  resetFields();
                   setDisabledForm(true);
                 }}
               >

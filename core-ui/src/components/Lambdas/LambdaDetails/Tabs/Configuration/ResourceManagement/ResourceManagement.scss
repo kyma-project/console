@@ -22,6 +22,9 @@
     }
     > .fd-panel__actions {
       /* Spin Buttons modified */
+      input[type='number'] {
+        position: relative; // do not delete this
+      }
       > input[type='number']::-webkit-outer-spin-button,
       > input[type='number']::-webkit-inner-spin-button {
         -webkit-appearance: none;
