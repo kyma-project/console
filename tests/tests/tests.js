@@ -76,7 +76,9 @@ testIf(
     await retry(t, 3, findActiveFrame);
     await retry(t, 3, t => {
       return t
-        .expect(Selector('button').withText(/.*create application.*/i).exists)
+        .expect(
+          Selector('.fd-action-bar__title').withText('Applications').exists,
+        )
         .ok();
     });
   },
