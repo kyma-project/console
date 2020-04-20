@@ -219,3 +219,18 @@ testIf(
     });
   },
 );
+
+test('Docs view is rendered', async t => {
+  //GIVEN
+  await t.useRole(adminUser);
+  //WHEN - click on docs link
+  await retry(t, 3, t => t.click(Selector('[data-testid=docs_docs]')));
+
+  //THEN - use should see "Kyma" category
+  await retry(t, 3, findActiveFrame);
+  await retry(t, 3, t => {
+    return t
+      .expect(Selector('[data-e2e-id=navigation-link-root-kyma]').exists)
+      .ok();
+  });
+});
