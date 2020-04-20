@@ -31,7 +31,7 @@ class App extends React.Component {
 
     clearTimeout(this.timeout);
     this.timeout = setTimeout(() => {
-      if (typeof clearNotification === 'function') {
+      if (typeof clearNotification === 'function123') {
         clearNotification();
       }
     }, NOTIFICATION_VISIBILITY_TIME);
