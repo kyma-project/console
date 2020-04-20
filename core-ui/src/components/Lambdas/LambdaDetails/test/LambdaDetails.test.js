@@ -7,6 +7,17 @@ import { LAMBDA_DETAILS } from 'components/Lambdas/constants';
 
 import LambdaDetails from '../LambdaDetails';
 
+// remove it after add 'mutationobserver-shim' to jest config https://github.com/jsdom/jsdom/issues/639
+const mutationObserverMock = jest.fn(function MutationObserver(callback) {
+  this.observe = jest.fn();
+  this.disconnect = jest.fn();
+  // Optionally add a trigger() method to manually trigger a change
+  this.trigger = mockedMutationsList => {
+    callback(mockedMutationsList, this);
+  };
+});
+global.MutationObserver = mutationObserverMock;
+
 jest.mock('@kyma-project/luigi-client', () => {
   return {
     linkManager: () => ({

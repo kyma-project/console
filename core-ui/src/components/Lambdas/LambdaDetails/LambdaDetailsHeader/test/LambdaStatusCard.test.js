@@ -17,7 +17,7 @@ jest.mock('@kyma-project/luigi-client', () => {
 });
 
 describe('LambdaStatusCard', () => {
-  it('should render status card with appropriate message - Initializing phase', async () => {
+  it('should render status card with only title - Initializing phase', async () => {
     const { getByText } = render(
       <LambdaStatusCard
         lambdaName={lambdaMock.name}
@@ -26,7 +26,6 @@ describe('LambdaStatusCard', () => {
     );
 
     expect(getByText(LAMBDA_PHASES.INITIALIZING.TITLE)).toBeInTheDocument();
-    expect(getByText(LAMBDA_PHASES.INITIALIZING.MESSAGE)).toBeInTheDocument();
   });
 
   it('should render link for modal with error logs if status has error phase - Failed phase', async () => {
