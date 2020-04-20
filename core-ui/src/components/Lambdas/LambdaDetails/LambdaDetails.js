@@ -16,6 +16,9 @@ export default function LambdaDetails({ lambda }) {
     <>
       <LambdaDetailsHeader lambda={lambda} />
       <TabGroup>
+        <Tab key="lambda-code" id="lambda-code" title="Code">
+          <CodeTab lambda={lambda} bindingUsages={bindingUsages} />
+        </Tab>
         <Tab
           key="lambda-configuration"
           id="lambda-configuration"
@@ -25,9 +28,6 @@ export default function LambdaDetails({ lambda }) {
             lambda={lambda}
             setBindingUsages={setBindingUsages}
           />
-        </Tab>
-        <Tab key="lambda-code" id="lambda-code" title="Code">
-          <CodeTab lambda={lambda} bindingUsages={bindingUsages} />
         </Tab>
       </TabGroup>
     </>
