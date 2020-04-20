@@ -36,6 +36,30 @@ test('Namespaces view is rendered', async t => {
   });
 });
 
+test('Deployments view is rendered', async t => {
+  //GIVEN
+  await t.useRole(adminUser);
+  const deploymentsLink = leftNavLinkSelector('Deployments');
+  //WHEN
+  await retry(t, 3, findActiveFrame);
+
+  await retry(t, 3, t => {
+    return t
+      .click(Selector('.fd-panel__title').withText('default'))
+      .switchToMainWindow()
+      .click(deploymentsLink);
+  });
+
+  //THEN
+  await retry(t, 3, findActiveFrame);
+
+  await retry(t, 3, t => {
+    return t
+      .expect(Selector('.fd-action-bar__title').withText('Deployments').exists)
+      .ok();
+  });
+});
+
 testIf(
   !toBoolean(config.apiPackagesEnabled),
   'Applications view is rendered',
