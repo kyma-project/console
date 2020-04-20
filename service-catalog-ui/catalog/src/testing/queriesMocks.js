@@ -1,4 +1,4 @@
-import { getAllServiceClasses } from '../components/ServiceClassList/queries';
+import { getAllServiceClasses } from '../components/catalog/ServiceClassList/queries';
 import { getServiceClass } from '../components/ServiceClassDetails/queries';
 import { getServiceClassPlans } from '../components/ServiceClassPlansList/queries';
 import { createServiceInstance } from '../components/ServiceClassDetails/CreateInstanceModal/mutations';

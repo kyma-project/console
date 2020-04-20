@@ -1,8 +1,8 @@
 import React from 'react';
 import classnames from 'classnames';
-import { Tooltip } from '../../../react-shared';
+import { Tooltip } from '../../../../react-shared';
 
-import { isStringValueEqualToTrue } from '../../../commons/helpers';
+import { isStringValueEqualToTrue } from '../../../../commons/helpers';
 import './InstancesIndicator.scss';
 
 const tooltipDescription = {

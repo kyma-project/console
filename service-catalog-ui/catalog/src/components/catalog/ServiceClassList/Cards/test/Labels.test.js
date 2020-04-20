@@ -1,7 +1,7 @@
 import { render } from 'enzyme';
 import React from 'react';
 import { Labels } from '../Labels';
-import { expectKnownConsoleWarnings } from '../../../../testing';
+import { expectKnownConsoleWarnings } from '../../../../../testing';
 
 const consoleWarn = jest.spyOn(global.console, 'warn').mockImplementation();
 afterAll(() => {

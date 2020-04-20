@@ -1,7 +1,7 @@
 import React from 'react';
 import { Label, Tooltip, PanelFooter } from '@kyma-project/react-components';
 import './Labels.scss';
-import { isStringValueEqualToTrue } from '../../../commons/helpers';
+import { isStringValueEqualToTrue } from '../../../../commons/helpers';
 const labelsDescription = {
   'connected-app':
     'This Service Class is connected to a given application by Application Connector.',

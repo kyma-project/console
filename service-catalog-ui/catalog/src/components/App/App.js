@@ -3,7 +3,7 @@ import { Switch, Route, BrowserRouter } from 'react-router-dom';
 import { Modal, BackendModuleDisabled } from '@kyma-project/react-components';
 
 import { NotificationProvider } from '../../shared/contexts/NotificationContext';
-import ServiceClassList from '../ServiceClassList/ServiceClassList';
+import ServiceClassList from '../catalog/ServiceClassList/ServiceClassList';
 import ServiceClassDetails from '../ServiceClassDetails/ServiceClassDetails';
 import ServiceClassPlansList from '../ServiceClassPlansList/ServiceClassPlansList';
 

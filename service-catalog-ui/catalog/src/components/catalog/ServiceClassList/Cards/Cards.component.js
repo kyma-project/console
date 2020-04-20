@@ -2,13 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import LuigiClient from '@kyma-project/luigi-client';
 
-import { DOCUMENTATION_PER_PLAN_LABEL } from '../../../shared/constants';
+import { DOCUMENTATION_PER_PLAN_LABEL } from '../../../../shared/constants';
 import Card from './Card.component';
 
 import {
   getResourceDisplayName,
   isStringValueEqualToTrue,
-} from '../../../commons/helpers';
+} from '../../../../commons/helpers';
 
 const Cards = ({ items }) => {
   const goToDetails = item => {

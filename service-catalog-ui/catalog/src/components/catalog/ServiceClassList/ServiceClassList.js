@@ -12,7 +12,7 @@ import {
 import { Identifier } from 'fundamental-react';
 
 import { getAllServiceClasses } from './queries';
-import { serviceClassConstants } from '../../variables';
+import { serviceClassConstants } from '../../../variables';
 import { determineDisplayedServiceClasses } from './searchUtils';
 
 import Cards from './Cards/Cards.component';
