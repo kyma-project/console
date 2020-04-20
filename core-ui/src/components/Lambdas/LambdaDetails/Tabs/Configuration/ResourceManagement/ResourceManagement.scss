@@ -18,7 +18,46 @@
     display: block;
     padding: 10px 0;
     > .fd-panel__head {
-      padding-bottom: 5px;
+      padding-bottom: 10px;
+    }
+    > .fd-panel__actions {
+      /* Spin Buttons modified */
+      > input[type='number']::-webkit-outer-spin-button,
+      > input[type='number']::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        background: #fff
+          url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAkAAAAJCAYAAADgkQYQAAAAKUlEQVQYlWNgwAT/sYhhKPiPT+F/LJgEsHv37v+EMGkmkuImoh2NoQAANlcun/q4OoYAAAAASUVORK5CYII=)
+          no-repeat center center;
+        width: 1em;
+        border-left: 1px solid #bbb;
+        opacity: 0.5; /* shows Spin Buttons per default (Chrome >= 39) */
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        top: 0;
+      }
+
+      > input[type='number']::-webkit-inner-spin-button:hover,
+      > input[type='number']::-webkit-inner-spin-button:active {
+        box-shadow: 0 0 2px #0cf;
+        opacity: 0.8;
+      }
+
+      /* Override browser form filling */
+      > input:-webkit-autofill {
+        background: black;
+      }
+
+      > input.resource_input:disabled {
+        color: black;
+        opacity: 0.5;
+        border-color: rgb(163, 163, 163);
+      }
+
+      > div.error_message {
+        padding-top: 5px;
+        color: #ee0000;
+      }
     }
   }
 }

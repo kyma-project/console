@@ -1,6 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { InlineHelp, FormLabel } from 'fundamental-react';
 
 const defaultHelpText = `
               The name must consist of lower case alphanumeric characters or dashes,

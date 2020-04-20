@@ -124,6 +124,19 @@ export const RESOURCES_MANAGEMENT_PANEL = {
       TEXT: 'Save',
     },
   },
+  ERROR_MESSAGES: {
+    CPU:
+      'CPU value has to be expressed as  fixed-point number or in "milicpu", example: 100m, 0.1, 1',
+    MEMORY:
+      'Memory value has to be fixed-point number using one of these suffixes: Gi, Mi, Ki. Example: 50Mi, 1000.5Ki, 0.1Gi',
+    MIN_REPLICAS_TOO_HIGH:
+      'Minimum number of replicas has to be equal to or lower than maximum',
+    MIN_REPLICAS_NON_NEGATIVE: 'Minimum replicas must be non-negative integer',
+    MAX_REPLICAS_TOO_LOW:
+      'Maximum number of replicas has to be equal or greater than minimum',
+    MAX_REPLICAS_NON_NEGATIVE: 'Maximum replicas must be non-negative integer',
+  },
+
   REPLICAS_MODE: {
     MIN_NUMBER: {
       TITLE: 'Minimum number of replicas',

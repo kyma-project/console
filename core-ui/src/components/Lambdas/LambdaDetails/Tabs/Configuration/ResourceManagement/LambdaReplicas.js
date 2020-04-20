@@ -7,6 +7,7 @@ import { Row } from './TableElements/Row';
 import { RESOURCES_MANAGEMENT_PANEL } from 'components/Lambdas/constants';
 
 import './ResourceManagement.scss';
+import { errorClassName, inputClassName, inputNames } from './shared';
 
 export function LambdaReplicas({ disabledForm, register, errors }) {
   const panels = [
@@ -17,13 +18,14 @@ export function LambdaReplicas({ disabledForm, register, errors }) {
       action: (
         <>
           <Input
-            name={'minReplicas'}
+            className={inputClassName}
+            name={inputNames.replicas.min}
             disabled={disabledForm}
             type="number"
             _ref={register}
             min="0"
           />
-          <span>{errors?.minReplicas?.message}</span>
+          <div className={errorClassName}>{errors?.minReplicas?.message}</div>
         </>
       ),
     },
@@ -34,13 +36,14 @@ export function LambdaReplicas({ disabledForm, register, errors }) {
       action: (
         <>
           <Input
+            className={inputClassName}
             disabled={disabledForm}
             min="0"
-            name="maxReplicas"
+            name={inputNames.replicas.max}
             type="number"
             _ref={register}
           />
-          <span>{errors?.maxReplicas?.message}</span>
+          <div className={errorClassName}>{errors?.maxReplicas?.message}</div>
         </>
       ),
     },

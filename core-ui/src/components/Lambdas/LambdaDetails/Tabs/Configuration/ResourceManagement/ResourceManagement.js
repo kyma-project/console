@@ -6,46 +6,63 @@ import { useUpdateLambda, UPDATE_TYPE } from 'components/Lambdas/gql/hooks';
 import { LambdaReplicas } from './LambdaReplicas';
 import { LambdaResources } from './LambdaResources';
 import './ResourceManagement.scss';
+import { inputNames } from './shared';
 
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 
 const cpuRegexp = /(^\d+(\.\d+)?$)|(^\d+[m]$)/;
-const memoryRegexp = /^\d+(\.\d+)?(Gi|Mi|Ki|G|M|K)?$/;
+const memoryRegexp = /^\d+(\.\d+)?(Gi|Mi|Ki)$/;
 
 const schema = yup.object().shape({
-  minReplicas: yup
+  [inputNames.replicas.min]: yup
     .number()
-    .min(0)
-    .integer()
+    .transform((val, originalVal) => {
+      return originalVal === '' ? -1 : val; // -1 so that instead of throwing errors about NaN it will pass validation here, but fail on min(0) with nicer error message
+    })
+    .min(0, RESOURCES_MANAGEMENT_PANEL.ERROR_MESSAGES.MIN_REPLICAS_NON_NEGATIVE)
+    .integer(
+      RESOURCES_MANAGEMENT_PANEL.ERROR_MESSAGES.MIN_REPLICAS_NON_NEGATIVE,
+    )
     .test(
-      'match',
-      'Minimum number of replicas has to be equal to or lower than maximum',
+      'matchMinReplicas',
+      RESOURCES_MANAGEMENT_PANEL.ERROR_MESSAGES.MIN_REPLICAS_TOO_HIGH,
       function(arg) {
         return arg <= this.parent.maxReplicas;
       },
     ),
-  maxReplicas: yup
+  [inputNames.replicas.max]: yup
     .number()
-    .min(0)
-    .integer()
+    .transform((val, originalVal) => {
+      return originalVal === '' ? -1 : val; // -1 so that instead of throwing errors about NaN it will pass validation here, but fail on min(0) with nicer error message
+    })
+    .min(0, RESOURCES_MANAGEMENT_PANEL.ERROR_MESSAGES.MAX_REPLICAS_NON_NEGATIVE)
+    .integer(
+      RESOURCES_MANAGEMENT_PANEL.ERROR_MESSAGES.MAX_REPLICAS_NON_NEGATIVE,
+    )
     .test(
-      'match',
-      'Maximum number of replicas has to be equal or greater than minimum',
+      'matchMaxReplicas',
+      RESOURCES_MANAGEMENT_PANEL.ERROR_MESSAGES.MAX_REPLICAS_TOO_LOW,
       function(arg) {
         return arg >= this.parent.minReplicas;
       },
     ),
-  requestsCpu: yup
-    .string()
-    .matches(cpuRegexp, { excludeEmptyString: true, message: 'XD' }),
-  limitsCpu: yup.string().matches(cpuRegexp, { excludeEmptyString: true }),
-  requestsMemory: yup
-    .string()
-    .matches(memoryRegexp, { excludeEmptyString: true }),
-  limitsMemory: yup
-    .string()
-    .matches(memoryRegexp, { excludeEmptyString: true }),
+  [inputNames.requests.cpu]: yup.string().matches(cpuRegexp, {
+    excludeEmptyString: true,
+    message: RESOURCES_MANAGEMENT_PANEL.ERROR_MESSAGES.CPU,
+  }),
+  [inputNames.limits.cpu]: yup.string().matches(cpuRegexp, {
+    excludeEmptyString: true,
+    message: RESOURCES_MANAGEMENT_PANEL.ERROR_MESSAGES.CPU,
+  }),
+  [inputNames.requests.memory]: yup.string().matches(memoryRegexp, {
+    excludeEmptyString: true,
+    message: RESOURCES_MANAGEMENT_PANEL.ERROR_MESSAGES.MEMORY,
+  }),
+  [inputNames.limits.memory]: yup.string().matches(memoryRegexp, {
+    excludeEmptyString: true,
+    message: RESOURCES_MANAGEMENT_PANEL.ERROR_MESSAGES.MEMORY,
+  }),
 });
 
 export function ResourcesManagement({ lambda }) {
@@ -69,12 +86,12 @@ export function ResourcesManagement({ lambda }) {
     validationSchema: schema,
     mode: 'onChange',
     defaultValues: {
-      minReplicas: defaultedReplicas.min,
-      maxReplicas: defaultedReplicas.max,
-      requestsCpu: defaultedResources.requests.cpu,
-      limitsCpu: defaultedResources.limits.cpu,
-      requestsMemory: defaultedResources.requests.memory,
-      limitsMemory: defaultedResources.limits.memory,
+      [inputNames.replicas.min]: defaultedReplicas.min,
+      [inputNames.replicas.max]: defaultedReplicas.max,
+      [inputNames.requests.cpu]: defaultedResources.requests.cpu,
+      [inputNames.limits.cpu]: defaultedResources.limits.cpu,
+      [inputNames.requests.memory]: defaultedResources.requests.memory,
+      [inputNames.limits.memory]: defaultedResources.limits.memory,
     },
   });
 
@@ -90,6 +107,7 @@ export function ResourcesManagement({ lambda }) {
         reset();
       }
     };
+
     setDisabledForm(prev => !prev);
 
     if (!disabledForm) {

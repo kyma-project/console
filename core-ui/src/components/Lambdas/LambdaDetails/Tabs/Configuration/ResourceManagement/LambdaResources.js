@@ -6,6 +6,7 @@ import { Input } from './TableElements/Input';
 import { Row } from './TableElements/Row';
 
 import { RESOURCES_MANAGEMENT_PANEL } from 'components/Lambdas/constants';
+import { errorClassName, inputClassName, inputNames } from './shared';
 
 export function LambdaResources({ disabledForm, register, errors }) {
   return (
@@ -25,14 +26,17 @@ export function LambdaResources({ disabledForm, register, errors }) {
             action={
               <>
                 <Input
+                  className={inputClassName}
                   disabled={disabledForm}
                   _ref={register}
-                  name="requestsMemory"
+                  name={inputNames.requests.memory}
                   placeholder={
                     RESOURCES_MANAGEMENT_PANEL.RESOURCES.MEMORY.TITLE
                   }
                 />
-                <span>{errors?.requestsMemory?.message}</span>
+                <div className={errorClassName}>
+                  {errors?.requestsMemory?.message}
+                </div>
               </>
             }
           ></Row>
@@ -43,11 +47,14 @@ export function LambdaResources({ disabledForm, register, errors }) {
                 <Input
                   disabled={disabledForm}
                   noLabel
-                  name="requestsCpu"
+                  className={inputClassName}
+                  name={inputNames.requests.cpu}
                   _ref={register}
                   placeholder={RESOURCES_MANAGEMENT_PANEL.RESOURCES.CPU.TITLE}
                 />
-                <span>{errors?.requestsCpu?.message}</span>
+                <div className={errorClassName}>
+                  {errors?.requestsCpu?.message}
+                </div>
               </>
             }
           ></Row>
@@ -70,13 +77,16 @@ export function LambdaResources({ disabledForm, register, errors }) {
                 <Input
                   disabled={disabledForm}
                   noLabel
-                  name="limitsMemory"
+                  className={inputClassName}
+                  name={inputNames.limits.memory}
                   _ref={register}
                   placeholder={
                     RESOURCES_MANAGEMENT_PANEL.RESOURCES.MEMORY.TITLE
                   }
                 />
-                <span>{errors?.limitsMemory?.message}</span>
+                <div className={errorClassName}>
+                  {errors?.limitsMemory?.message}
+                </div>
               </>
             }
           ></Row>
@@ -85,13 +95,16 @@ export function LambdaResources({ disabledForm, register, errors }) {
             action={
               <>
                 <Input
-                  name={'limitsCpu'}
+                  name={inputNames.limits.cpu}
                   disabled={disabledForm}
                   noLabel
+                  className={inputClassName}
                   _ref={register}
                   placeholder={RESOURCES_MANAGEMENT_PANEL.RESOURCES.CPU.TITLE}
                 />
-                <span>{errors?.limitsCpu?.message}</span>
+                <div className={errorClassName}>
+                  {errors?.limitsCpu?.message}
+                </div>
               </>
             }
           ></Row>
