@@ -8,21 +8,23 @@ import { RESOURCES_MANAGEMENT_PANEL } from 'components/Lambdas/constants';
 
 import './ResourceManagement.scss';
 
-export function LambdaReplicas({ replicas, disabledForm, setReplicas }) {
+export function LambdaReplicas({ disabledForm, register, errors }) {
   const panels = [
     {
       title: RESOURCES_MANAGEMENT_PANEL.REPLICAS_MODE.MIN_NUMBER.TITLE,
       description:
         RESOURCES_MANAGEMENT_PANEL.REPLICAS_MODE.MIN_NUMBER.DESCRIPTION,
       action: (
-        <Input
-          disabled={disabledForm}
-          noLabel
-          placeholder={'Minimum replicas'}
-          type="number"
-          value={replicas.min}
-          onChange={e => setReplicas({ ...replicas, min: e.target.value })}
-        />
+        <>
+          <Input
+            name={'minReplicas'}
+            disabled={disabledForm}
+            type="number"
+            _ref={register}
+            min="0"
+          />
+          <span>{errors?.minReplicas?.message}</span>
+        </>
       ),
     },
     {
@@ -30,14 +32,16 @@ export function LambdaReplicas({ replicas, disabledForm, setReplicas }) {
       description:
         RESOURCES_MANAGEMENT_PANEL.REPLICAS_MODE.MAX_NUMBER.DESCRIPTION,
       action: (
-        <Input
-          disabled={disabledForm}
-          noLabel
-          type="number"
-          placeholder={'Max replicas'}
-          value={replicas.max}
-          onChange={e => setReplicas({ ...replicas, max: e.target.value })}
-        />
+        <>
+          <Input
+            disabled={disabledForm}
+            min="0"
+            name="maxReplicas"
+            type="number"
+            _ref={register}
+          />
+          <span>{errors?.maxReplicas?.message}</span>
+        </>
       ),
     },
   ];
@@ -57,10 +61,6 @@ export function LambdaReplicas({ replicas, disabledForm, setReplicas }) {
 }
 
 LambdaReplicas.propTypes = {
-  replicas: PropTypes.shape({
-    min: PropTypes.any.isRequired,
-    max: PropTypes.any.isRequired,
-  }).isRequired,
+  register: PropTypes.func.isRequired,
   disabledForm: PropTypes.bool.isRequired,
-  setReplicas: PropTypes.func.isRequired,
 };

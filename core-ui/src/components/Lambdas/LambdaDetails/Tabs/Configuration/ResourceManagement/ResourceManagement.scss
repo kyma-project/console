@@ -14,11 +14,11 @@
   .has-none-border-bottom {
     border-bottom: none;
   }
-  // .is-block {
-  // display: block;
-  // padding: 10px 0;
-  // > .fd-panel__head {
-  // padding-bottom: 5px;
-  // }
-  // }
+  .is-block {
+    display: block;
+    padding: 10px 0;
+    > .fd-panel__head {
+      padding-bottom: 5px;
+    }
+  }
 }

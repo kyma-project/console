@@ -5,14 +5,17 @@
   "dependencies": {
     "@kyma-project/luigi-core": "^0.6.4",
     "@monaco-editor/react": "^2.0.0",
+    "@types/yup": "^0.26.37",
     "ace-builds": "^1.4.8",
     "asyncapi-converter": "^0.4.2",
     "dompurify": "^2.0.8",
     "markdown-it": "^10.0.0",
     "openapi-sampler": "^1.0.0-beta.15",
     "react-ace": "^8.0.0",
+    "react-hook-form": "^5.5.0",
+    "use-debounce": "^3.4.1",
     "xml-js": "^1.6.11",
-    "use-debounce": "^3.4.1"
+    "yup": "^0.28.3"
   },
   "scripts": {
     "start": "PORT=8889 ../node_modules/.bin/react-scripts start",

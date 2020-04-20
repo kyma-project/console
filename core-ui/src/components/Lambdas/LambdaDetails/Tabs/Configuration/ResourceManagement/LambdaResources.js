@@ -7,19 +7,13 @@ import { Row } from './TableElements/Row';
 
 import { RESOURCES_MANAGEMENT_PANEL } from 'components/Lambdas/constants';
 
-export function LambdaResources({ resources, disabledForm, setResources }) {
-  const requests = resources.requests;
-  const limits = resources.limits;
-
+export function LambdaResources({ disabledForm, register, errors }) {
   return (
     <LayoutGrid cols={2}>
       <Panel className="has-box-shadow-none">
         <Panel.Header className="has-padding-none has-none-border-bottom">
           <Panel.Head
-            title={
-              RESOURCES_MANAGEMENT_PANEL.RESOURCES.REQUESTS.TITLE +
-              ' dodaj tutaj inline helpa'
-            }
+            title={RESOURCES_MANAGEMENT_PANEL.RESOURCES.REQUESTS.TITLE}
             description={
               RESOURCES_MANAGEMENT_PANEL.RESOURCES.REQUESTS.DESCRIPTION
             }
@@ -29,41 +23,32 @@ export function LambdaResources({ resources, disabledForm, setResources }) {
           <Row
             title={RESOURCES_MANAGEMENT_PANEL.RESOURCES.MEMORY.TITLE}
             action={
-              <Input
-                disabled={disabledForm}
-                noLabel
-                placeholder={RESOURCES_MANAGEMENT_PANEL.RESOURCES.MEMORY.TITLE}
-                value={requests.memory}
-                onChange={e => {
-                  setResources({
-                    ...resources,
-                    requests: {
-                      cpu: requests.cpu,
-                      memory: e.target.value || '',
-                    },
-                  });
-                }}
-              />
+              <>
+                <Input
+                  disabled={disabledForm}
+                  _ref={register}
+                  name="requestsMemory"
+                  placeholder={
+                    RESOURCES_MANAGEMENT_PANEL.RESOURCES.MEMORY.TITLE
+                  }
+                />
+                <span>{errors?.requestsMemory?.message}</span>
+              </>
             }
           ></Row>
           <Row
             title={RESOURCES_MANAGEMENT_PANEL.RESOURCES.CPU.TITLE}
             action={
-              <Input
-                disabled={disabledForm}
-                noLabel
-                placeholder={RESOURCES_MANAGEMENT_PANEL.RESOURCES.CPU.TITLE}
-                value={requests.cpu}
-                onChange={e => {
-                  setResources({
-                    ...resources,
-                    requests: {
-                      cpu: e.target.value || '',
-                      memory: requests.memory,
-                    },
-                  });
-                }}
-              />
+              <>
+                <Input
+                  disabled={disabledForm}
+                  noLabel
+                  name="requestsCpu"
+                  _ref={register}
+                  placeholder={RESOURCES_MANAGEMENT_PANEL.RESOURCES.CPU.TITLE}
+                />
+                <span>{errors?.requestsCpu?.message}</span>
+              </>
             }
           ></Row>
         </Panel.Body>
@@ -81,42 +66,33 @@ export function LambdaResources({ resources, disabledForm, setResources }) {
           <Row
             title={RESOURCES_MANAGEMENT_PANEL.RESOURCES.MEMORY.TITLE}
             action={
-              <Input
-                disabled={disabledForm}
-                noLabel
-                placeholder={RESOURCES_MANAGEMENT_PANEL.RESOURCES.MEMORY.TITLE}
-                value={limits.memory}
-                onChange={e => {
-                  setResources({
-                    ...resources,
-                    limits: {
-                      memory: e.target.value || '',
-                      cpu: limits.cpu,
-                    },
-                  });
-                }}
-              />
+              <>
+                <Input
+                  disabled={disabledForm}
+                  noLabel
+                  name="limitsMemory"
+                  _ref={register}
+                  placeholder={
+                    RESOURCES_MANAGEMENT_PANEL.RESOURCES.MEMORY.TITLE
+                  }
+                />
+                <span>{errors?.limitsMemory?.message}</span>
+              </>
             }
           ></Row>
           <Row
             title={RESOURCES_MANAGEMENT_PANEL.RESOURCES.CPU.TITLE}
             action={
-              <Input
-                id="lambdaName"
-                disabled={disabledForm}
-                noLabel
-                placeholder={RESOURCES_MANAGEMENT_PANEL.RESOURCES.CPU.TITLE}
-                value={limits.cpu}
-                onChange={e => {
-                  setResources({
-                    ...resources,
-                    limits: {
-                      memory: limits.memory,
-                      cpu: e.target.value || '',
-                    },
-                  });
-                }}
-              />
+              <>
+                <Input
+                  name={'limitsCpu'}
+                  disabled={disabledForm}
+                  noLabel
+                  _ref={register}
+                  placeholder={RESOURCES_MANAGEMENT_PANEL.RESOURCES.CPU.TITLE}
+                />
+                <span>{errors?.limitsCpu?.message}</span>
+              </>
             }
           ></Row>
         </Panel.Body>
@@ -126,14 +102,6 @@ export function LambdaResources({ resources, disabledForm, setResources }) {
 }
 
 LambdaResources.propTypes = {
-  resources: PropTypes.shape({
-    limits: PropTypes.shape({
-      cpu: PropTypes.string.isRequired,
-      memory: PropTypes.string.isRequired,
-    }),
-    requests: PropTypes.shape({
-      cpu: PropTypes.string.isRequired,
-      memory: PropTypes.string.isRequired,
-    }),
-  }).isRequired,
+  register: PropTypes.any.isRequired,
+  disabledForm: PropTypes.bool.isRequired,
 };
