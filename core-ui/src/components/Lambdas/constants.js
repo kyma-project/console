@@ -127,68 +127,68 @@ export const TRIGGER_SUBSCRIBER = {
 
 export const GQL_QUERIES = {
   LAMBDA: {
-    ERROR_MESSAGE: `Error while fetching "{lambdaName}" Function: {error}`,
+    ERROR_MESSAGE: `Couldn't fetch "{lambdaName}" due to this error: {error}`,
   },
   LAMBDAS: {
-    ERROR_MESSAGE: `Error while fetching Functions in "{namespace}" Namespace: {error}`,
+    ERROR_MESSAGE: `Couldn't fetch Functions from "{namespace}" due to this error: {error}`,
   },
   EVENT_ACTIVATIONS: {
-    ERROR_MESSAGE: `Error while fetching available Events in "{namespace}" namespace: {error}`,
+    ERROR_MESSAGE: `Couldn't fetch available Events from "{namespace}" due to this error: {error}`,
   },
   EVENT_TRIGGERS: {
-    ERROR_MESSAGE: `Error while fetching Event Triggers for "{lambdaName}" Function: {error}`,
+    ERROR_MESSAGE: `Couldn't fetch Event Triggers for "{lambdaName}" due to this error: {error}`,
   },
   SERVICE_BINDING_USAGES: {
-    ERROR_MESSAGE: `Error while fetching injected Service Binding Usages to "{lambdaName}" Function: {error}`,
+    ERROR_MESSAGE: `Couldn't fetch Service Binding Usages injected in "{lambdaName}" due to this error: {error}`,
   },
   SERVICE_INSTANCES: {
-    ERROR_MESSAGE: `Error while fetching Service Instances: {error}`,
+    ERROR_MESSAGE: `Couldn't fetch Service Instances due to this error: {error}`,
   },
 };
 
 export const GQL_MUTATIONS = {
   CREATE_LAMBDA: {
-    SUCCESS_MESSAGE: `"{lambdaName}" Function is successfully created`,
-    ERROR_MESSAGE: `Error while creating "{lambdaName}" Function: {error}`,
+    SUCCESS_MESSAGE: `"{lambdaName}" was successfully created`,
+    ERROR_MESSAGE: `Couldn't create "{lambdaName}" due to this error: {error}`,
   },
   UPDATE_LAMBDA: {
     GENERAL_CONFIGURATION: {
-      SUCCESS_MESSAGE: `General Configuration for "{lambdaName}" Function are successfully updated`,
-      ERROR_MESSAGE: `Error while updating General Configuration for "{lambdaName}" Function: {error}`,
+      SUCCESS_MESSAGE: `General configuration for "{lambdaName}" was successfully updated`,
+      ERROR_MESSAGE: `Couldn't update general configuration for "{lambdaName}" due to this error: {error}`,
     },
     CODE_AND_DEPENDENCIES: {
-      SUCCESS_MESSAGE: `Code and Dependencies for "{lambdaName}" Function are successfully updated`,
-      ERROR_MESSAGE: `Error while updating Code and Dependencies for "{lambdaName}" Function: {error}`,
+      SUCCESS_MESSAGE: `Code and dependencies for "{lambdaName}" were successfully updated`,
+      ERROR_MESSAGE: `Couldn't update code and dependencies for "{lambdaName}" due to this error: {error}`,
     },
     RESOURCES_AND_REPLICAS: {
-      SUCCESS_MESSAGE: `Resources and Replicas for "{lambdaName}" Function are successfully updated`,
-      ERROR_MESSAGE: `Error while updating Resources and Replicas for "{lambdaName}" Function: {error}`,
+      SUCCESS_MESSAGE: `Resources and replicas for "{lambdaName}" were successfully updated`,
+      ERROR_MESSAGE: `Couldn't update resources and replicas for "{lambdaName}" due to this error: {error}`,
     },
     VARIABLES: {
-      SUCCESS_MESSAGE: `Environment Variables for "{lambdaName}" Function are successfully updated`,
-      ERROR_MESSAGE: `Error while updating Environment Variables for "{lambdaName}" Function: {error}`,
+      SUCCESS_MESSAGE: `Environment variables for "{lambdaName}" were successfully update`,
+      ERROR_MESSAGE: `Couldn't update environment variables for "{lambdaName}" due to this error: {error}`,
     },
   },
   DELETE_LAMBDA: {
-    SUCCESS_MESSAGE: `"{lambdaName}" Function is successfully removed`,
-    ERROR_MESSAGE: `Error while deleting "{lambdaName}" Function: {error}`,
+    SUCCESS_MESSAGE: `"{lambdaName}" was successfully deleted`,
+    ERROR_MESSAGE: `Couldn't delete "{lambdaName}" due to this error: {error}`,
     CONFIRM_MODAL: {
-      TITLE: `Remove {lambdaName} Function`,
-      MESSAGE: `Are you sure you want to delete "{lambdaName}" Function and whole related to it resources?`,
+      TITLE: `Delete {lambdaName}`,
+      MESSAGE: `Are you sure you want to delete "{lambdaName}" and all related resources?`,
     },
   },
   CREATE_TRIGGERS: {
     SUCCESS_MESSAGE_SINGLE: `Event Trigger created successfully`,
     SUCCESS_MESSAGE_MANY: `Event Triggers created successfully`,
-    ERROR_MESSAGE_SINGLE: `Error while creating an Event Trigger for "{lambdaName}" Function: {error}`,
-    ERROR_MESSAGE_MANY: `Error while creating Event Triggers for "{lambdaName}" Function: {error}`,
+    ERROR_MESSAGE_SINGLE: `Event Trigger for "{lambdaName}" couldn't be created due to this error: {error}`,
+    ERROR_MESSAGE_MANY: `Couldn't create Event Triggers for "{lambdaName}" due to this error: {error}`,
   },
   DELETE_TRIGGER: {
-    SUCCESS_MESSAGE: `Event Trigger was successfully removed`,
-    ERROR_MESSAGE: `Error while deleting "{triggerName}" Event Trigger for "{lambdaName}" Function: {error}`,
+    SUCCESS_MESSAGE: `Event Trigger was successfully deleted`,
+    ERROR_MESSAGE: `Couldn't delete the "{triggerName}" Event Trigger for the "{lambdaName}" Function due to this error: {error}`,
     CONFIRM_MODAL: {
-      TITLE: `Remove Event Trigger`,
-      MESSAGE: `Are you sure you want to delete "{triggerName}" Event Trigger for "{lambdaName}" Function?`,
+      TITLE: `Delete Event Trigger`,
+      MESSAGE: `Are you sure you want to delete the "{triggerName}" Event Trigger for the "{lambdaName}" Function?`,
     },
   },
   CREATE_BINDING_USAGE: {
@@ -297,7 +297,7 @@ export const EVENT_TRIGGERS_PANEL = {
     OPEN_BUTTON: {
       TEXT: 'Add Event Trigger',
       NOT_ENTRIES_POPUP_MESSAGE:
-        'No Events available to connect in current namespace.',
+        'No Events available to connect in this Namespace.',
     },
     CONFIRM_BUTTON: {
       TEXT: 'Add',
@@ -354,60 +354,60 @@ export const ENVIRONMENT_VARIABLES_PANEL = {
     TITLE: 'Environment Variables',
     ERRORS: {
       RESOURCES_NOT_FOUND:
-        "This lambda doesn't have any Environment Variables yet.",
+        "This Function doesn't have any environment variables yet.",
       NOT_MATCHING_SEARCH_QUERY:
-        "Couldn't find Environment Variables matching this query.",
+        "Couldn't find environment variables matching this query.",
     },
   },
   EDIT_MODAL: {
-    TITLE: 'Edit Environment Variables',
+    TITLE: 'Edit environment variables',
     OPEN_BUTTON: {
-      TEXT: 'Edit Environment Variables',
+      TEXT: 'Edit environment variables',
     },
     CONFIRM_BUTTON: {
       TEXT: 'Save',
       POPUP_MESSAGES: {
-        NO_ENVS_DEFINED: 'At least one Variable must be defined.',
-        COLLECTIONS_EQUAL: 'Changes in Variables are required.',
+        NO_ENVS_DEFINED: 'You must define at least one variable.',
+        COLLECTIONS_EQUAL: 'Changes in variables are required.',
         ERROR:
-          'At least one Variable is duplicated, has wrong name format or is empty.',
+          'At least one variable has an incorrect name format, is duplicated, or empty.',
       },
     },
     ADD_ENV_BUTTON: {
-      TEXT: 'Add new Variable',
+      TEXT: 'Add new variable',
     },
   },
   ERRORS: {
     EMPTY: 'Variable is empty.',
-    DUPLICATED: 'Duplicated Variable name.',
-    INVALID:
-      'Invalid Variable name: must consist of alphanumeric characters or "_" and no spaces (for example "VARIABLE_NAME").',
+    DUPLICATED: 'Duplicated variable name.',
+    INVALID: `Invalid variable name. The name must consist of alphanumeric characters, can contain "_" and no spaces, like "VARIABLE_NAME".`,
   },
   WARNINGS: {
     TEXT: 'Warning',
     VARIABLE_CAN_OVERRIDE_SBU:
-      'The Variable can override Variable injected by one of the created Service Bindings.',
+      'This variable can override or be overridden by a variable injected by one of the created Service Bindings.',
     SBU_CAN_BE_OVERRIDE: {
-      BY_CUSTOM_ENV: 'The Variable can be override by one of custom Variables.',
+      BY_CUSTOM_ENV:
+        'This variable can override or be overridden by one of the custom variables.',
       BY_SBU:
-        'The Variable can be override by Variable injected by one of the created Service Bindings.',
+        'This variable can override or be overridden by a variable injected by one of the Service Bindings.',
       BY_CUSTOM_ENV_AND_SBU:
-        'The Variable can be override by one of custom Variables or Variable injected by one of the created Service Bindings.',
+        'This variable can be overridden by one of the custom variables or a variable injected by one of the Service Bindings.',
     },
   },
   PLACEHOLDERS: {
-    VARIABLE_NAME: 'Variable Name',
-    VARIABLE_VALUE: 'Variable Value',
+    VARIABLE_NAME: 'Variable name',
+    VARIABLE_VALUE: 'Variable value',
   },
   VARIABLE_TYPE: {
     CUSTOM: {
       TEXT: 'Custom',
-      TOOLTIP_MESSAGE: 'The Variable is provided by User.',
+      TOOLTIP_MESSAGE: 'This variable was provided by the user.',
     },
     BINDING_USAGE: {
       TEXT: 'Service Binding',
       TOOLTIP_MESSAGE:
-        'The Variable is injected by Service Binding from "{serviceInstanceName}" Service Instance.',
+        'This variable was injected by the Service Binding referencing the "{serviceInstanceName}" Service Instance.',
     },
   },
 };
