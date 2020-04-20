@@ -52,6 +52,11 @@ const fetchFromGraphql = async data => {
     },
     body: JSON.stringify(data),
   });
+
+  if (response.status === 401) {
+    setCurrentLocation();
+  }
+
   return response.json();
 };
 
@@ -79,4 +84,19 @@ export const customOptionsRenderer = opt => {
   return `<a href="javascript:void(0)" class="fd-menu__item ${
     isSelected ? 'is-selected' : ''
   } svelte-1ldh2pm" title="${label}">${label}</a>`;
+};
+
+const setCurrentLocation = () => {
+  if (!window.location.hash) {
+    const location = window.location.href;
+    localStorage.setItem('console.location', location);
+  }
+};
+
+export const getPreviousLocation = () => {
+  const prevLocation = localStorage.getItem('console.location');
+  if (prevLocation) {
+    localStorage.removeItem('console.location');
+  }
+  return prevLocation;
 };

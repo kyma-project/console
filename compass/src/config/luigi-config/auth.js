@@ -1,5 +1,6 @@
 import OpenIdConnect from '@luigi-project/plugin-auth-oidc';
 import { clusterConfig } from './clusterConfig';
+import { getPreviousLocation } from './helpers/navigation-helpers';
 
 async function fetchDexMetadata() {
   const domain = clusterConfig['domain'];
@@ -54,6 +55,14 @@ export default async function createAuth() {
           );
         } catch (e) {
           console.error('Error parsing oidc user data', e);
+        }
+      },
+    },
+    events: {
+      onAuthSuccessful: () => {
+        const prevLocation = getPreviousLocation();
+        if (prevLocation) {
+          window.location.replace(prevLocation);
         }
       },
     },
