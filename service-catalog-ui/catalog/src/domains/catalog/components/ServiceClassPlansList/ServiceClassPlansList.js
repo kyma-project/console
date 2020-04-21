@@ -4,14 +4,12 @@ import LuigiClient from '@kyma-project/luigi-client';
 import { getServiceClassPlans } from './queries';
 import { serviceClassConstants } from '../../constants';
 import PropTypes from 'prop-types';
+import { Spinner, PageHeader, GenericList, Tooltip } from 'react-shared';
 import {
-  Spinner,
-  PageHeader,
-  GenericList,
-  Tooltip,
-} from '../../../../react-shared';
-import { getResourceDisplayName, isService } from '../../../../commons/helpers';
-import { sortByDisplayName } from '../../../../shared/sorting';
+  getResourceDisplayName,
+  isService,
+  sortByDisplayName,
+} from '../../../../commons/helpers';
 import { Badge } from 'fundamental-react';
 import './ServiceClassPlansList.scss';
 

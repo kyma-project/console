@@ -13,7 +13,6 @@ import ServiceClassTabs from './ServiceClassTabs/ServiceClassTabs';
 import CreateInstanceModal from './CreateInstanceModal/CreateInstanceModal.container';
 import { Identifier, Button } from 'fundamental-react';
 import ModalWithForm from '../../../../shared/ModalWithForm/ModalWithForm';
-import { isStringValueEqualToTrue } from '../../../../commons/helpers';
 import './ServiceClassDetails.scss';
 import { ServiceClassDetailsWrapper, EmptyList } from './styled';
 import LuigiClient from '@kyma-project/luigi-client';
@@ -21,12 +20,13 @@ import {
   getResourceDisplayName,
   getDescription,
   backendModuleExists,
+  isStringValueEqualToTrue,
+  sortByDisplayName,
 } from '../../../../commons/helpers';
 import { DOCUMENTATION_PER_PLAN_LABEL } from '../../../../commons/constants';
 import ServiceClassDetailsHeader from './ServiceClassDetailsHeader/ServiceClassDetailsHeader.component';
 import { DOCUMENTATION_PER_PLAN_DESCRIPTION } from '../../constants';
 import { Tooltip, Spinner } from 'react-shared';
-import { sortByDisplayName } from '../../../../shared/sorting';
 
 export const PlanSelector = ({ allPlans, currentlySelected, onPlanChange }) => {
   return (
