@@ -3,7 +3,10 @@ import Cards from '../Cards.component';
 import React from 'react';
 import { shallow } from 'enzyme';
 import Card from '../Card.component';
-import { mockServiceClass, mockPlan } from 'testing/serviceClassesMocks';
+import {
+  mockServiceClass,
+  mockPlan,
+} from 'domains/catalog/testing/serviceClassesMocks';
 import { DOCUMENTATION_PER_PLAN_LABEL } from 'shared/constants';
 
 const mockNavigate = jest.fn();

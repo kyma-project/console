@@ -1,14 +1,14 @@
-import { getAllServiceClasses } from '../domains/catalog/components/ServiceClassList/queries';
-import { getServiceClass } from '../domains/catalog/components/ServiceClassDetails/queries';
-import { getServiceClassPlans } from '../domains/catalog/components/ServiceClassPlansList/queries';
-import { createServiceInstance } from '../domains/catalog/components/ServiceClassDetails/CreateInstanceModal/mutations';
+import { getAllServiceClasses } from '../components/ServiceClassList/queries';
+import { getServiceClass } from '../components/ServiceClassDetails/queries';
+import { getServiceClassPlans } from '../components/ServiceClassPlansList/queries';
+import { createServiceInstance } from '../components/ServiceClassDetails/CreateInstanceModal/mutations';
 import {
   mockServiceClass,
   mockPlan,
   planWithImagePullPolicy,
 } from './serviceClassesMocks';
-import { filterExtensions } from '../variables';
-import { DOCUMENTATION_PER_PLAN_LABEL } from '../shared/constants';
+import { filterExtensions } from '../../../variables';
+import { DOCUMENTATION_PER_PLAN_LABEL } from '../../../shared/constants';
 
 export const mockEnvironmentId = 'testnamespace';
 

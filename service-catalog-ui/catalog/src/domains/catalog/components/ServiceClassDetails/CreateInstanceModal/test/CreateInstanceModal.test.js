@@ -8,13 +8,13 @@ import {
   mockServiceClass,
   mockPlan,
   planWithImagePullPolicy,
-} from '../../../../../../testing/serviceClassesMocks';
+} from '../../../../testing/serviceClassesMocks';
 import {
   createServiceInstanceSuccessfulMock,
   createServiceInstanceErrorMock,
   mockEnvironmentId,
   createServiceInstanceNoPlanSpecSuccessfulMock,
-} from '../../../../../../testing/queriesMocks';
+} from '../../../../testing/queriesMocks';
 import CreateInstanceModal from '../CreateInstanceModal.component';
 
 const onCompleted = jest.fn();

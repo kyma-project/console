@@ -4,7 +4,7 @@ import { mount } from 'enzyme';
 import {
   allServiceClassesQuery,
   mockEnvironmentId,
-} from '../../../../../testing/queriesMocks';
+} from '../../../testing/queriesMocks';
 import { Spinner, Tab } from '@kyma-project/react-components';
 import ServiceClassList from '../ServiceClassList';
 import { componentUpdate } from '../../../../../testing';

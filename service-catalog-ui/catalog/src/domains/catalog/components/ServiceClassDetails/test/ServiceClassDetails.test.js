@@ -6,12 +6,12 @@ import {
   serviceClassAPIruleQuery,
   mockEnvironmentId,
   serviceClassWithPlans,
-} from '../../../../../testing/queriesMocks';
+} from '../../../testing/queriesMocks';
 import ServiceClassDetails, { PlanSelector } from '../ServiceClassDetails';
 import { Spinner } from '../../../../../react-shared';
 import { componentUpdate } from '../../../../../testing';
 import ServiceClassDetailsHeader from '../ServiceClassDetailsHeader/ServiceClassDetailsHeader.component';
-import { mockPlan } from 'testing/serviceClassesMocks';
+import { mockPlan } from 'domains/catalog/testing/serviceClassesMocks';
 
 const mockNavigate = jest.fn();
 const mockAddBackdrop = jest.fn();

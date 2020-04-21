@@ -12,8 +12,8 @@ import {
   serviceClassPlansQuery,
   serviceClassNoPlansQuery,
   mockEnvironmentId,
-} from '../../../../../testing/queriesMocks';
-import { assetGroupWithManyAssets } from '../../../../../testing/serviceClassesMocks';
+} from '../../../testing/queriesMocks';
+import { assetGroupWithManyAssets } from '../../../testing/serviceClassesMocks';
 
 const mockNavigate = jest.fn();
 const mockShowConfirmationModal = jest.fn(() => Promise.resolve());
