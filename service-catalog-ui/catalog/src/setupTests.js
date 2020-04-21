@@ -50,3 +50,12 @@ export async function expectToSolveWithin(
   );
   return Promise.race([timeoutPromise, expectAssertionsPromise]);
 }
+
+global.document.createRange = () => ({
+  setStart: () => {},
+  setEnd: () => {},
+  commonAncestorContainer: {
+    nodeName: 'BODY',
+    ownerDocument: document,
+  },
+});
