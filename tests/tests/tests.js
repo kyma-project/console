@@ -18,7 +18,7 @@ test('Luigi navigation is rendered', async t => {
   const namespacesLink = leftNavLinkSelector('Namespaces');
 
   //THEN
-  await t.expect(namespacesLink.exists).ok();
+  await retry(t, 3, t => t.expect(namespacesLink.exists).ok());
 });
 
 test('Namespaces view is rendered', async t => {
