@@ -7,7 +7,7 @@ import {
   mockServiceClass,
   mockPlan,
 } from 'domains/catalog/testing/serviceClassesMocks';
-import { DOCUMENTATION_PER_PLAN_LABEL } from '../../../../constants';
+import { DOCUMENTATION_PER_PLAN_LABEL } from '../../../../../../commons/constants';
 
 const mockNavigate = jest.fn();
 jest.mock('@kyma-project/luigi-client', () => ({

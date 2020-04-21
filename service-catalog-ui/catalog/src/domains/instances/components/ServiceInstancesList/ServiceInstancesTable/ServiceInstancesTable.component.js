@@ -21,7 +21,7 @@ import {
   getResourceDisplayName,
   backendModuleExists,
 } from '../../../commons/helpers';
-import { DOCUMENTATION_PER_PLAN_LABEL } from '../../../variables';
+import { DOCUMENTATION_PER_PLAN_LABEL } from '../../../../../commons/constants';
 
 const deleteButton = <Button compact option="light" glyph="delete" />;
 

@@ -16,10 +16,8 @@ import {
   CardImage,
   CardDescription,
 } from './styled';
-import {
-  DOCUMENTATION_PER_PLAN_LABEL,
-  DOCUMENTATION_PER_PLAN_DESCRIPTION,
-} from '../../../constants';
+import { DOCUMENTATION_PER_PLAN_DESCRIPTION } from '../../../constants';
+import { DOCUMENTATION_PER_PLAN_LABEL } from '../../../../../commons/constants';
 
 const Card = ({
   title,

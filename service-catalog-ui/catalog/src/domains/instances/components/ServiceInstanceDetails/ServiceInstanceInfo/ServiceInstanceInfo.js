@@ -2,10 +2,8 @@ import React from 'react';
 import LuigiClient from '@kyma-project/luigi-client';
 import Grid from 'styled-components-grid';
 import { getResourceDisplayName } from '../../../commons/helpers';
-import {
-  serviceInstanceConstants,
-  DOCUMENTATION_PER_PLAN_LABEL,
-} from '../../../variables';
+import { serviceInstanceConstants } from '../../../variables';
+import { DOCUMENTATION_PER_PLAN_LABEL } from '../../../../../commons/constants';
 
 import { Modal, PanelBody, Label, Panel } from '@kyma-project/react-components';
 

@@ -7,7 +7,7 @@ import Card from '../Card.component';
 import { InstancesIndicator } from '../InstancesIndicator';
 import { Labels } from '../Labels';
 import { CardImage, CardContent } from '../styled';
-import { DOCUMENTATION_PER_PLAN_LABEL } from '../../../../constants';
+import { DOCUMENTATION_PER_PLAN_LABEL } from '../../../../../../commons/constants';
 
 const mock = {
   title: 'Some title',

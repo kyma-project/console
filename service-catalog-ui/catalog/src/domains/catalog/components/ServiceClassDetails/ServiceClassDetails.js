@@ -22,11 +22,9 @@ import {
   getDescription,
   backendModuleExists,
 } from '../../../../commons/helpers';
+import { DOCUMENTATION_PER_PLAN_LABEL } from '../../../../commons/constants';
 import ServiceClassDetailsHeader from './ServiceClassDetailsHeader/ServiceClassDetailsHeader.component';
-import {
-  DOCUMENTATION_PER_PLAN_LABEL,
-  DOCUMENTATION_PER_PLAN_DESCRIPTION,
-} from '../../constants';
+import { DOCUMENTATION_PER_PLAN_DESCRIPTION } from '../../constants';
 import { Tooltip, Spinner } from 'react-shared';
 import { sortByDisplayName } from '../../../../shared/sorting';
 
