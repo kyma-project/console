@@ -7,7 +7,7 @@ import {
   mockPlan,
   planWithImagePullPolicy,
 } from './serviceClassesMocks';
-import { filterExtensions } from '../../../variables';
+import { filterExtensions } from '../variables';
 import { DOCUMENTATION_PER_PLAN_LABEL } from '../../../shared/constants';
 
 export const mockEnvironmentId = 'testnamespace';

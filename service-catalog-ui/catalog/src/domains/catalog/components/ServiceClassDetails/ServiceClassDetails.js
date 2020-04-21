@@ -7,7 +7,7 @@ import {
   serviceClassConstants,
   createInstanceButtonText,
   filterExtensions,
-} from '../../../../variables';
+} from '../../variables';
 
 import ServiceClassTabs from './ServiceClassTabs/ServiceClassTabs';
 import CreateInstanceModal from './CreateInstanceModal/CreateInstanceModal.container';
