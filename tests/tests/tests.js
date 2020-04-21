@@ -51,9 +51,10 @@ test('Deployments view is rendered', async t => {
   });
 
   //THEN
-  await retry(t, 3, findActiveFrame);
-
-  await retry(t, 3, t => {
+  await retry(t, 3, async t => {
+    await t.switchToIframe(
+      Selector('iframe', { timeout: 20000 }).filterVisible(),
+    );
     return t
       .expect(Selector('.fd-action-bar__title').withText('Deployments').exists)
       .ok();
