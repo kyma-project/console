@@ -219,7 +219,7 @@ export const MODALS = {
 };
 
 export const RESOURCES_MANAGEMENT_PANEL = {
-  TITLE: 'Resources and Replicas',
+  TITLE: 'Edit Resources and Replicas',
   EDIT_MODAL: {
     TITLE: 'Edit Resources and Replicas Configuration',
     OPEN_BUTTON: {
@@ -234,15 +234,16 @@ export const RESOURCES_MANAGEMENT_PANEL = {
   },
   ERROR_MESSAGES: {
     CPU:
-      'CPU value has to be expressed as  fixed-point number or in "milicpu", example: 100m, 0.1, 1',
+      'CPU value has to be expressed as a fixed-point number or in milicpu. For example, use 100m, 0.1, or 1.',
     MEMORY:
-      'Memory value has to be fixed-point number using one of these suffixes: Gi, Mi, Ki. Example: 50Mi, 1000.5Ki, 0.1Gi',
+      'Memory value has to be a fixed-point number with one of these suffixes: Gi, Mi, or Ki. For example, use 50Mi, 1000.5Ki, or 0.1Gi.',
     MIN_REPLICAS_TOO_HIGH:
-      'Minimum number of replicas has to be equal to or lower than maximum',
+      'Minimum number of replicas has to be equal to or lower than maximum.',
     MIN_REPLICAS_NON_NEGATIVE: 'Minimum replicas must be non-negative integer',
     MAX_REPLICAS_TOO_LOW:
-      'Maximum number of replicas has to be equal or greater than minimum',
-    MAX_REPLICAS_NON_NEGATIVE: 'Maximum replicas must be non-negative integer',
+      'Maximum number of replicas has to be equal or greater than minimum.',
+    MAX_REPLICAS_NON_NEGATIVE:
+      'Maximum replicas must be a non-negative integer.',
   },
 
   REPLICAS_MODE: {
@@ -252,11 +253,11 @@ export const RESOURCES_MANAGEMENT_PANEL = {
     },
     MAX_NUMBER: {
       TITLE: 'Maximum number of replicas',
-      DESCRIPTION: 'Set it to zero to disable lambda.',
+      DESCRIPTION: 'Set it to 0 to disable lambda.',
     },
     SCALE_TO_ZERO: {
       TITLE: 'Scale to zero',
-      DESCRIPTION: 'Enable scale to zero.',
+      DESCRIPTION: 'Enable scaling to zero.',
     },
     FIXED: {
       TITLE: 'Fixed replicas',
@@ -265,14 +266,14 @@ export const RESOURCES_MANAGEMENT_PANEL = {
   },
   RESOURCES: {
     REQUESTS: {
-      TITLE: 'Requests Resources',
+      TITLE: 'Requests',
       DESCRIPTION:
-        'Requests describes the minimum amount of compute resources required.',
+        'Requests describe the minimum amount of compute resources required.',
     },
     LIMITS: {
-      TITLE: 'Limits Resources',
+      TITLE: 'Limits',
       DESCRIPTION:
-        'Limits describes the maximum amount of compute resources allowed.',
+        'Limits describe the maximum amount of compute resources allowed.',
     },
     MEMORY: {
       TITLE: 'Memory',
