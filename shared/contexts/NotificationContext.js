@@ -81,3 +81,11 @@ export const NotificationProvider = ({
 export function useNotification() {
   return useContext(NotificationContext);
 }
+
+export function withNotification(Component) {
+  return props => (
+    <NotificationContext.Consumer>
+      {notification => <Component notification={notification} {...props} />}
+    </NotificationContext.Consumer>
+  );
+}

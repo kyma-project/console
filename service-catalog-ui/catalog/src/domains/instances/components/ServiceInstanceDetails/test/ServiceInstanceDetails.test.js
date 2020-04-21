@@ -8,13 +8,12 @@ import {
 } from '../../../testing/queriesMocks';
 import ServiceInstanceDetails from '../ServiceInstanceDetails';
 import { Spinner, Toolbar, Modal } from '@kyma-project/react-components';
-import { createMockLink } from 'react-shared';
+import { createMockLink, NotificationContext } from 'react-shared';
 import { componentUpdate } from '../../../testing';
 import { serviceInstanceConstants } from '../../../variables';
 
 import ServiceInstanceHeader from '../ServiceInstanceHeader/ServiceInstanceHeader';
 import ServiceInstanceBindings from '../ServiceInstanceBindings/ServiceInstanceBindings.container';
-import NotificationContext from '../../../contexts/NotificationContext/NotificationContext';
 
 const mockNavigate = jest.fn();
 const mockAddBackdrop = jest.fn();

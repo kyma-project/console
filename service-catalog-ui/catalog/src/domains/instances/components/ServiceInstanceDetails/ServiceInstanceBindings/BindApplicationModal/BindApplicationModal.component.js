@@ -20,7 +20,7 @@ import { SubSectionTitle } from './styled';
 
 import { clearEmptyPropertiesInObject } from '../../../../../../commons/helpers';
 import LuigiClient from '@kyma-project/luigi-client';
-import WithNotificationContext from '../WithNotificationContext/WithNotificationContext';
+import { withNotification } from 'react-shared';
 
 class BindApplicationModal extends React.Component {
   constructor(props) {
@@ -362,6 +362,4 @@ class BindApplicationModal extends React.Component {
   }
 }
 
-export default function BindApplicationModalWithContext(props) {
-  return WithNotificationContext(BindApplicationModal, props);
-}
+export default withNotification(BindApplicationModal);
