@@ -2,7 +2,7 @@ import React from 'react';
 import Moment from 'react-moment';
 
 import { PageHeader, GenericList, Tooltip } from '../../react-shared';
-import { statusColor } from '../../commons/helpers';
+import { Badge } from 'fundamental-react';
 
 class ServiceBrokers extends React.Component {
   render() {
@@ -19,14 +19,14 @@ class ServiceBrokers extends React.Component {
         </Moment>,
         item.url,
         (_ => {
-          let type = '';
-          item.status.ready === true ? (type = 'RUNNING') : (type = 'FAILED');
+          const status = item.status.ready === true ? 'RUNNING' : 'FAILED';
+          const type = item.status.ready === true ? 'success' : 'error';
 
           return (
             <Tooltip title={item.status.message}>
-              <span style={{ color: statusColor(type), cursor: 'help' }}>
-                {type}
-              </span>
+              <Badge type={type} modifier="filled">
+                {status}
+              </Badge>
             </Tooltip>
           );
         })(),
