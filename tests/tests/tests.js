@@ -86,3 +86,33 @@ testIf(
     });
   },
 );
+
+testIf(
+  toBoolean(config.serviceCatalogEnabled),
+  'Instances view is rendered',
+  async t => {
+    //GIVEN
+    await t.useRole(adminUser);
+    const catalogLink = leftNavLinkSelector('Instances');
+
+    //WHEN
+    await retry(t, 3, findActiveFrame);
+    await retry(t, 3, t => {
+      return t
+        .click(Selector('.fd-panel__title').withText('default'))
+        .switchToMainWindow()
+        .click(catalogLink);
+    });
+
+    //THEN
+    await retry(t, 3, findActiveFrame);
+    await retry(t, 3, t => {
+      return t
+        .expect(
+          Selector('.fd-action-bar__title').withText('Service Instances')
+            .exists,
+        )
+        .ok();
+    });
+  },
+);

@@ -13,12 +13,8 @@ export default function App() {
     <NotificationProvider>
       <BrowserRouter>
         <Switch>
-          <Route exact path="/catalog">
-            <CatalogApp />
-          </Route>
-          <Route exact path="/instances">
-            <InstancesApp />
-          </Route>
+          <Route exact path="/catalog" component={CatalogApp} />
+          <Route exact path="/instances" componen={InstancesApp} />
         </Switch>
       </BrowserRouter>
     </NotificationProvider>
