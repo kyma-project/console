@@ -26,7 +26,7 @@ import {
 import { DOCUMENTATION_PER_PLAN_LABEL } from '../../../../commons/constants';
 import ServiceClassDetailsHeader from './ServiceClassDetailsHeader/ServiceClassDetailsHeader.component';
 import { DOCUMENTATION_PER_PLAN_DESCRIPTION } from '../../constants';
-import { Tooltip, Spinner } from 'react-shared';
+import { Tooltip, Spinner } from '../../../../react-shared';
 
 export const PlanSelector = ({ allPlans, currentlySelected, onPlanChange }) => {
   return (

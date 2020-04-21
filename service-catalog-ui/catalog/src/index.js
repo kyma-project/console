@@ -7,7 +7,7 @@ import { preloadingStrategy } from '@kyma-project/common';
 
 import './index.scss';
 
-import App from './domains/catalog/components/App/App';
+import App from './components/App/App';
 
 import builder from './commons/builder';
 

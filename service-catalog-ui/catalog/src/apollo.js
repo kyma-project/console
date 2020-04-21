@@ -1,6 +1,6 @@
 import ApolloClient from 'apollo-client';
 import { createHttpLink } from 'apollo-link-http';
-import { ApolloLink } from 'apollo-link';
+import { ApolloLink, split } from 'apollo-link';
 import { setContext } from 'apollo-link-context';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { onError } from 'apollo-link-error';
@@ -9,6 +9,7 @@ import builder from './commons/builder';
 import { getApiUrl as getURL } from '@kyma-project/common';
 
 import { SubscriptionClient } from 'subscriptions-transport-ws';
+import { isSubscriptionOperation } from './react-shared';
 
 export function createApolloClient() {
   const graphqlApiUrl = getURL(
@@ -32,7 +33,7 @@ export function createApolloClient() {
     };
   });
   const authHttpLink = authLink.concat(httpLink);
-  const link = split(isSubscriptionOperation, wsLink, httpLink);
+  const link = split(isSubscriptionOperation, wsLink, authHttpLink);
 
   const cache = new InMemoryCache();
 

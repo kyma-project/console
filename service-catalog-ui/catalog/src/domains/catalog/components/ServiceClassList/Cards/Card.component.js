@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import './Card.scss';
-import { Tooltip } from 'react-shared';
+import { Tooltip } from '../../../../../react-shared';
 import { Icon } from 'fundamental-react';
 import { InstancesIndicator } from './InstancesIndicator';
 import { Labels } from './Labels';

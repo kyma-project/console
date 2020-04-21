@@ -20,7 +20,7 @@ import { SubSectionTitle } from './styled';
 
 import { clearEmptyPropertiesInObject } from '../../../../../../commons/helpers';
 import LuigiClient from '@kyma-project/luigi-client';
-import { withNotification } from 'react-shared';
+import { withNotification } from '../../../../../../react-shared';
 
 class BindApplicationModal extends React.Component {
   constructor(props) {

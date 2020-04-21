@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, useRouteMatch } from 'react-router-dom';
 import { Modal } from '@kyma-project/react-components';
 
 import ServiceClassList from '../ServiceClassList/ServiceClassList';
