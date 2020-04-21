@@ -253,7 +253,7 @@ export const RESOURCES_MANAGEMENT_PANEL = {
     },
     MAX_NUMBER: {
       TITLE: 'Maximum number of replicas',
-      DESCRIPTION: 'Set it to 0 to disable function.',
+      DESCRIPTION: 'Set it to 0 to disable a function.',
     },
   },
   RESOURCES: {
