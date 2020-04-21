@@ -6,7 +6,7 @@ import { NotificationProvider } from 'react-shared';
 import './App.scss';
 import Overview from './components/Overview/Overview';
 import Runtimes from './components/Runtimes/Runtimes';
-import RuntimeDetails from './components/Runtimes/RuntimeDetails/RuntimeDetails.container';
+import RuntimeDetails from './components/Runtimes/RuntimeDetails/RuntimeDetails';
 import Applications from './components/Applications/Applications.container';
 import EditApi from 'components/Api/EditApi/EditApi.container';
 import EditEventApi from 'components/Api/EditEventApi/EditEventApi.container';
