@@ -247,7 +247,7 @@ test('Docs view is rendered', async t => {
   //WHEN - click on docs link
   await retry(t, 3, t => t.click(Selector('[data-testid=docs_docs]')));
 
-  //THEN - use should see "Kyma" category
+  //THEN - user should see "Kyma" category
   await retry(t, 3, findActiveFrame);
   await retry(t, 3, t => {
     return t
