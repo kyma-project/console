@@ -1,5 +1,5 @@
 import cloneDeep from 'lodash.clonedeep';
-import { serviceInstanceConstants } from '../variables';
+import { serviceInstanceConstants } from './constants';
 
 export const handleInstanceEventOnList = (obj = {}, event = {}) => {
   const currentItems = obj.serviceInstances || [];

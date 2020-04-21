@@ -16,7 +16,7 @@ import builder from '../../../../commons/builder';
 import { getAllServiceInstances } from '../../queries/queries';
 import { deleteServiceInstance } from '../../queries/mutations';
 import { SERVICE_INSTANCE_EVENT_SUBSCRIPTION } from '../../queries/subscriptions';
-import { serviceInstanceConstants } from '../../variables';
+import { serviceInstanceConstants } from '../../constants';
 
 import {
   determineAvailableLabels,
@@ -25,7 +25,7 @@ import {
 
 import ServiceInstancesTable from './ServiceInstancesTable/ServiceInstancesTable.component';
 import ServiceInstancesToolbar from './ServiceInstancesToolbar/ServiceInstancesToolbar.component';
-import { handleInstanceEventOnList } from '../../store/events';
+import { handleInstanceEventOnList } from '../../events';
 
 import {
   EmptyList,

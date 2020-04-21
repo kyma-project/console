@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { serviceInstanceConstants } from '../../../variables';
+import { serviceInstanceConstants } from '../../../constants';
 import { Toolbar } from '@kyma-project/react-components';
 
 import SearchDropdown from './SearchDropdown.component';

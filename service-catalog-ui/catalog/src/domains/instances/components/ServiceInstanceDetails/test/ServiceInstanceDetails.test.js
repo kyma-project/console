@@ -10,7 +10,7 @@ import ServiceInstanceDetails from '../ServiceInstanceDetails';
 import { Spinner, Toolbar, Modal } from '@kyma-project/react-components';
 import { createMockLink, NotificationContext } from 'react-shared';
 import { componentUpdate } from '../../../testing';
-import { serviceInstanceConstants } from '../../../variables';
+import { serviceInstanceConstants } from '../../../constants';
 
 import ServiceInstanceHeader from '../ServiceInstanceHeader/ServiceInstanceHeader';
 import ServiceInstanceBindings from '../ServiceInstanceBindings/ServiceInstanceBindings.container';

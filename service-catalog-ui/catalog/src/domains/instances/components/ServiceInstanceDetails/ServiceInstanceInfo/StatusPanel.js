@@ -6,7 +6,7 @@ import {
   PanelBody,
   PanelActions,
 } from '@kyma-project/react-components';
-import { serviceInstanceConstants } from '../../../variables';
+import { serviceInstanceConstants } from '../../../constants';
 
 const statusIcon = statusType => {
   switch (statusType) {

@@ -13,7 +13,7 @@ import ServiceInstanceHeader from './ServiceInstanceHeader/ServiceInstanceHeader
 import ServiceInstanceTabs from './ServiceInstanceTabs/ServiceInstanceTabs.component';
 import ServiceInstanceBindings from './ServiceInstanceBindings/ServiceInstanceBindings.container';
 
-import { serviceInstanceConstants } from '../../variables';
+import { serviceInstanceConstants } from '../../constants';
 
 import { ServiceInstanceWrapper, EmptyList } from './styled';
 import { backendModuleExists } from '../../../../commons/helpers';
@@ -28,7 +28,7 @@ import {
   handleInstanceEventOnDetails,
   handleServiceBindingEvent,
   handleServiceBindingUsageEvent,
-} from '../../store/events';
+} from '../../events';
 import { deleteServiceInstance } from '../../queries/mutations';
 
 export default function ServiceInstanceDetails({ match }) {

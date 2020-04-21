@@ -1,4 +1,4 @@
-import { serviceInstanceConstants } from '../../variables';
+import { serviceInstanceConstants } from '../../constants';
 import {
   isAddonInstance,
   isServiceInstance,
