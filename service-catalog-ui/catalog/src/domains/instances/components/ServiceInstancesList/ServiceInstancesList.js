@@ -25,7 +25,7 @@ import {
 
 import ServiceInstancesTable from './ServiceInstancesTable/ServiceInstancesTable.component';
 import ServiceInstancesToolbar from './ServiceInstancesToolbar/ServiceInstancesToolbar.component';
-import { handleInstanceEventOnList } from '../../store/ServiceInstances/events';
+import { handleInstanceEventOnList } from '../../store/events';
 
 import {
   EmptyList,

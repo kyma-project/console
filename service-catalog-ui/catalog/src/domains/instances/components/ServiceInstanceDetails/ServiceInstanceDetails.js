@@ -28,7 +28,7 @@ import {
   handleInstanceEventOnDetails,
   handleServiceBindingEvent,
   handleServiceBindingUsageEvent,
-} from '../../store/ServiceInstances/events';
+} from '../../store/events';
 import { deleteServiceInstance } from '../../queries/mutations';
 
 export default function ServiceInstanceDetails({ match }) {
