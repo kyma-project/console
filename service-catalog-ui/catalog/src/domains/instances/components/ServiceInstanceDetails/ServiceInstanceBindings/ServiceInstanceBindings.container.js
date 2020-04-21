@@ -10,7 +10,7 @@ import {
 
 import ServiceInstanceBindings from './ServiceInstanceBindings.component';
 
-import builder from '../../../commons/builder';
+import builder from '../../../../../commons/builder';
 
 export default compose(
   graphql(BINDING_CREATE_MUTATION, {

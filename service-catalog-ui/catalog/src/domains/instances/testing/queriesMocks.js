@@ -10,7 +10,7 @@ import {
   serviceInstance3,
 } from './instanceMocks';
 
-import builder from '../commons/builder';
+import builder from '../../../commons/builder';
 
 export const allServiceInstancesQuery = {
   request: {

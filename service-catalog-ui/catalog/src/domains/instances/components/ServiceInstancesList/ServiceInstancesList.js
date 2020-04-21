@@ -12,7 +12,7 @@ import {
 } from '@kyma-project/react-components';
 import { Identifier } from 'fundamental-react';
 
-import builder from '../../commons/builder';
+import builder from '../../../../commons/builder';
 import { getAllServiceInstances } from '../../queries/queries';
 import { deleteServiceInstance } from '../../queries/mutations';
 import { SERVICE_INSTANCE_EVENT_SUBSCRIPTION } from '../../queries/subscriptions';

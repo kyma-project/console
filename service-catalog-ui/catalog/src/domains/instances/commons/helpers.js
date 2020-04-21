@@ -1,4 +1,4 @@
-import builder from './builder';
+import builder from '../../../commons/builder';
 
 export const sortDocumentsByType = documents => {
   if (!documents) return null;

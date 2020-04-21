@@ -1,6 +1,6 @@
 import { ApolloLink } from 'apollo-link';
 import { SubscriptionClient } from 'subscriptions-transport-ws';
-import builder from '../commons/builder';
+import builder from '../../../commons/builder';
 
 export class WebSocketLink extends ApolloLink {
   constructor(paramsOrClient) {

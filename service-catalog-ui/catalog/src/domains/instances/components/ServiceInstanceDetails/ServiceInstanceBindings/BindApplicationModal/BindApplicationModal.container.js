@@ -6,7 +6,7 @@ import { BINDABLE_RESOURCES_QUERY, USAGE_KINDS_QUERY } from './queries';
 
 import BindApplicationModal from './BindApplicationModal.component';
 
-import builder from '../../../../commons/builder';
+import builder from '../../../../../../commons/builder';
 
 const BindApplicationContainer = ({ client, ...props }) => {
   const fetchBindableResources = () => {

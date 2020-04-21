@@ -17,7 +17,7 @@ import { serviceInstanceConstants } from '../../variables';
 
 import { ServiceInstanceWrapper, EmptyList } from './styled';
 import { backendModuleExists } from '../../commons/helpers';
-import builder from '../../commons/builder';
+import builder from '../../../../commons/builder';
 import { getServiceInstanceDetails } from '../../queries/queries';
 import {
   SERVICE_BINDING_EVENT_SUBSCRIPTION,

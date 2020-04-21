@@ -5,7 +5,7 @@ import { split } from 'apollo-link';
 import { WebSocketLink } from './ws';
 import { isSubscriptionOperation } from '../react-shared';
 
-import builder from '../commons/builder';
+import builder from '../../../commons/builder';
 import { getApiUrl as getURL } from '@kyma-project/common';
 
 export function createApolloClient() {
