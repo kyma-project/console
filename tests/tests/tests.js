@@ -104,24 +104,24 @@ test('Cluster Addons view is rendered', async t => {
   });
 });
 
-test('Lambda view is rendered', async t => {
-  //GIVEN
-  const lambdaLink = leftNavLinkSelector('Lambdas');
+test('Functions view is rendered', async t => {
   await t.useRole(adminUser);
+  const functionsLink = leftNavLinkSelector('Functions');
 
+  //WHEN
   await retry(t, 3, findActiveFrame);
   await retry(t, 3, t => {
     return t
       .click(Selector('.fd-panel__title').withText('default'))
       .switchToMainWindow()
-      .click(lambdaLink);
+      .click(functionsLink);
   });
 
   //THEN
   await retry(t, 3, findActiveFrame);
   await retry(t, 3, t => {
     return t
-      .expect(Selector('.fd-action-bar__title').withText(/Lambdas/i).exists)
+      .expect(Selector('.fd-panel__title').withText(/Functions/).exists)
       .ok();
   });
 });
@@ -202,18 +202,12 @@ testIf(
     //THEN
     await retry(t, 3, findActiveFrame);
 
-    // check title
     await retry(t, 3, t => {
       return t
         .expect(
           Selector('.fd-action-bar__title').withText('Service Brokers').exists,
         )
         .ok();
-    });
-
-    // check loading brokers - helm-broker should be always preset in table
-    await retry(t, 3, t => {
-      return t.expect(Selector('td').withText('helm-broker').exists).ok();
     });
   },
 );
@@ -224,7 +218,7 @@ testIf(
   async t => {
     //GIVEN
     await t.useRole(adminUser);
-    const instancesLink = leftNavLinkSelector('Instance');
+    const instancesLink = leftNavLinkSelector('Instances');
 
     //WHEN
     await retry(t, 3, findActiveFrame);
