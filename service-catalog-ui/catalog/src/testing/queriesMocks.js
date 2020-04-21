@@ -1,7 +1,7 @@
-import { getAllServiceClasses } from '../components/catalog/ServiceClassList/queries';
-import { getServiceClass } from '../components/catalog/ServiceClassDetails/queries';
-import { getServiceClassPlans } from '../components/catalog/ServiceClassPlansList/queries';
-import { createServiceInstance } from '../components/catalog/ServiceClassDetails/CreateInstanceModal/mutations';
+import { getAllServiceClasses } from '../domains/catalog/ServiceClassList/queries';
+import { getServiceClass } from '../domains/catalog/ServiceClassDetails/queries';
+import { getServiceClassPlans } from '../domains/catalog/ServiceClassPlansList/queries';
+import { createServiceInstance } from '../domains/catalog/ServiceClassDetails/CreateInstanceModal/mutations';
 import {
   mockServiceClass,
   mockPlan,

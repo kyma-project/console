@@ -13,7 +13,7 @@ import ServiceInstanceHeader from './ServiceInstanceHeader/ServiceInstanceHeader
 import ServiceInstanceTabs from './ServiceInstanceTabs/ServiceInstanceTabs.component';
 import ServiceInstanceBindings from './ServiceInstanceBindings/ServiceInstanceBindings.container';
 
-import { serviceInstanceConstants } from './../../variables';
+import { serviceInstanceConstants } from '../../variables';
 
 import { ServiceInstanceWrapper, EmptyList } from './styled';
 import { backendModuleExists } from '../../commons/helpers';
