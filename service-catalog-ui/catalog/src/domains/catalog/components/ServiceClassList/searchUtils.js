@@ -1,4 +1,4 @@
-import { serviceClassConstants } from '../../variables';
+import { serviceClassConstants } from '../../constants';
 import { isAddon, isService } from '../../../../commons/helpers';
 
 const determineDisplayedServiceClasses = (

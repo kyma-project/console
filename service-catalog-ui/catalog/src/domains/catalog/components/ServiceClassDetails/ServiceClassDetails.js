@@ -7,7 +7,7 @@ import {
   serviceClassConstants,
   createInstanceButtonText,
   filterExtensions,
-} from '../../variables';
+} from '../../constants';
 
 import ServiceClassTabs from './ServiceClassTabs/ServiceClassTabs';
 import CreateInstanceModal from './CreateInstanceModal/CreateInstanceModal.container';
@@ -26,8 +26,8 @@ import ServiceClassDetailsHeader from './ServiceClassDetailsHeader/ServiceClassD
 import {
   DOCUMENTATION_PER_PLAN_LABEL,
   DOCUMENTATION_PER_PLAN_DESCRIPTION,
-} from '../../../../shared/constants';
-import { Tooltip, Spinner } from '../../../../react-shared';
+} from '../../constants';
+import { Tooltip, Spinner } from 'react-shared';
 import { sortByDisplayName } from '../../../../shared/sorting';
 
 export const PlanSelector = ({ allPlans, currentlySelected, onPlanChange }) => {

@@ -2,7 +2,7 @@ import React from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import LuigiClient from '@kyma-project/luigi-client';
 import { getServiceClassPlans } from './queries';
-import { serviceClassConstants } from '../../variables';
+import { serviceClassConstants } from '../../constants';
 import PropTypes from 'prop-types';
 import {
   Spinner,

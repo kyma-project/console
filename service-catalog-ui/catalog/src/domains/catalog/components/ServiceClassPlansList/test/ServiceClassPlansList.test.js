@@ -7,7 +7,7 @@ import {
 } from '@testing-library/react';
 import ServiceClassPlansList, { DocTypesList } from '../ServiceClassPlansList';
 import { MockedProvider } from '@apollo/react-testing';
-import { serviceClassConstants } from '../../../variables';
+import { serviceClassConstants } from '../../../constants';
 import {
   serviceClassPlansQuery,
   serviceClassNoPlansQuery,
