@@ -219,7 +219,7 @@ export const MODALS = {
 };
 
 export const RESOURCES_MANAGEMENT_PANEL = {
-  TITLE: 'Edit Resources and Replicas',
+  TITLE: 'Edit resources and replicas',
   EDIT_MODAL: {
     TITLE: 'Edit Resources and Replicas Configuration',
     OPEN_BUTTON: {
@@ -249,19 +249,11 @@ export const RESOURCES_MANAGEMENT_PANEL = {
   REPLICAS_MODE: {
     MIN_NUMBER: {
       TITLE: 'Minimum number of replicas',
-      DESCRIPTION: 'Set it to 0 to enable scale to zero',
+      DESCRIPTION: 'Set it to 0 to enable scaling to zero',
     },
     MAX_NUMBER: {
       TITLE: 'Maximum number of replicas',
-      DESCRIPTION: 'Set it to 0 to disable lambda.',
-    },
-    SCALE_TO_ZERO: {
-      TITLE: 'Scale to zero',
-      DESCRIPTION: 'Enable scaling to zero.',
-    },
-    FIXED: {
-      TITLE: 'Fixed replicas',
-      DESCRIPTION: 'Enable fixed replicas.',
+      DESCRIPTION: 'Set it to 0 to disable function.',
     },
   },
   RESOURCES: {
