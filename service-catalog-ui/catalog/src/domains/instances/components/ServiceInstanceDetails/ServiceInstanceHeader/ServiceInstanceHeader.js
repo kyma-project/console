@@ -10,7 +10,7 @@ import {
 } from '@kyma-project/react-components';
 import { BreadcrumbWrapper, ToolbarWrapper } from './styled';
 import builder from '../../../../../commons/builder';
-import { isService } from '../../../commons/helpers';
+import { isService } from '../../../../../commons/helpers';
 
 const ServiceInstanceHeader = ({
   serviceInstance,

@@ -18,7 +18,7 @@ import InfoButton from '../InfoButton/InfoButton.component';
 
 import { SubSectionTitle } from './styled';
 
-import { clearEmptyPropertiesInObject } from '../../../../commons/helpers';
+import { clearEmptyPropertiesInObject } from '../../../../../../commons/helpers';
 import LuigiClient from '@kyma-project/luigi-client';
 import WithNotificationContext from '../WithNotificationContext/WithNotificationContext';
 

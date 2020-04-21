@@ -24,7 +24,7 @@ import {
 
 import { TextOverflowWrapper } from '../../ServiceInstancesList/ServiceInstancesTable/styled';
 
-import { backendModuleExists } from '../../../commons/helpers';
+import { backendModuleExists } from '../../../../../commons/helpers';
 
 class ServiceInstanceBindings extends React.Component {
   capitalize = str => {

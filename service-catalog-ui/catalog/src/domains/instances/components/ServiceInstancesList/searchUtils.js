@@ -1,5 +1,8 @@
 import { serviceInstanceConstants } from '../../variables';
-import { isAddon, isService } from '../../commons/helpers';
+import {
+  isAddonInstance,
+  isServiceInstance,
+} from '../../../../commons/helpers';
 
 function determineDisplayedInstances(
   serviceInstances,
@@ -16,7 +19,9 @@ function determineDisplayedInstances(
   );
 
   const filterFunction =
-    tabIndex === serviceInstanceConstants.addonsIndex ? isAddon : isService;
+    tabIndex === serviceInstanceConstants.addonsIndex
+      ? isAddonInstance
+      : isServiceInstance;
 
   const filteredByTab = filteredByLabels.filter(filterFunction);
 
