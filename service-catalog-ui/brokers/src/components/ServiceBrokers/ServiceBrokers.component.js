@@ -3,6 +3,7 @@ import Moment from 'react-moment';
 
 import { PageHeader, GenericList, Tooltip } from '../../react-shared';
 import { Badge } from 'fundamental-react';
+import './ServiceBrokers.component.scss';
 
 class ServiceBrokers extends React.Component {
   render() {
