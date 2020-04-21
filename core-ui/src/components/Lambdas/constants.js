@@ -249,7 +249,7 @@ export const RESOURCES_MANAGEMENT_PANEL = {
   REPLICAS_MODE: {
     MIN_NUMBER: {
       TITLE: 'Minimum number of replicas',
-      DESCRIPTION: 'Set it to 0 to enable scaling to zero',
+      DESCRIPTION: 'Set it to 0 to enable scaling to zero.',
     },
     MAX_NUMBER: {
       TITLE: 'Maximum number of replicas',
