@@ -15,14 +15,11 @@ export class OrganisationComponent implements OnInit {
   public orgName: string;
   public showSystemNamespaces = false;
   public showExperimentalViews = false;
-  public showDeprecatedViews = false;
   public shouldShowNamespacesToggle = true;
 
   constructor(private http: HttpClient) {
     this.showExperimentalViews =
       localStorage.getItem('console.showExperimentalViews') === 'true';
-    this.showDeprecatedViews =
-      localStorage.getItem('console.showDeprecatedViews') === 'true';
   }
 
   public downloadKubeconfig() {
@@ -66,11 +63,6 @@ export class OrganisationComponent implements OnInit {
       },
       '*'
     );
-  }
-
-
-  public toggleDeprecatedViews() {
-    this.toggleViewVisibilityPreference('showDeprecatedViews');
   }
 
   public toggleExperimentalViews() {

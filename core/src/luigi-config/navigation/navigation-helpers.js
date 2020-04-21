@@ -85,11 +85,9 @@ export const getPreviousLocation = () => {
 };
 
 
-export function hideByNodeCategory(node, showExperimentalCategory, showDeprecatedCategory) {
+export function hideByNodeCategory(node, showExperimentalCategory) {
   if (node.category === "Experimental") {
     return { ...node, hideFromNav: !showExperimentalCategory };
-  } if (node.category === "Deprecated") {
-    return { ...node, hideFromNav: !showDeprecatedCategory };
   } else {
     return node;
   }
