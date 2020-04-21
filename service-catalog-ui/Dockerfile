@@ -18,7 +18,6 @@ RUN npm run bootstrap:prod
 COPY package.json package-lock.json /app/service-catalog/
 COPY brokers/package.json brokers/package-lock.json brokers/config-overrides.js /app/service-catalog/brokers/
 COPY catalog/package.json catalog/package-lock.json catalog/config-overrides.js catalog/.env catalog/postinstall.js /app/service-catalog/catalog/
-COPY instances/package.json instances/package-lock.json instances/config-overrides.js instances/.env instances/postinstall.js /app/service-catalog/instances/
 RUN cd /app/service-catalog && npm install --no-optional --unsafe-perm
 
 # Copy sources
@@ -27,9 +26,6 @@ COPY brokers/public /app/service-catalog/brokers/public
 
 COPY catalog/src /app/service-catalog/catalog/src
 COPY catalog/public /app/service-catalog/catalog/public
-
-COPY instances/src /app/service-catalog/instances/src
-COPY instances/public /app/service-catalog/instances/public
 
 # Set env variables 
 ENV PRODUCTION true
@@ -51,7 +47,6 @@ LABEL source git@github.com:kyma-project/console.git
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY --from=ui-generator /app/service-catalog/brokers/build var/brokers-public
 COPY --from=ui-generator /app/service-catalog/catalog/build var/catalog-public
-COPY --from=ui-generator /app/service-catalog/instances/build var/instances-public
 COPY --from=ui-generator /app/licenses/ /app/licenses/
 
 RUN touch /var/run/nginx.pid && \
