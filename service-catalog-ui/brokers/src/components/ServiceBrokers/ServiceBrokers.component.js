@@ -38,10 +38,10 @@ class ServiceBrokers extends React.Component {
       <article className="brokers-list">
         <PageHeader title="Service Brokers" />
         <GenericList
-          actions={[]}
           entries={brokers}
           headerRenderer={headerRenderer}
           rowRenderer={rowRenderer}
+          showRootHeader={false}
         />
       </article>
     );
