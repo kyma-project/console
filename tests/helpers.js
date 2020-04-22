@@ -11,7 +11,7 @@ export const testIf = (condition, testName, testToRun) => {
 
 export const findActiveFrame = t => {
   return t.switchToIframe(
-    Selector('iframe', { visibilityCheck: true, timeout: 20000 }),
+    Selector('iframe', { timeout: 20000 }).filterVisible(),
   );
 };
 
