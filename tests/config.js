@@ -3,6 +3,6 @@ module.exports = {
   password: process.env.PASSWORD || 'nimda123',
   domain: process.env.DOMAIN || 'kyma.local',
   localDev: process.env.LOCAL_DEV || false,
-  apiPackagesEnabled: process.env.API_PACKAGES_ENABLED || false,
+  disableLegacyConnectivity: process.env.DISABLE_LEGACY_CONNECTIVITY || false,
   serviceCatalogEnabled: process.env.CATALOG_ENABLED || true,
 };

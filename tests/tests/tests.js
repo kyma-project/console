@@ -62,7 +62,7 @@ test('Deployments view is rendered', async t => {
 });
 
 testIf(
-  !toBoolean(config.apiPackagesEnabled),
+  !toBoolean(config.disableLegacyConnectivity),
   'Applications view is rendered',
   async t => {
     //GIVEN
