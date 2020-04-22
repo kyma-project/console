@@ -1,18 +1,7 @@
-// .copiable-text {
-//   div {
-//     position: relative;
-//     button {
-//       position: absolute;
-//       transform: translateY(-50%);
-//       top: 50%;
-//       margin-left: 4px;
-//     }
-//   }
-// }
-
 .copiable-text {
   display: flex;
   align-items: center;
+
   > button {
     flex-grow: -1;
   }
