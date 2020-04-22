@@ -16,17 +16,14 @@ import { CONNECT_APPLICATION } from 'gql/mutations';
 const FormEntry = ({ caption, name, value }) => (
   <FormItem className="connect-application__data-entry">
     <FormLabel htmlFor={name}>{caption}</FormLabel>
-    <CopiableText
-      textToCopy={value || ''}
-      caption={
-        <FormTextarea
-          type="text"
-          id={name}
-          value={value || 'Loading...'}
-          readOnly
-        />
-      }
-    />
+    <CopiableText textToCopy={value || ''}>
+      <FormTextarea
+        type="text"
+        id={name}
+        value={value || 'Loading...'}
+        readOnly
+      />
+    </CopiableText>
   </FormItem>
 );
 

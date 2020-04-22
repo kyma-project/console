@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Icon } from 'fundamental-react';
-import { GenericList } from 'react-shared';
+import { GenericList, CopiableLink } from 'react-shared';
 
 function isUrl(str) {
   try {
@@ -12,13 +11,6 @@ function isUrl(str) {
     return false;
   }
 }
-
-const Link = ({ target }) => (
-  <a href={target} target="_blank" rel="noopener noreferrer">
-    {target}
-    <Icon glyph="inspect" size="s" className="fd-has-margin-left-tiny" />
-  </a>
-);
 
 LabelsTable.propTypes = {
   labels: PropTypes.object,
@@ -44,7 +36,7 @@ export default function LabelsTable({ labels, ownerType, ignoredLabels }) {
   const headerRenderer = () => ['Name', 'Value'];
   const rowRenderer = ({ key, value }) => [
     key,
-    isUrl(value) ? <Link target={value} /> : value,
+    isUrl(value) ? <CopiableLink url={value} /> : value,
   ];
 
   return (

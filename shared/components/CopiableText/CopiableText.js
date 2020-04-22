@@ -8,17 +8,19 @@ import copyToCliboard from 'copy-to-clipboard';
 CopiableText.propTypes = {
   textToCopy: PropTypes.string.isRequired,
   caption: PropTypes.node,
+  children: PropTypes.node,
 };
 
-export function CopiableText({ textToCopy, caption }) {
+export function CopiableText({ textToCopy, children }) {
   return (
     <div className="copiable-text">
-      {caption || textToCopy}
+      {children || textToCopy}
       <Tooltip title="Copy to clipboard" position="top">
         <Button
-          option="light"
           compact
           glyph="copy"
+          option="light"
+          className="fd-has-margin-left-tiny"
           onClick={() => copyToCliboard(textToCopy)}
         />
       </Tooltip>
