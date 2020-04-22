@@ -2,10 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Badge, Icon } from 'fundamental-react';
 
-// const passAll = {
-//   value: 'allow',
-//   displayName: 'Allow',
-// };
+const passAll = {
+  value: 'allow',
+  displayName: 'Allow',
+};
 const jwt = {
   value: 'jwt',
   displayName: 'JWT',
@@ -18,7 +18,7 @@ const oauth2 = {
   value: 'oauth2_introspection',
   displayName: 'OAuth2',
 };
-const accessStrategiesList = [noop, oauth2, jwt];
+const accessStrategiesList = [noop, oauth2, jwt, passAll];
 
 const AccessStrategy = ({ strategy }) => {
   const selectedType = strategy.accessStrategies[0].name;
