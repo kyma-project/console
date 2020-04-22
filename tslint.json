@@ -37,7 +37,6 @@
       "*/components/angular/**/*",
       "*/components/react/**/*",
       "*/core/**/*",
-      "*/lambda/**/*",
       "*/logging/**/*",
       "*/scripts/**/*",
       "*/service-catalog-ui/**/*",

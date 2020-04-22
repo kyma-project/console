@@ -88,7 +88,6 @@ compass/public/luigiConfig.bundle.js
 components/angular
 compass/react-components/index.js
 core
-lambda
 **/public/config/config.js
 
 **/temp/**
