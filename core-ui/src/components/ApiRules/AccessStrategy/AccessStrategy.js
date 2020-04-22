@@ -18,7 +18,7 @@ const oauth2 = {
   value: 'oauth2_introspection',
   displayName: 'OAuth2',
 };
-const accessStrategiesList = [noop, oauth2, jwt, passAll];
+const accessStrategiesList = [passAll, noop, oauth2, jwt];
 
 const AccessStrategy = ({ strategy }) => {
   const selectedType = strategy.accessStrategies[0].name;
@@ -30,7 +30,11 @@ const AccessStrategy = ({ strategy }) => {
         <div className="type">
           <Badge modifier="filled">
             <Icon
-              glyph={selectedType === noop.value ? 'unlocked' : 'locked'}
+              glyph={
+                selectedType === noop.value || selectedType === passAll.value
+                  ? 'unlocked'
+                  : 'locked'
+              }
               size="s"
             />
             {
