@@ -50,11 +50,11 @@ export const RowRenderer = ({ entry, actions, rowRenderer, ...others }) => {
 };
 
 const DefaultRowRenderer = ({
-  key,
   entry,
   actions,
   rowRenderer,
   actionsStandaloneItems,
+  compact,
 }) => {
   const cells = rowRenderer.map((cell, id) => <td key={id}>{cell}</td>);
   const actionsCell = (
@@ -63,12 +63,13 @@ const DefaultRowRenderer = ({
         actions={actions}
         entry={entry}
         standaloneItems={actionsStandaloneItems}
+        compact={compact}
       />
     </td>
   );
 
   return (
-    <tr key={key}>
+    <tr>
       {cells}
       {!!actions.length && actionsCell}
     </tr>
@@ -76,16 +77,13 @@ const DefaultRowRenderer = ({
 };
 
 const CollapsedRowRenderer = ({
-  key,
-  entry,
-  actions,
   rowRenderer: {
     cells,
     collapseContent,
     withCollapseControl = true,
     showCollapseControl = true,
   },
-  actionsStandaloneItems,
+  ...props
 }) => {
   const [isOpen, setOpen] = useState(false);
 
@@ -111,13 +109,7 @@ const CollapsedRowRenderer = ({
   }
 
   const defaultRow = (
-    <DefaultRowRenderer
-      key={key}
-      entry={entry}
-      actions={actions}
-      rowRenderer={rowRenderer}
-      actionsStandaloneItems={actionsStandaloneItems}
-    />
+    <DefaultRowRenderer rowRenderer={rowRenderer} {...props} />
   );
 
   let collapseRow = collapseContent && (
