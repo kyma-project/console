@@ -7,7 +7,6 @@ import copyToCliboard from 'copy-to-clipboard';
 
 CopiableText.propTypes = {
   textToCopy: PropTypes.string.isRequired,
-  caption: PropTypes.node,
   children: PropTypes.node,
 };
 
