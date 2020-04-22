@@ -2,13 +2,13 @@
     display: grid;
     @media (min-width: 1000px) {
         grid-template-columns: 2fr 3fr;
-        > :not(:nth-child(1)) {
+        > :not(:first-child) {
             margin-left: 0px !important;
         }
     }
 
     @media (max-width: 999px) {
-        > :not(:nth-child(1)) {
+        > :not(:first-child) {
             margin-top: 0px !important;
         }
     }
