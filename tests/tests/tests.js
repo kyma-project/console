@@ -104,29 +104,33 @@ test('Cluster Addons view is rendered', async t => {
   });
 });
 
-test('Functions view is rendered', async t => {
-  await t.useRole(adminUser);
-  const functionsLink = leftNavLinkSelector('Functions');
+testIf(
+  toBoolean(config.functionsEnabled),
+  'Functions view is rendered',
+  async t => {
+    await t.useRole(adminUser);
+    const functionsLink = leftNavLinkSelector('Functions');
 
-  //WHEN
-  await retry(t, 3, findActiveFrame);
-  await retry(t, 3, t => {
-    return t
-      .click(Selector('.fd-panel__title').withText('default'))
-      .switchToMainWindow()
-      .click(functionsLink);
-  });
+    //WHEN
+    await retry(t, 3, findActiveFrame);
+    await retry(t, 3, t => {
+      return t
+        .click(Selector('.fd-panel__title').withText('default'))
+        .switchToMainWindow()
+        .click(functionsLink);
+    });
 
-  //THEN
-  await retry(t, 3, findActiveFrame);
-  await retry(t, 3, t => {
-    return t
-      .expect(Selector('.fd-panel__title').withText(/Functions/).exists)
-      .ok();
-  });
-});
+    //THEN
+    await retry(t, 3, findActiveFrame);
+    await retry(t, 3, t => {
+      return t
+        .expect(Selector('.fd-panel__title').withText(/Functions/).exists)
+        .ok();
+    });
+  },
+);
 
-test('Logs view is rendered', async t => {
+testIf(toBoolean(config.loggingEnabled), 'Logs view is rendered', async t => {
   //GIVEN
   const logsLink = leftNavLinkSelector('Logs');
   await t

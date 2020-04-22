@@ -5,4 +5,6 @@ module.exports = {
   localDev: process.env.LOCAL_DEV || false,
   disableLegacyConnectivity: process.env.DISABLE_LEGACY_CONNECTIVITY || false,
   serviceCatalogEnabled: process.env.CATALOG_ENABLED || true,
+  loggingEnabled: process.env.LOGGING_ENABLED || false,
+  functionsEnabled: process.env.FUNCTIONS_ENABLED || true,
 };
