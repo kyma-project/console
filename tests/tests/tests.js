@@ -10,11 +10,12 @@ import {
 } from '../helpers';
 import config from '../config';
 
-fixture`Console UI Smoke tests`;
+fixture`Console UI Smoke tests`.beforeEach(
+  async t => await t.useRole(adminUser),
+);
 
 test('Luigi navigation is rendered', async t => {
   //GIVEN
-  await t.useRole(adminUser);
   const namespacesLink = leftNavLinkSelector('Namespaces');
 
   //THEN
@@ -22,10 +23,7 @@ test('Luigi navigation is rendered', async t => {
 });
 
 test('Namespaces view is rendered', async t => {
-  //GIVEN
-  await t.useRole(adminUser);
-
-  //THEN
+  //GIVEN; THEN
   await retry(t, 3, findActiveFrame);
   await retry(t, 3, t => {
     return t
@@ -38,7 +36,6 @@ test('Namespaces view is rendered', async t => {
 
 test('Deployments view is rendered', async t => {
   //GIVEN
-  await t.useRole(adminUser);
   const deploymentsLink = leftNavLinkSelector('Deployments');
   //WHEN
   await retry(t, 3, findActiveFrame);
@@ -67,11 +64,9 @@ testIf(
   async t => {
     //GIVEN
     const applicationLink = leftNavLinkSelector('Applications');
-    await t
-      .useRole(adminUser)
 
-      //WHEN
-      .click(applicationLink);
+    //WHEN
+    await t.click(applicationLink);
 
     //THEN
     await retry(t, 3, findActiveFrame);
@@ -88,10 +83,9 @@ testIf(
 test('Cluster Addons view is rendered', async t => {
   //GIVEN
   const addonsLink = leftNavLinkSelector('Cluster Addons');
-  await t
-    .useRole(adminUser)
-    //WHEN
-    .click(addonsLink);
+
+  //WHEN
+  await t.click(addonsLink);
 
   //THEN
   await retry(t, 3, findActiveFrame);
@@ -108,7 +102,6 @@ testIf(
   toBoolean(config.functionsEnabled),
   'Functions view is rendered',
   async t => {
-    await t.useRole(adminUser);
     const functionsLink = leftNavLinkSelector('Functions');
 
     //WHEN
@@ -133,10 +126,9 @@ testIf(
 testIf(toBoolean(config.loggingEnabled), 'Logs view is rendered', async t => {
   //GIVEN
   const logsLink = leftNavLinkSelector('Logs');
-  await t
-    .useRole(adminUser)
-    //WHEN
-    .click(logsLink);
+
+  //WHEN
+  await t.click(logsLink);
 
   //THEN
   await retry(t, 3, findActiveFrame);
@@ -162,7 +154,6 @@ testIf(
   'Catalog view is rendered',
   async t => {
     //GIVEN
-    await t.useRole(adminUser);
     const catalogLink = leftNavLinkSelector('Catalog');
 
     //WHEN
@@ -191,7 +182,6 @@ testIf(
   'Service Brokers view is rendered',
   async t => {
     //GIVEN
-    await t.useRole(adminUser);
     const brokersLink = leftNavLinkSelector('Brokers');
 
     //WHEN
@@ -221,7 +211,6 @@ testIf(
   'Instances view is rendered',
   async t => {
     //GIVEN
-    await t.useRole(adminUser);
     const instancesLink = leftNavLinkSelector('Instances');
 
     //WHEN
@@ -247,7 +236,6 @@ testIf(
 
 test('Docs view is rendered', async t => {
   //GIVEN
-  await t.useRole(adminUser);
   //WHEN - click on docs link
   await retry(t, 3, t => t.click(Selector('[data-testid=docs_docs]')));
 
