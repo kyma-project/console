@@ -36,7 +36,8 @@ export default function LabelsTable({ labels, ownerType, ignoredLabels }) {
         .filter(([key]) => !ignoredLabels.includes(key))
         .map(([key, value]) => ({
           key,
-          value,
+          value:
+            typeof value === 'object' ? JSON.stringify(value, null, 2) : value,
         }))
     : [];
 
@@ -53,7 +54,7 @@ export default function LabelsTable({ labels, ownerType, ignoredLabels }) {
       entries={entries}
       headerRenderer={headerRenderer}
       rowRenderer={rowRenderer}
-      textSearchProperties={['Name', 'Value']}
+      textSearchProperties={['key', 'value']}
     />
   );
 }
