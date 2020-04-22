@@ -43,7 +43,10 @@ const AccessStrategy = ({ strategy }) => {
             }
           </Badge>
         </div>
-        <div className="methods">
+        <div
+          className="methods"
+          style={selectedType === passAll.value ? { display: 'none' } : {}}
+        >
           {strategy.methods
             .sort()
             .reverse()

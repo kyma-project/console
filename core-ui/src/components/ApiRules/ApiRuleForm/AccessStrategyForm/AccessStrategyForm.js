@@ -15,8 +15,6 @@ import StringListInput from './StringListInput';
 import { Tooltip } from 'react-shared';
 import JwtDetails from './JwtDetails/JwtDetails';
 
-const AVAILABLE_METHODS = ['GET', 'POST', 'PUT', 'DELETE'];
-
 // const URLregexp = new RegExp(
 //   '(https://(?:www.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9].[^s]{2,}|www.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9].[^s]{2,}|https?://(?:www.|(?!www))[a-zA-Z0-9]+.[^s]{2,}|www.[a-zA-Z0-9]+.[^s]{2,})',
 // );
@@ -48,21 +46,6 @@ export default function AccessStrategyForm({
 }) {
   const selectedType = strategy.accessStrategies[0].name;
 
-  function toggleMethod(method, checked) {
-    if (checked) {
-      setStrategy({ ...strategy, methods: [...strategy.methods, method] });
-    } else {
-      const removeIdx = strategy.methods.indexOf(method);
-      setStrategy({
-        ...strategy,
-        methods: [
-          ...strategy.methods.slice(0, removeIdx),
-          ...strategy.methods.slice(removeIdx + 1, strategy.methods.length),
-        ],
-      });
-    }
-  }
-
   const deleteButtonWrapper = canDelete
     ? component => component
     : component => (
@@ -92,18 +75,6 @@ export default function AccessStrategyForm({
                 }
               />
             </FormItem>
-            <FormFieldset>
-              <FormRadioGroup inline className="inline-radio-group">
-                {AVAILABLE_METHODS.map(m => (
-                  <Checkbox
-                    key={m}
-                    value={m}
-                    defaultChecked={strategy.methods.includes(m)}
-                    onChange={e => toggleMethod(m, e.target.checked)}
-                  />
-                ))}
-              </FormRadioGroup>
-            </FormFieldset>
             <FormItem>
               <FormSelect
                 defaultValue={selectedType}
@@ -134,6 +105,10 @@ export default function AccessStrategyForm({
                 ))}
               </FormSelect>
             </FormItem>
+            <HTTPMethods
+              strategy={strategy}
+              setStrategy={setStrategy}
+            ></HTTPMethods>
           </LayoutGrid>
         </FormGroup>
 
@@ -193,5 +168,41 @@ function OAuth2Details({ config, setConfig }) {
       label="Required scope"
       regexp={/^[^, ]+$/}
     />
+  );
+}
+
+function HTTPMethods({ strategy, setStrategy }) {
+  const AVAILABLE_METHODS = ['GET', 'POST', 'PUT', 'DELETE'];
+  const toggleMethod = function(method, checked) {
+    if (checked) {
+      setStrategy({ ...strategy, methods: [...strategy.methods, method] });
+    } else {
+      const removeIdx = strategy.methods.indexOf(method);
+      setStrategy({
+        ...strategy,
+        methods: [
+          ...strategy.methods.slice(0, removeIdx),
+          ...strategy.methods.slice(removeIdx + 1, strategy.methods.length),
+        ],
+      });
+    }
+  };
+  const methodsIrrelevant =
+    strategy.accessStrategies[0] &&
+    strategy.accessStrategies[0].name === passAll.value;
+  return (
+    <FormFieldset>
+      <FormRadioGroup inline className="inline-radio-group">
+        {AVAILABLE_METHODS.map(m => (
+          <Checkbox
+            key={m}
+            value={m}
+            defaultChecked={strategy.methods.includes(m)}
+            onChange={e => toggleMethod(m, e.target.checked)}
+            disabled={methodsIrrelevant}
+          />
+        ))}
+      </FormRadioGroup>
+    </FormFieldset>
   );
 }
