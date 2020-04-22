@@ -28,7 +28,7 @@ describe('LabelsTable', () => {
     expect(queryByText('BAD')).not.toBeInTheDocument();
   });
 
-  it('Renders labels', async () => {
+  it('Renders labels as inks', async () => {
     const { queryByRole } = render(
       <LabelsTable ownerType="Parent" labels={{ label1: 'http://1' }} />,
     );
