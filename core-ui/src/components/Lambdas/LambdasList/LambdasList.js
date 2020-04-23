@@ -25,13 +25,16 @@ function LambdaStatusBadge({ status }) {
     badgeType = undefined;
   }
 
-  let tooltipTitle = texts.MESSAGE;
-  if (LAMBDA_ERROR_PHASES.includes(statusPhase)) {
-    const formattedError = formatMessage(LAMBDA_PHASES.ERROR_SUFFIX, {
-      error: status.message,
-    });
-    tooltipTitle = `${tooltipTitle} ${formattedError}`;
+  const badgeComponent = <Badge type={badgeType}>{texts.TITLE}</Badge>;
+
+  if (!LAMBDA_ERROR_PHASES.includes(statusPhase)) {
+    return badgeComponent;
   }
+
+  const formattedError = formatMessage(LAMBDA_PHASES.ERROR_SUFFIX, {
+    error: status.message,
+  });
+  const tooltipTitle = `${texts.MESSAGE} ${formattedError}`;
 
   return (
     <Tooltip
@@ -42,7 +45,7 @@ function LambdaStatusBadge({ status }) {
         distance: 8,
       }}
     >
-      <Badge type={badgeType}>{texts.TITLE}</Badge>
+      {badgeComponent}
     </Tooltip>
   );
 }

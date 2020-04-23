@@ -57,9 +57,9 @@ export const LAMBDAS_LIST = {
     NOT_MATCHING_SEARCH_QUERY: "Couldn't find Functions matching this query.",
   },
   CREATE_MODAL: {
-    TITLE: 'Create new Function',
+    TITLE: 'Create Function',
     OPEN_BUTTON: {
-      TEXT: 'Create new Function',
+      TEXT: 'Create Function',
     },
     CONFIRM_BUTTON: {
       TEXT: 'Create',
@@ -119,12 +119,6 @@ export const LOGS_AND_METRICS = {
   },
 };
 
-export const TRIGGER_SUBSCRIBER = {
-  SERVING_SERVICE: 'Service',
-  SERVING_API_VERSION: 'serving.knative.dev/v1',
-  BROKER: 'default',
-};
-
 export const GQL_QUERIES = {
   LAMBDA: {
     ERROR_MESSAGE: `Couldn't fetch "{lambdaName}" due to this error: {error}`,
@@ -165,7 +159,7 @@ export const GQL_MUTATIONS = {
       ERROR_MESSAGE: `Couldn't update resources and replicas for "{lambdaName}" due to this error: {error}`,
     },
     VARIABLES: {
-      SUCCESS_MESSAGE: `Environment variables for "{lambdaName}" were successfully update`,
+      SUCCESS_MESSAGE: `Environment variables for "{lambdaName}" were successfully updated`,
       ERROR_MESSAGE: `Couldn't update environment variables for "{lambdaName}" due to this error: {error}`,
     },
   },
@@ -221,7 +215,6 @@ export const MODALS = {
 export const RESOURCES_MANAGEMENT_PANEL = {
   TITLE: 'Edit resources and replicas',
   EDIT_MODAL: {
-    TITLE: 'Edit Resources and Replicas Configuration',
     OPEN_BUTTON: {
       TEXT: {
         EDIT: 'Edit Configuration',
@@ -239,7 +232,8 @@ export const RESOURCES_MANAGEMENT_PANEL = {
       'Memory value has to be a fixed-point number with one of these suffixes: Gi, Mi, or Ki. For example, use 50Mi, 1000.5Ki, or 0.1Gi.',
     MIN_REPLICAS_TOO_HIGH:
       'Minimum number of replicas has to be equal to or lower than maximum.',
-    MIN_REPLICAS_NON_NEGATIVE: 'Minimum replicas must be non-negative integer',
+    MIN_REPLICAS_NON_NEGATIVE:
+      'Minimum replicas must be a non-negative integer.',
     MAX_REPLICAS_TOO_LOW:
       'Maximum number of replicas has to be equal or greater than minimum.',
     MAX_REPLICAS_NON_NEGATIVE:
@@ -353,9 +347,9 @@ export const ENVIRONMENT_VARIABLES_PANEL = {
     },
   },
   EDIT_MODAL: {
-    TITLE: 'Edit environment variables',
+    TITLE: 'Edit Environment Variables',
     OPEN_BUTTON: {
-      TEXT: 'Edit environment variables',
+      TEXT: 'Edit Environment Variables',
     },
     CONFIRM_BUTTON: {
       TEXT: 'Save',
@@ -367,7 +361,7 @@ export const ENVIRONMENT_VARIABLES_PANEL = {
       },
     },
     ADD_ENV_BUTTON: {
-      TEXT: 'Add new variable',
+      TEXT: 'Add Environment Variable',
     },
   },
   ERRORS: {
@@ -410,6 +404,17 @@ export const FIRST_BREADCRUMB_NODE = 'Functions';
 export const FUNCTION_USAGE_KIND = 'function';
 
 export const REFETCH_LAMBDAS_TIMEOUT = 2000;
+
+export const FUNCTION_CUSTOM_RESOURCE = {
+  KIND: 'Function',
+  API_VERSION: 'serverless.kyma-project.io/v1alpha1',
+};
+
+export const TRIGGER_SUBSCRIBER = {
+  SERVING_SERVICE: 'Service',
+  SERVING_API_VERSION: 'serving.knative.dev/v1',
+  BROKER: 'default',
+};
 
 export const DEFAULT_LAMBDA_CODE = `module.exports = { 
   main: function (event, context) {
