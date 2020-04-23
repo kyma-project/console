@@ -47,17 +47,13 @@ describe('AplicationDetailsScenario', () => {
   it('Shows list title', async () => {
     const { queryByText } = component;
 
-    await wait(() => {
-      expect(queryByText('Assigned to Scenario')).toBeInTheDocument();
-    });
+    expect(queryByText('Assigned to Scenario')).toBeInTheDocument();
   });
 
   it('shows the scenarios names', async () => {
     const { queryByText } = component;
 
-    await wait(() => {
-      expect(queryByText(mockScenarios[0])).toBeInTheDocument();
-      expect(queryByText(mockScenarios[1])).toBeInTheDocument();
-    });
+    expect(queryByText(mockScenarios[0])).toBeInTheDocument();
+    expect(queryByText(mockScenarios[1])).toBeInTheDocument();
   });
 });

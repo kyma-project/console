@@ -13,57 +13,46 @@ describe('ApplicationDetails', () => {
         <ApplicationDetails applicationId="123" />
       </MockedProvider>,
     );
+    // wait for data to load
+    await waitForDomChange();
   });
 
   it('Shows application providerName', async () => {
     const { queryByText } = component;
-
-    await wait(() => {
-      expect(
-        queryByText(MOCK_GET_APPLICATION.result.data.application.providerName),
-      ).toBeInTheDocument();
-    });
+    expect(
+      queryByText(MOCK_GET_APPLICATION.result.data.application.providerName),
+    ).toBeInTheDocument();
   });
 
   it('Shows application description', async () => {
     const { queryByText } = component;
-
-    await wait(() => {
-      expect(
-        queryByText(MOCK_GET_APPLICATION.result.data.application.description),
-      ).toBeInTheDocument();
-    });
+    expect(
+      queryByText(MOCK_GET_APPLICATION.result.data.application.description),
+    ).toBeInTheDocument();
   });
 
   it('Shows application status', async () => {
     const { queryByText } = component;
-
-    await wait(() => {
-      expect(
-        queryByText(
-          MOCK_GET_APPLICATION.result.data.application.status.condition,
-        ),
-      ).toBeInTheDocument();
-    });
+    expect(
+      queryByText(
+        MOCK_GET_APPLICATION.result.data.application.status.condition,
+      ),
+    ).toBeInTheDocument();
   });
 
   it('Shows application scenarios', async () => {
     const { queryByText } = component;
-    await wait(() => {
-      MOCK_GET_APPLICATION.result.data.application.labels.scenarios.forEach(s => {
-        expect(queryByText(s)).toBeInTheDocument();
-      });
+
+    MOCK_GET_APPLICATION.result.data.application.labels.scenarios.forEach(s => {
+      expect(queryByText(s)).toBeInTheDocument();
     });
   });
 
   it('Shows application empty packages list', async () => {
     const { queryByText } = component;
-
-    await wait(() => {
-      expect(
-        queryByText('There are no Packages defined for this Application'),
-      ).toBeInTheDocument();
-    });
+    expect(
+      queryByText('There are no Packages defined for this Application'),
+    ).toBeInTheDocument();
   });
 });
 

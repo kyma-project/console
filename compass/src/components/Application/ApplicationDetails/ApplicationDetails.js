@@ -1,6 +1,5 @@
 import React from 'react';
 import { useQuery } from 'react-apollo';
-import { useMutation } from '@apollo/react-hooks';
 import Header from './ApplicationDetailsHeader/ApplicationDetailsHeader';
 import ScenariosList from './ApplicationDetailsScenarios/ApplicationDetailsScenarios';
 import ApplicationApiPackages from './ApplicationApiPackages/ApplicationApiPackages';
@@ -9,7 +8,6 @@ import ResourceNotFound from '../../Shared/ResourceNotFound.component';
 import LabelsTable from 'components/Shared/LabelsTable/LabelsTable';
 
 import { GET_APPLICATION } from '../gql';
-import { UNREGISTER_APPLICATION_MUTATION } from '../../Applications/gql';
 
 import './ApplicationDetails.scss';
 
@@ -20,9 +18,6 @@ ApplicationDetails.propTypes = {
 export const ApplicationQueryContext = React.createContext(null);
 
 function ApplicationDetails({ applicationId }) {
-  const [deleteApplicationMutation] = useMutation(
-    UNREGISTER_APPLICATION_MUTATION,
-  );
   const applicationQuery = useQuery(GET_APPLICATION, {
     variables: { id: applicationId },
     fetchPolicy: 'cache-and-network',
@@ -54,10 +49,7 @@ function ApplicationDetails({ applicationId }) {
 
   return (
     <ApplicationQueryContext.Provider value={applicationQuery}>
-      <Header
-        application={application}
-        deleteApplication={deleteApplicationMutation}
-      />
+      <Header application={application} />
       <ApplicationApiPackages
         apiPackages={application.packages.data}
         applicationId={application.id}
