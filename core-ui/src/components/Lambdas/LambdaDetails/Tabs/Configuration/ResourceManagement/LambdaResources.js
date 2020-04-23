@@ -34,9 +34,11 @@ export function LambdaResources({ disabledForm, register, errors }) {
                     RESOURCES_MANAGEMENT_PANEL.RESOURCES.MEMORY.TITLE
                   }
                 />
-                <div className={errorClassName}>
-                  {errors?.requestsMemory?.message}
-                </div>
+                {errors?.requestsMemory?.message && (
+                  <div className={errorClassName}>
+                    {errors?.requestsMemory?.message}
+                  </div>
+                )}
               </>
             }
           ></Row>
@@ -52,9 +54,11 @@ export function LambdaResources({ disabledForm, register, errors }) {
                   _ref={register}
                   placeholder={RESOURCES_MANAGEMENT_PANEL.RESOURCES.CPU.TITLE}
                 />
-                <div className={errorClassName}>
-                  {errors?.requestsCpu?.message}
-                </div>
+                {errors?.requestsCpu?.message && (
+                  <div className={errorClassName}>
+                    {errors?.requestsCpu?.message}
+                  </div>
+                )}
               </>
             }
           ></Row>
@@ -84,9 +88,11 @@ export function LambdaResources({ disabledForm, register, errors }) {
                     RESOURCES_MANAGEMENT_PANEL.RESOURCES.MEMORY.TITLE
                   }
                 />
-                <div className={errorClassName}>
-                  {errors?.limitsMemory?.message}
-                </div>
+                {errors?.limitsMemory?.message && (
+                  <div className={errorClassName}>
+                    {errors?.limitsMemory?.message}
+                  </div>
+                )}
               </>
             }
           ></Row>
@@ -102,9 +108,11 @@ export function LambdaResources({ disabledForm, register, errors }) {
                   _ref={register}
                   placeholder={RESOURCES_MANAGEMENT_PANEL.RESOURCES.CPU.TITLE}
                 />
-                <div className={errorClassName}>
-                  {errors?.limitsCpu?.message}
-                </div>
+                {errors?.limitsCpu?.message && (
+                  <div className={errorClassName}>
+                    {errors?.limitsCpu?.message}
+                  </div>
+                )}
               </>
             }
           ></Row>

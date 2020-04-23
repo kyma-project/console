@@ -11,8 +11,8 @@ import { inputNames } from './shared';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 
-const cpuRegexp = /(^\d+(\.\d+)?$)|(^\d+[m]$)/;
-const memoryRegexp = /^\d+(\.\d+)?(Gi|Mi|Ki)$/;
+export const cpuRegexp = /^\d+(\.\d+)?m?$/;
+export const memoryRegexp = /^\d+(\.\d+)?(Gi|Mi|Ki|G|M|K)$/;
 
 const schema = yup.object().shape({
   [inputNames.replicas.min]: yup
@@ -66,49 +66,41 @@ const schema = yup.object().shape({
 });
 
 export function ResourcesManagement({ lambda }) {
-  const defaultedReplicas = {
-    min: lambda.replicas.min || '1',
-    max: lambda.replicas.max || '1',
+  const defaultValues = {
+    [inputNames.replicas.min]: lambda.replicas.min || '1',
+    [inputNames.replicas.max]: lambda.replicas.max || '1',
+    [inputNames.requests.cpu]: parseCpu(lambda.resources.requests.cpu || ''),
+    [inputNames.limits.cpu]: parseCpu(lambda.resources.limits.cpu || ''),
+    [inputNames.requests.memory]: lambda.resources.requests.memory || '',
+    [inputNames.limits.memory]: lambda.resources.limits.memory || '',
   };
 
-  const defaultedResources = {
-    requests: {
-      cpu: lambda.resources.requests.cpu || '',
-      memory: lambda.resources.requests.memory || '',
-    },
-    limits: {
-      cpu: lambda.resources.limits.cpu || '',
-      memory: lambda.resources.limits.memory || '',
-    },
-  };
-
-  const { register, handleSubmit, errors, formState, setValue } = useForm({
+  const {
+    register,
+    handleSubmit,
+    errors,
+    formState,
+    setValue,
+    triggerValidation,
+  } = useForm({
     validationSchema: schema,
     mode: 'onChange',
-    defaultValues: {
-      [inputNames.replicas.min]: defaultedReplicas.min,
-      [inputNames.replicas.max]: defaultedReplicas.max,
-      [inputNames.requests.cpu]: defaultedResources.requests.cpu,
-      [inputNames.limits.cpu]: defaultedResources.limits.cpu,
-      [inputNames.requests.memory]: defaultedResources.requests.memory,
-      [inputNames.limits.memory]: defaultedResources.limits.memory,
-    },
+    defaultValues,
   });
 
-  const [disabledForm, setDisabledForm] = useState(true);
+  const [isEditMode, setIsEditMode] = useState(false);
   const updateLambda = useUpdateLambda({
     lambda,
     type: UPDATE_TYPE.RESOURCES_AND_REPLICAS,
   });
 
-  const resetFields = () => {
-    setValue(inputNames.replicas.min, defaultedReplicas.min);
-    setValue([inputNames.replicas.min], defaultedReplicas.min);
-    setValue([inputNames.replicas.max], defaultedReplicas.max);
-    setValue([inputNames.requests.cpu], defaultedResources.requests.cpu);
-    setValue([inputNames.limits.cpu], defaultedResources.limits.cpu);
-    setValue([inputNames.requests.memory], defaultedResources.requests.memory);
-    setValue([inputNames.limits.memory], defaultedResources.limits.memory);
+  const resetFields = () =>
+    Object.entries(defaultValues).forEach(([name, val]) => setValue(name, val));
+
+  const retriggerValidation = async () => {
+    await Promise.all(
+      Object.keys(defaultValues).map(elem => triggerValidation(elem)),
+    );
   };
 
   const onSubmit = data => {
@@ -118,9 +110,9 @@ export function ResourcesManagement({ lambda }) {
       }
     };
 
-    setDisabledForm(prev => !prev);
+    setIsEditMode(prev => !prev);
 
-    if (!disabledForm) {
+    if (isEditMode) {
       updateLambda(
         {
           replicas: { min: data.minReplicas, max: data.maxReplicas },
@@ -142,45 +134,50 @@ export function ResourcesManagement({ lambda }) {
 
   const saveText = RESOURCES_MANAGEMENT_PANEL.EDIT_MODAL.OPEN_BUTTON.TEXT.SAVE;
   const editText = RESOURCES_MANAGEMENT_PANEL.EDIT_MODAL.OPEN_BUTTON.TEXT.EDIT;
+
   return (
     <Panel className="fd-has-margin-m lambda-resources-management">
       <form onSubmit={handleSubmit(onSubmit)}>
         <Panel.Header className="fd-has-padding-xs">
           <Panel.Head title={RESOURCES_MANAGEMENT_PANEL.TITLE} />
           <Panel.Actions>
-            {!disabledForm && (
+            {isEditMode && (
               <Button
                 glyph="sys-cancel"
                 type="negative"
-                onClick={() => {
+                onClick={async () => {
                   resetFields();
-                  setDisabledForm(true);
+                  setIsEditMode(false);
+                  retriggerValidation();
                 }}
               >
                 {'Cancel'}
               </Button>
             )}
             <Button
-              glyph={disabledForm ? 'edit' : 'save'}
-              option={disabledForm ? 'light' : 'default'}
+              glyph={isEditMode ? 'save' : 'edit'}
+              option={isEditMode ? 'emphasized' : 'light'}
               typeAttr="submit"
-              disabled={!formState.isValid}
+              onClick={async () => {
+                await retriggerValidation();
+              }}
+              disabled={isEditMode && !formState.isValid}
             >
-              {disabledForm ? editText : saveText}
+              {isEditMode ? saveText : editText}
             </Button>
           </Panel.Actions>
         </Panel.Header>
         <Panel.Body className="fd-has-padding-xs">
           <LambdaReplicas
             register={register}
-            disabledForm={disabledForm}
+            disabledForm={!isEditMode}
             errors={errors}
           />
         </Panel.Body>
         <Panel.Body className="fd-has-padding-xs">
           <LambdaResources
             register={register}
-            disabledForm={disabledForm}
+            disabledForm={!isEditMode}
             errors={errors}
           />
         </Panel.Body>
@@ -191,4 +188,13 @@ export function ResourcesManagement({ lambda }) {
 
 ResourcesManagement.propTypes = {
   lambda: PropTypes.object.isRequired,
+};
+
+export const parseCpu = cpu => {
+  const microCpuRegexp = /^\d+(\.\d+)?u$/;
+  if (!microCpuRegexp.test(cpu)) {
+    return cpu;
+  }
+  const numberPart = parseFloat(cpu.slice(0, cpu.length - 1));
+  return `${numberPart / 1000}m`;
 };
