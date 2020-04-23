@@ -9,10 +9,20 @@ export const testIf = (condition, testName, testToRun) => {
   }
 };
 
-export const findActiveFrame = t => {
-  return t.switchToIframe(
-    Selector('iframe', { visibilityCheck: true, timeout: 20000 }),
-  );
+export const findActiveFrame = async t => {
+  Selector('iframe', {
+    visibilityCheck: true,
+  })().then(fr => {
+    console.log(fr);
+    return fr;
+  });
+  const iframe = Selector('iframe', {
+    visibilityCheck: true,
+  });
+  // console.log(iframe.getBoundingClientRectProperty().valueOf());
+  return t.switchToIframe(iframe);
+  // .expect(iframe.hasChildNodes)
+  // .ok();
 };
 
 export const leftNavLinkSelector = text => {
