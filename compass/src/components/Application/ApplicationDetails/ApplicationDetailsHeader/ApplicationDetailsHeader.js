@@ -14,7 +14,7 @@ import ModalWithForm from './../../../../shared/components/ModalWithForm/ModalWi
 import UpdateApplicationForm from './../UpdateApplicationForm/UpdateApplicationForm.container';
 import ConnectApplicationModal from './../ConnectApplicationModal/ConnectApplicationModal';
 
-import { ApplicationQueryContext } from './../ApplicationDetails.component';
+import { ApplicationQueryContext } from '../ApplicationDetails';
 
 function navigateToApplications() {
   LuigiClient.linkManager()

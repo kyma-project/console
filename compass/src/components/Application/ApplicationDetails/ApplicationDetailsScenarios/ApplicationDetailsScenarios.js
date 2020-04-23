@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import LuigiClient from '@luigi-project/client';
 import { GenericList } from 'react-shared';
 import AssignScenarioModal from './../../../Shared/AssignScenario/AssignScenarioModal.container';
-import { ApplicationQueryContext } from './../../ApplicationDetails/ApplicationDetails.component';
+import { ApplicationQueryContext } from '../ApplicationDetails';
 import { SEND_NOTIFICATION } from '../../../../gql';
 
 import { SET_APPLICATION_SCENARIOS, DELETE_SCENARIO_LABEL } from '../../gql';
