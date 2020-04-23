@@ -9,10 +9,10 @@ export const testIf = (condition, testName, testToRun) => {
   }
 };
 
-export const findActiveFrame = t => {
-  return t.switchToIframe(
-    Selector('iframe', { visibilityCheck: true, timeout: 6000 }),
-  );
+export const findActiveFrame = async t => {
+  const iframe = Selector('iframe', { visibilityCheck: true, timeout: 6000 });
+  await iframe.find('html')();
+  return t.switchToIframe(iframe);
 };
 
 export const leftNavLinkSelector = text => {
