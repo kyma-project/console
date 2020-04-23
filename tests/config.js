@@ -6,5 +6,5 @@ module.exports = {
   apiPackagesEnabled: process.env.API_PACKAGES_ENABLED || false,
   serviceCatalogEnabled: process.env.CATALOG_ENABLED || true,
 
-  navLinksTimeout: 1000,
+  navLinksTimeout: 3000,
 };
