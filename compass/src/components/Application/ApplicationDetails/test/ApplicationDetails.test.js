@@ -50,7 +50,7 @@ describe('ApplicationDetails', () => {
   it('Shows application scenarios', async () => {
     const { queryByText } = component;
     await wait(() => {
-      MOCK_GET_APPLICATION.result.data.application.scenarios.forEach(s => {
+      MOCK_GET_APPLICATION.result.data.application.labels.scenarios.forEach(s => {
         expect(queryByText(s)).toBeInTheDocument();
       });
     });
