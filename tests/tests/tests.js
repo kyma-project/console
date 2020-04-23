@@ -197,9 +197,7 @@ testIf(
 
     await retry(t, 3, t => {
       return t
-        .expect(
-          Selector('.fd-action-bar__title').withText('Service Brokers').exists,
-        )
+        .expect(Selector('.fd-panel__title').withText('Service Brokers').exists)
         .ok();
     });
   },
