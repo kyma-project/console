@@ -16,7 +16,7 @@ const oauth2_introspection = {
   displayName: 'OAuth2',
 };
 
-const accessStrategyTypes = { allow, noop, oauth2_introspection, jwt };
+const accessStrategyTypes = { noop, allow, oauth2_introspection, jwt };
 
 export default accessStrategyTypes;
 export const usesMethods = strategyType =>
