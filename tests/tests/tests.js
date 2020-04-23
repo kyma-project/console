@@ -17,10 +17,9 @@ test('Luigi navigation is rendered', async t => {
   await t.useRole(adminUser);
   const namespacesLink = leftNavLinkSelector('Namespaces');
   //THEN
-  await retry(t, 3, findActiveFrame);
-  await retry(t, 3, t => {
-    return t.expect(namespacesLink.exists).ok();
-  });
+  return t
+    .expect(namespacesLink.exists)
+    .ok({ timeout: config.navLinksTimeout });
 });
 
 test('Namespaces view is rendered', async t => {
@@ -28,14 +27,12 @@ test('Namespaces view is rendered', async t => {
   await t.useRole(adminUser);
 
   //THEN
-  await retry(t, 3, findActiveFrame);
-  await retry(t, 3, t => {
-    return t
-      .expect(Selector('.fd-button').withText('Add new namespace').exists)
-      .ok()
-      .expect(Selector('.fd-panel__title').withText('default').exists)
-      .ok();
-  });
+  await findActiveFrame(t);
+  return t
+    .expect(Selector('.fd-button').withText('Add new namespace').exists)
+    .ok()
+    .expect(Selector('.fd-panel__title').withText('default').exists)
+    .ok();
 });
 
 testIf(
@@ -51,12 +48,11 @@ testIf(
       .click(applicationLink);
 
     //THEN
-    await retry(t, 3, findActiveFrame);
-    await retry(t, 3, t => {
-      return t
-        .expect(Selector('button').withText(/.*create application.*/i).exists)
-        .ok();
-    });
+    await findActiveFrame(t);
+
+    return t
+      .expect(Selector('button').withText(/.*create application.*/i).exists)
+      .ok();
   },
 );
 
@@ -69,22 +65,20 @@ testIf(
     const catalogLink = leftNavLinkSelector('Catalog');
 
     //WHEN
-    await retry(t, 3, findActiveFrame);
-    await retry(t, 3, t => {
-      return t
-        .click(Selector('.fd-panel__title').withText('default'))
-        .switchToMainWindow()
-        .click(catalogLink);
-    });
+    await findActiveFrame(t);
+
+    return t
+      .click(Selector('.fd-panel__title').withText('default'))
+      .switchToMainWindow()
+      .click(catalogLink);
 
     //THEN
-    await retry(t, 3, findActiveFrame);
-    await retry(t, 3, t => {
-      return t
-        .expect(
-          Selector('.fd-action-bar__title').withText('Service Catalog').exists,
-        )
-        .ok();
-    });
+    await findActiveFrame(t);
+
+    return t
+      .expect(
+        Selector('.fd-action-bar__title').withText('Service Catalog').exists,
+      )
+      .ok();
   },
 );

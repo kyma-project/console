@@ -5,4 +5,6 @@ module.exports = {
   localDev: process.env.LOCAL_DEV || false,
   apiPackagesEnabled: process.env.API_PACKAGES_ENABLED || false,
   serviceCatalogEnabled: process.env.CATALOG_ENABLED || true,
+
+  navLinksTimeout: 1000,
 };
