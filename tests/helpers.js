@@ -16,7 +16,9 @@ export const findActiveFrame = t => {
 };
 
 export const leftNavLinkSelector = text => {
-  return Selector('nav.fd-side-nav a').withText(text);
+  return Selector('nav.fd-side-nav a', {
+    visibilityCheck: true,
+  }).withText(text);
 };
 
 export const retry = async (t, n, func) => {
