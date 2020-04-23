@@ -18,6 +18,7 @@ export const findActiveFrame = async t => {
 export const leftNavLinkSelector = text => {
   return Selector('nav.fd-side-nav a', {
     visibilityCheck: true,
+    timeout: config.navLinksTimeout,
   }).withText(text);
 };
 
