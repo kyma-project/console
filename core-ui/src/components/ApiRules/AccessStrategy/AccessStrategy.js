@@ -1,24 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Badge, Icon } from 'fundamental-react';
-
-const passAll = {
-  value: 'allow',
-  displayName: 'Allow',
-};
-const jwt = {
-  value: 'jwt',
-  displayName: 'JWT',
-};
-const noop = {
-  value: 'noop',
-  displayName: 'noop',
-};
-const oauth2 = {
-  value: 'oauth2_introspection',
-  displayName: 'OAuth2',
-};
-const accessStrategiesList = [passAll, noop, oauth2, jwt];
+import classNames from 'classnames';
+import accessStrategyTypes, { usesMethods } from '../accessStrategyTypes';
 
 const AccessStrategy = ({ strategy }) => {
   const selectedType = strategy.accessStrategies[0].name;
@@ -31,31 +15,26 @@ const AccessStrategy = ({ strategy }) => {
           <Badge modifier="filled">
             <Icon
               glyph={
-                selectedType === noop.value || selectedType === passAll.value
+                selectedType === accessStrategyTypes.noop.value ||
+                selectedType === accessStrategyTypes.allow.value
                   ? 'unlocked'
                   : 'locked'
               }
               size="s"
             />
-            {
-              accessStrategiesList.find(item => item.value === selectedType)
-                .displayName
-            }
+            {accessStrategyTypes[selectedType].displayName}
           </Badge>
         </div>
         <div
-          className="methods"
-          style={selectedType === passAll.value ? { display: 'none' } : {}}
+          className={classNames('methods', {
+            'fd-hidden': !usesMethods(selectedType),
+          })}
         >
           {strategy.methods
             .sort()
             .reverse()
             .map(method => (
-              <Badge
-                key={method}
-                aria-label="method"
-                type={method === 'DELETE' ? 'error' : null}
-              >
+              <Badge key={method} aria-label="method">
                 {method}
               </Badge>
             ))}

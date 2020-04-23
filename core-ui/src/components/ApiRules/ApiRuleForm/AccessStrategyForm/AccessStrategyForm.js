@@ -14,27 +14,10 @@ import {
 import StringListInput from './StringListInput';
 import { Tooltip } from 'react-shared';
 import JwtDetails from './JwtDetails/JwtDetails';
-
-// const URLregexp = new RegExp(
-//   '(https://(?:www.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9].[^s]{2,}|www.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9].[^s]{2,}|https?://(?:www.|(?!www))[a-zA-Z0-9]+.[^s]{2,}|www.[a-zA-Z0-9]+.[^s]{2,})',
-// );
-const passAll = {
-  value: 'allow',
-  displayName: 'Allow',
-};
-const noop = {
-  value: 'noop',
-  displayName: 'noop',
-};
-const jwt = {
-  value: 'jwt',
-  displayName: 'JWT',
-};
-const oauth2 = {
-  value: 'oauth2_introspection',
-  displayName: 'OAuth2',
-};
-const accessStrategiesList = [passAll, noop, oauth2, jwt];
+import classNames from 'classnames';
+import accessStrategyTypes, {
+  usesMethods,
+} from 'components/ApiRules/accessStrategyTypes';
 
 export default function AccessStrategyForm({
   strategy,
@@ -98,17 +81,18 @@ export default function AccessStrategyForm({
                   handleFormChanged();
                 }}
               >
-                {accessStrategiesList.map(ac => (
+                {Object.values(accessStrategyTypes).map(ac => (
                   <option key={ac.value} value={ac.value}>
                     {ac.displayName}
                   </option>
                 ))}
               </FormSelect>
             </FormItem>
-            <HTTPMethods
-              strategy={strategy}
-              setStrategy={setStrategy}
-            ></HTTPMethods>
+            <MethodsForm
+              methods={strategy.methods}
+              setMethods={methods => setStrategy({ ...strategy, methods })}
+              isRelevant={usesMethods(selectedType)}
+            ></MethodsForm>
           </LayoutGrid>
         </FormGroup>
 
@@ -150,9 +134,9 @@ AccessStrategyForm.propTypes = {
 
 function Details({ name, ...props }) {
   switch (name) {
-    case oauth2.value:
+    case accessStrategyTypes.oauth2_introspection.value:
       return <OAuth2Details {...props} />;
-    case jwt.value:
+    case accessStrategyTypes.jwt.value:
       return <JwtDetails {...props} />;
     default:
       return null;
@@ -171,35 +155,28 @@ function OAuth2Details({ config, setConfig }) {
   );
 }
 
-function HTTPMethods({ strategy, setStrategy }) {
+function MethodsForm({ methods, setMethods, isRelevant }) {
   const AVAILABLE_METHODS = ['GET', 'POST', 'PUT', 'DELETE'];
   const toggleMethod = function(method, checked) {
     if (checked) {
-      setStrategy({ ...strategy, methods: [...strategy.methods, method] });
+      setMethods([...methods, method]);
     } else {
-      const removeIdx = strategy.methods.indexOf(method);
-      setStrategy({
-        ...strategy,
-        methods: [
-          ...strategy.methods.slice(0, removeIdx),
-          ...strategy.methods.slice(removeIdx + 1, strategy.methods.length),
-        ],
-      });
+      const removeIdx = methods.indexOf(method);
+      setMethods([
+        ...methods.slice(0, removeIdx),
+        ...methods.slice(removeIdx + 1, methods.length),
+      ]);
     }
   };
-  const methodsIrrelevant =
-    strategy.accessStrategies[0] &&
-    strategy.accessStrategies[0].name === passAll.value;
   return (
-    <FormFieldset>
+    <FormFieldset className={classNames({ 'fd-hidden': !isRelevant })}>
       <FormRadioGroup inline className="inline-radio-group">
         {AVAILABLE_METHODS.map(m => (
           <Checkbox
             key={m}
             value={m}
-            defaultChecked={strategy.methods.includes(m)}
+            defaultChecked={methods.includes(m)}
             onChange={e => toggleMethod(m, e.target.checked)}
-            disabled={methodsIrrelevant}
           />
         ))}
       </FormRadioGroup>
