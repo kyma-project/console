@@ -12,11 +12,12 @@ export const testIf = (condition, testName, testToRun) => {
 export const findActiveFrame = async t => {
   const iframe = Selector('iframe', { visibilityCheck: true, timeout: 6000 });
 
-  await t.switchToIframe(iframe);
+  return retry(t, 5, async t => {
+    await t.switchToIframe(iframe);
+    return t.expect(Selector('body').exists).ok();
+  });
 
-  return retry(t, 5, t =>
-    t.expect(Selector('body').exists).ok({ timeout: 6000 }),
-  );
+  // return t.switchToIframe(iframe);
 };
 
 export const leftNavLinkSelector = text => {
