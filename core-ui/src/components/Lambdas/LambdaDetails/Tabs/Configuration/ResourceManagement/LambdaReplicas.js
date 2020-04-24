@@ -26,7 +26,7 @@ export function LambdaReplicas({ disabledForm, register, errors }) {
             min="0"
           />
           {errors?.minReplicas?.message && (
-            <div className={errorClassName}>{errors?.minReplicas?.message}</div>
+            <div className={errorClassName}>{errors.minReplicas.message}</div>
           )}
         </>
       ),
@@ -46,7 +46,7 @@ export function LambdaReplicas({ disabledForm, register, errors }) {
             _ref={register}
           />
           {errors?.maxReplicas?.message && (
-            <div className={errorClassName}>{errors?.maxReplicas?.message}</div>
+            <div className={errorClassName}>{errors.maxReplicas.message}</div>
           )}
         </>
       ),

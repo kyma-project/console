@@ -36,7 +36,7 @@ export function LambdaResources({ disabledForm, register, errors }) {
                 />
                 {errors?.requestsMemory?.message && (
                   <div className={errorClassName}>
-                    {errors?.requestsMemory?.message}
+                    {errors.requestsMemory.message}
                   </div>
                 )}
               </>
@@ -56,7 +56,7 @@ export function LambdaResources({ disabledForm, register, errors }) {
                 />
                 {errors?.requestsCpu?.message && (
                   <div className={errorClassName}>
-                    {errors?.requestsCpu?.message}
+                    {errors.requestsCpu.message}
                   </div>
                 )}
               </>
@@ -90,7 +90,7 @@ export function LambdaResources({ disabledForm, register, errors }) {
                 />
                 {errors?.limitsMemory?.message && (
                   <div className={errorClassName}>
-                    {errors?.limitsMemory?.message}
+                    {errors.limitsMemory.message}
                   </div>
                 )}
               </>
@@ -110,7 +110,7 @@ export function LambdaResources({ disabledForm, register, errors }) {
                 />
                 {errors?.limitsCpu?.message && (
                   <div className={errorClassName}>
-                    {errors?.limitsCpu?.message}
+                    {errors.limitsCpu.message}
                   </div>
                 )}
               </>
