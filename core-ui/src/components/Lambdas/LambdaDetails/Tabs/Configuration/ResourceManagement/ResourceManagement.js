@@ -110,9 +110,7 @@ export function ResourcesManagement({ lambda }) {
       }
     };
 
-    setIsEditMode(prev => !prev);
-
-    if (isEditMode) {
+    if (!isEditMode) {
       updateLambda(
         {
           replicas: { min: data.minReplicas, max: data.maxReplicas },
@@ -134,6 +132,8 @@ export function ResourcesManagement({ lambda }) {
 
   const saveText = RESOURCES_MANAGEMENT_PANEL.EDIT_MODAL.OPEN_BUTTON.TEXT.SAVE;
   const editText = RESOURCES_MANAGEMENT_PANEL.EDIT_MODAL.OPEN_BUTTON.TEXT.EDIT;
+
+  console.log(isEditMode, formState.isValid);
 
   return (
     <Panel className="fd-has-margin-m lambda-resources-management">
@@ -159,6 +159,9 @@ export function ResourcesManagement({ lambda }) {
               option={isEditMode ? 'emphasized' : 'light'}
               typeAttr="submit"
               onClick={async () => {
+                // this needs to be here and not in `onSumbit`,
+                //because we need to be able to turn on edit Mode when underlying data does not pass validation
+                setIsEditMode(prev => !prev);
                 await retriggerValidation();
               }}
               disabled={isEditMode && !formState.isValid}
@@ -192,9 +195,14 @@ ResourcesManagement.propTypes = {
 
 export const parseCpu = cpu => {
   const microCpuRegexp = /^\d+(\.\d+)?u$/;
-  if (!microCpuRegexp.test(cpu)) {
-    return cpu;
+  const nanoCpuRegexp = /^\d+(\.\d+)?n$/;
+  if (microCpuRegexp.test(cpu)) {
+    const numberPart = parseFloat(cpu.slice(0, cpu.length - 1));
+    return `${numberPart / 1000}m`;
   }
-  const numberPart = parseFloat(cpu.slice(0, cpu.length - 1));
-  return `${numberPart / 1000}m`;
+  if (nanoCpuRegexp.test(cpu)) {
+    const numberPart = parseFloat(cpu.slice(0, cpu.length - 1));
+    return `${numberPart / 10 ** 6}m`;
+  }
+  return cpu;
 };

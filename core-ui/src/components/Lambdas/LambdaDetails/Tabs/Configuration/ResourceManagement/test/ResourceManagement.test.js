@@ -1,12 +1,15 @@
 import { parseCpu, cpuRegexp, memoryRegexp } from '../ResourceManagement';
 
 describe('parseCpu', () => {
-  test.each([['500u', '0.5m'], ['59m', '59m'], ['abc', 'abc']])(
-    '.parseCpu("%s")=="%s"',
-    (data, expected) => {
-      expect(parseCpu(data)).toBe(expected);
-    },
-  );
+  test.each([
+    ['500u', '0.5m'],
+    ['59m', '59m'],
+    ['abc', 'abc'],
+    ['5000n', '0.005m'],
+    ['500n', '0.0005m'],
+  ])('.parseCpu("%s")=="%s"', (data, expected) => {
+    expect(parseCpu(data)).toBe(expected);
+  });
 });
 
 describe('cpuRegexp', () => {
