@@ -39,6 +39,7 @@ describe('useDeleteEventTrigger', () => {
     lambda: lambdaMock,
   };
   const variables = {
+    namespace: eventTriggerMock.namespace,
     trigger: {
       name: eventTriggerMock.name,
       namespace: eventTriggerMock.namespace,

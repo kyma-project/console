@@ -25,8 +25,11 @@ export const UPDATE_LAMBDA = gql`
 `;
 
 export const DELETE_LAMBDA = gql`
-  mutation deleteFunction($function: FunctionMetadataInput!) {
-    deleteFunction(function: $function) {
+  mutation deleteFunction(
+    $namespace: String!
+    $function: FunctionMetadataInput!
+  ) {
+    deleteFunction(namespace: $namespace, function: $function) {
       name
     }
   }
@@ -34,18 +37,23 @@ export const DELETE_LAMBDA = gql`
 
 export const CREATE_MANY_EVENT_TRIGGERS = gql`
   mutation createManyTriggers(
+    $namespace: String!
     $triggers: [TriggerCreateInput!]!
     $ownerRef: [OwnerReference!]
   ) {
-    createManyTriggers(triggers: $triggers, ownerRef: $ownerRef) {
+    createManyTriggers(
+      namespace: $namespace
+      triggers: $triggers
+      ownerRef: $ownerRef
+    ) {
       name
     }
   }
 `;
 
 export const DELETE_ONE_EVENT_TRIGGER = gql`
-  mutation deleteTrigger($trigger: TriggerMetadataInput!) {
-    deleteTrigger(trigger: $trigger) {
+  mutation deleteTrigger($namespace: String!, $trigger: TriggerMetadataInput!) {
+    deleteTrigger(namespace: $namespace, trigger: $trigger) {
       name
     }
   }

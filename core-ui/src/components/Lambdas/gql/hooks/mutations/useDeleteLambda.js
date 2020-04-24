@@ -33,6 +33,7 @@ export const useDeleteLambda = ({
     try {
       const response = await deleteLambdaMutation({
         variables: {
+          namespace: lambda.namespace,
           function: {
             name: lambda.name,
             namespace: lambda.namespace,
