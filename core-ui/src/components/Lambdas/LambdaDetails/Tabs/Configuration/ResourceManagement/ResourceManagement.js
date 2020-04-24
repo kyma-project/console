@@ -133,8 +133,6 @@ export function ResourcesManagement({ lambda }) {
   const saveText = RESOURCES_MANAGEMENT_PANEL.EDIT_MODAL.OPEN_BUTTON.TEXT.SAVE;
   const editText = RESOURCES_MANAGEMENT_PANEL.EDIT_MODAL.OPEN_BUTTON.TEXT.EDIT;
 
-  console.log(isEditMode, formState.isValid);
-
   return (
     <Panel className="fd-has-margin-m lambda-resources-management">
       <form onSubmit={handleSubmit(onSubmit)}>
