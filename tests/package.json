@@ -6,7 +6,7 @@
     "test:headless": "PASSWORD=$(kubectl get secret admin-user -n kyma-system -o jsonpath='{.data.password}' | base64 -D) testcafe chrome:headless tests/tests.js",
     "test:dev": "LOCAL_DEV=true PASSWORD=$(kubectl get secret admin-user -n kyma-system -o jsonpath='{.data.password}' | base64 -D) testcafe chrome tests/tests.js",
     "test:dev_headless": "LOCAL_DEV=true PASSWORD=$(kubectl get secret admin-user -n kyma-system -o jsonpath='{.data.password}' | base64 -D) testcafe chrome:headless tests/tests.js",
-    "test:cluster": "testcafe chromium:headless tests/tests.js",
+    "test:cluster": "npm run test:cluster_chrome && npm run test:cluster_firefox",
     "test:cluster_firefox": "testcafe firefox:headless --skip-js-errors tests/tests.js",
     "test:cluster_chrome": "testcafe chrome:headless tests/tests.js"
   },
