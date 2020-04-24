@@ -17,9 +17,10 @@ test('Luigi navigation is rendered', async t => {
   await t.useRole(adminUser);
   const namespacesLink = leftNavLinkSelector('Namespaces');
   //THEN
-  return t
-    .expect(namespacesLink.exists)
-    .ok({ timeout: config.navLinksTimeout });
+
+  retry(t, 3, t =>
+    t.expect(namespacesLink.exists).ok({ timeout: config.navLinksTimeout }),
+  );
 });
 
 test('Namespaces view is rendered', async t => {
