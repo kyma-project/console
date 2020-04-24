@@ -10,14 +10,14 @@ export const testIf = (condition, testName, testToRun) => {
 };
 
 export const findActiveFrame = async t => {
+  const iframe = Selector('iframe', {
+    visibilityCheck: true,
+    timeout: 6000,
+  });
   return retry(
     t,
     5,
     async t => {
-      const iframe = await Selector('iframe', {
-        visibilityCheck: true,
-        timeout: 6000,
-      })();
       await t.switchToIframe(iframe);
       return t.expect(Selector('body').exists).ok();
     },
