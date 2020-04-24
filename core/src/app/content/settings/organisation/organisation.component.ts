@@ -36,7 +36,7 @@ export class OrganisationComponent implements OnInit {
     this.orgId = AppConfig.orgId;
     this.orgName = AppConfig.orgName;
 
-    const groups = LuigiClient.getNodeParams().groups;
+    const groups = LuigiClient.getContext().groups;
     this.shouldShowNamespacesToggle = this.isVisibleForCurrentGroup(groups);
 
     if (localStorage.getItem('console.showSystemNamespaces')) {
