@@ -10,12 +10,14 @@ import {
 } from '../helpers';
 import config from '../config';
 
-fixture`Console UI Smoke tests`;
+fixture`Console UI Smoke tests`.afterEach(
+  async t => await t.switchToMainWindow(),
+);
 
 test('Luigi navigation is rendered', async t => {
   //GIVEN
   await t.useRole(adminUser);
-  const namespacesLink = leftNavLinkSelector('Namespaces');
+  const namespacesLink = await leftNavLinkSelector('Namespaces');
   //THEN
 
   retry(t, 3, t =>
@@ -41,7 +43,7 @@ testIf(
   'Applications view is rendered',
   async t => {
     //GIVEN
-    const applicationLink = leftNavLinkSelector('Applications');
+    const applicationLink = await leftNavLinkSelector('Applications');
     await t
       .useRole(adminUser)
 
@@ -63,12 +65,12 @@ testIf(
   async t => {
     //GIVEN
     await t.useRole(adminUser);
-    const catalogLink = leftNavLinkSelector('Catalog');
+    const catalogLink = await leftNavLinkSelector('Catalog');
 
     //WHEN
     await findActiveFrame(t);
 
-    return t
+    await t
       .click(Selector('.fd-panel__title').withText('default'))
       .switchToMainWindow()
       .click(catalogLink);

@@ -25,13 +25,13 @@ export const findActiveFrame = async t => {
   );
 };
 
-export const leftNavLinkSelector = text => {
+export const leftNavLinkSelector = async text => {
   const result = Selector('nav.fd-side-nav a', {
     visibilityCheck: true,
     timeout: config.navLinksTimeout,
   }).withText(text);
 
-  retry(null, 5, () => {
+  await retry(null, 5, () => {
     if (result.exists) {
       return;
     } else {
@@ -43,8 +43,7 @@ export const leftNavLinkSelector = text => {
 
 export const retry = async (t, n, func, cleanupFunc = () => {}) => {
   try {
-    await func(t);
-    return;
+    return await func(t);
   } catch (err) {
     console.log(`Retries left: ${n - 1}`);
     cleanupFunc(t);
