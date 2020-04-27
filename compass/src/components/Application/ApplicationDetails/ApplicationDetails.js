@@ -5,7 +5,7 @@ import ScenariosList from './ApplicationDetailsScenarios/ApplicationDetailsScena
 import ApplicationApiPackages from './ApplicationApiPackages/ApplicationApiPackages';
 import PropTypes from 'prop-types';
 import ResourceNotFound from '../../Shared/ResourceNotFound.component';
-import LabelsTable from 'components/Shared/LabelsTable/LabelsTable';
+import MetadataDefinitionTable from 'components/Shared/MetadataDefinitionTable/MetadataDefinitionTable';
 
 import { GET_APPLICATION } from '../gql';
 
@@ -56,7 +56,7 @@ function ApplicationDetails({ applicationId }) {
       />
       <section className="application-details-body">
         <ScenariosList scenarios={scenarios} applicationId={application.id} />
-        <LabelsTable ownerType="Application" labels={labels} />
+        <MetadataDefinitionTable ownerType="Application" labels={labels} />
       </section>
     </ApplicationQueryContext.Provider>
   );

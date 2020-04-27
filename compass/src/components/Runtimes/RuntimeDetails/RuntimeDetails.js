@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import RuntimeDetailsHeader from './RuntimeDetailsHeader/RuntimeDetailsHeader.component';
 import RuntimeScenarios from './RuntimeScenarios/RuntimeScenarios.container';
 import ResourceNotFound from '../../Shared/ResourceNotFound.component';
-import LabelsTable from 'components/Shared/LabelsTable/LabelsTable';
+import MetadataDefinitionTable from 'components/Shared/MetadataDefinitionTable/MetadataDefinitionTable';
 
 import './RuntimeDetails.scss';
 
@@ -47,7 +47,7 @@ const RuntimeDetails = ({ runtimeId }) => {
       <RuntimeDetailsHeader runtime={runtime} />
       <section className="runtime-details-body">
         <RuntimeScenarios runtimeId={runtime.id} scenarios={scenarios} />
-        <LabelsTable ownerType="Runtime" labels={labels} />
+        <MetadataDefinitionTable ownerType="Runtime" labels={labels} />
       </section>
     </RuntimeQueryContext.Provider>
   );
