@@ -148,7 +148,7 @@ export default class CreateLabelModal extends React.Component {
 
     return (
       <Modal
-        title="Create Label"
+        title="Create metadata definition"
         confirmText="Save"
         cancelText="Cancel"
         type={'emphasized'}
@@ -158,7 +158,7 @@ export default class CreateLabelModal extends React.Component {
         onShow={() => this.setState(this.createInitialState())}
       >
         {this.props.labelNamesQuery.loading ? (
-          <p>Loading existing labels...</p>
+          <p>Loading existing metadata definitions...</p>
         ) : (
           content
         )}

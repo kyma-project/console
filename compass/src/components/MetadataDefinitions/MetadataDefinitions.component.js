@@ -7,7 +7,7 @@ import CreateLabelModal from '../Labels/CreateLabelModal/CreateLabelModal.contai
 import { PageHeader } from 'react-shared';
 
 class MetadataDefinitions extends React.Component {
-  headerRenderer = () => ['Labels', 'Schema Provided'];
+  headerRenderer = () => ['Name', 'Schema Provided'];
 
   rowRenderer = labelDef => [
     <span
