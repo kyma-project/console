@@ -45,7 +45,7 @@ export default class CreateMDmodal extends React.Component {
     } else if (!/^[a-zA-Z0-9_]*$/.test(name)) {
       this.setState({
         nameError:
-          'Label name may contain only alphanumeric characters and underscore.',
+          'Metadata definition name may contain only alphanumeric characters and underscore.',
       });
     } else {
       this.setState({ nameError: '' });
@@ -64,7 +64,7 @@ export default class CreateMDmodal extends React.Component {
       labelNamesQuery.refetch();
       sendNotification({
         variables: {
-          content: `Label "${name}" created.`,
+          content: `Metadata definition "${name}" created.`,
           title: `${name}`,
           color: '#359c46',
           icon: 'accept',

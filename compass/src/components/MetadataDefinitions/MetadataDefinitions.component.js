@@ -53,7 +53,7 @@ class MetadataDefinitions extends React.Component {
 
     return (
       <>
-        <PageHeader title="Metadata Definitions" />
+        <PageHeader title="Metadata definitions" />
         <GenericList
           entries={labelsDefinitions}
           headerRenderer={this.headerRenderer}
