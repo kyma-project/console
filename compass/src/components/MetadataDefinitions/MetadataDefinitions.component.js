@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import LuigiClient from '@luigi-project/client';
 
 import { GenericList, handleDelete } from 'react-shared';
-import CreateLabelModal from '../Labels/CreateLabelModal/CreateLabelModal.container';
+import CreateMDmodal from './CreateMDmodal/CreateMDmodal.container';
 import { PageHeader } from 'react-shared';
 
 class MetadataDefinitions extends React.Component {
@@ -58,7 +58,7 @@ class MetadataDefinitions extends React.Component {
           entries={labelsDefinitions}
           headerRenderer={this.headerRenderer}
           rowRenderer={this.rowRenderer}
-          extraHeaderContent={<CreateLabelModal />}
+          extraHeaderContent={<CreateMDmodal />}
           actions={this.actions}
           textSearchProperties={['key']}
         />

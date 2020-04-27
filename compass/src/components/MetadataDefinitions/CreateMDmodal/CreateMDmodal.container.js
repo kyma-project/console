@@ -1,17 +1,16 @@
 import { graphql } from 'react-apollo';
 import { compose } from 'recompose';
 
-import { CREATE_LABEL } from './../gql';
-import { GET_LABEL_DEFINITIONS } from '../../MetadataDefinitions/gql';
+import { CREATE_LABEL_DEFINITION, GET_LABEL_DEFINITIONS } from '../gql';
 import { SEND_NOTIFICATION } from '../../../gql';
 
-import CreateLabelModal from './CreateLabelModal.component';
+import CreateMDmodal from './CreateMDmodal.component';
 
 export default compose(
   graphql(GET_LABEL_DEFINITIONS, {
     name: 'labelNamesQuery',
   }),
-  graphql(CREATE_LABEL, {
+  graphql(CREATE_LABEL_DEFINITION, {
     props: props => ({
       createLabel: async labelInput => {
         const input = {
@@ -25,4 +24,4 @@ export default compose(
   graphql(SEND_NOTIFICATION, {
     name: 'sendNotification',
   }),
-)(CreateLabelModal);
+)(CreateMDmodal);

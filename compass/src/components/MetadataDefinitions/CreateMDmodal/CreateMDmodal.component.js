@@ -14,11 +14,11 @@ import {
   FormLabel,
   Button,
 } from 'fundamental-react';
-import FileInput from './../../Shared/FileInput/FileInput';
+import FileInput from '../../Shared/FileInput/FileInput';
 import { Modal } from 'react-shared';
 import { readFile } from 'components/Api/ApiHelpers';
 
-export default class CreateLabelModal extends React.Component {
+export default class CreateMDmodal extends React.Component {
   state = this.createInitialState();
   inputRef = React.createRef();
 
@@ -167,7 +167,7 @@ export default class CreateLabelModal extends React.Component {
   }
 }
 
-CreateLabelModal.propTypes = {
+CreateMDmodal.propTypes = {
   labelNamesQuery: PropTypes.object.isRequired,
   createLabel: PropTypes.func.isRequired,
   sendNotification: PropTypes.func.isRequired,
