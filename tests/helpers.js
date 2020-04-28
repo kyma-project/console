@@ -10,27 +10,22 @@ export const testIf = (condition, testName, testToRun) => {
 };
 
 export const findActiveFrame = async t => {
-  const iframe = Selector('iframe', {
-    visibilityCheck: true,
-    timeout: 6000,
+  return retry(t, 7, async t => {
+    const iframe = Selector('iframe', {
+      visibilityCheck: true,
+    });
+    await t.expect(Selector('body').exists).ok();
+    await t.switchToIframe(iframe);
   });
-  return retry(
-    t,
-    7,
-    async t => {
-      await t.switchToIframe(iframe);
-      return t.expect(Selector('body').exists).ok();
-    },
-    async t => await t.switchToMainWindow(),
-  );
 };
 
 export const leftNavLinkSelector = async text => {
-  const result = Selector('nav.fd-side-nav a', {
+  const link = Selector('nav.fd-side-nav a', {
     visibilityCheck: true,
     timeout: config.navLinksTimeout,
   }).withText(text);
 
+  return link;
   await retry(null, 5, () => {
     if (result.exists) {
       return;

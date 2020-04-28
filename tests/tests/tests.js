@@ -10,19 +10,14 @@ import {
 } from '../helpers';
 import config from '../config';
 
-fixture`Console UI Smoke tests`.afterEach(
-  async t => await t.switchToMainWindow(),
-);
+fixture`Console UI Smoke tests`;
 
 test('Luigi navigation is rendered', async t => {
   //GIVEN
   await t.useRole(adminUser);
   const namespacesLink = await leftNavLinkSelector('Namespaces');
   //THEN
-
-  retry(t, 3, t =>
-    t.expect(namespacesLink.exists).ok({ timeout: config.navLinksTimeout }),
-  );
+  t.expect(namespacesLink.exists).ok({ timeout: config.navLinksTimeout });
 });
 
 test('Namespaces view is rendered', async t => {
