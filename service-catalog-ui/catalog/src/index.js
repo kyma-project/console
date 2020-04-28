@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import { ApolloProvider } from 'react-apollo';
-
 import { preloadingStrategy } from '@kyma-project/common';
 
 import './index.scss';
