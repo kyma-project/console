@@ -58,7 +58,7 @@ verify:: test
 
 release: do-npm-stuff build-image push-image
 
-do-npm-stuff-local: root resolve test
+do-npm-stuff-local: root resolve_folder test
 
 
 .PHONY: build-image push-image
@@ -84,6 +84,11 @@ test:
 	CI=true npm run test
 
 resolve:
+	cd .. && npm ci && npm run ci:libraries
+	cd ../components/react && npm ci && npm run build
+	npm ci --no-optional
+
+resolve_folder:
 	npm ci --no-optional
 
 pull-licenses-local:
