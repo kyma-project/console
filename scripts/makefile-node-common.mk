@@ -54,11 +54,9 @@ endef
 #
 verify:: test 
 
-# release: root resolve verify build-image push-image
-
 release: do-npm-stuff build-image push-image
 
-do-npm-stuff-local: root resolve_folder test
+do-npm-stuff-local: root resolve test
 
 
 .PHONY: build-image push-image
@@ -71,7 +69,7 @@ docker-create-opts:
 	@echo $(DOCKER_CREATE_OPTS)
 
 # Targets mounting sources to buildpack
-MOUNT_TARGETS = pull-licenses
+MOUNT_TARGETS = pull-licenses-local
 $(foreach t,$(MOUNT_TARGETS),$(eval $(call buildpack-mount,$(t))))
 
 root:
