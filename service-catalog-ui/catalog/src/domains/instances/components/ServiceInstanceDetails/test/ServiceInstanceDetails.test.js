@@ -11,7 +11,7 @@ import { Spinner, Toolbar, Modal } from '@kyma-project/react-components';
 import {
   createMockLink,
   NotificationContext,
-} from '../../../../../../react-shared';
+} from '../../../../../react-shared';
 import { componentUpdate } from '../../../testing';
 import { serviceInstanceConstants } from '../../../constants';
 
