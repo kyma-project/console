@@ -82,8 +82,7 @@ test:
 	CI=true npm run test
 
 resolve:
-	cd .. && npm ci && npm run ci:libraries
-	cd ../components/react && npm ci && npm run build
+	cd .. && npm run bootstrap:ci
 	npm ci --no-optional
 
 resolve_folder:
