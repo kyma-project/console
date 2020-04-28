@@ -316,15 +316,6 @@ export const GET_API_DEFININTION = gql`
           name
           description
           targetURL
-          defaultAuth {
-            credential {
-              ... on OAuthCredentialData {
-                clientId
-                clientSecret
-                url
-              }
-            }
-          }
           spec {
             data
             format

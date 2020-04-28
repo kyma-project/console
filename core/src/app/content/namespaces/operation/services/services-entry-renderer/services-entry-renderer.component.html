@@ -4,7 +4,7 @@
       {{ entry.metadata.name }}
     </a>
   </td>
-  <td>{{ entry.spec.clusterIP }}</td>
+  <td class="y-fd-table--nowrap">{{ entry.spec.clusterIP }}</td>
   <td>
     <ng-container *ngFor="let port of entry.spec.ports">
       <p>
@@ -23,7 +23,7 @@
       {{ emptyText }}
     </ng-container>
   </td>
-  <td>
+  <td class="y-fd-table--nowrap">
     <app-status-label [statusType]="getStatusType(entry)">
       {{ getStatus(entry) }}
     </app-status-label>

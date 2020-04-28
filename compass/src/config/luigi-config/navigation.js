@@ -186,7 +186,7 @@ const navigation = {
             {
               keepSelectedForChildren: true,
               pathSegment: 'metadata-definitions',
-              label: 'Metadata Definitions',
+              label: 'Metadata definitions',
               viewUrl: compassMfUrl + '/metadata-definitions',
               category: 'SETTINGS',
               children: [
@@ -195,7 +195,7 @@ const navigation = {
                   children: [
                     {
                       pathSegment: ':definitionKey',
-                      label: 'Metadata Definition',
+                      label: 'Metadata definition',
                       viewUrl:
                         compassMfUrl + '/metadatadefinition/:definitionKey',
                     },

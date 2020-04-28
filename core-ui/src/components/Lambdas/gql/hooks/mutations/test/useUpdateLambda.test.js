@@ -41,12 +41,14 @@ describe('useUpdateLambda', () => {
   const gqlMessages = GQL_MUTATIONS.UPDATE_LAMBDA[UPDATE_TYPE.VARIABLES];
 
   it('should see notification with error message if there is an error', async () => {
+    const mockedCallback = jest.fn();
     const mockProvider = withApolloMockProvider({
       component: (
         <MutationComponent
           hook={useUpdateLambda}
           hookInput={hookInput}
           mutationInput={mutationInput}
+          userCallback={mockedCallback}
         />
       ),
       mocks: [UPDATE_LAMBDA_ERROR_MOCK(variables)],
@@ -57,7 +59,7 @@ describe('useUpdateLambda', () => {
         component: mockProvider,
       }),
     );
-
+    expect(mockedCallback).toBeCalledTimes(0);
     const message = formatMessage(gqlMessages.ERROR_MESSAGE, {
       lambdaName: lambdaMock.name,
       error: `Network error: ${TESTING_STATE.ERROR}`,
@@ -69,15 +71,19 @@ describe('useUpdateLambda', () => {
     await wait(() => {
       expect(getByText(message)).toBeInTheDocument();
     });
+    expect(mockedCallback).toBeCalledTimes(1);
+    expect(mockedCallback).toHaveBeenCalledWith({ ok: false });
   });
 
   it("should see notification with success message if there isn't an error", async () => {
+    const mockedCallback = jest.fn();
     const mockProvider = withApolloMockProvider({
       component: (
         <MutationComponent
           hook={useUpdateLambda}
           hookInput={hookInput}
           mutationInput={mutationInput}
+          userCallback={mockedCallback}
         />
       ),
       mocks: [UPDATE_LAMBDA_DATA_MOCK(variables)],
@@ -88,7 +94,7 @@ describe('useUpdateLambda', () => {
         component: mockProvider,
       }),
     );
-
+    expect(mockedCallback).toBeCalledTimes(0);
     const message = formatMessage(gqlMessages.SUCCESS_MESSAGE, {
       lambdaName: lambdaMock.name,
     });
@@ -99,5 +105,7 @@ describe('useUpdateLambda', () => {
     await wait(() => {
       expect(getByText(message)).toBeInTheDocument();
     });
+    expect(mockedCallback).toBeCalledTimes(1);
+    expect(mockedCallback).toHaveBeenCalledWith({ ok: true });
   });
 });

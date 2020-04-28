@@ -112,7 +112,7 @@ const MetadataDefinitionDetails = ({
     if (error)
       return (
         <ResourceNotFound
-          resource="Metadata Definition"
+          resource="Metadata definition"
           breadcrumb="MetadataDefinitions"
         />
       );
@@ -129,7 +129,7 @@ const MetadataDefinitionDetails = ({
           <section>
             <Breadcrumb>
               <Breadcrumb.Item
-                name="Metadata Definitions"
+                name="Metadata definitions"
                 url="#"
                 onClick={() =>
                   LuigiClient.linkManager()
@@ -158,7 +158,7 @@ const MetadataDefinitionDetails = ({
             <Button
               onClick={() => {
                 handleDelete(
-                  'Metadata Definition',
+                  'Metadata definition',
                   metadataDefinition.key,
                   metadataDefinition.key,
                   deleteLabelDefinition,

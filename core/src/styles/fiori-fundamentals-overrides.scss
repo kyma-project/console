@@ -102,6 +102,11 @@
     }
   }
 
+  &--nowrap {
+    width: 1%;
+    white-space: nowrap;
+  }
+
   &__tr--no-border-below {
     border-bottom: 0;
   }

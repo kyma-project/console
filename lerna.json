@@ -9,7 +9,6 @@
     "service-catalog-ui/catalog",
     "content",
     "add-ons",
-    "lambda",
     "logging",
     "core-ui",
     "shared"

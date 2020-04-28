@@ -1,0 +1,15 @@
+.runtime-details-body {
+    display: grid;
+    @media (min-width: 1000px) {
+        grid-template-columns: 2fr 3fr;
+        > :not(:first-child) {
+            margin-left: 0px !important;
+        }
+    }
+
+    @media (max-width: 999px) {
+        > :not(:first-child) {
+            margin-top: 0px !important;
+        }
+    }
+}

@@ -17,9 +17,8 @@ describe('CopiableText', () => {
     const text = 'abcd und 123456';
     const caption = <p>Copiable</p>;
     const { queryByText } = render(
-      <CopiableText textToCopy={text} caption={caption} />,
+      <CopiableText textToCopy={text}>{caption}</CopiableText>,
     );
-
     expect(queryByText('Copiable')).toBeInTheDocument();
   });
 

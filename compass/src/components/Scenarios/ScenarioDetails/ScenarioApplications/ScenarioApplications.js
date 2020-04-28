@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-import LuigiClient from '@luigi-project/client';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 
 import { GenericList } from 'react-shared';
@@ -9,6 +8,7 @@ import {
   createEqualityQuery,
   GET_APPLICATIONS_FOR_SCENARIO,
   SET_APPLICATION_SCENARIOS,
+  DELETE_APPLICATION_SCENARIOS_LABEL,
 } from '../../gql';
 import ScenarioNameContext from '../ScenarioNameContext';
 import { SEND_NOTIFICATION } from '../../../../gql';
@@ -36,6 +36,11 @@ export default function ScenarioApplications({ updateApplicationsCount }) {
   const [removeApplicationFromScenario] = useMutation(
     SET_APPLICATION_SCENARIOS,
   );
+  const [deleteApplicationScenariosMutation] = useMutation(
+    DELETE_APPLICATION_SCENARIOS_LABEL,
+  );
+  const deleteApplicationScenarios = id =>
+    deleteApplicationScenariosMutation({ variables: { id } });
 
   if (loading) {
     return <p>Loading...</p>;
@@ -58,21 +63,13 @@ export default function ScenarioApplications({ updateApplicationsCount }) {
         },
       });
     };
-    if (application.labels.scenarios.length === 1) {
-      LuigiClient.uxManager().showAlert({
-        text: 'At least one scenario is required.',
-        type: 'warning',
-        closeAfter: 10000,
-      });
-      return;
-    }
 
     await unassignScenarioHandler(
       application.name,
       application.id,
       application.labels.scenarios,
       removeApplicationFromScenario,
-      undefined,
+      deleteApplicationScenarios,
       scenarioName,
       async () => {
         await refetchApplications();

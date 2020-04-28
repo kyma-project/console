@@ -3,7 +3,6 @@ let domain, localDomain, localDevDomainBindings;
 export default function processNodeForLocalDevelopment(node, spec, config) {
   ({ domain, localDomain } = config);
   localDevDomainBindings = [
-    { startsWith: 'lambdas-ui', replaceWith: config.lambdasModuleUrl },
     { startsWith: 'brokers', replaceWith: config.serviceBrokersModuleUrl },
     { startsWith: 'instances', replaceWith: config.serviceInstancesModuleUrl },
     { startsWith: 'catalog', replaceWith: config.serviceCatalogModuleUrl },

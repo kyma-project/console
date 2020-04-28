@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Button, Toggle } from 'fundamental-react';
 import { useDebouncedCallback } from 'use-debounce';
 
@@ -8,41 +8,30 @@ import { TabsWithActions } from 'components/Lambdas/components';
 import Editor from './Editor';
 
 import { useUpdateLambda, UPDATE_TYPE } from 'components/Lambdas/gql/hooks';
-import { formatMessage } from 'components/Lambdas/helpers/misc';
-import {
-  CODE_AND_DEPENDENCIES_PANEL,
-  DEFAULT_LAMBDA_CODE,
-  DEFAULT_LAMBDA_DEPS,
-} from 'components/Lambdas/constants';
+import { CODE_AND_DEPENDENCIES_PANEL } from 'components/Lambdas/constants';
 
 import './CodeAndDependencies.scss';
-
-function formatDefaultDependencies(lambdaName) {
-  return formatMessage(DEFAULT_LAMBDA_DEPS, { lambdaName });
-}
 
 export default function CodeAndDependencies({ lambda }) {
   const updateLambda = useUpdateLambda({
     lambda,
     type: UPDATE_TYPE.CODE_AND_DEPENDENCIES,
   });
+
   const [showDiff, setShowDiff] = useState(false);
-  const [code, setCode] = useState(lambda.source || DEFAULT_LAMBDA_CODE);
-  const [dependencies, setDependencies] = useState(
-    lambda.dependencies || formatDefaultDependencies(lambda.name),
-  );
   const [disableButton, setDisableButton] = useState(true);
 
-  // TODO: Fix saving changes in diff mode - it doesn't work
+  const [code, setCode] = useState(lambda.source);
+  const [controlledCode, setControlledCode] = useState(lambda.source);
+
+  const [dependencies, setDependencies] = useState(lambda.dependencies);
+  const [controllerDependencies, setControlledDependencies] = useState(
+    lambda.dependencies,
+  );
+
   const [debouncedCallback] = useDebouncedCallback(() => {
     checkDifference();
   }, 150);
-
-  useEffect(() => {
-    setCode(lambda.source);
-    setDependencies(lambda.dependencies);
-    setDisableButton(true);
-  }, [lambda]);
 
   function checkDifference() {
     const isDiff =
@@ -50,17 +39,24 @@ export default function CodeAndDependencies({ lambda }) {
     setDisableButton(!isDiff);
   }
 
+  function onChangeToggle() {
+    setControlledCode(code);
+    setControlledDependencies(dependencies);
+    setShowDiff(prev => !prev);
+  }
+
   function handleSave() {
     updateLambda({
       source: code,
       dependencies,
     });
+    setDisableButton(true);
   }
 
   const button = (
     <Button
       glyph="save"
-      option="light"
+      option={disableButton ? 'light' : 'default'}
       typeAttr="button"
       disabled={disableButton}
       onClick={handleSave}
@@ -84,7 +80,7 @@ export default function CodeAndDependencies({ lambda }) {
   );
 
   const toggle = (
-    <Toggle size="s" onChange={() => setShowDiff(prev => !prev)}>
+    <Toggle size="s" onChange={onChangeToggle}>
       {CODE_AND_DEPENDENCIES_PANEL.DIFF_TOGGLE}
     </Toggle>
   );
@@ -106,7 +102,9 @@ export default function CodeAndDependencies({ lambda }) {
           showDiff={showDiff}
           originalValue={lambda.source}
           value={code}
+          controlledValue={controlledCode}
           setValue={setCode}
+          setControlledValue={setControlledCode}
           debouncedCallback={debouncedCallback}
         />
       ),
@@ -121,7 +119,9 @@ export default function CodeAndDependencies({ lambda }) {
           showDiff={showDiff}
           originalValue={lambda.dependencies}
           value={dependencies}
+          controlledValue={controllerDependencies}
           setValue={setDependencies}
+          setControlledValue={setControlledDependencies}
           debouncedCallback={debouncedCallback}
         />
       ),

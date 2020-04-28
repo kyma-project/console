@@ -15,7 +15,7 @@ UI developed within the Console and Compass UI should be compliant with [Fiori D
 * Modal should support keyboard control:
     * User should always be able to navigate the modal using only a keyboard. While the modal is opened, focus should not leave the modal window.
     * If the modal contains input fields, the first of them should be automatically focused on opening the modal. In some cases, we can set focus on the most important element instead (e.g. the incorrect one).
-    * Main actions, such as **Confirm**,  **Save**, **Apply**, should use the [emphasized style](https://experience.sap.com/fiori-design-web/button).
+    * Main actions, such as **Confirm**, **Save**, **Apply**, should use the [emphasized style](https://experience.sap.com/fiori-design-web/button).
 * If the content of the modal is dynamic, avoid resizing the modal. Modals width should be consistent across the application.
 * Follow the [ARIA](https://www.w3.org/WAI/standards-guidelines/aria/) attributes.
 

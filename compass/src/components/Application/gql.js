@@ -48,6 +48,15 @@ export const SET_APPLICATION_SCENARIOS = gql`
   }
 `;
 
+export const DELETE_SCENARIO_LABEL = gql`
+  mutation deleteApplicationLabel($id: ID!) {
+    deleteApplicationLabel(applicationID: $id, key: "scenarios") {
+      key
+      value
+    }
+  }
+`;
+
 export const UPDATE_APPLICATION = gql`
   mutation updateApplication($id: ID!, $in: ApplicationUpdateInput!) {
     updateApplication(id: $id, in: $in) {

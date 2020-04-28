@@ -1,4 +1,4 @@
-import { render, queryByText, wait } from '@testing-library/react';
+import { render, wait } from '@testing-library/react';
 import Applications from './Applications.container';
 import { MockedProvider } from '@apollo/react-testing';
 import React from 'react';
@@ -9,7 +9,9 @@ const mockApplication1 = {
   name: 'still a testapp',
   description: 'ahh, again?',
   providerName: 'I am the creator of this app',
-  labels: [],
+  labels: {
+    scenarios: ['DEFAULT'],
+  },
   status: { condition: 'most likely running' },
   packages: { totalCount: 9 },
 };
@@ -21,6 +23,10 @@ const mocks = [
   },
 ];
 
+jest.mock('../../store/getConfigValue', () => ({
+  getConfigValue: item => true,
+}));
+
 describe('Applications', () => {
   let component;
   beforeEach(() => {
@@ -30,6 +36,11 @@ describe('Applications', () => {
       </MockedProvider>,
     );
   });
+
+  afterAll(() => {
+    jest.resetModules();
+  });
+
   it('shows the application name', async () => {
     const { queryByText } = component;
 
@@ -44,6 +55,16 @@ describe('Applications', () => {
     await wait(() => {
       expect(
         queryByText(mockApplication1.packages.totalCount.toString()),
+      ).toBeInTheDocument();
+    });
+  });
+
+  it('shows the scenarios', async () => {
+    const { queryByText } = component;
+
+    await wait(() => {
+      expect(
+        queryByText(mockApplication1.labels.scenarios[0]),
       ).toBeInTheDocument();
     });
   });

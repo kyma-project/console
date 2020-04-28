@@ -1,0 +1,141 @@
+.lambda-details-header {
+  .fd-panel__header {
+    padding-right: 32px;
+    padding-left: 32px;
+    padding-bottom: 8px;
+    border-bottom-width: 0;
+
+    .fd-has-margin-bottom-s {
+      margin-bottom: 0px !important;
+    }
+  }
+
+  &__content {
+    background: #fff;
+    padding: 0 32px;
+    margin-bottom: -32px;
+  }
+
+  &__status {
+    .fd-panel {
+      border-width: 1px 1px 1px 6px;
+      border-style: solid;
+      border-color: rgb(217, 217, 217);
+      border-image: initial;
+      box-shadow: none;
+
+      .fd-panel__header {
+        border-bottom-width: 1px;
+      }
+    }
+
+    &--success {
+      .fd-panel {
+        border-left-color: #3db350;
+      }
+      .lambda-details-header__status-phase {
+        color: #3db350;
+      }
+    }
+
+    &--warning {
+      .fd-panel {
+        border-left-color: rgb(233, 115, 12);
+      }
+      .lambda-details-header__status-phase {
+        color: rgb(233, 115, 12);
+      }
+      .sap-icon--sys-help {
+        color: rgb(233, 115, 12);
+      }
+    }
+
+    &--error {
+      .fd-panel {
+        border-left-color: #ee0000;
+      }
+      .lambda-details-header__status-phase {
+        color: #ee0000;
+      }
+    }
+
+    &--info {
+      .fd-panel {
+        border-left-color: rgb(10, 110, 209);
+      }
+      .lambda-details-header__status-phase {
+        color: rgb(10, 110, 209);
+      }
+      .sap-icon--sys-help {
+        color: rgb(10, 110, 209);
+      }
+    }
+
+    .sap-icon--sys-enter {
+      color: #3db350;
+    }
+
+    .sap-icon--sys-cancel {
+      color: #ee0000;
+    }
+
+    .fd-panel__header {
+      color: rgb(50, 54, 58);
+      font-size: 16px;
+      font-weight: normal;
+      padding: 16px 24px;
+    }
+
+    &-phase {
+      text-transform: uppercase;
+      font-weight: 700;
+      margin-bottom: 0;
+    }
+
+    &-message {
+      margin-top: 6px;
+    }
+
+    .link {
+      margin-left: 6px;
+    }
+  }
+
+  &__labels {
+    display: inline-block;
+
+    &-title,
+    &-content {
+      display: block;
+    }
+  
+    &-title {
+      color: var(--fd-color-text-4);
+      margin-bottom: 6px;
+      font-size: 14px;
+
+      > div {
+        display: inline-block;
+      }
+
+      .sap-icon--edit {
+        padding-left: 8px;
+        cursor: pointer;
+
+        &:hover {
+          color: rgb(10, 110, 209);
+        } 
+      }
+    }
+
+    .fd-token {
+      margin: 0 8px 8px 0;
+    }
+  }
+
+  &__edit-labels-modal {
+    .fd-modal__body {
+      min-height: 140px;
+    }
+  }
+}
