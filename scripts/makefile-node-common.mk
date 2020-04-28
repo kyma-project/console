@@ -56,15 +56,14 @@ verify:: test
 
 # release: root resolve verify build-image push-image
 
-# release: do-npm-stuff build-image push-image
-release: do-npm-stuff build-image 
+release: do-npm-stuff build-image push-image
 
 do-npm-stuff-local: root-local resolve-local test-local
 
 
 .PHONY: build-image push-image
 build-image: pull-licenses
-	docker build -t $(IMG_NAME) .
+	docker build -t $(APP_NAME) -f Dockerfile ..
 push-image:
 	docker tag $(IMG_NAME) $(IMG_NAME):$(TAG)
 	docker push $(IMG_NAME):$(TAG)
