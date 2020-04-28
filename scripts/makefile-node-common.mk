@@ -71,7 +71,7 @@ docker-create-opts:
 	@echo $(DOCKER_CREATE_OPTS)
 
 # Targets mounting sources to buildpack
-MOUNT_TARGETS = 
+MOUNT_TARGETS = pull-licenses
 $(foreach t,$(MOUNT_TARGETS),$(eval $(call buildpack-mount,$(t))))
 
 root:
@@ -86,7 +86,7 @@ test:
 resolve:
 	npm ci --no-optional
 
-pull-licenses:
+pull-licenses-local:
 ifdef LICENSE_PULLER_PATH
 	bash $(LICENSE_PULLER_PATH) --dirs-to-pulling="../,../common,../components/react,../components/shared,../components/generic-documentation"
 else
