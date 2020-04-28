@@ -58,7 +58,7 @@ verify:: test
 
 release: do-npm-stuff build-image push-image
 
-do-npm-stuff-local: root-local resolve-local test-local
+do-npm-stuff-local: root resolve test
 
 
 .PHONY: build-image push-image
@@ -71,24 +71,22 @@ docker-create-opts:
 	@echo $(DOCKER_CREATE_OPTS)
 
 # Targets mounting sources to buildpack
-MOUNT_TARGETS = root build resolve pull-licenses test
+MOUNT_TARGETS = 
 $(foreach t,$(MOUNT_TARGETS),$(eval $(call buildpack-mount,$(t))))
 
-root-local:
+root:
 	make -C "../" ci
 
-build-local:
+build:
 	npm run build
 
-test-local:
+test:
 	CI=true npm run test
 
-resolve-local:
-	cd .. && npm ci &&	npm run ci:libraries
-	cd ../components/react && npm ci && npm run build
+resolve:
 	npm ci --no-optional
 
-pull-licenses-local:
+pull-licenses:
 ifdef LICENSE_PULLER_PATH
 	bash $(LICENSE_PULLER_PATH) --dirs-to-pulling="../,../common,../components/react,../components/shared,../components/generic-documentation"
 else
