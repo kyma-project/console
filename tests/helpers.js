@@ -10,13 +10,18 @@ export const testIf = (condition, testName, testToRun) => {
 };
 
 export const findActiveFrame = async t => {
-  return retry(t, 7, async t => {
-    const iframe = Selector('iframe', {
-      visibilityCheck: true,
-    });
-    await t.expect(Selector('body').exists).ok();
-    await t.switchToIframe(iframe);
-  });
+  return retry(
+    t,
+    7,
+    async t => {
+      const iframe = Selector('iframe', {
+        visibilityCheck: true,
+      });
+      await t.expect(Selector('body').exists).ok();
+      await t.switchToIframe(iframe);
+    },
+    'Switching the iframe',
+  );
 };
 
 export const leftNavLinkSelector = async text => {
@@ -26,22 +31,14 @@ export const leftNavLinkSelector = async text => {
   }).withText(text);
 
   return link;
-  await retry(null, 5, () => {
-    if (result.exists) {
-      return;
-    } else {
-      throw new Error();
-    }
-  });
-  return result;
 };
 
-export const retry = async (t, n, func, cleanupFunc = () => {}) => {
+export const retry = async (t, n, func, goal) => {
   try {
     return await func(t);
   } catch (err) {
-    console.log(`Retries left: ${n - 1}`);
-    cleanupFunc(t);
+    console.log(`${goal}. Retries left: ${n - 1}`);
+
     if (n === 1) throw err;
     return await retry(t, n - 1, func);
   }
