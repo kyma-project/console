@@ -14,7 +14,7 @@ export default function App() {
       <BrowserRouter>
         <Switch>
           <Route exact path="/catalog" component={CatalogApp} />
-          <Route exact path="/instances" componen={InstancesApp} />
+          <Route exact path="/instances" component={InstancesApp} />
         </Switch>
       </BrowserRouter>
     </NotificationProvider>
