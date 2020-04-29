@@ -1,31 +1,35 @@
-FROM node:12.16.0-alpine3.9 as ui-generator
-
+# This Dockerfile must be execute with higher context, because firstly we have to create react components lib with local changes.
+# If you want to build image without local changes of react components, delete 16 line of code.
+FROM node:12.16.0-alpine3.9 as builder
+ARG app_name=add-ons
+ARG common_makefile=../scripts/makefile-node-common.mk
 WORKDIR /app
 
-# Copy licenses
-COPY licenses/ /app/licenses/
-
-# Install global dependencies
-RUN apk update && apk upgrade && \
-    apk add --no-cache curl && \
-    apk add --no-cache bash
+# # Install global dependencies
+RUN apk update && \
+  apk upgrade && \
+  apk add --no-cache curl make
 
 # Install root and app dependencies
-COPY ./temp /app
-RUN npm run bootstrap:prod
-COPY package.json package-lock.json config-overrides.js tsconfig.json /app/addons/
-RUN cd /app/addons && npm install --no-optional
+COPY . /app
+RUN cd /app/${app_name}
 
-# Copy sources
-COPY ./src /app/addons/src
-COPY ./public /app/addons/public
+# Install dependencies
+RUN make -f ${common_makefile} -C /app/${app_name} resolve 
 
-# Set env variables 
+# Run linters
+RUN make -f ${common_makefile} -C /app validate 
+
+# Test
+RUN make -f ${common_makefile} -C /app/${app_name} verify 
+  
+
+# Set env variables
 ENV PRODUCTION true
 ENV CI true
 
 # Test & Build
-RUN cd /app/addons && npm run build
+RUN cd /app/${app_name} && make build
 
 ### Main image ###
 FROM alpine:3.11
@@ -33,11 +37,13 @@ FROM alpine:3.11
 ### Install nginx package and remove cache ###
 RUN apk add --update nginx && rm -rf /var/cache/apk/*
 
+RUN cd /app/${app_name}
+
 LABEL source git@github.com:kyma-project/console.git
 
-COPY nginx.conf /etc/nginx/nginx.conf
-COPY --from=ui-generator /app/addons/build var/public
-COPY --from=ui-generator /app/licenses/ /app/licenses/
+COPY ./${app_name}/nginx.conf /etc/nginx/nginx.conf
+COPY --from=builder /app/${app_name}/build var/public
+COPY --from=builder /app/${app_name}/licenses/ /app/licenses/
 
 RUN touch /var/run/nginx.pid && \
   chown -R nginx:nginx /var/run/nginx.pid

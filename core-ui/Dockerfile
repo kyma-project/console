@@ -14,6 +14,7 @@ COPY . /app
 RUN cd /app/${app_name} && \
   make resolve && \
   make verify
+  
 
 # Set env variables
 ENV PRODUCTION true

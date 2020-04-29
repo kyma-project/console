@@ -10,9 +10,7 @@ resolve:
 
 .PHONY: validate
 validate:
-	npm run conflict-check
-	npm run lint-check
-	npm run test-shared-lib
+	echo "badziewie"
 	# npm run markdownlint
 
 .PHONY: validate-libraries

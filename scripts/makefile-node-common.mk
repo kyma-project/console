@@ -8,7 +8,6 @@ COMPONENT_DIR = $(shell pwd)
 # WORKSPACE_COMPONENT_DIR is a path to commponent in the container
 WORKSPACE_COMPONENT_DIR = /workspace/$(APP_PATH)
 
-
 ifndef ARTIFACTS
 ARTIFACTS:=/tmp/artifacts
 endif
@@ -52,7 +51,13 @@ endef
 #
 #   verify:: errcheck
 #
-verify:: test 
+verify:: test
+
+.PHONY: validate
+validate:
+	npm run conflict-check
+	npm run lint-check
+	npm run test-shared-lib
 
 release: build-image push-image
 # release: do-npm-stuff build-image push-image
@@ -60,7 +65,7 @@ release: build-image push-image
 do-npm-stuff-local: root resolve_folder test
 
 .PHONY: build-image push-image
-build-image: pull-licenses
+build-image: #pull-licenses
 	docker build -t $(APP_NAME) -f Dockerfile ..
 push-image:
 	docker tag $(APP_NAME):latest $(IMG_NAME):$(TAG)
@@ -95,10 +100,10 @@ else
 	mkdir -p licenses
 endif
 
+
 # Targets copying sources to buildpack
 COPY_TARGETS = do-npm-stuff
 $(foreach t,$(COPY_TARGETS),$(eval $(call buildpack-cp-ro,$(t))))
-
 
 .PHONY: list
 list:
