@@ -242,24 +242,23 @@ export const RESOURCES_MANAGEMENT_PANEL = {
 
   REPLICAS_MODE: {
     MIN_NUMBER: {
-      TITLE: 'Minimum number of replicas',
-      DESCRIPTION: 'Set it to 0 to enable scaling to zero.',
+      TITLE: 'Minimum replicas',
+      DESCRIPTION: 'Minimum number of running replicas.',
     },
     MAX_NUMBER: {
-      TITLE: 'Maximum number of replicas',
-      DESCRIPTION: 'Set it to 0 to disable a function.',
+      TITLE: 'Maximum replicas',
+      DESCRIPTION:
+        'Maximum number of running replicas. Set it to 0 to disable the function.',
     },
   },
   RESOURCES: {
     REQUESTS: {
       TITLE: 'Requests',
-      DESCRIPTION:
-        'Requests describe the minimum amount of compute resources required.',
+      DESCRIPTION: 'Minimum amount of compute resources required.',
     },
     LIMITS: {
       TITLE: 'Limits',
-      DESCRIPTION:
-        'Limits describe the maximum amount of compute resources allowed.',
+      DESCRIPTION: 'Maximum amount of compute resources allowed.',
     },
     MEMORY: {
       TITLE: 'Memory',
