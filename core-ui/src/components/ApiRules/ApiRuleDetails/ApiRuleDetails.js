@@ -96,7 +96,7 @@ function navigateToEditView(apiRuleName) {
 function ApiRuleDetailsHeader({ data }) {
   const host = `https://${data.service.host}`;
   const DOMAIN = getApiUrl('domain');
-  let url = host.split(`.${DOMAIN}`)[0] + `.${DOMAIN}`;
+  const url = host.split(`.${DOMAIN}`)[0] + `.${DOMAIN}`;
 
   const navigateToService = () =>
     LuigiClient.linkManager()
