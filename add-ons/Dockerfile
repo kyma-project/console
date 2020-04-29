@@ -29,8 +29,6 @@ ARG app_name=add-ons
 ### Install nginx package and remove cache ###
 RUN apk add --update nginx && rm -rf /var/cache/apk/*
 
-RUN cd /app/${app_name}
-
 LABEL source git@github.com:kyma-project/console.git
 
 COPY ./${app_name}/nginx.conf /etc/nginx/nginx.conf
