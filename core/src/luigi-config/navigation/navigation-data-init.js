@@ -66,7 +66,7 @@ export let navigation = {
   })
 };
 
-export function getNavigationData() {
+function getNavigationData() {
   return new Promise(function(resolve, reject) {
     let token = getToken();
     let groups = getGroups(token);
