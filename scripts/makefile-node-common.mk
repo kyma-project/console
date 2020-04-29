@@ -56,8 +56,7 @@ verify:: test
 
 release: do-npm-stuff build-image push-image
 
-do-npm-stuff-local: root test
-
+do-npm-stuff-local: root resolve_folder test
 
 .PHONY: build-image push-image
 build-image: pull-licenses
@@ -83,7 +82,10 @@ test:
 
 resolve:
 	cd .. && npm run bootstrap:ci
+	npm ci --no-optional
 
+resolve_folder:
+	npm ci --no-optional
 
 pull-licenses-local:
 ifdef LICENSE_PULLER_PATH

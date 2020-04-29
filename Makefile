@@ -1,7 +1,8 @@
 ci-pr: resolve validate validate-libraries
 ci-master: resolve validate validate-libraries
 
-ci: resolve validate validate-libraries
+# ci: resolve validate validate-libraries
+ci: resolve 
 
 .PHONY: resolve
 resolve:
