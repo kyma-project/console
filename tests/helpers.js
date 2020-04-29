@@ -38,9 +38,7 @@ export const findActiveFrame = async t => {
 };
 
 export const leftNavLinkSelector = async text => {
-  const link = Selector('nav.fd-side-nav a').withText(text);
-
-  return link;
+  return Selector('nav.fd-side-nav a').withText(text);
 };
 
 export const ADRESS = `${
