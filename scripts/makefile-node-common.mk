@@ -54,7 +54,8 @@ endef
 #
 verify:: test 
 
-release: do-npm-stuff build-image push-image
+release: build-image push-image
+# release: do-npm-stuff build-image push-image
 
 do-npm-stuff-local: root resolve_folder test
 
