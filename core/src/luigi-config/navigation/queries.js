@@ -49,10 +49,14 @@ export const CONSOLE_INIT_DATA = `query {
         }
       }
     }
-    versionInfo {
-      kymaVersion
-    }
   }
+`;
+
+export const GET_KYMA_VERSION = `query {
+  versionInfo {
+    kymaVersion
+  }
+}
 `;
 
 export const GET_NAMESPACES = `query Namespace($showSystemNamespaces: Boolean, $withInactiveStatus: Boolean) {

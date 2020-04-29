@@ -1,7 +1,8 @@
 import {
   CONSOLE_INIT_DATA,
   GET_MICROFRONTENDS,
-  GET_NAMESPACES
+  GET_NAMESPACES,
+  GET_KYMA_VERSION
 } from './queries';
 import { config } from '../config';
 import {
@@ -67,7 +68,6 @@ export let navigation = {
 
 export function getNavigationData() {
   return new Promise(function(resolve, reject) {
-    let kymaVersion;
     let token = getToken();
     let groups = getGroups(token);
     fetchFromGraphQL(CONSOLE_INIT_DATA, undefined, true)
@@ -77,7 +77,6 @@ export function getNavigationData() {
             const modules = res.backendModules;
             const subjectRules = res.selfSubjectRules;
             const cmfs = res.clusterMicroFrontends;
-            kymaVersion = `Kyma version: ${res.versionInfo.kymaVersion}`;
             setInitValues(
               (modules && modules.map(m => m.name)) || [],
               subjectRules || []
@@ -192,12 +191,33 @@ export function getNavigationData() {
             ]
           }
         ];
-        resolve([nodes, kymaVersion]);
+        resolve(nodes);
       })
       .catch(err => {
         console.error('Config Init Error', err);
         reject(err);
       });
+  });
+}
+
+export const getInitData = () => {
+  return new Promise((resolve, reject) => {
+    getNavigationData()
+    .then(navData => {
+      fetchFromGraphQL(GET_KYMA_VERSION, undefined, true)
+        .then(
+          res => {
+            let kymaVersion;
+            if (res && res.versionInfo) {
+              kymaVersion = `Kyma version: ${res.versionInfo.kymaVersion}`;
+            }
+            resolve([navData, kymaVersion]);
+          }
+        )
+      }
+    ).catch((err) => {
+      reject(err)
+    });
   });
 }
 

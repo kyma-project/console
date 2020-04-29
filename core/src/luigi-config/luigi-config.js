@@ -4,7 +4,7 @@ import { config } from './config';
 import createAuth from './auth';
 import {
   navigation,
-  getNavigationData,
+  getInitData,
   resolveNavigationNodes
 } from './navigation/navigation-data-init';
 import { onQuotaExceed } from './luigi-event-handlers';
@@ -50,7 +50,7 @@ export const NODE_PARAM_PREFIX = `~`;
       luigiAfterInit: () => {
         const token = getToken();
         if (token) {
-          getNavigationData().then(response => {
+          getInitData().then(response => {
             resolveNavigationNodes(response[0]);
             luigiConfig.settings.sideNavFooterText = response[1];
             Luigi.configChanged('settings');
