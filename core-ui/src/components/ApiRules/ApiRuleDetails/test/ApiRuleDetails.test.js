@@ -77,6 +77,10 @@ jest.mock('@kyma-project/luigi-client', () => ({
   }),
 }));
 
+jest.mock('@kyma-project/common', () => ({
+  getApiUrl: () => 'kyma.local',
+}));
+
 describe('ApiRuleDetails', () => {
   it('renders rule name', async () => {
     const { queryByText, container } = render(

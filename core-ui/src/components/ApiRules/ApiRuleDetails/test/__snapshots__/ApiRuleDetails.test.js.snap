@@ -1,5 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`ApiRuleDetails Clicking on "Delete" deletes element 1`] = `Array []`;
+
 exports[`ApiRuleDetails renders breadcrumb 1`] = `
 Array [
   <li
