@@ -9,39 +9,38 @@ export const testIf = (condition, testName, testToRun) => {
   }
 };
 
+const retry = async (t, retries, func, message) => {
+  try {
+    return await func(t);
+  } catch (err) {
+    console.log(
+      `${message ? message : 'Testing iframe'} failed. Retries left: ${retries -
+        1}`,
+    );
+    if (retries === 1) throw err;
+    return await retry(t, retries - 1, func, message);
+  }
+};
+
 export const findActiveFrame = async t => {
   return retry(
     t,
-    7,
+    3,
     async t => {
       const iframe = Selector('iframe', {
         visibilityCheck: true,
       });
-      await t.expect(Selector('body').exists).ok();
       await t.switchToIframe(iframe);
+      await t.expect(Selector('body')()).ok();
     },
     'Switching the iframe',
   );
 };
 
 export const leftNavLinkSelector = async text => {
-  const link = Selector('nav.fd-side-nav a', {
-    visibilityCheck: true,
-    timeout: config.navLinksTimeout,
-  }).withText(text);
+  const link = Selector('nav.fd-side-nav a').withText(text);
 
   return link;
-};
-
-export const retry = async (t, n, func, goal) => {
-  try {
-    return await func(t);
-  } catch (err) {
-    console.log(`${goal}. Retries left: ${n - 1}`);
-
-    if (n === 1) throw err;
-    return await retry(t, n - 1, func);
-  }
 };
 
 export const ADRESS = `${
@@ -58,16 +57,14 @@ export const adminUser = Role(
       .typeText('#password', config.password)
       .click('#submit-login');
 
-    await Selector('#app', {
-      timeout: 5000,
-    })();
+    await Selector('#app')();
   },
   { preserveUrl: true },
 );
 
 const chooseLoginRole = async t => {
   try {
-    await Selector('#login').visible; // '.exists' doesn't really wait for the selector..
+    await Selector('#login')();
     console.log('One login method detected...');
   } catch (e) {
     console.log(

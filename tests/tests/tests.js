@@ -5,7 +5,6 @@ import {
   findActiveFrame,
   adminUser,
   toBoolean,
-  retry,
   leftNavLinkSelector,
 } from '../helpers';
 import config from '../config';
@@ -17,7 +16,7 @@ test('Luigi navigation is rendered', async t => {
   await t.useRole(adminUser);
   const namespacesLink = await leftNavLinkSelector('Namespaces');
   //THEN
-  t.expect(namespacesLink.exists).ok({ timeout: config.navLinksTimeout });
+  t.expect(namespacesLink.exists).ok();
 });
 
 test('Namespaces view is rendered', async t => {
@@ -26,7 +25,7 @@ test('Namespaces view is rendered', async t => {
 
   //THEN
   await findActiveFrame(t);
-  return t
+  await t
     .expect(Selector('.fd-button').withText('Add new namespace').exists)
     .ok()
     .expect(Selector('.fd-panel__title').withText('default').exists)
@@ -48,7 +47,7 @@ testIf(
     //THEN
     await findActiveFrame(t);
 
-    return t
+    await t
       .expect(Selector('button').withText(/.*create application.*/i).exists)
       .ok();
   },
@@ -73,7 +72,7 @@ testIf(
     //THEN
     await findActiveFrame(t);
 
-    return t
+    await t
       .expect(
         Selector('.fd-action-bar__title').withText('Service Catalog').exists,
       )
