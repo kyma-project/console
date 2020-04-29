@@ -43,7 +43,7 @@ export const adminUser = Role(
       .typeText('#login', config.login)
       .typeText('#password', config.password)
       .click('#submit-login')
-      .wait(5000);
+      .wait(10000);
   },
   { preserveUrl: true },
 );

@@ -27,8 +27,8 @@ test('Namespaces view is rendered', async t => {
 
   //THEN
   await retry(t, 3, findActiveFrame);
-  await retry(t, 3, t => {
-    return t
+  await retry(t, 3, async t => {
+    await t
       .expect(Selector('.fd-button').withText('Add new namespace').exists)
       .ok()
       .expect(Selector('.fd-panel__title').withText('default').exists)
@@ -50,8 +50,8 @@ testIf(
 
     //THEN
     await retry(t, 3, findActiveFrame);
-    await retry(t, 3, t => {
-      return t
+    await retry(t, 3, async t => {
+      await t
         .expect(Selector('button').withText(/.*create application.*/i).exists)
         .ok();
     });
@@ -68,8 +68,8 @@ testIf(
 
     //WHEN
     await retry(t, 3, findActiveFrame);
-    await retry(t, 3, t => {
-      return t
+    await retry(t, 3, async t => {
+      await t
         .click(Selector('.fd-panel__title').withText('default'))
         .switchToMainWindow()
         .click(catalogLink);
@@ -77,8 +77,8 @@ testIf(
 
     //THEN
     await retry(t, 3, findActiveFrame);
-    await retry(t, 3, t => {
-      return t
+    await retry(t, 3, async t => {
+      await t
         .expect(
           Selector('.fd-action-bar__title').withText('Service Catalog').exists,
         )
