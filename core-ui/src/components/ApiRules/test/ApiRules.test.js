@@ -15,7 +15,7 @@ const mockNamespace = 'nsp';
 const mockNavigate = jest.fn();
 const mockShowConfirmationModal = jest.fn(() => Promise.resolve());
 
-const gqlApiRulesRequest = APIRules => ({
+const gqlApiRulesRequest = (APIRules) => ({
   request: {
     query: GET_API_RULES,
     variables: { namespace: mockNamespace },
@@ -27,7 +27,7 @@ const gqlApiRulesRequest = APIRules => ({
   },
 });
 
-const gqlDeleteRequest = name => ({
+const gqlDeleteRequest = (name) => ({
   request: {
     query: DELETE_API_RULE,
     variables: { namespace: mockNamespace, name },
@@ -41,7 +41,7 @@ const gqlDeleteRequest = name => ({
   })),
 });
 
-const apiRule = id => ({
+const apiRule = (id) => ({
   name: 'tets-api-rule' + id,
 });
 
@@ -74,7 +74,7 @@ describe('ApiRules', () => {
     await waitForDomChange(container);
 
     const table = queryByRole('table');
-    expect(table).toBeInTheDocument();
+    expect(table).not.toBeInTheDocument();
     expect(queryAllByRole(table, 'row')).toHaveLength(2);
     expect(queryByText(table, 'No entries found')).toBeInTheDocument();
   });
@@ -119,7 +119,7 @@ describe('ApiRules', () => {
     const table = queryByRole('table');
     expect(table).toBeInTheDocument();
     expect(queryAllByRole(table, 'row')).toHaveLength(3);
-    apis.forEach(api => {
+    apis.forEach((api) => {
       expect(queryByText(table, api.name)).toBeInTheDocument();
     });
   });
