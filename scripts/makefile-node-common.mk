@@ -51,18 +51,16 @@ endef
 #
 #   verify:: errcheck
 #
-verify:: test
+verify:: test validate
+
+
+release: build-image push-image
 
 .PHONY: validate
 validate:
-	npm run conflict-check
-	npm run lint-check
-	npm run test-shared-lib
-
-release: build-image push-image
-# release: do-npm-stuff build-image push-image
-
-do-npm-stuff-local: root resolve_folder test
+	npm run --prefix=../ conflict-check
+	npm run --prefix=../ lint-check
+	npm run --prefix=../ test-shared-lib
 
 .PHONY: build-image push-image
 build-image: #pull-licenses
@@ -77,9 +75,6 @@ docker-create-opts:
 MOUNT_TARGETS = pull-licenses
 $(foreach t,$(MOUNT_TARGETS),$(eval $(call buildpack-mount,$(t))))
 
-root:
-	make -C "../" ci
-
 build:
 	npm run build
 
@@ -88,9 +83,6 @@ test:
 
 resolve:
 	cd .. && npm run bootstrap:ci
-	npm ci --no-optional
-
-resolve_folder:
 	npm ci --no-optional
 
 pull-licenses-local:

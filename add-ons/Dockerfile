@@ -2,7 +2,6 @@
 # If you want to build image without local changes of react components, delete 16 line of code.
 FROM node:12.16.0-alpine3.9 as builder
 ARG app_name=add-ons
-ARG common_makefile=../scripts/makefile-node-common.mk
 WORKDIR /app
 
 # # Install global dependencies
@@ -12,17 +11,9 @@ RUN apk update && \
 
 # Install root and app dependencies
 COPY . /app
-RUN cd /app/${app_name}
-
-# Install dependencies
-RUN make -f ${common_makefile} -C /app/${app_name} resolve 
-
-# Run linters
-RUN make -f ${common_makefile} -C /app validate 
-
-# Test
-RUN make -f ${common_makefile} -C /app/${app_name} verify 
-  
+RUN cd /app/${app_name} && \
+  make resolve && \
+  make verify
 
 # Set env variables
 ENV PRODUCTION true
@@ -33,6 +24,7 @@ RUN cd /app/${app_name} && make build
 
 ### Main image ###
 FROM alpine:3.11
+ARG app_name=add-ons
 
 ### Install nginx package and remove cache ###
 RUN apk add --update nginx && rm -rf /var/cache/apk/*
