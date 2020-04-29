@@ -56,14 +56,14 @@ verify:: test
 
 release: do-npm-stuff build-image push-image
 
-do-npm-stuff-local: root resolve test
+do-npm-stuff-local: root test
 
 
 .PHONY: build-image push-image
 build-image: pull-licenses
 	docker build -t $(APP_NAME) -f Dockerfile ..
 push-image:
-	docker tag $(IMG_NAME) $(IMG_NAME):$(TAG)
+	docker tag $(APP_NAME):latest $(IMG_NAME):$(TAG)
 	docker push $(IMG_NAME):$(TAG)
 docker-create-opts:
 	@echo $(DOCKER_CREATE_OPTS)
@@ -83,10 +83,7 @@ test:
 
 resolve:
 	cd .. && npm run bootstrap:ci
-	npm ci --no-optional
 
-resolve_folder:
-	npm ci --no-optional
 
 pull-licenses-local:
 ifdef LICENSE_PULLER_PATH
