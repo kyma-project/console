@@ -135,10 +135,13 @@ describe('ApiRuleDetails', () => {
     );
 
     await waitForDomChange(container);
-
-    const expectedHostUrl = `${apiRuleWithShortHost.service.host}.kyma.cluster.com`;
-
-    expect(queryByText(new RegExp(expectedHostUrl))).toBeInTheDocument();
+    expect(
+      queryByText(
+        new RegExp(
+          `${apiRuleWithShortHost.service.host}\\.kyma\\.cluster\\.com`,
+        ),
+      ),
+    ).toBeInTheDocument();
   });
 
   it('renders rule service', async () => {
