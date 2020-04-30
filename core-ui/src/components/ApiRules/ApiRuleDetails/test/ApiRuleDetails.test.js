@@ -99,7 +99,7 @@ jest.mock('@kyma-project/luigi-client', () => ({
 }));
 
 jest.mock('@kyma-project/common', () => ({
-  getApiUrl: () => 'kyma.local',
+  getApiUrl: () => 'kyma.cluster.com',
 }));
 
 describe('ApiRuleDetails', () => {
@@ -136,11 +136,9 @@ describe('ApiRuleDetails', () => {
 
     await waitForDomChange(container);
 
-    expect(
-      queryByText(
-        new RegExp(`${apiRuleWithShortHost.service.host}.kyma.local`),
-      ),
-    ).toBeInTheDocument();
+    const expectedHostUrl = `${apiRuleWithShortHost.service.host}.kyma.cluster.com`;
+
+    expect(queryByText(new RegExp(expectedHostUrl))).toBeInTheDocument();
   });
 
   it('renders rule service', async () => {
