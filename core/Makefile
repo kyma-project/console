@@ -21,7 +21,7 @@ lint:
 	npm run lint
 
 test:
-	npm run test:single
+	npm run test
 
 build:
 	npm run build
