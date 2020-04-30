@@ -34,7 +34,7 @@ ARG app_name=core-ui
 
 COPY ./${app_name}/nginx.conf /etc/nginx/nginx.conf
 COPY --from=builder /app/${app_name}/build var/public
-# COPY --from=builder /app/${app_name}/licenses/ /app/licenses/
+COPY --from=builder /app/${app_name}/licenses/ /app/licenses/
 
 RUN touch /var/run/nginx.pid && \
   chown -R nginx:nginx /var/run/nginx.pid

@@ -63,7 +63,7 @@ validate:
 	npm run --prefix=../ test-shared-lib
 
 .PHONY: build-image push-image
-build-image: #pull-licenses
+build-image: pull-licenses
 	docker build -t $(APP_NAME) -f Dockerfile ..
 push-image:
 	docker tag $(APP_NAME):latest $(IMG_NAME):$(TAG)
