@@ -34,9 +34,12 @@
     "exclude": [
       "*/node_modules/**/*",
       "*/compass/**/*",
-      "*/components/angular/**/*",
+      "*/add-ons/**",
       "*/components/react/**/*",
+      "*/content/**/*",
       "*/core/**/*",
+      "*/core-ui/**/*",
+      "*/lambda/**/*",
       "*/logging/**/*",
       "*/scripts/**/*",
       "*/service-catalog-ui/**/*",

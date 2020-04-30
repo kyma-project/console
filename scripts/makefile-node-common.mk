@@ -51,16 +51,17 @@ endef
 #
 #   verify:: errcheck
 #
-verify:: test validate
+verify:: test validate-shared 
 
 
 release: build-image push-image
 
 .PHONY: validate
-validate:
+validate-shared:
 	npm run --prefix=../ conflict-check
 	npm run --prefix=../ lint-check
 	npm run --prefix=../ test-shared-lib
+
 
 .PHONY: build-image push-image
 build-image: #pull-licenses

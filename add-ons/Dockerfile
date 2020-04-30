@@ -7,7 +7,9 @@ WORKDIR /app
 # # Install global dependencies
 RUN apk update && \
   apk upgrade && \
-  apk add --no-cache curl make
+  apk add --no-cache curl make 
+
+RUN npm i -g typescript 
 
 # Install root and app dependencies
 COPY . /app
