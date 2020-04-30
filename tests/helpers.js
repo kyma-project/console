@@ -23,7 +23,7 @@ const retry = async (t, retries, func, message) => {
 };
 
 export const findActiveFrame = async t => {
-  return retry(
+  return await retry(
     t,
     3,
     async t => {
