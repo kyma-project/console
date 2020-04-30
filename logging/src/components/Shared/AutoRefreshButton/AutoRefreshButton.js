@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { SearchParamsContext } from '../../Logs/SearchParams.reducer';
-import { Button } from '@kyma-project/react-components';
+import { Button } from 'fundamental-react';
 
 export default function AutoRefreshButton() {
   const [{ autoRefreshEnabled }, actions] = useContext(SearchParamsContext);
