@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import { ControlledEditor, DiffEditor } from '@monaco-editor/react';
 
 export default function Editor({
@@ -7,11 +7,38 @@ export default function Editor({
   showDiff = false,
   originalValue = '',
   value = '',
+  controlledValue = '',
+  setControlledValue = '',
   setValue,
   debouncedCallback = () => void 0,
 }) {
-  function handleChange(_, value) {
+  const subscription = useRef();
+
+  // unsubscribe
+  useEffect(() => {
+    return () => {
+      if (
+        subscription &&
+        subscription.current &&
+        typeof subscription.current.dispose === 'function'
+      ) {
+        subscription.current.dispose();
+      }
+    };
+  }, []);
+
+  function handleDiffEditorDidMount(_, __, editor) {
+    const { modified } = editor.getModel();
+
+    subscription.current = modified.onDidChangeContent(_ => {
+      setValue(modified.getValue());
+      debouncedCallback();
+    });
+  }
+
+  function handleControlledChange(_, value) {
     setValue(value);
+    setControlledValue(value);
     debouncedCallback();
   }
 
@@ -23,8 +50,8 @@ export default function Editor({
         language={language}
         theme="vs-light"
         original={originalValue}
-        modified={value}
-        onChange={handleChange}
+        modified={controlledValue}
+        editorDidMount={handleDiffEditorDidMount}
       />
     );
   }
@@ -35,8 +62,8 @@ export default function Editor({
       height="30em"
       language={language}
       theme="vs-light"
-      value={value}
-      onChange={handleChange}
+      value={controlledValue}
+      onChange={handleControlledChange}
     />
   );
 }

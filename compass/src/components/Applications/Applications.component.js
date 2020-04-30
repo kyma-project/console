@@ -42,7 +42,9 @@ class Applications extends React.Component {
       ? application.providerName
       : EMPTY_TEXT_PLACEHOLDER,
     application.description ? application.description : EMPTY_TEXT_PLACEHOLDER,
-    <ScenariosDisplay scenarios={application.labels.scenarios || []} />,
+    <ScenariosDisplay
+      scenarios={(application.labels && application.labels.scenarios) || []}
+    />,
     <Counter>{application.packages.totalCount}</Counter>,
 
     <StatusBadge

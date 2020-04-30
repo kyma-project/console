@@ -126,7 +126,9 @@ export function getNavigationData() {
           }
         },
         err => {
-          // console.error(err);
+          if (err === 'access denied') {
+            window.location.pathname = '/nopermissions.html';
+          }
         }
       )
       // 'Finally' not supported by IE and FIREFOX (if 'finally' is needed, update your .babelrc)

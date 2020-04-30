@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 
-import { ServiceBindingsService } from './ServiceBindingsService';
 import ServiceBindings from './ServiceBindings';
 import { useServiceBindingUsagesQuery } from 'components/Lambdas/gql/hooks/queries';
 
@@ -17,13 +16,11 @@ export default function ServiceBindingsWrapper({
   }, [setBindingUsages, bindingUsages]);
 
   return (
-    <ServiceBindingsService lambdaName={lambda.name}>
-      <ServiceBindings
-        lambda={lambda}
-        serviceBindingUsages={bindingUsages}
-        serverDataError={error || false}
-        serverDataLoading={loading || false}
-      />
-    </ServiceBindingsService>
+    <ServiceBindings
+      lambda={lambda}
+      serviceBindingUsages={bindingUsages}
+      serverDataError={error || false}
+      serverDataLoading={loading || false}
+    />
   );
 }

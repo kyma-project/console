@@ -237,6 +237,4 @@ export function getStaticRootNodes(namespaceChildrenNodesResolver){
       hideFromNav: true
     }
   ];
-
-
 }

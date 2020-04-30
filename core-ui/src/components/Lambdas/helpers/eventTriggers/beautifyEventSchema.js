@@ -62,6 +62,7 @@ export function beautifyEventSchema(eventSchema) {
 
   if (
     !schema.hasOwnProperty('example') ||
+    !schema.example ||
     !Object.keys(schema.example).length
   ) {
     schema.example = generateExampleSchema(schema);

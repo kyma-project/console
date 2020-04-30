@@ -1,0 +1,18 @@
+.lambda-details {
+  position: relative;
+  height: 100vh;
+
+  > .fd-loading-dots {
+    margin: 0 auto;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .lambda-details-tabs {
+    .fd-tabs__item:first-of-type {
+      padding-left: 32px;
+    }
+  }
+}

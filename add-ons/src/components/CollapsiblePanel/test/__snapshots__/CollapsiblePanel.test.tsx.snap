@@ -6,6 +6,7 @@ exports[`CollapsiblePanel Renders with minimal props 1`] = `
 >
   <Panel.Header>
     <Button
+      className="fd-has-margin-right-xs"
       disabled={false}
       glyph="navigation-up-arrow"
       onClick={[Function]}
@@ -17,7 +18,7 @@ exports[`CollapsiblePanel Renders with minimal props 1`] = `
     />
   </Panel.Header>
   <Panel.Body
-    className="body body--open"
+    className="body"
   >
     <p>
       child

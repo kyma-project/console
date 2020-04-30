@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import LuigiClient from '@luigi-project/client';
 import RuntimeScenarioModal from './RuntimeScenarioModal.container';
-import { RuntimeQueryContext } from './../RuntimeDetails.component';
+import { RuntimeQueryContext } from '../RuntimeDetails';
 
 import { GenericList } from 'react-shared';
 

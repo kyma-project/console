@@ -25,7 +25,7 @@ describe('CollapsiblePanel', () => {
         isOpen={true}
       />,
     );
-    expect(component.exists('.body--open')).toBe(true);
+
     expect(component.exists('.body--closed')).toBe(false);
   });
 

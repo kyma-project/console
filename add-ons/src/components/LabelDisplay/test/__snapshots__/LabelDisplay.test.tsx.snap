@@ -25,12 +25,22 @@ exports[`LabelDisplay Renders labels 1`] = `
         <Token
           className="caption-muted caption--no-button"
         >
-          <span
-            className="fd-token caption-muted caption--no-button"
-            role="button"
+          <Token
+            className="caption-muted caption--no-button"
+            forwardedRef={null}
           >
-            aR=a
-          </span>
+            <Token
+              className="caption-muted caption--no-button"
+              disableStyles={false}
+            >
+              <span
+                className="fd-token caption-muted caption--no-button"
+                role="button"
+              >
+                aR=a
+              </span>
+            </Token>
+          </Token>
         </Token>
       </li>
       <li
@@ -39,12 +49,22 @@ exports[`LabelDisplay Renders labels 1`] = `
         <Token
           className="caption-muted caption--no-button"
         >
-          <span
-            className="fd-token caption-muted caption--no-button"
-            role="button"
+          <Token
+            className="caption-muted caption--no-button"
+            forwardedRef={null}
           >
-            bR=b
-          </span>
+            <Token
+              className="caption-muted caption--no-button"
+              disableStyles={false}
+            >
+              <span
+                className="fd-token caption-muted caption--no-button"
+                role="button"
+              >
+                bR=b
+              </span>
+            </Token>
+          </Token>
         </Token>
       </li>
       <li
@@ -53,12 +73,22 @@ exports[`LabelDisplay Renders labels 1`] = `
         <Token
           className="caption-muted"
         >
-          <span
-            className="fd-token caption-muted"
-            role="button"
+          <Token
+            className="caption-muted"
+            forwardedRef={null}
           >
-            a=1
-          </span>
+            <Token
+              className="caption-muted"
+              disableStyles={false}
+            >
+              <span
+                className="fd-token caption-muted"
+                role="button"
+              >
+                a=1
+              </span>
+            </Token>
+          </Token>
         </Token>
       </li>
       <li
@@ -67,12 +97,22 @@ exports[`LabelDisplay Renders labels 1`] = `
         <Token
           className="caption-muted"
         >
-          <span
-            className="fd-token caption-muted"
-            role="button"
+          <Token
+            className="caption-muted"
+            forwardedRef={null}
           >
-            b=2
-          </span>
+            <Token
+              className="caption-muted"
+              disableStyles={false}
+            >
+              <span
+                className="fd-token caption-muted"
+                role="button"
+              >
+                b=2
+              </span>
+            </Token>
+          </Token>
         </Token>
       </li>
     </ul>

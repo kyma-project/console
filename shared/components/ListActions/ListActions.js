@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 const AUTO_ICONS_BY_NAME = new Map([['Edit', 'edit'], ['Delete', 'delete']]);
 
-const StandaloneAction = ({ action, entry }) => {
+const StandaloneAction = ({ action, entry, compact }) => {
   const icon = action.icon || AUTO_ICONS_BY_NAME.get(action.name);
 
   return (
@@ -15,13 +15,15 @@ const StandaloneAction = ({ action, entry }) => {
       option="light"
       glyph={icon}
       aria-label={action.name}
+      typeAttr="button"
+      compact={compact}
     >
       {icon ? '' : action.name}
     </Button>
   );
 };
 
-const ListActions = ({ actions, entry, standaloneItems = 2 }) => {
+const ListActions = ({ actions, entry, standaloneItems = 2, compact }) => {
   if (!actions.length) {
     return null;
   }
@@ -31,7 +33,12 @@ const ListActions = ({ actions, entry, standaloneItems = 2 }) => {
   return (
     <div className="list-actions">
       {actions.slice(0, standaloneItems).map(a => (
-        <StandaloneAction key={a.name} action={a} entry={entry} />
+        <StandaloneAction
+          key={a.name}
+          action={a}
+          entry={entry}
+          compact={compact}
+        />
       ))}
       {listItems.length ? (
         <Popover
@@ -69,6 +76,7 @@ ListActions.propTypes = {
   ).isRequired,
   entry: PropTypes.any.isRequired,
   standaloneItems: PropTypes.number,
+  compact: PropTypes.bool,
 };
 
 export default ListActions;

@@ -35,3 +35,12 @@ export const DELETE_LABEL_DEFINITION = gql`
     }
   }
 `;
+
+export const CREATE_LABEL_DEFINITION = gql`
+  mutation createLabelDefinition($in: LabelDefinitionInput!) {
+    createLabelDefinition(in: $in) {
+      key
+      schema
+    }
+  }
+`;

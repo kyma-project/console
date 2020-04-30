@@ -1,37 +1,49 @@
 import React from 'react';
+import Moment from 'react-moment';
 
-import {
-  NotificationMessage,
-  ThemeWrapper,
-} from '@kyma-project/react-components';
-
-import ServiceBrokersTable from './ServiceBrokersTable/ServiceBrokersTable.component';
-import ServiceBrokersToolbar from './ServiceBrokersToolbar/ServiceBrokersToolbar.component';
-
-import { ServiceBrokersWrapper } from './styled';
+import { PageHeader, GenericList, Tooltip } from '../../react-shared';
+import { Badge } from 'fundamental-react';
+import './ServiceBrokers.component.scss';
 
 class ServiceBrokers extends React.Component {
   render() {
     const { serviceBrokers = {} } = this.props;
-
     const brokers = serviceBrokers.serviceBrokers || [];
 
+    const headerRenderer = () => ['Name', 'Age', 'Url', 'Status'];
+
+    const rowRenderer = item => {
+      return [
+        item.name,
+        <Moment unix fromNow>
+          {item.creationTimestamp}
+        </Moment>,
+        item.url,
+        (_ => {
+          const status = item.status.ready === true ? 'RUNNING' : 'FAILED';
+          const type = item.status.ready === true ? 'success' : 'error';
+
+          return (
+            <Tooltip title={item.status.message}>
+              <Badge type={type} modifier="filled">
+                {status}
+              </Badge>
+            </Tooltip>
+          );
+        })(),
+      ];
+    };
+
     return (
-      <ThemeWrapper>
-        <ServiceBrokersToolbar serviceBrokersExists={brokers.length > 0} />
-        <NotificationMessage
-          type="error"
-          title="Error"
-          message={serviceBrokers.error && serviceBrokers.error.message}
+      <article className="brokers-list">
+        <PageHeader title="Service Brokers" />
+        <GenericList
+          entries={brokers}
+          headerRenderer={headerRenderer}
+          rowRenderer={rowRenderer}
+          showRootHeader={false}
         />
-        <ServiceBrokersWrapper data-e2e-id="brokers-wrapper">
-          <ServiceBrokersTable
-            data={brokers}
-            refetch={serviceBrokers.refetch}
-            loading={serviceBrokers.loading}
-          />
-        </ServiceBrokersWrapper>
-      </ThemeWrapper>
+      </article>
     );
   }
 }

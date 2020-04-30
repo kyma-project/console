@@ -7,11 +7,21 @@ exports[`AddonConfigurationBadge Renders in error state for status "failed" 1`] 
   <Badge
     type="error"
   >
-    <span
-      className="fd-badge fd-badge--error"
+    <Badge
+      forwardedRef={null}
+      type="error"
     >
-      failed
-    </span>
+      <Badge
+        disableStyles={false}
+        type="error"
+      >
+        <span
+          className="fd-badge fd-badge--error"
+        >
+          failed
+        </span>
+      </Badge>
+    </Badge>
   </Badge>
 </AddonConfigurationBadge>
 `;
@@ -23,11 +33,21 @@ exports[`AddonConfigurationBadge Renders in success state for "ready" status 1`]
   <Badge
     type="success"
   >
-    <span
-      className="fd-badge fd-badge--success"
+    <Badge
+      forwardedRef={null}
+      type="success"
     >
-      ready
-    </span>
+      <Badge
+        disableStyles={false}
+        type="success"
+      >
+        <span
+          className="fd-badge fd-badge--success"
+        >
+          ready
+        </span>
+      </Badge>
+    </Badge>
   </Badge>
 </AddonConfigurationBadge>
 `;
@@ -39,11 +59,21 @@ exports[`AddonConfigurationBadge Renders in warning state for custom status 1`] 
   <Badge
     type="warning"
   >
-    <span
-      className="fd-badge fd-badge--warning"
+    <Badge
+      forwardedRef={null}
+      type="warning"
     >
-      other
-    </span>
+      <Badge
+        disableStyles={false}
+        type="warning"
+      >
+        <span
+          className="fd-badge fd-badge--warning"
+        >
+          other
+        </span>
+      </Badge>
+    </Badge>
   </Badge>
 </AddonConfigurationBadge>
 `;

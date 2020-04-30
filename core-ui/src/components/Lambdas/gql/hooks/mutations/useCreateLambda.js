@@ -82,10 +82,19 @@ export function prepareCreateLambdaInput(name) {
     source: DEFAULT_LAMBDA_CODE,
     dependencies,
     resources: {
-      requests: {},
-      limits: {},
+      requests: {
+        cpu: '50m',
+        memory: '64Mi',
+      },
+      limits: {
+        cpu: '100m',
+        memory: '128Mi',
+      },
     },
-    replicas: {},
+    replicas: {
+      min: 1,
+      max: 1,
+    },
     env: [],
   };
 }

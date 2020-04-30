@@ -1,11 +1,24 @@
 .generic-list {
+  height: fit-content;
+
   .fd-table {
     tr {
       cursor: default;
     }
+
+    &.compact {
+      td {
+        padding-top: 8px;
+        padding-bottom: 8px;
+      }
+    }
+
+    border-left: none;
+    border-right: none;
   }
   .fd-panel__body {
     padding: 0;
+    display: flex;
   }
 
   .fd-panel__header {

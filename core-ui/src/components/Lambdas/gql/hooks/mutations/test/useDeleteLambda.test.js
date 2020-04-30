@@ -36,6 +36,7 @@ describe('useDeleteLambda', () => {
   };
 
   const variables = {
+    namespace: lambdaMock.namespace,
     function: {
       name: lambdaMock.name,
       namespace: lambdaMock.namespace,

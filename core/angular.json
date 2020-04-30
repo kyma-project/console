@@ -31,6 +31,7 @@
               "src/version.html",
               "src/index.html",
               "src/logout.html",
+              "src/nopermissions.html",
               {
                 "glob": "**",
                 "input": "./node_modules/@luigi-project/core",

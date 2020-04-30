@@ -98,28 +98,5 @@
       </fd-panel-body>
     </fd-panel>
 
-    <fd-panel class="y-fd-panel">
-      <fd-panel-header>
-        <fd-panel-head>
-          <h2 fd-panel-title>Deprecated functionalities</h2>
-        </fd-panel-head>
-        <fd-panel-actions>
-          <div [dir]="'rtl'">
-            <fd-toggle
-              [(ngModel)]="showDeprecatedViews"
-              (change)="toggleDeprecatedViews()"
-              >Enable all
-            </fd-toggle>
-          </div>
-        </fd-panel-actions>
-      </fd-panel-header>
-      <fd-panel-body>
-        <p>
-          Enables all views which expose deprecated functionalities in the UI.<br> Refresh the page after enabling this option to see
-          additional navigation nodes in the
-          <strong>Deprecated</strong> category of the left navigation.
-        </p>
-      </fd-panel-body>
-    </fd-panel>
   </fd-panel-grid>
 </section>

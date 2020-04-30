@@ -1,6 +1,6 @@
 <tr [ngClass]="{ disabled: disabled === true }">
   <td class="fd-has-font-weight-bold">{{ entry.name }}</td>
-  <td>
+  <td class="y-fd-table--nowrap">
     <span
       fd-badge
       [modifier]="'filled'"
@@ -56,7 +56,7 @@
       {{ emptyText }}
     </ng-container>
   </td>
-  <td>
+  <td class="y-fd-table--nowrap">
     <app-status-label [statusType]="getStatusType(entry)">
       {{ getStatus(entry) }}
     </app-status-label>

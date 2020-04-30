@@ -109,7 +109,6 @@ const apps = [
   'content',
   'core',
   'core-ui',
-  'lambda',
   'logging',
   'service-catalog-ui/brokers',
   'service-catalog-ui/catalog',

@@ -10,89 +10,191 @@ export const ERRORS = {
   NOT_MATCHING_FILTERS: "Couldn't find resources matching these filters.",
 };
 
+export const LAMBDA_PHASES = {
+  INITIALIZING: {
+    TYPE: 'INITIALIZING',
+    TITLE: 'Initializing',
+  },
+  BUILDING: {
+    TYPE: 'BUILDING',
+    TITLE: 'Building',
+  },
+  DEPLOYING: {
+    TYPE: 'DEPLOYING',
+    TITLE: 'Deploying',
+  },
+  RUNNING: {
+    TYPE: 'RUNNING',
+    TITLE: 'Running',
+  },
+  NEW_REVISION_ERROR: {
+    TYPE: 'NEW_REVISION_ERROR',
+    TITLE: 'New Revision Error',
+    MESSAGE: `A new revision couldn't be created due to an error.`,
+  },
+  FAILED: {
+    TYPE: 'FAILED',
+    TITLE: 'Failed',
+    MESSAGE: `Function couldn't be processed.`,
+  },
+  ERROR_SUFFIX: 'Error: {error}',
+};
+
+export const LAMBDA_ERROR_PHASES = [
+  LAMBDA_PHASES.FAILED.TYPE,
+  LAMBDA_PHASES.NEW_REVISION_ERROR.TYPE,
+];
+
 export const TOOLBAR = {
-  TITLE: 'Lambdas',
+  TITLE: 'Functions',
   DESCRIPTION:
-    'Extend your applications with lambdas that you can trigger with incoming events and expose outside the cluster with API Rules.',
+    'Extend your applications with Functions that you can trigger with incoming events and expose outside the cluster with API Rules.',
 };
 
 export const LAMBDAS_LIST = {
   ERRORS: {
-    RESOURCES_NOT_FOUND: "This namespace doesn't have any Lambdas yet.",
-    NOT_MATCHING_SEARCH_QUERY: "Couldn't find Lambdas matching this query.",
+    RESOURCES_NOT_FOUND: "This Namespace doesn't have any Functions yet.",
+    NOT_MATCHING_SEARCH_QUERY: "Couldn't find Functions matching this query.",
+  },
+  CREATE_MODAL: {
+    TITLE: 'Create Function',
+    OPEN_BUTTON: {
+      TEXT: 'Create Function',
+    },
+    CONFIRM_BUTTON: {
+      TEXT: 'Create',
+    },
+    INPUTS: {
+      NAME: {
+        LABEL: 'Name',
+        INLINE_HELP: `The name must consist of lower case alphanumeric characters or dashes, and must start and end with an alphanumeric character (e.g. 'my-name1').`,
+      },
+      LABEL: {
+        LABEL: 'Labels',
+        INLINE_HELP: `The key/value pair should be separated by '=', consist of alphanumeric characters, '-', '_' or '.', and must start and end with an alphanumeric character. The key cannot be empty.`,
+      },
+    },
   },
 };
 
-export const TRIGGER_SUBSCRIBER = {
-  SERVING_SERVICE: 'Service',
-  SERVING_API_VERSION: 'serving.knative.dev/v1',
-  BROKER: 'default',
+export const LAMBDA_DETAILS = {
+  STATUS: {
+    TITLE: 'Status',
+    ERROR: {
+      LINK: 'See error logs.',
+      MODAL: {
+        TITLE: 'Error logs from "{lambdaName}"',
+      },
+    },
+  },
+  LABELS: {
+    TITLE: 'Labels',
+    POPUP_MESSAGE: 'Edit Labels',
+    EDIT_MODAL: {
+      TITLE: 'Edit Labels',
+      CONFIRM_BUTTON: {
+        TEXT: 'Save',
+        INVALID_POPUP_MESSAGE: 'Invalid label',
+      },
+    },
+  },
+  TABS: {
+    CODE: {
+      TITLE: 'Code',
+    },
+    CONFIGURATION: {
+      TITLE: 'Configuration',
+    },
+  },
+};
+
+export const LOGS_AND_METRICS = {
+  LOGS: {
+    SPLIT_VIEW: {
+      TITLE: 'Logs',
+    },
+    MODAL: {
+      TITLE: 'Logs from "{lambdaName}"',
+    },
+  },
 };
 
 export const GQL_QUERIES = {
   LAMBDA: {
-    ERROR_MESSAGE: `Error while fetching "{lambdaName}" Lambda: {error}`,
+    ERROR_MESSAGE: `Couldn't fetch "{lambdaName}" due to this error: {error}`,
   },
   LAMBDAS: {
-    ERROR_MESSAGE: `Error while fetching Lambdas in "{namespace}" Namespace: {error}`,
+    ERROR_MESSAGE: `Couldn't fetch Functions from "{namespace}" due to this error: {error}`,
   },
   EVENT_ACTIVATIONS: {
-    ERROR_MESSAGE: `Error while fetching available Events in "{namespace}" namespace: {error}`,
+    ERROR_MESSAGE: `Couldn't fetch available Events from "{namespace}" due to this error: {error}`,
   },
   EVENT_TRIGGERS: {
-    ERROR_MESSAGE: `Error while fetching Event Triggers for "{lambdaName}" Lambda: {error}`,
+    ERROR_MESSAGE: `Couldn't fetch Event Triggers for "{lambdaName}" due to this error: {error}`,
   },
   SERVICE_BINDING_USAGES: {
-    ERROR_MESSAGE: `Error while fetching injected Service Binding Usages to "{lambdaName}" Lambda: {error}`,
+    ERROR_MESSAGE: `Couldn't fetch Service Binding Usages injected in "{lambdaName}" due to this error: {error}`,
   },
   SERVICE_INSTANCES: {
-    ERROR_MESSAGE: `Error while fetching Service Instances: {error}`,
+    ERROR_MESSAGE: `Couldn't fetch Service Instances due to this error: {error}`,
   },
 };
 
 export const GQL_MUTATIONS = {
   CREATE_LAMBDA: {
-    SUCCESS_MESSAGE: `"{lambdaName}" Lambda is successfully created`,
-    ERROR_MESSAGE: `Error while creating "{lambdaName}" Lambda: {error}`,
+    SUCCESS_MESSAGE: `"{lambdaName}" was successfully created`,
+    ERROR_MESSAGE: `Couldn't create "{lambdaName}" due to this error: {error}`,
   },
   UPDATE_LAMBDA: {
     GENERAL_CONFIGURATION: {
-      SUCCESS_MESSAGE: `General Configuration for "{lambdaName}" Lambda are successfully updated`,
-      ERROR_MESSAGE: `Error while updating General Configuration for "{lambdaName}" Lambda: {error}`,
+      SUCCESS_MESSAGE: `General configuration for "{lambdaName}" was successfully updated`,
+      ERROR_MESSAGE: `Couldn't update general configuration for "{lambdaName}" due to this error: {error}`,
     },
     CODE_AND_DEPENDENCIES: {
-      SUCCESS_MESSAGE: `Code and Dependencies for "{lambdaName}" Lambda are successfully updated`,
-      ERROR_MESSAGE: `Error while updating Code and Dependencies for "{lambdaName}" Lambda: {error}`,
+      SUCCESS_MESSAGE: `Code and dependencies for "{lambdaName}" were successfully updated`,
+      ERROR_MESSAGE: `Couldn't update code and dependencies for "{lambdaName}" due to this error: {error}`,
     },
     RESOURCES_AND_REPLICAS: {
-      SUCCESS_MESSAGE: `Resources and Replicas for "{lambdaName}" Lambda are successfully updated`,
-      ERROR_MESSAGE: `Error while updating Resources and Replicas for "{lambdaName}" Lambda: {error}`,
+      SUCCESS_MESSAGE: `Resources and replicas for "{lambdaName}" were successfully updated`,
+      ERROR_MESSAGE: `Couldn't update resources and replicas for "{lambdaName}" due to this error: {error}`,
     },
     VARIABLES: {
-      SUCCESS_MESSAGE: `Environment Variables for "{lambdaName}" Lambda are successfully updated`,
-      ERROR_MESSAGE: `Error while updating Environment Variables for "{lambdaName}" Lambda: {error}`,
+      SUCCESS_MESSAGE: `Environment variables for "{lambdaName}" were successfully updated`,
+      ERROR_MESSAGE: `Couldn't update environment variables for "{lambdaName}" due to this error: {error}`,
     },
   },
   DELETE_LAMBDA: {
-    SUCCESS_MESSAGE: `"{lambdaName}" Lambda is successfully removed`,
-    ERROR_MESSAGE: `Error while deleting "{lambdaName}" Lambda: {error}`,
+    SUCCESS_MESSAGE: `"{lambdaName}" was successfully deleted`,
+    ERROR_MESSAGE: `Couldn't delete "{lambdaName}" due to this error: {error}`,
     CONFIRM_MODAL: {
-      TITLE: `Remove {lambdaName} Lambda`,
-      MESSAGE: `Are you sure you want to delete "{lambdaName}" Lambda and whole related to it resources?`,
+      TITLE: `Delete {lambdaName}`,
+      MESSAGE: `Are you sure you want to delete "{lambdaName}" and all related resources?`,
     },
   },
   CREATE_TRIGGERS: {
     SUCCESS_MESSAGE_SINGLE: `Event Trigger created successfully`,
     SUCCESS_MESSAGE_MANY: `Event Triggers created successfully`,
-    ERROR_MESSAGE_SINGLE: `Error while creating an Event Trigger for "{lambdaName}" Lambda: {error}`,
-    ERROR_MESSAGE_MANY: `Error while creating Event Triggers for "{lambdaName}" Lambda: {error}`,
+    ERROR_MESSAGE_SINGLE: `Event Trigger for "{lambdaName}" couldn't be created due to this error: {error}`,
+    ERROR_MESSAGE_MANY: `Couldn't create Event Triggers for "{lambdaName}" due to this error: {error}`,
   },
   DELETE_TRIGGER: {
-    SUCCESS_MESSAGE: `Event Trigger was successfully removed`,
-    ERROR_MESSAGE: `Error while deleting "{triggerName}" Event Trigger for "{lambdaName}" Lambda: {error}`,
+    SUCCESS_MESSAGE: `Event Trigger was successfully deleted`,
+    ERROR_MESSAGE: `Couldn't delete the "{triggerName}" Event Trigger for the "{lambdaName}" Function due to this error: {error}`,
     CONFIRM_MODAL: {
-      TITLE: `Remove Event Trigger`,
-      MESSAGE: `Are you sure you want to delete "{triggerName}" Event Trigger for "{lambdaName}" Lambda?`,
+      TITLE: `Delete Event Trigger`,
+      MESSAGE: `Are you sure you want to delete the "{triggerName}" Event Trigger for the "{lambdaName}" Function?`,
+    },
+  },
+  CREATE_BINDING_USAGE: {
+    SUCCESS_MESSAGE: `Service Binding referencing the "{serviceInstanceName}" Service Instance was successfully created`,
+    ERROR_MESSAGE: `Couldn't create a Service Binding referencing the "{serviceInstanceName}" Service Instance due to this error: {error}`,
+  },
+  DELETE_BINDING_USAGE: {
+    SUCCESS_MESSAGE: `Service Binding referencing the "{serviceInstanceName}" Service Instance was successfully deleted`,
+    ERROR_MESSAGE: `Couldn't delete the Service Binding referencing the "{serviceInstanceName}" Service Instance due to this error: {error}`,
+    CONFIRM_MODAL: {
+      TITLE: `Delete Service Binding`,
+      MESSAGE: `Are you sure you want to delete the Service Binding referencing the "{serviceInstanceName}" Service Instance?`,
     },
   },
 };
@@ -111,9 +213,8 @@ export const MODALS = {
 };
 
 export const RESOURCES_MANAGEMENT_PANEL = {
-  TITLE: 'Resources and Replicas',
+  TITLE: 'Edit resources and replicas',
   EDIT_MODAL: {
-    TITLE: 'Edit Resources and Replicas Configuration',
     OPEN_BUTTON: {
       TEXT: {
         EDIT: 'Edit Configuration',
@@ -126,45 +227,38 @@ export const RESOURCES_MANAGEMENT_PANEL = {
   },
   ERROR_MESSAGES: {
     CPU:
-      'CPU value has to be expressed as  fixed-point number or in "milicpu", example: 100m, 0.1, 1',
+      'CPU value has to be expressed as a fixed-point number or in milicpu. For example, use 100m, 0.1, or 1.',
     MEMORY:
-      'Memory value has to be fixed-point number using one of these suffixes: Gi, Mi, Ki. Example: 50Mi, 1000.5Ki, 0.1Gi',
+      'Memory value has to be a fixed-point number with one of these suffixes: Gi, G, Mi, M, Ki, or K. For example, use 50Mi, 1000.5Ki, or 0.1G.',
     MIN_REPLICAS_TOO_HIGH:
-      'Minimum number of replicas has to be equal to or lower than maximum',
-    MIN_REPLICAS_NON_NEGATIVE: 'Minimum replicas must be non-negative integer',
+      'Minimum number of replicas has to be equal to or lower than maximum.',
+    MIN_REPLICAS_NON_NEGATIVE:
+      'Minimum replicas must be a non-negative integer.',
     MAX_REPLICAS_TOO_LOW:
-      'Maximum number of replicas has to be equal or greater than minimum',
-    MAX_REPLICAS_NON_NEGATIVE: 'Maximum replicas must be non-negative integer',
+      'Maximum number of replicas has to be equal or greater than minimum.',
+    MAX_REPLICAS_NON_NEGATIVE:
+      'Maximum replicas must be a non-negative integer.',
   },
 
   REPLICAS_MODE: {
     MIN_NUMBER: {
-      TITLE: 'Minimum number of replicas',
-      DESCRIPTION: 'Set it to 0 to enable scale to zero',
+      TITLE: 'Minimum replicas',
+      DESCRIPTION: 'Minimum number of running replicas.',
     },
     MAX_NUMBER: {
-      TITLE: 'Maximum number of replicas',
-      DESCRIPTION: 'Set it to zero to disable lambda.',
-    },
-    SCALE_TO_ZERO: {
-      TITLE: 'Scale to zero',
-      DESCRIPTION: 'Enable scale to zero.',
-    },
-    FIXED: {
-      TITLE: 'Fixed replicas',
-      DESCRIPTION: 'Enable fixed replicas.',
+      TITLE: 'Maximum replicas',
+      DESCRIPTION:
+        'Maximum number of running replicas. Set it to 0 to disable the function.',
     },
   },
   RESOURCES: {
     REQUESTS: {
-      TITLE: 'Requests Resources',
-      DESCRIPTION:
-        'Requests describes the minimum amount of compute resources required.',
+      TITLE: 'Requests',
+      DESCRIPTION: 'Minimum amount of compute resources required.',
     },
     LIMITS: {
-      TITLE: 'Limits Resources',
-      DESCRIPTION:
-        'Limits describes the maximum amount of compute resources allowed.',
+      TITLE: 'Limits',
+      DESCRIPTION: 'Maximum amount of compute resources allowed.',
     },
     MEMORY: {
       TITLE: 'Memory',
@@ -179,7 +273,7 @@ export const EVENT_TRIGGERS_PANEL = {
   LIST: {
     TITLE: 'Event Triggers',
     ERRORS: {
-      RESOURCES_NOT_FOUND: "This lambda doesn't have any Event Triggers yet.",
+      RESOURCES_NOT_FOUND: "This Function doesn't have any Event Triggers yet.",
       NOT_MATCHING_SEARCH_QUERY:
         "Couldn't find Event Triggers matching this query.",
     },
@@ -189,7 +283,7 @@ export const EVENT_TRIGGERS_PANEL = {
     OPEN_BUTTON: {
       TEXT: 'Add Event Trigger',
       NOT_ENTRIES_POPUP_MESSAGE:
-        'No Events available to connect in current namespace.',
+        'No Events available to connect in this Namespace.',
     },
     CONFIRM_BUTTON: {
       TEXT: 'Add',
@@ -202,7 +296,8 @@ export const SERVICE_BINDINGS_PANEL = {
   LIST: {
     TITLE: 'Service Bindings',
     ERRORS: {
-      RESOURCES_NOT_FOUND: "This lambda doesn't have any Service Bindings yet.",
+      RESOURCES_NOT_FOUND:
+        "This Function doesn't have any Service Bindings yet.",
       NOT_MATCHING_SEARCH_QUERY:
         "Couldn't find Service Bindings matching this query.",
     },
@@ -230,7 +325,7 @@ export const SERVICE_BINDINGS_PANEL = {
 
 export const CODE_AND_DEPENDENCIES_PANEL = {
   TABS: {
-    CODE: 'Lambda Code',
+    CODE: 'Source',
     DEPENDENCIES: 'Dependencies',
   },
   SAVE_BUTTON: {
@@ -240,11 +335,89 @@ export const CODE_AND_DEPENDENCIES_PANEL = {
   DIFF_TOGGLE: 'Diff',
 };
 
+export const ENVIRONMENT_VARIABLES_PANEL = {
+  LIST: {
+    TITLE: 'Environment Variables',
+    ERRORS: {
+      RESOURCES_NOT_FOUND:
+        "This Function doesn't have any environment variables yet.",
+      NOT_MATCHING_SEARCH_QUERY:
+        "Couldn't find environment variables matching this query.",
+    },
+  },
+  EDIT_MODAL: {
+    TITLE: 'Edit Environment Variables',
+    OPEN_BUTTON: {
+      TEXT: 'Edit Environment Variables',
+    },
+    CONFIRM_BUTTON: {
+      TEXT: 'Save',
+      POPUP_MESSAGES: {
+        NO_ENVS_DEFINED: 'You must define at least one variable.',
+        COLLECTIONS_EQUAL: 'Changes in variables are required.',
+        ERROR:
+          'At least one variable has an incorrect name format, is duplicated, or empty.',
+      },
+    },
+    ADD_ENV_BUTTON: {
+      TEXT: 'Add Environment Variable',
+    },
+  },
+  ERRORS: {
+    EMPTY: 'Variable is empty.',
+    DUPLICATED: 'Duplicated variable name.',
+    INVALID: `Invalid variable name. The name must consist of alphanumeric characters, can contain "_" and no spaces, like "VARIABLE_NAME".`,
+  },
+  WARNINGS: {
+    TEXT: 'Warning',
+    VARIABLE_CAN_OVERRIDE_SBU:
+      'This variable can override or be overridden by a variable injected by one of the created Service Bindings.',
+    SBU_CAN_BE_OVERRIDE: {
+      BY_CUSTOM_ENV:
+        'This variable can override or be overridden by one of the custom variables.',
+      BY_SBU:
+        'This variable can override or be overridden by a variable injected by one of the Service Bindings.',
+      BY_CUSTOM_ENV_AND_SBU:
+        'This variable can be overridden by one of the custom variables or a variable injected by one of the Service Bindings.',
+    },
+  },
+  PLACEHOLDERS: {
+    VARIABLE_NAME: 'Variable name',
+    VARIABLE_VALUE: 'Variable value',
+  },
+  VARIABLE_TYPE: {
+    CUSTOM: {
+      TEXT: 'Custom',
+      TOOLTIP_MESSAGE: 'This variable was provided by the user.',
+    },
+    BINDING_USAGE: {
+      TEXT: 'Service Binding',
+      TOOLTIP_MESSAGE:
+        'This variable was injected by the Service Binding referencing the "{serviceInstanceName}" Service Instance.',
+    },
+  },
+};
+
+export const FIRST_BREADCRUMB_NODE = 'Functions';
+
 export const FUNCTION_USAGE_KIND = 'knative-service';
+
+export const REFETCH_LAMBDAS_TIMEOUT = 2000;
+
+export const FUNCTION_CUSTOM_RESOURCE = {
+  KIND: 'Function',
+  API_VERSION: 'serverless.kyma-project.io/v1alpha1',
+};
+
+export const TRIGGER_SUBSCRIBER = {
+  SERVING_SERVICE: 'Service',
+  SERVING_API_VERSION: 'serving.knative.dev/v1',
+  BROKER: 'default',
+};
 
 export const DEFAULT_LAMBDA_CODE = `module.exports = { 
   main: function (event, context) {
-
+    return "Hello World!";
   }
 }`;
 
