@@ -11,9 +11,9 @@ RUN apk update && \
 
 # Install root and app dependencies
 COPY . /app
-RUN cd /app/${app_name} && \
-  make resolve && \
-  make verify
+RUN cd /app/${app_name} && make resolve 
+
+RUN cd /app/${app_name} && make verify
 
 # Set env variables
 ENV PRODUCTION true
