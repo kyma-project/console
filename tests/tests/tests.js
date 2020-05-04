@@ -15,17 +15,14 @@ fixture`Console UI Smoke tests`.beforeEach(
 
 test('Luigi navigation is rendered', async t => {
   //GIVEN
-  await t.useRole(adminUser);
   const namespacesLink = await leftNavLinkSelector('Namespaces');
+
   //THEN
-  t.expect(namespacesLink.exists).ok();
+  await t.expect(namespacesLink.exists).ok();
 });
 
 test('Namespaces view is rendered', async t => {
-  //GIVEN
-  await t.useRole(adminUser);
-
-  //THEN
+  //GIVEN; THEN
   await findActiveFrame(t);
   await t
     .expect(Selector('.fd-button').withText('Add new namespace').exists)
@@ -36,25 +33,21 @@ test('Namespaces view is rendered', async t => {
 
 test('Deployments view is rendered', async t => {
   //GIVEN
-  const deploymentsLink = leftNavLinkSelector('Deployments');
+  const deploymentsLink = await leftNavLinkSelector('Deployments');
   //WHEN
-  await retry(t, 3, findActiveFrame);
+  await findActiveFrame(t);
 
-  await retry(t, 3, t => {
-    return t
-      .click(Selector('.fd-panel__title').withText('default'))
-      .switchToMainWindow()
-      .click(deploymentsLink);
-  });
+  await t
+    .click(Selector('.fd-panel__title').withText('default'))
+    .switchToMainWindow()
+    .click(deploymentsLink);
 
   //THEN
-  await retry(t, 3, findActiveFrame);
+  await findActiveFrame(t);
 
-  await retry(t, 3, async t => {
-    return t
-      .expect(Selector('.fd-action-bar__title').withText('Deployments').exists)
-      .ok();
-  });
+  await t
+    .expect(Selector('.fd-action-bar__title').withText('Deployments').exists)
+    .ok();
 });
 
 testIf(
@@ -71,78 +64,68 @@ testIf(
     await findActiveFrame(t);
 
     await t
-      .expect(Selector('button').withText(/.*create application.*/i).exists)
+      .expect(Selector('.fd-action-bar__title').withText('Applications').exists)
       .ok();
   },
 );
 
 test('Cluster Addons view is rendered', async t => {
   //GIVEN
-  const addonsLink = leftNavLinkSelector('Cluster Addons');
+  const addonsLink = await leftNavLinkSelector('Cluster Addons');
 
   //WHEN
   await t.click(addonsLink);
 
   //THEN
-  await retry(t, 3, findActiveFrame);
-  await retry(t, 3, t => {
-    return t
-      .expect(
-        Selector('.fd-action-bar__title').withText(/Cluster Addons/i).exists,
-      )
-      .ok();
-  });
+  await findActiveFrame(t);
+  await t
+    .expect(
+      Selector('.fd-action-bar__title').withText(/Cluster Addons/i).exists,
+    )
+    .ok();
 });
 
 testIf(
   toBoolean(config.functionsEnabled),
   'Functions view is rendered',
   async t => {
-    const functionsLink = leftNavLinkSelector('Functions');
+    const functionsLink = await leftNavLinkSelector('Functions');
 
     //WHEN
-    await retry(t, 3, findActiveFrame);
-    await retry(t, 3, t => {
-      return t
-        .click(Selector('.fd-panel__title').withText('default'))
-        .switchToMainWindow()
-        .click(functionsLink);
-    });
+    await findActiveFrame(t);
+    await t
+      .click(Selector('.fd-panel__title').withText('default'))
+      .switchToMainWindow()
+      .click(functionsLink);
 
     //THEN
-    await retry(t, 3, findActiveFrame);
-    await retry(t, 3, t => {
-      return t
-        .expect(Selector('.fd-panel__title').withText(/Functions/).exists)
-        .ok();
-    });
+    await findActiveFrame(t);
+    await t
+      .expect(Selector('.fd-panel__title').withText(/Functions/).exists)
+      .ok();
   },
 );
 
 testIf(toBoolean(config.loggingEnabled), 'Logs view is rendered', async t => {
   //GIVEN
-  const logsLink = leftNavLinkSelector('Logs');
+  const logsLink = await leftNavLinkSelector('Logs');
 
   //WHEN
   await t.click(logsLink);
 
   //THEN
-  await retry(t, 3, findActiveFrame);
+  await findActiveFrame(t);
   // check title
-  await retry(t, 3, t => {
-    return t.expect(Selector('h1').withText(/Logs/i).exists).ok();
-  });
+  await t.expect(Selector('h1').withText(/Logs/i).exists).ok();
 
   // check loading log sources
-  await retry(t, 3, async t => {
-    await t.click(
-      Selector('input').withAttribute('placeholder', /Select Label/i),
-    );
-    await t.click(Selector('.fd-mega-menu__link').withText(/namespace/i));
-    return t
-      .expect(Selector('.fd-mega-menu__sublink').withText('default').exists)
-      .ok();
-  });
+  await t.click(
+    Selector('input').withAttribute('placeholder', /Select Label/i),
+  );
+  await t.click(Selector('.fd-mega-menu__link').withText(/namespace/i));
+  await t
+    .expect(Selector('.fd-mega-menu__sublink').withText('default').exists)
+    .ok();
 });
 
 testIf(
@@ -176,25 +159,21 @@ testIf(
   'Service Brokers view is rendered',
   async t => {
     //GIVEN
-    const brokersLink = leftNavLinkSelector('Brokers');
+    const brokersLink = await leftNavLinkSelector('Brokers');
 
     //WHEN
-    await retry(t, 3, findActiveFrame);
-    await retry(t, 3, t => {
-      return t
-        .click(Selector('.fd-panel__title').withText('default'))
-        .switchToMainWindow()
-        .click(brokersLink);
-    });
+    await findActiveFrame(t);
+    await t
+      .click(Selector('.fd-panel__title').withText('default'))
+      .switchToMainWindow()
+      .click(brokersLink);
 
     //THEN
-    await retry(t, 3, findActiveFrame);
+    await findActiveFrame(t);
 
-    await retry(t, 3, t => {
-      return t
-        .expect(Selector('.fd-panel__title').withText('Service Brokers').exists)
-        .ok();
-    });
+    await t
+      .expect(Selector('.fd-panel__title').withText('Service Brokers').exists)
+      .ok();
   },
 );
 
@@ -203,39 +182,36 @@ testIf(
   'Instances view is rendered',
   async t => {
     //GIVEN
-    const instancesLink = leftNavLinkSelector('Instances');
+    const instancesLink = await leftNavLinkSelector('Instances');
 
     //WHEN
-    await retry(t, 3, findActiveFrame);
-    await retry(t, 3, t => {
-      return t
-        .click(Selector('.fd-panel__title').withText('default'))
-        .switchToMainWindow()
-        .click(instancesLink);
-    });
+    await findActiveFrame(t);
+    await t
+      .click(Selector('.fd-panel__title').withText('default'))
+      .switchToMainWindow()
+      .click(instancesLink);
 
     //THEN
-    await retry(t, 3, findActiveFrame);
-    await retry(t, 3, t => {
-      return t
-        .expect(
-          Selector('.fd-action-bar__title').withText('Service Instance').exists,
-        )
-        .ok();
-    });
+    await findActiveFrame(t);
+    await t
+      .expect(
+        Selector('.fd-action-bar__title').withText('Service Instance').exists,
+      )
+      .ok();
   },
 );
 
 test('Docs view is rendered', async t => {
   //GIVEN
-  //WHEN - click on docs link
-  await retry(t, 3, t => t.click(Selector('[data-testid=docs_docs]')));
+  const docsLink = Selector('[data-testid=docs_docs]');
+  const kymaCategoryHeader = Selector(
+    '[data-e2e-id=navigation-link-root-kyma]',
+  );
+
+  //WHEN
+  await t.click(await docsLink);
 
   //THEN - user should see "Kyma" category
-  await retry(t, 3, findActiveFrame);
-  await retry(t, 3, t => {
-    return t
-      .expect(Selector('[data-e2e-id=navigation-link-root-kyma]').exists)
-      .ok();
-  });
+  await findActiveFrame(t);
+  await t.expect(await kymaCategoryHeader.exists).ok();
 });
