@@ -7,11 +7,14 @@ FROM node:12.16.0-alpine3.9 as ui-generator
 ARG app_name=service-catalog-ui
 WORKDIR /app
 
-RUN apk update && apk upgrade && apk add --no-cache curl make bash 
+RUN apk update && apk upgrade && apk add --no-cache curl make bash
+
 # Copy licenses
 # COPY licenses/ /app/licenses/
 
 COPY . /app
+
+RUN npm set unsafe-perm true
 
 RUN cd /app/${app_name} && make resolve 
 
