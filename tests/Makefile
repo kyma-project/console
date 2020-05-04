@@ -6,6 +6,6 @@ SCRIPTS_DIR = $(realpath $(shell pwd)/..)/scripts
 include $(SCRIPTS_DIR)/makefile-node-common.mk
 
 build-image: pull-licenses
-	docker build -t $(IMG_NAME) .
+	docker build -t $(APP_NAME) .
 
 
