@@ -6,13 +6,15 @@ WORKDIR /app
 
 # Install global dependencies
 RUN apk update && \
-    apk upgrade && \
-    apk add --no-cache curl make
+  apk upgrade && \
+  apk add --no-cache curl make
 
 # Install root and app dependencies
 COPY . /app
 RUN cd /app/${app_name} && \
-    make resolve
+  make resolve && \
+  make verify
+
 
 # Set env variables
 ENV PRODUCTION true

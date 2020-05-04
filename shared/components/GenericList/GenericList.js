@@ -9,6 +9,7 @@ import { HeaderRenderer, RowRenderer, BodyFallback } from './components';
 
 import { filterEntries } from './helpers';
 import { MESSAGES } from './constants';
+import classnames from 'classnames';
 
 import './GenericList.scss';
 
@@ -34,6 +35,7 @@ export const GenericList = ({
   serverDataLoading,
   hasExternalMargin,
   pagination,
+  compact,
 }) => {
   const [filteredEntries, setFilteredEntries] = useState(entries);
   const [searchQuery, setSearchQuery] = useState('');
@@ -100,9 +102,12 @@ export const GenericList = ({
         actions={actions}
         actionsStandaloneItems={actionsStandaloneItems}
         rowRenderer={rowRenderer}
+        compact={compact}
       />
     ));
   };
+
+  const tableClassNames = classnames('fd-table', { compact });
 
   return (
     <Panel
@@ -117,7 +122,7 @@ export const GenericList = ({
       )}
 
       <Panel.Body>
-        <table className="fd-table">
+        <table className={tableClassNames}>
           {showHeader && (
             <thead>
               <tr>
@@ -185,6 +190,7 @@ GenericList.propTypes = {
   serverDataLoading: PropTypes.bool,
   hasExternalMargin: PropTypes.bool,
   pagination: PaginationProps,
+  compact: PropTypes.bool,
 };
 
 GenericList.defaultProps = {
@@ -202,4 +208,5 @@ GenericList.defaultProps = {
   serverDataError: null,
   serverDataLoading: false,
   hasExternalMargin: true,
+  compact: true,
 };

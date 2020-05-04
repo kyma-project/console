@@ -33,7 +33,7 @@ export const K8sNameInput = ({
       placeholder={kind + ' name'}
       aria-required="true"
       required
-      pattern="^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$"
+      pattern="^[a-z]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$"
       {...props}
     />
   </>

@@ -1,0 +1,73 @@
+.lambda-variables {
+  .list-actions {
+    li {
+      display: inline-block;
+    }
+  }
+
+  .fd-table > tbody > tr {
+    td:last-child {
+      max-width: 100px;
+      width: 100px;
+    }
+
+    td:nth-last-child(2) {
+      max-width: 230px;
+      width: 230px;
+    }
+
+    td:nth-child(3) {
+      max-width: 30%;
+      width: 30%;
+      max-width: 20%;
+    }
+  }
+}
+
+.edit-lambda-variables-form {
+  .fd-table tbody tr {
+    border: 0;
+
+    &:hover {
+      background-color: #fff;
+    }
+
+    td {
+      padding-bottom: 8px;
+      text-align: center;
+
+      &:last-child {
+        max-width: 85px;
+      }
+    }
+
+    &:last-child {
+      td {
+        padding-bottom: 16px;
+      }
+    }
+
+    &.collapse-content {    
+      td {
+        padding-top: 0;
+        padding-right: 8px;
+      }
+  
+      .fd-form-message {
+        padding-top: 4px;
+        padding-bottom: 4px;
+        margin-top: 0;
+        text-align: left;
+
+        &::before {
+          font-size: 13px;
+          margin-top: -4px;
+        }
+      }
+    }
+  }
+}
+
+.lambda-variable-status {
+  float: right;
+}

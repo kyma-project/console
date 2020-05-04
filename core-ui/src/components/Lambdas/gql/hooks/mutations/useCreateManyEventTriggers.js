@@ -74,6 +74,7 @@ export const useCreateManyEventTriggers = ({
     try {
       const response = await createManyEventTriggersMutation({
         variables: {
+          namespace: lambda.namespace,
           triggers,
           ownerRef: [ownerRef],
         },

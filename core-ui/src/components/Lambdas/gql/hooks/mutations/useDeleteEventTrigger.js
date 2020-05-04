@@ -34,6 +34,7 @@ export const useDeleteEventTrigger = ({
 
   async function handleDeleteEventTrigger(eventTrigger) {
     const variables = {
+      namespace: eventTrigger.namespace,
       trigger: {
         name: eventTrigger.name,
         namespace: eventTrigger.namespace,

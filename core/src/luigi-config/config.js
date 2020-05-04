@@ -6,7 +6,6 @@ export const config = {
   localDomain: 'console-dev.kyma.local',
   serviceCatalogModuleUrl: 'https://catalog.' + k8sDomain,
   serviceInstancesModuleUrl: 'https://instances.' + k8sDomain,
-  lambdasModuleUrl: 'https://lambdas-ui.' + k8sDomain,
   serviceBrokersModuleUrl: 'https://brokers.' + k8sDomain,
   docsModuleUrl: 'https://docs.' + k8sDomain,
   addOnsModuleUrl: 'https://addons.' + k8sDomain,

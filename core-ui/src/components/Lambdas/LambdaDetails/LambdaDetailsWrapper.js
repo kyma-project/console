@@ -8,21 +8,24 @@ import { Spinner } from 'react-shared';
 
 import LambdaDetails from './LambdaDetails';
 
+import './LambdaDetails.scss';
+
 export default function LambdaDetailsWrapper({ lambdaName }) {
   const { lambda, error, loading } = useLambdaQuery({
     name: lambdaName,
     namespace: LuigiClient.getEventData().environmentId,
   });
 
-  if (error) {
-    return `Error! ${error.message}`;
-  }
+  let content = null;
   if (loading) {
-    return <Spinner />;
-  }
-  if (!lambda) {
-    return <EntryNotFound entryType="Lambda" entryId={lambdaName} />;
+    content = <Spinner />;
+  } else if (error) {
+    content = <span>Error! {error.message}</span>;
+  } else if (!lambda) {
+    content = <EntryNotFound entryType="Lambda" entryId={lambdaName} />;
+  } else {
+    content = <LambdaDetails lambda={lambda} />;
   }
 
-  return <LambdaDetails lambda={lambda} />;
+  return <div className="lambda-details">{content}</div>;
 }

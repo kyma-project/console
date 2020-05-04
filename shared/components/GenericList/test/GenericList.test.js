@@ -10,11 +10,6 @@ describe('GenericList', () => {
 
   const mockHeaderRenderer = entries => ['Id', 'Name', 'description'];
   const mockEntryRenderer = entry => [entry.id, entry.name, entry.description];
-  const mockCollapseEntryRenderer = entry => ({
-    cells: [entry.id, entry.name, entry.description],
-    collapseContent: <td colSpan="4">{entry.name}</td>,
-    showCollapseControl: entry.id !== '3',
-  });
 
   const mockEntries = [
     { id: '1', name: 'first_entry', description: 'testdescription1' },
@@ -150,7 +145,13 @@ describe('GenericList', () => {
     expect(await queryByText(mockEntries[0].name)).toBeInTheDocument();
   });
 
-  it('Renders collapse entries', async () => {
+  it('Renders collapse entries with collapse control', async () => {
+    const mockCollapseEntryRenderer = entry => ({
+      cells: [entry.id, entry.name, entry.description],
+      collapseContent: <td colSpan="4">{entry.name}</td>,
+      showCollapseControl: entry.id !== '3',
+    });
+
     const { getByText, getAllByTestId } = render(
       <GenericList
         entries={mockEntries}
@@ -175,6 +176,30 @@ describe('GenericList', () => {
 
     const foundCollapseContents = await getAllByTestId('collapse-content');
     expect(foundCollapseContents).toHaveLength(1);
+  });
+
+  it('Renders collapse entries without collapse control', async () => {
+    const mockCollapseEntryRenderer = entry => ({
+      cells: [entry.id, entry.name, entry.description],
+      collapseContent: <td colSpan="4">{entry.name}</td>,
+      withCollapseControl: false,
+    });
+
+    const { getByText, getAllByTestId, queryAllByTestId } = render(
+      <GenericList
+        entries={mockEntries}
+        headerRenderer={mockHeaderRenderer}
+        rowRenderer={mockCollapseEntryRenderer}
+      />,
+    );
+
+    let foundCollapseButtons = await queryAllByTestId('collapse-button-close');
+    expect(foundCollapseButtons).toHaveLength(0);
+    foundCollapseButtons = await queryAllByTestId('collapse-button-open');
+    expect(foundCollapseButtons).toHaveLength(0);
+
+    const foundCollapseContents = await getAllByTestId('collapse-content');
+    expect(foundCollapseContents).toHaveLength(3);
   });
 
   it('Renders headers', async () => {

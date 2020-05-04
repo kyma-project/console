@@ -13,7 +13,6 @@ The Console project consists of the following UI projects:
 - [`Instances`](./service-catalog-ui/instances) - The view for displaying Service Instances
 - [`Brokers`](./service-catalog-ui/brokers) - The view for displaying Service Brokers
 - [`Addons`](./add-ons) - The view for displaying Namespace-scoped and cluster-wide Addons
-- [`Lambda`](./lambda) - The view for lambda functions
 - [`Content`](./content) - The documentation view
 - [`Log UI`](./logging) - The logs view
 - [`Compass`](./logging) - The **experimental** view for the [Compass](https://github.com/kyma-incubator/compass/blob/master/README.md) project.
@@ -106,7 +105,6 @@ Once you start Kyma with Console locally, you can start development. All modules
 The `Core` and other UIs run at the following addresses:
 
 - `Core` - [http://console-dev.kyma.local:4200](http://console-dev.kyma.local:4200)
-- `Lambda` - [http://console-dev.kyma.local:4201](http://console-dev.kyma.local:4201)
 - `Log UI` - [http://console-dev.kyma.local:4400](http://console-dev.kyma.local:4400)
 - `Catalog` - [http://console-dev.kyma.local:8000](http://console-dev.kyma.local:8000)
 - `Instances` - [http://console-dev.kyma.local:8001](http://console-dev.kyma.local:8001)

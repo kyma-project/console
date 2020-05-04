@@ -65,6 +65,7 @@ export default function CreateServiceBindingModal({
       {fallbackContent || (
         <CreateServiceBindingForm
           {...props}
+          lambda={lambda}
           serviceInstances={serviceInstances}
           setPopupModalMessage={setPopupModalMessage}
           refetchServiceInstances={refetchServiceInstances}

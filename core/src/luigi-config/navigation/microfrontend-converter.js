@@ -121,8 +121,6 @@ export default function convertToNavigationTree(
     .map(n => {
       const showExperimentalViews =
         localStorage.getItem('console.showExperimentalViews') === 'true';
-      const showDeprecatedViews =
-        localStorage.getItem('console.showDeprecatedViews') === 'true';
-      return hideByNodeCategory(n, showExperimentalViews, showDeprecatedViews);
+      return hideByNodeCategory(n, showExperimentalViews);
     });
 }

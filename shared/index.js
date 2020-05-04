@@ -10,6 +10,8 @@ export { Tooltip } from './components/Tooltip/Tooltip';
 export { PageHeader } from './components/PageHeader/PageHeader';
 export { Spinner } from './components/Spinner/Spinner';
 export { CopiableText } from './components/CopiableText/CopiableText';
+export { Link } from './components/Link/Link';
+export { CopiableLink } from './components/Link/CopiableLink';
 export { DetailsError } from './components/DetailsError/DetailsError';
 export { Modal } from './components/Modal/Modal';
 export { Labels } from './components/Labels/Labels';

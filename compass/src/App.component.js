@@ -1,17 +1,18 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Notification } from '@kyma-project/react-components';
+import { NotificationProvider } from 'react-shared';
 
 import './App.scss';
 import Overview from './components/Overview/Overview';
 import Runtimes from './components/Runtimes/Runtimes';
-import RuntimeDetails from './components/Runtimes/RuntimeDetails/RuntimeDetails.container';
+import RuntimeDetails from './components/Runtimes/RuntimeDetails/RuntimeDetails';
 import Applications from './components/Applications/Applications.container';
 import EditApi from 'components/Api/EditApi/EditApi.container';
 import EditEventApi from 'components/Api/EditEventApi/EditEventApi.container';
 import Scenarios from './components/Scenarios/Scenarios.container';
 import ScenarioDetails from './components/Scenarios/ScenarioDetails/ScenarioDetails';
-import ApplicationDetails from './components/Application/ApplicationDetails/ApplicationDetails.container';
+import ApplicationDetails from './components/Application/ApplicationDetails/ApplicationDetails';
 import MetadataDefinitions from './components/MetadataDefinitions/MetadataDefinitions.container';
 import MetadataDefinitionDetails from './components/MetadataDefinitions/MetadataDefinitionDetails/MetadataDefinitionDetails.container';
 import ApiDetails from './components/Api/ApiDetails/ApiDetails';
@@ -51,69 +52,73 @@ class App extends React.Component {
 
     return (
       <div>
+        {/* Old notifications */}
         <Notification {...notification} onClick={this.clearNotification} />
         <Router>
-          <Switch>
-            <Route path="/" exact component={Overview} />
-            <Route path="/tenant-search" exact component={TenantSearch} />
-            <Route path="/runtimes" exact component={Runtimes} />
-            <Route
-              path="/runtime/:id"
-              exact
-              render={({ match }) => (
-                <RuntimeDetails runtimeId={match.params.id} />
-              )}
-            />
-            <Route path="/applications" exact component={Applications} />
-            <Route
-              path="/application/:id"
-              exact
-              render={({ match }) => (
-                <ApplicationDetails applicationId={match.params.id} />
-              )}
-            />
-            <Route
-              path="/application/:applicationId/apiPackage/:apiPackageId"
-              exact
-              render={RoutedApiPackageDetails}
-            />
-            <Route
-              path="/application/:applicationId/apiPackage/:apiPackageId/api/:apiId"
-              exact
-              render={RoutedApiDetails}
-            />
-            <Route
-              path="/application/:applicationId/apiPackage/:apiPackageId/api/:apiId/edit"
-              exact
-              render={RoutedEditApi}
-            />
-            <Route
-              path="/application/:applicationId/apiPackage/:apiPackageId/eventApi/:eventApiId"
-              exact
-              render={RoutedEventApiDetails}
-            />
-            <Route
-              path="/application/:applicationId/apiPackage/:apiPackageId/eventApi/:eventApiId/edit"
-              exact
-              render={RoutedEditEventApi}
-            />
-            <Route path="/scenarios" exact component={Scenarios} />
-            <Route
-              path="/scenarios/:scenarioName"
-              exact
-              render={RoutedScenarioDetails}
-            />
-            <Route
-              path="/metadata-definitions"
-              exact
-              component={MetadataDefinitions}
-            />
-            <Route
-              path="/metadatadefinition/:definitionKey"
-              exact
-              render={RoutedMetadataDefinitionDetails}
-            />
-          </Switch>
+          {/* New notifications */}
+          <NotificationProvider>
+            <Switch>
+              <Route path="/" exact component={Overview} />
+              <Route path="/tenant-search" exact component={TenantSearch} />
+              <Route path="/runtimes" exact component={Runtimes} />
+              <Route
+                path="/runtime/:id"
+                exact
+                render={({ match }) => (
+                  <RuntimeDetails runtimeId={match.params.id} />
+                )}
+              />
+              <Route path="/applications" exact component={Applications} />
+              <Route
+                path="/application/:id"
+                exact
+                render={({ match }) => (
+                  <ApplicationDetails applicationId={match.params.id} />
+                )}
+              />
+              <Route
+                path="/application/:applicationId/apiPackage/:apiPackageId"
+                exact
+                render={RoutedApiPackageDetails}
+              />
+              <Route
+                path="/application/:applicationId/apiPackage/:apiPackageId/api/:apiId"
+                exact
+                render={RoutedApiDetails}
+              />
+              <Route
+                path="/application/:applicationId/apiPackage/:apiPackageId/api/:apiId/edit"
+                exact
+                render={RoutedEditApi}
+              />
+              <Route
+                path="/application/:applicationId/apiPackage/:apiPackageId/eventApi/:eventApiId"
+                exact
+                render={RoutedEventApiDetails}
+              />
+              <Route
+                path="/application/:applicationId/apiPackage/:apiPackageId/eventApi/:eventApiId/edit"
+                exact
+                render={RoutedEditEventApi}
+              />
+              <Route path="/scenarios" exact component={Scenarios} />
+              <Route
+                path="/scenarios/:scenarioName"
+                exact
+                render={RoutedScenarioDetails}
+              />
+              <Route
+                path="/metadata-definitions"
+                exact
+                component={MetadataDefinitions}
+              />
+              <Route
+                path="/metadatadefinition/:definitionKey"
+                exact
+                render={RoutedMetadataDefinitionDetails}
+              />
+            </Switch>
+          </NotificationProvider>
         </Router>
       </div>
     );

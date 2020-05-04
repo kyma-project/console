@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNotification } from 'react-shared';
 import { useQuery, useApolloClient } from '@apollo/react-hooks';
 
@@ -18,6 +18,7 @@ import extractGraphQlErrors from 'shared/graphqlErrorExtractor';
 
 export const useServiceBindingUsagesQuery = ({ lambda }) => {
   const notificationManager = useNotification();
+  const [loadedData, setLoadedData] = useState(false);
   const [bindingUsages, setBindingUsages] = useStateWithCallback([]);
   const apolloClient = useApolloClient();
 
@@ -47,8 +48,9 @@ export const useServiceBindingUsagesQuery = ({ lambda }) => {
   });
 
   useEffect(() => {
-    if (data && data.serviceBindingUsages && !bindingUsages.length) {
+    if (!loadedData && data && data.serviceBindingUsages) {
       setBindingUsages(data.serviceBindingUsages);
+      setLoadedData(true);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);

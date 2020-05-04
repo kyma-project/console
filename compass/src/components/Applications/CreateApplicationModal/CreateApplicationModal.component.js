@@ -5,9 +5,12 @@ import { Modal } from 'react-shared';
 import { Input } from '@kyma-project/react-components';
 import LuigiClient from '@luigi-project/client';
 
+import { getConfigValue } from '../../../store/getConfigValue';
 import MultiChoiceList from '../../Shared/MultiChoiceList/MultiChoiceList.component';
 
 const DEFAULT_SCENARIO_LABEL = 'DEFAULT';
+const AUTOMATIC_DEFAULT_SCENARIO =
+  getConfigValue('compassAutomaticDefaultScenario') === 'true';
 
 class CreateApplicationModal extends React.Component {
   constructor(props) {
@@ -40,8 +43,12 @@ class CreateApplicationModal extends React.Component {
       requiredFieldsFilled: false,
       tooltipData: null,
       enableCheckNameExists: false,
-      scenariosToSelect: null,
-      selectedScenarios: [DEFAULT_SCENARIO_LABEL],
+      scenariosToSelect: AUTOMATIC_DEFAULT_SCENARIO
+        ? null
+        : [DEFAULT_SCENARIO_LABEL],
+      selectedScenarios: AUTOMATIC_DEFAULT_SCENARIO
+        ? [DEFAULT_SCENARIO_LABEL]
+        : [],
     };
   };
 

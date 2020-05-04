@@ -63,7 +63,7 @@ export function TenantSearch({ parentPath, token, _tenants }) {
     return tenants.filter(
       tenant =>
         tenant.name.toLowerCase().includes(searchPhrase) ||
-        tenant.id.includes(searchPhrase),
+        tenant.id.toLowerCase().includes(searchPhrase),
     );
   };
 

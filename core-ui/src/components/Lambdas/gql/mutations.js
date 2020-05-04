@@ -25,8 +25,11 @@ export const UPDATE_LAMBDA = gql`
 `;
 
 export const DELETE_LAMBDA = gql`
-  mutation deleteFunction($function: FunctionMetadataInput!) {
-    deleteFunction(function: $function) {
+  mutation deleteFunction(
+    $namespace: String!
+    $function: FunctionMetadataInput!
+  ) {
+    deleteFunction(namespace: $namespace, function: $function) {
       name
     }
   }
@@ -34,18 +37,67 @@ export const DELETE_LAMBDA = gql`
 
 export const CREATE_MANY_EVENT_TRIGGERS = gql`
   mutation createManyTriggers(
+    $namespace: String!
     $triggers: [TriggerCreateInput!]!
     $ownerRef: [OwnerReference!]
   ) {
-    createManyTriggers(triggers: $triggers, ownerRef: $ownerRef) {
+    createManyTriggers(
+      namespace: $namespace
+      triggers: $triggers
+      ownerRef: $ownerRef
+    ) {
       name
     }
   }
 `;
 
 export const DELETE_ONE_EVENT_TRIGGER = gql`
-  mutation deleteTrigger($trigger: TriggerMetadataInput!) {
-    deleteTrigger(trigger: $trigger) {
+  mutation deleteTrigger($namespace: String!, $trigger: TriggerMetadataInput!) {
+    deleteTrigger(namespace: $namespace, trigger: $trigger) {
+      name
+    }
+  }
+`;
+
+export const CREATE_SERVICE_BINDING = gql`
+  mutation createServiceBinding(
+    $serviceInstanceName: String!
+    $namespace: String!
+    $parameters: JSON
+  ) {
+    createServiceBinding(
+      serviceInstanceName: $serviceInstanceName
+      namespace: $namespace
+      parameters: $parameters
+    ) {
+      name
+    }
+  }
+`;
+
+export const CREATE_SERVICE_BINDING_USAGE = gql`
+  mutation createServiceBindingUsage(
+    $createServiceBindingUsageInput: CreateServiceBindingUsageInput
+    $namespace: String!
+  ) {
+    createServiceBindingUsage(
+      createServiceBindingUsageInput: $createServiceBindingUsageInput
+      namespace: $namespace
+    ) {
+      name
+    }
+  }
+`;
+
+export const DELETE_SERVICE_BINDING_USAGE = gql`
+  mutation deleteServiceBindingUsage(
+    $serviceBindingUsageName: String!
+    $namespace: String!
+  ) {
+    deleteServiceBindingUsage(
+      serviceBindingUsageName: $serviceBindingUsageName
+      namespace: $namespace
+    ) {
       name
     }
   }

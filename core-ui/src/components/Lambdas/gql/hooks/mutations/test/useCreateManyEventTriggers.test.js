@@ -37,6 +37,7 @@ describe('useCreateManyEventTriggers', () => {
     },
   ];
   const variables = {
+    namespace: lambdaMock.namespace,
     triggers: [
       {
         namespace: lambdaMock.namespace,

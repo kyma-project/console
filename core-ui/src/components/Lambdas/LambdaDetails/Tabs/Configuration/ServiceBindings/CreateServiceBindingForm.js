@@ -4,7 +4,7 @@ import { FormItem, FormLabel, FormInput, Alert } from 'fundamental-react';
 
 import Checkbox from 'components/Lambdas/Checkbox/Checkbox';
 
-import { useServiceBindings } from './ServiceBindingsService';
+import { useCreateServiceBindingUsage } from 'components/Lambdas/gql/hooks/mutations';
 
 import { SERVICE_BINDINGS_PANEL } from 'components/Lambdas/constants';
 
@@ -15,6 +15,7 @@ const checkBoxInputProps = {
 };
 
 export default function CreateServiceBindingForm({
+  lambda,
   serviceInstances = [],
   setPopupModalMessage = () => void 0,
   refetchServiceInstances = () => void 0,
@@ -23,7 +24,7 @@ export default function CreateServiceBindingForm({
   setValidity = () => void 0,
   isOpen = false,
 }) {
-  const { createServiceBinding } = useServiceBindings();
+  const createServiceBindingUsage = useCreateServiceBindingUsage({ lambda });
 
   const [serviceInstanceName, setServiceInstanceName] = useState('');
   const [envPrefix, setEnvPrefix] = useState('');
@@ -104,7 +105,7 @@ export default function CreateServiceBindingForm({
     };
 
     refetchServiceInstances();
-    await createServiceBinding(parameters);
+    await createServiceBindingUsage(parameters);
   }
 
   const serviceInstancesNames = serviceInstances.map(service => (

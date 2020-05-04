@@ -178,8 +178,8 @@
         <table fd-table>
           <thead>
             <tr>
-              <th>ServiceClass Name</th>
-              <th class="y-fd-table--col-1">API</th>
+              <th>Name</th>
+              <th class="y-fd-table--col-1">APIs</th>
               <th class="y-fd-table--col-1">Events</th>
             </tr>
           </thead>
@@ -191,28 +191,10 @@
                 </span>
               </td>
               <td>
-                <span
-                  class="sap-icon--l"
-                  ngClass="{{
-                    hasType(service.entries, 'API')
-                      ? 'sap-icon--accept fd-has-color-status-1'
-                      : 'sap-icon--decline fd-has-color-status-4'
-                  }}"
-                  role="presentation"
-                >
-                </span>
+                {{ getNumberOf('API', service) }}
               </td>
               <td>
-                <span
-                  class="sap-icon--l"
-                  ngClass="{{
-                    hasType(service.entries, 'Events')
-                      ? 'sap-icon--accept fd-has-color-status-1'
-                      : 'sap-icon--decline fd-has-color-status-4'
-                  }}"
-                  role="presentation"
-                >
-                </span>
+                {{ getNumberOf('Events', service) }}
               </td>
             </tr>
           </tbody>

@@ -50,11 +50,11 @@ export const RowRenderer = ({ entry, actions, rowRenderer, ...others }) => {
 };
 
 const DefaultRowRenderer = ({
-  key,
   entry,
   actions,
   rowRenderer,
   actionsStandaloneItems,
+  compact,
 }) => {
   const cells = rowRenderer.map((cell, id) => <td key={id}>{cell}</td>);
   const actionsCell = (
@@ -63,12 +63,13 @@ const DefaultRowRenderer = ({
         actions={actions}
         entry={entry}
         standaloneItems={actionsStandaloneItems}
+        compact={compact}
       />
     </td>
   );
 
   return (
-    <tr key={key}>
+    <tr>
       {cells}
       {!!actions.length && actionsCell}
     </tr>
@@ -76,48 +77,54 @@ const DefaultRowRenderer = ({
 };
 
 const CollapsedRowRenderer = ({
-  key,
-  entry,
-  actions,
-  rowRenderer: { cells, collapseContent, showCollapseControl = true },
-  actionsStandaloneItems,
+  rowRenderer: {
+    cells,
+    collapseContent,
+    withCollapseControl = true,
+    showCollapseControl = true,
+  },
+  ...props
 }) => {
   const [isOpen, setOpen] = useState(false);
 
-  const rowRenderer = [
-    showCollapseControl ? (
-      <Button
-        data-testid={isOpen ? 'collapse-button-open' : 'collapse-button-close'}
-        glyph={isOpen ? 'navigation-up-arrow' : 'navigation-down-arrow'}
-        option="light"
-        onClick={() => setOpen(!isOpen)}
-        compact={true}
-        typeAttr="button"
-      />
-    ) : (
-      <></>
-    ),
-    ...cells,
-  ];
+  let rowRenderer = cells;
+  if (withCollapseControl) {
+    rowRenderer = [
+      showCollapseControl ? (
+        <Button
+          data-testid={
+            isOpen ? 'collapse-button-open' : 'collapse-button-close'
+          }
+          glyph={isOpen ? 'navigation-up-arrow' : 'navigation-down-arrow'}
+          option="light"
+          onClick={() => setOpen(!isOpen)}
+          compact={true}
+          typeAttr="button"
+        />
+      ) : (
+        <></>
+      ),
+      ...cells,
+    ];
+  }
 
   const defaultRow = (
-    <DefaultRowRenderer
-      key={key}
-      entry={entry}
-      actions={actions}
-      rowRenderer={rowRenderer}
-      actionsStandaloneItems={actionsStandaloneItems}
-    />
+    <DefaultRowRenderer rowRenderer={rowRenderer} {...props} />
   );
+
+  let collapseRow = collapseContent && (
+    <tr role="row" className="collapse-content" data-testid="collapse-content">
+      {collapseContent}
+    </tr>
+  );
+  if (withCollapseControl) {
+    collapseRow = isOpen ? collapseRow : null;
+  }
 
   return (
     <>
       {defaultRow}
-      {isOpen ? (
-        <tr role="row" data-testid="collapse-content">
-          {collapseContent}
-        </tr>
-      ) : null}
+      {collapseRow}
     </>
   );
 };
