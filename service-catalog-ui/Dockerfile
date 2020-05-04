@@ -23,10 +23,12 @@ ENV CI true
 ENV NODE_OPTIONS=--max_old_space_size=2048
 
 # Build
+RUN ls /app/${app_name}/brokers
 RUN cd /app/${app_name}/brokers && npm run build
-RUN cd /app/${app_name}/catalog && npm run build
+# RUN cd /app/${app_name}/catalog && npm run build
+RUN ls /app/${app_name}/instances
+RUN cat /app/${app_name}/instances/package-lock.json | grep styled-components-grid
 RUN cd /app/${app_name}/instances && npm run build
-
 
 ### Main image ###
 FROM alpine:3.11
