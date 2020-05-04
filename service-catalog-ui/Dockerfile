@@ -20,6 +20,7 @@ RUN cd /app/${app_name} && make verify
 # Set env variables
 ENV PRODUCTION true
 ENV CI true
+ENV NODE_OPTIONS=--max_old_space_size=2048
 
 # Test & Build
 RUN cd /app/${app_name}/brokers && npm run build
