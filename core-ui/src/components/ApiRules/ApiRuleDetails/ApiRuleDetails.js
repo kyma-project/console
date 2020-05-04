@@ -9,6 +9,7 @@ import { GET_API_RULE } from '../../../gql/queries';
 import { Spinner, PageHeader, CopiableLink } from 'react-shared';
 import { useDeleteApiRule } from '../useDeleteApiRule';
 import EntryNotFound from 'components/EntryNotFound/EntryNotFound';
+import { getApiUrl } from '@kyma-project/common';
 
 const ApiRuleDetails = ({ apiName }) => {
   const { error, loading, data } = useQuery(GET_API_RULE, {
@@ -94,6 +95,8 @@ function navigateToEditView(apiRuleName) {
 
 function ApiRuleDetailsHeader({ data }) {
   const host = `https://${data.service.host}`;
+  const DOMAIN = getApiUrl('domain');
+  const url = host.split(`.${DOMAIN}`)[0] + `.${DOMAIN}`;
 
   const navigateToService = () =>
     LuigiClient.linkManager()
@@ -117,7 +120,7 @@ function ApiRuleDetailsHeader({ data }) {
         </span>
       </PageHeader.Column>
       <PageHeader.Column title="Host" columnSpan="2 / 4">
-        <CopiableLink url={host} />
+        <CopiableLink url={url} />
       </PageHeader.Column>
     </PageHeader>
   );

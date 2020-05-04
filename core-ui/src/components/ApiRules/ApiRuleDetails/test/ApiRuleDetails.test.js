@@ -36,6 +36,15 @@ const apiRule = {
     },
   ],
 };
+const apiRuleWithShortHost = {
+  name: 'tets2',
+  service: {
+    name: 'tets-service',
+    host: 'tets',
+    port: 8080,
+  },
+  rules: [],
+};
 const mockNamespace = 'nsp';
 const validResponseMock = {
   request: {
@@ -45,6 +54,18 @@ const validResponseMock = {
   result: {
     data: {
       APIRule: apiRule,
+    },
+  },
+};
+
+const shortHostResponseMock = {
+  request: {
+    query: GET_API_RULE,
+    variables: { name: apiRuleWithShortHost.name, namespace: mockNamespace },
+  },
+  result: {
+    data: {
+      APIRule: apiRuleWithShortHost,
     },
   },
 };
@@ -77,6 +98,10 @@ jest.mock('@kyma-project/luigi-client', () => ({
   }),
 }));
 
+jest.mock('@kyma-project/common', () => ({
+  getApiUrl: () => 'kyma.cluster.com',
+}));
+
 describe('ApiRuleDetails', () => {
   it('renders rule name', async () => {
     const { queryByText, container } = render(
@@ -100,6 +125,23 @@ describe('ApiRuleDetails', () => {
     await waitForDomChange(container);
 
     expect(queryByText(new RegExp(apiRule.service.host))).toBeInTheDocument();
+  });
+
+  it('renders auto-completed host url', async () => {
+    const { queryByText, container } = render(
+      <MockedProvider addTypename={false} mocks={[shortHostResponseMock]}>
+        <ApiRuleDetails apiName={apiRuleWithShortHost.name} />
+      </MockedProvider>,
+    );
+
+    await waitForDomChange(container);
+    expect(
+      queryByText(
+        new RegExp(
+          `${apiRuleWithShortHost.service.host}\\.kyma\\.cluster\\.com`,
+        ),
+      ),
+    ).toBeInTheDocument();
   });
 
   it('renders rule service', async () => {
