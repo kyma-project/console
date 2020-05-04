@@ -22,9 +22,7 @@ ENV PRODUCTION true
 ENV CI true
 ENV NODE_OPTIONS=--max_old_space_size=2048
 
-# Test & Build
+# Build
 RUN cd /app/${app_name}/brokers && npm run build
-
-RUN ls /app/${app_name}/catalog
-
-RUN ls /app/${app_name}/catalog/build
+RUN cd /app/${app_name}/catalog && npm run build
+RUN cd /app/${app_name}/instances && npm run build
