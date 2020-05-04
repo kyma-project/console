@@ -60,7 +60,7 @@ release: build-image push-image
 validate-shared:
 	npm run --prefix=../ conflict-check
 	npm run --prefix=../ lint-check
-	# npm run --prefix=../ test-shared-lib
+	npm run --prefix=../ test-shared-lib
 
 
 .PHONY: build-image push-image
@@ -80,8 +80,7 @@ build:
 	npm run build
 
 test:
-	echo 'nie ma testow'
-	# CI=true npm run test
+	CI=true npm run test
 
 resolve:
 	cd .. && npm run bootstrap:ci
