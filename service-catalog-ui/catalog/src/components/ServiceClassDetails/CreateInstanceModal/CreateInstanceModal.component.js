@@ -329,7 +329,7 @@ export default function CreateInstanceModal({
             <JSONEditor
               aria-label="schema-editor"
               onChangeText={handleCustomParametersChange}
-              text={JSON.stringify({}, null, 2)}
+              text={JSON.stringify(instanceCreateParameters, null, 2)}
             />
           )}
         </>
