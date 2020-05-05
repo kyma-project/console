@@ -27,7 +27,10 @@ test('Namespaces view is rendered', async t => {
   await t
     .expect(Selector('.fd-button').withText('Add new namespace').exists)
     .ok()
-    .expect(Selector('.fd-panel__title').withText('default').exists)
+    .expect(
+      Selector('.fd-panel__title').withText(config.DEFAULT_NAMESPACE_NAME)
+        .exists,
+    )
     .ok();
 });
 
@@ -38,7 +41,7 @@ test('Deployments view is rendered', async t => {
   await findActiveFrame(t);
 
   await t
-    .click(Selector('.fd-panel__title').withText('default'))
+    .click(Selector('.fd-panel__title').withText(config.DEFAULT_NAMESPACE_NAME))
     .switchToMainWindow()
     .click(deploymentsLink);
 
@@ -94,7 +97,9 @@ testIf(
     //WHEN
     await findActiveFrame(t);
     await t
-      .click(Selector('.fd-panel__title').withText('default'))
+      .click(
+        Selector('.fd-panel__title').withText(config.DEFAULT_NAMESPACE_NAME),
+      )
       .switchToMainWindow()
       .click(functionsLink);
 
@@ -124,7 +129,10 @@ testIf(toBoolean(config.loggingEnabled), 'Logs view is rendered', async t => {
   );
   await t.click(Selector('.fd-mega-menu__link').withText(/namespace/i));
   await t
-    .expect(Selector('.fd-mega-menu__sublink').withText('default').exists)
+    .expect(
+      Selector('.fd-mega-menu__sublink').withText(config.DEFAULT_NAMESPACE_NAME)
+        .exists,
+    )
     .ok();
 });
 
@@ -139,7 +147,9 @@ testIf(
     await findActiveFrame(t);
 
     await t
-      .click(Selector('.fd-panel__title').withText('default'))
+      .click(
+        Selector('.fd-panel__title').withText(config.DEFAULT_NAMESPACE_NAME),
+      )
       .switchToMainWindow()
       .click(catalogLink);
 
@@ -164,7 +174,9 @@ testIf(
     //WHEN
     await findActiveFrame(t);
     await t
-      .click(Selector('.fd-panel__title').withText('default'))
+      .click(
+        Selector('.fd-panel__title').withText(config.DEFAULT_NAMESPACE_NAME),
+      )
       .switchToMainWindow()
       .click(brokersLink);
 
@@ -187,7 +199,9 @@ testIf(
     //WHEN
     await findActiveFrame(t);
     await t
-      .click(Selector('.fd-panel__title').withText('default'))
+      .click(
+        Selector('.fd-panel__title').withText(config.DEFAULT_NAMESPACE_NAME),
+      )
       .switchToMainWindow()
       .click(instancesLink);
 
@@ -209,9 +223,9 @@ test('Docs view is rendered', async t => {
   );
 
   //WHEN
-  await t.click(await docsLink);
+  await t.click(docsLink);
 
   //THEN - user should see "Kyma" category
   await findActiveFrame(t);
-  await t.expect(await kymaCategoryHeader.exists).ok();
+  await t.expect(kymaCategoryHeader.exists).ok();
 });

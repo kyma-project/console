@@ -7,4 +7,5 @@ module.exports = {
   serviceCatalogEnabled: process.env.CATALOG_ENABLED || true,
   loggingEnabled: process.env.LOGGING_ENABLED || false,
   functionsEnabled: process.env.FUNCTIONS_ENABLED || true,
+  DEFAULT_NAMESPACE_NAME: 'default',
 };

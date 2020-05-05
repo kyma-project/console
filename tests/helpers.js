@@ -28,9 +28,7 @@ export const findActiveFrame = async t => {
     t,
     3,
     async t => {
-      const iframe = Selector('iframe', {
-        visibilityCheck: true,
-      });
+      const iframe = Selector('iframe').filterVisible();
       await t.switchToIframe(iframe);
       await t.expect(Selector('body')()).ok();
     },
