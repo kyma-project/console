@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
-import { FormItem, FormLabel } from 'fundamental-react';
+import { FormItem, FormLabel, Icon } from 'fundamental-react';
 import { useMutation } from '@apollo/react-hooks';
 import * as LuigiClient from '@kyma-project/luigi-client';
 
@@ -13,7 +13,12 @@ import {
   randomNameGenerator,
 } from '../../../commons/helpers';
 
-import { CustomPropTypes } from '../../../react-shared';
+import {
+  CustomPropTypes,
+  JSONEditor,
+  Tooltip,
+  CopiableLink,
+} from '../../../react-shared';
 
 const SERVICE_PLAN_SHAPE = PropTypes.shape({
   name: PropTypes.string.isRequired,
@@ -109,7 +114,12 @@ export default function CreateInstanceModal({
   item,
   checkInstanceExistQuery,
   preselectedPlan,
+  documentationUrl,
 }) {
+  const [
+    customParametersProvided,
+    setCustomParametersProvided,
+  ] = React.useState(false);
   const plans = (item && item.plans) || [];
   plans.forEach(plan => {
     parseDefaultIntegerValues(plan);
@@ -119,6 +129,7 @@ export default function CreateInstanceModal({
   const plan = preselectedPlan ? preselectedPlan.name : plans[0].name;
 
   const [instanceCreateParameters, setInstanceCreateParameters] = useState({});
+
   const [
     instanceCreateParameterSchema,
     setInstanceCreateParameterSchema,
@@ -160,6 +171,16 @@ export default function CreateInstanceModal({
     if (!newParametersSchema || !newParametersSchema.length) {
       jsonSchemaFormRef.current = null;
     }
+  };
+
+  const handleCustomParametersChange = input => {
+    const isNonNullObject = o => typeof o === 'object' && !!o;
+    try {
+      const parsedInput = JSON.parse(input);
+      if (isNonNullObject(parsedInput)) {
+        setInstanceCreateParameters(parsedInput);
+      }
+    } catch (e) {}
   };
 
   async function handleFormSubmit(e) {
@@ -251,10 +272,9 @@ export default function CreateInstanceModal({
           />
         </FormItem>
       </form>
-
+      <div className="json-schemaform-separator" />
       {instanceCreateParameterSchemaExists && (
         <>
-          <div className="json-schemaform-separator" />
           <SchemaData
             schemaFormRef={jsonSchemaFormRef}
             data={instanceCreateParameters}
@@ -271,6 +291,48 @@ export default function CreateInstanceModal({
               setInstanceCreateParameters(formData.instanceCreateParameters);
             }}
           />
+        </>
+      )}
+
+      {!instanceCreateParameterSchemaExists && (
+        <>
+          <p className="fd-has-margin-top-s">
+            <span
+              className="link fd-has-margin-right-tiny clear-underline"
+              onClick={() =>
+                setCustomParametersProvided(!customParametersProvided)
+              }
+            >
+              {customParametersProvided
+                ? 'Remove parameters'
+                : 'Add parameters'}
+            </span>
+            <Tooltip
+              position="top"
+              title="The service provider did not define specific parameters for the selected plan. Refer to the documentation to learn about the required parameters, and define them as JSON in the editor."
+            >
+              <Icon glyph="sys-help" />
+            </Tooltip>
+            {documentationUrl && (
+              <div className="fd-has-float-right">
+                <CopiableLink
+                  url={documentationUrl}
+                  text="Documentation"
+                  className="fd-has-float-right"
+                />
+              </div>
+            )}
+          </p>
+
+          {customParametersProvided && (
+            <JSONEditor
+              aria-label="schema-editor"
+              onChangeText={input => {
+                handleCustomParametersChange(input);
+              }}
+              text={JSON.stringify({}, null, 2)}
+            />
+          )}
         </>
       )}
     </>

@@ -206,7 +206,11 @@ export default function ServiceClassDetails({ name, plan }) {
           id="add-instance-modal"
           item={serviceClass}
           renderForm={props => (
-            <CreateInstanceModal {...props} preselectedPlan={currentPlan} />
+            <CreateInstanceModal
+              {...props}
+              preselectedPlan={currentPlan}
+              documentationUrl={documentationUrl}
+            />
           )}
         />
       </ServiceClassDetailsHeader>
