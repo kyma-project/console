@@ -1,5 +1,6 @@
 import config from './config';
 import { Selector, Role } from 'testcafe';
+import chalk from 'chalk';
 
 export const testIf = (condition, testName, testToRun) => {
   if (condition) {
@@ -54,6 +55,17 @@ export const adminUser = Role(
       .typeText('#login', config.login)
       .typeText('#password', config.password)
       .click('#submit-login');
+
+    Selector('#login-error')()
+      .then(element => {
+        console.error(
+          chalk.redBright.bgHex('#bfff00')(
+            `Login failed with message: ${chalk.bold(element.innerText)}`,
+          ),
+        );
+        process.exit(1);
+      })
+      .catch(() => {});
 
     await Selector('#app')();
   },
