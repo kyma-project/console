@@ -130,7 +130,6 @@ export default function CreateInstanceModal({
   const plan = preselectedPlan ? preselectedPlan.name : plans[0].name;
 
   const [instanceCreateParameters, setInstanceCreateParameters] = useState({});
-
   const [
     instanceCreateParameterSchema,
     setInstanceCreateParameterSchema,
@@ -276,7 +275,7 @@ export default function CreateInstanceModal({
           />
         </FormItem>
       </form>
-      <div className="json-schemaform-separator" />
+      <div className="instance-schema-panel__separator" />
       {instanceCreateParameterSchemaExists && (
         <SchemaData
           schemaFormRef={jsonSchemaFormRef}
@@ -298,31 +297,27 @@ export default function CreateInstanceModal({
 
       {!instanceCreateParameterSchemaExists && (
         <>
-          <div className="fd-has-margin-top-s fd-has-margin-bottom-tiny">
-            <span
-              className="link fd-has-margin-right-tiny clear-underline"
-              onClick={() =>
-                setCustomParametersProvided(!customParametersProvided)
-              }
-            >
-              {customParametersProvided
-                ? 'Remove parameters'
-                : 'Add parameters'}
-            </span>
-            <Tooltip
-              position="top"
-              title="The service provider did not define specific parameters for the selected plan. Refer to the documentation to learn about the required parameters, and define them as JSON in the editor."
-            >
-              <Icon glyph="sys-help" />
-            </Tooltip>
+          <div className="fd-has-margin-top-s fd-has-margin-bottom-tiny instance-schema-panel">
+            <div>
+              <span
+                className="link fd-has-margin-right-tiny clear-underline"
+                onClick={() =>
+                  setCustomParametersProvided(!customParametersProvided)
+                }
+              >
+                {customParametersProvided
+                  ? 'Remove parameters'
+                  : 'Add parameters'}
+              </span>
+              <Tooltip
+                position="top"
+                title="The service provider did not define specific parameters for the selected plan. Refer to the documentation to learn about the required parameters, and define them as JSON in the editor."
+              >
+                <Icon glyph="sys-help" />
+              </Tooltip>
+            </div>
             {documentationUrl && (
-              <div className="fd-has-float-right">
-                <CopiableLink
-                  url={documentationUrl}
-                  text="Documentation"
-                  className="fd-has-float-right"
-                />
-              </div>
+              <CopiableLink url={documentationUrl} text="Documentation" />
             )}
           </div>
           {customParametersProvided && (
