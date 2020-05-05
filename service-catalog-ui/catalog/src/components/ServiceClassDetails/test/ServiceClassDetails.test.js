@@ -1,7 +1,12 @@
 import React from 'react';
 import { MockedProvider } from '@apollo/react-testing';
 import { mount } from 'enzyme';
-import { render, wait, fireEvent } from '@testing-library/react';
+import {
+  render,
+  wait,
+  fireEvent,
+  waitForDomChange,
+} from '@testing-library/react';
 import {
   serviceClassAPIruleQuery,
   serviceClassAPIruleQueryNoPlans,
@@ -112,14 +117,14 @@ describe('Service Class Details UI', () => {
         </MockedProvider>,
       );
 
-      await wait(() => {
-        expect(queryByLabelText('docs-per-plan-icon')).toBeInTheDocument();
-        expect(
-          queryByText(
-            `${query.result.data.serviceClass.displayName} - Plans list`,
-          ),
-        ).toBeInTheDocument();
-      });
+      await waitForDomChange();
+
+      expect(queryByLabelText('docs-per-plan-icon')).toBeInTheDocument();
+      expect(
+        queryByText(
+          `${query.result.data.serviceClass.displayName} - Plans list`,
+        ),
+      ).toBeInTheDocument();
     });
 
     it("Shows no breadcrumb when there's only one plan", async () => {

@@ -109,6 +109,7 @@ export default function CreateInstanceModal({
   onChange,
   onCompleted,
   onError,
+  setCustomValid,
   formElementRef,
   jsonSchemaFormRef,
   item,
@@ -179,8 +180,11 @@ export default function CreateInstanceModal({
       const parsedInput = JSON.parse(input);
       if (isNonNullObject(parsedInput)) {
         setInstanceCreateParameters(parsedInput);
+        setCustomValid(true);
       }
-    } catch (e) {}
+    } catch (_) {
+      setCustomValid(false);
+    }
   };
 
   async function handleFormSubmit(e) {
@@ -274,29 +278,27 @@ export default function CreateInstanceModal({
       </form>
       <div className="json-schemaform-separator" />
       {instanceCreateParameterSchemaExists && (
-        <>
-          <SchemaData
-            schemaFormRef={jsonSchemaFormRef}
-            data={instanceCreateParameters}
-            instanceCreateParameterSchema={instanceCreateParameterSchema}
-            planName={
-              (formValues.plan &&
-                formValues.plan.current &&
-                formValues.plan.current.value) ||
-              ''
-            }
-            onSubmitSchemaForm={() => {}}
-            callback={formData => {
-              onChange(formData);
-              setInstanceCreateParameters(formData.instanceCreateParameters);
-            }}
-          />
-        </>
+        <SchemaData
+          schemaFormRef={jsonSchemaFormRef}
+          data={instanceCreateParameters}
+          instanceCreateParameterSchema={instanceCreateParameterSchema}
+          planName={
+            (formValues.plan &&
+              formValues.plan.current &&
+              formValues.plan.current.value) ||
+            ''
+          }
+          onSubmitSchemaForm={() => {}}
+          callback={formData => {
+            onChange(formData);
+            setInstanceCreateParameters(formData.instanceCreateParameters);
+          }}
+        />
       )}
 
       {!instanceCreateParameterSchemaExists && (
         <>
-          <p className="fd-has-margin-top-s">
+          <div className="fd-has-margin-top-s fd-has-margin-bottom-tiny">
             <span
               className="link fd-has-margin-right-tiny clear-underline"
               onClick={() =>
@@ -322,14 +324,11 @@ export default function CreateInstanceModal({
                 />
               </div>
             )}
-          </p>
-
+          </div>
           {customParametersProvided && (
             <JSONEditor
               aria-label="schema-editor"
-              onChangeText={input => {
-                handleCustomParametersChange(input);
-              }}
+              onChangeText={handleCustomParametersChange}
               text={JSON.stringify({}, null, 2)}
             />
           )}
