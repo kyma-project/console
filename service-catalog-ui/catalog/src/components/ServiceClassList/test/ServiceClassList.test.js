@@ -13,6 +13,9 @@ import { Identifier } from 'fundamental-react';
 
 const mockNavigate = jest.fn();
 
+const servicesTabIndex = 0;
+const addonsTabIndex = 1;
+
 jest.mock('@kyma-project/luigi-client', () => ({
   getEventData: () => ({
     environmentId: mockEnvironmentId,
@@ -58,7 +61,7 @@ describe('ServiceClassList UI', () => {
 
   it('Add-Ons tab has proper counter', async () => {
     await componentUpdate(component);
-    const addOnsTab = component.find(Tab).at(0);
+    const addOnsTab = component.find(Tab).at(addonsTabIndex);
     expect(addOnsTab.find(Identifier).text()).toEqual(
       allServiceClassesQuery.result.data.serviceClasses.length.toString(),
     );
@@ -68,7 +71,7 @@ describe('ServiceClassList UI', () => {
 
   it('Services tab has proper counter', async () => {
     await componentUpdate(component);
-    const servicesTab = component.find(Tab).at(1);
+    const servicesTab = component.find(Tab).at(servicesTabIndex);
     expect(servicesTab.find(Identifier).text()).toEqual(
       allServiceClassesQuery.result.data.clusterServiceClasses.length.toString(),
     );
@@ -94,7 +97,7 @@ describe('ServiceClassList UI', () => {
 
     component
       .find(Tab)
-      .at(1)
+      .at(servicesTabIndex)
       .find('div')
       .first()
       .simulate('click');
@@ -174,7 +177,7 @@ describe('Search classes by other attributes', () => {
     });
     await componentUpdate(component);
 
-    const addOnsTab = component.find(Tab).at(0);
+    const addOnsTab = component.find(Tab).at(addonsTabIndex);
     expect(addOnsTab.find(Identifier).text()).toEqual('1');
 
     expectKnownConsoleWarnings();
@@ -188,7 +191,7 @@ describe('Search classes by other attributes', () => {
     search.simulate('change', { target: { value: searchedClass.description } });
     await componentUpdate(component);
 
-    const addOnsTab = component.find(Tab).at(0);
+    const addOnsTab = component.find(Tab).at(addonsTabIndex);
     expect(addOnsTab.find(Identifier).text()).toEqual('1');
 
     expectKnownConsoleWarnings();
