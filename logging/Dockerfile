@@ -27,7 +27,7 @@ ENV PRODUCTION true
 ENV CI true
 
 # Test & Build
-#RUN cd /app/logging && npm run test:single
+RUN cd /app/logging && npm run test:single
 RUN cd /app/logging && npm run build
 
 ### Main image ###
