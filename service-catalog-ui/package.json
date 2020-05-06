@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {},
   "scripts": {
-    "start": ". ../scripts/load-cluster-config.sh && BROWSER=none PORT=8000 ../node_modules/.bin/react-scripts start",
+    "start": ". ../scripts/load-cluster-config.sh && BROWSER=none PORT=8000 HOST=console-dev.kyma.local ../node_modules/.bin/react-scripts start",
     "start:kyma": "npm run start",
     "build": "react-scripts build",
     "test": "react-scripts test",
