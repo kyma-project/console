@@ -1,50 +1,17 @@
 import React from 'react';
-import renderer from 'react-test-renderer';
+import { render } from '@testing-library/react';
 import Logs from '../Logs';
-import { isTest } from 'apollo-utilities';
+
+jest.mock('@kyma-project/common', () => ({
+  getApiUrl: () => 'kyma.local',
+}));
 
 describe('Logs', () => {
-  it('Renders with minimal props', () => {
-    console.error = jest.fn();
-
-    afterEach(() => {
-      console.error.mockReset();
-    });
-
-    afterAll(() => {
-      expect(console.error.mock.calls[0][0]).toMatchSnapshot(); // unique "key" prop warning
-    });
-
-    const component = renderer.create(
+  it('Shows message if no labels are present', () => {
+    const {queryByText} = render(
       <Logs httpService={{}} queryTransformService={{ toQuery: () => {} }} />,
     );
-    const tree = component.toJSON();
-    expect(tree).toMatchSnapshot();
+    
+    expect(queryByText('Add at least one label to the filter to see the logs.')).toBeInTheDocument();
   });
-
-  it('Renders with lambda view props', () => {
-    console.error = jest.fn();
-
-    afterEach(() => {
-      console.error.mockReset();
-    });
-
-    afterAll(() => {
-      expect(console.error.mock.calls[0][0]).toMatchSnapshot(); // unique "key" prop warning
-    });
-
-    const component = renderer.create(
-      <Logs
-        httpService={{}}
-        queryTransformService={{ toQuery: () => {} }}
-        isLambda={true}
-        readonlyLabels={[]}
-        lambdaName="test"
-      />,
-    );
-    const tree = component.toJSON();
-    expect(tree).toMatchSnapshot();
-  });
-
-  test.todo('Renders with some labels')
 });
