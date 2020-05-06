@@ -1,20 +1,27 @@
 {
-  "name": "@kyma-project/service-catalog-ui",
-  "description": "All Service Catalog UIs",
+  "name": "service-catalog-ui",
+  "version": "0.1.0",
   "private": true,
-  "license": "Apache-2.0",
-  "devDependencies": {
-    "concurrently": "^5.0.0"
-  },
+  "dependencies": {},
   "scripts": {
-    "start": "concurrently \"cd brokers && npm start\" \"cd catalog && npm start\"  \"cd instances && npm start\"",
-    "install": "concurrently \"cd brokers && npm install\" \"cd catalog && npm install\"  \"cd instances && npm install\"",
-    "build": "concurrently \"cd brokers && npm run-script build\" \"cd catalog && npm run-script build\"  \"cd instances && npm run-script build\"",
-    "lint-check": "concurrently \"cd brokers && npm run lint-check\" \"cd catalog && npm run lint-check\"  \"cd instances && npm run lint-check\"",
-    "eslint-check": "concurrently \"cd brokers && npm run eslint-check\" \"cd catalog && npm run eslint-check\"  \"cd instances && npm run eslint-check\"",
-    "test": "concurrently \"cd brokers && npm run test\" \"cd catalog && npm run test\"  \"cd instances && npm run test\""
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
   },
-  "config": {
-    "unsafe-perm": true
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }
