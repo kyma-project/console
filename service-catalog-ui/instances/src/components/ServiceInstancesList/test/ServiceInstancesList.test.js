@@ -27,6 +27,9 @@ const mockNavigate = jest.fn();
 const mockAddBackdrop = jest.fn();
 const mockRemoveBackdrop = jest.fn();
 
+const servicesTabIndex = 0;
+const addonsTabIndex = 1;
+
 function mountWithModalBg(component) {
   return mount(
     <div className="modal-demo-bg">
@@ -310,10 +313,10 @@ describe('Search instances by name', () => {
   it('Shows all instances initially', async () => {
     await componentUpdate(component);
 
-    const addOnsTab = component.find(Tab).at(0);
+    const addOnsTab = component.find(Tab).at(addonsTabIndex);
     expect(addOnsTab.find(Identifier).text()).toEqual('2');
 
-    const servicesTab = component.find(Tab).at(1);
+    const servicesTab = component.find(Tab).at(servicesTabIndex);
     expect(servicesTab.find(Identifier).text()).toEqual('1');
 
     expectKnownConsoleWarnings();
@@ -327,7 +330,7 @@ describe('Search instances by name', () => {
     search.simulate('change', { target: { value: 'motherly' } });
 
     await componentUpdate(component);
-    const addOnsTab = component.find(Tab).at(0);
+    const addOnsTab = component.find(Tab).at(addonsTabIndex);
     expect(addOnsTab.find(Identifier).text()).toEqual('1');
     addOnsTab
       .find('div')
@@ -338,7 +341,7 @@ describe('Search instances by name', () => {
       serviceInstance1,
     ]);
 
-    const servicesTab = component.find(Tab).at(1);
+    const servicesTab = component.find(Tab).at(servicesTabIndex);
     expect(servicesTab.find(Identifier).text()).toEqual('0');
 
     servicesTab
@@ -359,7 +362,7 @@ describe('Search instances by name', () => {
     search.simulate('change', { target: { value: 'fishing' } });
 
     await componentUpdate(component);
-    const addOnsTab = component.find(Tab).at(0);
+    const addOnsTab = component.find(Tab).at(addonsTabIndex);
     expect(addOnsTab.find(Identifier).text()).toEqual('0');
     addOnsTab
       .find('div')
@@ -368,7 +371,7 @@ describe('Search instances by name', () => {
     await componentUpdate(component);
     expect(component.find(ServiceInstancesTable).prop('data')).toEqual([]);
 
-    const servicesTab = component.find(Tab).at(1);
+    const servicesTab = component.find(Tab).at(servicesTabIndex);
     expect(servicesTab.find(Identifier).text()).toEqual('1');
 
     servicesTab
@@ -428,7 +431,7 @@ describe('filter instances by labels', () => {
       'label1',
     ]);
 
-    const addOnsTab = component.find(Tab).at(0);
+    const addOnsTab = component.find(Tab).at(addonsTabIndex);
     expect(addOnsTab.find(Identifier).text()).toEqual('1');
 
     addOnsTab
@@ -440,7 +443,7 @@ describe('filter instances by labels', () => {
       serviceInstance1,
     ]);
 
-    const servicesTab = component.find(Tab).at(1);
+    const servicesTab = component.find(Tab).at(servicesTabIndex);
     expect(servicesTab.find(Identifier).text()).toEqual('0');
 
     servicesTab

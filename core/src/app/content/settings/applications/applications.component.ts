@@ -22,7 +22,7 @@ import { GraphQLClientService } from 'shared/services/graphql-client-service';
 })
 export class ApplicationsComponent extends AbstractGraphqlElementListComponent
   implements OnDestroy, OnInit {
-  title = 'Applications';
+  title = 'Applications/Systems';
   public emptyListData: IEmptyListData = this.getBasicEmptyListData(
     this.title,
     { headerTitle: true, namespaceSuffix: false }

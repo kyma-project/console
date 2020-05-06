@@ -173,41 +173,6 @@ export default function ServiceInstancesList() {
           status={status(
             determineDisplayedInstances(
               serviceInstances,
-              serviceInstanceConstants.addonsIndex,
-              searchQuery,
-              activeLabelFilters,
-            ).length,
-            'addons-status',
-          )}
-          title={
-            <Tooltip
-              content={serviceInstanceConstants.addonsTooltipDescription}
-              minWidth="100px"
-              showTooltipTimeout={750}
-              key="instances-addons-tab-tooltip"
-            >
-              {serviceInstanceConstants.addons}
-            </Tooltip>
-          }
-        >
-          <ServiceInstancesWrapper data-e2e-id="instances-wrapper">
-            <ServiceInstancesTable
-              data={determineDisplayedInstances(
-                serviceInstances,
-                serviceInstanceConstants.addonsIndex,
-                searchQuery,
-                activeLabelFilters,
-              )}
-              deleteServiceInstance={handleDelete}
-              type="addons"
-            />
-          </ServiceInstancesWrapper>
-        </Tab>
-        <Tab
-          noMargin
-          status={status(
-            determineDisplayedInstances(
-              serviceInstances,
               serviceInstanceConstants.servicesIndex,
               searchQuery,
               activeLabelFilters,
@@ -235,6 +200,41 @@ export default function ServiceInstancesList() {
               )}
               deleteServiceInstance={handleDelete}
               type="services"
+            />
+          </ServiceInstancesWrapper>
+        </Tab>
+        <Tab
+          noMargin
+          status={status(
+            determineDisplayedInstances(
+              serviceInstances,
+              serviceInstanceConstants.addonsIndex,
+              searchQuery,
+              activeLabelFilters,
+            ).length,
+            'addons-status',
+          )}
+          title={
+            <Tooltip
+              content={serviceInstanceConstants.addonsTooltipDescription}
+              minWidth="100px"
+              showTooltipTimeout={750}
+              key="instances-addons-tab-tooltip"
+            >
+              {serviceInstanceConstants.addons}
+            </Tooltip>
+          }
+        >
+          <ServiceInstancesWrapper data-e2e-id="instances-wrapper">
+            <ServiceInstancesTable
+              data={determineDisplayedInstances(
+                serviceInstances,
+                serviceInstanceConstants.addonsIndex,
+                searchQuery,
+                activeLabelFilters,
+              )}
+              deleteServiceInstance={handleDelete}
+              type="addons"
             />
           </ServiceInstancesWrapper>
         </Tab>

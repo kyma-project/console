@@ -117,7 +117,7 @@ class Tabs extends React.Component {
         )}
         <TabsContent
           noMargin={props && props.noMargin}
-          wrapInPanel={props.wrapInPanel}
+          wrapInPanel={props && props.wrapInPanel}
         >
           {this.renderActiveTab(children)}
         </TabsContent>

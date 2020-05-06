@@ -4,11 +4,13 @@
     grid-gap: 16px;
 }
 
-.json-schemaform-separator {
-    box-sizing: border-box;
-    display: block;
+.instance-schema-panel__separator {
     height: 1px;
-    opacity: 0.1;
-    background-color: #000000;
+    background-color: var(--fd-modal-border-color);
     margin: 16px -16px;
+}
+
+.instance-schema-panel {
+    display: flex;
+    justify-content: space-between;
 }
