@@ -27,8 +27,8 @@ export const serviceInstanceConstants = {
   error: 'Error',
 
   //instance list tabs indices
-  addonsIndex: 0,
-  servicesIndex: 1,
+  servicesIndex: 0,
+  addonsIndex: 1,
 };
 
 export const serviceInstanceTabs = {
