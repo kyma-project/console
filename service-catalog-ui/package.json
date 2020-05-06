@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {},
   "scripts": {
-    "start": "react-scripts start",
+    "start": ". ../scripts/load-cluster-config.sh /.. && ../node_modules/.bin/react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
