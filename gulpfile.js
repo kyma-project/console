@@ -110,9 +110,7 @@ const apps = [
   'core',
   'core-ui',
   'logging',
-  'service-catalog-ui/brokers',
-  'service-catalog-ui/catalog',
-  'service-catalog-ui/instances',
+  'service-catalog-ui',
 ];
 
 // Installing apps
