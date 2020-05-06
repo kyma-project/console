@@ -38,6 +38,7 @@ const ModalWithForm = ({
 }) => {
   const [isOpen, setOpen] = useState(false);
   const [isValid, setValid] = useState(false);
+  const [customValid, setCustomValid] = useState(true);
   const formElementRef = useRef(null);
   const jsonSchemaFormRef = useRef(null);
   const notificationManager = useNotification();
@@ -141,7 +142,7 @@ const ModalWithForm = ({
               Cancel
             </Button>
             <Button
-              aria-disabled={!isValid}
+              aria-disabled={!isValid || !customValid}
               onClick={handleFormSubmit}
               option="emphasized"
             >
@@ -158,6 +159,11 @@ const ModalWithForm = ({
           formElementRef,
           jsonSchemaFormRef,
           isValid,
+          setCustomValid: isValid => {
+            // revalidate rest of the form
+            setValid(formElementRef.current.checkValidity());
+            setCustomValid(isValid);
+          },
           onChange: handleFormChanged,
           onError: handleFormError,
           onCompleted: handleFormSuccess,

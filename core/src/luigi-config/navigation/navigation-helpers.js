@@ -63,8 +63,12 @@ export const saveCurrentLocation = () => {
 
 export function relogin() {
   saveCurrentLocation();
-  Luigi.auth().store.removeAuthData();
+  clearToken();
   location.reload();
+}
+
+export function clearToken() {
+  Luigi.auth().store.removeAuthData();
 }
 
 export function getToken() {

@@ -40,7 +40,7 @@
     font-size: 50px;
   }
   </style>
-  
+
 </head>
 <body>
   <div class="fd-ui fd-ui--fundamental">
@@ -55,9 +55,18 @@
                 <p class="fd-has-margin-tiny">Contact your administrator to grant you an access.</p>
               </div>
             </p>
+            <p class="fd-has-text-align-center">
+              <button class="fd-button--emphasized " onclick="tryAgain()">Try again</button>
+            </p>
         </section>
       </div>
     </div>
   </div>
 </body>
+
+<script type="text/javascript">
+  function tryAgain() {
+    window.location.href = window.location.origin;
+  }
+</script>
 </html>

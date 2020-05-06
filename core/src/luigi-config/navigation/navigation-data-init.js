@@ -20,7 +20,7 @@ import {
   hideDisabledNodes,
   getSystemNamespaces,
   createNamespacesList,
-  relogin,
+  clearToken,
   getToken
 } from './navigation-helpers';
 
@@ -127,6 +127,7 @@ export function getNavigationData() {
         },
         err => {
           if (err === 'access denied') {
+            clearToken();
             window.location.pathname = '/nopermissions.html';
           }
         }
@@ -233,7 +234,8 @@ function fetchFromGraphQL(query, variables, gracefully) {
         }
       } else {
         if (xmlHttp.status === 401) {
-          relogin();
+          clearToken();
+          window.location.pathname = '/nopermissions.html';
         }
         if (!gracefully) {
           reject(xmlHttp.response);
