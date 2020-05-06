@@ -1,17 +1,27 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root'),
-);
+import { ApolloProvider } from '@apollo/react-hooks';
+import { BrowserRouter } from 'react-router-dom';
+import { preloadingStrategy } from '@kyma-project/common';
+// import './index.scss';
+// import App from './components/App/App';
+import builder from './builder';
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+import { createKymaApolloClient } from './apollo';
+import App from 'components/App/App';
+
+preloadingStrategy(async () => {
+  builder.addEventListeners(() => {
+    const kymaClient = createKymaApolloClient();
+
+    ReactDOM.render(
+      <ApolloProvider client={kymaClient}>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </ApolloProvider>,
+      document.getElementById('root'),
+    );
+  });
+});

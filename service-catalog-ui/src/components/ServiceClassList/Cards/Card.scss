@@ -1,0 +1,17 @@
+.card {
+  &__header {
+    .icon {
+      $verticalOffset: -4px;
+      background-color: var(--fd-color-neutral-2);
+      color: var(--fd-color-text-2);
+      margin-left: 10px;
+      text-align: center;
+      width: 28px;
+      border-radius: 4px;
+      height: 28px;
+      padding: 0;
+      padding-top: -$verticalOffset;
+      transform: translateY($verticalOffset);
+    }
+  }
+}
