@@ -2,9 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Modal, Button } from 'fundamental-react';
 import LuigiClient from '@kyma-project/luigi-client';
-import { useNotification } from '../contexts/NotificationContext';
-
-//TODO: move this component to a shared "place"
+import { useNotification } from '../../contexts/NotificationContext';
 
 const isFormValid = (formRef, reportValidity = false) => {
   if (!formRef || !formRef.current) return true;
@@ -41,7 +39,7 @@ const ModalWithForm = ({
   const [customValid, setCustomValid] = useState(true);
   const formElementRef = useRef(null);
   const jsonSchemaFormRef = useRef(null);
-  const notificationManager = useNotification();
+  const notificationManager = null;
 
   useEffect(() => {
     setOpenStatus(opened);
@@ -116,7 +114,7 @@ const ModalWithForm = ({
       setTimeout(() => setOpenStatus(false));
     }
   }
-
+  return null;
   return (
     <div>
       <Button
