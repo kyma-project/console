@@ -1,10 +1,11 @@
 import React from 'react';
 import AccessStrategy from '../AccessStrategy';
 import { render } from '@testing-library/react';
+import { supportedMethodsList } from '../../accessStrategyTypes';
 
 const defaultAccessStrategy = {
   path: '/.*',
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  methods: supportedMethodsList,
   accessStrategies: [
     {
       name: 'noop',

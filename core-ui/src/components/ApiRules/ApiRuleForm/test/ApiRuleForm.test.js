@@ -56,6 +56,8 @@ describe('ApiRuleForm', () => {
     verifyMethodCheckboxes(queryAllByLabelText, 'PUT');
     verifyMethodCheckboxes(queryAllByLabelText, 'POST');
     verifyMethodCheckboxes(queryAllByLabelText, 'DELETE');
+    verifyMethodCheckboxes(queryAllByLabelText, 'HEAD');
+    verifyMethodCheckboxes(queryAllByLabelText, 'PATCH');
 
     const typeSelects = queryAllByLabelText('Access strategy type');
     expect(typeSelects).toHaveLength(apiRule().rules.length);

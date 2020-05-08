@@ -21,3 +21,12 @@ const accessStrategyTypes = { noop, allow, oauth2_introspection, jwt };
 export default accessStrategyTypes;
 export const usesMethods = strategyType =>
   !accessStrategyTypes[strategyType].methodsIrrelevant;
+
+export const supportedMethodsList = [
+  'GET',
+  'POST',
+  'PUT',
+  'PATCH',
+  'DELETE',
+  'HEAD',
+];
