@@ -6,7 +6,7 @@ import { Toolbar } from '@kyma-project/react-components';
 import SearchDropdown from './SearchDropdown.component';
 import FilterDropdown from './FilterDropdown.component';
 
-const ServiceInstancesToolbar = ({
+const ServiceInstanceToolbar = ({
   searchFn,
   availableLabels,
   onLabelChange,
@@ -29,4 +29,4 @@ const ServiceInstancesToolbar = ({
   );
 };
 
-export default ServiceInstancesToolbar;
+export default ServiceInstanceToolbar;

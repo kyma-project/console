@@ -4,7 +4,7 @@ import { Route, Switch } from 'react-router-dom';
 import ServiceClassList from '../ServiceClassList/ServiceClassList';
 import ServiceClassDetails from '../ServiceClassDetails/ServiceClassDetails';
 import ServiceClassPlansList from '../ServiceClassPlansList/ServiceClassPlansList';
-import ServiceInstancesList from '../ServiceInstancesList/ServiceInstancesList';
+import ServiceInstancesList from '../ServiceInstanceList/ServiceInstanceList';
 import ServiceInstancesDetails from '../ServiceInstanceDetails/ServiceInstanceDetails';
 import { NotificationProvider } from 'react-shared';
 

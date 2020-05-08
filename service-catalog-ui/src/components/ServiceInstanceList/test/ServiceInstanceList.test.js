@@ -6,11 +6,11 @@ import {
   allServiceInstancesQuery,
   serviceInstancesSubscription,
 } from '../../../testing/queriesMocks';
-import ServiceInstancesTable from '../ServiceInstancesTable/ServiceInstancesTable.component';
+import ServiceInstanceTable from '../ServiceInstanceTable/ServiceInstanceTable.component';
 
 import { Button, Spinner, Tab, Search } from '@kyma-project/react-components';
-import ServiceInstancesList from '../ServiceInstancesList';
-import { Link } from '../ServiceInstancesTable/styled.js';
+import ServiceInstancesList from '../ServiceInstanceList';
+import { Link } from '../ServiceInstanceTable/styled.js';
 import { createMockLink } from 'react-shared';
 import { componentUpdate } from '../../../testing';
 import { act } from 'react-dom/test-utils';
@@ -20,8 +20,8 @@ import {
   serviceInstance3,
   serviceInstance2,
 } from 'testing/instanceMocks';
-import FilterDropdown from '../ServiceInstancesToolbar/FilterDropdown.component';
-import { FormInput } from '../ServiceInstancesToolbar/styled';
+import FilterDropdown from '../ServiceInstanceToolbar/FilterDropdown.component';
+import { FormInput } from '../ServiceInstanceToolbar/styled';
 
 const mockNavigate = jest.fn();
 const mockAddBackdrop = jest.fn();
@@ -102,7 +102,7 @@ describe('InstancesList UI', () => {
 
     await componentUpdate(component);
 
-    const table = component.find(ServiceInstancesTable);
+    const table = component.find(ServiceInstanceTable);
     expect(table.exists()).toBe(true);
 
     const rowData = table.prop('data');
@@ -178,7 +178,7 @@ describe('InstancesList UI', () => {
     await componentUpdate(component);
     await componentUpdate(component);
 
-    const table = component.find(ServiceInstancesTable);
+    const table = component.find(ServiceInstanceTable);
     expect(table.exists()).toBe(true);
     expect(table.prop('data')).toHaveLength(1);
     expectKnownConsoleWarnings();
@@ -195,7 +195,7 @@ describe('InstancesList UI', () => {
     await componentUpdate(component);
     await componentUpdate(component);
 
-    const table = component.find(ServiceInstancesTable);
+    const table = component.find(ServiceInstanceTable);
     expect(table.exists()).toBe(true);
     expect(table.prop('data')).toHaveLength(3);
     expectKnownConsoleWarnings();
@@ -216,7 +216,7 @@ describe('InstancesList UI', () => {
     );
     await componentUpdate(component);
 
-    const table = component.find(ServiceInstancesTable);
+    const table = component.find(ServiceInstanceTable);
     expect(table.exists()).toBe(true);
     expect(table.prop('data')).toHaveLength(2);
 
@@ -337,7 +337,7 @@ describe('Search instances by name', () => {
       .first()
       .simulate('click');
     await componentUpdate(component);
-    expect(component.find(ServiceInstancesTable).prop('data')).toEqual([
+    expect(component.find(ServiceInstanceTable).prop('data')).toEqual([
       serviceInstance1,
     ]);
 
@@ -349,7 +349,7 @@ describe('Search instances by name', () => {
       .first()
       .simulate('click');
     await componentUpdate(component);
-    expect(component.find(ServiceInstancesTable).prop('data')).toEqual([]);
+    expect(component.find(ServiceInstanceTable).prop('data')).toEqual([]);
 
     expectKnownConsoleWarnings();
   });
@@ -369,7 +369,7 @@ describe('Search instances by name', () => {
       .first()
       .simulate('click');
     await componentUpdate(component);
-    expect(component.find(ServiceInstancesTable).prop('data')).toEqual([]);
+    expect(component.find(ServiceInstanceTable).prop('data')).toEqual([]);
 
     const servicesTab = component.find(Tab).at(servicesTabIndex);
     expect(servicesTab.find(Identifier).text()).toEqual('1');
@@ -379,7 +379,7 @@ describe('Search instances by name', () => {
       .first()
       .simulate('click');
     await componentUpdate(component);
-    expect(component.find(ServiceInstancesTable).prop('data')).toEqual([
+    expect(component.find(ServiceInstanceTable).prop('data')).toEqual([
       serviceInstance3,
     ]);
 
@@ -439,7 +439,7 @@ describe('filter instances by labels', () => {
       .first()
       .simulate('click');
     await componentUpdate(component);
-    expect(component.find(ServiceInstancesTable).prop('data')).toEqual([
+    expect(component.find(ServiceInstanceTable).prop('data')).toEqual([
       serviceInstance1,
     ]);
 
@@ -451,7 +451,7 @@ describe('filter instances by labels', () => {
       .first()
       .simulate('click');
     await componentUpdate(component);
-    expect(component.find(ServiceInstancesTable).prop('data')).toEqual([]);
+    expect(component.find(ServiceInstanceTable).prop('data')).toEqual([]);
 
     expectKnownConsoleWarnings();
   });

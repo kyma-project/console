@@ -22,7 +22,7 @@ import { DOCUMENTATION_PER_PLAN_LABEL } from 'helpers/constants';
 
 const deleteButton = <Button compact option="light" glyph="delete" />;
 
-export class ServiceInstancesTable extends Component {
+export class ServiceInstanceTable extends Component {
   displayBindingsUsages = (bindings = []) => {
     if (!bindings) return null;
 
@@ -277,4 +277,4 @@ export class ServiceInstancesTable extends Component {
   }
 }
 
-export default ServiceInstancesTable;
+export default ServiceInstanceTable;

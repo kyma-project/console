@@ -23,8 +23,8 @@ import {
   determineDisplayedInstances,
 } from 'helpers/search';
 
-import ServiceInstancesTable from './ServiceInstancesTable/ServiceInstancesTable.component';
-import ServiceInstancesToolbar from './ServiceInstancesToolbar/ServiceInstancesToolbar.component';
+import ServiceInstanceTable from './ServiceInstanceTable/ServiceInstanceTable.component';
+import ServiceInstanceToolbar from './ServiceInstanceToolbar/ServiceInstanceToolbar.component';
 import { handleInstanceEventOnList } from 'helpers/instancesGQL/events';
 
 import {
@@ -141,7 +141,7 @@ export default function ServiceInstancesList() {
 
   return (
     <ThemeWrapper>
-      <ServiceInstancesToolbar
+      <ServiceInstanceToolbar
         searchFn={setSearchQuery}
         onLabelChange={handleLabelChange}
         activeLabelFilters={activeLabelFilters}
@@ -191,7 +191,7 @@ export default function ServiceInstancesList() {
           }
         >
           <ServiceInstancesWrapper data-e2e-id="instances-wrapper">
-            <ServiceInstancesTable
+            <ServiceInstanceTable
               data={determineDisplayedInstances(
                 serviceInstances,
                 serviceInstanceConstants.servicesIndex,
@@ -226,7 +226,7 @@ export default function ServiceInstancesList() {
           }
         >
           <ServiceInstancesWrapper data-e2e-id="instances-wrapper">
-            <ServiceInstancesTable
+            <ServiceInstanceTable
               data={determineDisplayedInstances(
                 serviceInstances,
                 serviceInstanceConstants.addonsIndex,

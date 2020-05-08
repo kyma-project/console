@@ -22,7 +22,7 @@ import {
   ActionsWrapper,
 } from './styled';
 
-import { TextOverflowWrapper } from '../../ServiceInstancesList/ServiceInstancesTable/styled';
+import { TextOverflowWrapper } from '../../ServiceInstanceList/ServiceInstanceTable/styled';
 
 import { backendModuleExists } from 'helpers';
 
