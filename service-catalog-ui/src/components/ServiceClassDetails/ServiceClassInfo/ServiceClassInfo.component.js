@@ -21,7 +21,7 @@ import {
 } from './styled';
 
 import { serviceClassTileTitles } from 'helpers/constants';
-import { isStringValueEqualToTrue } from 'helpers/helpers';
+import { isStringValueEqualToTrue } from 'helpers';
 import ProvisionOnlyOnceInfo from '../ProvisionOnlyOnceInfo/ProvisionOnlyOnceInfo.component';
 
 const ServiceClassInfo = ({

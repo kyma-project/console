@@ -5,10 +5,7 @@ import LuigiClient from '@kyma-project/luigi-client';
 import { DOCUMENTATION_PER_PLAN_LABEL } from 'helpers/constants';
 import Card from './Card.component';
 
-import {
-  getResourceDisplayName,
-  isStringValueEqualToTrue,
-} from 'helpers/helpers';
+import { getResourceDisplayName, isStringValueEqualToTrue } from 'helpers';
 
 const Cards = ({ items }) => {
   const goToDetails = item => {

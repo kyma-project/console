@@ -8,7 +8,7 @@ import SchemaData from './SchemaData.component';
 import { createServiceInstance } from './mutations';
 
 import './CreateInstanceModal.scss';
-import { getResourceDisplayName, randomNameGenerator } from 'helpers/helpers';
+import { getResourceDisplayName, randomNameGenerator } from 'helpers';
 
 import {
   CustomPropTypes,

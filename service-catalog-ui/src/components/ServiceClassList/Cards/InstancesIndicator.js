@@ -2,7 +2,7 @@ import React from 'react';
 import classnames from 'classnames';
 import { Tooltip } from 'react-shared';
 
-import { isStringValueEqualToTrue } from 'helpers/helpers';
+import { isStringValueEqualToTrue } from 'helpers';
 import './InstancesIndicator.scss';
 
 const tooltipDescription = {

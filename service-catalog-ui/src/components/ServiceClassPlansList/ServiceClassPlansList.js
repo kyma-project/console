@@ -5,7 +5,7 @@ import { getServiceClassPlans } from './queries';
 import { serviceClassConstants } from 'helpers/constants';
 import PropTypes from 'prop-types';
 import { Spinner, PageHeader, GenericList, Tooltip } from 'react-shared';
-import { getResourceDisplayName, isService } from 'helpers/helpers';
+import { getResourceDisplayName, isService } from 'helpers';
 import { sortByDisplayName } from 'helpers/sorting';
 import { Badge } from 'fundamental-react';
 import './ServiceClassPlansList.scss';

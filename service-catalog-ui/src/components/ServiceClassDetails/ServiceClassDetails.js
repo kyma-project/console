@@ -13,7 +13,7 @@ import ServiceClassTabs from './ServiceClassTabs/ServiceClassTabs';
 import CreateInstanceModal from './CreateInstanceModal/CreateInstanceModal.container';
 import { Identifier, Button } from 'fundamental-react';
 
-import { isStringValueEqualToTrue } from 'helpers/helpers';
+import { isStringValueEqualToTrue } from 'helpers';
 import './ServiceClassDetails.scss';
 import { ServiceClassDetailsWrapper, EmptyList } from './styled';
 import LuigiClient from '@kyma-project/luigi-client';
@@ -21,7 +21,7 @@ import {
   getResourceDisplayName,
   getDescription,
   backendModuleExists,
-} from 'helpers/helpers';
+} from 'helpers';
 import ServiceClassDetailsHeader from './ServiceClassDetailsHeader/ServiceClassDetailsHeader.component';
 import {
   DOCUMENTATION_PER_PLAN_LABEL,

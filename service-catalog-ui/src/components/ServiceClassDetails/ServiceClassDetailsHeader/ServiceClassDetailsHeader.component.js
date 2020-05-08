@@ -12,7 +12,7 @@ import {
 } from './styled';
 
 import { serviceClassConstants } from 'helpers/constants';
-import { isService } from 'helpers/helpers';
+import { isService } from 'helpers';
 
 const ServiceClassDetailsHeader = ({
   creationTimestamp,

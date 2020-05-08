@@ -17,7 +17,7 @@ import {
   JSONCode,
   TextOverflowWrapper,
 } from './styled';
-import { getResourceDisplayName, backendModuleExists } from 'helpers/helpers';
+import { getResourceDisplayName, backendModuleExists } from 'helpers';
 import { DOCUMENTATION_PER_PLAN_LABEL } from 'helpers/constants';
 
 const deleteButton = <Button compact option="light" glyph="delete" />;

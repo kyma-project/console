@@ -1,5 +1,5 @@
 import { serviceInstanceConstants } from 'helpers/constants';
-import { isAddon, isService } from 'helpers/helpers';
+import { isAddon, isService } from 'helpers';
 
 function determineDisplayedInstances(
   serviceInstances,
