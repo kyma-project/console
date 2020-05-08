@@ -3,14 +3,9 @@ const defaultConfig = {
 };
 
 function getConfigValue(field) {
-  const clusterConfig = window.clusterConfig;
+  const serverlessConfig = window.clusterConfig?.serverless;
   const defaultValue = defaultConfig[field] || '';
 
-  if (!clusterConfig) {
-    return defaultValue;
-  }
-
-  const serverlessConfig = clusterConfig.serverless;
   if (!serverlessConfig) {
     return defaultValue;
   }
