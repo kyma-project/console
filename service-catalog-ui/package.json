@@ -2,7 +2,9 @@
   "name": "service-catalog-ui",
   "version": "0.1.0",
   "private": true,
-  "dependencies": {},
+  "dependencies": {
+    "styled-components-grid": "^2.2.2"
+  },
   "scripts": {
     "start": ". ../scripts/load-cluster-config.sh && BROWSER=none PORT=8000 HOST=console-dev.kyma.local ../node_modules/.bin/react-scripts start",
     "start:kyma": "npm run start",

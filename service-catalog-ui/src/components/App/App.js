@@ -5,6 +5,7 @@ import ServiceClassList from '../ServiceClassList/ServiceClassList';
 import ServiceClassDetails from '../ServiceClassDetails/ServiceClassDetails';
 import ServiceClassPlansList from '../ServiceClassPlansList/ServiceClassPlansList';
 import ServiceInstancesList from '../ServiceInstancesList/ServiceInstancesList';
+import ServiceInstancesDetails from '../ServiceInstanceDetails/ServiceInstanceDetails';
 import { NotificationProvider } from 'react-shared';
 
 const App = () => (
@@ -46,6 +47,11 @@ const App = () => (
           return (
             <>
               <Route exact path={base + '/'} component={ServiceInstancesList} />
+              <Route
+                exact
+                path={base + '/details/:name'}
+                component={ServiceInstancesDetails}
+              />
             </>
           );
         }}
