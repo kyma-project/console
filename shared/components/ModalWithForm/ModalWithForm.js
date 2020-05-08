@@ -23,7 +23,7 @@ const isJsonSchemaFormValid = formRef => {
     : true;
 };
 
-const ModalWithForm = ({
+export const ModalWithForm = ({
   performRefetch,
   sendNotification,
   title,
@@ -39,7 +39,7 @@ const ModalWithForm = ({
   const [customValid, setCustomValid] = useState(true);
   const formElementRef = useRef(null);
   const jsonSchemaFormRef = useRef(null);
-  const notificationManager = null;
+  const notificationManager = useNotification();
 
   useEffect(() => {
     setOpenStatus(opened);
@@ -114,7 +114,7 @@ const ModalWithForm = ({
       setTimeout(() => setOpenStatus(false));
     }
   }
-  return null;
+
   return (
     <div>
       <Button
@@ -189,5 +189,3 @@ ModalWithForm.propTypes = {
 ModalWithForm.defaultProps = {
   performRefetch: () => {},
 };
-
-export default ModalWithForm;
