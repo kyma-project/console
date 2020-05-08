@@ -9,7 +9,8 @@ import {
   lambdaMock,
 } from 'components/Lambdas/helpers/testing';
 import { formatMessage } from 'components/Lambdas/helpers/misc';
-import { GQL_QUERIES, FUNCTION_USAGE_KIND } from 'components/Lambdas/constants';
+import { GQL_QUERIES } from 'components/Lambdas/constants';
+import { CONFIG } from 'components/Lambdas/config';
 
 import { useServiceBindingUsagesQuery } from '../useServiceBindingUsagesQuery';
 import {
@@ -24,7 +25,7 @@ describe('useServiceBindingUsagesQuery', () => {
   };
   const variables = {
     namespace: lambdaMock.namespace,
-    resourceKind: FUNCTION_USAGE_KIND,
+    resourceKind: CONFIG.functionUsageKind,
     resourceName: lambdaMock.name,
   };
   const subscriptionMock = SERVICE_BINDING_USAGE_EVENT_SUBSCRIPTION_MOCK(

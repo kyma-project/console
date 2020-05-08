@@ -8,10 +8,8 @@ import {
 import extractGraphQlErrors from 'shared/graphqlErrorExtractor';
 
 import { formatMessage } from 'components/Lambdas/helpers/misc';
-import {
-  GQL_MUTATIONS,
-  FUNCTION_USAGE_KIND,
-} from 'components/Lambdas/constants';
+import { GQL_MUTATIONS } from 'components/Lambdas/constants';
+import { CONFIG } from 'components/Lambdas/config';
 
 export const useCreateServiceBindingUsage = ({ lambda }) => {
   const notificationManager = useNotification();
@@ -47,7 +45,7 @@ export const useCreateServiceBindingUsage = ({ lambda }) => {
       },
       usedBy: {
         name: lambda.name,
-        kind: FUNCTION_USAGE_KIND,
+        kind: CONFIG.functionUsageKind,
       },
       parameters: serviceBindingUsageParameters,
     };
