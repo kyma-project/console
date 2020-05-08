@@ -4,6 +4,7 @@ import { Route, Switch } from 'react-router-dom';
 import ServiceClassList from '../ServiceClassList/ServiceClassList';
 import ServiceClassDetails from '../ServiceClassDetails/ServiceClassDetails';
 import ServiceClassPlansList from '../ServiceClassPlansList/ServiceClassPlansList';
+import ServiceInstancesList from '../ServiceInstancesList/ServiceInstancesList';
 import { NotificationProvider } from 'react-shared';
 
 const App = () => (
@@ -33,6 +34,18 @@ const App = () => (
                 path={base + '/details/:name/plans'}
                 component={RoutedServicePlanList}
               />
+            </>
+          );
+        }}
+      />
+
+      <Route
+        path="/instances"
+        component={({ match }) => {
+          const { path: base } = match;
+          return (
+            <>
+              <Route exact path={base + '/'} component={ServiceInstancesList} />
             </>
           );
         }}
