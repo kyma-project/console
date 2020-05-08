@@ -10,17 +10,32 @@ const App = () => (
   <NotificationProvider>
     <Switch>
       <Route path="/preload" component={() => null} />
-      <Route exact path="/" component={ServiceClassList} />
-      <Route exact path="/details/:name" component={RoutedCatalogDetails} />
+
       <Route
-        exact
-        path="/details/:name/plan/:plan"
-        component={RoutedCatalogDetails}
-      />
-      <Route
-        exact
-        path="/details/:name/plans"
-        component={RoutedServicePlanList}
+        path="/catalog"
+        component={({ match }) => {
+          const { path: base } = match;
+          return (
+            <>
+              <Route exact path={base + '/'} component={ServiceClassList} />
+              <Route
+                exact
+                path={base + '/details/:name'}
+                component={RoutedCatalogDetails}
+              />
+              <Route
+                exact
+                path={base + '/details/:name/plan/:plan'}
+                component={RoutedCatalogDetails}
+              />
+              <Route
+                exact
+                path={base + '/details/:name/plans'}
+                component={RoutedServicePlanList}
+              />
+            </>
+          );
+        }}
       />
     </Switch>
   </NotificationProvider>
