@@ -10,12 +10,7 @@ function getConfigValue(field) {
     return defaultValue;
   }
 
-  const configValue = serverlessConfig[field];
-  if (!configValue) {
-    return defaultValue;
-  }
-
-  return configValue;
+  return serverlessConfig[field] || configValue;
 }
 
 function loadConfig() {
