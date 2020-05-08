@@ -60,8 +60,8 @@ export class ServiceApiRulesComponent implements OnInit {
   }
 
   private getApiRules() {
-    this.gqlClientService.gqlQuery(GET_API_RULES, { namespace: this.currentNamespace })
-      .subscribe(data => this.apiRules = data.APIRules.filter(rule => rule.service.name === this.serviceName),
+    this.gqlClientService.gqlQuery(GET_API_RULES, { namespace: this.currentNamespace, serviceName: this.serviceName })
+      .subscribe(data => this.apiRules = data.APIRules,
       error => {
         this.error = error.message || error;
         console.warn(error);

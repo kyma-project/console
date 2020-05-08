@@ -1,6 +1,6 @@
 
 export const GET_API_RULES = `query APIRules($namespace: String!) {
-  APIRules(namespace: $namespace) {
+  APIRules(namespace: $namespace, serviceName: $serviceName) {
     name
     service {
       host
