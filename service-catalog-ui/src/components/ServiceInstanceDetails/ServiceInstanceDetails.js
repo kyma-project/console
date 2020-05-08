@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-
+import LuigiClient from '@kyma-project/luigi-client';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import { createBrowserHistory } from 'history';
 
@@ -16,7 +16,6 @@ import { serviceInstanceConstants } from 'helpers/constants';
 
 import { ServiceInstanceWrapper, EmptyList } from './styled';
 import { backendModuleExists } from 'helpers';
-import builder from 'builder';
 import { getServiceInstanceDetails } from 'helpers/instancesGQL/queries';
 import {
   SERVICE_BINDING_EVENT_SUBSCRIPTION,
@@ -36,7 +35,7 @@ export default function ServiceInstanceDetails({ match }) {
     getServiceInstanceDetails,
     {
       variables: {
-        namespace: builder.getCurrentEnvironmentId(),
+        namespace: LuigiClient.getContext().namespaceId,
         name: match.params.name,
       },
     },
@@ -45,7 +44,7 @@ export default function ServiceInstanceDetails({ match }) {
   useEffect(() => {
     return subscribeToMore({
       variables: {
-        namespace: builder.getCurrentEnvironmentId(),
+        namespace: LuigiClient.getContext().namespaceId,
       },
       document: SERVICE_BINDING_EVENT_SUBSCRIPTION,
       updateQuery: (prev, { subscriptionData }) => {
@@ -67,7 +66,7 @@ export default function ServiceInstanceDetails({ match }) {
   useEffect(() => {
     return subscribeToMore({
       variables: {
-        namespace: builder.getCurrentEnvironmentId(),
+        namespace: LuigiClient.getContext().namespaceId,
       },
       document: SERVICE_BINDING_USAGE_EVENT_SUBSCRIPTION,
       updateQuery: (prev, { subscriptionData }) => {
@@ -89,7 +88,7 @@ export default function ServiceInstanceDetails({ match }) {
   useEffect(() => {
     return subscribeToMore({
       variables: {
-        namespace: builder.getCurrentEnvironmentId(),
+        namespace: LuigiClient.getContext().namespaceId,
       },
       document: SERVICE_INSTANCE_EVENT_SUBSCRIPTION,
       updateQuery: (prev, { subscriptionData }) => {

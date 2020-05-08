@@ -12,7 +12,6 @@ import {
 } from '@kyma-project/react-components';
 import { Identifier } from 'fundamental-react';
 
-import builder from 'builder';
 import { getAllServiceInstances } from 'helpers/instancesGQL/queries';
 import { deleteServiceInstance } from 'helpers/instancesGQL/mutations';
 import { SERVICE_INSTANCE_EVENT_SUBSCRIPTION } from 'helpers/instancesGQL/subscriptions';
@@ -75,14 +74,14 @@ export default function ServiceInstancesList() {
     subscribeToMore,
   } = useQuery(getAllServiceInstances, {
     variables: {
-      namespace: builder.getCurrentEnvironmentId(),
+      namespace: LuigiClient.getContext().namespaceId,
     },
   });
 
   useEffect(() => {
     return subscribeToMore({
       variables: {
-        namespace: builder.getCurrentEnvironmentId(),
+        namespace: LuigiClient.getContext().namespaceId,
       },
       document: SERVICE_INSTANCE_EVENT_SUBSCRIPTION,
       updateQuery: (prev, { subscriptionData }) => {
@@ -123,7 +122,7 @@ export default function ServiceInstancesList() {
   const handleDelete = instanceName => {
     deleteServiceInstanceMutation({
       variables: {
-        namespace: builder.getCurrentEnvironmentId(),
+        namespace: LuigiClient.getContext().namespaceId,
         name: instanceName,
       },
     });

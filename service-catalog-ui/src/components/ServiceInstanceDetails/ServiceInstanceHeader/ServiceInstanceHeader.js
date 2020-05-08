@@ -9,7 +9,6 @@ import {
   Toolbar,
 } from '@kyma-project/react-components';
 import { BreadcrumbWrapper, ToolbarWrapper } from './styled';
-import builder from 'builder';
 import { isService } from 'helpers';
 
 const ServiceInstanceHeader = ({
@@ -29,7 +28,7 @@ const ServiceInstanceHeader = ({
   const handleDelete = async () => {
     await deleteServiceInstance({
       variables: {
-        namespace: builder.getCurrentEnvironmentId(),
+        namespace: LuigiClient.getContext().namespaceId,
         name: serviceInstance.name,
       },
     });

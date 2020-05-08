@@ -1,5 +1,5 @@
 import { randomNamesGenerator } from '@kyma-project/common';
-import builder from '../builder';
+import builder from 'builder';
 
 export const getDocumentsTypes = (items, docsSortedByType) => {
   let documentsTypes = [];

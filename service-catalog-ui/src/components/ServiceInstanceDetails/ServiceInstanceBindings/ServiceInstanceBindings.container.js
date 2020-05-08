@@ -1,6 +1,6 @@
 import { graphql } from 'react-apollo';
 import { compose } from 'recompose';
-
+import LuigiClient from '@kyma-project/luigi-client';
 import {
   BINDING_USAGE_CREATE_MUTATION,
   BINDING_CREATE_MUTATION,
@@ -10,8 +10,6 @@ import {
 
 import ServiceInstanceBindings from './ServiceInstanceBindings.component';
 
-import builder from 'builder';
-
 export default compose(
   graphql(BINDING_CREATE_MUTATION, {
     props: ({ mutate }) => ({
@@ -19,7 +17,7 @@ export default compose(
         mutate({
           variables: {
             serviceInstanceName,
-            namespace: builder.getCurrentEnvironmentId(),
+            namespace: LuigiClient.getContext().namespaceId,
             parameters,
           },
         }),
@@ -30,7 +28,7 @@ export default compose(
       createBindingUsage: createServiceBindingUsageInput =>
         mutate({
           variables: {
-            namespace: builder.getCurrentEnvironmentId(),
+            namespace: LuigiClient.getContext().namespaceId,
             createServiceBindingUsageInput,
           },
         }),
@@ -42,7 +40,7 @@ export default compose(
         mutate({
           variables: {
             serviceBindingName: name,
-            namespace: builder.getCurrentEnvironmentId(),
+            namespace: LuigiClient.getContext().namespaceId,
           },
         }),
     }),
@@ -53,7 +51,7 @@ export default compose(
         mutate({
           variables: {
             serviceBindingUsageName: name,
-            namespace: builder.getCurrentEnvironmentId(),
+            namespace: LuigiClient.getContext().namespaceId,
           },
         }),
     }),

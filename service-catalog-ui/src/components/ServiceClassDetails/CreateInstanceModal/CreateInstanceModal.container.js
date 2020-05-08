@@ -1,8 +1,7 @@
 import { graphql } from 'react-apollo';
 import { compose } from 'recompose';
 import { checkInstanceExist } from './queries';
-
-import builder from 'builder';
+import LuigiClient from '@kyma-project/luigi-client';
 import CreateInstanceModal from './CreateInstanceModal.component';
 
 export default compose(
@@ -11,7 +10,7 @@ export default compose(
     options: () => {
       return {
         variables: {
-          namespace: builder.getCurrentEnvironmentId(),
+          namespace: LuigiClient.getContext().namespaceId,
         },
       };
     },
