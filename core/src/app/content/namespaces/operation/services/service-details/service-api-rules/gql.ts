@@ -1,5 +1,5 @@
 
-export const GET_API_RULES = `query APIRules($namespace: String!) {
+export const GET_API_RULES = `query APIRules($namespace: String!, $serviceName: String) {
   APIRules(namespace: $namespace, serviceName: $serviceName) {
     name
     service {
