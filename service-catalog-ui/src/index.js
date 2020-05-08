@@ -4,8 +4,7 @@ import ReactDOM from 'react-dom';
 import { ApolloProvider } from '@apollo/react-hooks';
 import { BrowserRouter } from 'react-router-dom';
 import { preloadingStrategy } from '@kyma-project/common';
-// import './index.scss';
-// import App from './components/App/App';
+import './index.scss';
 import builder from './builder';
 
 import { createKymaApolloClient } from './apollo';
