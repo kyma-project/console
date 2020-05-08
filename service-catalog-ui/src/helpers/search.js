@@ -1,7 +1,10 @@
-import { serviceInstanceConstants } from 'helpers/constants';
+import {
+  serviceInstanceConstants,
+  serviceClassConstants,
+} from 'helpers/constants';
 import { isAddon, isService } from 'helpers';
 
-function determineDisplayedInstances(
+export function determineDisplayedInstances(
   serviceInstances,
   tabIndex,
   searchQuery,
@@ -23,7 +26,11 @@ function determineDisplayedInstances(
   return filteredByTab;
 }
 
-function determineAvailableLabels(serviceInstances, tabName, searchQuery) {
+export function determineAvailableLabels(
+  serviceInstances,
+  tabName,
+  searchQuery,
+) {
   const displayedInstances = determineDisplayedInstances(
     serviceInstances,
     tabName,
@@ -53,4 +60,30 @@ function determineAvailableLabels(serviceInstances, tabName, searchQuery) {
   return labelsWithOccurrences;
 }
 
-export { determineAvailableLabels, determineDisplayedInstances };
+export const determineDisplayedServiceClasses = (
+  serviceClasses,
+  tabIndex,
+  searchQuery,
+  activeLabels,
+) => {
+  const searched = serviceClasses.filter(item => {
+    const searchRegexp = new RegExp(searchQuery, 'i');
+
+    return (
+      searchRegexp.test(item.displayName) ||
+      searchRegexp.test(item.description) ||
+      searchRegexp.test(item.providerDisplayName)
+    );
+  });
+
+  const filteredByLabels = searched.filter(item =>
+    activeLabels.every(activeLabel => item.labels.includes(activeLabel)),
+  );
+
+  const filterFunction =
+    tabIndex === serviceClassConstants.addonsIndex ? isAddon : isService;
+
+  const filteredByTab = filteredByLabels.filter(filterFunction);
+
+  return filteredByTab;
+};

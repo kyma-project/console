@@ -21,7 +21,7 @@ import { serviceInstanceConstants } from 'helpers/constants';
 import {
   determineAvailableLabels,
   determineDisplayedInstances,
-} from './searchUtils';
+} from 'helpers/search';
 
 import ServiceInstancesTable from './ServiceInstancesTable/ServiceInstancesTable.component';
 import ServiceInstancesToolbar from './ServiceInstancesToolbar/ServiceInstancesToolbar.component';

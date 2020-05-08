@@ -13,7 +13,7 @@ import { Identifier } from 'fundamental-react';
 
 import { getAllServiceClasses } from './queries';
 import { serviceClassConstants } from 'helpers/constants';
-import { determineDisplayedServiceClasses } from './searchUtils';
+import { determineDisplayedServiceClasses } from 'helpers/search';
 
 import Cards from './Cards/Cards.component';
 import ServiceClassToolbar from './ServiceClassToolbar/ServiceClassToolbar.component';
