@@ -1,0 +1,12 @@
+.doc-type-badge {
+  $marginBetween: 18px;
+  cursor: help;
+  display: block;
+  &:not(:first-child) {
+    margin-top: calc(#{$marginBetween} / 2);
+  }
+
+  &:not(:last-child) {
+    margin-bottom: calc(#{$marginBetween} / 2);
+  }
+}
