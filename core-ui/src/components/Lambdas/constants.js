@@ -400,7 +400,7 @@ export const ENVIRONMENT_VARIABLES_PANEL = {
 
 export const FIRST_BREADCRUMB_NODE = 'Functions';
 
-export const FUNCTION_USAGE_KIND = 'knative-service';
+export const FUNCTION_USAGE_KIND = 'function';
 
 export const REFETCH_LAMBDAS_TIMEOUT = 2000;
 
