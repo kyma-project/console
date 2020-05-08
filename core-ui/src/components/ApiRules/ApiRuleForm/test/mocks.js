@@ -25,10 +25,10 @@ export const apiRule = () => ({
     },
     {
       path: '/bbb',
-      methods: ['POST', 'DELETE'],
+      methods: [],
       accessStrategies: [
         {
-          name: 'noop',
+          name: 'allow',
         },
       ],
     },
