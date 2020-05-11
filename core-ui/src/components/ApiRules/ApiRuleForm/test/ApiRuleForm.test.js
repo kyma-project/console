@@ -8,6 +8,7 @@ import {
   servicesQuery,
   idpPresetsQuery,
 } from './mocks';
+import { supportedMethodsList } from 'components/ApiRules/accessStrategyTypes';
 
 jest.mock('@kyma-project/common', () => ({
   getApiUrl: () => 'kyma.cluster.com',
@@ -52,12 +53,9 @@ describe('ApiRuleForm', () => {
       expect(input).toHaveValue(apiRule().rules[idx].path);
     });
 
-    verifyMethodCheckboxes(queryAllByLabelText, 'GET');
-    verifyMethodCheckboxes(queryAllByLabelText, 'PUT');
-    verifyMethodCheckboxes(queryAllByLabelText, 'POST');
-    verifyMethodCheckboxes(queryAllByLabelText, 'DELETE');
-    verifyMethodCheckboxes(queryAllByLabelText, 'HEAD');
-    verifyMethodCheckboxes(queryAllByLabelText, 'PATCH');
+    supportedMethodsList.forEach(method =>
+      verifyMethodCheckboxes(queryAllByLabelText, method),
+    );
 
     const typeSelects = queryAllByLabelText('Access strategy type');
     expect(typeSelects).toHaveLength(apiRule().rules.length);

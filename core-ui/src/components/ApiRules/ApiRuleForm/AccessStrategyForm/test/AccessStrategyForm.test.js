@@ -88,6 +88,8 @@ describe('AccessStrategyForm', () => {
     expect(getByLabelText('PUT')).toBeChecked();
     expect(getByLabelText('POST')).not.toBeChecked();
     expect(getByLabelText('DELETE')).not.toBeChecked();
+    expect(getByLabelText('HEAD')).not.toBeChecked();
+    expect(getByLabelText('PATCH')).not.toBeChecked();
   });
 
   it('renders OAuth2 strategy', () => {
