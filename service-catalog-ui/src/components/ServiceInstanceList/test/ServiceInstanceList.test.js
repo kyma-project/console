@@ -5,21 +5,21 @@ import {
   serviceInstanceDeleteMutation,
   allServiceInstancesQuery,
   serviceInstancesSubscription,
-} from '../../../testing/queriesMocks';
+} from 'testing/instances/queriesMocks';
 import ServiceInstanceTable from '../ServiceInstanceTable/ServiceInstanceTable.component';
 
 import { Button, Spinner, Tab, Search } from '@kyma-project/react-components';
 import ServiceInstancesList from '../ServiceInstanceList';
 import { Link } from '../ServiceInstanceTable/styled.js';
 import { createMockLink } from 'react-shared';
-import { componentUpdate } from '../../../testing';
+import { componentUpdate, mockTestNamespace } from 'testing';
 import { act } from 'react-dom/test-utils';
 import { Identifier } from 'fundamental-react';
 import {
   serviceInstance1,
   serviceInstance3,
   serviceInstance2,
-} from 'testing/instanceMocks';
+} from 'testing/instances/instanceMocks';
 import FilterDropdown from '../ServiceInstanceToolbar/FilterDropdown.component';
 import { FormInput } from '../ServiceInstanceToolbar/styled';
 
@@ -41,6 +41,9 @@ function mountWithModalBg(component) {
 }
 
 jest.mock('@kyma-project/luigi-client', () => ({
+  getContext: () => ({
+    namespaceId: mockTestNamespace,
+  }),
   linkManager: () => ({
     fromContext: () => ({
       navigate: mockNavigate,
@@ -92,7 +95,7 @@ describe('InstancesList UI', () => {
     expectKnownConsoleWarnings();
   });
 
-  it('Displays instances with their corresponding names in the table', async () => {
+  fit('Displays instances with their corresponding names in the table', async () => {
     const { link } = createMockLink([allServiceInstancesQuery]);
     const component = mount(
       <MockedProvider link={link}>

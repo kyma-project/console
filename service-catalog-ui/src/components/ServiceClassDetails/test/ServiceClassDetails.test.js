@@ -9,15 +9,13 @@ import {
 } from '@testing-library/react';
 import {
   serviceClassAPIruleQuery,
-  serviceClassAPIruleQueryNoPlans,
-  mockEnvironmentId,
   serviceClassWithPlans,
-} from '../../../testing/queriesMocks';
+} from 'testing/catalog/queriesMocks';
 import ServiceClassDetails, { PlanSelector } from '../ServiceClassDetails';
 import { Spinner } from 'react-shared';
-import { componentUpdate } from '../../../testing';
+import { componentUpdate, mockTestNamespace } from 'testing';
 import ServiceClassDetailsHeader from '../ServiceClassDetailsHeader/ServiceClassDetailsHeader.component';
-import { mockPlan } from 'testing/serviceClassesMocks';
+import { mockPlan } from 'testing/catalog/serviceClassesMocks';
 
 const mockNavigate = jest.fn();
 const mockAddBackdrop = jest.fn();
@@ -30,7 +28,7 @@ jest.mock('@kyma-project/generic-documentation', () => {
 
 jest.mock('@kyma-project/luigi-client', () => ({
   getEventData: () => ({
-    environmentId: mockEnvironmentId,
+    environmentId: mockTestNamespace,
   }),
   linkManager: () => ({
     fromContext: () => ({

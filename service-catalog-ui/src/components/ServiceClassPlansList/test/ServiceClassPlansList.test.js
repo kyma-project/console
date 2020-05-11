@@ -7,20 +7,20 @@ import {
 } from '@testing-library/react';
 import ServiceClassPlansList, { DocTypesList } from '../ServiceClassPlansList';
 import { MockedProvider } from '@apollo/react-testing';
-import { serviceClassConstants } from '../../../variables';
+import { serviceClassConstants } from 'helpers/constants';
 import {
   serviceClassPlansQuery,
   serviceClassNoPlansQuery,
-  mockEnvironmentId,
-} from '../../../testing/queriesMocks';
-import { assetGroupWithManyAssets } from '../../../testing/serviceClassesMocks';
+} from 'testing/catalog/queriesMocks';
+import { testNamespace as mockTestNamespace } from 'testing';
+import { assetGroupWithManyAssets } from 'testing/catalog/serviceClassesMocks';
 
 const mockNavigate = jest.fn();
 const mockShowConfirmationModal = jest.fn(() => Promise.resolve());
 
 jest.mock('@kyma-project/luigi-client', () => ({
   getEventData: () => ({
-    environmentId: mockEnvironmentId,
+    environmentId: mockTestNamespace,
   }),
   linkManager: () => ({
     fromClosestContext: () => ({

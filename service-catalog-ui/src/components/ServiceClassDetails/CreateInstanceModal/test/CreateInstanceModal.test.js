@@ -3,18 +3,17 @@ import renderer from 'react-test-renderer';
 import { mount } from 'enzyme';
 import { MockedProvider } from '@apollo/react-testing';
 import { render } from '@testing-library/react';
-import { componentUpdate } from '../../../../testing';
+import { componentUpdate, mockTestNamespace } from 'testing';
 import {
   mockServiceClass,
   mockPlan,
   planWithImagePullPolicy,
-} from '../../../../testing/serviceClassesMocks';
+} from 'testing/catalog/serviceClassesMocks';
 import {
   createServiceInstanceSuccessfulMock,
   createServiceInstanceErrorMock,
-  mockEnvironmentId,
   createServiceInstanceNoPlanSpecSuccessfulMock,
-} from '../../../../testing/queriesMocks';
+} from 'testing/catalog/queriesMocks';
 import CreateInstanceModal from '../CreateInstanceModal.component';
 
 const onCompleted = jest.fn();
@@ -30,7 +29,7 @@ jest.mock('react-shared', () => ({
 
 jest.mock('@kyma-project/luigi-client', () => ({
   getEventData: () => ({
-    environmentId: mockEnvironmentId,
+    environmentId: mockTestNamespace,
   }),
   linkManager: () => ({
     fromContext: () => ({

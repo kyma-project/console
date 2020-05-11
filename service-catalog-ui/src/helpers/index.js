@@ -119,3 +119,25 @@ export function isAddon(serviceClass) {
 export function isService(serviceClass) {
   return !serviceClass.labels || serviceClass.labels.local !== 'true';
 }
+
+function getServiceClass(instance) {
+  return instance.serviceClass
+    ? instance.serviceClass
+    : instance.clusterServiceClass;
+}
+
+export function isAddonInstance(instance) {
+  const serviceClass = getServiceClass(instance);
+  if (!serviceClass) {
+    return true;
+  }
+  return serviceClass.labels && serviceClass.labels.local === 'true';
+}
+
+export function isServiceInstance(instance) {
+  const serviceClass = getServiceClass(instance);
+  if (!serviceClass) {
+    return false;
+  }
+  return !serviceClass.labels || serviceClass.labels.local !== 'true';
+}

@@ -1,22 +1,21 @@
 import {
   getAllServiceInstances,
   getServiceInstanceDetails,
-} from '../queries/queries';
-import { deleteServiceInstance } from '../queries/mutations';
-import { BINDING_CREATE_MUTATION } from '../components/ServiceInstanceDetails/ServiceInstanceBindings/mutations';
+} from 'helpers/instancesGQL/queries';
+import { deleteServiceInstance } from 'helpers/instancesGQL/mutations';
+import { mockTestNamespace } from 'testing';
+import { BINDING_CREATE_MUTATION } from 'components/ServiceInstanceDetails/ServiceInstanceBindings/mutations';
 import {
   serviceInstance1,
   serviceInstance2,
   serviceInstance3,
 } from './instanceMocks';
 
-import builder from '../commons/builder';
-
 export const allServiceInstancesQuery = {
   request: {
     query: getAllServiceInstances,
     variables: {
-      namespace: builder.getCurrentEnvironmentId(),
+      namespace: mockTestNamespace,
     },
   },
   result: {
@@ -30,7 +29,7 @@ export const serviceInstanceQuery = {
   request: {
     query: getServiceInstanceDetails,
     variables: {
-      namespace: builder.getCurrentEnvironmentId(),
+      namespace: mockTestNamespace,
       name: 'sth-motherly-deposit',
     },
   },
@@ -45,7 +44,7 @@ export const serviceInstanceDeleteMutation = {
   request: {
     query: deleteServiceInstance,
     variables: {
-      namespace: builder.getCurrentEnvironmentId(),
+      namespace: mockTestNamespace,
       name: 'sth-motherly-deposit',
     },
   },
@@ -62,7 +61,7 @@ export const createBindingMutation = {
   request: {
     query: BINDING_CREATE_MUTATION,
     variables: {
-      namespace: builder.getCurrentEnvironmentId(),
+      namespace: mockTestNamespace,
       serviceInstanceName: 'sth-motherly-deposit',
       parameters: {},
     },

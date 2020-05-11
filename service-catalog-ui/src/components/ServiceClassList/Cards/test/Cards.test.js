@@ -3,8 +3,11 @@ import Cards from '../Cards.component';
 import React from 'react';
 import { shallow } from 'enzyme';
 import Card from '../Card.component';
-import { mockServiceClass, mockPlan } from 'testing/serviceClassesMocks';
-import { DOCUMENTATION_PER_PLAN_LABEL } from 'shared/constants';
+import {
+  mockServiceClass,
+  mockPlan,
+} from 'testing/catalog/serviceClassesMocks';
+import { DOCUMENTATION_PER_PLAN_LABEL } from 'helpers/constants';
 
 const mockNavigate = jest.fn();
 jest.mock('@kyma-project/luigi-client', () => ({

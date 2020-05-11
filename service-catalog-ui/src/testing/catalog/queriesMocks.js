@@ -1,16 +1,18 @@
-import { getAllServiceClasses } from '../components/ServiceClassList/queries';
-import { getServiceClass } from '../components/ServiceClassDetails/queries';
-import { getServiceClassPlans } from '../components/ServiceClassPlansList/queries';
-import { createServiceInstance } from '../components/ServiceClassDetails/CreateInstanceModal/mutations';
+import { getAllServiceClasses } from 'components/ServiceClassList/queries';
+import { getServiceClass } from 'components/ServiceClassDetails/queries';
+import { getServiceClassPlans } from 'components/ServiceClassPlansList/queries';
+import { createServiceInstance } from 'components/ServiceClassDetails/CreateInstanceModal/mutations';
 import {
   mockServiceClass,
   mockPlan,
   planWithImagePullPolicy,
 } from './serviceClassesMocks';
-import { filterExtensions } from '../variables';
-import { DOCUMENTATION_PER_PLAN_LABEL } from '../shared/constants';
+import {
+  filterExtensions,
+  DOCUMENTATION_PER_PLAN_LABEL,
+} from 'helpers/constants';
 
-export const mockEnvironmentId = 'testnamespace';
+import { mockTestNamespace } from 'testing';
 
 const otherRequestParams = {
   externalServiceClassName: mockServiceClass(1).externalName,
@@ -26,7 +28,7 @@ export const allServiceClassesQuery = {
   request: {
     query: getAllServiceClasses,
     variables: {
-      namespace: mockEnvironmentId,
+      namespace: mockTestNamespace,
     },
   },
   result: {
@@ -42,7 +44,7 @@ export const serviceClassWithPlans = {
   request: {
     query: getServiceClass,
     variables: {
-      namespace: mockEnvironmentId,
+      namespace: mockTestNamespace,
       name: mockServiceClass(1, true).name,
       fileExtensions: filterExtensions,
     },
@@ -62,7 +64,7 @@ export const serviceClassAPIruleQuery = plans => ({
   request: {
     query: getServiceClass,
     variables: {
-      namespace: mockEnvironmentId,
+      namespace: mockTestNamespace,
       name: mockServiceClass(1, false).name,
       fileExtensions: filterExtensions,
     },
@@ -83,7 +85,7 @@ export const serviceClassPlansQuery = {
   request: {
     query: getServiceClassPlans,
     variables: {
-      namespace: mockEnvironmentId,
+      namespace: mockTestNamespace,
       name: mockServiceClass(1).name,
     },
   },
@@ -99,7 +101,7 @@ export const serviceClassNoPlansQuery = {
   request: {
     query: getServiceClassPlans,
     variables: {
-      namespace: mockEnvironmentId,
+      namespace: mockTestNamespace,
       name: mockServiceClass(1).name,
     },
   },
@@ -116,7 +118,7 @@ export const createServiceInstanceSuccessfulMock = name => {
     request: {
       query: createServiceInstance,
       variables: {
-        namespace: mockEnvironmentId,
+        namespace: mockTestNamespace,
         name,
         ...otherRequestParams,
       },
@@ -124,7 +126,7 @@ export const createServiceInstanceSuccessfulMock = name => {
     result: jest.fn().mockReturnValue({
       data: {
         createServiceInstance: {
-          namespace: mockEnvironmentId,
+          namespace: mockTestNamespace,
           name,
           parameters: {},
         },
@@ -139,7 +141,7 @@ export const createServiceInstanceNoPlanSpecSuccessfulMock = name => {
     request: {
       query: createServiceInstance,
       variables: {
-        namespace: mockEnvironmentId,
+        namespace: mockTestNamespace,
         name,
         parameterSchema: {},
         ...params,
@@ -149,7 +151,7 @@ export const createServiceInstanceNoPlanSpecSuccessfulMock = name => {
     result: jest.fn().mockReturnValue({
       data: {
         createServiceInstance: {
-          namespace: mockEnvironmentId,
+          namespace: mockTestNamespace,
           name,
           parameters: {},
         },
@@ -162,7 +164,7 @@ export const createServiceInstanceErrorMock = name => ({
   request: {
     query: createServiceInstance,
     variables: {
-      namespace: mockEnvironmentId,
+      namespace: mockTestNamespace,
       name,
       ...otherRequestParams,
     },

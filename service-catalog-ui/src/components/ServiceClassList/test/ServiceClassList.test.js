@@ -4,10 +4,10 @@ import { mount } from 'enzyme';
 import {
   allServiceClassesQuery,
   mockEnvironmentId,
-} from '../../../testing/queriesMocks';
+} from 'testing/catalog/queriesMocks';
 import { Spinner, Tab } from '@kyma-project/react-components';
 import ServiceClassList from '../ServiceClassList';
-import { componentUpdate } from '../../../testing';
+import { componentUpdate } from 'testing';
 import { Search } from '@kyma-project/react-components';
 import { Identifier } from 'fundamental-react';
 

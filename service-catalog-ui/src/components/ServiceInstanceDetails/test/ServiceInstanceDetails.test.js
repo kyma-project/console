@@ -5,16 +5,15 @@ import {
   serviceInstanceDeleteMutation,
   serviceInstanceQuery,
   createBindingMutation,
-} from '../../../testing/queriesMocks';
+} from 'testing/instances/queriesMocks';
 import ServiceInstanceDetails from '../ServiceInstanceDetails';
 import { Spinner, Toolbar, Modal } from '@kyma-project/react-components';
-import { createMockLink } from 'react-shared';
-import { componentUpdate } from '../../../testing';
-import { serviceInstanceConstants } from '../../../variables';
+import { createMockLink, NotificationContext } from 'react-shared';
+import { componentUpdate, mockTestNamespace } from 'testing';
+import { serviceInstanceConstants } from 'helpers/constants';
 
 import ServiceInstanceHeader from '../ServiceInstanceHeader/ServiceInstanceHeader';
 import ServiceInstanceBindings from '../ServiceInstanceBindings/ServiceInstanceBindings.container';
-import NotificationContext from '../../../contexts/NotificationContext/NotificationContext';
 
 const mockNavigate = jest.fn();
 const mockAddBackdrop = jest.fn();
@@ -25,6 +24,9 @@ jest.mock('@kyma-project/generic-documentation', () => {
 });
 
 jest.mock('@kyma-project/luigi-client', () => ({
+  getContext: () => ({
+    namespaceId: mockTestNamespace,
+  }),
   linkManager: () => ({
     fromContext: () => ({
       navigate: mockNavigate,

@@ -10,3 +10,5 @@ export async function componentUpdate(component) {
 export function expectKnownConsoleWarnings(consoleWarn) {
   expect(consoleWarn.mock.calls).toMatchSnapshot();
 }
+
+export const mockTestNamespace = 'testnamespace';
