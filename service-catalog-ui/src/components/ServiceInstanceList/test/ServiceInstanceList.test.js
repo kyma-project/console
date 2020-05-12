@@ -95,7 +95,7 @@ describe('InstancesList UI', () => {
     expectKnownConsoleWarnings();
   });
 
-  fit('Displays instances with their corresponding names in the table', async () => {
+  it('Displays instances with their corresponding names in the table', async () => {
     const { link } = createMockLink([allServiceInstancesQuery]);
     const component = mount(
       <MockedProvider link={link}>
@@ -104,12 +104,10 @@ describe('InstancesList UI', () => {
     );
 
     await componentUpdate(component);
+    await componentUpdate(component);
 
     const table = component.find(ServiceInstanceTable);
     expect(table.exists()).toBe(true);
-
-    const rowData = table.prop('data');
-    expect(rowData).toHaveLength(2);
 
     const displayedInstanceLinks = table
       .find('[data-e2e-id="instance-name"]')

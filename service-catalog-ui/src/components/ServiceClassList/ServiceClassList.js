@@ -63,7 +63,7 @@ export default function ServiceClassList() {
     error: queryError,
   } = useQuery(getAllServiceClasses, {
     variables: {
-      namespace: LuigiClient.getEventData().environmentId,
+      namespace: LuigiClient.getContext().namespaceId,
     },
     fetchPolicy: 'no-cache',
   });

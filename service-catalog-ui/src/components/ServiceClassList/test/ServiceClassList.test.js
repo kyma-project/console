@@ -1,13 +1,10 @@
 import React from 'react';
 import { MockedProvider } from '@apollo/react-testing';
 import { mount } from 'enzyme';
-import {
-  allServiceClassesQuery,
-  mockEnvironmentId,
-} from 'testing/catalog/queriesMocks';
+import { allServiceClassesQuery } from 'testing/catalog/queriesMocks';
 import { Spinner, Tab } from '@kyma-project/react-components';
 import ServiceClassList from '../ServiceClassList';
-import { componentUpdate } from 'testing';
+import { componentUpdate, mockTestNamespace } from 'testing';
 import { Search } from '@kyma-project/react-components';
 import { Identifier } from 'fundamental-react';
 
@@ -17,8 +14,8 @@ const servicesTabIndex = 0;
 const addonsTabIndex = 1;
 
 jest.mock('@kyma-project/luigi-client', () => ({
-  getEventData: () => ({
-    environmentId: mockEnvironmentId,
+  getContext: () => ({
+    namespaceId: mockTestNamespace,
   }),
   linkManager: () => ({
     fromClosestContext: () => ({
@@ -61,6 +58,7 @@ describe('ServiceClassList UI', () => {
 
   it('Add-Ons tab has proper counter', async () => {
     await componentUpdate(component);
+
     const addOnsTab = component.find(Tab).at(addonsTabIndex);
     expect(addOnsTab.find(Identifier).text()).toEqual(
       allServiceClassesQuery.result.data.serviceClasses.length.toString(),

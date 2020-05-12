@@ -12,15 +12,15 @@ import {
   serviceClassPlansQuery,
   serviceClassNoPlansQuery,
 } from 'testing/catalog/queriesMocks';
-import { testNamespace as mockTestNamespace } from 'testing';
+import { mockTestNamespace } from 'testing';
 import { assetGroupWithManyAssets } from 'testing/catalog/serviceClassesMocks';
 
 const mockNavigate = jest.fn();
 const mockShowConfirmationModal = jest.fn(() => Promise.resolve());
 
 jest.mock('@kyma-project/luigi-client', () => ({
-  getEventData: () => ({
-    environmentId: mockTestNamespace,
+  getContext: () => ({
+    namespaceId: mockTestNamespace,
   }),
   linkManager: () => ({
     fromClosestContext: () => ({

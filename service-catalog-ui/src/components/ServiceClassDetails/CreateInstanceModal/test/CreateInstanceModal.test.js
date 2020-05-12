@@ -28,8 +28,8 @@ jest.mock('react-shared', () => ({
 }));
 
 jest.mock('@kyma-project/luigi-client', () => ({
-  getEventData: () => ({
-    environmentId: mockTestNamespace,
+  getContext: () => ({
+    namespaceId: mockTestNamespace,
   }),
   linkManager: () => ({
     fromContext: () => ({

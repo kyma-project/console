@@ -53,7 +53,7 @@ PlanSelector.propTypes = {
 };
 
 export default function ServiceClassDetails({ name, plan }) {
-  const namespace = LuigiClient.getEventData().environmentId;
+  const namespace = LuigiClient.getContext().namespaceId;
   const [currentPlan, setCurrentPlan] = useState(null);
 
   const {

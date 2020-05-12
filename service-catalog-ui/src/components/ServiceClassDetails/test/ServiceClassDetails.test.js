@@ -27,8 +27,8 @@ jest.mock('@kyma-project/generic-documentation', () => {
 });
 
 jest.mock('@kyma-project/luigi-client', () => ({
-  getEventData: () => ({
-    environmentId: mockTestNamespace,
+  getContext: () => ({
+    namespaceId: mockTestNamespace,
   }),
   linkManager: () => ({
     fromContext: () => ({

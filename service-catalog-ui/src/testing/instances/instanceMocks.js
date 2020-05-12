@@ -1,6 +1,8 @@
+import { mockTestNamespace } from 'testing';
+
 const serviceInstance1 = {
   name: 'sth-motherly-deposit',
-  namespace: 'default',
+  namespace: mockTestNamespace,
   planSpec: { imagePullPolicy: 'IfNotPresent' },
   labels: ['label1', 'label2'],
   bindable: true,
@@ -72,7 +74,7 @@ const serviceInstance1 = {
     items: [
       {
         name: 'eloquent-visvesvaraya',
-        namespace: 'default',
+        namespace: mockTestNamespace,
         parameters: {},
         secret: {
           name: 'eloquent-visvesvaraya',
@@ -81,7 +83,7 @@ const serviceInstance1 = {
               'sth-enterprise-c6ca8420-d71f-11e9-9df2-b636baf2f-sth.default.svc.cluster.local',
             PORT: '6379',
           },
-          namespace: 'default',
+          namespace: mockTestNamespace,
           __typename: 'Secret',
         },
         serviceInstanceName: 'sth-motherly-deposit',
@@ -106,7 +108,7 @@ const serviceInstance1 = {
   serviceBindingUsages: [
     {
       name: 'nifty-ramanujan',
-      namespace: 'default',
+      namespace: mockTestNamespace,
       serviceBinding: {
         name: 'eloquent-visvesvaraya',
         serviceInstanceName: 'sth-motherly-deposit',
@@ -144,7 +146,7 @@ const serviceInstance1 = {
 
 const serviceInstance2 = {
   name: 'testing-curly-tax',
-  namespace: 'default',
+  namespace: mockTestNamespace,
   planSpec: {},
   labels: ['label2'],
   bindable: false,
@@ -293,7 +295,7 @@ const serviceInstance2 = {
 
 const serviceInstance3 = {
   name: 'going-fishing',
-  namespace: 'default',
+  namespace: mockTestNamespace,
   planSpec: {},
   labels: ['label3'],
   bindable: false,

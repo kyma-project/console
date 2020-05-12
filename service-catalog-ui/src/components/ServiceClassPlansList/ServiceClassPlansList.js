@@ -78,7 +78,8 @@ function getPlanDocTypes(plan) {
 }
 
 export default function ServiceClassPlansList({ name }) {
-  const namespace = LuigiClient.getEventData().environmentId;
+  const namespace = LuigiClient.getContext().namespaceId;
+
   const {
     data: queryData,
     loading: queryLoading,

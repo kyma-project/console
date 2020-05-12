@@ -200,7 +200,7 @@ export default function CreateInstanceModal({
       const isClusterServiceClass = item.__typename === 'ClusterServiceClass';
       const variables = {
         name: formValues.name.current.value,
-        namespace: LuigiClient.getEventData().environmentId,
+        namespace: LuigiClient.getContext().namespaceId,
         externalServiceClassName: item.externalName,
         externalPlanName: currentPlan && currentPlan.externalName,
         classClusterWide: isClusterServiceClass,

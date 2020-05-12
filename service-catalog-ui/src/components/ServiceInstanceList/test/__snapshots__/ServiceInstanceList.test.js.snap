@@ -1,6 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`InstancesList UI Displays instances with their corresponding names in the table 1`] = `
+exports[`InstancesList UI Displays instances with their corresponding names in the table 1`] = `Array []`;
+
+exports[`InstancesList UI Navigates to Instance details when clicked on Instance link 1`] = `Array []`;
+
+exports[`InstancesList UI Navigates to Service Catalog when clicked on "Add instance" button 1`] = `Array []`;
+
+exports[`InstancesList UI No modal for plan with empty spec 1`] = `Array []`;
+
+exports[`InstancesList UI Open modal for plan with non-empty spec 1`] = `Array []`;
+
+exports[`InstancesList UI Shows loading indicator only when data is not yet loaded 1`] = `
 Array [
   Array [
     "Warning: componentWillMount has been renamed, and is not recommended for use. See https://fb.me/react-unsafe-component-lifecycles for details.
@@ -39,16 +49,6 @@ Please update the following components: Styled(Modal), Styled(Popover), styled.d
 ]
 `;
 
-exports[`InstancesList UI Navigates to Instance details when clicked on Instance link 1`] = `Array []`;
-
-exports[`InstancesList UI Navigates to Service Catalog when clicked on "Add instance" button 1`] = `Array []`;
-
-exports[`InstancesList UI No modal for plan with empty spec 1`] = `Array []`;
-
-exports[`InstancesList UI Open modal for plan with non-empty spec 1`] = `Array []`;
-
-exports[`InstancesList UI Shows loading indicator only when data is not yet loaded 1`] = `Array []`;
-
 exports[`InstancesList UI Test adding instances via subscription 1`] = `Array []`;
 
 exports[`InstancesList UI Test deleting instances via subscription 1`] = `Array []`;
@@ -64,5 +64,3 @@ exports[`Search instances by name Shows all instances initially 1`] = `Array []`
 exports[`filter instances by labels Filter dropdown is filled with labels 1`] = `Array []`;
 
 exports[`filter instances by labels Select filter 1`] = `Array []`;
-
-exports[`filter instances by labels Select filter 2`] = `Array []`;

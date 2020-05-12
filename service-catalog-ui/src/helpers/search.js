@@ -2,7 +2,12 @@ import {
   serviceInstanceConstants,
   serviceClassConstants,
 } from 'helpers/constants';
-import { isServiceInstance, isAddonInstance } from 'helpers';
+import {
+  isServiceInstance,
+  isAddonInstance,
+  isAddon,
+  isService,
+} from 'helpers';
 
 export function determineDisplayedInstances(
   serviceInstances,
@@ -24,13 +29,7 @@ export function determineDisplayedInstances(
       : isServiceInstance;
 
   const filteredByTab = filteredByLabels.filter(filterFunction);
-  console.log(
-    searched.length,
-    filteredByLabels.length,
-    serviceInstanceConstants.addonsIndex,
-    tabIndex,
-    tabIndex === serviceInstanceConstants.addonsIndex,
-  );
+
   return filteredByTab;
 }
 
@@ -89,9 +88,7 @@ export const determineDisplayedServiceClasses = (
   );
 
   const filterFunction =
-    tabIndex === serviceClassConstants.addonsIndex
-      ? isAddonInstance
-      : isServiceInstance;
+    tabIndex === serviceClassConstants.addonsIndex ? isAddon : isService;
 
   const filteredByTab = filteredByLabels.filter(filterFunction);
 
