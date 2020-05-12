@@ -1,45 +1,42 @@
-# Copying .env in 17 line is a temporary solution for issue with babel-loader package in react-scripts 
-
-FROM node:12.16.0-alpine3.9 as ui-generator
-
+# This Dockerfile must be execute with higher context, because firstly we have to create react components lib with local changes.
+# If you want to build image without local changes of react components, delete 16 line of code.
+FROM node:12.16.0-alpine3.9 as builder
+ARG app_name=content
 WORKDIR /app
 
-# Copy licenses
-COPY licenses/ /app/licenses/
+# # Install global dependencies
+RUN apk update && \
+  apk upgrade && \
+  apk add --no-cache curl make 
 
-# Install global dependencies
-RUN apk update && apk upgrade && \
-    apk add --no-cache curl
+RUN npm i -g typescript 
 
 # Install root and app dependencies
-COPY ./temp /app
-RUN npm run bootstrap:prod
-COPY package.json package-lock.json config-overrides.js .env /app/content/
-RUN cd /app/content && npm install --no-optional
+COPY . /app
+RUN cd /app/${app_name} && make resolve 
 
-# Copy sources
-COPY ./src /app/content/src
-COPY ./public /app/content/public
+RUN cd /app/${app_name} && make verify
 
-# Set env variables 
+# Set env variables
 ENV PRODUCTION true
 ENV CI true
 
 # Test & Build
-RUN cd /app/content && npm test
-RUN cd /app/content && npm run build
+RUN cd /app/${app_name} && make build
+
 
 ### Main image ###
 FROM alpine:3.11
+ARG app_name=content
 
 ### Install nginx package and remove cache ###
 RUN apk add --update nginx && rm -rf /var/cache/apk/*
 
 LABEL source git@github.com:kyma-project/console.git
 
-COPY nginx.conf /etc/nginx/nginx.conf
-COPY --from=ui-generator /app/content/build var/public
-COPY --from=ui-generator /app/licenses/ /app/licenses/
+COPY ./${app_name}/nginx.conf /etc/nginx/nginx.conf
+COPY --from=builder /app/${app_name}/build var/public
+COPY --from=builder /app/${app_name}/licenses/ /app/licenses/
 
 RUN touch /var/run/nginx.pid && \
   chown -R nginx:nginx /var/run/nginx.pid
