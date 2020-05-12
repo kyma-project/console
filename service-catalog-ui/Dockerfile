@@ -12,8 +12,7 @@ RUN apk update && \
 # Install root and app dependencies
 COPY . /app
 RUN cd /app/${app_name} && \
-  make resolve && \
-  make verify
+  make resolve 
 
 
 # Set env variables
@@ -30,7 +29,7 @@ FROM alpine:3.11
 RUN apk add --update nginx && rm -rf /var/cache/apk/*
 
 LABEL source git@github.com:kyma-project/console.git
-ARG app_name=core-ui
+ARG app_name=service-catalog-ui
 
 COPY ./${app_name}/nginx.conf /etc/nginx/nginx.conf
 COPY --from=builder /app/${app_name}/build var/public
