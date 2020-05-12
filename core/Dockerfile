@@ -23,7 +23,7 @@ RUN apk add --update nginx && rm -rf /var/cache/apk/*
 LABEL source git@github.com:kyma-project/console.git
 ARG app_name=core
 
-COPY ./${app_name}/nginx.conf /etc/nginx/nginx.conf
+COPY ./${app_name}/nginx/nginx.conf /etc/nginx/nginx.conf
 COPY --from=builder /app/${app_name}/dist /usr/share/nginx/html/
 COPY --from=builder /app/${app_name}/licenses/ /app/licenses/
 COPY --from=builder /app/${app_name}/nginx/conf.d /etc/nginx/conf.d/
