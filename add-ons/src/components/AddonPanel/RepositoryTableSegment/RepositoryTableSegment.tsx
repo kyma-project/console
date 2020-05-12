@@ -11,9 +11,12 @@ interface RepositoryTableHeaderProps {
   configName: string;
 }
 
-const RepositoryTableHeader: React.FunctionComponent<
-  RepositoryTableHeaderProps
-> = ({ isOpen, setIsOpen, repository, configName }) => (
+const RepositoryTableHeader: React.FunctionComponent<RepositoryTableHeaderProps> = ({
+  isOpen,
+  setIsOpen,
+  repository,
+  configName,
+}) => (
   <tr>
     <th>
       <Button
@@ -96,9 +99,10 @@ interface RepositoryTableSegmentProps {
   configName: string;
 }
 
-const RepositoryTableSegment: React.FunctionComponent<
-  RepositoryTableSegmentProps
-> = ({ repository, configName }) => {
+const RepositoryTableSegment: React.FunctionComponent<RepositoryTableSegmentProps> = ({
+  repository,
+  configName,
+}) => {
   const [isOpen, setIsOpen] = React.useState(false);
 
   return (

@@ -1,4 +1,7 @@
-const indexTabNamePairs = [[0, 'services'], [1, 'addons']];
+const indexTabNamePairs = [
+  [0, 'services'],
+  [1, 'addons'],
+];
 
 const DEFAULT_TAB_NAME = 'services';
 const DEFAULT_TAB_INDEX = 0;

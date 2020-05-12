@@ -98,9 +98,7 @@ export interface GenericDocumentationProps {
   additionalTabs?: TabProps[];
 }
 
-export const GenericDocumentation: React.FunctionComponent<
-  GenericDocumentationProps
-> = ({
+export const GenericDocumentation: React.FunctionComponent<GenericDocumentationProps> = ({
   assetGroup,
   sources: srcs = [],
   layout = LayoutType.CONTENT_UI,
