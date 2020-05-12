@@ -1,13 +1,13 @@
 import React from 'react';
 
-import { Search } from '@kyma-project/react-components';
+import { FormInput } from 'fundamental-react';
 import { SearchWrapper } from './styled';
 
 const SearchDropdown = ({ onChange }) => {
   return (
     <SearchWrapper>
-      <Search
-        noSearchBtn
+      <FormInput
+        type="text"
         placeholder="Search"
         onChange={onChange}
         data-e2e-id="search"

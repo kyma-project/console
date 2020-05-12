@@ -1,13 +1,6 @@
 import styled from 'styled-components';
+import { Popover as FdPopover } from 'fundamental-react';
 import { sizes } from '@kyma-project/react-components';
-
-import {
-  FormLabel as UnstyledFormLabel,
-  Panel as UnstyledPanel,
-  PanelBody as UnstyledPanelBody,
-  FormItem as UnstyledFormItem,
-  FormInput as UnstyledFormInput,
-} from '@kyma-project/react-components';
 
 export const FiltersDropdownWrapper = styled.div`
   .fd-button--emphasized {
@@ -35,36 +28,6 @@ export const FiltersDropdownWrapper = styled.div`
   }
 `;
 
-export const FormItem = styled(UnstyledFormItem)`
-  display: flex;
-`;
-export const FormInput = styled(UnstyledFormInput)`
-  &&:checked:before {
-    border-color: #fff;
-  }
-`;
-
-export const FormLabel = styled(UnstyledFormLabel)`
-  &&& {
-    position: relative;
-    top: -2px;
-    font-size: 16px;
-    padding-right: 20px;
-    white-space: nowrap;
-  }
-`;
-
-export const PanelBody = styled(UnstyledPanelBody)`
-  && {
-    padding: 12px;
-  }
-`;
-
-export const Panel = styled(UnstyledPanel)`
-  && {
-    min-width: 200px;
-  }
-`;
 export const SearchWrapper = styled.div`
   max-width: 640px;
   flex: 1 0 auto;
@@ -81,4 +44,9 @@ export const SearchWrapper = styled.div`
       --fd-forms-border-color: var(--fd-color-action-focus);
     }
   }
+`;
+
+// override top: -4px;
+export const Popover = styled(FdPopover)`
+  top: 0px !important;
 `;

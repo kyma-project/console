@@ -1,15 +1,15 @@
 import React from 'react';
 
-import { Button, Dropdown, FormFieldset } from '@kyma-project/react-components';
-
 import {
-  FiltersDropdownWrapper,
+  Button,
+  Dropdown,
+  FormFieldset,
   FormLabel,
   FormItem,
   Panel,
-  PanelBody,
   FormInput,
-} from './styled';
+} from 'fundamental-react';
+import { FiltersDropdownWrapper, Popover } from './styled';
 
 const FilterDropdown = ({
   onLabelChange,
@@ -27,37 +27,46 @@ const FilterDropdown = ({
     onLabelChange(ev.target.id, ev.target.checked);
   };
 
+  const labels = Object.entries(availableLabels).map(([label, count]) => (
+    <FormItem key={label}>
+      <FormInput
+        data-e2e-id={`filter-${label}`}
+        type="checkbox"
+        id={label}
+        onChange={handleLabelClick}
+        checked={activeLabelFilters.includes(label)}
+        className="fd-has-margin-right-s"
+      />
+      <FormLabel htmlFor={label} className="fd-has-color-text-3">
+        {label} ({count})
+      </FormLabel>
+    </FormItem>
+  ));
+
   return (
     <FiltersDropdownWrapper>
-      <Dropdown control={control} disabled={disabled}>
-        <Panel>
-          <PanelBody>
-            <FormFieldset>
-              {Object.entries(availableLabels).map(
-                ({ 0: label, 1: count }, index) => {
-                  return (
-                    <FormItem isCheck key={index}>
-                      <FormInput
-                        data-e2e-id={`filter-${label}`}
-                        type="checkbox"
-                        id={label}
-                        name={`checkbox-name-${index}`}
-                        onChange={handleLabelClick}
-                        checked={activeLabelFilters.includes(label)}
-                      />
-                      <FormLabel htmlFor={`checkbox-${index}`}>
-                        {label} ({count})
-                      </FormLabel>
-                    </FormItem>
-                  );
-                },
-              )}
-            </FormFieldset>
-          </PanelBody>
-        </Panel>
+      <Dropdown>
+        <Popover
+          body={
+            <Panel>
+              <Panel.Body>
+                <FormFieldset>{labels}</FormFieldset>
+              </Panel.Body>
+            </Panel>
+          }
+          control={control}
+          placement="bottom-end"
+        />
       </Dropdown>
     </FiltersDropdownWrapper>
   );
+  // return (
+  //   <FiltersDropdownWrapper>
+  //     <Dropdown control={control} disabled={disabled}>
+  //
+  //     </Dropdown>
+  //   </FiltersDropdownWrapper>
+  // );
 };
 
 export default FilterDropdown;

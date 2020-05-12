@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { Image as Img } from '@kyma-project/react-components';
-import { Icon as DefaultServiceClassIcon } from '@kyma-project/react-components';
+import { Icon as DefaultServiceClassIcon } from 'fundamental-react';
 
 export const ServiceClassInfoContentWrapper = styled.div`
   background-color: #fff;
@@ -20,6 +20,7 @@ export const Image = styled(Img)`
 `;
 
 export const ServiceClassHeaderTileGrid = styled.div`
+  display: grid;
   > div {
     border: none;
   }

@@ -2,14 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Moment from 'react-moment';
 
-import {
-  Label,
-  Icon,
-  Tooltip,
-  Tile,
-  TileContent,
-  TileMedia,
-} from '@kyma-project/react-components';
+import { Label, Tooltip } from '@kyma-project/react-components';
+import { Tile, Icon } from 'fundamental-react';
 
 import {
   ServiceClassInfoContentWrapper,
@@ -83,25 +77,29 @@ const ServiceClassInfo = ({
       : defaultNumberOfColumns;
   };
 
+  const columnCount = computeNumberOfColumns(isProvisionedOnlyOnce);
+
   return (
     <ServiceClassInfoContentWrapper className="fd-has-padding-top-none">
       <ServiceClassHeaderTileGrid
-        col={computeNumberOfColumns(isProvisionedOnlyOnce)}
+        style={{
+          gridTemplateColumns: `repeat(${columnCount} ,1fr)`,
+        }}
       >
         <Tile>
-          <TileMedia className="fd-has-display-flex">
+          <Tile.Media className="fd-has-display-flex">
             {imageUrl ? (
               <Image size="l" photo={imageUrl} />
             ) : (
               <Icon glyph="crm-service-manager" />
             )}
-          </TileMedia>
-          <TileContent title={serviceClassTileTitles.creator}>
+          </Tile.Media>
+          <Tile.Content title={serviceClassTileTitles.creator}>
             <p>{providerDisplayName}</p>
-          </TileContent>
+          </Tile.Content>
         </Tile>
         <Tile>
-          <TileContent title={serviceClassTileTitles.lastUpdate}>
+          <Tile.Content title={serviceClassTileTitles.lastUpdate}>
             <Moment
               unix
               format="MMM DD, YYYY"
@@ -109,44 +107,46 @@ const ServiceClassInfo = ({
             >
               {creationTimestamp}
             </Moment>
-          </TileContent>
+          </Tile.Content>
         </Tile>
         <Tile>
           {documentationUrl && (
-            <TileContent title={serviceClassTileTitles.documentation}>
+            <Tile.Content title={serviceClassTileTitles.documentation}>
               <ExternalLink href={documentationUrl} target="_blank">
                 Link
               </ExternalLink>
-            </TileContent>
+            </Tile.Content>
           )}
         </Tile>
-        <Tile>
-          {supportUrl && (
-            <TileContent title={serviceClassTileTitles.support}>
+        {supportUrl && (
+          <Tile>
+            <Tile.Content title={serviceClassTileTitles.support}>
               <ExternalLink href={supportUrl} target="_blank">
                 Link
               </ExternalLink>
-            </TileContent>
-          )}
-        </Tile>
+            </Tile.Content>
+          </Tile>
+        )}
         {isProvisionedOnlyOnce && (
-          <Tile rowSpan={2} className="fd-has-padding-left-none">
+          <Tile
+            className="fd-has-grid-row-span-2 fd-has-padding-left-none"
+            style={{ gridColumn: columnCount }}
+          >
             <ProvisionOnlyOnceInfo />
           </Tile>
         )}
-        <Tile columnSpan={4}>
-          <TileContent title={serviceClassTileTitles.description}>
+        <Tile className="fd-has-grid-column-span-4">
+          <Tile.Content title={serviceClassTileTitles.description}>
             <p data-e2e-id="service-description">{description}</p>
-          </TileContent>
+          </Tile.Content>
         </Tile>
         {modifiedTags && modifiedTags.length > 0 && (
           <Tile
-            columnSpan={
-              computeNumberOfColumns(isProvisionedOnlyOnce) -
-              (planSelector ? 2 : 0)
-            }
+            style={{
+              gridColumn: `span ${columnCount - (planSelector ? 2 : 0)}`,
+            }}
           >
-            <TileContent title={serviceClassTileTitles.tags}>
+            <Tile.Content title={serviceClassTileTitles.tags}>
               <LabelsWrapper data-e2e-id="service-labels">
                 {modifiedTags.sort(sortTags).map(tag => (
                   <LabelWrapper key={`${tag.type}-${tag.name}`}>
@@ -161,14 +161,14 @@ const ServiceClassInfo = ({
                   </LabelWrapper>
                 ))}
               </LabelsWrapper>
-            </TileContent>
+            </Tile.Content>
           </Tile>
         )}
         {planSelector && (
           <Tile columnSpan="2">
-            <TileContent title={serviceClassTileTitles.plans}>
+            <Tile.Content title={serviceClassTileTitles.plans}>
               {planSelector}
-            </TileContent>
+            </Tile.Content>
           </Tile>
         )}
       </ServiceClassHeaderTileGrid>
