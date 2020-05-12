@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { TileGrid, Image as Img } from '@kyma-project/react-components';
+import { Image as Img } from '@kyma-project/react-components';
 import { Icon as DefaultServiceClassIcon } from '@kyma-project/react-components';
 
 export const ServiceClassInfoContentWrapper = styled.div`
@@ -19,7 +19,7 @@ export const Image = styled(Img)`
   }
 `;
 
-export const ServiceClassHeaderTileGrid = styled(TileGrid)`
+export const ServiceClassHeaderTileGrid = styled.div`
   > div {
     border: none;
   }

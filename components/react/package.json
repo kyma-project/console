@@ -23,7 +23,6 @@
     "lint-check": "prettier --config ../../.prettierrc --check \"./src/**/*.{js,jsx,ts,tsx,html,css,json}\""
   },
   "dependencies": {
-    "fundamental-react": "0.5.0",
     "polished": "^1.8.1",
     "styled-components-modifiers": "^1.0.1"
   },
