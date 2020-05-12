@@ -15,20 +15,6 @@ export default function ResultOptionsDropdown() {
 
   const PopoverContent = () => (
     <FormSet id="result-options">
-      {/* <FormItem className="fd-has-margin-small">
-        <FormInput
-          type="checkbox"
-          id="previous-logs"
-          defaultChecked={state.showPreviousLogs}
-          onChange={e => actions.setShowPreviousLogs(e.target.checked)}
-        />
-        <FormLabel
-          className="caption-muted fd-has-margin-left-tiny"
-          htmlFor="previous-logs"
-        >
-          logs of previous lambda version
-        </FormLabel>
-      </FormItem> */}
       <FormItem className="fd-has-margin-small">
         <FormInput
           type="checkbox"

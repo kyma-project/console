@@ -12,7 +12,7 @@ describe('ServicesDropdown', () => {
         _ref={ref}
         error={undefined}
         loading={true}
-        data={[]}
+        data={{}}
       />,
     );
 
@@ -25,7 +25,7 @@ describe('ServicesDropdown', () => {
         _ref={ref}
         error={new Error('Error')}
         loading={false}
-        data={[]}
+        data={{}}
       />,
     );
     expect(

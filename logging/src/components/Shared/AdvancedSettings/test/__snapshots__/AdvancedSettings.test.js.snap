@@ -28,7 +28,7 @@ exports[` 1`] = `
     <div>
       <input
         autoComplete="off"
-        className="fd-form__control is-normal"
+        className="fd-input is-normal"
         id="query"
         onChange={[Function]}
         type="text"
@@ -64,7 +64,7 @@ exports[` 1`] = `
     <div>
       <input
         autoComplete="off"
-        className="fd-form__control"
+        className="fd-input"
         defaultValue={1000}
         id="result-limit"
         onChange={[Function]}

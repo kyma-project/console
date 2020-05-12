@@ -83,6 +83,12 @@ export const handleServiceBindingUsageEvent = (
 
   const serviceInstance = instanceObj.serviceInstance;
 
+  if (
+    serviceInstance.name !== bindingUsage.serviceBinding.serviceInstanceName
+  ) {
+    return instanceObj;
+  }
+
   const currentInstanceServiceBindingUsages =
     serviceInstance.serviceBindingUsages || [];
 
@@ -145,6 +151,10 @@ export const handleServiceBindingEvent = (instanceObj = {}, event = {}) => {
   }
 
   const serviceInstance = instanceObj.serviceInstance;
+
+  if (serviceInstance.name !== binding.serviceInstanceName) {
+    return instanceObj;
+  }
 
   const currentInstanceServiceBindings =
     (serviceInstance.serviceBindings &&

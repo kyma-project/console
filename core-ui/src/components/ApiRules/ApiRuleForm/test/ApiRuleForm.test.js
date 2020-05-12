@@ -151,6 +151,31 @@ describe('ApiRuleForm', () => {
     });
   });
 
+  it('does not modify other strategies after removing one', async () => {
+    const mutation = jest.fn();
+    const rule = apiRule();
+    const { getAllByLabelText, container } = render(
+      <MockedProvider mocks={[servicesQuery, idpPresetsQuery]}>
+        <ApiRuleForm
+          apiRule={rule}
+          mutation={mutation}
+          saveButtonText="Save"
+          headerTitle="Form"
+          breadcrumbItems={[]}
+        />
+      </MockedProvider>,
+    );
+    await waitForDomChange({ container });
+
+    getAllByLabelText('remove-access-strategy')[0].click();
+
+    await waitForDomChange({ container });
+
+    const strategySelects = getAllByLabelText('Access strategy type');
+    const nonRemovedRule = rule.rules[1].accessStrategies[0];
+    expect(strategySelects[0].value).toBe(nonRemovedRule.name);
+  });
+
   it('allows to modify exisitng access strategy', async () => {
     const mutation = jest.fn();
     const { getAllByLabelText, getByText, container } = render(
