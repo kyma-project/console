@@ -2,7 +2,7 @@
 
 ## Overview
 
-The project contains an application with the Docs UI page for the Kyma Console. The view enables you to list documentation.
+The project contains an application with the Docs UI page for the Kyma Console. The view enables you to list the documentation.
 
 The [create-react-app](https://create-react-app.dev/) project provides the structure for this application. Read the project's [documentation](https://create-react-app.dev/docs/available-scripts/) for more information.
 
