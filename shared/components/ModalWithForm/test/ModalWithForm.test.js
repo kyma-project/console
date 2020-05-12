@@ -1,6 +1,6 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-import ModalWithForm from '../ModalWithForm';
+import { ModalWithForm } from '../ModalWithForm';
 
 describe('ModalWithForm', () => {
   it('Renders with minimal props', () => {
