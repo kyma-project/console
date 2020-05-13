@@ -99,6 +99,7 @@ exports[`DropdownRenderer UI Shows / hides nested list when parent its parent is
             <span
               aria-controls="name"
               aria-haspopup="true"
+              aria-label="link"
               className="fd-mega-menu__link has-child cursor-pointer"
               onClick={[Function]}
             >
@@ -130,6 +131,7 @@ exports[`DropdownRenderer UI Shows / hides nested list when parent its parent is
                   key="c,d"
                 >
                   <span
+                    aria-label="sublink"
                     className="fd-mega-menu__sublink cursor-pointer"
                     onClick={[Function]}
                   >
@@ -147,6 +149,7 @@ exports[`DropdownRenderer UI Shows / hides nested list when parent its parent is
             <span
               aria-controls="name 2"
               aria-haspopup="true"
+              aria-label="link"
               className="fd-mega-menu__link has-child cursor-pointer"
               onClick={[Function]}
             >
@@ -178,6 +181,7 @@ exports[`DropdownRenderer UI Shows / hides nested list when parent its parent is
                   key="e,f"
                 >
                   <span
+                    aria-label="sublink"
                     className="fd-mega-menu__sublink cursor-pointer"
                     onClick={[Function]}
                   >
@@ -294,6 +298,7 @@ exports[`DropdownRenderer UI Shows / hides nested list when parent its parent is
             <span
               aria-controls="name"
               aria-haspopup="true"
+              aria-label="link"
               className="fd-mega-menu__link has-child cursor-pointer"
               onClick={[Function]}
             >
@@ -325,6 +330,7 @@ exports[`DropdownRenderer UI Shows / hides nested list when parent its parent is
                   key="c,d"
                 >
                   <span
+                    aria-label="sublink"
                     className="fd-mega-menu__sublink cursor-pointer"
                     onClick={[Function]}
                   >
@@ -342,6 +348,7 @@ exports[`DropdownRenderer UI Shows / hides nested list when parent its parent is
             <span
               aria-controls="name 2"
               aria-haspopup="true"
+              aria-label="link"
               className="fd-mega-menu__link has-child cursor-pointer"
               onClick={[Function]}
             >
@@ -373,6 +380,7 @@ exports[`DropdownRenderer UI Shows / hides nested list when parent its parent is
                   key="e,f"
                 >
                   <span
+                    aria-label="sublink"
                     className="fd-mega-menu__sublink cursor-pointer"
                     onClick={[Function]}
                   >

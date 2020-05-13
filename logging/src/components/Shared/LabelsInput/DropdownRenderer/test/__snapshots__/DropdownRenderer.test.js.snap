@@ -54,6 +54,7 @@ exports[`DropdownRenderer Renders with minimal props 1`] = `
         <span
           aria-controls="name 1"
           aria-haspopup="true"
+          aria-label="link"
           className="fd-mega-menu__link has-child cursor-pointer"
           onClick={[Function]}
         >
@@ -81,6 +82,7 @@ exports[`DropdownRenderer Renders with minimal props 1`] = `
         <span
           aria-controls="name 2"
           aria-haspopup="true"
+          aria-label="link"
           className="fd-mega-menu__link has-child cursor-pointer"
           onClick={[Function]}
         >
