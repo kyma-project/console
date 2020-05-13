@@ -25,10 +25,10 @@ test('Namespaces view is rendered', async t => {
   //GIVEN; THEN
   await findActiveFrame(t);
   await t
-    .expect(Selector('[data-e2e-testid="title"]').withText('Namespaces').exists)
+    .expect(Selector('[aria-label="title"]').withText('Namespaces').exists)
     .ok()
     .expect(
-      Selector('[data-e2e-testid="namespace-name"]').withText(
+      Selector('[aria-label="namespace-name"]').withText(
         config.DEFAULT_NAMESPACE_NAME,
       ).exists,
     )
@@ -43,7 +43,7 @@ test('Deployments view is rendered', async t => {
 
   await t
     .click(
-      Selector('[data-e2e-testid="namespace-name"]').withText(
+      Selector('[aria-label="namespace-name"]').withText(
         config.DEFAULT_NAMESPACE_NAME,
       ),
     )
@@ -54,9 +54,7 @@ test('Deployments view is rendered', async t => {
   await findActiveFrame(t);
 
   await t
-    .expect(
-      Selector('[data-e2e-testid="title"]').withText('Deployments').exists,
-    )
+    .expect(Selector('[aria-label="title"]').withText('Deployments').exists)
     .ok();
 });
 
@@ -74,9 +72,7 @@ testIf(
     await findActiveFrame(t);
 
     await t
-      .expect(
-        Selector('[data-e2e-testid="title"]').withText('Applications').exists,
-      )
+      .expect(Selector('[aria-label="title"]').withText('Applications').exists)
       .ok();
   },
 );
@@ -108,7 +104,7 @@ testIf(
     await findActiveFrame(t);
     await t
       .click(
-        Selector('[data-e2e-testid="namespace-name"]').withText(
+        Selector('[aria-label="namespace-name"]').withText(
           config.DEFAULT_NAMESPACE_NAME,
         ),
       )
@@ -118,9 +114,7 @@ testIf(
     //THEN
     await findActiveFrame(t);
     await t
-      .expect(
-        Selector('[data-e2e-testid="title"]').withText(/Functions/).exists,
-      )
+      .expect(Selector('[aria-label="title"]').withText(/Functions/).exists)
       .ok();
   },
 );
@@ -141,12 +135,11 @@ testIf(toBoolean(config.loggingEnabled), 'Logs view is rendered', async t => {
   await t.click(
     Selector('input').withAttribute('placeholder', /Select Label/i),
   );
-  await t.click(Selector('[data-e2e-testid="link"]').withText(/namespace/i));
+  await t.click(Selector('[aria-label="link"]').withText(/namespace/i));
   await t
     .expect(
-      Selector('[data-e2e-testid="sublink"]').withText(
-        config.DEFAULT_NAMESPACE_NAME,
-      ).exists,
+      Selector('[aria-label="sublink"]').withText(config.DEFAULT_NAMESPACE_NAME)
+        .exists,
     )
     .ok();
 });
@@ -163,7 +156,7 @@ testIf(
 
     await t
       .click(
-        Selector('[data-e2e-testid="namespace-name"]').withText(
+        Selector('[aria-label="namespace-name"]').withText(
           config.DEFAULT_NAMESPACE_NAME,
         ),
       )
@@ -192,7 +185,7 @@ testIf(
     await findActiveFrame(t);
     await t
       .click(
-        Selector('[data-e2e-testid="namespace-name"]').withText(
+        Selector('[aria-label="namespace-name"]').withText(
           config.DEFAULT_NAMESPACE_NAME,
         ),
       )
@@ -219,7 +212,7 @@ testIf(
     await findActiveFrame(t);
     await t
       .click(
-        Selector('[data-e2e-testid="namespace-name"]').withText(
+        Selector('[aria-label="namespace-name"]').withText(
           config.DEFAULT_NAMESPACE_NAME,
         ),
       )

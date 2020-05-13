@@ -62,7 +62,7 @@ export const PageHeader = ({
         <Panel.Head
           title={title}
           description={description}
-          data-e2e-testid={e2etestid}
+          aria-label={e2etestid}
         />
         <section className="column-wrapper"> {children}</section>
       </section>
