@@ -34,7 +34,9 @@ export default function NamespacesListHeader({
 
   return (
     <Panel className="namespace-list-header fd-has-padding-medium remove-after">
-      <span className="fd-has-type-4">Namespaces</span>
+      <span data-e2e-testid="title" className="fd-has-type-4">
+        Namespaces
+      </span>
       <div className="namespace-list-actions">
         <FormInput
           onChange={e => updateSearchPhrase(e.target.value)}

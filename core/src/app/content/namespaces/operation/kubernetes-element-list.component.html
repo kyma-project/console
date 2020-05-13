@@ -2,7 +2,7 @@
   <section class="fd-section">
     <div fd-action-bar>
       <div fd-action-bar-header>
-        <h3 fd-action-bar-title>{{ title }}</h3>
+        <h3 fd-action-bar-title [attr.data-e2e-testid]="'title'">{{ title }} </h3>
       </div>
       <div fd-action-bar-actions>
         <y-list-search [hidden]="!initialized || showEmptyPage" [filterState]="filterState"

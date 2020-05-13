@@ -36,6 +36,7 @@ export const PageHeader = ({
   breadcrumbItems,
   actions,
   children,
+  testid,
 }) => (
   <Panel className="page-header">
     <Panel.Header>
@@ -58,7 +59,11 @@ export const PageHeader = ({
           </section>
         ) : null}
 
-        <Panel.Head title={title} description={description} />
+        <Panel.Head
+          title={title}
+          description={description}
+          data-e2e-testid={testid}
+        />
         <section className="column-wrapper"> {children}</section>
       </section>
 

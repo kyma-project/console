@@ -25,11 +25,12 @@ test('Namespaces view is rendered', async t => {
   //GIVEN; THEN
   await findActiveFrame(t);
   await t
-    .expect(Selector('.fd-button').withText('Add new namespace').exists)
+    .expect(Selector('[data-e2e-testid="title"]').withText('Namespaces').exists)
     .ok()
     .expect(
-      Selector('.fd-panel__title').withText(config.DEFAULT_NAMESPACE_NAME)
-        .exists,
+      Selector('[data-e2e-testid="namespace-name"]').withText(
+        config.DEFAULT_NAMESPACE_NAME,
+      ).exists,
     )
     .ok();
 });
@@ -41,7 +42,11 @@ test('Deployments view is rendered', async t => {
   await findActiveFrame(t);
 
   await t
-    .click(Selector('.fd-panel__title').withText(config.DEFAULT_NAMESPACE_NAME))
+    .click(
+      Selector('[data-e2e-testid="namespace-name"]').withText(
+        config.DEFAULT_NAMESPACE_NAME,
+      ),
+    )
     .switchToMainWindow()
     .click(deploymentsLink);
 
@@ -49,7 +54,9 @@ test('Deployments view is rendered', async t => {
   await findActiveFrame(t);
 
   await t
-    .expect(Selector('.fd-action-bar__title').withText('Deployments').exists)
+    .expect(
+      Selector('[data-e2e-testid="title"]').withText('Deployments').exists,
+    )
     .ok();
 });
 
@@ -67,7 +74,9 @@ testIf(
     await findActiveFrame(t);
 
     await t
-      .expect(Selector('.fd-action-bar__title').withText('Applications').exists)
+      .expect(
+        Selector('[data-e2e-testid="title"]').withText('Applications').exists,
+      )
       .ok();
   },
 );
@@ -99,7 +108,9 @@ testIf(
     await findActiveFrame(t);
     await t
       .click(
-        Selector('.fd-panel__title').withText(config.DEFAULT_NAMESPACE_NAME),
+        Selector('[data-e2e-testid="namespace-name"]').withText(
+          config.DEFAULT_NAMESPACE_NAME,
+        ),
       )
       .switchToMainWindow()
       .click(functionsLink);
@@ -107,7 +118,9 @@ testIf(
     //THEN
     await findActiveFrame(t);
     await t
-      .expect(Selector('.fd-panel__title').withText(/Functions/).exists)
+      .expect(
+        Selector('[data-e2e-testid="title"]').withText(/Functions/).exists,
+      )
       .ok();
   },
 );
@@ -128,11 +141,12 @@ testIf(toBoolean(config.loggingEnabled), 'Logs view is rendered', async t => {
   await t.click(
     Selector('input').withAttribute('placeholder', /Select Label/i),
   );
-  await t.click(Selector('.fd-mega-menu__link').withText(/namespace/i));
+  await t.click(Selector('[data-e2e-testid="link"]').withText(/namespace/i));
   await t
     .expect(
-      Selector('.fd-mega-menu__sublink').withText(config.DEFAULT_NAMESPACE_NAME)
-        .exists,
+      Selector('[data-e2e-testid="sublink"]').withText(
+        config.DEFAULT_NAMESPACE_NAME,
+      ).exists,
     )
     .ok();
 });
@@ -149,7 +163,9 @@ testIf(
 
     await t
       .click(
-        Selector('.fd-panel__title').withText(config.DEFAULT_NAMESPACE_NAME),
+        Selector('[data-e2e-testid="namespace-name"]').withText(
+          config.DEFAULT_NAMESPACE_NAME,
+        ),
       )
       .switchToMainWindow()
       .click(catalogLink);
@@ -159,7 +175,7 @@ testIf(
 
     await t
       .expect(
-        Selector('.fd-action-bar__title').withText('Service Catalog').exists,
+        Selector('.fd-action-bar__title').withText('Service Catalog').exists, //change selector after catalog merge
       )
       .ok();
   },
@@ -176,7 +192,9 @@ testIf(
     await findActiveFrame(t);
     await t
       .click(
-        Selector('.fd-panel__title').withText(config.DEFAULT_NAMESPACE_NAME),
+        Selector('[data-e2e-testid="namespace-name"]').withText(
+          config.DEFAULT_NAMESPACE_NAME,
+        ),
       )
       .switchToMainWindow()
       .click(brokersLink);
@@ -185,7 +203,7 @@ testIf(
     await findActiveFrame(t);
 
     await t
-      .expect(Selector('.fd-panel__title').withText('Service Brokers').exists)
+      .expect(Selector('.fd-panel__title').withText('Service Brokers').exists) //change selector after catalog merge
       .ok();
   },
 );
@@ -201,7 +219,9 @@ testIf(
     await findActiveFrame(t);
     await t
       .click(
-        Selector('.fd-panel__title').withText(config.DEFAULT_NAMESPACE_NAME),
+        Selector('[data-e2e-testid="namespace-name"]').withText(
+          config.DEFAULT_NAMESPACE_NAME,
+        ),
       )
       .switchToMainWindow()
       .click(instancesLink);
@@ -210,7 +230,7 @@ testIf(
     await findActiveFrame(t);
     await t
       .expect(
-        Selector('.fd-action-bar__title').withText('Service Instance').exists,
+        Selector('.fd-action-bar__title').withText('Service Instance').exists, //change selector after catalog merge
       )
       .ok();
   },
@@ -218,7 +238,7 @@ testIf(
 
 test('Docs view is rendered', async t => {
   //GIVEN
-  const docsLink = Selector('[data-testid=docs_docs]');
+  const docsLink = Selector('[data-e2e-testid=docs_docs]');
   const kymaCategoryHeader = Selector(
     '[data-e2e-id=navigation-link-root-kyma]',
   );
