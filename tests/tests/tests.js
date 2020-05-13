@@ -168,9 +168,9 @@ testIf(
 
     await t
       .expect(
-        Selector('.fd-action-bar__title').withText('Service Catalog').exists, //change selector after catalog merge
+        Selector('.fd-action-bar__title').withText('Service Catalog').exists,
       )
-      .ok();
+      .ok(); //change selector after catalog merge
   },
 );
 
@@ -196,8 +196,8 @@ testIf(
     await findActiveFrame(t);
 
     await t
-      .expect(Selector('.fd-panel__title').withText('Service Brokers').exists) //change selector after catalog merge
-      .ok();
+      .expect(Selector('.fd-panel__title').withText('Service Brokers').exists)
+      .ok(); //change selector after catalog merge
   },
 );
 
@@ -223,9 +223,9 @@ testIf(
     await findActiveFrame(t);
     await t
       .expect(
-        Selector('.fd-action-bar__title').withText('Service Instance').exists, //change selector after catalog merge
+        Selector('.fd-action-bar__title').withText('Service Instances').exists,
       )
-      .ok();
+      .ok(); //change selector after catalog merge
   },
 );
 

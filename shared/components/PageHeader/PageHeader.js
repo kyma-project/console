@@ -36,7 +36,6 @@ export const PageHeader = ({
   breadcrumbItems,
   actions,
   children,
-  e2etestid,
 }) => (
   <Panel className="page-header">
     <Panel.Header>
@@ -62,7 +61,7 @@ export const PageHeader = ({
         <Panel.Head
           title={title}
           description={description}
-          aria-label={e2etestid}
+          aria-label="title"
         />
         <section className="column-wrapper"> {children}</section>
       </section>
