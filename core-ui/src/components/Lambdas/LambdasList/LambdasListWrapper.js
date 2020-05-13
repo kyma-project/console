@@ -30,7 +30,7 @@ export default function LambdaDetailsWrapper() {
         title={TOOLBAR.TITLE}
         description={TOOLBAR.DESCRIPTION}
         actions={headerActions}
-        testid="title"
+        e2etestid="title"
       />
       <LambdasList
         lambdas={lambdas}
