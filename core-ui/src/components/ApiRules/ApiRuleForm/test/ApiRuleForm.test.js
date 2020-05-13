@@ -8,6 +8,7 @@ import {
   servicesQuery,
   idpPresetsQuery,
 } from './mocks';
+import { supportedMethodsList } from 'components/ApiRules/accessStrategyTypes';
 
 jest.mock('@kyma-project/common', () => ({
   getApiUrl: () => 'kyma.cluster.com',
@@ -52,10 +53,9 @@ describe('ApiRuleForm', () => {
       expect(input).toHaveValue(apiRule().rules[idx].path);
     });
 
-    verifyMethodCheckboxes(queryAllByLabelText, 'GET');
-    verifyMethodCheckboxes(queryAllByLabelText, 'PUT');
-    verifyMethodCheckboxes(queryAllByLabelText, 'POST');
-    verifyMethodCheckboxes(queryAllByLabelText, 'DELETE');
+    supportedMethodsList.forEach(method =>
+      verifyMethodCheckboxes(queryAllByLabelText, method),
+    );
 
     const typeSelects = queryAllByLabelText('Access strategy type');
     expect(typeSelects).toHaveLength(apiRule().rules.length);
@@ -149,6 +149,31 @@ describe('ApiRuleForm', () => {
         },
       },
     });
+  });
+
+  it('does not modify other strategies after removing one', async () => {
+    const mutation = jest.fn();
+    const rule = apiRule();
+    const { getAllByLabelText, container } = render(
+      <MockedProvider mocks={[servicesQuery, idpPresetsQuery]}>
+        <ApiRuleForm
+          apiRule={rule}
+          mutation={mutation}
+          saveButtonText="Save"
+          headerTitle="Form"
+          breadcrumbItems={[]}
+        />
+      </MockedProvider>,
+    );
+    await waitForDomChange({ container });
+
+    getAllByLabelText('remove-access-strategy')[0].click();
+
+    await waitForDomChange({ container });
+
+    const strategySelects = getAllByLabelText('Access strategy type');
+    const nonRemovedRule = rule.rules[1].accessStrategies[0];
+    expect(strategySelects[0].value).toBe(nonRemovedRule.name);
   });
 
   it('allows to modify exisitng access strategy', async () => {

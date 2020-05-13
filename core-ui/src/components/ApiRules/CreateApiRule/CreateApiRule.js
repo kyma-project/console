@@ -5,10 +5,11 @@ import { useNotification } from 'react-shared';
 import { CREATE_API_RULE } from '../../../gql/mutations';
 import ApiRuleForm from '../ApiRuleForm/ApiRuleForm';
 import LuigiClient from '@kyma-project/luigi-client';
+import { supportedMethodsList } from '../accessStrategyTypes';
 
 const DEFAULT_ACCESS_STRATEGY = {
   path: '/.*',
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  methods: supportedMethodsList,
   accessStrategies: [
     {
       name: 'noop',

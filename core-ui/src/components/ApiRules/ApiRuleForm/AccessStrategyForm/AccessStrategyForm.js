@@ -17,6 +17,7 @@ import JwtDetails from './JwtDetails/JwtDetails';
 import classNames from 'classnames';
 import accessStrategyTypes, {
   usesMethods,
+  supportedMethodsList,
 } from 'components/ApiRules/accessStrategyTypes';
 
 export default function AccessStrategyForm({
@@ -156,7 +157,7 @@ function OAuth2Details({ config, setConfig }) {
 }
 
 function MethodsForm({ methods, setMethods, isRelevant }) {
-  const AVAILABLE_METHODS = ['GET', 'POST', 'PUT', 'DELETE'];
+  const AVAILABLE_METHODS = supportedMethodsList;
   const toggleMethod = function(method, checked) {
     if (checked) {
       setMethods([...methods, method]);

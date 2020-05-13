@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
+import { v4 as uuid } from 'uuid';
 import { useQuery } from '@apollo/react-hooks';
 import LuigiClient from '@kyma-project/luigi-client';
 import { K8sNameInput, InputWithSuffix } from 'react-shared';
@@ -57,7 +58,10 @@ export default function ApiRuleForm({
   breadcrumbItems,
 }) {
   const namespace = LuigiClient.getEventData().environmentId;
-  const [rules, setRules] = useState(apiRule.rules);
+  const [rules, setRules] = useState(
+    apiRule.rules.map(r => ({ ...r, renderKey: uuid() })),
+  );
+
   const [isValid, setValid] = useState(false);
   const { serviceName, port } = LuigiClient.getNodeParams();
 
@@ -121,14 +125,17 @@ export default function ApiRuleForm({
         serviceName,
         servicePort,
         gateway: DEFAULT_GATEWAY,
-        rules: rules,
+        rules: rules.map(({ renderKey, ...actualRule }) => actualRule),
       },
     };
     mutation({ variables });
   }
 
   function addAccessStrategy() {
-    setRules(rules => [...rules, EMPTY_ACCESS_STRATEGY]);
+    setRules(rules => [
+      ...rules,
+      { ...EMPTY_ACCESS_STRATEGY, renderKey: uuid() },
+    ]);
     setValid(false);
   }
 
@@ -222,7 +229,7 @@ export default function ApiRuleForm({
                   {rules.map((rule, idx) => {
                     return (
                       <AccessStrategyForm
-                        key={idx}
+                        key={rule.renderKey}
                         strategy={rule}
                         setStrategy={newStrategy => {
                           setRules(rules => [

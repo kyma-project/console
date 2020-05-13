@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
-import { FormItem, FormLabel } from 'fundamental-react';
+import { FormItem, FormLabel, Icon } from 'fundamental-react';
 import { useMutation } from '@apollo/react-hooks';
 import * as LuigiClient from '@kyma-project/luigi-client';
 
@@ -13,7 +13,12 @@ import {
   randomNameGenerator,
 } from '../../../commons/helpers';
 
-import { CustomPropTypes } from '../../../react-shared';
+import {
+  CustomPropTypes,
+  JSONEditor,
+  Tooltip,
+  CopiableLink,
+} from '../../../react-shared';
 
 const SERVICE_PLAN_SHAPE = PropTypes.shape({
   name: PropTypes.string.isRequired,
@@ -104,12 +109,18 @@ export default function CreateInstanceModal({
   onChange,
   onCompleted,
   onError,
+  setCustomValid,
   formElementRef,
   jsonSchemaFormRef,
   item,
   checkInstanceExistQuery,
   preselectedPlan,
+  documentationUrl,
 }) {
+  const [
+    customParametersProvided,
+    setCustomParametersProvided,
+  ] = React.useState(false);
   const plans = (item && item.plans) || [];
   plans.forEach(plan => {
     parseDefaultIntegerValues(plan);
@@ -159,6 +170,19 @@ export default function CreateInstanceModal({
     setInstanceCreateParameters({});
     if (!newParametersSchema || !newParametersSchema.length) {
       jsonSchemaFormRef.current = null;
+    }
+  };
+
+  const handleCustomParametersChange = input => {
+    const isNonNullObject = o => typeof o === 'object' && !!o;
+    try {
+      const parsedInput = JSON.parse(input);
+      if (isNonNullObject(parsedInput)) {
+        setInstanceCreateParameters(parsedInput);
+        setCustomValid(true);
+      }
+    } catch (_) {
+      setCustomValid(false);
     }
   };
 
@@ -251,26 +275,58 @@ export default function CreateInstanceModal({
           />
         </FormItem>
       </form>
-
+      <div className="instance-schema-panel__separator" />
       {instanceCreateParameterSchemaExists && (
+        <SchemaData
+          schemaFormRef={jsonSchemaFormRef}
+          data={instanceCreateParameters}
+          instanceCreateParameterSchema={instanceCreateParameterSchema}
+          planName={
+            (formValues.plan &&
+              formValues.plan.current &&
+              formValues.plan.current.value) ||
+            ''
+          }
+          onSubmitSchemaForm={() => {}}
+          callback={formData => {
+            onChange(formData);
+            setInstanceCreateParameters(formData.instanceCreateParameters);
+          }}
+        />
+      )}
+
+      {!instanceCreateParameterSchemaExists && (
         <>
-          <div className="json-schemaform-separator" />
-          <SchemaData
-            schemaFormRef={jsonSchemaFormRef}
-            data={instanceCreateParameters}
-            instanceCreateParameterSchema={instanceCreateParameterSchema}
-            planName={
-              (formValues.plan &&
-                formValues.plan.current &&
-                formValues.plan.current.value) ||
-              ''
-            }
-            onSubmitSchemaForm={() => {}}
-            callback={formData => {
-              onChange(formData);
-              setInstanceCreateParameters(formData.instanceCreateParameters);
-            }}
-          />
+          <div className="fd-has-margin-top-s fd-has-margin-bottom-tiny instance-schema-panel">
+            <div>
+              <span
+                className="link fd-has-margin-right-tiny clear-underline"
+                onClick={() =>
+                  setCustomParametersProvided(!customParametersProvided)
+                }
+              >
+                {customParametersProvided
+                  ? 'Remove parameters'
+                  : 'Add parameters'}
+              </span>
+              <Tooltip
+                position="top"
+                title="The service provider did not define specific parameters for the selected plan. Refer to the documentation to learn about the required parameters, and define them as JSON in the editor."
+              >
+                <Icon glyph="sys-help" />
+              </Tooltip>
+            </div>
+            {documentationUrl && (
+              <CopiableLink url={documentationUrl} text="Documentation" />
+            )}
+          </div>
+          {customParametersProvided && (
+            <JSONEditor
+              aria-label="schema-editor"
+              onChangeText={handleCustomParametersChange}
+              text={JSON.stringify(instanceCreateParameters, null, 2)}
+            />
+          )}
         </>
       )}
     </>

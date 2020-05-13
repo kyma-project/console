@@ -13,7 +13,8 @@ import {
   formatMessage,
   handleSubscriptionEvent,
 } from 'components/Lambdas/helpers/misc';
-import { GQL_QUERIES, FUNCTION_USAGE_KIND } from 'components/Lambdas/constants';
+import { GQL_QUERIES } from 'components/Lambdas/constants';
+import { CONFIG } from 'components/Lambdas/config';
 import extractGraphQlErrors from 'shared/graphqlErrorExtractor';
 
 export const useServiceBindingUsagesQuery = ({ lambda }) => {
@@ -38,7 +39,7 @@ export const useServiceBindingUsagesQuery = ({ lambda }) => {
 
   const variables = {
     namespace: lambda.namespace,
-    resourceKind: FUNCTION_USAGE_KIND,
+    resourceKind: CONFIG.functionUsageKind,
     resourceName: lambda.name,
   };
 

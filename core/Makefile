@@ -2,11 +2,9 @@ IMG_NAME = console
 IMG = $(DOCKER_PUSH_REPOSITORY)$(DOCKER_PUSH_DIRECTORY)/$(IMG_NAME)
 TAG = $(DOCKER_TAG)
 
-ci-pr: install-dependencies validate test build build-image push-image
-ci-master: install-dependencies validate test build build-image push-image
-ci-release: install-dependencies validate test build build-image push-image
+release: build-image push-image
 
-install-dependencies:
+resolve:
 	cd .. && npm install --no-optional # Install common dependencies 
 	npm ci
 
@@ -17,18 +15,21 @@ else
 	mkdir -p licenses
 endif
 
-validate:
+verify: lint test 
+
+lint:
 	npm run lint
 
 test:
-	npm run test:single
+	npm run test
 
 build:
 	npm run build
 
-build-image: pull-licenses
-	docker build -t $(IMG_NAME) .
+build-image: 
+	docker build -t $(IMG_NAME) -f Dockerfile ..
 
 push-image:
 	docker tag $(IMG_NAME) $(IMG):$(TAG)
 	docker push $(IMG):$(TAG)
+

@@ -22,6 +22,12 @@ const onError = jest.fn();
 const onChange = jest.fn();
 const mockNavigate = jest.fn();
 
+jest.mock('react-shared', () => ({
+  ...jest.requireActual('react-shared'),
+  JSONEditor: () => null,
+  Tooltip: () => null,
+}));
+
 jest.mock('@kyma-project/luigi-client', () => ({
   getEventData: () => ({
     environmentId: mockEnvironmentId,

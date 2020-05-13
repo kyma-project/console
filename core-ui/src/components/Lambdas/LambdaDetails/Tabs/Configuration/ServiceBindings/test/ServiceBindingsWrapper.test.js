@@ -14,10 +14,8 @@ import {
 
 import ServiceBindingsWrapper from '../ServiceBindingsWrapper';
 
-import {
-  SERVICE_BINDINGS_PANEL,
-  FUNCTION_USAGE_KIND,
-} from 'components/Lambdas/constants';
+import { SERVICE_BINDINGS_PANEL } from 'components/Lambdas/constants';
+import { CONFIG } from 'components/Lambdas/config';
 
 jest.mock('@kyma-project/luigi-client', () => {
   return {
@@ -31,7 +29,7 @@ jest.mock('@kyma-project/luigi-client', () => {
 describe('ServiceBindingsWrapper + ServiceBindings', () => {
   const variables = {
     namespace: lambdaMock.namespace,
-    resourceKind: FUNCTION_USAGE_KIND,
+    resourceKind: CONFIG.functionUsageKind,
     resourceName: lambdaMock.name,
   };
   const subscriptionMock = SERVICE_BINDING_USAGE_EVENT_SUBSCRIPTION_MOCK(

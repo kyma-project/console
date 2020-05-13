@@ -1,5 +1,5 @@
 import React from 'react';
-import renderer from 'react-test-renderer';
+import { fireEvent, render } from '@testing-library/react';
 import ResultsOptionsDropdown from './../ResultsOptionsDropdown';
 import {
   SearchParamsContext,
@@ -8,14 +8,44 @@ import {
 } from '../../../Logs/SearchParams.reducer';
 
 describe('ResultsOptionsDropdown', () => {
+  //Popover's Warning: `NaN` is an invalid value for the `left` css style property.
+  console.error = jest.fn();
+
   it('Renders with minimal props', () => {
-    const component = renderer.create(
+    const { getByRole, getByLabelText } = render(
       <SearchParamsContext.Provider
-        value={[defaultSearchParams, actions(jest.fn())]}
+        value={[
+          { ...defaultSearchParams, showHealthChecks: true },
+          actions(jest.fn()),
+        ]}
       >
         <ResultsOptionsDropdown />
       </SearchParamsContext.Provider>,
     );
-    expect(component).toMatchSnapshot();
+
+    // open dropdown
+    fireEvent.click(getByRole('button'));
+
+    expect(getByLabelText(/health checks/)).toBeChecked();
+  });
+
+  it('Dispatches event on click on checkbox', () => {
+    const actionsMock = {
+      setShowHealthChecks: jest.fn(),
+    };
+
+    const { getByRole, getByLabelText } = render(
+      <SearchParamsContext.Provider value={[defaultSearchParams, actionsMock]}>
+        <ResultsOptionsDropdown />
+      </SearchParamsContext.Provider>,
+    );
+
+    // open dropdown
+    fireEvent.click(getByRole('button'));
+
+    // check
+    fireEvent.click(getByLabelText(/health checks/));
+
+    expect(actionsMock.setShowHealthChecks).toHaveBeenCalledWith(true);
   });
 });

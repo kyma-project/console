@@ -106,47 +106,6 @@ export default function ServiceClassList() {
           status={status(
             determineDisplayedServiceClasses(
               serviceClasses,
-              serviceClassConstants.addonsIndex,
-              searchQuery,
-              [],
-            ).length,
-            'addons-status',
-          )}
-          title={
-            <Tooltip
-              content={serviceClassConstants.addonsTooltipDescription}
-              minWidth="100px"
-              showTooltipTimeout={750}
-              key="catalog-addons-tab-tooltip"
-            >
-              {serviceClassConstants.addons}
-            </Tooltip>
-          }
-        >
-          <>
-            <ServiceClassDescription>
-              {serviceClassConstants.addonsDescription}
-            </ServiceClassDescription>
-            <ServiceClassListWrapper>
-              <CardsWrapper data-e2e-id="cards">
-                <Cards
-                  data-e2e-id="cards"
-                  items={determineDisplayedServiceClasses(
-                    serviceClasses,
-                    serviceClassConstants.addonsIndex,
-                    searchQuery,
-                    [],
-                  )}
-                />
-              </CardsWrapper>
-            </ServiceClassListWrapper>
-          </>
-        </Tab>
-        <Tab
-          noMargin
-          status={status(
-            determineDisplayedServiceClasses(
-              serviceClasses,
               serviceClassConstants.servicesIndex,
               searchQuery,
               [],
@@ -175,6 +134,47 @@ export default function ServiceClassList() {
                   items={determineDisplayedServiceClasses(
                     serviceClasses,
                     serviceClassConstants.servicesIndex,
+                    searchQuery,
+                    [],
+                  )}
+                />
+              </CardsWrapper>
+            </ServiceClassListWrapper>
+          </>
+        </Tab>
+        <Tab
+          noMargin
+          status={status(
+            determineDisplayedServiceClasses(
+              serviceClasses,
+              serviceClassConstants.addonsIndex,
+              searchQuery,
+              [],
+            ).length,
+            'addons-status',
+          )}
+          title={
+            <Tooltip
+              content={serviceClassConstants.addonsTooltipDescription}
+              minWidth="100px"
+              showTooltipTimeout={750}
+              key="catalog-addons-tab-tooltip"
+            >
+              {serviceClassConstants.addons}
+            </Tooltip>
+          }
+        >
+          <>
+            <ServiceClassDescription>
+              {serviceClassConstants.addonsDescription}
+            </ServiceClassDescription>
+            <ServiceClassListWrapper>
+              <CardsWrapper data-e2e-id="cards">
+                <Cards
+                  data-e2e-id="cards"
+                  items={determineDisplayedServiceClasses(
+                    serviceClasses,
+                    serviceClassConstants.addonsIndex,
                     searchQuery,
                     [],
                   )}

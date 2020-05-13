@@ -2,6 +2,7 @@ import { service1, service2 } from 'testing/servicesMocks';
 import { GET_SERVICES } from 'gql/queries';
 import { CREATE_API_RULE } from 'gql/mutations';
 import { EXCLUDED_SERVICES_LABELS } from 'components/ApiRules/constants';
+import { supportedMethodsList } from 'components/ApiRules/accessStrategyTypes';
 
 export const apiRuleName = 'test-123';
 export const mockNamespace = 'test';
@@ -22,7 +23,7 @@ export const sampleAPIRule = {
     rules: [
       {
         path: '/.*',
-        methods: ['GET', 'POST', 'PUT', 'DELETE'],
+        methods: supportedMethodsList,
         accessStrategies: [
           {
             name: 'noop',
