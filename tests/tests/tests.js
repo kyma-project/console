@@ -25,12 +25,9 @@ test('Namespaces view is rendered', async t => {
   //GIVEN; THEN
   await findActiveFrame(t);
   await t
-    .expect(Selector('.fd-button').withText('Add new namespace').exists)
+    .expect(Selector('button').withText('Add new namespace').exists)
     .ok()
-    .expect(
-      Selector('.fd-panel__title').withText(config.DEFAULT_NAMESPACE_NAME)
-        .exists,
-    )
+    .expect(Selector('h3').withText(config.DEFAULT_NAMESPACE_NAME).exists)
     .ok();
 });
 
@@ -41,16 +38,14 @@ test('Deployments view is rendered', async t => {
   await findActiveFrame(t);
 
   await t
-    .click(Selector('.fd-panel__title').withText(config.DEFAULT_NAMESPACE_NAME))
+    .click(Selector('h3').withText(config.DEFAULT_NAMESPACE_NAME))
     .switchToMainWindow()
     .click(deploymentsLink);
 
   //THEN
   await findActiveFrame(t);
 
-  await t
-    .expect(Selector('.fd-action-bar__title').withText('Deployments').exists)
-    .ok();
+  await t.expect(Selector('h3').withText('Deployments').exists).ok();
 });
 
 testIf(
@@ -66,9 +61,7 @@ testIf(
     //THEN
     await findActiveFrame(t);
 
-    await t
-      .expect(Selector('.fd-action-bar__title').withText('Applications').exists)
-      .ok();
+    await t.expect(Selector('h3').withText('Applications').exists).ok();
   },
 );
 
@@ -84,7 +77,7 @@ testIf(
 //   await findActiveFrame(t);
 //   await t
 //     .expect(
-//       Selector('.fd-action-bar__title').withText(/Cluster Addons/i).exists,
+//       Selector('h3').withText(/Cluster Addons/i).exists,
 //     )
 //     .ok();
 // });
@@ -98,17 +91,13 @@ testIf(
     //WHEN
     await findActiveFrame(t);
     await t
-      .click(
-        Selector('.fd-panel__title').withText(config.DEFAULT_NAMESPACE_NAME),
-      )
+      .click(Selector('h3').withText(config.DEFAULT_NAMESPACE_NAME))
       .switchToMainWindow()
       .click(functionsLink);
 
     //THEN
     await findActiveFrame(t);
-    await t
-      .expect(Selector('.fd-panel__title').withText(/Functions/).exists)
-      .ok();
+    await t.expect(Selector('h3').withText(/Functions/).exists).ok();
   },
 );
 
@@ -128,12 +117,9 @@ testIf(toBoolean(config.loggingEnabled), 'Logs view is rendered', async t => {
   await t.click(
     Selector('input').withAttribute('placeholder', /Select Label/i),
   );
-  await t.click(Selector('.fd-mega-menu__link').withText(/namespace/i));
+  await t.click(Selector('span').withText(/namespace/i));
   await t
-    .expect(
-      Selector('.fd-mega-menu__sublink').withText(config.DEFAULT_NAMESPACE_NAME)
-        .exists,
-    )
+    .expect(Selector('span').withText(config.DEFAULT_NAMESPACE_NAME).exists)
     .ok();
 });
 
@@ -148,20 +134,14 @@ testIf(
     await findActiveFrame(t);
 
     await t
-      .click(
-        Selector('.fd-panel__title').withText(config.DEFAULT_NAMESPACE_NAME),
-      )
+      .click(Selector('h3').withText(config.DEFAULT_NAMESPACE_NAME))
       .switchToMainWindow()
       .click(catalogLink);
 
     //THEN
     await findActiveFrame(t);
 
-    await t
-      .expect(
-        Selector('.fd-action-bar__title').withText('Service Catalog').exists,
-      )
-      .ok();
+    await t.expect(Selector('h1').withText('Service Catalog').exists).ok();
   },
 );
 
@@ -175,18 +155,14 @@ testIf(
     //WHEN
     await findActiveFrame(t);
     await t
-      .click(
-        Selector('.fd-panel__title').withText(config.DEFAULT_NAMESPACE_NAME),
-      )
+      .click(Selector('h3').withText(config.DEFAULT_NAMESPACE_NAME))
       .switchToMainWindow()
       .click(brokersLink);
 
     //THEN
     await findActiveFrame(t);
 
-    await t
-      .expect(Selector('.fd-panel__title').withText('Service Brokers').exists)
-      .ok();
+    await t.expect(Selector('h3').withText('Service Brokers').exists).ok();
   },
 );
 
@@ -200,19 +176,13 @@ testIf(
     //WHEN
     await findActiveFrame(t);
     await t
-      .click(
-        Selector('.fd-panel__title').withText(config.DEFAULT_NAMESPACE_NAME),
-      )
+      .click(Selector('h3').withText(config.DEFAULT_NAMESPACE_NAME))
       .switchToMainWindow()
       .click(instancesLink);
 
     //THEN
     await findActiveFrame(t);
-    await t
-      .expect(
-        Selector('.fd-action-bar__title').withText('Service Instance').exists,
-      )
-      .ok();
+    await t.expect(Selector('h1').withText('Service Instances').exists).ok();
   },
 );
 
