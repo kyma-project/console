@@ -1,4 +1,4 @@
-APP_NAME = content
+APP_NAME = content-ui
 APP_PATH = content
 BUILDPACK = eu.gcr.io/kyma-project/test-infra/buildpack-node:v20200428-02dd40a1
 
