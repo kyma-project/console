@@ -54,42 +54,6 @@ describe('EventTriggersWrapper + EventTriggers', () => {
     await wait();
   });
 
-  // it('should render server error message - by eventActivations query', async () => {
-  //   const { getByText } = render(
-  //     withApolloMockProvider({
-  //       component: <EventTriggersWrapper lambda={lambdaMock} />,
-  //       mocks: [
-  //         subscriptionMock,
-  //         GET_EVENT_ACTIVATIONS_ERROR_MOCK(eventActivationsVariables),
-  //         GET_EVENT_TRIGGERS_DATA_MOCK(eventTriggersVariables),
-  //       ],
-  //     }),
-  //   );
-
-  //   await wait(() => {
-  //     expect(getByText(ERRORS.SERVER)).toBeInTheDocument();
-  //   });
-  // });
-
-  it('should render server error message - by eventTriggers query', async () => {
-    const { getByText } = render(
-      withApolloMockProvider({
-        component: <EventTriggersWrapper lambda={lambdaMock} />,
-        mocks: [
-          subscriptionMock,
-          GET_EVENT_ACTIVATIONS_DATA_MOCK(eventActivationsVariables),
-          GET_EVENT_TRIGGERS_ERROR_MOCK(eventTriggersVariables),
-          GET_EVENT_TRIGGERS_ERROR_MOCK(eventTriggersVariables),
-          GET_EVENT_TRIGGERS_ERROR_MOCK(eventTriggersVariables),
-        ],
-      }),
-    );
-
-    await wait(() => {
-      expect(getByText(ERRORS.SERVER)).toBeInTheDocument();
-    });
-  });
-
   it('should render table', async () => {
     const { getByText, queryByRole, queryAllByRole } = render(
       withApolloMockProvider({
