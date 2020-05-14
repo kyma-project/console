@@ -42,7 +42,7 @@ describe('Card.component', () => {
     );
 
     it('has title', () => {
-      const field = component.find('div[data-e2e-id="card-title"] h2');
+      const field = component.find('div[data-e2e-id="card-title"] h3');
       expect(field.exists()).toBe(true);
       expect(field.text()).toEqual(mock.title);
     });
