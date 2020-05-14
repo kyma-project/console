@@ -14,7 +14,10 @@ export const TabsContent = styled.div`
 `;
 
 export const TabsHeader = styled.ul`
-  list-style: none;
+  &,
+  ul {
+    list-style-type: none;
+  }
   margin: ${props => (props.noMargin ? '0' : '0 5px')};
   ${props =>
     props.customStyles &&
