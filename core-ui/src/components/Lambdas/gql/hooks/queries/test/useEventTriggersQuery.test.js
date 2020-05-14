@@ -57,7 +57,7 @@ describe('useEventTriggersQuery', () => {
     await wait(() => {
       expect(getByText(TESTING_STATE.ERROR)).toBeInTheDocument();
     });
-  }, 15000);
+  });
 
   it('should see data state', async () => {
     const { getByText } = render(
