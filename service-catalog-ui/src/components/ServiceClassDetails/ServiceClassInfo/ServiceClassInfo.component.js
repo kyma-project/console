@@ -109,15 +109,15 @@ const ServiceClassInfo = ({
             </Moment>
           </Tile.Content>
         </Tile>
-        <Tile>
-          {documentationUrl && (
+        {documentationUrl && (
+          <Tile>
             <Tile.Content title={serviceClassTileTitles.documentation}>
               <ExternalLink href={documentationUrl} target="_blank">
                 Link
               </ExternalLink>
             </Tile.Content>
-          )}
-        </Tile>
+          </Tile>
+        )}
         {supportUrl && (
           <Tile>
             <Tile.Content title={serviceClassTileTitles.support}>
