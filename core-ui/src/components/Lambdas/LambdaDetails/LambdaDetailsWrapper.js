@@ -24,7 +24,8 @@ export default function LambdaDetailsWrapper({ lambdaName }) {
   } else if (!lambda) {
     content = <EntryNotFound entryType="Lambda" entryId={lambdaName} />;
   } else {
-    content = <LambdaDetails lambda={lambda} />;
+    const backendModules = LuigiClient.getEventData().backendModules;
+    content = <LambdaDetails lambda={lambda} backendModules={backendModules} />;
   }
 
   return <div className="lambda-details">{content}</div>;

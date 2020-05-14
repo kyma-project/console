@@ -239,8 +239,7 @@ export const RESOURCES_MANAGEMENT_PANEL = {
     MAX_REPLICAS_NON_NEGATIVE:
       'Maximum replicas must be a non-negative integer.',
   },
-
-  REPLICAS_MODE: {
+  REPLICAS: {
     MIN_NUMBER: {
       TITLE: 'Minimum replicas',
       DESCRIPTION: 'Minimum number of running replicas.',

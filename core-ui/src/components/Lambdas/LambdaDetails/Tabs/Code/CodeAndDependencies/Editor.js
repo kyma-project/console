@@ -44,26 +44,30 @@ export default function Editor({
 
   if (showDiff) {
     return (
-      <DiffEditor
-        id={id}
-        height="30em"
-        language={language}
-        theme="vs-light"
-        original={originalValue}
-        modified={controlledValue}
-        editorDidMount={handleDiffEditorDidMount}
-      />
+      <div className="diff-editor">
+        <DiffEditor
+          id={id}
+          height="30em"
+          language={language}
+          theme="vs-light"
+          original={originalValue}
+          modified={controlledValue}
+          editorDidMount={handleDiffEditorDidMount}
+        />
+      </div>
     );
   }
 
   return (
-    <ControlledEditor
-      id={id}
-      height="30em"
-      language={language}
-      theme="vs-light"
-      value={controlledValue}
-      onChange={handleControlledChange}
-    />
+    <div className="controlled-editor">
+      <ControlledEditor
+        id={id}
+        height="30em"
+        language={language}
+        theme="vs-light"
+        value={controlledValue}
+        onChange={handleControlledChange}
+      />
+    </div>
   );
 }

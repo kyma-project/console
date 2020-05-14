@@ -1,71 +1,22 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import { Panel, Button } from 'fundamental-react';
-import { RESOURCES_MANAGEMENT_PANEL } from 'components/Lambdas/constants';
-import { useUpdateLambda, UPDATE_TYPE } from 'components/Lambdas/gql/hooks';
-import { LambdaReplicas } from './LambdaReplicas';
-import { LambdaResources } from './LambdaResources';
-import './ResourceManagement.scss';
-import { inputNames } from './shared';
-
 import { useForm } from 'react-hook-form';
-import * as yup from 'yup';
 
-export const cpuRegexp = /^\d+(\.\d+)?m?$/;
-export const memoryRegexp = /^\d+(\.\d+)?(Gi|Mi|Ki|G|M|K)$/;
+import { Panel, Button } from 'fundamental-react';
 
-const schema = yup.object().shape({
-  [inputNames.replicas.min]: yup
-    .number()
-    .transform((val, originalVal) => {
-      return originalVal === '' ? -1 : val; // -1 so that instead of throwing errors about NaN it will pass validation here, but fail on min(0) with nicer error message
-    })
-    .min(0, RESOURCES_MANAGEMENT_PANEL.ERROR_MESSAGES.MIN_REPLICAS_NON_NEGATIVE)
-    .integer(
-      RESOURCES_MANAGEMENT_PANEL.ERROR_MESSAGES.MIN_REPLICAS_NON_NEGATIVE,
-    )
-    .test(
-      'matchMinReplicas',
-      RESOURCES_MANAGEMENT_PANEL.ERROR_MESSAGES.MIN_REPLICAS_TOO_HIGH,
-      function(arg) {
-        return arg <= this.parent.maxReplicas;
-      },
-    ),
-  [inputNames.replicas.max]: yup
-    .number()
-    .transform((val, originalVal) => {
-      return originalVal === '' ? -1 : val; // -1 so that instead of throwing errors about NaN it will pass validation here, but fail on min(0) with nicer error message
-    })
-    .min(0, RESOURCES_MANAGEMENT_PANEL.ERROR_MESSAGES.MAX_REPLICAS_NON_NEGATIVE)
-    .integer(
-      RESOURCES_MANAGEMENT_PANEL.ERROR_MESSAGES.MAX_REPLICAS_NON_NEGATIVE,
-    )
-    .test(
-      'matchMaxReplicas',
-      RESOURCES_MANAGEMENT_PANEL.ERROR_MESSAGES.MAX_REPLICAS_TOO_LOW,
-      function(arg) {
-        return arg >= this.parent.minReplicas;
-      },
-    ),
-  [inputNames.requests.cpu]: yup.string().matches(cpuRegexp, {
-    excludeEmptyString: true,
-    message: RESOURCES_MANAGEMENT_PANEL.ERROR_MESSAGES.CPU,
-  }),
-  [inputNames.limits.cpu]: yup.string().matches(cpuRegexp, {
-    excludeEmptyString: true,
-    message: RESOURCES_MANAGEMENT_PANEL.ERROR_MESSAGES.CPU,
-  }),
-  [inputNames.requests.memory]: yup.string().matches(memoryRegexp, {
-    excludeEmptyString: true,
-    message: RESOURCES_MANAGEMENT_PANEL.ERROR_MESSAGES.MEMORY,
-  }),
-  [inputNames.limits.memory]: yup.string().matches(memoryRegexp, {
-    excludeEmptyString: true,
-    message: RESOURCES_MANAGEMENT_PANEL.ERROR_MESSAGES.MEMORY,
-  }),
-});
+import LambdaReplicas from './LambdaReplicas';
+import LambdaResources from './LambdaResources';
 
-export function ResourcesManagement({ lambda }) {
+import { useUpdateLambda, UPDATE_TYPE } from 'components/Lambdas/gql/hooks';
+import {
+  BUTTONS,
+  RESOURCES_MANAGEMENT_PANEL,
+} from 'components/Lambdas/constants';
+import { parseCpu } from 'components/Lambdas/helpers/resources';
+import { schema, inputNames } from './shared';
+
+import './ResourceManagement.scss';
+
+export default function ResourcesManagement({ lambda }) {
   const defaultValues = {
     [inputNames.replicas.min]: lambda.replicas.min || '1',
     [inputNames.replicas.max]: lambda.replicas.max || '1',
@@ -94,16 +45,17 @@ export function ResourcesManagement({ lambda }) {
     type: UPDATE_TYPE.RESOURCES_AND_REPLICAS,
   });
 
-  const resetFields = () =>
+  function resetFields() {
     Object.entries(defaultValues).forEach(([name, val]) => setValue(name, val));
+  }
 
-  const retriggerValidation = async () => {
+  async function retriggerValidation() {
     await Promise.all(
       Object.keys(defaultValues).map(elem => triggerValidation(elem)),
     );
-  };
+  }
 
-  const onSubmit = data => {
+  function onSubmit(data) {
     const callback = ({ ok }) => {
       if (!ok) {
         resetFields();
@@ -128,7 +80,7 @@ export function ResourcesManagement({ lambda }) {
         callback,
       );
     }
-  };
+  }
 
   const saveText = RESOURCES_MANAGEMENT_PANEL.EDIT_MODAL.OPEN_BUTTON.TEXT.SAVE;
   const editText = RESOURCES_MANAGEMENT_PANEL.EDIT_MODAL.OPEN_BUTTON.TEXT.EDIT;
@@ -149,7 +101,7 @@ export function ResourcesManagement({ lambda }) {
                   retriggerValidation();
                 }}
               >
-                {'Cancel'}
+                {BUTTONS.CANCEL}
               </Button>
             )}
             <Button
@@ -186,21 +138,3 @@ export function ResourcesManagement({ lambda }) {
     </Panel>
   );
 }
-
-ResourcesManagement.propTypes = {
-  lambda: PropTypes.object.isRequired,
-};
-
-export const parseCpu = cpu => {
-  const microCpuRegexp = /^\d+(\.\d+)?u$/;
-  const nanoCpuRegexp = /^\d+(\.\d+)?n$/;
-  if (microCpuRegexp.test(cpu)) {
-    const numberPart = parseFloat(cpu.slice(0, cpu.length - 1));
-    return `${numberPart / 1000}m`;
-  }
-  if (nanoCpuRegexp.test(cpu)) {
-    const numberPart = parseFloat(cpu.slice(0, cpu.length - 1));
-    return `${numberPart / 10 ** 6}m`;
-  }
-  return cpu;
-};

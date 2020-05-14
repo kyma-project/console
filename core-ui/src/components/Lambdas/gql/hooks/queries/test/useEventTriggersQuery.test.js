@@ -44,21 +44,20 @@ describe('useEventTriggersQuery', () => {
     await wait();
   });
 
-  // TODO: Investigate why it fails on CI, but locally always passes
-  // it('should see error state', async () => {
-  //   const { getByText } = render(
-  //     withApolloMockProvider({
-  //       component: (
-  //         <QueryComponent hook={useEventTriggersQuery} hookInput={hookInput} />
-  //       ),
-  //       mocks: [GET_EVENT_TRIGGERS_ERROR_MOCK(variables), subscriptionMock],
-  //     }),
-  //   );
+  it('should see error state', async () => {
+    const { getByText } = render(
+      withApolloMockProvider({
+        component: (
+          <QueryComponent hook={useEventTriggersQuery} hookInput={hookInput} />
+        ),
+        mocks: [GET_EVENT_TRIGGERS_ERROR_MOCK(variables), subscriptionMock],
+      }),
+    );
 
-  //   await wait(() => {
-  //     expect(getByText(TESTING_STATE.ERROR)).toBeInTheDocument();
-  //   });
-  // });
+    await wait(() => {
+      expect(getByText(TESTING_STATE.ERROR)).toBeInTheDocument();
+    });
+  });
 
   it('should see data state', async () => {
     const { getByText } = render(

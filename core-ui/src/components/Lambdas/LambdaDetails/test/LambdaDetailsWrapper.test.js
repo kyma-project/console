@@ -20,6 +20,7 @@ jest.mock('@kyma-project/luigi-client', () => {
     }),
     getEventData: () => ({
       environmentId: 'namespace',
+      backendModules: [],
     }),
   };
 });

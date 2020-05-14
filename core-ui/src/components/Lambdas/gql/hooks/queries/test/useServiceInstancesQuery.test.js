@@ -9,7 +9,10 @@ import {
 } from 'components/Lambdas/helpers/testing';
 
 import { useServiceInstancesQuery } from '../useServiceInstancesQuery';
-import { GET_SERVICE_INSTANCES_DATA_MOCK } from '../testMocks';
+import {
+  GET_SERVICE_INSTANCES_DATA_MOCK,
+  GET_SERVICE_INSTANCES_ERROR_MOCK,
+} from '../testMocks';
 
 describe('useServiceInstancesQuery', () => {
   const hookInput = {
@@ -36,6 +39,24 @@ describe('useServiceInstancesQuery', () => {
 
     expect(getByText(TESTING_STATE.LOADING)).toBeInTheDocument();
     await wait();
+  });
+
+  it('should see error state', async () => {
+    const { getByText } = render(
+      withApolloMockProvider({
+        component: (
+          <QueryComponent
+            hook={useServiceInstancesQuery}
+            hookInput={hookInput}
+          />
+        ),
+        mocks: [GET_SERVICE_INSTANCES_ERROR_MOCK(variables)],
+      }),
+    );
+
+    await wait(() => {
+      expect(getByText(TESTING_STATE.ERROR)).toBeInTheDocument();
+    });
   });
 
   it('should see data state', async () => {
