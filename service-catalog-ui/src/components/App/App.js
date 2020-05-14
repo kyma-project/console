@@ -14,48 +14,28 @@ const App = () => (
     <Switch>
       <Route path="/preload" component={() => null} />
 
+      <Route exact path="/catalog" component={ServiceClassList} />
       <Route
-        path="/catalog"
-        component={({ match }) => {
-          const { path: base } = match;
-          return (
-            <>
-              <Route exact path={base + '/'} component={ServiceClassList} />
-              <Route
-                exact
-                path={base + '/details/:name'}
-                component={RoutedCatalogDetails}
-              />
-              <Route
-                exact
-                path={base + '/details/:name/plan/:plan'}
-                component={RoutedCatalogDetails}
-              />
-              <Route
-                exact
-                path={base + '/details/:name/plans'}
-                component={RoutedServicePlanList}
-              />
-            </>
-          );
-        }}
+        exact
+        path="/catalog/details/:name"
+        component={RoutedCatalogDetails}
+      />
+      <Route
+        exact
+        path="/catalog/details/:name/plan/:plan"
+        component={RoutedCatalogDetails}
+      />
+      <Route
+        exact
+        path="/catalog/details/:name/plans"
+        component={RoutedServicePlanList}
       />
 
+      <Route exact path="/instances" component={ServiceInstancesList} />
       <Route
-        path="/instances"
-        component={({ match }) => {
-          const { path: base } = match;
-          return (
-            <>
-              <Route exact path={base + '/'} component={ServiceInstancesList} />
-              <Route
-                exact
-                path={base + '/details/:name'}
-                component={ServiceInstancesDetails}
-              />
-            </>
-          );
-        }}
+        exact
+        path="/instances/details/:name"
+        component={ServiceInstancesDetails}
       />
 
       <Route path="/brokers" component={ServiceBrokers} />
