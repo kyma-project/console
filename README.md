@@ -21,7 +21,7 @@ The Console also includes React and Angular libraries:
 - [`React common`](./common) - common functionalities for React applications
 - [`React components`](./components/react) - components for React applications (it will be replaced by `Shared components`)
 - [`Shared components`](./components/shared) - new versions of components for React applications written in TypeScript
-- [`Generic documentation`](./components/generic-documentation) - a React component that uses [`@kyma-project/documentation-component`](https://github.com/kyma-incubator/documentation-component) for displaying documentation and various specifications in the [`Content`](./content), [`Service-Catalog-UI`](./service-catalog-ui) and the [`Compass`](./compass) views.
+- [`Generic documentation`](./components/generic-documentation) - a React component that uses [`@kyma-project/documentation-component`](https://github.com/kyma-incubator/documentation-component) for displaying documentation and various specifications in the [`Content`](./content), [`Service-Catalog-UI`](./service-catalog-ui), and [`Compass`](./compass) views.
 
 ## Prerequisites
 
