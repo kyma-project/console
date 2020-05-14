@@ -23,5 +23,5 @@ export function QueryComponent({ hook, hookInput, dataProp = 'data' }) {
   if (data) {
     return <p>{TESTING_STATE.DATA}</p>;
   }
-  return <p>{TESTING_STATE.ERROR}</p>;
+  return <p>{TESTING_STATE.EMPTY_DATA}</p>;
 }
