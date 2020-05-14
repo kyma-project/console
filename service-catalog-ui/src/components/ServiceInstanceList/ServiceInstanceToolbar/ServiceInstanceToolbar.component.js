@@ -14,7 +14,11 @@ const ServiceInstanceToolbar = ({
   activeLabelFilters,
 }) => {
   return (
-    <Toolbar background="#fff" title={serviceInstanceConstants.title}>
+    <Toolbar
+      background="#fff"
+      title={serviceInstanceConstants.title}
+      aria-label="title"
+    >
       {serviceInstancesExists ? (
         <>
           <SearchDropdown onChange={e => searchFn(e.target.value)} />

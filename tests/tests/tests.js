@@ -129,7 +129,9 @@ testIf(toBoolean(config.loggingEnabled), 'Logs view is rendered', async t => {
   //THEN
   await findActiveFrame(t);
   // check title
-  await t.expect(Selector('h1').withText(/Logs/i).exists).ok();
+  await t
+    .expect(Selector('[aria-label="title"]').withText(/Logs/i).exists)
+    .ok();
 
   // check loading log sources
   await t.click(
@@ -168,9 +170,9 @@ testIf(
 
     await t
       .expect(
-        Selector('.fd-action-bar__title').withText('Service Catalog').exists,
+        Selector('[aria-label="title"]').withText('Service Catalog').exists,
       )
-      .ok(); //change selector after catalog merge
+      .ok();
   },
 );
 
@@ -196,8 +198,10 @@ testIf(
     await findActiveFrame(t);
 
     await t
-      .expect(Selector('.fd-panel__title').withText('Service Brokers').exists)
-      .ok(); //change selector after catalog merge
+      .expect(
+        Selector('[aria-label="title"]').withText('Service Brokers').exists,
+      )
+      .ok();
   },
 );
 
@@ -223,9 +227,9 @@ testIf(
     await findActiveFrame(t);
     await t
       .expect(
-        Selector('.fd-action-bar__title').withText('Service Instances').exists,
+        Selector('[aria-label="title"]').withText('Service Instances').exists,
       )
-      .ok(); //change selector after catalog merge
+      .ok();
   },
 );
 

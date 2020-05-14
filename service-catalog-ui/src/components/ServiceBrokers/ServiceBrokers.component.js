@@ -36,7 +36,7 @@ class ServiceBrokers extends React.Component {
 
     return (
       <article className="brokers-list">
-        <PageHeader title="Service Brokers" />
+        <PageHeader title="Service Brokers" aria-label="title" />
         <GenericList
           entries={brokers}
           headerRenderer={headerRenderer}

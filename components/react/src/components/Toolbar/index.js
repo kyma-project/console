@@ -13,8 +13,9 @@ export default ({
   background,
   children,
   nowrap,
+  ...props
 }) => (
-  <ActionBar data-e2e-id="toolbar" background={background}>
+  <ActionBar data-e2e-id="toolbar" background={background} {...props}>
     {typeof goBack === 'function' && (
       <ActionBarBack onClick={goBack} data-e2e-id="toolbar-back" />
     )}

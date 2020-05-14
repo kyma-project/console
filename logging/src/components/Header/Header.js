@@ -28,7 +28,10 @@ export default function Header() {
 
   return (
     <Panel className="fd-has-padding-bottom-none header">
-      <h1 className="fd-has-type-3 fd-has-padding-bottom-tiny fd-has-padding-top-regular fd-has-padding-right-regular fd-has-padding-left-regular ">
+      <h1
+        className="fd-has-type-3 fd-has-padding-bottom-tiny fd-has-padding-top-regular fd-has-padding-right-regular fd-has-padding-left-regular"
+        aria-label="title"
+      >
         Logs
       </h1>
       <section className="header__settings-group fd-has-padding-right-regular fd-has-padding-left-regular ">
