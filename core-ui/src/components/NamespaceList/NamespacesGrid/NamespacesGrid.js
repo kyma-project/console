@@ -40,7 +40,9 @@ export default function NamespacesGrid({ namespaces }) {
               healthyPodsCount={healthyPodsCount}
               status={status}
               isSystemNamespace={isSystemNamespace}
-              applicationsCount={applications.length}
+              applicationsCount={
+                applications !== null ? applications.length : null
+              }
             />
           </li>
         );
