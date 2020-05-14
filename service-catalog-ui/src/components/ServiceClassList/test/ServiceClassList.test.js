@@ -5,8 +5,7 @@ import { allServiceClassesQuery } from 'testing/catalog/queriesMocks';
 import { Spinner, Tab } from '@kyma-project/react-components';
 import ServiceClassList from '../ServiceClassList';
 import { componentUpdate, mockTestNamespace } from 'testing';
-import { Search } from '@kyma-project/react-components';
-import { Identifier } from 'fundamental-react';
+import { FormInput, Identifier } from 'fundamental-react';
 
 const mockNavigate = jest.fn();
 
@@ -151,7 +150,7 @@ describe('Search classes by name', () => {
 
   it('Set search text gives no error', async () => {
     await componentUpdate(component);
-    const search = component.find(Search).find('input');
+    const search = component.find(FormInput).find('input');
     expect(search.exists()).toBe(true);
     search.simulate('change', { target: { value: 'displayName1' } });
 
@@ -169,7 +168,7 @@ describe('Search classes by other attributes', () => {
   it('By provider', async () => {
     const searchedClass = allServiceClassesQuery.result.data.serviceClasses[0];
     await componentUpdate(component);
-    const search = component.find(Search).find('input');
+    const search = component.find(FormInput).find('input');
     search.simulate('change', {
       target: { value: searchedClass.providerDisplayName },
     });
@@ -185,7 +184,7 @@ describe('Search classes by other attributes', () => {
     const searchedClass = allServiceClassesQuery.result.data.serviceClasses[0];
 
     await componentUpdate(component);
-    const search = component.find(Search).find('input');
+    const search = component.find(FormInput).find('input');
     search.simulate('change', { target: { value: searchedClass.description } });
     await componentUpdate(component);
 
