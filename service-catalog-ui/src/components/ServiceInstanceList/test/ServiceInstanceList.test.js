@@ -8,20 +8,19 @@ import {
 } from 'testing/instances/queriesMocks';
 import ServiceInstanceTable from '../ServiceInstanceTable/ServiceInstanceTable.component';
 
-import { Button, Spinner, Tab, Search } from '@kyma-project/react-components';
+import { Button, Spinner, Tab } from '@kyma-project/react-components';
 import ServiceInstancesList from '../ServiceInstanceList';
 import { Link } from '../ServiceInstanceTable/styled.js';
 import { createMockLink } from 'react-shared';
 import { componentUpdate, mockTestNamespace } from 'testing';
 import { act } from 'react-dom/test-utils';
-import { Identifier } from 'fundamental-react';
+import { FormInput, Identifier } from 'fundamental-react';
 import {
   serviceInstance1,
   serviceInstance3,
   serviceInstance2,
 } from 'testing/instances/instanceMocks';
 import FilterDropdown from '../ServiceInstanceToolbar/FilterDropdown.component';
-import { FormInput } from '../ServiceInstanceToolbar/styled';
 
 const mockNavigate = jest.fn();
 const mockAddBackdrop = jest.fn();
@@ -326,7 +325,7 @@ describe('Search instances by name', () => {
   it('Search addon', async () => {
     await componentUpdate(component);
 
-    const search = component.find(Search).find('input');
+    const search = component.find(FormInput).find('input');
     expect(search.exists()).toBe(true);
     search.simulate('change', { target: { value: 'motherly' } });
 
@@ -358,7 +357,7 @@ describe('Search instances by name', () => {
   it('Search service', async () => {
     await componentUpdate(component);
 
-    const search = component.find(Search).find('input');
+    const search = component.find(FormInput).find('input');
     expect(search.exists()).toBe(true);
     search.simulate('change', { target: { value: 'fishing' } });
 
@@ -404,7 +403,7 @@ describe('filter instances by labels', () => {
       label2: 2,
       label3: 0,
     });
-
+    component.debug();
     const filterButton = filter.find('button[data-e2e-id="toggle-filter"]');
     filterButton.simulate('click');
     await componentUpdate(component);
