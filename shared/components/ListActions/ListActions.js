@@ -3,7 +3,10 @@ import { Popover, Menu, Button } from 'fundamental-react';
 import './ListActions.scss';
 import PropTypes from 'prop-types';
 
-const AUTO_ICONS_BY_NAME = new Map([['Edit', 'edit'], ['Delete', 'delete']]);
+const AUTO_ICONS_BY_NAME = new Map([
+  ['Edit', 'edit'],
+  ['Delete', 'delete'],
+]);
 
 const StandaloneAction = ({ action, entry, compact }) => {
   const icon = action.icon || AUTO_ICONS_BY_NAME.get(action.name);

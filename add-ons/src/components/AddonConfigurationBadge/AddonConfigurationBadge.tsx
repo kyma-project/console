@@ -7,9 +7,10 @@ interface AddonConfigurationBadgeProps {
   className?: string;
 }
 
-const AddonConfigurationBadge: React.FunctionComponent<
-  AddonConfigurationBadgeProps
-> = ({ status, className }) => {
+const AddonConfigurationBadge: React.FunctionComponent<AddonConfigurationBadgeProps> = ({
+  status,
+  className,
+}) => {
   let type: BadgeTypes;
 
   switch (status.toLowerCase()) {

@@ -11,9 +11,7 @@ import { highlightTheme } from './highlightTheme';
 import { headingPrefix } from './helpers';
 import { disableInternalLinksParserPlugin } from './plugins';
 
-export const markdownRE: RenderEngineWithOptions<
-  MarkdownRenderEngineOptions
-> = {
+export const markdownRE: RenderEngineWithOptions<MarkdownRenderEngineOptions> = {
   renderEngine: markdownRenderEngine,
   options: {
     customRenderers: {
