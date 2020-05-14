@@ -13,7 +13,7 @@ The Console project consists of the following UI projects:
 - [`Addons`](./add-ons) - The view for displaying Namespace-scoped and cluster-wide Addons
 - [`Content`](./content) - The documentation view
 - [`Log UI`](./logging) - The logs view
-- [`Compass`](./logging) - The **experimental** view for the [Compass](https://github.com/kyma-incubator/compass/blob/master/README.md) project.
+- [`Compass`](./compass) - The **experimental** view for the [Compass](https://github.com/kyma-incubator/compass/blob/master/README.md) project.
 - [`Tests`](./tests) - Acceptance and end-to-end tests
 
 The Console also includes React and Angular libraries:
@@ -21,7 +21,7 @@ The Console also includes React and Angular libraries:
 - [`React common`](./common) - common functionalities for React applications
 - [`React components`](./components/react) - components for React applications (it will be replaced by `Shared components`)
 - [`Shared components`](./components/shared) - new versions of components for React applications written in TypeScript
-- [`Generic documentation`](./components/generic-documentation) - a React component that uses [`@kyma-project/documentation-component`](https://github.com/kyma-incubator/documentation-component) for displaying documentation and various specifications in the [`Content`](./content) and [`Service-Catalog-UI`](./service-catalog-ui) views.
+- [`Generic documentation`](./components/generic-documentation) - a React component that uses [`@kyma-project/documentation-component`](https://github.com/kyma-incubator/documentation-component) for displaying documentation and various specifications in the [`Content`](./content), [`Service-Catalog-UI`](./service-catalog-ui) and the [`Compass`](./compass) views.
 
 ## Prerequisites
 
