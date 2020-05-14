@@ -148,16 +148,18 @@ export default function NamespaceDetailsCard({
             </p>
             <p>Pods are healthy</p>
           </div>
-          <div>
-            <p className="fd-has-type-4 fd-has-font-weight-light">
-              {applicationsCount}
-            </p>
-            <p>
-              {applicationsCount === 1
-                ? 'Bound Application'
-                : 'Bound Applications'}
-            </p>
-          </div>
+          {applicationsCount && (
+            <div>
+              <p className="fd-has-type-4 fd-has-font-weight-light">
+                {applicationsCount}
+              </p>
+              <p>
+                {applicationsCount === 1
+                  ? 'Bound Application'
+                  : 'Bound Applications'}
+              </p>
+            </div>
+          )}
         </section>
       </Panel.Body>
       {isTerminating && (
