@@ -74,15 +74,19 @@ describe('ResourceManagement', () => {
       expect(saveButton).not.toBeDisabled();
       expect(saveButton).toBeInTheDocument();
 
-      cancelButton = getByText(BUTTONS.CANCEL);
+      const cancelButton = getByText(BUTTONS.CANCEL);
       expect(cancelButton).not.toBeDisabled();
       expect(cancelButton).toBeInTheDocument();
-      fireEvent.click(cancelButton);
+    });
 
+    const cancelButton = getByText(BUTTONS.CANCEL);
+    fireEvent.click(cancelButton);
+
+    await wait(() => {
       editButton = getByText(editText);
       expect(editButton).not.toBeDisabled();
     });
-  });
+  }, 10000);
 
   const replicasTestCases = [
     {
