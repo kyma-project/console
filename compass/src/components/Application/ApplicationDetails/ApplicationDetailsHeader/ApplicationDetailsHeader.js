@@ -31,7 +31,9 @@ ApplicationDetailsHeader.propTypes = {
 function ApplicationDetailsHeader({ application }) {
   const [deleteApplicationMutation] = useMutation(
     UNREGISTER_APPLICATION_MUTATION,
-    { variables: { id: application.id } },
+    {
+      variables: { id: application.id },
+    },
   );
 
   const isReadOnly = false; //todo

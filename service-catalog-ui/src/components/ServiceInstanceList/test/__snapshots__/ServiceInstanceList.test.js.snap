@@ -1,0 +1,66 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`InstancesList UI Displays instances with their corresponding names in the table 1`] = `Array []`;
+
+exports[`InstancesList UI Navigates to Instance details when clicked on Instance link 1`] = `Array []`;
+
+exports[`InstancesList UI Navigates to Service Catalog when clicked on "Add instance" button 1`] = `Array []`;
+
+exports[`InstancesList UI No modal for plan with empty spec 1`] = `Array []`;
+
+exports[`InstancesList UI Open modal for plan with non-empty spec 1`] = `Array []`;
+
+exports[`InstancesList UI Shows loading indicator only when data is not yet loaded 1`] = `
+Array [
+  Array [
+    "Warning: componentWillMount has been renamed, and is not recommended for use. See https://fb.me/react-unsafe-component-lifecycles for details.
+
+* Move code with side effects to componentDidMount, and set initial state in the constructor.
+* Rename componentWillMount to UNSAFE_componentWillMount to suppress this warning in non-strict mode. In React 17.x, only the UNSAFE_ name will work. To rename all deprecated lifecycles to their new names, you can run \`npx react-codemod rename-unsafe-lifecycles\` in your project source folder.
+
+Please update the following components: Styled(ActionBar), Styled(ActionBar.Actions), Styled(ActionBar.Header), Styled(Panel), Styled(Panel.Actions), Styled(Panel.Body), Styled(Panel.Head), Styled(Panel.Header), Styled(Table), ThemeProvider, styled.div, styled.li, styled.p, styled.ul",
+  ],
+  Array [
+    "Warning: componentWillReceiveProps has been renamed, and is not recommended for use. See https://fb.me/react-unsafe-component-lifecycles for details.
+
+* Move data fetching code or side effects to componentDidUpdate.
+* If you're updating state whenever props change, refactor your code to use memoization techniques or move it to static getDerivedStateFromProps. Learn more at: https://fb.me/react-derived-state
+* Rename componentWillReceiveProps to UNSAFE_componentWillReceiveProps to suppress this warning in non-strict mode. In React 17.x, only the UNSAFE_ name will work. To rename all deprecated lifecycles to their new names, you can run \`npx react-codemod rename-unsafe-lifecycles\` in your project source folder.
+
+Please update the following components: NotificationMessage, Styled(ActionBar), Styled(ActionBar.Actions), Styled(ActionBar.Header), Styled(Panel), Styled(Panel.Actions), Styled(Panel.Body), Styled(Panel.Head), Styled(Panel.Header), Styled(Table), ThemeProvider, styled.div, styled.li, styled.p, styled.ul",
+  ],
+  Array [
+    "Warning: componentWillMount has been renamed, and is not recommended for use. See https://fb.me/react-unsafe-component-lifecycles for details.
+
+* Move code with side effects to componentDidMount, and set initial state in the constructor.
+* Rename componentWillMount to UNSAFE_componentWillMount to suppress this warning in non-strict mode. In React 17.x, only the UNSAFE_ name will work. To rename all deprecated lifecycles to their new names, you can run \`npx react-codemod rename-unsafe-lifecycles\` in your project source folder.
+
+Please update the following components: Styled(Modal), Styled(Popover), styled.div, styled.span",
+  ],
+  Array [
+    "Warning: componentWillReceiveProps has been renamed, and is not recommended for use. See https://fb.me/react-unsafe-component-lifecycles for details.
+
+* Move data fetching code or side effects to componentDidUpdate.
+* If you're updating state whenever props change, refactor your code to use memoization techniques or move it to static getDerivedStateFromProps. Learn more at: https://fb.me/react-derived-state
+* Rename componentWillReceiveProps to UNSAFE_componentWillReceiveProps to suppress this warning in non-strict mode. In React 17.x, only the UNSAFE_ name will work. To rename all deprecated lifecycles to their new names, you can run \`npx react-codemod rename-unsafe-lifecycles\` in your project source folder.
+
+Please update the following components: Styled(Modal), Styled(Popover), styled.div, styled.span",
+  ],
+]
+`;
+
+exports[`InstancesList UI Test adding instances via subscription 1`] = `Array []`;
+
+exports[`InstancesList UI Test deleting instances via subscription 1`] = `Array []`;
+
+exports[`InstancesList UI Validate if modal delete button fires deleteMutation 1`] = `Array []`;
+
+exports[`Search instances by name Search addon 1`] = `Array []`;
+
+exports[`Search instances by name Search service 1`] = `Array []`;
+
+exports[`Search instances by name Shows all instances initially 1`] = `Array []`;
+
+exports[`filter instances by labels Filter dropdown is filled with labels 1`] = `Array []`;
+
+exports[`filter instances by labels Select filter 1`] = `Array []`;

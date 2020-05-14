@@ -77,7 +77,7 @@ export const ModelsExtended = (Orig: typeof React.Component, system: any) =>
                   false,
                 );
 
-                if (isShown && (schema.size === 0 && rawSchema.size > 0)) {
+                if (isShown && schema.size === 0 && rawSchema.size > 0) {
                   // Firing an action in a container render is not great,
                   // but it works for now.
                   this.props.specActions.requestResolvedSubtree([

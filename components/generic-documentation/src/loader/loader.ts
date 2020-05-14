@@ -57,11 +57,9 @@ export class DocsLoader {
     const markdownFiles = this.extractDocumentation();
 
     if (markdownFiles) {
-      const sources = (await Promise.all(
-        markdownFiles.map(file => this.fetchFile(file, 'md')),
-      )).filter(
-        source => source && source !== undefined,
-      ) as SourceWithOptions[];
+      const sources = (
+        await Promise.all(markdownFiles.map(file => this.fetchFile(file, 'md')))
+      ).filter(source => source && source !== undefined) as SourceWithOptions[];
 
       if (sources && sources.length) {
         return sources;

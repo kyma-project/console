@@ -7,9 +7,9 @@ export interface NotificationContainerProps {
   orientation?: string;
 }
 
-export const NotificationContainer: React.FunctionComponent<
-  NotificationContainerProps
-> = ({ orientation = 'bottom' }) => {
+export const NotificationContainer: React.FunctionComponent<NotificationContainerProps> = ({
+  orientation = 'bottom',
+}) => {
   const { notification, showNotification, hideNotification } = useContext(
     NotificationsService,
   );

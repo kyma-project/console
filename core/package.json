@@ -8,8 +8,10 @@
     "start:kyma": ". ../scripts/load-cluster-config.sh  && ../node_modules/concurrently/bin/concurrently.js \"npm run buildConfig:watch\" \"ng serve --disable-host-check --host console-dev.kyma.local\"",
     "start:kyma:api": ". ../scripts/load-cluster-config.sh  && ../node_modules/concurrently/bin/concurrently.js \"npm run buildConfig:watch\" \"ng serve --disable-host-check --host console-dev.kyma.local --configuration api-local\"",
     "build": ". ../scripts/load-cluster-config.sh && npm run buildConfig && ng build --prod",
-    "test": ". ../scripts/load-cluster-config.sh && ../node_modules/.bin/jest && ng test",
-    "test:single": "../node_modules/.bin/jest && ng test --watch=false",
+    "test": "../node_modules/.bin/jest && npm run test-ng",
+    "test-ng": "if test \"${CI}\" = \"true\"; then npm run test-ng:single; else npm run test-ng:watch; fi",
+    "test-ng:watch": ". ../scripts/load-cluster-config.sh &&  ng test",
+    "test-ng:single": "ng test --watch=false",
     "lint": "ng lint --tslint-config tslint.json",
     "buildConfig": ". ../scripts/load-cluster-config.sh && webpack --mode production --config webpack-generateConfig.config",
     "buildConfig:watch": ". ../scripts/load-cluster-config.sh  && webpack -d --config webpack-generateConfig.config --watch"

@@ -9,13 +9,11 @@ Console is a web-based UI for managing resources within Kyma. It consists of sep
 The Console project consists of the following UI projects:
 
 - [`Core`](./core) - The main frame of Kyma UI
-- [`Catalog`](./service-catalog-ui/catalog) - The UI layer for Service Catalog
-- [`Instances`](./service-catalog-ui/instances) - The view for displaying Service Instances
-- [`Brokers`](./service-catalog-ui/brokers) - The view for displaying Service Brokers
+- [`Service-Catalog-UI`](./service-catalog-ui) - The UI layer for Service Catalog, Instances and Brokers
 - [`Addons`](./add-ons) - The view for displaying Namespace-scoped and cluster-wide Addons
 - [`Content`](./content) - The documentation view
 - [`Log UI`](./logging) - The logs view
-- [`Compass`](./logging) - The **experimental** view for the [Compass](https://github.com/kyma-incubator/compass/blob/master/README.md) project.
+- [`Compass`](./compass) - The **experimental** view for the [Compass](https://github.com/kyma-incubator/compass/blob/master/README.md) project.
 - [`Tests`](./tests) - Acceptance and end-to-end tests
 
 The Console also includes React and Angular libraries:
@@ -23,7 +21,7 @@ The Console also includes React and Angular libraries:
 - [`React common`](./common) - common functionalities for React applications
 - [`React components`](./components/react) - components for React applications (it will be replaced by `Shared components`)
 - [`Shared components`](./components/shared) - new versions of components for React applications written in TypeScript
-- [`Generic documentation`](./components/generic-documentation) - a React component that uses [`@kyma-project/documentation-component`](https://github.com/kyma-incubator/documentation-component) for displaying documentation and various specifications in the [`Content`](./content), [`Catalog`](./service-catalog-ui/catalog) and [`Instances`](./service-catalog-ui/instances) views.
+- [`Generic documentation`](./components/generic-documentation) - a React component that uses [`@kyma-project/documentation-component`](https://github.com/kyma-incubator/documentation-component) for displaying documentation and various specifications in the [`Content`](./content), [`Service-Catalog-UI`](./service-catalog-ui), and [`Compass`](./compass) views.
 
 ## Prerequisites
 

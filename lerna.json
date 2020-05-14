@@ -5,9 +5,7 @@
   "packages": [
     "core",
     "compass",
-    "service-catalog-ui/brokers",
-    "service-catalog-ui/catalog",
-    "service-catalog-ui/instances",
+    "service-catalog-ui",
     "content",
     "add-ons",
     "logging",

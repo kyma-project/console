@@ -122,7 +122,7 @@ class CreateApplicationModal extends React.Component {
   }
 
   validateApplicationName = value => {
-    const regex = /^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$/;
+    const regex = /^[a-z]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$/;
     const wrongApplicationName =
       value && (!Boolean(regex.test(value || '')) || value.length > 36);
     return wrongApplicationName;
@@ -154,6 +154,9 @@ class CreateApplicationModal extends React.Component {
   invalidNameMessage = name => {
     if (!name.length) {
       return 'Please enter the name';
+    }
+    if (name.match('^[0-9]')) {
+      return 'The application name must start with a letter.';
     }
     if (name[0] === '-' || name[name.length - 1] === '-') {
       return 'The application name cannot begin or end with a dash';

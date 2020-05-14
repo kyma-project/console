@@ -11,9 +11,9 @@ export interface InstancesUILayoutProps {
   renderers: Renderers;
 }
 
-export const InstancesUILayout: React.FunctionComponent<
-  InstancesUILayoutProps
-> = ({ renderers }) => {
+export const InstancesUILayout: React.FunctionComponent<InstancesUILayoutProps> = ({
+  renderers,
+}) => {
   const selectedApiState = useState<Source | undefined>();
 
   renderers.group = (otherProps: any) => (

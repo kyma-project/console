@@ -84,11 +84,13 @@ sed -i '' "s/REACT_APP_domain=.*/REACT_APP_domain=\"$DOMAIN\"/" $CLUSTER_CONFIG_
 
 
 echo "Root permissions needed to remove previous cluster->localhost bindings in /etc/hosts"
-sudo sed -i '' "/.$HOST/d" /etc/hosts
 
+if [ $HOST != "kyma.local" ]; then
+    sudo sed -i '' "/.$HOST/d" /etc/hosts
+fi
 
 # add new cluster->localhost binding to hosts file
-echo "127.0.0.1 console-dev.$DOMAIN compass-dev.$DOMAIN localhost"| sudo tee -a /etc/hosts
+echo "127.0.0.1 console-dev.$DOMAIN compass-dev.$DOMAIN console-dev.kyma.local localhost"| sudo tee -a /etc/hosts
 
 echo "Added ClusterConfig to Console"
 echo ""

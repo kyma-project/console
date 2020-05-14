@@ -10,9 +10,9 @@ export interface HeadersNavigationProps {
   enableSmoothScroll?: boolean;
 }
 
-export const HeadersNavigation: React.FunctionComponent<
-  HeadersNavigationProps
-> = ({ enableSmoothScroll = false }) => {
+export const HeadersNavigation: React.FunctionComponent<HeadersNavigationProps> = ({
+  enableSmoothScroll = false,
+}) => {
   const headersWrapperRef = useRef<HTMLDivElement>();
 
   return (
