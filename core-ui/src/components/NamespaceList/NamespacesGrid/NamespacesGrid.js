@@ -35,7 +35,7 @@ export default function NamespacesGrid({ namespaces }) {
         return (
           <li key={name}>
             <NamespaceDetailsCard
-              namespaceName={name}
+              name={name}
               allPodsCount={allPodsCount}
               healthyPodsCount={healthyPodsCount}
               status={status}

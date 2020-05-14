@@ -41,8 +41,16 @@ function navigateToNamespaceDetails(namespaceName) {
   LuigiClient.sendCustomMessage({ id: 'console.refreshNavigation' });
 }
 
+const Spinner = () => (
+  <div className="fd-loading-dots" aria-hidden="false" aria-label="Loading">
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+);
+
 export default function NamespaceDetailsCard({
-  namespaceName,
+  name,
   allPodsCount,
   healthyPodsCount,
   status,
@@ -51,17 +59,17 @@ export default function NamespaceDetailsCard({
 }) {
   const [deleteNamespace] = useMutation(DELETE_NAMESPACE);
 
-  const handleNamespaceDelete = namespaceName => {
+  const handleNamespaceDelete = () => {
     LuigiClient.uxManager()
       .showConfirmationModal({
-        header: `Remove ${namespaceName}`,
-        body: `Are you sure you want to delete namespace "${namespaceName}"?`,
+        header: `Remove ${name}`,
+        body: `Are you sure you want to delete namespace "${name}"?`,
         buttonConfirm: 'Delete',
         buttonDismiss: 'Cancel',
       })
       .then(async () => {
         try {
-          await deleteNamespace({ variables: { name: namespaceName } });
+          await deleteNamespace({ variables: { name } });
         } catch (e) {
           console.warn(e);
           LuigiClient.uxManager().showAlert({
@@ -84,7 +92,7 @@ export default function NamespaceDetailsCard({
         <Menu.Item
           onClick={e => {
             e.stopPropagation();
-            handleNamespaceDelete(namespaceName);
+            handleNamespaceDelete(name);
           }}
         >
           Delete
@@ -108,22 +116,14 @@ export default function NamespaceDetailsCard({
     'namespace-details-card--terminating': isTerminating,
   });
 
-  const Spinner = () => (
-    <div className="fd-loading-dots" aria-hidden="false" aria-label="Loading">
-      <div></div>
-      <div></div>
-      <div></div>
-    </div>
-  );
-
   return (
     <Panel
       role="gridcell"
       className={panelClass}
-      onClick={() => navigateToNamespaceDetails(namespaceName)}
+      onClick={() => navigateToNamespaceDetails(name)}
     >
       <Panel.Header className="fd-has-color-text-1 fd-has-type-1">
-        <Panel.Head title={namespaceName} />
+        <Panel.Head title={name} />
         <span>
           {isSystemNamespace && (
             <Badge className="fd-has-margin-left-tiny">System</Badge>
