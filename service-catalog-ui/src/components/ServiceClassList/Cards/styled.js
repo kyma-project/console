@@ -89,7 +89,8 @@ export const CardHeaderContent = styled(TileContent)`
     margin-left: 20px;
     align-self: flex-start;
 
-    > h2 {
+    > h3 {
+      margin-left: 0px;
       font-size: 16px;
       color: rgb(50, 54, 58);
       font-weight: normal;
