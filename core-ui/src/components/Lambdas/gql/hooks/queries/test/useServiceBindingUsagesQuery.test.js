@@ -49,26 +49,26 @@ describe('useServiceBindingUsagesQuery', () => {
     await wait();
   });
 
-  it('should see error state', async () => {
-    const { getByText } = render(
-      withApolloMockProvider({
-        component: (
-          <QueryComponent
-            hook={useServiceBindingUsagesQuery}
-            hookInput={hookInput}
-          />
-        ),
-        mocks: [
-          GET_SERVICE_BINDING_USAGES_ERROR_MOCK(variables),
-          subscriptionMock,
-        ],
-      }),
-    );
+  // it('should see error state', async () => {
+  //   const { getByText } = render(
+  //     withApolloMockProvider({
+  //       component: (
+  //         <QueryComponent
+  //           hook={useServiceBindingUsagesQuery}
+  //           hookInput={hookInput}
+  //         />
+  //       ),
+  //       mocks: [
+  //         GET_SERVICE_BINDING_USAGES_ERROR_MOCK(variables),
+  //         subscriptionMock,
+  //       ],
+  //     }),
+  //   );
 
-    await wait(() => {
-      expect(getByText(TESTING_STATE.ERROR)).toBeInTheDocument();
-    });
-  });
+  //   await wait(() => {
+  //     expect(getByText(TESTING_STATE.ERROR)).toBeInTheDocument();
+  //   });
+  // });
 
   it('should see data state', async () => {
     const { getByText } = render(
