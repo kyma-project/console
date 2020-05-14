@@ -10,11 +10,11 @@ NamespacesGrid.propTypes = {
     PropTypes.shape({
       name: PropTypes.any,
       stauts: PropTypes.any,
+      applications: PropTypes.any,
+      isSystemNamespace: PropTypes.any,
       pods: PropTypes.arrayOf(
         PropTypes.shape({ status: PropTypes.string.isRequired }),
       ).isRequired,
-      applications: PropTypes.array,
-      isSystemNamespace: PropTypes.bool.isRequired,
     }),
   ).isRequired,
 };
@@ -40,9 +40,7 @@ export default function NamespacesGrid({ namespaces }) {
               healthyPodsCount={healthyPodsCount}
               status={status}
               isSystemNamespace={isSystemNamespace}
-              applicationsCount={
-                applications !== null ? applications.length : null
-              }
+              applications={applications}
             />
           </li>
         );
