@@ -32,7 +32,7 @@ describe('NamespaceDetailsCard', () => {
     );
     expect(queryByText('9/10')).toBeInTheDocument();
     expect(queryByText(applications.length.toString())).toBeInTheDocument();
-    expect(queryByText('Bound applications')).toBeInTheDocument();
+    expect(queryByText('Bound Applications')).toBeInTheDocument();
     expect(queryByText('test-namespace-name')).toBeInTheDocument();
     expect(queryByText('System')).not.toBeInTheDocument();
   });
@@ -48,7 +48,7 @@ describe('NamespaceDetailsCard', () => {
         applications={null}
       />,
     );
-    expect(queryByText('Bound application')).not.toBeInTheDocument();
+    expect(queryByText('Bound Application')).not.toBeInTheDocument();
   });
 
   it('Displays "SYSTEM" badge on system namespace', () => {

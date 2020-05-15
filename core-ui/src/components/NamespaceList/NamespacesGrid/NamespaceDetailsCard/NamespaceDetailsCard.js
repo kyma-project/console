@@ -155,8 +155,8 @@ export default function NamespaceDetailsCard({
               </p>
               <p>
                 {applications.length === 1
-                  ? 'Bound application'
-                  : 'Bound applications'}
+                  ? 'Bound Application'
+                  : 'Bound Applications'}
               </p>
             </div>
           )}
