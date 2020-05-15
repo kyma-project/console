@@ -45,8 +45,8 @@ export default function MetadataDefinitionTable({
 
   return (
     <GenericList
-      title="Metadata definitions"
-      notFoundMessage={`This ${ownerType} doesn't have any metadata definitions.`}
+      title="Metadata"
+      notFoundMessage={`This ${ownerType} doesn't have any metadata.`}
       entries={entries}
       headerRenderer={headerRenderer}
       rowRenderer={rowRenderer}
