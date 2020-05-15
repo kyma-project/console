@@ -12,6 +12,7 @@ export const StatusesList = styled.ul`
   align-items: center;
   display: grid;
   grid-gap: 3px;
+  list-style: none;
 `;
 
 export const StatusWrapper = styled.li`

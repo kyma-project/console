@@ -19,6 +19,8 @@ export { ResourceNotFound } from './components/ResourceNotFound/ResourceNotFound
 export { StatusBadge } from './components/StatusBadge/StatusBadge';
 export { JSONEditor } from './components/JSONEditor/JSONEditor';
 export { TextFormItem } from './components/TextFormItem/TextFormItem';
+export { Tabs } from './components/Tabs/Tabs';
+export { Tab } from './components/Tabs/Tab.js';
 
 export * from './forms';
 export * from './hooks';
