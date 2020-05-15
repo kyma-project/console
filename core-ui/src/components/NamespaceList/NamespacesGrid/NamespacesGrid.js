@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import NamespaceDetailsCard from './NamespaceDetailsCard/NamespaceDetailsCard';
 import './NamespacesGrid.scss';
 import getPodsCounts from './getPodsCounts';
+import { backendModuleExists } from 'commons/helpers';
 
 NamespacesGrid.propTypes = {
   namespaces: PropTypes.arrayOf(
@@ -40,7 +41,9 @@ export default function NamespacesGrid({ namespaces }) {
               healthyPodsCount={healthyPodsCount}
               status={status}
               isSystemNamespace={isSystemNamespace}
-              applications={applications}
+              applications={
+                backendModuleExists('applications') ? applications : null
+              }
             />
           </li>
         );

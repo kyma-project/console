@@ -18,6 +18,7 @@ jest.mock('@kyma-project/luigi-client', () => ({
 }));
 
 describe('NamespaceDetailsCard', () => {
+  const applications = [{}, {}];
   it('Displays basic namespace data', () => {
     const { queryByText } = render(
       <NamespaceDetailsCard
@@ -26,12 +27,28 @@ describe('NamespaceDetailsCard', () => {
         healthyPodsCount={9}
         status="Active"
         isSystemNamespace={false}
-        applicationsCount={0}
+        applications={applications}
       />,
     );
     expect(queryByText('9/10')).toBeInTheDocument();
+    expect(queryByText(applications.length.toString())).toBeInTheDocument();
+    expect(queryByText('Bound applications')).toBeInTheDocument();
     expect(queryByText('test-namespace-name')).toBeInTheDocument();
     expect(queryByText('System')).not.toBeInTheDocument();
+  });
+
+  it(`Doesn't display applications if null`, () => {
+    const { queryByText } = render(
+      <NamespaceDetailsCard
+        name="test-namespace-name"
+        allPodsCount={10}
+        healthyPodsCount={9}
+        status="Active"
+        isSystemNamespace={false}
+        applications={null}
+      />,
+    );
+    expect(queryByText('Bound application')).not.toBeInTheDocument();
   });
 
   it('Displays "SYSTEM" badge on system namespace', () => {
@@ -42,7 +59,7 @@ describe('NamespaceDetailsCard', () => {
         healthyPodsCount={10}
         status="Active"
         isSystemNamespace={true}
-        applicationsCount={0}
+        applications={applications}
       />,
     );
 
@@ -57,7 +74,7 @@ describe('NamespaceDetailsCard', () => {
         healthyPodsCount={10}
         status="Active"
         isSystemNamespace={true}
-        applicationsCount={0}
+        applications={applications}
       />,
     );
 
@@ -82,7 +99,7 @@ describe('NamespaceDetailsCard', () => {
           healthyPodsCount={10}
           status="Active"
           isSystemNamespace={true}
-          applicationsCount={0}
+          applications={applications}
         />
       </MockedProvider>,
     );

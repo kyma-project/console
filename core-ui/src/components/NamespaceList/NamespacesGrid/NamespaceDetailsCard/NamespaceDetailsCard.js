@@ -8,15 +8,14 @@ import { useMutation } from '@apollo/react-hooks';
 
 import { Button, Menu, Panel, Badge, Popover } from 'fundamental-react';
 import './NamespaceDetailsCard.scss';
-import builder from 'commons/builder';
 
 NamespaceDetailsCard.propTypes = {
-  namespaceName: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
   allPodsCount: PropTypes.number.isRequired,
   healthyPodsCount: PropTypes.number.isRequired,
   status: PropTypes.string.isRequired,
   isSystemNamespace: PropTypes.bool.isRequired,
-  applications: PropTypes.array.isRequired,
+  applications: PropTypes.array,
 };
 
 export function getPodsRatioColor(healthyPods, allPods) {
@@ -149,15 +148,15 @@ export default function NamespaceDetailsCard({
             </p>
             <p>Pods are healthy</p>
           </div>
-          {builder.getBackendModules().includes('applications') && (
+          {applications !== null && (
             <div>
               <p className="fd-has-type-4 fd-has-font-weight-light">
                 {applications.length}
               </p>
               <p>
                 {applications.length === 1
-                  ? 'Bound Application'
-                  : 'Bound Applications'}
+                  ? 'Bound application'
+                  : 'Bound applications'}
               </p>
             </div>
           )}
