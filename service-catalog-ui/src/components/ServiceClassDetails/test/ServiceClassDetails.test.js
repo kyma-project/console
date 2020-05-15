@@ -1,12 +1,7 @@
 import React from 'react';
 import { MockedProvider } from '@apollo/react-testing';
 import { mount } from 'enzyme';
-import {
-  render,
-  wait,
-  fireEvent,
-  waitForDomChange,
-} from '@testing-library/react';
+import { render, fireEvent, waitForDomChange } from '@testing-library/react';
 import {
   serviceClassAPIruleQuery,
   serviceClassWithPlans,
@@ -94,14 +89,14 @@ describe('Service Class Details UI', () => {
         </MockedProvider>,
       );
 
-      await wait(() => {
-        expect(mockShowAlert).toHaveBeenCalledWith({
-          type: 'error',
-          text:
-            'The provided plan name is wrong. Please make sure you selected the right one.',
-        });
-        mockShowAlert.mockReset();
+      await waitForDomChange();
+
+      expect(mockShowAlert).toHaveBeenCalledWith({
+        type: 'error',
+        text:
+          'The provided plan name is wrong. Please make sure you selected the right one.',
       });
+      mockShowAlert.mockReset();
     });
 
     it('Shows API package icon and breadcrumb when the label is present', async () => {
@@ -136,10 +131,10 @@ describe('Service Class Details UI', () => {
         </MockedProvider>,
       );
 
-      await wait(() => {
-        expect(queryByLabelText('docs-per-plan-icon')).toBeInTheDocument();
-        expect(queryByText(`Plans list`)).not.toBeInTheDocument();
-      });
+      await waitForDomChange();
+
+      expect(queryByLabelText('docs-per-plan-icon')).toBeInTheDocument();
+      expect(queryByText(`Plans list`)).not.toBeInTheDocument();
     });
 
     it("Doesn't show API package icon or breadcrumb when label isn't present", async () => {
@@ -150,11 +145,10 @@ describe('Service Class Details UI', () => {
           />
         </MockedProvider>,
       );
+      await waitForDomChange();
 
-      await wait(() => {
-        expect(queryByLabelText('docs-per-plan-icon')).not.toBeInTheDocument();
-        expect(queryByText(`Plans list`)).not.toBeInTheDocument();
-      });
+      expect(queryByLabelText('docs-per-plan-icon')).not.toBeInTheDocument();
+      expect(queryByText(`Plans list`)).not.toBeInTheDocument();
     });
     describe('PlanSelector', () => {
       it('Renders no plans', () => {

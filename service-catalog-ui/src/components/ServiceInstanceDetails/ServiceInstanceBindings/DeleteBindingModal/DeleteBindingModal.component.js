@@ -9,7 +9,6 @@ import { TextWrapper, Text, Bold } from './styled';
 class DeleteBindingModal extends React.Component {
   constructor(props) {
     super(props);
-    this.child = React.createRef();
     this.state = {
       bindingUsageChecked: props.deleteBindingUsage ? true : false,
       bindingChecked: props.deleteBinding && props.bindingExists,
@@ -114,7 +113,6 @@ class DeleteBindingModal extends React.Component {
 
     return (
       <Modal
-        ref={modal => (this.child = modal)}
         title="Warning"
         confirmText="Delete"
         onConfirm={this.handleConfirmation}
