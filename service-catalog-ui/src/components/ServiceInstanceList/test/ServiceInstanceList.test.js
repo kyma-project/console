@@ -8,13 +8,13 @@ import {
 } from 'testing/instances/queriesMocks';
 import ServiceInstanceTable from '../ServiceInstanceTable/ServiceInstanceTable.component';
 
-import { Button, Spinner, Tab } from '@kyma-project/react-components';
+import { Tab } from '@kyma-project/react-components';
 import ServiceInstancesList from '../ServiceInstanceList';
 import { Link } from '../ServiceInstanceTable/styled.js';
-import { createMockLink } from 'react-shared';
+import { Spinner, createMockLink } from 'react-shared';
 import { componentUpdate, mockTestNamespace } from 'testing';
 import { act } from 'react-dom/test-utils';
-import { FormInput, Identifier } from 'fundamental-react';
+import { Button, FormInput, Identifier } from 'fundamental-react';
 import {
   serviceInstance1,
   serviceInstance3,
@@ -250,10 +250,11 @@ describe('InstancesList UI', () => {
     );
 
     await componentUpdate(component);
+    await componentUpdate(component);
 
     let row = component.find('tbody > tr').at(0);
-
     const planLink = row.find('[data-e2e-id="service-plan"]').last();
+
     expect(planLink.exists()).toBe(true);
     expect(planLink.text()).toContain(
       serviceInstance1.clusterServicePlan.displayName,
@@ -281,7 +282,7 @@ describe('InstancesList UI', () => {
     );
 
     await componentUpdate(component);
-
+    await componentUpdate(component);
     let row = component.find('tbody > tr').at(1);
     const planLink = row.find('[data-e2e-id="service-plan"]');
     expect(planLink.exists()).toBe(true);
@@ -403,7 +404,7 @@ describe('filter instances by labels', () => {
       label2: 2,
       label3: 0,
     });
-    component.debug();
+
     const filterButton = filter.find('button[data-e2e-id="toggle-filter"]');
     filterButton.simulate('click');
     await componentUpdate(component);

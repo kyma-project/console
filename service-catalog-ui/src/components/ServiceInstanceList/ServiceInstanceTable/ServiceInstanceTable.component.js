@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import LuigiClient from '@kyma-project/luigi-client';
 import {
-  Button,
   InstanceStatus,
   Modal,
   Table,
   Tooltip,
 } from '@kyma-project/react-components';
-import { Icon } from 'fundamental-react';
+import { Button, Icon } from 'fundamental-react';
 
 import {
   LinkButton,

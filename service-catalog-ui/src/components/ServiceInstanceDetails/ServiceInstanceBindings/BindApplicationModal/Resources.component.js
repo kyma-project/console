@@ -1,6 +1,7 @@
 import React from 'react';
 
-import { Input, Select, Spinner } from '@kyma-project/react-components';
+import { Input, Select } from '@kyma-project/react-components';
+import { Spinner } from 'react-shared';
 
 import deepEqual from 'deep-equal';
 

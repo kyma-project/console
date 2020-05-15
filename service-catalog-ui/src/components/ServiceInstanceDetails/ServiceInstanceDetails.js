@@ -5,10 +5,10 @@ import { createBrowserHistory } from 'history';
 
 import {
   NotificationMessage,
-  Spinner,
   ThemeWrapper,
 } from '@kyma-project/react-components';
 
+import { Spinner } from 'react-shared';
 import ServiceInstanceHeader from './ServiceInstanceHeader/ServiceInstanceHeader';
 import ServiceInstanceTabs from './ServiceInstanceTabs/ServiceInstanceTabs.component';
 import ServiceInstanceBindings from './ServiceInstanceBindings/ServiceInstanceBindings.container';
