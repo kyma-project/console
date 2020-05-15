@@ -165,7 +165,7 @@ const ServiceClassInfo = ({
           </Tile>
         )}
         {planSelector && (
-          <Tile columnSpan="2">
+          <Tile className="fd-has-grid-column-span-2">
             <Tile.Content title={serviceClassTileTitles.plans}>
               {planSelector}
             </Tile.Content>

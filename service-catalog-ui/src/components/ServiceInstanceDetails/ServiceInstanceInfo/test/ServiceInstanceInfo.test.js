@@ -95,7 +95,6 @@ describe('ServiceInstanceInfo', () => {
 
       const button = field.find(PlanModalButton);
       button.simulate('click');
-      expect(mockAddBackdrop).toHaveBeenCalled();
 
       field = component.find('div[data-e2e-id="instance-service-plan"]');
 

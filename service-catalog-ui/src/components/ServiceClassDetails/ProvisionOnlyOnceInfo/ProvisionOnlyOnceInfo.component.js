@@ -16,7 +16,6 @@ const ProvisionOnlyOnceInfo = () => {
   };
   return (
     <ProvisionOnlyOnceInfoContentWrapper
-      colSpan={1}
       color="#0b74de"
       data-e2e-id="provision-only-once-info"
     >

@@ -23,7 +23,6 @@ export const StatusPanel = ({ serviceInstance }) => {
   return (
     <StatusWrapper
       data-e2e-id="instance-status"
-      colSpan={1}
       color={instanceStatusColor(serviceInstance.status.type)}
     >
       <ContentHeader>

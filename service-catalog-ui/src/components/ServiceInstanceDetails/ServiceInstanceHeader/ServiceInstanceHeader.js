@@ -2,12 +2,9 @@ import React from 'react';
 import LuigiClient from '@kyma-project/luigi-client';
 import ServiceInstanceInfo from '../ServiceInstanceInfo/ServiceInstanceInfo';
 import { serviceInstanceConstants } from 'helpers/constants';
-import {
-  Button,
-  Modal,
-  Breadcrumb,
-  Toolbar,
-} from '@kyma-project/react-components';
+import { Toolbar } from '@kyma-project/react-components';
+import { Button, Breadcrumb } from 'fundamental-react';
+import { Modal } from 'react-shared';
 import { BreadcrumbWrapper, ToolbarWrapper } from './styled';
 import { isService } from 'helpers';
 
@@ -74,8 +71,6 @@ const ServiceInstanceHeader = ({
             </Button>
           }
           type="negative"
-          onShow={() => LuigiClient.uxManager().addBackdrop()}
-          onHide={() => LuigiClient.uxManager().removeBackdrop()}
         >
           {`${serviceInstanceConstants.instanceDeleteConfirm} "${serviceInstance.name}"?`}
         </Modal>

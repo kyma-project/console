@@ -2,7 +2,7 @@
 
 exports[`Render info with status FAILED 1`] = `
 <div
-  class="fd-panel fd-layout-grid__span-column-1 sc-bwzfXH sPJOf"
+  class="fd-panel sc-bwzfXH sPJOf"
   color="#ee0000"
   data-e2e-id="instance-status"
 >
@@ -40,7 +40,7 @@ exports[`Render info with status FAILED 1`] = `
 
 exports[`Render info with status PROVISIONING 1`] = `
 <div
-  class="fd-panel fd-layout-grid__span-column-1 sc-bwzfXH bKkzNl"
+  class="fd-panel sc-bwzfXH bKkzNl"
   color="#ffb600"
   data-e2e-id="instance-status"
 >
@@ -78,7 +78,7 @@ exports[`Render info with status PROVISIONING 1`] = `
 
 exports[`Render info with status RUNNING 1`] = `
 <div
-  class="fd-panel fd-layout-grid__span-column-1 sc-bwzfXH iEwrcE"
+  class="fd-panel sc-bwzfXH iEwrcE"
   color="#3db350"
   data-e2e-id="instance-status"
 >

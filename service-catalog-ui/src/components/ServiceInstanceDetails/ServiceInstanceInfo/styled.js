@@ -1,7 +1,7 @@
 import styled from 'styled-components';
-import { PanelGrid, Panel, PanelHeader } from '@kyma-project/react-components';
+import { Panel, LayoutGrid } from 'fundamental-react';
 
-export const ServiceInstanceInfoWrapper = styled(PanelGrid)`
+export const ServiceInstanceInfoWrapper = styled(LayoutGrid)`
   margin: 0 32px;
   && > * {
     box-shadow: none;
@@ -18,7 +18,7 @@ export const StatusWrapper = styled(Panel)`
   }
 `;
 
-export const ContentHeader = styled(PanelHeader)`
+export const ContentHeader = styled(Panel.Header)`
   && {
     color: #32363a;
     font-size: 16px;

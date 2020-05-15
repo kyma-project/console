@@ -7,7 +7,9 @@ import {
   DOCUMENTATION_PER_PLAN_LABEL,
 } from 'helpers/constants';
 
-import { Modal, PanelBody, Label, Panel } from '@kyma-project/react-components';
+import { Label } from '@kyma-project/react-components';
+import { Panel } from 'fundamental-react';
+import { Modal } from 'react-shared';
 
 import {
   ServiceInstanceInfoWrapper,
@@ -65,7 +67,7 @@ const ServiceInstanceInfo = ({ serviceInstance }) => {
       className="fd-has-padding-bottom-medium"
     >
       <Panel colSpan={2}>
-        <PanelBody className="fd-has-margin-bottom-medium fd-has-padding-none">
+        <Panel.Body className="fd-has-margin-bottom-medium fd-has-padding-none">
           <Grid>
             <Grid.Unit size={INFORMATION_CELL_SIZE}>
               <DescriptionKey>
@@ -99,8 +101,7 @@ const ServiceInstanceInfo = ({ serviceInstance }) => {
                       </PlanModalButton>
                     }
                     title={serviceInstanceConstants.instanceParameters}
-                    onShow={() => LuigiClient.uxManager().addBackdrop()}
-                    onHide={() => LuigiClient.uxManager().removeBackdrop()}
+                    confirmText="Close"
                   >
                     <JSONCode>
                       {JSON.stringify(serviceInstance.planSpec, undefined, 2)}
@@ -174,7 +175,7 @@ const ServiceInstanceInfo = ({ serviceInstance }) => {
               </div>
             )}
           </Grid>
-        </PanelBody>
+        </Panel.Body>
       </Panel>
       <StatusPanel serviceInstance={serviceInstance} />
     </ServiceInstanceInfoWrapper>

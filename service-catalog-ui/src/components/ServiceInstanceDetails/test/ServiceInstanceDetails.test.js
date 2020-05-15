@@ -7,7 +7,8 @@ import {
   createBindingMutation,
 } from 'testing/instances/queriesMocks';
 import ServiceInstanceDetails from '../ServiceInstanceDetails';
-import { Spinner, Toolbar, Modal } from '@kyma-project/react-components';
+import { Spinner, Toolbar } from '@kyma-project/react-components';
+import { Modal } from 'react-shared';
 import { createMockLink, NotificationContext } from 'react-shared';
 import { componentUpdate, mockTestNamespace } from 'testing';
 import { serviceInstanceConstants } from 'helpers/constants';
