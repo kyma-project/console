@@ -10,7 +10,7 @@ const createLimitRangeSuccessfulMock = () => ({
     variables: {
       limitRange: {
         max: {
-          memory: '1Gi',
+          memory: '1100Mi',
         },
         default: {
           memory: '512Mi',

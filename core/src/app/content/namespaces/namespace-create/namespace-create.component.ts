@@ -172,7 +172,7 @@ export class NamespaceCreateComponent {
     this.labels = ['istio-injection=enabled'];
     this.memoryLimits = '3Gi';
     this.memoryRequests = '2.8Gi';
-    this.max = '1Gi';
+    this.max = '1100Mi';
     this.default = '512Mi';
     this.defaultRequest = '32Mi';
 

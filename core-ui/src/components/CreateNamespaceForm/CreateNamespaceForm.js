@@ -172,7 +172,7 @@ const ContainerLimitSection = ({ maxRef, defaultRef, requestRef }) => (
       id="container-max"
       placeholder="Max"
       type="text"
-      defaultValue="1Gi"
+      defaultValue="1100Mi"
       pattern={LIMIT_REGEX}
       reference={maxRef}
       description="Max *"
