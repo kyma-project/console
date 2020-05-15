@@ -8,7 +8,8 @@ import {
   PlanModalButton,
   JSONCode,
 } from '../styled';
-import { Label, Modal } from '@kyma-project/react-components';
+import { Label } from '@kyma-project/react-components';
+import { Modal } from 'react-shared';
 
 const mockNavigate = jest.fn();
 const mockAddBackdrop = jest.fn();

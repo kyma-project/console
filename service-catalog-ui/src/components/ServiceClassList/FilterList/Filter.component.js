@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Text } from '@kyma-project/react-components';
+import { Text } from '@kyma-project/react-components';
+import { Button } from 'fundamental-react';
 
 import {
   Checkmark,

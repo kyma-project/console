@@ -1,12 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import {
-  JsonSchemaForm,
-  ErrorBoundary,
-  Icon,
-} from '@kyma-project/react-components';
-import { Bold, Flex } from './styled';
+import { ErrorBoundary, Icon } from '@kyma-project/react-components';
+import { Bold, Flex, JsonSchemaForm } from './styled';
 const [draft04, draft06] = [
   require('ajv/lib/refs/json-schema-draft-04.json'),
   require('ajv/lib/refs/json-schema-draft-06.json'),

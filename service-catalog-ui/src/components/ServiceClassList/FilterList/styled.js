@@ -1,5 +1,6 @@
 import styled from 'styled-components';
-import { Button, sizes } from '@kyma-project/react-components';
+import { sizes } from '@kyma-project/react-components';
+import { Button } from 'fundamental-react';
 
 export const FiltersDropdown = styled.div`
   .fd-button--emphasized {
