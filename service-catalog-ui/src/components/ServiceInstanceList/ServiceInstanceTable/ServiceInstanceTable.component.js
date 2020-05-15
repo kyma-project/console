@@ -1,12 +1,8 @@
 import React, { Component } from 'react';
 import LuigiClient from '@kyma-project/luigi-client';
-import {
-  InstanceStatus,
-  Modal,
-  Table,
-  Tooltip,
-} from '@kyma-project/react-components';
+import { InstanceStatus, Table, Tooltip } from '@kyma-project/react-components';
 import { Button, Icon } from 'fundamental-react';
+import { Modal } from 'react-shared';
 
 import {
   LinkButton,
@@ -146,8 +142,7 @@ export class ServiceInstanceTable extends Component {
                           <Icon glyph="detail-view" size="s" />
                         </ServicePlanButton>
                       }
-                      onShow={() => LuigiClient.uxManager().addBackdrop()}
-                      onHide={() => LuigiClient.uxManager().removeBackdrop()}
+                      confirmText="Close"
                     >
                       <JSONCode data-e2e-id="service-plan-content">
                         {JSON.stringify(instance.planSpec, null, 2)}
