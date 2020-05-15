@@ -10,6 +10,7 @@ import {
   FormInput,
 } from 'fundamental-react';
 import { FiltersDropdownWrapper, Popover } from './styled';
+import './FilterDropdown.scss';
 
 const FilterDropdown = ({
   onLabelChange,
@@ -28,14 +29,14 @@ const FilterDropdown = ({
   };
 
   const labels = Object.entries(availableLabels).map(([label, count]) => (
-    <FormItem key={label}>
+    <FormItem key={label} className="filter-dropdown__item">
       <FormInput
         data-e2e-id={`filter-${label}`}
         type="checkbox"
         id={label}
         onChange={handleLabelClick}
         checked={activeLabelFilters.includes(label)}
-        className="fd-has-margin-right-s"
+        className="fd-has-margin-right-tiny"
       />
       <FormLabel htmlFor={label} className="fd-has-color-text-3">
         {label} ({count})
