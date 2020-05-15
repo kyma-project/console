@@ -37,7 +37,7 @@ const ServiceInstanceHeader = ({
   };
 
   return (
-    <ToolbarWrapper>
+    <ToolbarWrapper class="fd-has-padding-medium">
       <BreadcrumbWrapper>
         <Breadcrumb>
           <Breadcrumb.Item

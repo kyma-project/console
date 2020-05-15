@@ -264,13 +264,13 @@ describe('InstancesList UI', () => {
     expect(planContent.exists()).toBe(false);
 
     planLink.simulate('click');
-    // await componentUpdate(component);
-    // row = component.find('tbody > tr').at(0);
+    await componentUpdate(component);
+    row = component.find('tbody > tr').at(0);
 
-    // planContent = row.find('code[data-e2e-id="service-plan-content"]');
-    // expect(planContent.exists()).toBe(true);
-    // expect(planContent.text()).toBe(planSpecCode);
-    // expectKnownConsoleWarnings();
+    planContent = row.find('code[data-e2e-id="service-plan-content"]');
+    expect(planContent.exists()).toBe(true);
+    expect(planContent.text()).toBe(planSpecCode);
+    expectKnownConsoleWarnings();
   });
 
   it('No modal for plan with empty spec', async () => {

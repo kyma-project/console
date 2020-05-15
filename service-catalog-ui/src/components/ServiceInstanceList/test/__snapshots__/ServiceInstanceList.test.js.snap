@@ -8,6 +8,14 @@ exports[`InstancesList UI Navigates to Service Catalog when clicked on "Add inst
 
 exports[`InstancesList UI No modal for plan with empty spec 1`] = `Array []`;
 
+exports[`InstancesList UI Open modal for plan with non-empty spec 1`] = `
+Array [
+  Array [
+    "There is no target origin set. You can specify the target origin by calling LuigiClient.setTargetOrigin(\\"targetorigin\\") in your micro frontend.",
+  ],
+]
+`;
+
 exports[`InstancesList UI Shows loading indicator only when data is not yet loaded 1`] = `
 Array [
   Array [
