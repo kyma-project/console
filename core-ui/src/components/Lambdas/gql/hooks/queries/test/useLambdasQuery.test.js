@@ -41,21 +41,6 @@ describe('useLambdasQuery', () => {
     await wait();
   });
 
-  // it('should see error state', async () => {
-  //   const { getByText } = render(
-  //     withApolloMockProvider({
-  //       component: (
-  //         <QueryComponent hook={useLambdasQuery} hookInput={hookInput} />
-  //       ),
-  //       mocks: [GET_LAMBDAS_ERROR_MOCK(variables), subscriptionMock],
-  //     }),
-  //   );
-
-  //   await wait(() => {
-  //     expect(getByText(TESTING_STATE.ERROR)).toBeInTheDocument();
-  //   });
-  // });
-
   it('should see data state', async () => {
     const { getByText } = render(
       withApolloMockProvider({

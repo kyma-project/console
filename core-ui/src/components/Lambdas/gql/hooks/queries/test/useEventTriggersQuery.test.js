@@ -44,21 +44,6 @@ describe('useEventTriggersQuery', () => {
     await wait();
   });
 
-  // it('should see error state', async () => {
-  //   const { getByText } = render(
-  //     withApolloMockProvider({
-  //       component: (
-  //         <QueryComponent hook={useEventTriggersQuery} hookInput={hookInput} />
-  //       ),
-  //       mocks: [GET_EVENT_TRIGGERS_ERROR_MOCK(variables), subscriptionMock],
-  //     }),
-  //   );
-
-  //   await wait(() => {
-  //     expect(getByText(TESTING_STATE.ERROR)).toBeInTheDocument();
-  //   });
-  // });
-
   it('should see data state', async () => {
     const { getByText } = render(
       withApolloMockProvider({

@@ -26,7 +26,7 @@ describe('CodeAndDependencies', () => {
     });
   });
 
-  it('should cannot save when the user has not made any changes', async () => {
+  it('should not be able to save when the user has not made any changes', async () => {
     render(<CodeAndDependencies lambda={lambdaMock} />);
 
     const saveButton = document.querySelector('.sap-icon--save');

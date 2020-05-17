@@ -121,7 +121,7 @@ describe('ResourceManagement', () => {
     });
   }
 
-  it('should cannot save when user type greater min replicas than max replicas', async () => {
+  it('should not be able to save when user types greater min replicas than max replicas', async () => {
     const { getByText } = render(<ResourceManagement lambda={lambdaMock} />);
 
     let editButton = getByText(editText);
@@ -164,6 +164,73 @@ describe('ResourceManagement', () => {
     await wait(() => {
       const saveButton = getByText(saveText);
       expect(saveButton).not.toBeDisabled();
+    });
+  });
+
+  it('should return default replicas when user click Cancel button after passing custom replicas', async () => {
+    const { getByText } = render(<ResourceManagement lambda={lambdaMock} />);
+
+    let editButton = getByText(editText);
+    fireEvent.click(editButton);
+
+    const minReplicas = document.querySelector('#minReplicas');
+    const defaultMinReplicas = minReplicas.value;
+    const maxReplicas = document.querySelector('#maxReplicas');
+    const defaultMaxReplicas = maxReplicas.value;
+
+    fireEvent.input(minReplicas, { target: { value: '3' } });
+    fireEvent.input(maxReplicas, { target: { value: '2' } });
+
+    await wait(() => {
+      expect(
+        getByText(
+          RESOURCES_MANAGEMENT_PANEL.ERROR_MESSAGES.MIN_REPLICAS_TOO_HIGH,
+        ),
+      ).toBeInTheDocument();
+      expect(
+        getByText(
+          RESOURCES_MANAGEMENT_PANEL.ERROR_MESSAGES.MAX_REPLICAS_TOO_LOW,
+        ),
+      ).toBeInTheDocument();
+      const saveButton = getByText(saveText);
+      expect(saveButton).toBeDisabled();
+    });
+
+    const cancelButton = getByText(BUTTONS.CANCEL);
+    fireEvent.click(cancelButton);
+
+    await wait(() => {
+      expect(minReplicas.value).toEqual(defaultMinReplicas);
+      expect(maxReplicas.value).toEqual(defaultMaxReplicas);
+    });
+  });
+
+  it('should shows errors when backend returns incorrect replicas', async () => {
+    const replicasLambda = {
+      ...lambdaMock,
+      replicas: {
+        min: 3,
+        max: 2,
+      },
+    };
+    const { getByText } = render(
+      <ResourceManagement lambda={replicasLambda} />,
+    );
+
+    let editButton = getByText(editText);
+    fireEvent.click(editButton);
+
+    await wait(() => {
+      expect(
+        getByText(
+          RESOURCES_MANAGEMENT_PANEL.ERROR_MESSAGES.MIN_REPLICAS_TOO_HIGH,
+        ),
+      ).toBeInTheDocument();
+      expect(
+        getByText(
+          RESOURCES_MANAGEMENT_PANEL.ERROR_MESSAGES.MAX_REPLICAS_TOO_LOW,
+        ),
+      ).toBeInTheDocument();
     });
   });
 
@@ -251,8 +318,10 @@ describe('ResourceManagement', () => {
     });
   }
 
-  it('should can save when user clear inputs for request and limits', async () => {
-    const { getByText } = render(<ResourceManagement lambda={lambdaMock} />);
+  it('should be able to save when user clears inputs for request and limits', async () => {
+    const { getByText, getAllByText } = render(
+      <ResourceManagement lambda={lambdaMock} />,
+    );
 
     let editButton = getByText(editText);
     fireEvent.click(editButton);
@@ -268,6 +337,81 @@ describe('ResourceManagement', () => {
     await wait(() => {
       const saveButton = getByText(saveText);
       expect(saveButton).not.toBeDisabled();
+    });
+  });
+
+  it('should return default values for resources when user click Cancel button after passing custom resources', async () => {
+    const { getByText, getAllByText } = render(
+      <ResourceManagement lambda={lambdaMock} />,
+    );
+
+    let editButton = getByText(editText);
+    fireEvent.click(editButton);
+
+    const inputs = document.querySelectorAll('.resource_input');
+    expect(inputs).toHaveLength(6); // 2 for replicas + 4 for resources
+    const defaultResourceValues = [
+      inputs[2].value,
+      inputs[3].value,
+      inputs[4].value,
+      inputs[5].value,
+    ];
+
+    fireEvent.input(inputs[2], { target: { value: '2137epstein' } });
+    fireEvent.input(inputs[3], { target: { value: '2137epstein' } });
+    fireEvent.input(inputs[4], { target: { value: '2137epstein' } });
+    fireEvent.input(inputs[5], { target: { value: '2137epstein' } });
+
+    await wait(() => {
+      expect(
+        getAllByText(RESOURCES_MANAGEMENT_PANEL.ERROR_MESSAGES.MEMORY),
+      ).toHaveLength(2);
+      expect(
+        getAllByText(RESOURCES_MANAGEMENT_PANEL.ERROR_MESSAGES.CPU),
+      ).toHaveLength(2);
+      const saveButton = getByText(saveText);
+      expect(saveButton).toBeDisabled();
+    });
+
+    const cancelButton = getByText(BUTTONS.CANCEL);
+    fireEvent.click(cancelButton);
+
+    await wait(() => {
+      expect(inputs[2].value).toEqual(defaultResourceValues[0]);
+      expect(inputs[3].value).toEqual(defaultResourceValues[1]);
+      expect(inputs[4].value).toEqual(defaultResourceValues[2]);
+      expect(inputs[5].value).toEqual(defaultResourceValues[3]);
+    });
+  });
+
+  it('should shows errors when backend returns incorrect resources', async () => {
+    const replicasLambda = {
+      ...lambdaMock,
+      resources: {
+        requests: {
+          memory: '2137epstein',
+          cpu: '2137epstein',
+        },
+        limits: {
+          memory: '2137epstein',
+          cpu: '2137epstein',
+        },
+      },
+    };
+    const { getByText, getAllByText } = render(
+      <ResourceManagement lambda={replicasLambda} />,
+    );
+
+    let editButton = getByText(editText);
+    fireEvent.click(editButton);
+
+    await wait(() => {
+      expect(
+        getAllByText(RESOURCES_MANAGEMENT_PANEL.ERROR_MESSAGES.MEMORY),
+      ).toHaveLength(2);
+      expect(
+        getAllByText(RESOURCES_MANAGEMENT_PANEL.ERROR_MESSAGES.CPU),
+      ).toHaveLength(2);
     });
   });
 });

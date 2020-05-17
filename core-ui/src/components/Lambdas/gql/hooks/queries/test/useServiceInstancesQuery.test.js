@@ -41,24 +41,6 @@ describe('useServiceInstancesQuery', () => {
     await wait();
   });
 
-  // it('should see error state', async () => {
-  //   const { getByText } = render(
-  //     withApolloMockProvider({
-  //       component: (
-  //         <QueryComponent
-  //           hook={useServiceInstancesQuery}
-  //           hookInput={hookInput}
-  //         />
-  //       ),
-  //       mocks: [GET_SERVICE_INSTANCES_ERROR_MOCK(variables)],
-  //     }),
-  //   );
-
-  //   await wait(() => {
-  //     expect(getByText(TESTING_STATE.ERROR)).toBeInTheDocument();
-  //   });
-  // });
-
   it('should see data state', async () => {
     const { getByText } = render(
       withApolloMockProvider({
