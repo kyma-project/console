@@ -3,11 +3,9 @@ import React, { Fragment } from 'react';
 import {
   instanceStatusColor,
   Table,
-  Tabs,
-  Tab,
   Tooltip,
 } from '@kyma-project/react-components';
-
+import { Tabs, Tab } from 'react-shared';
 import BindApplicationModal from './BindApplicationModal/BindApplicationModal.container';
 import CreateCredentialsModal from './CreateCredentialsModal/CreateCredentialsModal.component';
 import SecretDataModal from './SecretDataModal/SecretDataModal.component';

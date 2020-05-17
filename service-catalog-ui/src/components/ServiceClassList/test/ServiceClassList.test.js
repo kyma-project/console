@@ -2,7 +2,6 @@ import React from 'react';
 import { MockedProvider } from '@apollo/react-testing';
 import { mount } from 'enzyme';
 import { allServiceClassesQuery } from 'testing/catalog/queriesMocks';
-import { Tab } from '@kyma-project/react-components';
 import { Spinner } from 'react-shared';
 import ServiceClassList from '../ServiceClassList';
 import { componentUpdate, mockTestNamespace } from 'testing';
@@ -59,7 +58,7 @@ describe('ServiceClassList UI', () => {
   it('Add-Ons tab has proper counter', async () => {
     await componentUpdate(component);
 
-    const addOnsTab = component.find(Tab).at(addonsTabIndex);
+    const addOnsTab = component.find('[role="tab"]').at(addonsTabIndex);
     expect(addOnsTab.find(Identifier).text()).toEqual(
       allServiceClassesQuery.result.data.serviceClasses.length.toString(),
     );
@@ -69,7 +68,7 @@ describe('ServiceClassList UI', () => {
 
   it('Services tab has proper counter', async () => {
     await componentUpdate(component);
-    const servicesTab = component.find(Tab).at(servicesTabIndex);
+    const servicesTab = component.find('[role="tab"]').at(servicesTabIndex);
     expect(servicesTab.find(Identifier).text()).toEqual(
       allServiceClassesQuery.result.data.clusterServiceClasses.length.toString(),
     );
@@ -94,7 +93,7 @@ describe('ServiceClassList UI', () => {
     );
 
     component
-      .find(Tab)
+      .find('[role="tab"]')
       .at(servicesTabIndex)
       .find('div')
       .first()
@@ -175,7 +174,7 @@ describe('Search classes by other attributes', () => {
     });
     await componentUpdate(component);
 
-    const addOnsTab = component.find(Tab).at(addonsTabIndex);
+    const addOnsTab = component.find('[role="tab"]').at(addonsTabIndex);
     expect(addOnsTab.find(Identifier).text()).toEqual('1');
 
     expectKnownConsoleWarnings();
@@ -189,7 +188,7 @@ describe('Search classes by other attributes', () => {
     search.simulate('change', { target: { value: searchedClass.description } });
     await componentUpdate(component);
 
-    const addOnsTab = component.find(Tab).at(addonsTabIndex);
+    const addOnsTab = component.find('[role="tab"]').at(addonsTabIndex);
     expect(addOnsTab.find(Identifier).text()).toEqual('1');
 
     expectKnownConsoleWarnings();

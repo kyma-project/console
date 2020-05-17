@@ -4,12 +4,10 @@ import { useMutation, useQuery } from '@apollo/react-hooks';
 import {
   instancesTabUtils,
   NotificationMessage,
-  Tab,
-  Tabs,
   ThemeWrapper,
   Tooltip,
 } from '@kyma-project/react-components';
-import { Spinner } from 'react-shared';
+import { Tab, Tabs, Spinner } from 'react-shared';
 import { Identifier } from 'fundamental-react';
 
 import { getAllServiceInstances } from 'helpers/instancesGQL/queries';

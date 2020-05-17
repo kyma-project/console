@@ -23,7 +23,7 @@ export const ServiceClassDescription = styled.div`
   color: #74777a;
   font-size: 16px;
   text-align: left;
-  padding: 30px 30px 0;
+  padding: 16px 30px 0;
 `;
 
 export const StatusesList = styled.ul`
@@ -34,6 +34,7 @@ export const StatusesList = styled.ul`
 `;
 
 export const StatusWrapper = styled.li`
+  list-style-type: none;
   grid-row: 1;
   &:first-child {
     margin-left: 0;

@@ -8,7 +8,6 @@ import {
 } from 'testing/instances/queriesMocks';
 import ServiceInstanceTable from '../ServiceInstanceTable/ServiceInstanceTable.component';
 
-import { Tab } from '@kyma-project/react-components';
 import ServiceInstancesList from '../ServiceInstanceList';
 import { Link } from '../ServiceInstanceTable/styled.js';
 import { Spinner, createMockLink } from 'react-shared';
@@ -314,10 +313,10 @@ describe('Search instances by name', () => {
   it('Shows all instances initially', async () => {
     await componentUpdate(component);
 
-    const addOnsTab = component.find(Tab).at(addonsTabIndex);
+    const addOnsTab = component.find('[role="tab"]').at(addonsTabIndex);
     expect(addOnsTab.find(Identifier).text()).toEqual('2');
 
-    const servicesTab = component.find(Tab).at(servicesTabIndex);
+    const servicesTab = component.find('[role="tab"]').at(servicesTabIndex);
     expect(servicesTab.find(Identifier).text()).toEqual('1');
 
     expectKnownConsoleWarnings();
@@ -331,7 +330,7 @@ describe('Search instances by name', () => {
     search.simulate('change', { target: { value: 'motherly' } });
 
     await componentUpdate(component);
-    const addOnsTab = component.find(Tab).at(addonsTabIndex);
+    const addOnsTab = component.find('[role="tab"]').at(addonsTabIndex);
     expect(addOnsTab.find(Identifier).text()).toEqual('1');
     addOnsTab
       .find('div')
@@ -342,7 +341,7 @@ describe('Search instances by name', () => {
       serviceInstance1,
     ]);
 
-    const servicesTab = component.find(Tab).at(servicesTabIndex);
+    const servicesTab = component.find('[role="tab"]').at(servicesTabIndex);
     expect(servicesTab.find(Identifier).text()).toEqual('0');
 
     servicesTab
@@ -363,7 +362,7 @@ describe('Search instances by name', () => {
     search.simulate('change', { target: { value: 'fishing' } });
 
     await componentUpdate(component);
-    const addOnsTab = component.find(Tab).at(addonsTabIndex);
+    const addOnsTab = component.find('[role="tab"]').at(addonsTabIndex);
     expect(addOnsTab.find(Identifier).text()).toEqual('0');
     addOnsTab
       .find('div')
@@ -372,7 +371,7 @@ describe('Search instances by name', () => {
     await componentUpdate(component);
     expect(component.find(ServiceInstanceTable).prop('data')).toEqual([]);
 
-    const servicesTab = component.find(Tab).at(servicesTabIndex);
+    const servicesTab = component.find('[role="tab"]').at(servicesTabIndex);
     expect(servicesTab.find(Identifier).text()).toEqual('1');
 
     servicesTab
@@ -432,7 +431,7 @@ describe('filter instances by labels', () => {
       'label1',
     ]);
 
-    const addOnsTab = component.find(Tab).at(addonsTabIndex);
+    const addOnsTab = component.find('[role="tab"]').at(addonsTabIndex);
     expect(addOnsTab.find(Identifier).text()).toEqual('1');
 
     addOnsTab
@@ -444,7 +443,7 @@ describe('filter instances by labels', () => {
       serviceInstance1,
     ]);
 
-    const servicesTab = component.find(Tab).at(servicesTabIndex);
+    const servicesTab = component.find('[role="tab"]').at(servicesTabIndex);
     expect(servicesTab.find(Identifier).text()).toEqual('0');
 
     servicesTab

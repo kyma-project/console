@@ -2,13 +2,8 @@ import React, { useState } from 'react';
 import LuigiClient from '@kyma-project/luigi-client';
 import { useQuery } from '@apollo/react-hooks';
 
-import {
-  Tab,
-  Tabs,
-  Tooltip,
-  instancesTabUtils,
-} from '@kyma-project/react-components';
-import { Spinner } from 'react-shared';
+import { Tooltip, instancesTabUtils } from '@kyma-project/react-components';
+import { Tab, Tabs, Spinner } from 'react-shared';
 import { Identifier } from 'fundamental-react';
 
 import { getAllServiceClasses } from './queries';

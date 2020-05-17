@@ -10,7 +10,6 @@ export const Tab = ({
   tabIndex,
   id,
   isActive,
-  smallPadding,
 }) => {
   return (
     <div className="fd-tabs__item TabWrapper" key={tabIndex}>
@@ -21,9 +20,8 @@ export const Tab = ({
           onClick(tabIndex);
         }}
         aria-selected={isActive}
-        // active={isActive}
+        role="tab"
         data-e2e-id={id}
-        // smallPadding={smallPadding}
       >
         {title}
         {status}
