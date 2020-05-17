@@ -32,9 +32,7 @@ export class Tabs extends React.Component {
     this.setState({
       activeTabIndex: tabIndex,
     });
-    this.props.callback({
-      defaultActiveTabIndex: tabIndex,
-    });
+    this.props.callback(tabIndex);
   };
 
   renderHeader = children => {
@@ -97,6 +95,7 @@ export class Tabs extends React.Component {
         )}
         <div
           className="TabsContent"
+          role="tabpanel"
           // wrapInPanel={props && props.wrapInPanel}
         >
           {this.renderActiveTab(children)}
