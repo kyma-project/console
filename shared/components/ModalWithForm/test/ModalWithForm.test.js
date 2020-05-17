@@ -2,6 +2,13 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import { ModalWithForm } from '../ModalWithForm';
 
+jest.mock('@kyma-project/luigi-client', () => ({
+  uxManager: () => ({
+    addBackdrop: jest.fn(),
+    removeBackdrop: jest.fn(),
+  }),
+}));
+
 describe('ModalWithForm', () => {
   it('Renders with minimal props', () => {
     const component = renderer.create(
