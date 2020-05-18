@@ -234,89 +234,82 @@ describe('ResourceManagement', () => {
     });
   });
 
-  const passResourcesTestCases = [
-    {
-      name: 'should can save when user type good memory format for requests',
-      id: '#requestsMemory',
-      value: '128Mi',
-    },
-    {
-      name: 'should can save when user type wrong cpu format for requests',
-      id: '#requestsCpu',
-      value: '50m',
-    },
-    {
-      name: 'should can save when user type wrong memory format for limits',
-      id: '#limitsMemory',
-      value: '128Mi',
-    },
-    {
-      name: 'should can save when user type wrong cpu format for limits',
-      id: '#limitsCpu',
-      value: '50m',
-    },
-  ];
-  for (const testCase of passResourcesTestCases) {
-    it(testCase.name, async () => {
-      const { getByText } = render(<ResourceManagement lambda={lambdaMock} />);
+  test.each([
+    [
+      'should can save when user type good memory format for requests',
+      '#requestsMemory',
+      '128Mi',
+    ],
+    [
+      'should can save when user type wrong cpu format for requests',
+      '#requestsCpu',
+      '50m',
+    ],
+    [
+      'should can save when user type wrong memory format for limits',
+      '#limitsMemory',
+      '128Mi',
+    ],
+    [
+      'should can save when user type wrong cpu format for limits',
+      '#limitsCpu',
+      '50m',
+    ],
+  ])('%s', async (_, inputId, value) => {
+    const { getByText } = render(<ResourceManagement lambda={lambdaMock} />);
 
-      let editButton = getByText(editText);
-      fireEvent.click(editButton);
+    let editButton = getByText(editText);
+    fireEvent.click(editButton);
 
-      const inputs = document.querySelectorAll(testCase.id);
-      expect(inputs).toHaveLength(1);
+    const inputs = document.querySelectorAll(inputId);
+    expect(inputs).toHaveLength(1);
 
-      fireEvent.input(inputs[0], { target: { value: testCase.value } });
+    fireEvent.input(inputs[0], { target: { value } });
 
-      await wait(() => {
-        const saveButton = getByText(saveText);
-        expect(saveButton).not.toBeDisabled();
-      });
+    await wait(() => {
+      const saveButton = getByText(saveText);
+      expect(saveButton).not.toBeDisabled();
     });
-  }
+  });
 
-  const failResourcesTestCases = [
-    {
-      name:
-        'should cannot save when user type wrong memory format for requests',
-      id: '#requestsMemory',
-      errorMessage: RESOURCES_MANAGEMENT_PANEL.ERROR_MESSAGES.MEMORY,
-    },
-    {
-      name: 'should cannot save when user type wrong cpu format for requests',
-      id: '#requestsCpu',
-      errorMessage: RESOURCES_MANAGEMENT_PANEL.ERROR_MESSAGES.CPU,
-    },
-    {
-      name: 'should cannot save when user type wrong memory format for limits',
-      id: '#limitsMemory',
-      errorMessage: RESOURCES_MANAGEMENT_PANEL.ERROR_MESSAGES.MEMORY,
-    },
-    {
-      name: 'should cannot save when user type wrong cpu format for limits',
-      id: '#limitsCpu',
-      errorMessage: RESOURCES_MANAGEMENT_PANEL.ERROR_MESSAGES.CPU,
-    },
-  ];
-  for (const testCase of failResourcesTestCases) {
-    it(testCase.name, async () => {
-      const { getByText } = render(<ResourceManagement lambda={lambdaMock} />);
+  test.each([
+    [
+      'should cannot save when user type wrong memory format for requests',
+      '#requestsMemory',
+      RESOURCES_MANAGEMENT_PANEL.ERROR_MESSAGES.MEMORY,
+    ],
+    [
+      'should cannot save when user type wrong cpu format for requests',
+      '#requestsCpu',
+      RESOURCES_MANAGEMENT_PANEL.ERROR_MESSAGES.CPU,
+    ],
+    [
+      'should cannot save when user type wrong memory format for limits',
+      '#limitsMemory',
+      RESOURCES_MANAGEMENT_PANEL.ERROR_MESSAGES.MEMORY,
+    ],
+    [
+      'should cannot save when user type wrong cpu format for limits',
+      '#limitsCpu',
+      RESOURCES_MANAGEMENT_PANEL.ERROR_MESSAGES.CPU,
+    ],
+  ])('%s', async (_, inputId, errorMessage) => {
+    const { getByText } = render(<ResourceManagement lambda={lambdaMock} />);
 
-      let editButton = getByText(editText);
-      fireEvent.click(editButton);
+    let editButton = getByText(editText);
+    fireEvent.click(editButton);
 
-      const inputs = document.querySelectorAll(testCase.id);
-      expect(inputs).toHaveLength(1);
+    const inputs = document.querySelectorAll(inputId);
+    expect(inputs).toHaveLength(1);
 
-      fireEvent.input(inputs[0], { target: { value: '2137epstein' } });
+    fireEvent.input(inputs[0], { target: { value: '2137epstein' } });
 
-      await wait(() => {
-        expect(getByText(testCase.errorMessage)).toBeInTheDocument();
-        const saveButton = getByText(saveText);
-        expect(saveButton).toBeDisabled();
-      });
+    await wait(() => {
+      expect(getByText(errorMessage)).toBeInTheDocument();
+      const saveButton = getByText(saveText);
+      expect(saveButton).toBeDisabled();
     });
-  }
+  });
 
   it('should be able to save when user clears inputs for request and limits', async () => {
     const { getByText, getAllByText } = render(
