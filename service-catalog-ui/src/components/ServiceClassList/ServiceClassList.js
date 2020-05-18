@@ -93,7 +93,7 @@ export default function ServiceClassList() {
         callback={handleTabChange}
         borderType="none"
         noMargin
-        customStyles
+        customClass={'header-styles'}
         hideSeparator
       >
         <Tab

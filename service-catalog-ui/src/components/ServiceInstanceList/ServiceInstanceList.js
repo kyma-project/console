@@ -161,8 +161,7 @@ export default function ServiceInstancesList() {
         callback={handleTabChange}
         borderType="none"
         noMargin
-        customStyles={`background-color: #fff;
-          padding: 0 15px;`}
+        customClass={'header-styles'}
         hideSeparator
       >
         <Tab

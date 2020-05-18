@@ -86,7 +86,7 @@ export class Tabs extends React.Component {
         )}
         <div className={tabClass}>
           {this.renderHeader(children)}
-          <div className="TabsHeaderAdditionalContent">
+          <div className="additionalContent">
             {this.renderAdditionalHeaderContent(children)}
           </div>
         </div>
