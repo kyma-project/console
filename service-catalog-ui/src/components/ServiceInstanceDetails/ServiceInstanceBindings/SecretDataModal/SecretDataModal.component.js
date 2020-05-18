@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import Grid from 'styled-components-grid';
-import LuigiClient from '@kyma-project/luigi-client';
-import { Button, Modal } from '@kyma-project/react-components';
+import { Button } from 'fundamental-react';
+import { Modal } from 'react-shared';
 import { List, Item, Bold, Text, SecretKey, CenterVertically } from './styled';
 
 class SecretDataModal extends React.Component {
@@ -68,11 +68,9 @@ class SecretDataModal extends React.Component {
 
     return (
       <Modal
-        width={'681px'}
         title={title}
+        confirmText="Close"
         modalOpeningComponent={modalOpeningComponent}
-        onShow={() => LuigiClient.uxManager().addBackdrop()}
-        onHide={() => LuigiClient.uxManager().removeBackdrop()}
         actions={actions}
       >
         {content}

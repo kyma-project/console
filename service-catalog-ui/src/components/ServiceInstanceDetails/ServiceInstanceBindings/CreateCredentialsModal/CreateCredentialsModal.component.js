@@ -1,6 +1,8 @@
 import React, { Fragment } from 'react';
 
-import { Button, Modal, Tooltip } from '@kyma-project/react-components';
+import { Tooltip } from '@kyma-project/react-components';
+import { Button } from 'fundamental-react';
+import { Modal } from 'react-shared';
 
 import SchemaData from './SchemaData.component';
 import { bindingVariables } from '../InfoButton/variables';
@@ -159,6 +161,10 @@ class CreateCredentialsModal extends React.Component {
     const createCredentialsButton = (
       <Button compact option="light" data-e2e-id={id} onClick={this.handleOpen}>
         + Create Credentials
+        <InfoButton
+          content={bindingVariables.serviceBinding}
+          orientation="default"
+        />
       </Button>
     );
 
@@ -193,31 +199,19 @@ class CreateCredentialsModal extends React.Component {
       );
     }
 
-    const title = (
-      <>
-        <span>{'Create Credentials'}</span>
-        <InfoButton
-          content={bindingVariables.serviceBinding}
-          orientation="bottom"
-        />
-      </>
-    );
-
     return (
       <Modal
         ref={modal => {
           this.child = modal;
         }}
         key={serviceInstance.name}
-        title={title}
+        title="Create Credentials"
         confirmText="Create"
         onConfirm={this.handleConfirmation}
         modalOpeningComponent={createCredentialsButton}
         disabledConfirm={disabled}
         tooltipData={tooltipData}
         handleClose={this.clearState}
-        onShow={() => LuigiClient.uxManager().addBackdrop()}
-        onHide={() => LuigiClient.uxManager().removeBackdrop()}
       >
         {content}
       </Modal>

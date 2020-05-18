@@ -13,5 +13,5 @@ export const InfoButtonWrapper = styled.button`
   padding: 0;
   position: relative;
   top: 2px;
-  margin-left: 20px;
+  margin-left: 4px;
 `;

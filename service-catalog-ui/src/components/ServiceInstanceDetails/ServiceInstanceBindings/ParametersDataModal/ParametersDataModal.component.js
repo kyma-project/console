@@ -1,7 +1,7 @@
 import React from 'react';
 
-import LuigiClient from '@kyma-project/luigi-client';
-import { Modal, Button } from '@kyma-project/react-components';
+import { Button } from 'fundamental-react';
+import { Modal } from 'react-shared';
 
 import { JSONCode } from './styled';
 
@@ -17,8 +17,7 @@ const ParametersDataModal = ({ title, data }) => {
           glyph="syntax"
         />
       }
-      onShow={() => LuigiClient.uxManager().addBackdrop()}
-      onHide={() => LuigiClient.uxManager().removeBackdrop()}
+      confirmText="Close"
     >
       <JSONCode data-e2e-id="parameters-content">
         {JSON.stringify(data, undefined, 2)}

@@ -2,12 +2,9 @@ import React, { Fragment } from 'react';
 import dcopy from 'deep-copy';
 import 'core-js/es/array/flat-map';
 
-import {
-  Button,
-  Modal,
-  Tooltip,
-  Separator,
-} from '@kyma-project/react-components';
+import { Tooltip, Separator } from '@kyma-project/react-components';
+import { Button } from 'fundamental-react';
+import { Modal } from 'react-shared';
 
 import BindingsStep from './BindingsStep.component';
 import Resources from './Resources.component';
@@ -276,6 +273,10 @@ class BindApplicationModal extends React.Component {
     const bindApplicationButton = (
       <Button compact option="light" data-e2e-id={id} onClick={this.handleOpen}>
         + Bind Application
+        <InfoButton
+          content={bindingVariables.serviceBingingUsage}
+          orientation="bottom"
+        />
       </Button>
     );
 
@@ -331,30 +332,15 @@ class BindApplicationModal extends React.Component {
       );
     }
 
-    const title = (
-      <>
-        <span>{'Bind Application'}</span>
-        <InfoButton
-          content={bindingVariables.serviceBingingUsage}
-          orientation="bottom"
-        />
-      </>
-    );
-
     return (
       <Modal
-        width="681px"
-        key={serviceInstance.name}
-        type={'emphasized'}
-        title={title}
+        title="Bind Application"
         confirmText="Bind Application"
         onConfirm={this.handleConfirmation}
         modalOpeningComponent={bindApplicationButton}
         disabledConfirm={disabled}
         tooltipData={tooltipData}
         handleClose={this.clearState}
-        onShow={() => LuigiClient.uxManager().addBackdrop()}
-        onHide={() => LuigiClient.uxManager().removeBackdrop()}
       >
         {content}
       </Modal>

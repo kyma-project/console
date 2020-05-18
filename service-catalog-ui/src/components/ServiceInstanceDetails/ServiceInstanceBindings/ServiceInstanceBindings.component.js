@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 
 import {
   instanceStatusColor,
@@ -14,7 +14,6 @@ import DeleteBindingModal from './DeleteBindingModal/DeleteBindingModal.componen
 import StatusIndicator from './StatusIndicator/StatusIndicator.component';
 
 import {
-  Bold,
   ServiceInstanceBindingsWrapper,
   SecretModalButton,
   ActionsWrapper,
@@ -119,11 +118,7 @@ class ServiceInstanceBindings extends React.Component {
             return secret && Object.keys(secret).length ? (
               <TextOverflowWrapper>
                 <SecretDataModal
-                  title={
-                    <span title={secret.name}>
-                      Secret <Bold>{secret.name}</Bold>
-                    </span>
-                  }
+                  title={`Secret ${secret.name}`}
                   modalOpeningComponent={
                     <SecretModalButton data-e2e-id="secret-button">
                       {secret.name}
@@ -181,11 +176,7 @@ class ServiceInstanceBindings extends React.Component {
             return secret && Object.keys(secret).length ? (
               <TextOverflowWrapper>
                 <SecretDataModal
-                  title={
-                    <span title={secret.name}>
-                      Secret <Bold>{secret.name}</Bold>
-                    </span>
-                  }
+                  title={`Secret ${secret.name}`}
                   modalOpeningComponent={
                     <SecretModalButton data-e2e-id="secret-button">
                       {secret.name}
@@ -226,11 +217,7 @@ class ServiceInstanceBindings extends React.Component {
                       }}
                     >
                       <ParametersDataModal
-                        title={
-                          <Fragment>
-                            Parameters for <Bold>{binding.name}</Bold>
-                          </Fragment>
-                        }
+                        title={`Parameters for ${binding.name}`}
                         data={parameters}
                       />
                     </span>
