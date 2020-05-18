@@ -24,7 +24,7 @@ Array [
 * Move code with side effects to componentDidMount, and set initial state in the constructor.
 * Rename componentWillMount to UNSAFE_componentWillMount to suppress this warning in non-strict mode. In React 17.x, only the UNSAFE_ name will work. To rename all deprecated lifecycles to their new names, you can run \`npx react-codemod rename-unsafe-lifecycles\` in your project source folder.
 
-Please update the following components: Styled(ActionBar), Styled(ActionBar.Actions), Styled(ActionBar.Header), Styled(Panel), Styled(Panel.Actions), Styled(Panel.Body), Styled(Panel.Head), Styled(Panel.Header), Styled(Table), ThemeProvider, styled.p",
+Please update the following components: Styled(ActionBar), Styled(ActionBar.Actions), Styled(ActionBar.Header), ThemeProvider",
   ],
   Array [
     "Warning: componentWillReceiveProps has been renamed, and is not recommended for use. See https://fb.me/react-unsafe-component-lifecycles for details.
@@ -33,7 +33,7 @@ Please update the following components: Styled(ActionBar), Styled(ActionBar.Acti
 * If you're updating state whenever props change, refactor your code to use memoization techniques or move it to static getDerivedStateFromProps. Learn more at: https://fb.me/react-derived-state
 * Rename componentWillReceiveProps to UNSAFE_componentWillReceiveProps to suppress this warning in non-strict mode. In React 17.x, only the UNSAFE_ name will work. To rename all deprecated lifecycles to their new names, you can run \`npx react-codemod rename-unsafe-lifecycles\` in your project source folder.
 
-Please update the following components: NotificationMessage, Styled(ActionBar), Styled(ActionBar.Actions), Styled(ActionBar.Header), Styled(Panel), Styled(Panel.Actions), Styled(Panel.Body), Styled(Panel.Head), Styled(Panel.Header), Styled(Table), ThemeProvider, styled.p",
+Please update the following components: NotificationMessage, Styled(ActionBar), Styled(ActionBar.Actions), Styled(ActionBar.Header), ThemeProvider",
   ],
   Array [
     "Warning: componentWillMount has been renamed, and is not recommended for use. See https://fb.me/react-unsafe-component-lifecycles for details.

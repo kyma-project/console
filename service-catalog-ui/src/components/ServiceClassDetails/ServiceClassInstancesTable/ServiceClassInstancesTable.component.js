@@ -1,29 +1,14 @@
 import React, { Component } from 'react';
 
-import { InstanceStatus, Table } from '@kyma-project/react-components';
+import { InstanceStatus } from '@kyma-project/react-components';
 import LuigiClient from '@kyma-project/luigi-client';
+import { GenericList } from 'react-shared';
 
 import { serviceClassConstants } from 'helpers/constants';
 
 import { Link, LinkButton } from './styled';
 
 export class ServiceClassInstancesTable extends Component {
-  prepareRowData(serviceClassInstances) {
-    return serviceClassInstances.map(instance => ({
-      rowData: [
-        <LinkButton>
-          <Link
-            onClick={() => this.goToServiceInstanceDetails(instance.name)}
-            title={instance.name}
-          >
-            {instance.name}
-          </Link>
-        </LinkButton>,
-        <InstanceStatus status={instance.status.type} />,
-      ],
-    }));
-  }
-
   goToServiceInstanceDetails(instanceName) {
     LuigiClient.linkManager()
       .fromContext('namespaces')
@@ -31,14 +16,31 @@ export class ServiceClassInstancesTable extends Component {
   }
 
   render() {
+    const headerRenderer = () => [
+      serviceClassConstants.tableHeaderInstance,
+      serviceClassConstants.tableHeaderStatus,
+    ];
+
+    const rowRenderer = instance => [
+      <LinkButton>
+        <Link
+          onClick={() => this.goToServiceInstanceDetails(instance.name)}
+          title={instance.name}
+        >
+          {instance.name}
+        </Link>
+      </LinkButton>,
+      <InstanceStatus status={instance.status.type} />,
+    ];
+
     return (
-      <Table
-        headers={[
-          serviceClassConstants.tableHeaderInstance,
-          serviceClassConstants.tableHeaderStatus,
-        ]}
-        tableData={this.prepareRowData(this.props.tableData)}
+      <GenericList
+        headerRenderer={headerRenderer}
+        rowRenderer={rowRenderer}
+        entries={this.props.tableData}
         notFoundMessage={serviceClassConstants.emptyInstancesListMessage}
+        showRootHeader={false}
+        hasExternalMargin={false}
       />
     );
   }

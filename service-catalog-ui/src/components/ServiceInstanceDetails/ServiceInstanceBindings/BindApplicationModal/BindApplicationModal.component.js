@@ -284,7 +284,7 @@ class BindApplicationModal extends React.Component {
       return (
         <Tooltip
           type="error"
-          content={
+          title={
             <span>
               Instance must be in a <strong>Running</strong> state
             </span>
@@ -299,7 +299,7 @@ class BindApplicationModal extends React.Component {
     }
 
     const createDisabledBindApplicationButton = content => (
-      <Tooltip type="error" content={content} minWidth="161px">
+      <Tooltip type="error" title={content} minWidth="161px">
         <Button compact data-e2e-id={id} option="light" disabled={true}>
           + Bind Application
         </Button>
@@ -311,24 +311,19 @@ class BindApplicationModal extends React.Component {
 
     if (bindableResourcesError && bindableResourcesError.message) {
       return createDisabledBindApplicationButton(
-        <span>
-          Error while getting the list of bindable resources:{' '}
-          {bindableResourcesError.message}
-        </span>,
+        `Error while getting the list of bindable resources: ${bindableResourcesError.message}`,
       );
     }
 
     if (noApplicationsAvailable) {
       return createDisabledBindApplicationButton(
-        <span>There are no applications available</span>,
+        'There are no applications available',
       );
     }
 
     if (!serviceInstance.serviceClass && !serviceInstance.clusterServiceClass) {
       return createDisabledBindApplicationButton(
-        <span>
-          Service Class does not exist. Contact the cluster administrator.
-        </span>,
+        'Service Class does not exist. Contact the cluster administrator.',
       );
     }
 

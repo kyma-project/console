@@ -108,12 +108,12 @@ export const GenericList = ({
   };
 
   const tableClassNames = classnames('fd-table', { compact });
+  const panelClassNames = classnames('generic-list', {
+    'fd-has-margin-m': hasExternalMargin,
+  });
 
   return (
-    <Panel
-      className={`${hasExternalMargin ? 'fd-has-margin-m' : ''} generic-list`}
-      data-testid={testid}
-    >
+    <Panel className={panelClassNames} data-testid={testid}>
       {showRootHeader && (
         <Panel.Header className="fd-has-padding-xs">
           <Panel.Head title={title} />

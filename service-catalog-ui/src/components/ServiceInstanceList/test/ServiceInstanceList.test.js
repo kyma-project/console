@@ -21,6 +21,8 @@ import {
 } from 'testing/instances/instanceMocks';
 import FilterDropdown from '../ServiceInstanceToolbar/FilterDropdown.component';
 
+import toJson from 'enzyme-to-json';
+
 const mockNavigate = jest.fn();
 const mockAddBackdrop = jest.fn();
 const mockRemoveBackdrop = jest.fn();
@@ -200,14 +202,13 @@ describe('InstancesList UI', () => {
     expectKnownConsoleWarnings();
   });
 
-  it(`Validate if modal delete button fires deleteMutation`, async () => {
+  fit(`Validate if modal delete button fires deleteMutation`, async () => {
     const { link } = createMockLink([
       allServiceInstancesQuery,
       serviceInstanceDeleteMutation,
     ]);
 
-    const deleteButtonSelector =
-      'button[data-e2e-id="modal-confirmation-button"]';
+    const deleteButtonSelector = '[aria-label="Delete Instance"]';
     const component = mountWithModalBg(
       <MockedProvider link={link}>
         <ServiceInstancesList />
@@ -219,7 +220,7 @@ describe('InstancesList UI', () => {
     expect(table.exists()).toBe(true);
     expect(table.prop('data')).toHaveLength(2);
 
-    const displayedInstanceLinks = table.find('tr').find(Button);
+    const displayedInstanceLinks = table.find('tbody tr').find(Button);
     expect(displayedInstanceLinks).toHaveLength(2);
 
     const firstInstanceButton = displayedInstanceLinks.at(0).find('button');
@@ -227,7 +228,7 @@ describe('InstancesList UI', () => {
 
     firstInstanceButton.simulate('click');
 
-    const deleteButton = component.find(deleteButtonSelector);
+    const deleteButton = component.find(deleteButtonSelector).at(0);
     expect(deleteButton.exists()).toBe(true);
 
     await act(async () => {
@@ -251,7 +252,7 @@ describe('InstancesList UI', () => {
     await componentUpdate(component);
     await componentUpdate(component);
 
-    let row = component.find('tbody > tr').at(0);
+    let row = component.find('tbody tr').at(0);
     const planLink = row.find('[data-e2e-id="service-plan"]').last();
 
     expect(planLink.exists()).toBe(true);
@@ -264,7 +265,7 @@ describe('InstancesList UI', () => {
 
     planLink.simulate('click');
     await componentUpdate(component);
-    row = component.find('tbody > tr').at(0);
+    row = component.find('tbody tr').at(0);
 
     planContent = row.find('code[data-e2e-id="service-plan-content"]');
     expect(planContent.exists()).toBe(true);
@@ -282,7 +283,7 @@ describe('InstancesList UI', () => {
 
     await componentUpdate(component);
     await componentUpdate(component);
-    let row = component.find('tbody > tr').at(1);
+    const row = component.find('tbody tr').at(1);
     const planLink = row.find('[data-e2e-id="service-plan"]');
     expect(planLink.exists()).toBe(true);
     expect(planLink.text()).toEqual(
@@ -291,10 +292,8 @@ describe('InstancesList UI', () => {
 
     let planContent = row.find('code[data-e2e-id="service-plan-content"]');
     expect(planContent.exists()).toBe(false);
-
     planLink.simulate('click');
     await componentUpdate(component);
-    row = component.find('tbody > tr').at(1);
 
     planContent = component.find('code[data-e2e-id="service-plan-content"]');
     expect(planContent.exists()).toBe(false);
