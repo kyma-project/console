@@ -27,14 +27,10 @@ class SchemaData extends React.Component {
     super(props);
     this.state = {
       loading: false,
-      instanceCreateParameters: props.data.instanceCreateParameters,
     };
   }
 
   handleFormChange = ({ formData, errors }) => {
-    this.setState({
-      instanceCreateParameters: formData,
-    });
     this.props.onFormChange({
       instanceCreateParameters: formData,
     });
@@ -56,8 +52,8 @@ class SchemaData extends React.Component {
       children,
       planName,
       schemaFormRef,
+      data,
     } = this.props;
-    const { instanceCreateParameters } = this.state;
 
     return (
       <ErrorBoundary
@@ -77,7 +73,7 @@ class SchemaData extends React.Component {
           onChange={this.handleFormChange}
           liveValidate={true}
           onSubmit={onSubmitSchemaForm}
-          formData={instanceCreateParameters}
+          formData={data}
         >
           {children}
         </JsonSchemaForm>
