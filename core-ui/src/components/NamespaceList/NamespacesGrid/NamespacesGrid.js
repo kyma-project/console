@@ -3,22 +3,24 @@ import PropTypes from 'prop-types';
 
 import NamespaceDetailsCard from './NamespaceDetailsCard/NamespaceDetailsCard';
 import './NamespacesGrid.scss';
+import getPodsCounts from './getPodsCounts';
+import { backendModuleExists } from 'commons/helpers';
 
 NamespacesGrid.propTypes = {
-  namespaces: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
+  namespaces: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.any,
+      stauts: PropTypes.any,
+      applications: PropTypes.any,
+      isSystemNamespace: PropTypes.any,
+      pods: PropTypes.arrayOf(
+        PropTypes.shape({ status: PropTypes.string.isRequired }),
+      ).isRequired,
+    }),
+  ).isRequired,
 };
 
 export default function NamespacesGrid({ namespaces }) {
-  // todo replace with custom backend data
-  const getPodsCounts = pods => {
-    const allPodsCount = pods.length;
-    const healthyPodsCount = pods.filter(
-      pod => pod.status === 'RUNNING' || pod.status === 'SUCCEEDED',
-    ).length;
-
-    return [allPodsCount, healthyPodsCount];
-  };
-
   return (
     <ul className="grid-wrapper fd-has-margin-medium">
       {namespaces.map(namespace => {
@@ -34,12 +36,14 @@ export default function NamespacesGrid({ namespaces }) {
         return (
           <li key={name}>
             <NamespaceDetailsCard
-              namespaceName={name}
+              name={name}
               allPodsCount={allPodsCount}
               healthyPodsCount={healthyPodsCount}
               status={status}
               isSystemNamespace={isSystemNamespace}
-              applicationsCount={applications.length}
+              applications={
+                backendModuleExists('applications') ? applications : null
+              }
             />
           </li>
         );
