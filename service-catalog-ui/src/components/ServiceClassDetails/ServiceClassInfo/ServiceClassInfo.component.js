@@ -2,9 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Moment from 'react-moment';
 
-import { Label, Tooltip } from '@kyma-project/react-components';
+import { Label } from '@kyma-project/react-components';
 import { Tile, Icon } from 'fundamental-react';
 
+import { Tooltip } from 'react-shared';
 import {
   ServiceClassInfoContentWrapper,
   ExternalLink,
@@ -61,13 +62,6 @@ const ServiceClassInfo = ({
     'connected-app': 'Connected application',
     provisionOnlyOnce: 'Provision only once',
     tag: 'Tag',
-  };
-
-  const tooltipWidth = {
-    basic: '80px',
-    'connected-app': '140px',
-    provisionOnlyOnce: '140px',
-    tag: '50px',
   };
 
   const computeNumberOfColumns = isProvisionedOnlyOnce => {
@@ -150,12 +144,9 @@ const ServiceClassInfo = ({
               <LabelsWrapper data-e2e-id="service-labels">
                 {modifiedTags.sort(sortTags).map(tag => (
                   <LabelWrapper key={`${tag.type}-${tag.name}`}>
-                    <Tooltip
-                      content={tagsDescription[tag.type]}
-                      minWidth={tooltipWidth[tag.type]}
-                    >
+                    <Tooltip title={tagsDescription[tag.type]}>
                       <Label cursorType="help" data-e2e-id="service-label">
-                        {tag.name}
+                        {tag.name}lolo
                       </Label>
                     </Tooltip>
                   </LabelWrapper>

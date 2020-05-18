@@ -2,9 +2,9 @@ import React, { Fragment } from 'react';
 import dcopy from 'deep-copy';
 import 'core-js/es/array/flat-map';
 
-import { Tooltip, Separator } from '@kyma-project/react-components';
+import { Separator } from '@kyma-project/react-components';
 import { Button } from 'fundamental-react';
-import { Modal } from 'react-shared';
+import { Modal, Tooltip } from 'react-shared';
 
 import BindingsStep from './BindingsStep.component';
 import Resources from './Resources.component';

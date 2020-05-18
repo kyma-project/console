@@ -1,5 +1,6 @@
 import React from 'react';
-import { Label, Tooltip, PanelFooter } from '@kyma-project/react-components';
+import { Label, PanelFooter } from '@kyma-project/react-components';
+import { Tooltip } from 'react-shared';
 import './Labels.scss';
 import { isStringValueEqualToTrue } from 'helpers';
 const labelsDescription = {
@@ -30,7 +31,7 @@ export function Labels({ labels, ignoredLabels = [] }) {
 
           return (
             <div className="service-list--card__footer__labels" key={label}>
-              <Tooltip content={labelsDescription[label]}>
+              <Tooltip title={labelsDescription[label] || ''}>
                 <Label cursorType="help">
                   {label === 'connected-app' ? labels['connected-app'] : label}
                 </Label>

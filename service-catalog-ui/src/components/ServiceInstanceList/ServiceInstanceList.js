@@ -5,9 +5,8 @@ import {
   instancesTabUtils,
   NotificationMessage,
   ThemeWrapper,
-  Tooltip,
 } from '@kyma-project/react-components';
-import { Tab, Tabs, Spinner } from 'react-shared';
+import { Tab, Tabs, Spinner, Tooltip } from 'react-shared';
 import { Identifier } from 'fundamental-react';
 
 import { getAllServiceInstances } from 'helpers/instancesGQL/queries';
@@ -173,10 +172,7 @@ export default function ServiceInstancesList() {
           )}
           title={
             <Tooltip
-              content={serviceInstanceConstants.servicesTooltipDescription}
-              minWidth="140px"
-              showTooltipTimeout={750}
-              key="instances-services-tab-tooltip"
+              title={serviceInstanceConstants.servicesTooltipDescription}
             >
               {serviceInstanceConstants.services}
             </Tooltip>
@@ -206,12 +202,7 @@ export default function ServiceInstancesList() {
             'addons-status',
           )}
           title={
-            <Tooltip
-              content={serviceInstanceConstants.addonsTooltipDescription}
-              minWidth="100px"
-              showTooltipTimeout={750}
-              key="instances-addons-tab-tooltip"
-            >
+            <Tooltip title={serviceInstanceConstants.addonsTooltipDescription}>
               {serviceInstanceConstants.addons}
             </Tooltip>
           }

@@ -1,18 +1,15 @@
 import React from 'react';
 
-import { Icon, Tooltip } from '@kyma-project/react-components';
+import { Icon } from 'fundamental-react';
+
+import { Tooltip } from 'react-shared';
 
 import { InfoButtonWrapper } from './styled';
 
 const InfoButton = ({ content, orientation = 'top' }) => {
   return (
     <InfoButtonWrapper>
-      <Tooltip
-        content={content}
-        orientation={orientation}
-        minWidth={'320px'}
-        type="light"
-      >
+      <Tooltip title={content}>
         <Icon glyph="sys-help" />
       </Tooltip>
     </InfoButtonWrapper>

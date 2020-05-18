@@ -3,9 +3,9 @@ import React from 'react';
 import {
   instanceStatusColor,
   Table,
-  Tooltip,
+  Tooltip as StatusTooltip,
 } from '@kyma-project/react-components';
-import { Tabs, Tab } from 'react-shared';
+import { Tabs, Tab, Tooltip } from 'react-shared';
 import BindApplicationModal from './BindApplicationModal/BindApplicationModal.container';
 import CreateCredentialsModal from './CreateCredentialsModal/CreateCredentialsModal.component';
 import SecretDataModal from './SecretDataModal/SecretDataModal.component';
@@ -132,7 +132,7 @@ class ServiceInstanceBindings extends React.Component {
               '-'
             );
           })(),
-          <Tooltip
+          <StatusTooltip
             type={this.getStatusType(bindingUsage.status.type)}
             content={bindingUsage.status.message}
             minWidth="250px"
@@ -146,7 +146,7 @@ class ServiceInstanceBindings extends React.Component {
             >
               {bindingUsage.status.type}
             </span>
-          </Tooltip>,
+          </StatusTooltip>,
           <ActionsWrapper>
             <DeleteBindingModal
               deleteBindingUsage={this.props.deleteBindingUsage}
@@ -189,7 +189,7 @@ class ServiceInstanceBindings extends React.Component {
               '-'
             );
           })(),
-          <Tooltip
+          <StatusTooltip
             type={this.getStatusType(binding.status.type)}
             content={binding.status.message}
             minWidth="250px"
@@ -204,13 +204,13 @@ class ServiceInstanceBindings extends React.Component {
             >
               {binding.status.type}
             </span>
-          </Tooltip>,
+          </StatusTooltip>,
           (_ => {
             const parameters = binding && binding.parameters;
             return (
               <ActionsWrapper>
                 {parameters && Object.keys(parameters).length > 0 && (
-                  <Tooltip content={'Parameters'} minWidth="90px">
+                  <Tooltip title={'Parameters'}>
                     <span
                       style={{
                         cursor: 'help',
@@ -312,12 +312,7 @@ class ServiceInstanceBindings extends React.Component {
           {serviceCatalogAddonsBackendModuleExists ? (
             <Tab
               title={
-                <Tooltip
-                  content="ServiceBindingUsage is a Kyma custom resource that allows the ServiceBindingUsage controller to inject Secrets into a given application."
-                  minWidth="210px"
-                  showTooltipTimeout={750}
-                  key="service-binding-usage-tooltip"
-                >
+                <Tooltip title="ServiceBindingUsage is a Kyma custom resource that allows the ServiceBindingUsage controller to inject Secrets into a given application.">
                   <span data-e2e-id="service-binding-usage-tab">
                     Bound Applications
                   </span>
@@ -338,12 +333,7 @@ class ServiceInstanceBindings extends React.Component {
           ) : null}
           <Tab
             title={
-              <Tooltip
-                content="ServiceBinding is a link between a ServiceInstance and an application that cluster users create to obtain access credentials for their applications."
-                minWidth="210px"
-                showTooltipTimeout={750}
-                key="service-binding-tooltip"
-              >
+              <Tooltip title="ServiceBinding is a link between a ServiceInstance and an application that cluster users create to obtain access credentials for their applications.">
                 <span data-e2e-id="service-binding-tab">Credentials</span>
               </Tooltip>
             }

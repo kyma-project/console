@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import LuigiClient from '@kyma-project/luigi-client';
 import { useQuery } from '@apollo/react-hooks';
 
-import { Tooltip, instancesTabUtils } from '@kyma-project/react-components';
-import { Tab, Tabs, Spinner } from 'react-shared';
+import { instancesTabUtils } from '@kyma-project/react-components';
+import { Tab, Tabs, Spinner, Tooltip } from 'react-shared';
 import { Identifier } from 'fundamental-react';
 
 import { getAllServiceClasses } from './queries';
@@ -104,12 +104,7 @@ export default function ServiceClassList() {
             'services-status',
           )}
           title={
-            <Tooltip
-              content={serviceClassConstants.servicesTooltipDescription}
-              minWidth="140px"
-              showTooltipTimeout={750}
-              key="catalog-services-tab-tooltip"
-            >
+            <Tooltip title={serviceClassConstants.servicesTooltipDescription}>
               {serviceClassConstants.services}
             </Tooltip>
           }
@@ -144,12 +139,7 @@ export default function ServiceClassList() {
             'addons-status',
           )}
           title={
-            <Tooltip
-              content={serviceClassConstants.addonsTooltipDescription}
-              minWidth="100px"
-              showTooltipTimeout={750}
-              key="catalog-addons-tab-tooltip"
-            >
+            <Tooltip title={serviceClassConstants.addonsTooltipDescription}>
               {serviceClassConstants.addons}
             </Tooltip>
           }
