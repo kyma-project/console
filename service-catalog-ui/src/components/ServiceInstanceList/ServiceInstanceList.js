@@ -159,13 +159,9 @@ export default function ServiceInstancesList() {
       <Tabs
         defaultActiveTabIndex={determineSelectedTab()}
         callback={handleTabChange}
-        borderType="none"
-        noMargin
         customClass={'header-styles'}
-        hideSeparator
       >
         <Tab
-          noMargin
           status={status(
             determineDisplayedInstances(
               serviceInstances,
@@ -200,7 +196,6 @@ export default function ServiceInstancesList() {
           </ServiceInstancesWrapper>
         </Tab>
         <Tab
-          noMargin
           status={status(
             determineDisplayedInstances(
               serviceInstances,

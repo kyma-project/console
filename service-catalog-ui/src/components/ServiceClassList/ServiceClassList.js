@@ -91,13 +91,9 @@ export default function ServiceClassList() {
       <Tabs
         defaultActiveTabIndex={determineSelectedTab()}
         callback={handleTabChange}
-        borderType="none"
-        noMargin
         customClass={'header-styles'}
-        hideSeparator
       >
         <Tab
-          noMargin
           status={status(
             determineDisplayedServiceClasses(
               serviceClasses,
@@ -138,7 +134,6 @@ export default function ServiceClassList() {
           </>
         </Tab>
         <Tab
-          noMargin
           status={status(
             determineDisplayedServiceClasses(
               serviceClasses,

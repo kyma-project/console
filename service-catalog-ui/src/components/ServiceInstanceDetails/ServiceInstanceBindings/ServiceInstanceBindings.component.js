@@ -341,7 +341,6 @@ class ServiceInstanceBindings extends React.Component {
                 serviceInstance.serviceBindingUsages,
                 'status-service-binding-usage',
               )}
-              noMargin
             >
               <Table
                 headers={bindingUsagesHeaders}
@@ -366,7 +365,6 @@ class ServiceInstanceBindings extends React.Component {
               serviceInstance.serviceBindings.items,
               'status-service-binding',
             )}
-            noMargin
           >
             <Table
               headers={bindingsHeaders}
