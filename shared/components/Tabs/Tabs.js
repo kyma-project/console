@@ -8,8 +8,6 @@ export class Tabs extends React.Component {
     children: PropTypes.any.isRequired,
     defaultActiveTabIndex: PropTypes.number,
     callback: PropTypes.func,
-    border: PropTypes.bool,
-    borderType: PropTypes.oneOf(['top', 'bottom', 'none']),
     customClass: PropTypes.string,
     hideSeparator: PropTypes.bool,
   };
@@ -18,7 +16,6 @@ export class Tabs extends React.Component {
     defaultActiveTabIndex: 0,
     callback: () => {},
     hideSeparator: true,
-    borderType: 'none',
   };
 
   constructor(props) {
@@ -76,30 +73,14 @@ export class Tabs extends React.Component {
     const tabClass = classNames('fd-tabs', this.props.customClass);
     const props = this.getPropsFromActiveTab(children);
     return (
-      <div
-        role="tablist"
-        className="TabsWrapper"
-        // border={this.props.border} borderType={currentBorderType}
-      >
-        {!this.props.hideSeparator && currentBorderType === 'top' && (
-          <div className="separator" />
-        )}
+      <div role="tablist">
         <div className={tabClass}>
           {this.renderHeader(children)}
           <div className="additionalContent">
             {this.renderAdditionalHeaderContent(children)}
           </div>
         </div>
-        {!this.props.hideSeparator && currentBorderType === 'bottom' && (
-          <div className="separator" />
-        )}
-        <div
-          className="TabsContent"
-          role="tabpanel"
-          // wrapInPanel={props && props.wrapInPanel}
-        >
-          {this.renderActiveTab(children)}
-        </div>
+        <div role="tabpanel">{this.renderActiveTab(children)}</div>
       </div>
     );
   }
