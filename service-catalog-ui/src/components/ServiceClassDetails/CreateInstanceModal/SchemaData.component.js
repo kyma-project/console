@@ -14,7 +14,7 @@ const [draft04, draft06] = [
 
 class SchemaData extends React.Component {
   static propTypes = {
-    callback: PropTypes.func.isRequired,
+    onFormChange: PropTypes.func.isRequired,
     data: PropTypes.object.isRequired,
     children: PropTypes.element,
     instanceCreateParameterSchema: PropTypes.object,
@@ -31,11 +31,11 @@ class SchemaData extends React.Component {
     };
   }
 
-  onChangeSchemaForm = ({ formData, errors }) => {
+  handleFormChange = ({ formData, errors }) => {
     this.setState({
       instanceCreateParameters: formData,
     });
-    this.props.callback({
+    this.props.onFormChange({
       instanceCreateParameters: formData,
     });
   };
@@ -74,7 +74,7 @@ class SchemaData extends React.Component {
           additionalMetaSchemas={this.getAdditionalMetaSchemas(
             instanceCreateParameterSchema.$schema,
           )}
-          onChange={this.onChangeSchemaForm}
+          onChange={this.handleFormChange}
           liveValidate={true}
           onSubmit={onSubmitSchemaForm}
           formData={instanceCreateParameters}

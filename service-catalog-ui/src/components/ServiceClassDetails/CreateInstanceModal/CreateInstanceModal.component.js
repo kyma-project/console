@@ -285,7 +285,7 @@ export default function CreateInstanceModal({
             ''
           }
           onSubmitSchemaForm={() => {}}
-          callback={formData => {
+          onFormChange={formData => {
             onChange(formData);
             setInstanceCreateParameters(formData.instanceCreateParameters);
           }}
