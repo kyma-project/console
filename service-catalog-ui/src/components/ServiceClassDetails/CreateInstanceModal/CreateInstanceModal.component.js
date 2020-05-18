@@ -103,8 +103,8 @@ PlanColumnContent.proTypes = {
 };
 
 export default function CreateInstanceModal({
-  onChange,
   onCompleted,
+  onChange,
   onError,
   setCustomValid,
   formElementRef,
@@ -127,6 +127,7 @@ export default function CreateInstanceModal({
   const plan = preselectedPlan ? preselectedPlan.name : plans[0].name;
 
   const [instanceCreateParameters, setInstanceCreateParameters] = useState({});
+  const [validationVisible, setValidationVisible] = useState(false);
   const [
     instanceCreateParameterSchema,
     setInstanceCreateParameterSchema,
@@ -163,6 +164,7 @@ export default function CreateInstanceModal({
       plans,
       e.target.value,
     );
+    setValidationVisible(false);
     setInstanceCreateParameterSchema(newParametersSchema);
     setInstanceCreateParameters({});
     if (!newParametersSchema || !newParametersSchema.length) {
@@ -275,6 +277,7 @@ export default function CreateInstanceModal({
       <div className="instance-schema-panel__separator" />
       {instanceCreateParameterSchemaExists && (
         <SchemaData
+          validationVisible={validationVisible}
           schemaFormRef={jsonSchemaFormRef}
           data={instanceCreateParameters}
           instanceCreateParameterSchema={instanceCreateParameterSchema}
@@ -286,6 +289,14 @@ export default function CreateInstanceModal({
           }
           onSubmitSchemaForm={() => {}}
           onFormChange={formData => {
+            if (
+              !validationVisible &&
+              Object.values(formData.instanceCreateParameters).some(
+                val => val !== undefined,
+              )
+            )
+              setValidationVisible(true); // validation is hidden but some input has been performed => show validation
+
             onChange(formData);
             setInstanceCreateParameters(formData.instanceCreateParameters);
           }}
