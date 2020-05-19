@@ -59,16 +59,7 @@ exports[`InstancesList UI Test adding instances via subscription 1`] = `Array []
 
 exports[`InstancesList UI Test deleting instances via subscription 1`] = `Array []`;
 
-exports[`InstancesList UI Validate if modal delete button fires deleteMutation 1`] = `
-Array [
-  Array [
-    "There is no target origin set. You can specify the target origin by calling LuigiClient.setTargetOrigin(\\"targetorigin\\") in your micro frontend.",
-  ],
-  Array [
-    "There is no target origin set. You can specify the target origin by calling LuigiClient.setTargetOrigin(\\"targetorigin\\") in your micro frontend.",
-  ],
-]
-`;
+exports[`InstancesList UI Validate if modal delete button fires deleteMutation 1`] = `Array []`;
 
 exports[`Search instances by name Search addon 1`] = `Array []`;
 

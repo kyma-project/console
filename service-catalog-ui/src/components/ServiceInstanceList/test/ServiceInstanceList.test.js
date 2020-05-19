@@ -13,15 +13,19 @@ import { Link } from '../ServiceInstanceTable/styled.js';
 import { Spinner, createMockLink } from 'react-shared';
 import { componentUpdate, mockTestNamespace } from 'testing';
 import { act } from 'react-dom/test-utils';
-import { Button, FormInput, Identifier } from 'fundamental-react';
+import { FormInput, Identifier } from 'fundamental-react';
 import {
   serviceInstance1,
   serviceInstance3,
   serviceInstance2,
 } from 'testing/instances/instanceMocks';
 import FilterDropdown from '../ServiceInstanceToolbar/FilterDropdown.component';
-
 import toJson from 'enzyme-to-json';
+
+jest.mock('react-shared', () => ({
+  ...jest.requireActual('react-shared'),
+  handleDelete: (_, __, name, callback) => callback(name),
+}));
 
 const mockNavigate = jest.fn();
 const mockAddBackdrop = jest.fn();
@@ -202,7 +206,7 @@ describe('InstancesList UI', () => {
     expectKnownConsoleWarnings();
   });
 
-  fit(`Validate if modal delete button fires deleteMutation`, async () => {
+  it(`Validate if modal delete button fires deleteMutation`, async () => {
     const { link } = createMockLink([
       allServiceInstancesQuery,
       serviceInstanceDeleteMutation,
@@ -220,14 +224,6 @@ describe('InstancesList UI', () => {
     expect(table.exists()).toBe(true);
     expect(table.prop('data')).toHaveLength(2);
 
-    const displayedInstanceLinks = table.find('tbody tr').find(Button);
-    expect(displayedInstanceLinks).toHaveLength(2);
-
-    const firstInstanceButton = displayedInstanceLinks.at(0).find('button');
-    expect(firstInstanceButton.exists()).toBe(true);
-
-    firstInstanceButton.simulate('click');
-
     const deleteButton = component.find(deleteButtonSelector).at(0);
     expect(deleteButton.exists()).toBe(true);
 
@@ -236,7 +232,6 @@ describe('InstancesList UI', () => {
     });
     await componentUpdate(component);
 
-    expect(component.find(deleteButtonSelector).exists()).toBe(false);
     expect(serviceInstanceDeleteMutation.result).toHaveBeenCalled();
     expectKnownConsoleWarnings();
   });
