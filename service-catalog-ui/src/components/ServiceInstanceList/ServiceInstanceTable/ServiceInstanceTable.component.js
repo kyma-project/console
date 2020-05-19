@@ -45,7 +45,6 @@ export class ServiceInstanceTable extends Component {
         ? ['Bound Applications']
         : []),
       'Status',
-      '',
     ];
 
     const addServiceInstanceButton = (

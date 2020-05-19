@@ -190,14 +190,14 @@ class ServiceInstanceBindings extends React.Component {
           {bindingUsage.status.type}
         </span>
       </StatusTooltip>,
-      <ActionsWrapper>
+      <div class="list-actions">
         <DeleteBindingModal
           deleteBindingUsage={this.props.deleteBindingUsage}
           bindingUsageName={bindingUsage.name}
           bindingUsageCount={this.countBindingUsage(bindingUsage)}
           id={`service-binding-delete-${bindingUsage.name}`}
         />
-      </ActionsWrapper>,
+      </div>,
     ];
 
     const bindingsHeaderRenderer = () => ['Bindings', 'Secret', 'Status', ''];
@@ -244,7 +244,7 @@ class ServiceInstanceBindings extends React.Component {
       (_ => {
         const parameters = binding && binding.parameters;
         return (
-          <ActionsWrapper>
+          <div class="list-actions">
             {parameters && Object.keys(parameters).length > 0 && (
               <Tooltip title={'Parameters'}>
                 <span
@@ -270,7 +270,7 @@ class ServiceInstanceBindings extends React.Component {
               relatedBindingUsage={this.relatedBindingUsage(binding.name)}
               id={`service-binding-delete-${binding.name}`}
             />
-          </ActionsWrapper>
+          </div>
         );
       })(),
     ];
