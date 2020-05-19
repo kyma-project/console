@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import {
@@ -20,9 +20,20 @@ const SchemaData = ({
   instanceCreateParameterSchema,
   planName,
   schemaFormRef,
-  validationVisible,
 }) => {
-  const handleFormChange = ({ formData, errors }) => {
+  const [initialFormData, setInitialFormData] = useState(null);
+  const [validationVisible, setValidationVisible] = useState(false);
+
+  useEffect(() => {
+    setInitialFormData(null);
+  }, [instanceCreateParameterSchema, setInitialFormData]);
+
+  const handleFormChange = ({ formData }) => {
+    if (!initialFormData) {
+      setImmediate(() => setInitialFormData(formData));
+    } else if (!validationVisible && initialFormData !== formData)
+      setValidationVisible(true);
+
     onFormChange({
       instanceCreateParameters: formData,
     });
@@ -59,7 +70,7 @@ const SchemaData = ({
           instanceCreateParameterSchema.$schema,
         )}
         onChange={handleFormChange}
-        liveValidate={true}
+        liveValidate
         onSubmit={onSubmitSchemaForm}
         formData={data}
         transformErrors={validationVisible ? undefined : removeErrorMessages}
