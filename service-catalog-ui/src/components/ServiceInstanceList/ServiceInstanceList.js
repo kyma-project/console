@@ -158,7 +158,7 @@ export default function ServiceInstancesList() {
       <Tabs
         defaultActiveTabIndex={determineSelectedTab()}
         callback={handleTabChange}
-        customClass={'header-styles'}
+        className="header-styles"
       >
         <Tab
           status={status(

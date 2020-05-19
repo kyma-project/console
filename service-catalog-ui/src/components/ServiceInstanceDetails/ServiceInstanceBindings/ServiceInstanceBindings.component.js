@@ -278,7 +278,7 @@ class ServiceInstanceBindings extends React.Component {
     return (
       <ServiceInstanceBindingsWrapper>
         <Tabs
-          customClass={'table-styles'}
+          className="table-styles"
           defaultActiveTabIndex={this.props.defaultActiveTabIndex}
         >
           {serviceCatalogAddonsBackendModuleExists ? (

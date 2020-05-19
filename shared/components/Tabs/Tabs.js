@@ -8,7 +8,7 @@ export class Tabs extends React.Component {
     children: PropTypes.any.isRequired,
     defaultActiveTabIndex: PropTypes.number,
     callback: PropTypes.func,
-    customClass: PropTypes.string,
+    className: PropTypes.string,
     hideSeparator: PropTypes.bool,
   };
 
@@ -70,7 +70,7 @@ export class Tabs extends React.Component {
       .concat(...this.props.children)
       .filter(child => child !== null && child !== undefined && child);
 
-    const tabClass = classNames('fd-tabs', this.props.customClass);
+    const tabClass = classNames('fd-tabs', this.props.className);
     const props = this.getPropsFromActiveTab(children);
     return (
       <div role="tablist">
