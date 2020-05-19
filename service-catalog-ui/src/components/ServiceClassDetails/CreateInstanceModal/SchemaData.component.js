@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useLayoutEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 
 import {
@@ -24,7 +24,7 @@ const SchemaData = ({
   const initialFormData = useRef();
   const [validationVisible, setValidationVisible] = useState(false);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     initialFormData.current = null;
   }, [instanceCreateParameterSchema]);
 
