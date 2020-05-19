@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 
 import {
@@ -21,17 +21,19 @@ const SchemaData = ({
   planName,
   schemaFormRef,
 }) => {
-  const [initialFormData, setInitialFormData] = useState(null);
+  const initialFormData = useRef();
   const [validationVisible, setValidationVisible] = useState(false);
 
   useEffect(() => {
-    setInitialFormData(null);
-  }, [instanceCreateParameterSchema, setInitialFormData]);
+    initialFormData.current = null;
+  }, [instanceCreateParameterSchema]);
 
   const handleFormChange = ({ formData }) => {
-    if (!initialFormData) {
-      setImmediate(() => setInitialFormData(formData));
-    } else if (!validationVisible && initialFormData !== formData)
+    if (!initialFormData.current) {
+      setImmediate(() => {
+        initialFormData.current = formData;
+      });
+    } else if (!validationVisible && initialFormData.current !== formData)
       setValidationVisible(true);
 
     onFormChange({
