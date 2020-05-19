@@ -9,34 +9,30 @@ function displayConfirmationMessage(entityType, entityName) {
         buttonConfirm: 'Delete',
         buttonDismiss: 'Cancel',
       })
-      .then(() => {
-        resolve();
-      })
-      .catch(e => {});
+      .then(() => resolve(true))
+      .catch(_e => resolve(false));
   });
 }
 
-export function handleDelete(
+export async function handleDelete(
   entityType,
   entityId,
   entityName,
   deleteRequestFn,
   callback = () => {},
 ) {
-  displayConfirmationMessage(entityType, entityName)
-    .then(() => {
-      return deleteRequestFn(entityId, entityName);
-    })
-    .then(() => {
+  try {
+    if (await displayConfirmationMessage(entityType, entityName)) {
+      deleteRequestFn(entityId, entityName);
       callback();
-    })
-    .catch(err => {
-      LuigiClient.uxManager().showAlert({
-        text: `An error occurred while deleting ${entityType} ${entityName}: ${err.message}`,
-        type: 'error',
-        closeAfter: 10000,
-      });
+    }
+  } catch (err) {
+    LuigiClient.uxManager().showAlert({
+      text: `An error occurred while deleting ${entityType} ${entityName}: ${err.message}`,
+      type: 'error',
+      closeAfter: 10000,
     });
+  }
 }
 
 export function easyHandleDelete(
@@ -48,22 +44,24 @@ export function easyHandleDelete(
   notificationManager,
   callback = () => {},
 ) {
-  displayConfirmationMessage(entityType, entityName)
-    .then(async () => {
-      try {
-        const result = await deleteRequestFn(deleteRequestParam);
-        const isSuccess =
-          result.data &&
-          (deleteRequestName ? result.data[deleteRequestName] : true);
-        if (isSuccess) {
-          notificationManager.notifySuccess({
-            content: `${entityName} deleted`,
-          });
-        } else {
-          throw Error();
+  return displayConfirmationMessage(entityType, entityName)
+    .then(async shouldDelete => {
+      if (shouldDelete) {
+        try {
+          const result = await deleteRequestFn(deleteRequestParam);
+          const isSuccess =
+            result.data &&
+            (deleteRequestName ? result.data[deleteRequestName] : true);
+          if (isSuccess) {
+            notificationManager.notifySuccess({
+              content: `${entityName} deleted`,
+            });
+          } else {
+            throw Error();
+          }
+        } catch (e) {
+          throw e;
         }
-      } catch (e) {
-        throw e;
       }
     })
     .then(() => {
