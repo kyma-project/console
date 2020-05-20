@@ -16,15 +16,19 @@ describe('simpleDelete', () => {
     const deleteFunction = jest.fn();
     const customCallback = jest.fn();
 
-    await handleDelete(
-      'some-type',
-      'some-id',
-      'some-name',
-      deleteFunction,
-      customCallback,
-    );
+    const type = 'some-type';
+    const id = 'some-id';
+    const name = 'some-name';
 
-    expect(deleteFunction).toHaveBeenCalledWith('some-id', 'some-name');
+    await handleDelete(type, id, name, deleteFunction, customCallback);
+
+    expect(mockModal).toHaveBeenCalled();
+    expect(mockModal.mock.calls[0][0].body).toBe(
+      `Are you sure you want to delete ${type} "${name}"?`,
+    );
+    expect(mockModal.mock.calls[0][0].header).toBe(`Remove ${type}`);
+
+    expect(deleteFunction).toHaveBeenCalledWith(id, name);
     expect(customCallback).toHaveBeenCalled();
     expect(mockAlert).not.toHaveBeenCalled();
   });
