@@ -7,6 +7,7 @@ import {
   BINDING_DELETE_MUTATION,
   BINDING_USAGE_DELETE_MUTATION,
 } from './mutations';
+import { getServiceInstanceDetails } from 'helpers/instancesGQL/queries';
 
 import ServiceInstanceBindings from './ServiceInstanceBindings.component';
 
@@ -35,25 +36,51 @@ export default compose(
     }),
   }),
   graphql(BINDING_DELETE_MUTATION, {
-    props: ({ mutate }) => ({
-      deleteBinding: name =>
-        mutate({
+    props: ({ mutate, ownProps }) => ({
+      deleteBinding: name => {
+        const instanceName = ownProps.serviceInstance.name;
+        const namespace = LuigiClient.getContext().namespaceId;
+        return mutate({
           variables: {
             serviceBindingName: name,
-            namespace: LuigiClient.getContext().namespaceId,
+            namespace,
           },
-        }),
+          // todo remove after subscriptions are fixed
+          refetchQueries: () => [
+            {
+              query: getServiceInstanceDetails,
+              variables: {
+                name: instanceName,
+                namespace,
+              },
+            },
+          ],
+        });
+      },
     }),
   }),
   graphql(BINDING_USAGE_DELETE_MUTATION, {
-    props: ({ mutate }) => ({
-      deleteBindingUsage: name =>
-        mutate({
+    props: ({ mutate, ownProps }) => ({
+      deleteBindingUsage: name => {
+        const instanceName = ownProps.serviceInstance.name;
+        const namespace = LuigiClient.getContext().namespaceId;
+        return mutate({
           variables: {
             serviceBindingUsageName: name,
-            namespace: LuigiClient.getContext().namespaceId,
+            namespace,
           },
-        }),
+          // todo remove after subscriptions are fixed
+          refetchQueries: () => [
+            {
+              query: getServiceInstanceDetails,
+              variables: {
+                name: instanceName,
+                namespace,
+              },
+            },
+          ],
+        });
+      },
     }),
   }),
 )(ServiceInstanceBindings);
