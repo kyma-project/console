@@ -35,9 +35,9 @@ const determineSelectedTab = () => {
   return instancesTabUtils.convertTabNameToIndex(selectedTabName);
 };
 
-const handleTabChange = ({ defaultActiveTabIndex }) => {
+const handleTabChange = activeTabIndex => {
   const selectedTabName = instancesTabUtils.convertIndexToTabName(
-    defaultActiveTabIndex,
+    activeTabIndex,
   );
 
   LuigiClient.linkManager()
