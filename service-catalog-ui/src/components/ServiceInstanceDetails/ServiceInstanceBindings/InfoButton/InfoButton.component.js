@@ -6,7 +6,7 @@ import { Tooltip } from 'react-shared';
 
 import { InfoButtonWrapper } from './styled';
 
-const InfoButton = ({ content, orientation = 'top' }) => {
+const InfoButton = ({ content }) => {
   return (
     <InfoButtonWrapper>
       <Tooltip title={content}>

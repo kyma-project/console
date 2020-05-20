@@ -271,13 +271,16 @@ class BindApplicationModal extends React.Component {
     ];
 
     const bindApplicationButton = (
-      <Button compact option="light" data-e2e-id={id} onClick={this.handleOpen}>
-        + Bind Application
-        <InfoButton
-          content={bindingVariables.serviceBingingUsage}
-          orientation="bottom"
-        />
-      </Button>
+      <Tooltip title={bindingVariables.serviceBingingUsage}>
+        <Button
+          compact
+          option="light"
+          data-e2e-id={id}
+          onClick={this.handleOpen}
+        >
+          + Bind Application
+        </Button>
+      </Tooltip>
     );
 
     if (serviceInstance.status.type !== 'RUNNING') {

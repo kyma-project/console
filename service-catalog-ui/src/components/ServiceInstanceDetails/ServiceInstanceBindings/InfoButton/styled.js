@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 export const InfoButtonWrapper = styled.span`
+  line-height: initial;
   text-decoration: none;
   cursor: pointer;
   outline: 0;

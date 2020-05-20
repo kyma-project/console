@@ -1,12 +1,11 @@
 import React, { Fragment } from 'react';
 
-import { Tooltip } from '@kyma-project/react-components';
+import { Tooltip as StatusTooltip } from '@kyma-project/react-components';
 import { Button } from 'fundamental-react';
-import { Modal } from 'react-shared';
+import { Modal, Tooltip } from 'react-shared';
 
 import SchemaData from './SchemaData.component';
 import { bindingVariables } from '../InfoButton/variables';
-import InfoButton from '../InfoButton/InfoButton.component';
 
 import { clearEmptyPropertiesInObject } from 'helpers';
 import LuigiClient from '@kyma-project/luigi-client';
@@ -158,19 +157,9 @@ class CreateCredentialsModal extends React.Component {
       </Fragment>,
     ];
 
-    const createCredentialsButton = (
-      <Button compact option="light" data-e2e-id={id} onClick={this.handleOpen}>
-        + Create Credentials
-        <InfoButton
-          content={bindingVariables.serviceBinding}
-          orientation="default"
-        />
-      </Button>
-    );
-
     if (serviceInstance.status.type !== 'RUNNING') {
       return (
-        <Tooltip
+        <StatusTooltip
           type="error"
           content={
             <span>
@@ -182,22 +171,37 @@ class CreateCredentialsModal extends React.Component {
           <Button compact option="light" disabled={true}>
             + Create Credentials
           </Button>
-        </Tooltip>
+        </StatusTooltip>
       );
     }
 
     if (!bindingCreateParameterSchemaExists) {
       return (
+        <Tooltip title={bindingVariables.serviceBinding}>
+          <Button
+            compact
+            option="light"
+            data-e2e-id={id}
+            onClick={this.createWithoutOpening}
+          >
+            + Create Credentials
+          </Button>
+        </Tooltip>
+      );
+    }
+
+    const createCredentialsButton = (
+      <Tooltip title={bindingVariables.serviceBinding}>
         <Button
           compact
           option="light"
           data-e2e-id={id}
-          onClick={this.createWithoutOpening}
+          onClick={this.handleOpen}
         >
           + Create Credentials
         </Button>
-      );
-    }
+      </Tooltip>
+    );
 
     return (
       <Modal

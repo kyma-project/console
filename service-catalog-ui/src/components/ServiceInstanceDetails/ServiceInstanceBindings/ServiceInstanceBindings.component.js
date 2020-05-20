@@ -190,7 +190,7 @@ class ServiceInstanceBindings extends React.Component {
           {bindingUsage.status.type}
         </span>
       </StatusTooltip>,
-      <div class="list-actions">
+      <div className="list-actions">
         <DeleteBindingModal
           deleteBindingUsage={this.props.deleteBindingUsage}
           bindingUsageName={bindingUsage.name}
@@ -244,7 +244,7 @@ class ServiceInstanceBindings extends React.Component {
       (_ => {
         const parameters = binding && binding.parameters;
         return (
-          <div class="list-actions">
+          <div className="list-actions">
             {parameters && Object.keys(parameters).length > 0 && (
               <Tooltip title={'Parameters'}>
                 <span

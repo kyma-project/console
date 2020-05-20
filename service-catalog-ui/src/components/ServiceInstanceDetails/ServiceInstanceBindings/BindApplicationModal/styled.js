@@ -42,7 +42,7 @@ export const Link = styled.a`
   margin: 10px 0 0;
 `;
 
-export const SubSectionTitle = styled.p`
+export const SubSectionTitle = styled.div`
   margin: ${props => props.margin || '10px 0'};
   font-weight: ${props => (props.bold ? 'bold' : ' ')};
   line-height: 1.14;
