@@ -10,7 +10,7 @@ import { logsViewHelpers } from 'components/Lambdas/helpers/lambdas';
 
 import { LAMBDA_DETAILS } from 'components/Lambdas/constants';
 
-export default function LambdaDetails({ lambda }) {
+export default function LambdaDetails({ lambda, backendModules = [] }) {
   const [bindingUsages, setBindingUsages] = useState([]);
 
   useEffect(() => {
@@ -44,6 +44,7 @@ export default function LambdaDetails({ lambda }) {
           <ConfigurationTab
             lambda={lambda}
             setBindingUsages={setBindingUsages}
+            backendModules={backendModules}
           />
         </Tab>
       </TabGroup>

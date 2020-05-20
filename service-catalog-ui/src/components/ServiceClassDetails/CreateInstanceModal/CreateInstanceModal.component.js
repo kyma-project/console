@@ -103,8 +103,8 @@ PlanColumnContent.proTypes = {
 };
 
 export default function CreateInstanceModal({
-  onChange,
   onCompleted,
+  onChange,
   onError,
   setCustomValid,
   formElementRef,
@@ -127,6 +127,7 @@ export default function CreateInstanceModal({
   const plan = preselectedPlan ? preselectedPlan.name : plans[0].name;
 
   const [instanceCreateParameters, setInstanceCreateParameters] = useState({});
+
   const [
     instanceCreateParameterSchema,
     setInstanceCreateParameterSchema,
@@ -163,6 +164,7 @@ export default function CreateInstanceModal({
       plans,
       e.target.value,
     );
+
     setInstanceCreateParameterSchema(newParametersSchema);
     setInstanceCreateParameters({});
     if (!newParametersSchema || !newParametersSchema.length) {
@@ -285,7 +287,7 @@ export default function CreateInstanceModal({
             ''
           }
           onSubmitSchemaForm={() => {}}
-          callback={formData => {
+          onFormChange={formData => {
             onChange(formData);
             setInstanceCreateParameters(formData.instanceCreateParameters);
           }}

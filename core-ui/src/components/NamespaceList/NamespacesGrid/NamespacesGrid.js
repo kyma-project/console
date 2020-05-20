@@ -42,7 +42,7 @@ export default function NamespacesGrid({ namespaces }) {
               status={status}
               isSystemNamespace={isSystemNamespace}
               applications={
-                backendModuleExists('applications') ? applications : null
+                backendModuleExists('application') ? applications : null
               }
             />
           </li>

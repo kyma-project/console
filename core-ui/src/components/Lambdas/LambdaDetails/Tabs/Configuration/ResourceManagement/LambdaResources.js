@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import { LayoutGrid, Panel } from 'fundamental-react';
 import { Input } from './TableElements/Input';
@@ -8,31 +7,30 @@ import { Row } from './TableElements/Row';
 import { RESOURCES_MANAGEMENT_PANEL } from 'components/Lambdas/constants';
 import { errorClassName, inputClassName, inputNames } from './shared';
 
-export function LambdaResources({ disabledForm, register, errors }) {
+const resourcesMode = RESOURCES_MANAGEMENT_PANEL.RESOURCES;
+
+export default function LambdaResources({ disabledForm, register, errors }) {
   return (
     <LayoutGrid cols={2}>
       <Panel className="has-box-shadow-none">
         <Panel.Header className="has-padding-none has-none-border-bottom">
           <Panel.Head
-            title={RESOURCES_MANAGEMENT_PANEL.RESOURCES.REQUESTS.TITLE}
-            description={
-              RESOURCES_MANAGEMENT_PANEL.RESOURCES.REQUESTS.DESCRIPTION
-            }
+            title={resourcesMode.REQUESTS.TITLE}
+            description={resourcesMode.REQUESTS.DESCRIPTION}
           />
         </Panel.Header>
         <Panel.Body className="has-padding-none">
           <Row
-            title={RESOURCES_MANAGEMENT_PANEL.RESOURCES.MEMORY.TITLE}
+            title={resourcesMode.MEMORY.TITLE}
             action={
               <>
                 <Input
                   className={inputClassName}
                   disabled={disabledForm}
                   _ref={register}
+                  id={inputNames.requests.memory}
                   name={inputNames.requests.memory}
-                  placeholder={
-                    RESOURCES_MANAGEMENT_PANEL.RESOURCES.MEMORY.TITLE
-                  }
+                  placeholder={resourcesMode.MEMORY.TITLE}
                 />
                 {errors?.requestsMemory?.message && (
                   <div className={errorClassName}>
@@ -43,16 +41,16 @@ export function LambdaResources({ disabledForm, register, errors }) {
             }
           ></Row>
           <Row
-            title={RESOURCES_MANAGEMENT_PANEL.RESOURCES.CPU.TITLE}
+            title={resourcesMode.CPU.TITLE}
             action={
               <>
                 <Input
                   disabled={disabledForm}
-                  noLabel
                   className={inputClassName}
+                  id={inputNames.requests.cpu}
                   name={inputNames.requests.cpu}
                   _ref={register}
-                  placeholder={RESOURCES_MANAGEMENT_PANEL.RESOURCES.CPU.TITLE}
+                  placeholder={resourcesMode.CPU.TITLE}
                 />
                 {errors?.requestsCpu?.message && (
                   <div className={errorClassName}>
@@ -67,26 +65,22 @@ export function LambdaResources({ disabledForm, register, errors }) {
       <Panel className="has-box-shadow-none">
         <Panel.Header className="has-padding-none has-none-border-bottom">
           <Panel.Head
-            title={RESOURCES_MANAGEMENT_PANEL.RESOURCES.LIMITS.TITLE}
-            description={
-              RESOURCES_MANAGEMENT_PANEL.RESOURCES.LIMITS.DESCRIPTION
-            }
+            title={resourcesMode.LIMITS.TITLE}
+            description={resourcesMode.LIMITS.DESCRIPTION}
           />
         </Panel.Header>
         <Panel.Body className="has-padding-none">
           <Row
-            title={RESOURCES_MANAGEMENT_PANEL.RESOURCES.MEMORY.TITLE}
+            title={resourcesMode.MEMORY.TITLE}
             action={
               <>
                 <Input
                   disabled={disabledForm}
-                  noLabel
                   className={inputClassName}
+                  id={inputNames.limits.memory}
                   name={inputNames.limits.memory}
                   _ref={register}
-                  placeholder={
-                    RESOURCES_MANAGEMENT_PANEL.RESOURCES.MEMORY.TITLE
-                  }
+                  placeholder={resourcesMode.MEMORY.TITLE}
                 />
                 {errors?.limitsMemory?.message && (
                   <div className={errorClassName}>
@@ -97,16 +91,16 @@ export function LambdaResources({ disabledForm, register, errors }) {
             }
           ></Row>
           <Row
-            title={RESOURCES_MANAGEMENT_PANEL.RESOURCES.CPU.TITLE}
+            title={resourcesMode.CPU.TITLE}
             action={
               <>
                 <Input
+                  id={inputNames.limits.cpu}
                   name={inputNames.limits.cpu}
                   disabled={disabledForm}
-                  noLabel
                   className={inputClassName}
                   _ref={register}
-                  placeholder={RESOURCES_MANAGEMENT_PANEL.RESOURCES.CPU.TITLE}
+                  placeholder={resourcesMode.CPU.TITLE}
                 />
                 {errors?.limitsCpu?.message && (
                   <div className={errorClassName}>
@@ -121,8 +115,3 @@ export function LambdaResources({ disabledForm, register, errors }) {
     </LayoutGrid>
   );
 }
-
-LambdaResources.propTypes = {
-  register: PropTypes.any.isRequired,
-  disabledForm: PropTypes.bool.isRequired,
-};
