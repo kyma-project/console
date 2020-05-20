@@ -9,7 +9,10 @@ import {
 } from 'components/Lambdas/helpers/testing';
 
 import { useServiceInstancesQuery } from '../useServiceInstancesQuery';
-import { GET_SERVICE_INSTANCES_DATA_MOCK } from '../testMocks';
+import {
+  GET_SERVICE_INSTANCES_DATA_MOCK,
+  GET_SERVICE_INSTANCES_ERROR_MOCK,
+} from '../testMocks';
 
 describe('useServiceInstancesQuery', () => {
   const hookInput = {

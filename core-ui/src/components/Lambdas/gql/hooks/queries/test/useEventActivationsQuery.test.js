@@ -42,24 +42,6 @@ describe('useEventTriggersQuery', () => {
     await wait();
   });
 
-  it('should see error state', async () => {
-    const { getByText } = render(
-      withApolloMockProvider({
-        component: (
-          <QueryComponent
-            hook={useEventActivationsQuery}
-            hookInput={hookInput}
-          />
-        ),
-        mocks: [GET_EVENT_ACTIVATIONS_ERROR_MOCK(variables)],
-      }),
-    );
-
-    await wait(() => {
-      expect(getByText(TESTING_STATE.ERROR)).toBeInTheDocument();
-    });
-  });
-
   it('should see data state', async () => {
     const { getByText } = render(
       withApolloMockProvider({

@@ -1,21 +1,16 @@
 import React from 'react';
-import MetadataDefinitionTable from '../MetadataDefinitionTable';
+import MetadataTable from '../MetadataTable';
 import { render } from '@testing-library/react';
 
-describe('MetadataDefinitionTable', () => {
+describe('MetadataTable', () => {
   it('Renders empty table', async () => {
-    const { queryByText } = render(
-      <MetadataDefinitionTable ownerType="Entity" />,
-    );
+    const { queryByText } = render(<MetadataTable ownerType="Entity" />);
     expect(queryByText(/This Entity doesn't/)).toBeInTheDocument();
   });
 
   it('Renders labels', async () => {
     const { queryByText } = render(
-      <MetadataDefinitionTable
-        ownerType="Parent"
-        labels={{ label1: 'value1' }}
-      />,
+      <MetadataTable ownerType="Parent" labels={{ label1: 'value1' }} />,
     );
     expect(queryByText('label1')).toBeInTheDocument();
     expect(queryByText('value1')).toBeInTheDocument();
@@ -23,7 +18,7 @@ describe('MetadataDefinitionTable', () => {
 
   it('Does not render ignored labels', async () => {
     const { queryByText } = render(
-      <MetadataDefinitionTable
+      <MetadataTable
         ownerType="Ennio"
         labels={{ GOOD: 5, BAD: 6 }}
         ignoredLabels={['BAD']}
@@ -35,10 +30,7 @@ describe('MetadataDefinitionTable', () => {
 
   it('Renders object labels', async () => {
     const { queryByText } = render(
-      <MetadataDefinitionTable
-        ownerType="Parent"
-        labels={{ obj: { a: 'b' } }}
-      />,
+      <MetadataTable ownerType="Parent" labels={{ obj: { a: 'b' } }} />,
     );
     expect(queryByText('obj')).toBeInTheDocument();
     expect(queryByText(/"a": "b"/)).toBeInTheDocument();
@@ -46,10 +38,7 @@ describe('MetadataDefinitionTable', () => {
 
   it('Renders labels as links', async () => {
     const { queryByRole } = render(
-      <MetadataDefinitionTable
-        ownerType="Parent"
-        labels={{ label1: 'http://1' }}
-      />,
+      <MetadataTable ownerType="Parent" labels={{ label1: 'http://1' }} />,
     );
 
     const link = queryByRole('link');

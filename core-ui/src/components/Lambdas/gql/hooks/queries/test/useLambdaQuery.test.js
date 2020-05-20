@@ -39,7 +39,7 @@ describe('useLambdaQuery', () => {
         component: (
           <QueryComponent hook={useLambdaQuery} hookInput={hookInput} />
         ),
-        mocks: [subscriptionMock],
+        mocks: [LAMBDA_EVENT_SUBSCRIPTION_MOCK(subscriptionVariable)],
       }),
     );
 
@@ -47,44 +47,52 @@ describe('useLambdaQuery', () => {
     await wait();
   });
 
-  // TODO: Investigate why test doesn't see subscription mock
-  // it('should see data state', async () => {
-  //   const { getByText } = render(
-  //     withApolloMockProvider({
-  //       component: (
-  //         <QueryComponent hook={useLambdaQuery} hookInput={hookInput} dataProp="lambda" />
-  //       ),
-  //       mocks: [GET_LAMBDA_DATA_MOCK(variables), subscriptionMock],
-  //     }),
-  //   );
+  it('should see data state', async () => {
+    const { getByText } = render(
+      withApolloMockProvider({
+        component: (
+          <QueryComponent
+            hook={useLambdaQuery}
+            hookInput={hookInput}
+            dataProp="lambda"
+          />
+        ),
+        mocks: [
+          GET_LAMBDA_DATA_MOCK(variables),
+          subscriptionMock,
+          subscriptionMock,
+        ],
+      }),
+    );
 
-  //   await wait(() => {
-  //     expect(getByText(TESTING_STATE.DATA)).toBeInTheDocument();
-  //   });
-  // });
+    await wait(() => {
+      expect(getByText(TESTING_STATE.DATA)).toBeInTheDocument();
+    });
+  });
 
-  // TODO: Investigate why test doesn't see subscription mock
-  // it('should see notification if there is an error', async () => {
-  //   const mockProvider = withApolloMockProvider({
-  //     component: (
-  //       <QueryComponent hook={useLambdaQuery} hookInput={hookInput} />
-  //     ),
-  //     mocks: [GET_LAMBDA_ERROR_MOCK(variables), subscriptionMock],
-  //   });
+  it('should see notification if there is an error', async () => {
+    const mockProvider = withApolloMockProvider({
+      component: <QueryComponent hook={useLambdaQuery} hookInput={hookInput} />,
+      mocks: [
+        GET_LAMBDA_ERROR_MOCK(variables),
+        subscriptionMock,
+        subscriptionMock,
+      ],
+    });
 
-  //   const { getByText } = render(
-  //     withNotificationProvider({
-  //       component: mockProvider,
-  //     }),
-  //   );
+    const { getByText } = render(
+      withNotificationProvider({
+        component: mockProvider,
+      }),
+    );
 
-  //   const message = formatMessage(GQL_QUERIES.LAMBDA.ERROR_MESSAGE, {
-  //     lambdaName: lambdaMock.name,
-  //     error: `Network error: ${TESTING_STATE.ERROR}`,
-  //   });
+    const message = formatMessage(GQL_QUERIES.LAMBDA.ERROR_MESSAGE, {
+      lambdaName: lambdaMock.name,
+      error: `Network error: ${TESTING_STATE.ERROR}`,
+    });
 
-  //   await wait(() => {
-  //     expect(getByText(message)).toBeInTheDocument();
-  //   });
-  // });
+    await wait(() => {
+      expect(getByText(message)).toBeInTheDocument();
+    });
+  });
 });

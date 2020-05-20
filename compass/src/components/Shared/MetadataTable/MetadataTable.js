@@ -12,21 +12,17 @@ function isUrl(str) {
   }
 }
 
-MetadataDefinitionTable.propTypes = {
+MetadataTable.propTypes = {
   labels: PropTypes.object,
   ownerType: PropTypes.string.isRequired,
   ignoredLabels: PropTypes.arrayOf(PropTypes.string.isRequired),
 };
 
-MetadataDefinitionTable.defaultProps = {
+MetadataTable.defaultProps = {
   ignoredLabels: ['scenarios'],
 };
 
-export default function MetadataDefinitionTable({
-  labels,
-  ownerType,
-  ignoredLabels,
-}) {
+export default function MetadataTable({ labels, ownerType, ignoredLabels }) {
   const entries = labels
     ? Object.entries(labels)
         .filter(([key]) => !ignoredLabels.includes(key))
@@ -45,8 +41,8 @@ export default function MetadataDefinitionTable({
 
   return (
     <GenericList
-      title="Metadata definitions"
-      notFoundMessage={`This ${ownerType} doesn't have any metadata definitions.`}
+      title="Metadata"
+      notFoundMessage={`This ${ownerType} doesn't have any metadata.`}
       entries={entries}
       headerRenderer={headerRenderer}
       rowRenderer={rowRenderer}

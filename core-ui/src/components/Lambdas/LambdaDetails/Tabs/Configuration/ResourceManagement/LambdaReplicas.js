@@ -1,25 +1,25 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import { LayoutGrid } from 'fundamental-react';
 import { Input } from './TableElements/Input';
 import { Row } from './TableElements/Row';
-import { RESOURCES_MANAGEMENT_PANEL } from 'components/Lambdas/constants';
 
-import './ResourceManagement.scss';
+import { RESOURCES_MANAGEMENT_PANEL } from 'components/Lambdas/constants';
 import { errorClassName, inputClassName, inputNames } from './shared';
 
-export function LambdaReplicas({ disabledForm, register, errors }) {
+const replicasMode = RESOURCES_MANAGEMENT_PANEL.REPLICAS;
+
+export default function LambdaReplicas({ disabledForm, register, errors }) {
   const panels = [
     {
-      title: RESOURCES_MANAGEMENT_PANEL.REPLICAS_MODE.MIN_NUMBER.TITLE,
-      description:
-        RESOURCES_MANAGEMENT_PANEL.REPLICAS_MODE.MIN_NUMBER.DESCRIPTION,
+      title: replicasMode.MIN_NUMBER.TITLE,
+      description: replicasMode.MIN_NUMBER.DESCRIPTION,
       action: (
         <>
           <Input
             className={inputClassName}
             name={inputNames.replicas.min}
+            id={inputNames.replicas.min}
             disabled={disabledForm}
             type="number"
             _ref={register}
@@ -32,14 +32,14 @@ export function LambdaReplicas({ disabledForm, register, errors }) {
       ),
     },
     {
-      title: RESOURCES_MANAGEMENT_PANEL.REPLICAS_MODE.MAX_NUMBER.TITLE,
-      description:
-        RESOURCES_MANAGEMENT_PANEL.REPLICAS_MODE.MAX_NUMBER.DESCRIPTION,
+      title: replicasMode.MAX_NUMBER.TITLE,
+      description: replicasMode.MAX_NUMBER.DESCRIPTION,
       action: (
         <>
           <Input
             className={inputClassName}
             disabled={disabledForm}
+            id={inputNames.replicas.max}
             min="0"
             name={inputNames.replicas.max}
             type="number"
@@ -66,8 +66,3 @@ export function LambdaReplicas({ disabledForm, register, errors }) {
     </LayoutGrid>
   );
 }
-
-LambdaReplicas.propTypes = {
-  register: PropTypes.func.isRequired,
-  disabledForm: PropTypes.bool.isRequired,
-};
