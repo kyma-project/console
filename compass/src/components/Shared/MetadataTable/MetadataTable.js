@@ -12,21 +12,17 @@ function isUrl(str) {
   }
 }
 
-MetadataDefinitionTable.propTypes = {
+MetadataTable.propTypes = {
   labels: PropTypes.object,
   ownerType: PropTypes.string.isRequired,
   ignoredLabels: PropTypes.arrayOf(PropTypes.string.isRequired),
 };
 
-MetadataDefinitionTable.defaultProps = {
+MetadataTable.defaultProps = {
   ignoredLabels: ['scenarios'],
 };
 
-export default function MetadataDefinitionTable({
-  labels,
-  ownerType,
-  ignoredLabels,
-}) {
+export default function MetadataTable({ labels, ownerType, ignoredLabels }) {
   const entries = labels
     ? Object.entries(labels)
         .filter(([key]) => !ignoredLabels.includes(key))
