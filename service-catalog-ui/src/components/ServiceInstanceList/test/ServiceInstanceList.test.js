@@ -110,7 +110,7 @@ describe('InstancesList UI', () => {
     await componentUpdate(component);
     await componentUpdate(component);
 
-    const table = component.find(ServiceInstanceTable);
+    const table = component.find(ServiceInstanceTable).at(addonsTabIndex);
     expect(table.exists()).toBe(true);
 
     const displayedInstanceLinks = table
@@ -140,6 +140,7 @@ describe('InstancesList UI', () => {
 
     const addInstanceButton = component
       .find('[data-e2e-id="add-instance"]')
+      .at(addonsTabIndex)
       .find('button');
     expect(addInstanceButton.exists()).toBe(true);
 
@@ -183,7 +184,7 @@ describe('InstancesList UI', () => {
     await componentUpdate(component);
     await componentUpdate(component);
 
-    const table = component.find(ServiceInstanceTable);
+    const table = component.find(ServiceInstanceTable).at(servicesTabIndex);
     expect(table.exists()).toBe(true);
     expect(table.prop('data')).toHaveLength(1);
     expectKnownConsoleWarnings();
@@ -200,7 +201,7 @@ describe('InstancesList UI', () => {
     await componentUpdate(component);
     await componentUpdate(component);
 
-    const table = component.find(ServiceInstanceTable);
+    const table = component.find(ServiceInstanceTable).at(addonsTabIndex);
     expect(table.exists()).toBe(true);
     expect(table.prop('data')).toHaveLength(3);
     expectKnownConsoleWarnings();
@@ -220,11 +221,15 @@ describe('InstancesList UI', () => {
     );
     await componentUpdate(component);
 
-    const table = component.find(ServiceInstanceTable);
+    const table = component.find(ServiceInstanceTable).at(addonsTabIndex);
     expect(table.exists()).toBe(true);
     expect(table.prop('data')).toHaveLength(2);
 
-    const deleteButton = component.find(deleteButtonSelector).at(0);
+    const deleteButton = component
+      .find('[role="tabpanel"]')
+      .at(addonsTabIndex)
+      .find(deleteButtonSelector)
+      .at(0);
     expect(deleteButton.exists()).toBe(true);
 
     await act(async () => {
@@ -247,7 +252,11 @@ describe('InstancesList UI', () => {
     await componentUpdate(component);
     await componentUpdate(component);
 
-    let row = component.find('tbody tr').at(0);
+    let row = component
+      .find('[role="tabpanel"]')
+      .at(addonsTabIndex)
+      .find('tbody tr')
+      .at(0);
     const planLink = row.find('[data-e2e-id="service-plan"]').last();
 
     expect(planLink.exists()).toBe(true);
@@ -260,7 +269,11 @@ describe('InstancesList UI', () => {
 
     planLink.simulate('click');
     await componentUpdate(component);
-    row = component.find('tbody tr').at(0);
+    row = component
+      .find('[role="tabpanel"]')
+      .at(addonsTabIndex)
+      .find('tbody tr')
+      .at(0);
 
     planContent = row.find('code[data-e2e-id="service-plan-content"]');
     expect(planContent.exists()).toBe(true);
@@ -278,7 +291,12 @@ describe('InstancesList UI', () => {
 
     await componentUpdate(component);
     await componentUpdate(component);
-    const row = component.find('tbody tr').at(1);
+    const row = component
+      .find('[role="tabpanel"]')
+      .at(addonsTabIndex)
+      .find('tbody tr')
+      .at(1);
+
     const planLink = row.find('[data-e2e-id="service-plan"]');
     expect(planLink.exists()).toBe(true);
     expect(planLink.text()).toEqual(
@@ -331,9 +349,12 @@ describe('Search instances by name', () => {
       .first()
       .simulate('click');
     await componentUpdate(component);
-    expect(component.find(ServiceInstanceTable).prop('data')).toEqual([
-      serviceInstance1,
-    ]);
+    expect(
+      component
+        .find(ServiceInstanceTable)
+        .at(addonsTabIndex)
+        .prop('data'),
+    ).toEqual([serviceInstance1]);
 
     const servicesTab = component.find('[role="tab"]').at(servicesTabIndex);
     expect(servicesTab.find(Identifier).text()).toEqual('0');
@@ -343,7 +364,12 @@ describe('Search instances by name', () => {
       .first()
       .simulate('click');
     await componentUpdate(component);
-    expect(component.find(ServiceInstanceTable).prop('data')).toEqual([]);
+    expect(
+      component
+        .find(ServiceInstanceTable)
+        .at(servicesTabIndex)
+        .prop('data'),
+    ).toEqual([]);
 
     expectKnownConsoleWarnings();
   });
@@ -363,7 +389,12 @@ describe('Search instances by name', () => {
       .first()
       .simulate('click');
     await componentUpdate(component);
-    expect(component.find(ServiceInstanceTable).prop('data')).toEqual([]);
+    expect(
+      component
+        .find(ServiceInstanceTable)
+        .at(addonsTabIndex)
+        .prop('data'),
+    ).toEqual([]);
 
     const servicesTab = component.find('[role="tab"]').at(servicesTabIndex);
     expect(servicesTab.find(Identifier).text()).toEqual('1');
@@ -373,9 +404,12 @@ describe('Search instances by name', () => {
       .first()
       .simulate('click');
     await componentUpdate(component);
-    expect(component.find(ServiceInstanceTable).prop('data')).toEqual([
-      serviceInstance3,
-    ]);
+    expect(
+      component
+        .find(ServiceInstanceTable)
+        .at(servicesTabIndex)
+        .prop('data'),
+    ).toEqual([serviceInstance3]);
 
     expectKnownConsoleWarnings();
   });
@@ -433,9 +467,12 @@ describe('filter instances by labels', () => {
       .first()
       .simulate('click');
     await componentUpdate(component);
-    expect(component.find(ServiceInstanceTable).prop('data')).toEqual([
-      serviceInstance1,
-    ]);
+    expect(
+      component
+        .find(ServiceInstanceTable)
+        .at(addonsTabIndex)
+        .prop('data'),
+    ).toEqual([serviceInstance1]);
 
     const servicesTab = component.find('[role="tab"]').at(servicesTabIndex);
     expect(servicesTab.find(Identifier).text()).toEqual('0');
@@ -445,7 +482,12 @@ describe('filter instances by labels', () => {
       .first()
       .simulate('click');
     await componentUpdate(component);
-    expect(component.find(ServiceInstanceTable).prop('data')).toEqual([]);
+    expect(
+      component
+        .find(ServiceInstanceTable)
+        .at(servicesTabIndex)
+        .prop('data'),
+    ).toEqual([]);
 
     expectKnownConsoleWarnings();
   });

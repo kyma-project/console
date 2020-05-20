@@ -79,7 +79,10 @@ describe('ServiceClassList UI', () => {
   it('Displays classes with their corresponding names on the add-ons/services list', async () => {
     await componentUpdate(component);
 
-    const addonsCards = component.find('.fd-tile__title');
+    const addonsCards = component
+      .find('[role="tabpanel"]')
+      .at(addonsTabIndex)
+      .find('.fd-tile__title');
 
     expect(addonsCards.exists()).toBe(true);
     expect(addonsCards).toHaveLength(
@@ -101,7 +104,10 @@ describe('ServiceClassList UI', () => {
 
     await componentUpdate(component);
 
-    const servicesCards = component.find('.fd-tile__title');
+    const servicesCards = component
+      .find('[role="tabpanel"]')
+      .at(servicesTabIndex)
+      .find('.fd-tile__title');
 
     expect(servicesCards.exists()).toBe(true);
     expect(servicesCards).toHaveLength(
@@ -125,6 +131,8 @@ describe('ServiceClassList UI', () => {
     await componentUpdate(component);
 
     const goToDetails = component
+      .find('[role="tabpanel"]')
+      .at(addonsTabIndex)
       .find('[data-e2e-id="go-to-details"]>div')
       .at(0);
 

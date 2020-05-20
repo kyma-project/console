@@ -66,9 +66,7 @@ export class Tabs extends React.Component {
   };
 
   render() {
-    const children = []
-      .concat(...this.props.children)
-      .filter(child => child !== null && child !== undefined && child);
+    const children = this.props.children.filter(child => child);
 
     const tabClass = classNames('fd-tabs', this.props.className);
     const props = this.getPropsFromActiveTab(children);
@@ -80,7 +78,16 @@ export class Tabs extends React.Component {
             {this.renderAdditionalHeaderContent(children)}
           </div>
         </div>
-        <div role="tabpanel">{this.renderActiveTab(children)}</div>
+
+        {children.map((child, index) => {
+          const display =
+            this.state.activeTabIndex === index ? 'initial' : 'none';
+          return (
+            <div role="tabpanel" key={`tab-${index}`} style={{ display }}>
+              {child.props.children}
+            </div>
+          );
+        })}
       </div>
     );
   }
