@@ -275,6 +275,7 @@ export default function CreateInstanceModal({
       <div className="instance-schema-panel__separator" />
       {instanceCreateParameterSchemaExists && (
         <SchemaData
+          key={formValues.plan.current.value}
           schemaFormRef={jsonSchemaFormRef}
           data={instanceCreateParameters}
           instanceCreateParameterSchema={instanceCreateParameterSchema}
