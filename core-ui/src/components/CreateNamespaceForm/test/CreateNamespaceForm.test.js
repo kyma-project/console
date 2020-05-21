@@ -223,15 +223,15 @@ describe('CreateNamespaceForm', () => {
 
     form.simulate('submit');
 
-    await componentUpdate(component, 100);
-
-    expect(gqlMock[0].result).toHaveBeenCalled();
-    expect(onCompleted).not.toHaveBeenCalled();
-    expect(onError).toHaveBeenCalledWith(
-      expect.anything(),
-      expect.anything(),
-      true,
-    );
+    await wait(() => {
+      expect(gqlMock[0].result).toHaveBeenCalled();
+      expect(onCompleted).not.toHaveBeenCalled();
+      expect(onError).toHaveBeenCalledWith(
+        expect.anything(),
+        expect.anything(),
+        true,
+      );
+    });
   });
 
   it('Exits with an error, and does not proceed with subsequent calls if create Namespace request failed', async () => {
