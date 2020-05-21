@@ -86,6 +86,7 @@ const ApiSelector: React.FunctionComponent<{
       }
       placeholder={
         (selectedApi && selectedApi.data && selectedApi.data.displayName) ||
+        (selectedApi && selectedApi.type) ||
         'Select API'
       }
       inputProps={{ onChange: handleInputChange }}
