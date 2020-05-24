@@ -68,6 +68,12 @@ export const LAMBDAS_LIST = {
       NAME: {
         LABEL: 'Name',
         INLINE_HELP: `The name must consist of lower case alphanumeric characters or dashes, and must start and end with an alphanumeric character (e.g. 'my-name1').`,
+        ERRORS: {
+          EMPTY: 'Function name is required.',
+          INVALID: `Invalid Function name. The name must consist of lower case alphanumeric characters or dashes, and must start and end with an alphanumeric character (e.g. 'my-name1').`,
+          DUPLICATED:
+            'Function with given name already exists in current Namespace.',
+        },
       },
       LABEL: {
         LABEL: 'Labels',
@@ -223,13 +229,26 @@ export const RESOURCES_MANAGEMENT_PANEL = {
     },
     CONFIRM_BUTTON: {
       TEXT: 'Save',
+      POPUP_MESSAGE: 'At least one field is invalid.',
     },
   },
   ERROR_MESSAGES: {
-    CPU:
-      'CPU value has to be expressed as a fixed-point number or in milicpu. For example, use 100m, 0.1, or 1.',
-    MEMORY:
-      'Memory value has to be a fixed-point number with one of these suffixes: Gi, G, Mi, M, Ki, or K. For example, use 50Mi, 1000.5Ki, or 0.1G.',
+    CPU: {
+      DEFAULT:
+        'CPU value has to be expressed as a fixed-point number or in milicpu. For example, use 100m, 0.1, or 1.',
+      REQUEST_TOO_HIGH:
+        'Request CPU value has to be equal to or lower than Limits.',
+      LIMITS_TOO_LOW:
+        'Limits CPU value has to be equal to or greater than Requests.',
+    },
+    MEMORY: {
+      DEFAULT:
+        'Memory value has to be a fixed-point number with one of these suffixes: Gi, G, Mi, M, Ki, or K. For example, use 50Mi, 1000.5Ki, or 0.1G.',
+      REQUEST_TOO_HIGH:
+        'Request Memory value has to be equal to or lower than Limits.',
+      LIMITS_TOO_LOW:
+        'Limits Memory value has to be equal to or greater than Requests.',
+    },
     MIN_REPLICAS_TOO_HIGH:
       'Minimum number of replicas has to be equal to or lower than maximum.',
     MIN_REPLICAS_NON_NEGATIVE:
@@ -355,7 +374,7 @@ export const ENVIRONMENT_VARIABLES_PANEL = {
         NO_ENVS_DEFINED: 'You must define at least one variable.',
         COLLECTIONS_EQUAL: 'Changes in variables are required.',
         ERROR:
-          'At least one variable has an incorrect name format, is duplicated, or empty.',
+          'At least one variable has an incorrect/restricted name format, is duplicated, or empty.',
       },
     },
     ADD_ENV_BUTTON: {
@@ -366,6 +385,8 @@ export const ENVIRONMENT_VARIABLES_PANEL = {
     EMPTY: 'Variable is empty.',
     DUPLICATED: 'Duplicated variable name.',
     INVALID: `Invalid variable name. The name must consist of alphanumeric characters, can contain "_" and no spaces, like "VARIABLE_NAME".`,
+    RESTRICTED:
+      'Restricted variable name. Cannot create a variable with the given name.',
   },
   WARNINGS: {
     TEXT: 'Warning',

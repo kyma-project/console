@@ -17,8 +17,10 @@ export default function LambdaDetailsWrapper() {
     namespace: LuigiClient.getEventData().environmentId,
   });
 
+  const functionNames = lambdas.map(l => l.name);
   const headerActions = (
     <CreateLambdaModal
+      functionNames={functionNames}
       serverDataError={error || false}
       serverDataLoading={loading || false}
     />

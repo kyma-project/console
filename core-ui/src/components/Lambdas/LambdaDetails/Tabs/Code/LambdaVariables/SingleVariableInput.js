@@ -4,6 +4,7 @@ import { FormItem, FormInput, FormMessage } from 'fundamental-react';
 
 import { VARIABLE_VALIDATION } from 'components/Lambdas/helpers/lambdaVariables';
 import { ENVIRONMENT_VARIABLES_PANEL } from 'components/Lambdas/constants';
+import { CONFIG } from 'components/Lambdas/config';
 
 import { getValidationStatus, validateVariable } from './validation';
 
@@ -51,6 +52,7 @@ export default function SingleVariableInput({
     const validation = getValidationStatus({
       userVariables: variables,
       injectedVariables,
+      restrictedVariables: CONFIG.restrictedVariables,
       varName: name,
       varID: variable.id,
       varDirty: variable.dirty,
@@ -97,6 +99,10 @@ export default function SingleVariableInput({
       case VARIABLE_VALIDATION.DUPLICATED:
         type = 'error';
         message = ENVIRONMENT_VARIABLES_PANEL.ERRORS.DUPLICATED;
+        break;
+      case VARIABLE_VALIDATION.RESTRICTED:
+        type = 'error';
+        message = ENVIRONMENT_VARIABLES_PANEL.ERRORS.RESTRICTED;
         break;
       case VARIABLE_VALIDATION.CAN_OVERRIDE_SBU:
         type = 'warning';

@@ -3,6 +3,8 @@ import * as yup from 'yup';
 import {
   CPU_REGEXP,
   MEMORY_REGEXP,
+  normalizeCPU,
+  normalizeMemory,
 } from 'components/Lambdas/helpers/resources';
 import { RESOURCES_MANAGEMENT_PANEL } from 'components/Lambdas/constants';
 
@@ -47,20 +49,72 @@ export const schema = yup.object().shape({
     ) {
       return arg >= this.parent.minReplicas;
     }),
-  [inputNames.requests.cpu]: yup.string().matches(CPU_REGEXP, {
-    excludeEmptyString: true,
-    message: errorMessages.CPU,
-  }),
-  [inputNames.limits.cpu]: yup.string().matches(CPU_REGEXP, {
-    excludeEmptyString: true,
-    message: errorMessages.CPU,
-  }),
-  [inputNames.requests.memory]: yup.string().matches(MEMORY_REGEXP, {
-    excludeEmptyString: true,
-    message: errorMessages.MEMORY,
-  }),
-  [inputNames.limits.memory]: yup.string().matches(MEMORY_REGEXP, {
-    excludeEmptyString: true,
-    message: errorMessages.MEMORY,
-  }),
+  [inputNames.requests.cpu]: yup
+    .string()
+    .matches(CPU_REGEXP, {
+      excludeEmptyString: true,
+      message: errorMessages.CPU.DEFAULT,
+    })
+    .test('matchRequestsCPU', errorMessages.CPU.REQUEST_TOO_HIGH, function(
+      arg,
+    ) {
+      const normalizedLimit = normalizeCPU(this.parent.limitsCpu);
+      if (!normalizedLimit) {
+        return true;
+      }
+
+      const normalizedRequest = normalizeCPU(arg);
+      return normalizedRequest <= normalizedLimit;
+    }),
+  [inputNames.limits.cpu]: yup
+    .string()
+    .matches(CPU_REGEXP, {
+      excludeEmptyString: true,
+      message: errorMessages.CPU.DEFAULT,
+    })
+    .test('matchLimitsCPU', errorMessages.CPU.LIMITS_TOO_LOW, function(arg) {
+      if (!arg) {
+        return true;
+      }
+
+      const normalizedRequest = normalizeCPU(this.parent.requestsCpu);
+      const normalizedLimit = normalizeCPU(arg);
+      return normalizedRequest <= normalizedLimit;
+    }),
+  [inputNames.requests.memory]: yup
+    .string()
+    .matches(MEMORY_REGEXP, {
+      excludeEmptyString: true,
+      message: errorMessages.MEMORY.DEFAULT,
+    })
+    .test(
+      'matchRequestsMemory',
+      errorMessages.MEMORY.REQUEST_TOO_HIGH,
+      function(arg) {
+        const normalizedLimit = normalizeMemory(this.parent.limitsMemory);
+        if (!normalizedLimit) {
+          return true;
+        }
+
+        const normalizedRequest = normalizeMemory(arg);
+        return normalizedRequest <= normalizedLimit;
+      },
+    ),
+  [inputNames.limits.memory]: yup
+    .string()
+    .matches(MEMORY_REGEXP, {
+      excludeEmptyString: true,
+      message: errorMessages.MEMORY.DEFAULT,
+    })
+    .test('matchLimitsMemory', errorMessages.MEMORY.LIMITS_TOO_LOW, function(
+      arg,
+    ) {
+      if (!arg) {
+        return true;
+      }
+
+      const normalizedRequest = normalizeMemory(this.parent.requestsMemory);
+      const normalizedLimit = normalizeMemory(arg);
+      return normalizedRequest <= normalizedLimit;
+    }),
 });

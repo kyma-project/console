@@ -1,13 +1,26 @@
 import React from 'react';
 
-import { FormItem, FormLabel, InlineHelp } from 'fundamental-react';
+import {
+  FormItem,
+  FormLabel,
+  FormMessage,
+  InlineHelp,
+} from 'fundamental-react';
 import { K8sNameInput } from 'react-shared';
 
 import { LAMBDAS_LIST } from 'components/Lambdas/constants';
 
 import './LambdaNameInput.scss';
 
-export function LambdaNameInput({ ...otherProps }) {
+export function LambdaNameInput({
+  functionNames = [],
+  nameStatus,
+  ...otherProps
+}) {
+  const validationMessage = nameStatus ? (
+    <FormMessage type="error">{nameStatus}</FormMessage>
+  ) : null;
+
   return (
     <div className="lambda-name-input">
       <FormItem>
@@ -19,6 +32,7 @@ export function LambdaNameInput({ ...otherProps }) {
           />
         </FormLabel>
         <K8sNameInput {...otherProps} kind="Function" />
+        {validationMessage}
       </FormItem>
     </div>
   );

@@ -1,2 +1,3 @@
 export * from './constants';
-export * from './parseCpu';
+export * from './cpuHelpers';
+export * from './memoryHelpers';

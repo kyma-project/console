@@ -9,7 +9,12 @@ import { errorClassName, inputClassName, inputNames } from './shared';
 
 const resourcesMode = RESOURCES_MANAGEMENT_PANEL.RESOURCES;
 
-export default function LambdaResources({ disabledForm, register, errors }) {
+export default function LambdaResources({
+  disabledForm,
+  register,
+  errors,
+  triggerValidation = () => void 0,
+}) {
   return (
     <LayoutGrid cols={2}>
       <Panel className="has-box-shadow-none">
@@ -31,6 +36,9 @@ export default function LambdaResources({ disabledForm, register, errors }) {
                   id={inputNames.requests.memory}
                   name={inputNames.requests.memory}
                   placeholder={resourcesMode.MEMORY.TITLE}
+                  onChange={async () => {
+                    await triggerValidation(inputNames.limits.memory);
+                  }}
                 />
                 {errors?.requestsMemory?.message && (
                   <div className={errorClassName}>
@@ -51,6 +59,9 @@ export default function LambdaResources({ disabledForm, register, errors }) {
                   name={inputNames.requests.cpu}
                   _ref={register}
                   placeholder={resourcesMode.CPU.TITLE}
+                  onChange={async () => {
+                    await triggerValidation(inputNames.limits.cpu);
+                  }}
                 />
                 {errors?.requestsCpu?.message && (
                   <div className={errorClassName}>
@@ -81,6 +92,9 @@ export default function LambdaResources({ disabledForm, register, errors }) {
                   name={inputNames.limits.memory}
                   _ref={register}
                   placeholder={resourcesMode.MEMORY.TITLE}
+                  onChange={async () => {
+                    await triggerValidation(inputNames.requests.memory);
+                  }}
                 />
                 {errors?.limitsMemory?.message && (
                   <div className={errorClassName}>
@@ -101,6 +115,9 @@ export default function LambdaResources({ disabledForm, register, errors }) {
                   className={inputClassName}
                   _ref={register}
                   placeholder={resourcesMode.CPU.TITLE}
+                  onChange={async () => {
+                    await triggerValidation(inputNames.requests.cpu);
+                  }}
                 />
                 {errors?.limitsCpu?.message && (
                   <div className={errorClassName}>
