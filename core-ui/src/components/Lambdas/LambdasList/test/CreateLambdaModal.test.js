@@ -107,7 +107,7 @@ describe('CreateLambdaModal + CreateLambdaForm', () => {
       expect(button).toBeInTheDocument();
       expect(button).toBeDisabled();
     });
-  });
+  }, 10000);
 
   it('should show name errors - invalid Function name', async () => {
     const { getByText } = render(
@@ -132,7 +132,7 @@ describe('CreateLambdaModal + CreateLambdaForm', () => {
       expect(button).toBeInTheDocument();
       expect(button).toBeDisabled();
     });
-  });
+  }, 10000);
 
   it('should show name errors - duplicated Function name', async () => {
     const { getByText } = render(
@@ -161,5 +161,5 @@ describe('CreateLambdaModal + CreateLambdaForm', () => {
       expect(button).toBeInTheDocument();
       expect(button).toBeDisabled();
     });
-  });
+  }, 10000);
 });
