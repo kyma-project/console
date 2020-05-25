@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useQuery } from 'react-apollo';
 import PropTypes from 'prop-types';
-import './s.scss';
 
 const InfiniteList = ({
   query,
@@ -36,24 +35,12 @@ const InfiniteList = ({
   const canScrollMore = loading || data.runtimes.totalCount > entries.length;
 
   function handleScroll(ev) {
-    console.group('handleScroll');
-    console.log('handleScroll called');
     const {
       scrollHeight,
       scrollTop,
       clientHeight,
     } = ev.target.scrollingElement;
-
     const hasReachedBottom = scrollHeight - scrollTop === clientHeight;
-    console.log(
-      'handleScroll data',
-      !!ev.target.scrollingElement,
-      scrollHeight,
-      scrollTop,
-      clientHeight,
-      hasReachedBottom,
-    );
-    console.groupEnd('handleScroll');
     if (hasReachedBottom && data.runtimes.pageInfo.hasNextPage) {
       setCursor(data.runtimes.pageInfo.endCursor);
     }
@@ -61,60 +48,6 @@ const InfiniteList = ({
 
   return (
     <>
-      <p
-        className="panel"
-        onMouseMove={ev => {
-          const mousePos = ev.clientX;
-          setImmediate(() => {
-            const panel = document.querySelector('.panel');
-            const panelPos = panel.getBoundingClientRect();
-            const panelWidth = panelPos.right - panelPos.left;
-            const horizontalPos = (mousePos - panelPos.left) / panelWidth;
-
-            panel.style.backgroundPositionX = 0 + horizontalPos * 40 + '%';
-          });
-        }}
-      >
-        <h4>The Hasselhoff control panel</h4>
-        <div>
-          <button
-            onClick={() => {
-              const ev = {
-                target: {
-                  scrollingElement: {
-                    scrollHeight: 401,
-                    scrollTop: 47,
-                    clientHeight: 354,
-                  },
-                },
-              };
-              handleScroll(ev);
-            }}
-          >
-            Pretend there was an event
-          </button>
-        </div>
-        <div style={{ float: 'right' }}>
-          <button
-            onClick={() => {
-              if (data.runtimes.pageInfo.hasNextPage) {
-                setCursor(data.runtimes.pageInfo.endCursor);
-              } else {
-                console.log('no next page');
-              }
-            }}
-          >
-            Gimme more runtimes!
-          </button>
-          <button
-            onClick={() => {
-              window.open('https://www.youtube.com/watch?v=PldT2jq7ApM');
-            }}
-          >
-            Play Baywatch intro
-          </button>
-        </div>
-      </p>
       <table className="fd-table">
         <thead className="fd-table__header">
           <tr className="fd-table__row">
