@@ -1,45 +1,13 @@
 <header class="fd-page__header fd-has-background-color-background-2">
   <section class="fd-section">
     <div class="fd-section__header">
-      <h1 class="fd-section__title">Your Organisation</h1>
+      <h1 class="fd-section__title">Settings</h1>
     </div>
   </section>
 </header>
 
 <section class="fd-section">
   <fd-panel-grid [col]="1">
-    <fd-panel class="y-fd-panel">
-      <fd-panel-body>
-        <fieldset fd-form-set class="fd-col--6">
-          <fd-form-group>
-            <div fd-form-item>
-              <label fd-form-label>Name</label>
-              <input
-                fd-form-control
-                [type]="'text'"
-                placeholder="Function name"
-                value="{{ orgName }}"
-                readonly
-              />
-            </div>
-          </fd-form-group>
-        </fieldset>
-        <fieldset fd-form-set class="fd-col--6">
-          <fd-form-group>
-            <div fd-form-item>
-              <label fd-form-label>Org-ID</label>
-              <input
-                fd-form-control
-                [type]="'text'"
-                value="{{ orgId }}"
-                readonly
-              />
-            </div>
-          </fd-form-group>
-        </fieldset>
-      </fd-panel-body>
-    </fd-panel>
-
     <fd-panel class="y-fd-panel">
       <fd-panel-header>
         <fd-panel-head>

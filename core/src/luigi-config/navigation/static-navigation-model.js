@@ -191,16 +191,15 @@ export function getStaticRootNodes(namespaceChildrenNodesResolver){
     {
       pathSegment: 'settings',
       navigationContext: 'settings',
-      label: 'General Settings',
-      category: { label: 'Settings', icon: 'settings' },
-      viewUrl: '/consoleapp.html#/home/settings/organisation',
-      viewGroup: consoleViewGroupName
+      viewUrl: '/consoleapp.html#/home/settings/settings',
+      viewGroup: consoleViewGroupName,
+      hideFromNav: true
     },
     {
       pathSegment: 'global-permissions',
       navigationContext: 'global-permissions',
       label: 'Global Permissions',
-      category: 'Settings',
+      category: { label: 'Configuration', icon: 'settings' },
       viewUrl: '/consoleapp.html#/home/settings/globalPermissions',
       keepSelectedForChildren: true,
       viewGroup: consoleViewGroupName,

@@ -2,17 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { AppConfig } from '../../../app.config';
 import { HttpClient } from '@angular/common/http';
 import * as FileSaver from 'file-saver';
-import { SHOW_SYSTEM_NAMESPACES_CHANGED_EVENT } from './../../../shared/constants/constants';
+import { SHOW_SYSTEM_NAMESPACES_CHANGED_EVENT } from '../../../shared/constants/constants';
 import LuigiClient from '@luigi-project/client';
 
 @Component({
-  selector: 'app-organisation',
-  templateUrl: './organisation.component.html',
-  styleUrls: ['./organisation.component.scss']
+  selector: 'app-settings',
+  templateUrl: './settings.component.html'
 })
-export class OrganisationComponent implements OnInit {
-  public orgId: string;
-  public orgName: string;
+export class SettingsComponent implements OnInit {
   public showSystemNamespaces = false;
   public showExperimentalViews = false;
   public shouldShowNamespacesToggle = true;
@@ -33,9 +30,6 @@ export class OrganisationComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.orgId = AppConfig.orgId;
-    this.orgName = AppConfig.orgName;
-
     const groups = LuigiClient.getContext().groups;
     this.shouldShowNamespacesToggle = this.isVisibleForCurrentGroup(groups);
 

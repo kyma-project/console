@@ -12,7 +12,7 @@ import { SecretDetailComponent } from '../content/namespaces/operation/secrets/s
 import { SecretsComponent } from '../content/namespaces/operation/secrets/secrets.component';
 import { ServiceDetailsComponent } from '../content/namespaces/operation/services/service-details/service-details.component';
 import { ServicesComponent } from '../content/namespaces/operation/services/services.component';
-import { OrganisationComponent } from '../content/settings/organisation/organisation.component';
+import { SettingsComponent } from '../content/settings/settings/settings.component';
 import { ApplicationDetailsComponent } from '../content/settings/applications/application-details/application-details.component';
 import { ApplicationsComponent } from '../content/settings/applications/applications.component';
 import { ServiceBrokersComponent } from '../content/settings/service-brokers/service-brokers.component';
@@ -93,8 +93,8 @@ const appRoutes: Routes = [
         component: NamespacesContainerComponent,
         data: { navCtx: 'settings' },
         children: [
-          { path: 'yVirtual', component: OrganisationComponent },
-          { path: 'organisation', component: OrganisationComponent },
+          { path: 'yVirtual', component: SettingsComponent },
+          { path: 'settings', component: SettingsComponent },
           { path: 'apps', component: ApplicationsComponent },
           {
             path: 'apps/:id',
@@ -112,8 +112,8 @@ const appRoutes: Routes = [
             component: RoleDetailsComponent,
             data: { global: true }
           },
-          { path: '', redirectTo: 'organisation', pathMatch: 'full' },
-          { path: '**', redirectTo: 'organisation', pathMatch: 'full' }
+          { path: '', redirectTo: 'settings', pathMatch: 'full' },
+          { path: '**', redirectTo: 'settings', pathMatch: 'full' }
         ]
       },
       { path: '', pathMatch: 'full', redirectTo: 'namespaces/workspace' },
