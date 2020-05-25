@@ -24,3 +24,14 @@ export function normalizeCPU(cpu = '') {
   }
   return parseFloat(cpu) || 0;
 }
+
+export function correctLimitCPU(limit = '', current = '') {
+  if (!limit || !current) {
+    return;
+  }
+
+  const normalizedLimit = normalizeCPU(limit);
+  const normalizedCurrent = normalizeCPU(current);
+
+  return normalizedLimit <= normalizedCurrent;
+}

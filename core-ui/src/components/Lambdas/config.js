@@ -12,6 +12,12 @@ const defaultConfig = {
     'MOD_NAME',
     'NODE_PATH',
   ],
+  resources: {
+    min: {
+      memory: '16Mi',
+      cpu: '10m',
+    },
+  },
 };
 
 function getConfigValue(field) {
@@ -29,6 +35,7 @@ function loadConfig() {
   return {
     functionUsageKind: getConfigValue('functionUsageKind') || '',
     restrictedVariables: getConfigValue('restrictedVariables') || [],
+    resources: getConfigValue('resources') || {},
   };
 }
 

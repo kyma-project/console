@@ -72,7 +72,7 @@ export const LAMBDAS_LIST = {
           EMPTY: 'Function name is required.',
           INVALID: `Invalid Function name. The name must consist of lower case alphanumeric characters or dashes, and must start and end with an alphanumeric character (e.g. 'my-name1').`,
           DUPLICATED:
-            'Function with given name already exists in current Namespace.',
+            'There is already a Function with the same name in this Namespace.',
         },
       },
       LABEL: {
@@ -235,19 +235,21 @@ export const RESOURCES_MANAGEMENT_PANEL = {
   ERROR_MESSAGES: {
     CPU: {
       DEFAULT:
-        'CPU value has to be expressed as a fixed-point number or in milicpu. For example, use 100m, 0.1, or 1.',
+        'This value must be expressed as a fixed-point number or in milicpu. For example, use 100m, 0.1, or 1.',
+      TOO_LOW: 'This value is to low. Minimum value is {minValue}.',
       REQUEST_TOO_HIGH:
-        'Request CPU value has to be equal to or lower than Limits.',
+        'This value must be equal to or lower than the equivalent value for Limits.',
       LIMITS_TOO_LOW:
-        'Limits CPU value has to be equal to or greater than Requests.',
+        'This value must be equal to or greater than the equivalent value for Requests.',
     },
     MEMORY: {
       DEFAULT:
-        'Memory value has to be a fixed-point number with one of these suffixes: Gi, G, Mi, M, Ki, or K. For example, use 50Mi, 1000.5Ki, or 0.1G.',
+        'This value must be a fixed-point number with one of these suffixes: Gi, G, Mi, M, Ki, or K. For example, use 50Mi, 1000.5Ki, or 0.1G.',
+      TOO_LOW: 'This value is to low. Minimum value is {minValue}.',
       REQUEST_TOO_HIGH:
-        'Request Memory value has to be equal to or lower than Limits.',
+        'This value must be equal to or lower than the equivalent value for Limits.',
       LIMITS_TOO_LOW:
-        'Limits Memory value has to be equal to or greater than Requests.',
+        'This value must be equal to or greater than the equivalent value for Requests.',
     },
     MIN_REPLICAS_TOO_HIGH:
       'Minimum number of replicas has to be equal to or lower than maximum.',
@@ -374,7 +376,7 @@ export const ENVIRONMENT_VARIABLES_PANEL = {
         NO_ENVS_DEFINED: 'You must define at least one variable.',
         COLLECTIONS_EQUAL: 'Changes in variables are required.',
         ERROR:
-          'At least one variable has an incorrect/restricted name format, is duplicated, or empty.',
+          'At least one variable has an incorrect name format, is restricted, duplicated, or empty.',
       },
     },
     ADD_ENV_BUTTON: {
@@ -386,7 +388,7 @@ export const ENVIRONMENT_VARIABLES_PANEL = {
     DUPLICATED: 'Duplicated variable name.',
     INVALID: `Invalid variable name. The name must consist of alphanumeric characters, can contain "_" and no spaces, like "VARIABLE_NAME".`,
     RESTRICTED:
-      'Restricted variable name. Cannot create a variable with the given name.',
+      'This variable name is restricted and cannot be used. Try a different one.',
   },
   WARNINGS: {
     TEXT: 'Warning',

@@ -5,7 +5,11 @@ import {
   MEMORY_REGEXP,
   normalizeCPU,
   normalizeMemory,
+  correctLimitCPU,
+  correctLimitMemory,
 } from 'components/Lambdas/helpers/resources';
+import { formatMessage } from 'components/Lambdas/helpers/misc';
+import { CONFIG } from 'components/Lambdas/config';
 import { RESOURCES_MANAGEMENT_PANEL } from 'components/Lambdas/constants';
 
 export const inputClassName = 'resource_input';
@@ -24,6 +28,13 @@ export const inputNames = {
 };
 
 const errorMessages = RESOURCES_MANAGEMENT_PANEL.ERROR_MESSAGES;
+const MIN_MEMORY_VALUE_ERROR = formatMessage(errorMessages.MEMORY.TOO_LOW, {
+  minValue: CONFIG.resources?.min?.memory || '',
+});
+const MIN_CPU_VALUE_ERROR = formatMessage(errorMessages.CPU.TOO_LOW, {
+  minValue: CONFIG.resources?.min?.cpu || '',
+});
+
 export const schema = yup.object().shape({
   [inputNames.replicas.min]: yup
     .number()
@@ -55,9 +66,13 @@ export const schema = yup.object().shape({
       excludeEmptyString: true,
       message: errorMessages.CPU.DEFAULT,
     })
-    .test('matchRequestsCPU', errorMessages.CPU.REQUEST_TOO_HIGH, function(
-      arg,
-    ) {
+    .test('matchMinRequestCPU', MIN_CPU_VALUE_ERROR, function(arg) {
+      if (!arg) {
+        return true;
+      }
+      return testMinCPU(arg);
+    })
+    .test('matchRequestCPU', errorMessages.CPU.REQUEST_TOO_HIGH, function(arg) {
       const normalizedLimit = normalizeCPU(this.parent.limitsCpu);
       if (!normalizedLimit) {
         return true;
@@ -72,7 +87,13 @@ export const schema = yup.object().shape({
       excludeEmptyString: true,
       message: errorMessages.CPU.DEFAULT,
     })
-    .test('matchLimitsCPU', errorMessages.CPU.LIMITS_TOO_LOW, function(arg) {
+    .test('matchMinLimitCPU', MIN_CPU_VALUE_ERROR, function(arg) {
+      if (!arg) {
+        return true;
+      }
+      return testMinCPU(arg);
+    })
+    .test('matchLimitCPU', errorMessages.CPU.LIMITS_TOO_LOW, function(arg) {
       if (!arg) {
         return true;
       }
@@ -87,26 +108,36 @@ export const schema = yup.object().shape({
       excludeEmptyString: true,
       message: errorMessages.MEMORY.DEFAULT,
     })
-    .test(
-      'matchRequestsMemory',
-      errorMessages.MEMORY.REQUEST_TOO_HIGH,
-      function(arg) {
-        const normalizedLimit = normalizeMemory(this.parent.limitsMemory);
-        if (!normalizedLimit) {
-          return true;
-        }
+    .test('matchMinRequestMemory', MIN_MEMORY_VALUE_ERROR, function(arg) {
+      if (!arg) {
+        return true;
+      }
+      return testMinMemory(arg);
+    })
+    .test('matchRequestMemory', errorMessages.MEMORY.REQUEST_TOO_HIGH, function(
+      arg,
+    ) {
+      const normalizedLimit = normalizeMemory(this.parent.limitsMemory);
+      if (!normalizedLimit) {
+        return true;
+      }
 
-        const normalizedRequest = normalizeMemory(arg);
-        return normalizedRequest <= normalizedLimit;
-      },
-    ),
+      const normalizedRequest = normalizeMemory(arg);
+      return normalizedRequest <= normalizedLimit;
+    }),
   [inputNames.limits.memory]: yup
     .string()
     .matches(MEMORY_REGEXP, {
       excludeEmptyString: true,
       message: errorMessages.MEMORY.DEFAULT,
     })
-    .test('matchLimitsMemory', errorMessages.MEMORY.LIMITS_TOO_LOW, function(
+    .test('matchMinLimitMemory', MIN_MEMORY_VALUE_ERROR, function(arg) {
+      if (!arg) {
+        return true;
+      }
+      return testMinMemory(arg);
+    })
+    .test('matchLimitMemory', errorMessages.MEMORY.LIMITS_TOO_LOW, function(
       arg,
     ) {
       if (!arg) {
@@ -118,3 +149,11 @@ export const schema = yup.object().shape({
       return normalizedRequest <= normalizedLimit;
     }),
 });
+
+function testMinCPU(arg) {
+  return correctLimitCPU(CONFIG.resources?.min?.cpu, arg);
+}
+
+function testMinMemory(arg) {
+  return correctLimitMemory(CONFIG.resources?.min?.memory, arg);
+}

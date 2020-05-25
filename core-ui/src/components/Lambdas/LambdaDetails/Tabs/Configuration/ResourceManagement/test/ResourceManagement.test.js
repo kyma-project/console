@@ -5,10 +5,12 @@ import { lambdaMock } from 'components/Lambdas/helpers/testing';
 
 import ResourceManagement from '../ResourceManagement';
 
+import { formatMessage } from 'components/Lambdas/helpers/misc';
 import {
   BUTTONS,
   RESOURCES_MANAGEMENT_PANEL,
 } from 'components/Lambdas/constants';
+import { CONFIG } from 'components/Lambdas/config';
 
 // remove it after add 'mutationobserver-shim' to jest config https://github.com/jsdom/jsdom/issues/639
 const mutationObserverMock = jest.fn(function MutationObserver(callback) {
@@ -477,6 +479,41 @@ describe('ResourceManagement', () => {
     });
   });
 
+  it('should shows errors when user types memory under minimum', async () => {
+    const replicasLambda = {
+      ...lambdaMock,
+      resources: {
+        requests: {
+          memory: '20Mi',
+          cpu: '20m',
+        },
+        limits: {
+          memory: '30Mi',
+          cpu: '30m',
+        },
+      },
+    };
+    const { getByText, getAllByText } = render(
+      <ResourceManagement lambda={replicasLambda} />,
+    );
+
+    let editButton = getByText(editText);
+    fireEvent.click(editButton);
+
+    const requestsMemory = document.querySelector('#requestsMemory');
+    fireEvent.input(requestsMemory, { target: { value: '12Mi' } });
+    const limitsMemory = document.querySelector('#limitsMemory');
+    fireEvent.input(limitsMemory, { target: { value: '14Mi' } });
+
+    const message = formatMessage(
+      RESOURCES_MANAGEMENT_PANEL.ERROR_MESSAGES.MEMORY.TOO_LOW,
+      { minValue: CONFIG.resources.min.memory },
+    );
+    await wait(() => {
+      expect(getAllByText(message)).toHaveLength(2);
+    });
+  });
+
   it('should shows errors when user types requests greater than limits cpu', async () => {
     const replicasLambda = {
       ...lambdaMock,
@@ -510,6 +547,41 @@ describe('ResourceManagement', () => {
       expect(
         getByText(RESOURCES_MANAGEMENT_PANEL.ERROR_MESSAGES.CPU.LIMITS_TOO_LOW),
       ).toBeInTheDocument();
+    });
+  });
+
+  it('should shows errors when user types cpu under minimum', async () => {
+    const replicasLambda = {
+      ...lambdaMock,
+      resources: {
+        requests: {
+          memory: '20Mi',
+          cpu: '20m',
+        },
+        limits: {
+          memory: '30Mi',
+          cpu: '30m',
+        },
+      },
+    };
+    const { getByText, getAllByText } = render(
+      <ResourceManagement lambda={replicasLambda} />,
+    );
+
+    let editButton = getByText(editText);
+    fireEvent.click(editButton);
+
+    const requestsCpu = document.querySelector('#requestsCpu');
+    fireEvent.input(requestsCpu, { target: { value: '0.005' } });
+    const limitsCpu = document.querySelector('#limitsCpu');
+    fireEvent.input(limitsCpu, { target: { value: '0.007' } });
+
+    const message = formatMessage(
+      RESOURCES_MANAGEMENT_PANEL.ERROR_MESSAGES.MEMORY.TOO_LOW,
+      { minValue: CONFIG.resources.min.cpu },
+    );
+    await wait(() => {
+      expect(getAllByText(message)).toHaveLength(2);
     });
   });
 });
