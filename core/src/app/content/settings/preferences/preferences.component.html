@@ -1,30 +1,13 @@
 <header class="fd-page__header fd-has-background-color-background-2">
   <section class="fd-section">
     <div class="fd-section__header">
-      <h1 class="fd-section__title">Settings</h1>
+      <h1 class="fd-section__title">Preferences</h1>
     </div>
   </section>
 </header>
 
 <section class="fd-section">
   <fd-panel-grid [col]="1">
-    <fd-panel class="y-fd-panel">
-      <fd-panel-header>
-        <fd-panel-head>
-          <h2 fd-panel-title>Kubeconfig</h2>
-        </fd-panel-head>
-      </fd-panel-header>
-      <fd-panel-body>
-        <p class="fd-has-type fd-has-color-text-3 fd-has-font-style-italic">
-          kubeconfig is a file used to configure access to a cluster. Download
-          it to access the cluster using command line.
-        </p>
-        <button fd-button [glyph]="'download'" (click)="downloadKubeconfig()">
-          Download config
-        </button>
-      </fd-panel-body>
-    </fd-panel>
-
     <fd-panel *ngIf="shouldShowNamespacesToggle" class="y-fd-panel">
       <fd-panel-header>
         <fd-panel-head>

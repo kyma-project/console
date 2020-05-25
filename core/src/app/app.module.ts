@@ -49,7 +49,7 @@ import { ServiceDetailsComponent } from './content/namespaces/operation/services
 import { ServicesEntryRendererComponent } from './content/namespaces/operation/services/services-entry-renderer/services-entry-renderer.component';
 import { ServicesHeaderRendererComponent } from './content/namespaces/operation/services/services-header-renderer/services-header-renderer.component';
 import { ServicesComponent } from './content/namespaces/operation/services/services.component';
-import { SettingsComponent } from './content/settings/settings/settings.component';
+import { PreferencesComponent } from './content/settings/preferences/preferences.component';
 import { EditBindingsModalComponent } from './content/settings/applications/application-details/edit-bindings-modal/edit-binding-modal.component';
 import { BindingsDetailsModalComponent } from './content/settings/applications/application-details/bindings-details-modal/bindings-details-modal.component';
 import { CreateBindingsModalComponent } from './content/settings/applications/application-details/create-bindings-modal/create-binding-modal.component';
@@ -137,7 +137,7 @@ import * as LuigiClient from '@luigi-project/client';
     TimeAgoPipe,
     ApplicationsComponent,
     ApplicationDetailsComponent,
-    SettingsComponent,
+    PreferencesComponent,
     NamespaceDetailsComponent,
     ServiceBrokersComponent,
     ReplicaSetsComponent,

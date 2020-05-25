@@ -55,9 +55,14 @@ export let navigation = {
     items: [
       {
         icon: 'settings',
-        label: 'Settings',
-        link: '/home/settings'
-      }
+        label: 'Preferences',
+        link: '/home/preferences'
+      },
+      {
+        icon: 'download',
+        label: 'Get Kubeconfig',
+        link: '/home/download-kubeconfig'
+      },
     ]
   },
   nodes: new Promise((res) => {

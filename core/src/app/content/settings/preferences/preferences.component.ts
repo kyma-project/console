@@ -1,32 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { AppConfig } from '../../../app.config';
-import { HttpClient } from '@angular/common/http';
-import * as FileSaver from 'file-saver';
 import { SHOW_SYSTEM_NAMESPACES_CHANGED_EVENT } from '../../../shared/constants/constants';
 import LuigiClient from '@luigi-project/client';
 
 @Component({
-  selector: 'app-settings',
-  templateUrl: './settings.component.html'
+  selector: 'app-preferences',
+  templateUrl: './preferences.component.html'
 })
-export class SettingsComponent implements OnInit {
+export class PreferencesComponent implements OnInit {
   public showSystemNamespaces = false;
   public showExperimentalViews = false;
   public shouldShowNamespacesToggle = true;
 
-  constructor(private http: HttpClient) {
+  constructor() {
     this.showExperimentalViews =
       localStorage.getItem('console.showExperimentalViews') === 'true';
-  }
-
-  public downloadKubeconfig() {
-    return this.http
-      .get(AppConfig.kubeconfigGeneratorUrl, {
-        responseType: 'blob'
-      })
-      .subscribe(res => {
-        FileSaver.saveAs(res, 'kubeconfig');
-      });
   }
 
   ngOnInit() {
