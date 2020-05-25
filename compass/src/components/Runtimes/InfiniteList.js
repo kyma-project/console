@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useQuery } from 'react-apollo';
 import PropTypes from 'prop-types';
 
+const SCROLL_MARGIN = 20;
+
 const InfiniteList = ({
   query,
   queryVariables,
@@ -26,11 +28,8 @@ const InfiniteList = ({
 
   useEffect(() => {
     document.addEventListener('scroll', handleScroll);
-
     return () => document.removeEventListener('scroll', handleScroll);
   });
-
-  if (error) return `Error! ${error.message}`;
 
   const canScrollMore = loading || data.runtimes.totalCount > entries.length;
 
@@ -40,11 +39,15 @@ const InfiniteList = ({
       scrollTop,
       clientHeight,
     } = ev.target.scrollingElement;
-    const hasReachedBottom = scrollHeight - scrollTop === clientHeight;
+    const hasReachedBottom =
+      scrollHeight - scrollTop - SCROLL_MARGIN <= clientHeight;
+
     if (hasReachedBottom && data.runtimes.pageInfo.hasNextPage) {
       setCursor(data.runtimes.pageInfo.endCursor);
     }
   }
+
+  if (error) return `Error! ${error.message}`;
 
   return (
     <>
