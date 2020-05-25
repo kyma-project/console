@@ -4,7 +4,7 @@ import { parseJWT, getPreviousLocation } from './navigation/navigation-helpers';
 
 async function fetchDexMetadata() {
     const idpUrl = config.defaultIdpIssuer;
-  
+
     try {
       const response = await fetch(`${idpUrl}/.well-known/openid-configuration`);
       return await response.json();
@@ -14,7 +14,7 @@ async function fetchDexMetadata() {
       console.error('cannot fetch dex metadata', e);
     }
   }
-  
+
 export default async function createAuth() {
   const dexMetadata = await fetchDexMetadata();
   return {
@@ -25,6 +25,7 @@ export default async function createAuth() {
         client_id: 'console',
         scope:
         'audience:server:client_id:kyma-client audience:server:client_id:console openid email profile groups',
+        response_type: 'id_token',
         automaticSilentRenew: true,
         loadUserInfo: false,
         logoutUrl: 'logout.html',
