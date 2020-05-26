@@ -126,7 +126,7 @@ When developing new features in Console UI, adhere to the following rules. This 
 
 #### Prevent Cross-site request forgery (XSRF)
 
-- Do not store authentication token as a cookie. Make sure token is sent to the console backend service as a bearer token.
+- Do not store the authentication token as a cookie. Make sure the token is sent to the Console Backend Service as a bearer token.
 - Make sure that state-changing operations (gql mutations) are only trigered upon expolicit user interactions (e.g. form submissions).
 - Keep in mind that UI rendering (in response to user navigating between views) is only allowed to trigger read-only operations (gql querries and subscriptions) without any data mutations.
 
