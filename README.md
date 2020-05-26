@@ -132,7 +132,7 @@ When developing new features in Console UI, adhere to the following rules. This 
 
 #### Protect against Cross-site scripting (XSS)
 
-- It is recommended to use JS frameworks that have XSS prevention mechanisms built in (E.g. [reactJS](https://reactjs.org/docs/introducing-jsx.html#jsx-prevents-injection-attacks), [vue.js](https://vuejs.org/v2/guide/security.html#What-Vue-Does-to-Protect-You) or [angular](https://angular.io/guide/security#angulars-cross-site-scripting-security-model))
+- It is recommended to use JS frameworks that have built-in XSS prevention mechanisms, such as [reactJS](https://reactjs.org/docs/introducing-jsx.html#jsx-prevents-injection-attacks), [vue.js](https://vuejs.org/v2/guide/security.html#What-Vue-Does-to-Protect-You) or [angular](https://angular.io/guide/security#angulars-cross-site-scripting-security-model)).
 - As a rule of thumb, user-provided input can never be assumed 100% safe. Get familiar with prevention mechanismsm included in the framework of your choice. Make sure user input is sanitised before it is embedded in the DOM tree.
 - Get familiar with most common [XSS bypasses and potential dangers](https://stackoverflow.com/questions/33644499/what-does-it-mean-when-they-say-react-is-xss-protected). Pay special attention to those when writing or reviewing the code.
 - Enable `Content-security-policy` header for all new microforntends to assure in-depth XSS prevention. Do not allow for `unsafe-eval` policy.
