@@ -1,8 +1,9 @@
 import React from 'react';
-import { Button, Icon, Popover } from 'fundamental-react';
+import { Button } from 'fundamental-react';
 import DeleteUrlModal from './../../Modals/DeleteUrlModal/DeleteUrlModal.container';
 import { RepositoryStatus, RepositoryAddon } from '../../../types';
-import classNames from 'classnames';
+
+import * as ReactShared from '../../../react-shared';
 
 interface RepositoryTableHeaderProps {
   isOpen: boolean;
@@ -29,10 +30,9 @@ const RepositoryTableHeader: React.FunctionComponent<RepositoryTableHeaderProps>
     <th>{repository.url}</th>
     <th />
     <th>
-      <StatusWithMessage
-        status={repository.status}
-        message={repository.message}
-      />
+      <ReactShared.StatusBadge autoResolveType status={repository.status}>
+        {repository.message}
+      </ReactShared.StatusBadge>
     </th>
     <th>
       {<DeleteUrlModal url={repository.url} configurationName={configName} />}
@@ -52,47 +52,13 @@ const RepositoryTableRow: React.FunctionComponent<RepositoryTableRowProps> = ({
     <td className="addon-table-padded">{addon.name}</td>
     <td>{addon.version}</td>
     <td>
-      <StatusWithMessage status={addon.status} message={addon.message} />
+      <ReactShared.StatusBadge autoResolveType status={addon.status}>
+        {addon.message}
+      </ReactShared.StatusBadge>
     </td>
     <td />
   </tr>
 );
-
-interface StatusWithMessageProps {
-  status: string;
-  message: string;
-}
-
-const StatusWithMessage: React.FunctionComponent<StatusWithMessageProps> = ({
-  status,
-  message,
-}) => {
-  const statusClassName = classNames({
-    'fd-has-color-status-1': status === 'Ready',
-    'fd-has-color-status-3': status === 'Failed',
-  });
-
-  const body = (
-    <div className="fd-has-padding-xs has-max-width-m has-white-space-normal has-word-break-break-word">
-      {message}
-    </div>
-  );
-
-  const icon = (
-    <Icon
-      glyph="error"
-      size="s"
-      className="fd-has-color-status-3 fd-has-margin-left-tiny"
-    />
-  );
-
-  return (
-    <>
-      {<span className={statusClassName}>{status}</span>}
-      {message && <Popover body={body} control={icon} placement="bottom-end" />}
-    </>
-  );
-};
 
 interface RepositoryTableSegmentProps {
   repository: RepositoryStatus;

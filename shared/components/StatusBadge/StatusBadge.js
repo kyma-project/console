@@ -35,13 +35,18 @@ export const StatusBadge = ({
   children,
   autoResolveType = false,
   tooltipProps = {},
+  className,
 }) => {
   if (autoResolveType) type = resolveType(status);
 
-  const classes = classNames('status-badge', {
-    ['status-badge--' + type]: type,
-    'has-tooltip': children,
-  });
+  const classes = classNames(
+    'status-badge',
+    {
+      ['status-badge--' + type]: type,
+      'has-tooltip': children,
+    },
+    className,
+  );
 
   const badgeElement = (
     <Badge role="status" modifier="filled" className={classes}>
@@ -49,17 +54,19 @@ export const StatusBadge = ({
     </Badge>
   );
 
-  if (children)
-    return (
-      <Tooltip content={children} {...tooltipProps}>
-        {badgeElement}
-      </Tooltip>
-    );
-  else return badgeElement;
+  return children ? (
+    <Tooltip content={children} {...tooltipProps}>
+      {badgeElement}
+    </Tooltip>
+  ) : (
+    badgeElement
+  );
 };
 
 StatusBadge.propTypes = {
   status: PropTypes.string.isRequired,
   type: PropTypes.oneOf(['success', 'warning', 'error', 'info']),
   autoResolveType: PropTypes.bool,
+  tooltipProps: PropTypes.object,
+  className: PropTypes.string,
 };

@@ -2,7 +2,6 @@ import React, { useContext, useState } from 'react';
 import CollapsiblePanel from '../CollapsiblePanel/CollapsiblePanel';
 import { Configuration } from '../../types';
 import { Button } from 'fundamental-react';
-import AddonsConfigurationBadge from './../AddonConfigurationBadge/AddonConfigurationBadge';
 import LabelDisplay from './../LabelDisplay/LabelDisplay';
 import DeleteConfigurationModal from '../Modals/DeleteConfigurationModal/DeleteConfigurationModal.container';
 import AddUrlModal from '../Modals/AddUrlModal/AddUrlModal.container';
@@ -11,6 +10,7 @@ import { DEFAULT_CONFIGURATION } from './../../constants';
 import './AddonPanel.scss';
 import { MutationsService } from '../../services/Mutations.service';
 import { NotificationsService } from '@kyma-project/common';
+import * as ReactShared from '../../react-shared';
 
 interface ResyncButtonProps {
   configurationName: string;
@@ -86,9 +86,10 @@ const AddonPanel: React.FunctionComponent<AddonPanelProps> = ({ config }) => {
       setIsOpen={setIsOpen}
       collapseDisabled={!hasRepositories}
       additionalHeaderContent={
-        <AddonsConfigurationBadge
-          status={config.status.phase}
+        <ReactShared.StatusBadge
+          autoResolveType
           className="fd-has-margin-left-s"
+          status={config.status.phase}
         />
       }
       className="fd-has-margin-bottom-s addon-collapsible-panel"
