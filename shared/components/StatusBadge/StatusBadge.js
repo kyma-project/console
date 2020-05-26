@@ -44,7 +44,7 @@ export const StatusBadge = ({
   });
 
   const badgeElement = (
-    <Badge modifier="filled" className={classes}>
+    <Badge role="status" modifier="filled" className={classes}>
       {status}
     </Badge>
   );

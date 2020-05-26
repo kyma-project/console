@@ -1,11 +1,18 @@
-import renderer from 'react-test-renderer';
 import React from 'react';
 import { StatusBadge } from '../StatusBadge';
+import { render } from '@testing-library/react';
 
 describe('StatusBadge', () => {
-  it('should render loading state initially', () => {
-    const component = renderer.create(<StatusBadge status="INITIAL" />);
-    const tree = component.toJSON();
-    expect(tree).toMatchSnapshot();
+  it('renders status text', () => {
+    const { queryByText } = render(<StatusBadge status="INITIAL" />);
+
+    expect(queryByText('INITIAL')).toBeInTheDocument();
+  });
+
+  it('displays help cursor when tooltip content is set', () => {
+    const { getByRole } = render(
+      <StatusBadge status="INITIAL">some content</StatusBadge>,
+    );
+    expect(getByRole('status')).toHaveStyle(`cursor: help`);
   });
 });
