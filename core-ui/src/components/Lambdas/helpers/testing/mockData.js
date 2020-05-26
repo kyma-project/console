@@ -7,7 +7,7 @@ export const lambdaMock = {
     pico: 'bello',
   },
   source: 'source',
-  dependencies: 'dependencies',
+  dependencies: '{dependencies}',
   replicas: {
     min: 1,
     max: 1,

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Toggle } from 'fundamental-react';
 import { useDebouncedCallback } from 'use-debounce';
 
@@ -41,6 +41,11 @@ export default function CodeAndDependencies({ lambda }) {
   const [debouncedCallback] = useDebouncedCallback(() => {
     checkValidity();
   }, 150);
+
+  useEffect(() => {
+    checkValidity();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   function checkValidity() {
     const trimmedCode = (code || '').trim();
