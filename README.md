@@ -124,7 +124,7 @@ npm run start:api
 
 When developing new features in Console UI, adhere to the following rules. This will help you to mitigate any security-related threats.
 
-#### Prevent XSRF (Cross-site request forgery)
+#### Prevent Cross-site request forgery (XSRF)
 
 - Do not store authentication token as a cookie. Make sure token is sent to the console backend service as a bearer token.
 - Make sure that state-changing operations (gql mutations) are only trigered upon expolicit user interactions (e.g. form submissions).
