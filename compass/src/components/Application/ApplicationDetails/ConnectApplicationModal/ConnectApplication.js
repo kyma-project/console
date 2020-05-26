@@ -26,7 +26,7 @@ const FormEntry = ({ caption, name, value }) => (
     <div className="connect-application__input--copyable">
       <FormTextarea id={name} value={value || 'Loading...'} readOnly />
       {value && (
-        <Tooltip title="Copy to clipboard" position="top">
+        <Tooltip content="Copy to clipboard" position="top">
           <Button
             option="light"
             glyph="copy"

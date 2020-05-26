@@ -65,7 +65,7 @@ function VariableStatus({ validation }) {
     }
   }
 
-  return <Tooltip title={message}>{control}</Tooltip>;
+  return <Tooltip content={message}>{control}</Tooltip>;
 }
 
 function VariableType({ variable }) {
@@ -80,7 +80,7 @@ function VariableType({ variable }) {
   }
 
   return (
-    <Tooltip title={tooltipTitle}>
+    <Tooltip content={tooltipTitle}>
       <Badge>{message.TEXT}</Badge>
     </Tooltip>
   );

@@ -34,7 +34,7 @@ export default function AccessStrategyForm({
     ? component => component
     : component => (
         <div>
-          <Tooltip title="API rule requires at least one access strategy.">
+          <Tooltip content="API rule requires at least one access strategy.">
             {component}
           </Tooltip>
         </div>

@@ -51,7 +51,7 @@ export const StatusBadge = ({
 
   if (children)
     return (
-      <Tooltip title={children} {...tooltipProps}>
+      <Tooltip content={children} {...tooltipProps}>
         {badgeElement}
       </Tooltip>
     );

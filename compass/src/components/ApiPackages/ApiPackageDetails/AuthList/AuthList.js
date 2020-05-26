@@ -21,7 +21,7 @@ const getBadgeForCondition = condition => {
 };
 
 const AuthStatus = ({ timestamp, message, reason, condition }) => (
-  <Tooltip position="top" title={`[${timestamp}] ${reason} ${message}`}>
+  <Tooltip position="top" content={`[${timestamp}] ${reason} ${message}`}>
     <Badge type={getBadgeForCondition(condition)}>{condition}</Badge>
   </Tooltip>
 );

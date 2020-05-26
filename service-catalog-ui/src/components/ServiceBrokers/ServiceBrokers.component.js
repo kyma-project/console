@@ -24,7 +24,7 @@ class ServiceBrokers extends React.Component {
           const type = item.status.ready === true ? 'success' : 'error';
 
           return (
-            <Tooltip title={item.status.message}>
+            <Tooltip content={item.status.message}>
               <Badge type={type} modifier="filled">
                 {status}
               </Badge>

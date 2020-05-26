@@ -4,10 +4,16 @@ import PropTypes from 'prop-types';
 import { Tooltip as TippyTooltip } from 'react-tippy';
 import 'react-tippy/dist/tippy.css';
 
-export const Tooltip = ({ children, title, position, trigger, tippyProps }) => {
+export const Tooltip = ({
+  children,
+  content,
+  position,
+  trigger,
+  tippyProps,
+}) => {
   return (
     <TippyTooltip
-      html={title}
+      html={content}
       position={position}
       trigger={trigger}
       {...tippyProps}
@@ -18,7 +24,7 @@ export const Tooltip = ({ children, title, position, trigger, tippyProps }) => {
 };
 
 Tooltip.propTypes = {
-  title: PropTypes.node.isRequired,
+  content: PropTypes.node.isRequired,
   position: PropTypes.oneOf(['top', 'bottom', 'left', 'right']),
   trigger: PropTypes.oneOf(['mouseenter', 'focus', 'click', 'manual']),
   children: PropTypes.node.isRequired,

@@ -68,7 +68,7 @@ export default function CodeAndDependencies({ lambda }) {
     button
   ) : (
     <Tooltip
-      title={CODE_AND_DEPENDENCIES_PANEL.SAVE_BUTTON.POPUP_MESSAGE}
+      content={CODE_AND_DEPENDENCIES_PANEL.SAVE_BUTTON.POPUP_MESSAGE}
       position="top"
       trigger="mouseenter"
       tippyProps={{

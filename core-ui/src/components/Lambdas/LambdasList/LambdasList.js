@@ -38,7 +38,7 @@ function LambdaStatusBadge({ status }) {
 
   return (
     <Tooltip
-      title={tooltipTitle}
+      content={tooltipTitle}
       position="top"
       trigger="mouseenter"
       tippyProps={{

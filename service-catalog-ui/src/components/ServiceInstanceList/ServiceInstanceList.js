@@ -172,7 +172,7 @@ export default function ServiceInstancesList() {
           )}
           title={
             <Tooltip
-              title={serviceInstanceConstants.servicesTooltipDescription}
+              content={serviceInstanceConstants.servicesTooltipDescription}
             >
               {serviceInstanceConstants.services}
             </Tooltip>
@@ -202,7 +202,9 @@ export default function ServiceInstancesList() {
             'addons-status',
           )}
           title={
-            <Tooltip title={serviceInstanceConstants.addonsTooltipDescription}>
+            <Tooltip
+              content={serviceInstanceConstants.addonsTooltipDescription}
+            >
               {serviceInstanceConstants.addons}
             </Tooltip>
           }

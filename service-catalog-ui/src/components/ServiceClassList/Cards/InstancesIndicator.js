@@ -32,7 +32,7 @@ export function InstancesIndicator({ numberOfInstances, labels }) {
     <div className="instances-indicator">
       {isProvisionedOnlyOnce && (
         <Tooltip
-          title={
+          content={
             numberOfInstances > 0
               ? tooltipDescription.provisionOnlyOnceActive
               : tooltipDescription.provisionOnlyOnce
@@ -49,7 +49,7 @@ export function InstancesIndicator({ numberOfInstances, labels }) {
       )}
       {!isProvisionedOnlyOnce && numberOfInstances > 0 && (
         <Tooltip
-          title={`${
+          content={`${
             tooltipDescription.instancesTooltipInfo
           } ${numberOfInstances} ${
             numberOfInstances > 1

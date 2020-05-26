@@ -271,7 +271,7 @@ class BindApplicationModal extends React.Component {
     ];
 
     const bindApplicationButton = (
-      <Tooltip title={bindingVariables.serviceBingingUsage}>
+      <Tooltip content={bindingVariables.serviceBingingUsage}>
         <Button
           compact
           option="light"
@@ -287,7 +287,7 @@ class BindApplicationModal extends React.Component {
       return (
         <Tooltip
           type="error"
-          title={
+          content={
             <span>
               Instance must be in a <strong>Running</strong> state
             </span>
@@ -302,7 +302,7 @@ class BindApplicationModal extends React.Component {
     }
 
     const createDisabledBindApplicationButton = content => (
-      <Tooltip type="error" title={content} minWidth="161px">
+      <Tooltip type="error" content={content} minWidth="161px">
         <Button compact data-e2e-id={id} option="light" disabled={true}>
           + Bind Application
         </Button>

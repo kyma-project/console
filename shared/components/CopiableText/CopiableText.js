@@ -14,7 +14,7 @@ export function CopiableText({ textToCopy, children }) {
   return (
     <div className="copiable-text">
       {children || textToCopy}
-      <Tooltip title="Copy to clipboard" position="top">
+      <Tooltip content="Copy to clipboard" position="top">
         <Button
           compact
           glyph="copy"

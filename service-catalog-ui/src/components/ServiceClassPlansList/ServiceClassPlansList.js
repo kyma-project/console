@@ -33,7 +33,7 @@ export const DocTypesList = ({ plan }) => (
         className="doc-type-badge dont-break-words"
       >
         <Tooltip
-          title={
+          content={
             count > 1
               ? `There are ${count} ${type} specs in this plan.`
               : `There is one ${type} spec in this plan.`

@@ -46,7 +46,7 @@ export default function CreateServiceBindingModal({
     button
   ) : (
     <Tooltip
-      title={
+      content={
         SERVICE_BINDINGS_PANEL.CREATE_MODAL.OPEN_BUTTON
           .NOT_ENTRIES_POPUP_MESSAGE
       }

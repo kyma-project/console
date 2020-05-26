@@ -246,7 +246,7 @@ class ServiceInstanceBindings extends React.Component {
         return (
           <div className="list-actions">
             {parameters && Object.keys(parameters).length > 0 && (
-              <Tooltip title={'Parameters'}>
+              <Tooltip content={'Parameters'}>
                 <span
                   style={{
                     cursor: 'help',
@@ -284,7 +284,7 @@ class ServiceInstanceBindings extends React.Component {
           {serviceCatalogAddonsBackendModuleExists ? (
             <Tab
               title={
-                <Tooltip title="ServiceBindingUsage is a Kyma custom resource that allows the ServiceBindingUsage controller to inject Secrets into a given application.">
+                <Tooltip content="ServiceBindingUsage is a Kyma custom resource that allows the ServiceBindingUsage controller to inject Secrets into a given application.">
                   <span data-e2e-id="service-binding-usage-tab">
                     Bound Applications
                   </span>
@@ -309,7 +309,7 @@ class ServiceInstanceBindings extends React.Component {
           ) : null}
           <Tab
             title={
-              <Tooltip title="ServiceBinding is a link between a ServiceInstance and an application that cluster users create to obtain access credentials for their applications.">
+              <Tooltip content="ServiceBinding is a link between a ServiceInstance and an application that cluster users create to obtain access credentials for their applications.">
                 <span data-e2e-id="service-binding-tab">Credentials</span>
               </Tooltip>
             }

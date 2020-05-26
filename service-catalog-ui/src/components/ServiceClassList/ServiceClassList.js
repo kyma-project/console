@@ -104,7 +104,7 @@ export default function ServiceClassList() {
             'services-status',
           )}
           title={
-            <Tooltip title={serviceClassConstants.servicesTooltipDescription}>
+            <Tooltip content={serviceClassConstants.servicesTooltipDescription}>
               {serviceClassConstants.services}
             </Tooltip>
           }
@@ -139,7 +139,7 @@ export default function ServiceClassList() {
             'addons-status',
           )}
           title={
-            <Tooltip title={serviceClassConstants.addonsTooltipDescription}>
+            <Tooltip content={serviceClassConstants.addonsTooltipDescription}>
               {serviceClassConstants.addons}
             </Tooltip>
           }

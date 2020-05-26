@@ -311,7 +311,7 @@ export default function CreateInstanceModal({
               </span>
               <Tooltip
                 position="top"
-                title="The service provider did not define specific parameters for the selected plan. Refer to the documentation to learn about the required parameters, and define them as JSON in the editor."
+                content="The service provider did not define specific parameters for the selected plan. Refer to the documentation to learn about the required parameters, and define them as JSON in the editor."
               >
                 <Icon glyph="sys-help" />
               </Tooltip>

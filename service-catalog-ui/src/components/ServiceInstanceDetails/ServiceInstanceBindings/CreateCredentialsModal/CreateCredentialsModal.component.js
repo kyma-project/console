@@ -177,7 +177,7 @@ class CreateCredentialsModal extends React.Component {
 
     if (!bindingCreateParameterSchemaExists) {
       return (
-        <Tooltip title={bindingVariables.serviceBinding}>
+        <Tooltip content={bindingVariables.serviceBinding}>
           <Button
             compact
             option="light"
@@ -191,7 +191,7 @@ class CreateCredentialsModal extends React.Component {
     }
 
     const createCredentialsButton = (
-      <Tooltip title={bindingVariables.serviceBinding}>
+      <Tooltip content={bindingVariables.serviceBinding}>
         <Button
           compact
           option="light"

@@ -31,7 +31,7 @@ export function Labels({ labels, ignoredLabels = [] }) {
 
           return (
             <div className="service-list--card__footer__labels" key={label}>
-              <Tooltip title={labelsDescription[label] || ''}>
+              <Tooltip content={labelsDescription[label] || ''}>
                 <Label cursorType="help">
                   {label === 'connected-app' ? labels['connected-app'] : label}
                 </Label>

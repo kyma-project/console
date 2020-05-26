@@ -9,7 +9,7 @@ import { InfoButtonWrapper } from './styled';
 const InfoButton = ({ content }) => {
   return (
     <InfoButtonWrapper>
-      <Tooltip title={content}>
+      <Tooltip content={content}>
         <Icon glyph="sys-help" />
       </Tooltip>
     </InfoButtonWrapper>

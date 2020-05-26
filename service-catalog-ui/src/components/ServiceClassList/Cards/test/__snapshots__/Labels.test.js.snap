@@ -16,7 +16,6 @@ exports[`Labels Render keeps "TrUe" "showcase 1`] = `
     <div
       class=""
       style="display:inline"
-      title="This Service Class presents a specific functionality. Do not use it on the production cluster."
     >
       <div
         class="sc-ckVGcZ fRGHMA"
@@ -36,7 +35,6 @@ exports[`Labels Render keeps "TrUe" "showcase 1`] = `
     <div
       class=""
       style="display:inline"
-      title=""
     >
       <div
         class="sc-ckVGcZ fRGHMA"
@@ -63,7 +61,6 @@ exports[`Labels Render keeps "true" "showcase 1`] = `
     <div
       class=""
       style="display:inline"
-      title="This Service Class presents a specific functionality. Do not use it on the production cluster."
     >
       <div
         class="sc-ckVGcZ fRGHMA"
@@ -83,7 +80,6 @@ exports[`Labels Render keeps "true" "showcase 1`] = `
     <div
       class=""
       style="display:inline"
-      title=""
     >
       <div
         class="sc-ckVGcZ fRGHMA"
@@ -116,7 +112,6 @@ exports[`Labels Render skips "local" 1`] = `
     <div
       class=""
       style="display:inline"
-      title=""
     >
       <div
         class="sc-ckVGcZ fRGHMA"
@@ -143,7 +138,6 @@ exports[`Labels Render skips "provisionOnlyOnce" 1`] = `
     <div
       class=""
       style="display:inline"
-      title=""
     >
       <div
         class="sc-ckVGcZ fRGHMA"
@@ -170,7 +164,6 @@ exports[`Labels Render skips empty "connected-app" 1`] = `
     <div
       class=""
       style="display:inline"
-      title=""
     >
       <div
         class="sc-ckVGcZ fRGHMA"
@@ -197,7 +190,6 @@ exports[`Labels Render skips with not "true" "showcase 1`] = `
     <div
       class=""
       style="display:inline"
-      title=""
     >
       <div
         class="sc-ckVGcZ fRGHMA"
@@ -224,7 +216,6 @@ exports[`Labels Render value of "connected-app" 1`] = `
     <div
       class=""
       style="display:inline"
-      title="This Service Class is connected to a given application by Application Connector."
     >
       <div
         class="sc-ckVGcZ fRGHMA"
@@ -244,7 +235,6 @@ exports[`Labels Render value of "connected-app" 1`] = `
     <div
       class=""
       style="display:inline"
-      title=""
     >
       <div
         class="sc-ckVGcZ fRGHMA"

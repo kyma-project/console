@@ -144,7 +144,7 @@ const ServiceClassInfo = ({
               <LabelsWrapper data-e2e-id="service-labels">
                 {modifiedTags.sort(sortTags).map(tag => (
                   <LabelWrapper key={`${tag.type}-${tag.name}`}>
-                    <Tooltip title={tagsDescription[tag.type]}>
+                    <Tooltip content={tagsDescription[tag.type]}>
                       <Label cursorType="help" data-e2e-id="service-label">
                         {tag.name}lolo
                       </Label>

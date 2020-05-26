@@ -49,7 +49,7 @@ function EditLambdaLabelsForm({
 export default function EditLambdaLabelsModal({ lambda }) {
   const modalOpeningComponent = (
     <Tooltip
-      title={LAMBDA_DETAILS.LABELS.POPUP_MESSAGE}
+      content={LAMBDA_DETAILS.LABELS.POPUP_MESSAGE}
       position="top"
       trigger="mouseenter"
       tippyProps={{

@@ -119,7 +119,7 @@ const ModalWithForm = ({
     if (invalidPopupMessage && disabled) {
       return (
         <Tooltip
-          title={invalidPopupMessage}
+          content={invalidPopupMessage}
           position="top"
           trigger="mouseenter"
           tippyProps={{
