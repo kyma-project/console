@@ -40,7 +40,7 @@ export const StatusBadge = ({
 
   const classes = classNames('status-badge', {
     ['status-badge--' + type]: type,
-    hasTooltip: children,
+    'has-tooltip': children,
   });
 
   const badgeElement = (

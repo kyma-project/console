@@ -7,7 +7,7 @@ import 'react-tippy/dist/tippy.css';
 export const Tooltip = ({ children, title, position, trigger, tippyProps }) => {
   return (
     <TippyTooltip
-      title={title}
+      html={title}
       position={position}
       trigger={trigger}
       {...tippyProps}
@@ -18,7 +18,7 @@ export const Tooltip = ({ children, title, position, trigger, tippyProps }) => {
 };
 
 Tooltip.propTypes = {
-  title: PropTypes.string.isRequired,
+  title: PropTypes.node.isRequired,
   position: PropTypes.oneOf(['top', 'bottom', 'left', 'right']),
   trigger: PropTypes.oneOf(['mouseenter', 'focus', 'click', 'manual']),
   children: PropTypes.node.isRequired,
