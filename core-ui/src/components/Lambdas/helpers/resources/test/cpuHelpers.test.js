@@ -1,4 +1,4 @@
-import { parseCpu, normalizeCPU } from '../cpuHelpers';
+import { parseCpu, normalizeCPU, compareCpu } from '../cpuHelpers';
 
 describe('parseCpu', () => {
   test.each([
@@ -21,5 +21,15 @@ describe('normalizeCPU', () => {
     ['59.5m', 0.0595],
   ])('.normalizeCPU("%s")=="%s"', (data, expected) => {
     expect(normalizeCPU(data)).toBe(expected);
+  });
+});
+
+describe('compareCpu', () => {
+  test.each([
+    ['50m', '50m', true],
+    ['49.9m', '50m', true],
+    ['50.1m', '50m', false],
+  ])('.compareCpu("%s", "%s")=="%s"', (limit, current, expected) => {
+    expect(compareCpu(limit, current)).toBe(expected);
   });
 });

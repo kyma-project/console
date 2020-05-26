@@ -158,7 +158,7 @@ describe('LambdaVariables + EditVariablesModal + EditVariablesForm', () => {
   );
 
   it(
-    'should cannot save variables if there are any custom variables',
+    'should not able to save variables if there are any custom variables',
     async () => {
       const { getByText } = render(
         <LambdaVariables
@@ -283,7 +283,7 @@ describe('LambdaVariables + EditVariablesModal + EditVariablesForm', () => {
   );
 
   it(
-    'should cannot save when user type duplicated names',
+    'should not able to save when user types duplicated names',
     async () => {
       const { getByText, getAllByPlaceholderText, getAllByText } = render(
         <LambdaVariables
@@ -324,7 +324,7 @@ describe('LambdaVariables + EditVariablesModal + EditVariablesForm', () => {
   );
 
   it(
-    'should cannot save when user type restricted names',
+    'should not able to save when user types restricted names',
     async () => {
       const { getByText, getAllByPlaceholderText, getAllByText } = render(
         <LambdaVariables
@@ -365,7 +365,7 @@ describe('LambdaVariables + EditVariablesModal + EditVariablesForm', () => {
   );
 
   it(
-    'should cannot save when user type empty names - case with existing variable',
+    'should not able to save when user types empty names - case with existing variable',
     async () => {
       const { getByText, getAllByPlaceholderText, getAllByText } = render(
         <LambdaVariables
@@ -403,7 +403,7 @@ describe('LambdaVariables + EditVariablesModal + EditVariablesForm', () => {
   );
 
   it(
-    'should cannot save when user add new variables - without empty error message',
+    'should not able to save when user add new variables - without empty error message',
     async () => {
       const { getByText } = render(
         <LambdaVariables

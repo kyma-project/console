@@ -1,3 +1,14 @@
+const defaultCode = `module.exports = { 
+  main: function (event, context) {
+    return "Hello World!";
+  }
+}`;
+const defaultDeps = `{ 
+  "name": "{lambdaName}",
+  "version": "1.0.0",
+  "dependencies": {}
+}`;
+
 const defaultConfig = {
   functionUsageKind: 'serverless-function',
   restrictedVariables: [
@@ -18,6 +29,8 @@ const defaultConfig = {
       cpu: '10m',
     },
   },
+  defaultLambdaCode: defaultCode,
+  defaultLambdaDeps: defaultDeps,
 };
 
 function getConfigValue(field) {
@@ -36,6 +49,8 @@ function loadConfig() {
     functionUsageKind: getConfigValue('functionUsageKind') || '',
     restrictedVariables: getConfigValue('restrictedVariables') || [],
     resources: getConfigValue('resources') || {},
+    defaultLambdaCode: getConfigValue('defaultLambdaCode') || '',
+    defaultLambdaDeps: getConfigValue('defaultLambdaDeps') || '',
   };
 }
 

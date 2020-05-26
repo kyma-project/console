@@ -4,11 +4,11 @@ export function normalizeMemory(memory = '') {
   if (!memory) {
     return 0;
   }
-  const memoryWithBytes = memory.endsWith('B') ? memory : `${memory}B`;
-  return bytes(memoryWithBytes) || 0;
+  const memoryWithSuffix = memory.endsWith('B') ? memory : `${memory}B`;
+  return bytes(memoryWithSuffix) || 0;
 }
 
-export function correctLimitMemory(limit = '', current = '') {
+export function compareMemory(limit = '', current = '') {
   if (!limit || !current) {
     return;
   }

@@ -162,4 +162,39 @@ describe('CreateLambdaModal + CreateLambdaForm', () => {
       expect(button).toBeDisabled();
     });
   }, 10000);
+
+  it('should show name errors - too long Function name', async () => {
+    const { getByText } = render(
+      <CreateLambdaModal
+        serverDataError={false}
+        serverDataLoading={false}
+        functionNames={['function']}
+      />,
+    );
+
+    let button = getByText(openButton);
+    fireEvent.click(button);
+
+    const lambdaName = document.querySelector('#lambdaName');
+    fireEvent.input(lambdaName, {
+      target: {
+        value: Array(64)
+          .fill('a')
+          .join(''),
+      },
+    });
+
+    await wait(() => {
+      const error = LAMBDAS_LIST.CREATE_MODAL.INPUTS.NAME.ERRORS.TOO_LONG;
+      const tooltip = document.querySelector(
+        `[data-original-title="${error}"]`,
+      );
+      expect(tooltip).toBeInTheDocument();
+      expect(getByText(error)).toBeInTheDocument();
+
+      button = getByText(createButton);
+      expect(button).toBeInTheDocument();
+      expect(button).toBeDisabled();
+    });
+  }, 10000);
 });

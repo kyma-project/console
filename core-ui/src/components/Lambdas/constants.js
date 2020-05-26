@@ -67,12 +67,13 @@ export const LAMBDAS_LIST = {
     INPUTS: {
       NAME: {
         LABEL: 'Name',
-        INLINE_HELP: `The name must consist of lower case alphanumeric characters or dashes, and must start and end with an alphanumeric character (e.g. 'my-name1').`,
+        INLINE_HELP: `Function name must consist of lower case alphanumeric characters or dashes, and must start and end with an alphanumeric character (e.g. 'my-name1').`,
         ERRORS: {
           EMPTY: 'Function name is required.',
           INVALID: `Invalid Function name. The name must consist of lower case alphanumeric characters or dashes, and must start and end with an alphanumeric character (e.g. 'my-name1').`,
           DUPLICATED:
             'There is already a Function with the same name in this Namespace.',
+          TOO_LONG: 'Function name cannot be longer than 63 characters.',
         },
       },
       LABEL: {
@@ -236,7 +237,7 @@ export const RESOURCES_MANAGEMENT_PANEL = {
     CPU: {
       DEFAULT:
         'This value must be expressed as a fixed-point number or in milicpu. For example, use 100m, 0.1, or 1.',
-      TOO_LOW: 'This value is to low. Minimum value is {minValue}.',
+      TOO_LOW: 'This value is too low. The minimum value is {minValue}.',
       REQUEST_TOO_HIGH:
         'This value must be equal to or lower than the equivalent value for Limits.',
       LIMITS_TOO_LOW:
@@ -245,7 +246,7 @@ export const RESOURCES_MANAGEMENT_PANEL = {
     MEMORY: {
       DEFAULT:
         'This value must be a fixed-point number with one of these suffixes: Gi, G, Mi, M, Ki, or K. For example, use 50Mi, 1000.5Ki, or 0.1G.',
-      TOO_LOW: 'This value is to low. Minimum value is {minValue}.',
+      TOO_LOW: 'This value is too low. The minimum value is {minValue}.',
       REQUEST_TOO_HIGH:
         'This value must be equal to or lower than the equivalent value for Limits.',
       LIMITS_TOO_LOW:
@@ -350,7 +351,11 @@ export const CODE_AND_DEPENDENCIES_PANEL = {
   },
   SAVE_BUTTON: {
     TEXT: 'Save',
-    POPUP_MESSAGE: 'No changes made',
+    POPUP_MESSAGE: {
+      EMPTY_SOURCE: 'Source cannot be empty.',
+      INVALID_DEPS: "Dependencies should start with '{' and end with '}'.",
+      NO_CHANGES: 'No changes made.',
+    },
   },
   DIFF_TOGGLE: 'Diff',
 };
@@ -434,15 +439,3 @@ export const TRIGGER_SUBSCRIBER = {
   SERVING_API_VERSION: 'serving.knative.dev/v1',
   BROKER: 'default',
 };
-
-export const DEFAULT_LAMBDA_CODE = `module.exports = { 
-  main: function (event, context) {
-    return "Hello World!";
-  }
-}`;
-
-export const DEFAULT_LAMBDA_DEPS = `{ 
-  "name": "{lambdaName}",
-  "version": "1.0.0",
-  "dependencies": {}
-}`;

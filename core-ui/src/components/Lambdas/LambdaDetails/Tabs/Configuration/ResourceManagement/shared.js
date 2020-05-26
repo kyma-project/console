@@ -5,8 +5,8 @@ import {
   MEMORY_REGEXP,
   normalizeCPU,
   normalizeMemory,
-  correctLimitCPU,
-  correctLimitMemory,
+  compareCpu,
+  compareMemory,
 } from 'components/Lambdas/helpers/resources';
 import { formatMessage } from 'components/Lambdas/helpers/misc';
 import { CONFIG } from 'components/Lambdas/config';
@@ -67,9 +67,6 @@ export const schema = yup.object().shape({
       message: errorMessages.CPU.DEFAULT,
     })
     .test('matchMinRequestCPU', MIN_CPU_VALUE_ERROR, function(arg) {
-      if (!arg) {
-        return true;
-      }
       return testMinCPU(arg);
     })
     .test('matchRequestCPU', errorMessages.CPU.REQUEST_TOO_HIGH, function(arg) {
@@ -88,9 +85,6 @@ export const schema = yup.object().shape({
       message: errorMessages.CPU.DEFAULT,
     })
     .test('matchMinLimitCPU', MIN_CPU_VALUE_ERROR, function(arg) {
-      if (!arg) {
-        return true;
-      }
       return testMinCPU(arg);
     })
     .test('matchLimitCPU', errorMessages.CPU.LIMITS_TOO_LOW, function(arg) {
@@ -109,9 +103,6 @@ export const schema = yup.object().shape({
       message: errorMessages.MEMORY.DEFAULT,
     })
     .test('matchMinRequestMemory', MIN_MEMORY_VALUE_ERROR, function(arg) {
-      if (!arg) {
-        return true;
-      }
       return testMinMemory(arg);
     })
     .test('matchRequestMemory', errorMessages.MEMORY.REQUEST_TOO_HIGH, function(
@@ -132,9 +123,6 @@ export const schema = yup.object().shape({
       message: errorMessages.MEMORY.DEFAULT,
     })
     .test('matchMinLimitMemory', MIN_MEMORY_VALUE_ERROR, function(arg) {
-      if (!arg) {
-        return true;
-      }
       return testMinMemory(arg);
     })
     .test('matchLimitMemory', errorMessages.MEMORY.LIMITS_TOO_LOW, function(
@@ -151,9 +139,15 @@ export const schema = yup.object().shape({
 });
 
 function testMinCPU(arg) {
-  return correctLimitCPU(CONFIG.resources?.min?.cpu, arg);
+  if (!arg) {
+    return true;
+  }
+  return compareCpu(CONFIG.resources?.min?.cpu, arg);
 }
 
 function testMinMemory(arg) {
-  return correctLimitMemory(CONFIG.resources?.min?.memory, arg);
+  if (!arg) {
+    return true;
+  }
+  return compareMemory(CONFIG.resources?.min?.memory, arg);
 }

@@ -25,7 +25,7 @@ export function normalizeCPU(cpu = '') {
   return parseFloat(cpu) || 0;
 }
 
-export function correctLimitCPU(limit = '', current = '') {
+export function compareCpu(limit = '', current = '') {
   if (!limit || !current) {
     return;
   }
