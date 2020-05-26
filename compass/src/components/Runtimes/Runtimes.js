@@ -30,6 +30,7 @@ const runtimeRowRenderer = r => [
   [
     'status',
     <StatusBadge
+      autoResolveType
       status={r.status && r.status.condition ? r.status.condition : 'UNKNOWN'}
     />,
   ],

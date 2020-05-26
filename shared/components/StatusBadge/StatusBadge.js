@@ -1,24 +1,52 @@
 import React from 'react';
 import { Badge } from 'fundamental-react/Badge';
+import PropTypes from 'prop-types';
+import './StatusBadge.scss';
+import classNames from 'classnames';
 
-export const StatusBadge = ({ status }) => {
-  let type;
-
-  switch (status) {
+const resolveType = status => {
+  switch (status.toUpperCase()) {
     case 'INITIAL':
-      return <Badge>{status}</Badge>;
-    case 'READY':
-      type = 'success';
-      break;
-    case 'UNKNOWN':
-      type = 'warning';
-      break;
-    case 'FAILED':
-      type = 'error';
-      break;
-    default:
-      type = 'warning';
-  }
+      return 'info';
 
-  return <Badge type={type}>{status}</Badge>;
+    case 'READY':
+    case 'RUNNING':
+    case 'SUCCESS':
+      return 'success';
+
+    case 'UNKNOWN':
+    case 'WARNING':
+      return 'warning';
+
+    case 'FAILED':
+    case 'ERROR':
+    case 'FAILURE':
+      return 'error';
+
+    default:
+      return undefined;
+  }
+};
+
+export const StatusBadge = ({ status, type, autoResolveType = false }) => {
+  if (autoResolveType) type = resolveType(status);
+
+  return (
+    <>
+      <Badge
+        modifier="filled"
+        className={classNames('status-badge', {
+          ['status-badge--' + type]: type,
+        })}
+      >
+        {status}
+      </Badge>
+    </>
+  );
+};
+
+StatusBadge.propTypes = {
+  status: PropTypes.string.isRequired,
+  type: PropTypes.oneOf(['success', 'warning', 'error', 'info']),
+  autoResolveType: PropTypes.bool,
 };

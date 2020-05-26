@@ -46,8 +46,8 @@ class Applications extends React.Component {
       scenarios={(application.labels && application.labels.scenarios) || []}
     />,
     <Counter>{application.packages.totalCount}</Counter>,
-
     <StatusBadge
+      autoResolveType
       status={
         application.status && application.status.condition
           ? application.status.condition
