@@ -122,19 +122,19 @@ npm run start:api
 
 ### Follow security countermeasures
 
-When developing new features in Console UI, please follow the following policies that help reducing security related threats.
+When developing new features in Console UI, please respect the following rules that help reducing security related threats.
 
 #### Prevent XSRF (Cross-site request forgery)
 
-- Do not store authentication tokens as a cookie. Make sure token is sent to the console backend service as a bearer token.
+- Do not store authentication token as a cookie. Make sure token is sent to the console backend service as a bearer token.
 - Make sure that state-changing operations (gql mutations) are only trigered upon expolicit user interactions (e.g. form submissions).
-- Keep in mind that rendering views (resulting from routing in the console web application) is only allowed to trigger read-only operations (gql querries and subscriptions) without any data mutations.
+- Keep in mind that UI rendering (in response to user navigating between views) is only allowed to trigger read-only operations (gql querries and subscriptions) without any data mutations.
 
 #### Protect against XSS (Cross-site scripting)
 
-- It is recommended to use JS frameworks that has built in XSS prevention mechanisms (E.g. [reactJS](https://reactjs.org/docs/introducing-jsx.html#jsx-prevents-injection-attacks), [vue.js](https://vuejs.org/v2/guide/security.html#What-Vue-Does-to-Protect-You) or [angular](https://angular.io/guide/security#angulars-cross-site-scripting-security-model))
-- As a rule of thumb, user-provided input can never be assumed 100% safe. Get familiar with prevention mechanismsm included in the framework of your choice. Make sure user input is sanitised before it gets embedding in the DOM tree.
-- Get familiar with most common [XSS bypasses and potential dangers](https://stackoverflow.com/questions/33644499/what-does-it-mean-when-they-say-react-is-xss-protected). Pay special attention to those when writing and revieweing the code.
+- It is recommended to use JS frameworks that have XSS prevention mechanisms built in (E.g. [reactJS](https://reactjs.org/docs/introducing-jsx.html#jsx-prevents-injection-attacks), [vue.js](https://vuejs.org/v2/guide/security.html#What-Vue-Does-to-Protect-You) or [angular](https://angular.io/guide/security#angulars-cross-site-scripting-security-model))
+- As a rule of thumb, user-provided input can never be assumed 100% safe. Get familiar with prevention mechanismsm included in the framework of your choice. Make sure user input is sanitised before it is embedded in the DOM tree.
+- Get familiar with most common [XSS bypasses and potential dangers](https://stackoverflow.com/questions/33644499/what-does-it-mean-when-they-say-react-is-xss-protected). Pay special attention to those when writing or reviewing the code.
 - Enable `Content-security-policy` header for all new microforntends to assure in-depth XSS prevention. Do not allow for `unsafe-eval` policy.
 
 ### Run tests
