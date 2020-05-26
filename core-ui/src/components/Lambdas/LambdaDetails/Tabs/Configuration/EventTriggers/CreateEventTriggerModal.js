@@ -28,7 +28,7 @@ export default function CreateEventTriggerModal({
   if (!queryError && !availableEventsExist) {
     modalOpeningComponent = (
       <Tooltip
-        title={
+        content={
           EVENT_TRIGGERS_PANEL.ADD_MODAL.OPEN_BUTTON.NOT_ENTRIES_POPUP_MESSAGE
         }
         position="top"
