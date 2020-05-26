@@ -3,6 +3,7 @@ import { Badge } from 'fundamental-react/Badge';
 import PropTypes from 'prop-types';
 import './StatusBadge.scss';
 import classNames from 'classnames';
+import { Tooltip } from '../Tooltip/Tooltip';
 
 const resolveType = status => {
   switch (status.toUpperCase()) {
@@ -28,21 +29,33 @@ const resolveType = status => {
   }
 };
 
-export const StatusBadge = ({ status, type, autoResolveType = false }) => {
+export const StatusBadge = ({
+  status,
+  type,
+  children,
+  autoResolveType = false,
+  tooltipProps = {},
+}) => {
   if (autoResolveType) type = resolveType(status);
 
-  return (
-    <>
-      <Badge
-        modifier="filled"
-        className={classNames('status-badge', {
-          ['status-badge--' + type]: type,
-        })}
-      >
-        {status}
-      </Badge>
-    </>
+  const classes = classNames('status-badge', {
+    ['status-badge--' + type]: type,
+    hasTooltip: children,
+  });
+
+  const badgeElement = (
+    <Badge modifier="filled" className={classes}>
+      {status}
+    </Badge>
   );
+
+  if (children)
+    return (
+      <Tooltip title={children} {...tooltipProps}>
+        {badgeElement}
+      </Tooltip>
+    );
+  else return badgeElement;
 };
 
 StatusBadge.propTypes = {
