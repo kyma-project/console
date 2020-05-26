@@ -120,7 +120,7 @@ By default, the [`core`](./core) view and all other views are connected to the *
 npm run start:api
 ```
 
-### Follow security countermeasures
+### Security countermeasures
 
 When developing new features in Console UI, please respect the following rules that help reducing security related threats.
 
