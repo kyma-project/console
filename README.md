@@ -122,7 +122,7 @@ npm run start:api
 
 ### Security countermeasures
 
-When developing new features in Console UI, please respect the following rules that help reducing security related threats.
+When developing new features in Console UI, adhere to the following rules. This will help you to mitigate any security-related threats.
 
 #### Prevent XSRF (Cross-site request forgery)
 
