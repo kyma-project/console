@@ -1,6 +1,6 @@
 import React from 'react';
 import { StatusBadge } from '../StatusBadge';
-import { render, fireEvent, wait } from '@testing-library/react';
+import { render } from '@testing-library/react';
 
 describe('StatusBadge', () => {
   it('renders status text with proper role', () => {

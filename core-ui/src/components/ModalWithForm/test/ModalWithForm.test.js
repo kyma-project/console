@@ -75,11 +75,5 @@ describe('ModalWithForm', () => {
 
     const confirmButton = getByText(confirmText);
     expect(confirmButton).toBeInTheDocument();
-
-    fireEvent.mouseEnter(confirmButton);
-    const tooltip = document.querySelector(
-      `[data-original-title="${message}"]`,
-    );
-    expect(tooltip).toBeInTheDocument();
   });
 });

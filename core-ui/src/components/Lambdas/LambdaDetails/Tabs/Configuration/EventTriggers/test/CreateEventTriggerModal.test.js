@@ -26,36 +26,24 @@ describe('CreateEventTriggerModal + CreateEventTriggerForm', () => {
     })),
   ];
 
-  it('should show tooltip on hover button if there are not available events', async () => {
-    const { container, getByText } = render(
+  it('should disable open button if there are not available events', async () => {
+    const { getByText } = render(
       <CreateEventTriggerModal lambda={lambdaMock} availableEvents={[]} />,
     );
 
     const button = getByText(EVENT_TRIGGERS_PANEL.ADD_MODAL.OPEN_BUTTON.TEXT);
     expect(button).toBeInTheDocument();
     expect(button).toBeDisabled();
-
-    fireEvent.mouseEnter(button);
-    const tooltip = container.querySelector(
-      `[data-original-title="${EVENT_TRIGGERS_PANEL.ADD_MODAL.OPEN_BUTTON.NOT_ENTRIES_POPUP_MESSAGE}"]`,
-    );
-    expect(tooltip).toBeInTheDocument();
   });
 
-  it('should not show tooltip on hover button if there are available events', async () => {
-    const { container, getByText } = render(
+  it('should not disable button if there are available events', async () => {
+    const { getByText } = render(
       <CreateEventTriggerModal lambda={lambdaMock} availableEvents={events} />,
     );
 
     const button = getByText(EVENT_TRIGGERS_PANEL.ADD_MODAL.OPEN_BUTTON.TEXT);
     expect(button).toBeInTheDocument();
     expect(button).not.toBeDisabled();
-
-    fireEvent.mouseEnter(button);
-    const tooltip = container.querySelector(
-      `[data-original-title="${EVENT_TRIGGERS_PANEL.ADD_MODAL.OPEN_BUTTON.NOT_ENTRIES_POPUP_MESSAGE}"]`,
-    );
-    expect(tooltip).not.toBeInTheDocument();
   });
 
   it('should show modal after click action button', async () => {
@@ -75,11 +63,6 @@ describe('CreateEventTriggerModal + CreateEventTriggerForm', () => {
 
     const button = getByText(EVENT_TRIGGERS_PANEL.ADD_MODAL.OPEN_BUTTON.TEXT);
     fireEvent.click(button);
-
-    const tooltip = document.querySelector(
-      `[data-original-title="${EVENT_TRIGGERS_PANEL.ADD_MODAL.CONFIRM_BUTTON.INVALID_POPUP_MESSAGE}"]`,
-    );
-    expect(tooltip).toBeInTheDocument();
 
     const addButton = getByText(
       EVENT_TRIGGERS_PANEL.ADD_MODAL.CONFIRM_BUTTON.TEXT,
@@ -102,10 +85,6 @@ describe('CreateEventTriggerModal + CreateEventTriggerForm', () => {
     expect(checkboxes.length).toBeGreaterThan(0);
 
     fireEvent.click(checkboxes[0]);
-    const tooltip = document.querySelector(
-      `[data-original-title="${EVENT_TRIGGERS_PANEL.ADD_MODAL.CONFIRM_BUTTON.INVALID_POPUP_MESSAGE}"]`,
-    );
-    expect(tooltip).not.toBeInTheDocument();
 
     const addButton = getByText(
       EVENT_TRIGGERS_PANEL.ADD_MODAL.CONFIRM_BUTTON.TEXT,

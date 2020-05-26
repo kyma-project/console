@@ -26,8 +26,8 @@ describe('CreateServiceBindingModal', () => {
     status: 'RUNNING',
   };
 
-  it('should show tooltip on hover button if there are not available Service Instances', async () => {
-    const { container, getByText } = render(
+  it('renders disabled button if there are not available Service Instances', async () => {
+    const { getByText } = render(
       withApolloMockProvider({
         component: (
           <CreateServiceBindingModal
@@ -44,16 +44,10 @@ describe('CreateServiceBindingModal', () => {
     );
     expect(button).toBeInTheDocument();
     expect(button).toBeDisabled();
-
-    fireEvent.mouseEnter(button);
-    const tooltip = container.querySelector(
-      `[data-original-title="${SERVICE_BINDINGS_PANEL.CREATE_MODAL.OPEN_BUTTON.NOT_ENTRIES_POPUP_MESSAGE}"]`,
-    );
-    expect(tooltip).toBeInTheDocument();
   });
 
-  it('should not show tooltip on hover button if there are available Service Instances', async () => {
-    const { container, getByText } = render(
+  it('should render "Open modal" button if there are available Service Instances', async () => {
+    const { getByText } = render(
       withApolloMockProvider({
         component: (
           <CreateServiceBindingModal
@@ -71,12 +65,6 @@ describe('CreateServiceBindingModal', () => {
       );
       expect(button).toBeInTheDocument();
       expect(button).not.toBeDisabled();
-
-      fireEvent.mouseEnter(button);
-      const tooltip = container.querySelector(
-        `[data-original-title="${SERVICE_BINDINGS_PANEL.CREATE_MODAL.OPEN_BUTTON.NOT_ENTRIES_POPUP_MESSAGE}"]`,
-      );
-      expect(tooltip).not.toBeInTheDocument();
     });
   });
 });
