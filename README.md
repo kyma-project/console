@@ -130,7 +130,7 @@ When developing new features in Console UI, adhere to the following rules. This 
 - Make sure that state-changing operations (gql mutations) are only triggered upon explicit user interactions such as form submissions.
 - Keep in mind that UI rendering (in response to user navigating between views) is only allowed to trigger read-only operations (gql querries and subscriptions) without any data mutations.
 
-#### Protect against XSS (Cross-site scripting)
+#### Protect against Cross-site scripting (XSS)
 
 - It is recommended to use JS frameworks that have XSS prevention mechanisms built in (E.g. [reactJS](https://reactjs.org/docs/introducing-jsx.html#jsx-prevents-injection-attacks), [vue.js](https://vuejs.org/v2/guide/security.html#What-Vue-Does-to-Protect-You) or [angular](https://angular.io/guide/security#angulars-cross-site-scripting-security-model))
 - As a rule of thumb, user-provided input can never be assumed 100% safe. Get familiar with prevention mechanismsm included in the framework of your choice. Make sure user input is sanitised before it is embedded in the DOM tree.
