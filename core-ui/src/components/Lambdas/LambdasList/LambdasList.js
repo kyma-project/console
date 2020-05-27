@@ -1,8 +1,7 @@
 import React from 'react';
 import LuigiClient from '@kyma-project/luigi-client';
 
-import { Badge } from 'fundamental-react';
-import { GenericList, Labels, Tooltip, StatusBadge } from 'react-shared';
+import { GenericList, Labels, StatusBadge } from 'react-shared';
 
 import { useDeleteLambda } from 'components/Lambdas/gql/hooks/mutations';
 
