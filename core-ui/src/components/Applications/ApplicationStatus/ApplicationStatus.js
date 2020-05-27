@@ -7,12 +7,10 @@ export default function ApplicationStatus({ application }) {
   switch (status) {
     case STATUSES.NOT_INSTALLED:
       return (
-        <p>
-          <StatusBadge status={STATUSES.NOT_INSTALLED}>
-            This application is not active for your Runtime. You can edit it,
-            but you can't bind it to a Namespace.
-          </StatusBadge>
-        </p>
+        <StatusBadge status={STATUSES.NOT_INSTALLED}>
+          This application is not active for your Runtime. You can edit it, but
+          you can't bind it to a Namespace.
+        </StatusBadge>
       );
     case 'SERVING':
       return <StatusBadge status={status} type="success" />;
