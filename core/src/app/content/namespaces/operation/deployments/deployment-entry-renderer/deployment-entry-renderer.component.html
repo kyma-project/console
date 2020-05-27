@@ -1,17 +1,15 @@
 <tr [ngClass]="{ disabled: disabled === true }">
   <td class="fd-has-font-weight-bold">{{ entry.name }}</td>
   <td class="y-fd-table--nowrap">
-    <span
-      fd-badge
-      [modifier]="'filled'"
-      [status]="
+    <app-status-label
+      [statusType]="
         (entry.status.readyReplicas || 0) === entry.status.replicas
           ? 'success'
           : 'error'
       "
     >
       {{ entry.status.readyReplicas || '0' }}/{{ entry.status.replicas }}
-    </span>
+    </app-status-label>
   </td>
   <td>{{ entry.creationTimestamp * 1000 | timeAgo }}</td>
   <td>
@@ -58,7 +56,7 @@
   </td>
   <td class="y-fd-table--nowrap">
     <app-status-label [statusType]="getStatusType(entry)">
-      {{ getStatus(entry) }}
+      {{ getStatus(entry).toUpperCase() }}
     </app-status-label>
   </td>
   <td class="fd-has-float-right">

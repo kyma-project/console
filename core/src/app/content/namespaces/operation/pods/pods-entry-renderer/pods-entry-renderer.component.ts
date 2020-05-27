@@ -27,7 +27,9 @@ export class PodsEntryRendererComponent
   private communicationServiceSubscription: Subscription;
 
   ngOnInit() {
-    const lokiInstalled = this.luigiClientService.hasBackendModule('logging-loki');
+    const lokiInstalled = this.luigiClientService.hasBackendModule(
+      'logging-loki'
+    );
     if (lokiInstalled) {
       {
         this.actions.push({
@@ -40,10 +42,7 @@ export class PodsEntryRendererComponent
     this.communicationServiceSubscription = this.componentCommunicationService.observable$.subscribe(
       e => {
         const event: any = e;
-        if (
-          'disable' === event.type &&
-          this.entry.name === event.entry.name
-        ) {
+        if ('disable' === event.type && this.entry.name === event.entry.name) {
           this.disabled = event.entry.disabled;
         }
       }
@@ -65,18 +64,21 @@ export class PodsEntryRendererComponent
   }
 
   isSucceeded(entry) {
-    return (
-      entry.status === 'SUCCEEDED' || entry.status === 'RUNNING'
-    );
+    return entry.status === 'SUCCEEDED' || entry.status === 'RUNNING';
   }
 
-  getStatus(entry) {
-    if (entry.status !== 'RUNNING' && entry.containerStates && entry.containerStates.length > 0) {
-      const containerNotRunning = entry.containerStates.find((c) => c.state !== 'RUNNING');
-      return `${containerNotRunning.state}: ${containerNotRunning.reason}`;
-
+  getStatus(entry): [string, string?] {
+    if (
+      entry.status !== 'RUNNING' &&
+      entry.containerStates &&
+      entry.containerStates.length > 0
+    ) {
+      const containerNotRunning = entry.containerStates.find(
+        c => c.state !== 'RUNNING'
+      );
+      return [containerNotRunning.state, containerNotRunning.reason];
     }
-    return entry.status;
+    return [entry.status];
   }
 
   getStatusType(entry) {
@@ -90,8 +92,6 @@ export class PodsEntryRendererComponent
   }
 
   hasErrors(entry) {
-    return entry.containerStates.some(
-      s => s.state !== 'RUNNING' && s.message
-    );
+    return entry.containerStates.some(s => s.state !== 'RUNNING' && s.message);
   }
 }

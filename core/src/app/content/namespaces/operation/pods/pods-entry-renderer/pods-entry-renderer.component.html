@@ -2,13 +2,11 @@
   <td class="fd-has-font-weight-bold">{{ entry.name }}</td>
   <td>{{ entry.nodeName }}</td>
   <td>
-    <span
-      fd-badge
-      [modifier]="'filled'"
-      [status]="!entry.restartCount ? 'success' : 'warning'"
+    <app-status-label
+      [statusType]="!entry.restartCount ? 'success' : 'warning'"
     >
       {{ entry.restartCount }}
-    </span>
+    </app-status-label>
   </td>
   <td>{{ entry.creationTimestamp * 1000 | timeAgo }}</td>
   <td>
@@ -23,8 +21,11 @@
     </ng-container>
   </td>
   <td>
-    <app-status-label [statusType]="getStatusType(entry)">
-      {{ getStatus(entry) }}
+    <app-status-label
+      [statusType]="getStatusType(entry)"
+      [description]="getStatus(entry)[1]"
+    >
+      {{ getStatus(entry)[0] }}
     </app-status-label>
   </td>
   <td class="fd-has-float-right">

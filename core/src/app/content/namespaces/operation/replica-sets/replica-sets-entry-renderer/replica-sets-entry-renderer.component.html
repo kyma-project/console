@@ -3,17 +3,15 @@
     {{ entry.name }}
   </td>
   <td class="y-fd-table--nowrap">
-    <span
-      fd-badge
-      [modifier]="'filled'"
-      [status]="
+    <app-status-label
+      [statusType]="
         entry.pods.split('/')[0] === entry.pods.split('/')[1]
           ? 'success'
           : 'error'
       "
     >
       {{ entry.pods }}
-    </span>
+    </app-status-label>
   </td>
   <td>{{ entry.creationTimestamp * 1000 | timeAgo }}</td>
   <td>
