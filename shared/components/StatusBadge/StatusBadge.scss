@@ -8,20 +8,20 @@
     Helvetica,
     sans-serif
   );
-  margin: 0;
-
-  max-width: 100%;
-  display: inline-block;
-
+  font-weight: 700;
   line-height: 1;
+  word-break: keep-all;
 
-  //inverted
+  margin: 0;
+  padding: 0.14rem 0.4rem;
+
+  display: inline-block;
+  max-width: 100%;
   height: auto;
   min-height: 1rem;
   width: auto;
-  padding: 0.14rem 0.4rem;
   border-radius: 0.125rem;
-  font-weight: 700;
+
   background-color: var(--sapButton_Neutral_Background, #6a6d70);
   color: var(--sapButton_Neutral_TextColor, #fff);
 

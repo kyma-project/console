@@ -1,9 +1,8 @@
 import React from 'react';
 import LuigiClient from '@kyma-project/luigi-client';
 
-import { InstanceStatus, Tooltip } from '@kyma-project/react-components';
 import { Icon } from 'fundamental-react';
-import { Modal } from 'react-shared';
+import { Modal, StatusBadge } from 'react-shared';
 import {
   LinkButton,
   Link,
@@ -15,6 +14,7 @@ import {
 
 import { getResourceDisplayName } from 'helpers';
 import { DOCUMENTATION_PER_PLAN_LABEL } from 'helpers/constants';
+import { getBadgeTypeForStatus } from 'helpers/getBadgeTypeForStatus';
 
 const goToServiceInstanceDetails = name => {
   LuigiClient.linkManager()
@@ -157,30 +157,12 @@ const BindingUsagesCount = ({ instance }) => {
 };
 
 const Status = ({ instance }) => {
-  if (!instance.status) {
-    return '-';
-  }
-
-  let type = '';
-  switch (instance.status.type) {
-    case 'RUNNING':
-      type = 'success';
-      break;
-    case 'FAILED':
-      type = 'error';
-      break;
-    default:
-      type = 'warning';
-  }
+  instance.status = undefined;
+  const type = instance.status ? instance.status.type : 'UNKNOWN';
   return (
-    <Tooltip
-      wrapperStyles="max-width: 100%;"
-      type={type}
-      content={instance.status.message}
-      minWidth="250px"
-    >
-      <InstanceStatus status={instance.status.type} />
-    </Tooltip>
+    <StatusBadge status={type} type={getBadgeTypeForStatus(type)}>
+      {instance.status?.message}
+    </StatusBadge>
   );
 };
 

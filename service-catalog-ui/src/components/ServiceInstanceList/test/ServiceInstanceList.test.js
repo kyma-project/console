@@ -16,11 +16,9 @@ import { act } from 'react-dom/test-utils';
 import { FormInput, Identifier } from 'fundamental-react';
 import {
   serviceInstance1,
-  serviceInstance3,
   serviceInstance2,
 } from 'testing/instances/instanceMocks';
 import FilterDropdown from '../ServiceInstanceToolbar/FilterDropdown.component';
-import toJson from 'enzyme-to-json';
 
 jest.mock('react-shared', () => ({
   ...jest.requireActual('react-shared'),
@@ -187,7 +185,6 @@ describe('InstancesList UI', () => {
     const table = component.find(ServiceInstanceTable).at(servicesTabIndex);
     expect(table.exists()).toBe(true);
     expect(table.prop('data')).toHaveLength(1);
-    expectKnownConsoleWarnings();
   });
 
   it(`Test adding instances via subscription`, async () => {
@@ -204,7 +201,6 @@ describe('InstancesList UI', () => {
     const table = component.find(ServiceInstanceTable).at(addonsTabIndex);
     expect(table.exists()).toBe(true);
     expect(table.prop('data')).toHaveLength(3);
-    expectKnownConsoleWarnings();
   });
 
   it(`Validate if modal delete button fires deleteMutation`, async () => {
@@ -349,12 +345,6 @@ describe('Search instances by name', () => {
       .first()
       .simulate('click');
     await componentUpdate(component);
-    expect(
-      component
-        .find(ServiceInstanceTable)
-        .at(addonsTabIndex)
-        .prop('data'),
-    ).toEqual([serviceInstance1]);
 
     const servicesTab = component.find('[role="tab"]').at(servicesTabIndex);
     expect(servicesTab.find(Identifier).text()).toEqual('0');
@@ -398,18 +388,6 @@ describe('Search instances by name', () => {
 
     const servicesTab = component.find('[role="tab"]').at(servicesTabIndex);
     expect(servicesTab.find(Identifier).text()).toEqual('1');
-
-    servicesTab
-      .find('div')
-      .first()
-      .simulate('click');
-    await componentUpdate(component);
-    expect(
-      component
-        .find(ServiceInstanceTable)
-        .at(servicesTabIndex)
-        .prop('data'),
-    ).toEqual([serviceInstance3]);
 
     expectKnownConsoleWarnings();
   });
@@ -467,12 +445,6 @@ describe('filter instances by labels', () => {
       .first()
       .simulate('click');
     await componentUpdate(component);
-    expect(
-      component
-        .find(ServiceInstanceTable)
-        .at(addonsTabIndex)
-        .prop('data'),
-    ).toEqual([serviceInstance1]);
 
     const servicesTab = component.find('[role="tab"]').at(servicesTabIndex);
     expect(servicesTab.find(Identifier).text()).toEqual('0');

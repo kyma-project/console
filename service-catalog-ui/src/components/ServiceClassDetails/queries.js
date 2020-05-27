@@ -51,6 +51,7 @@ export const getServiceClass = gql`
         name
         status {
           type
+          message
         }
         clusterServicePlan {
           name

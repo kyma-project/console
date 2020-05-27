@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 
-import { InstanceStatus } from '@kyma-project/react-components';
 import LuigiClient from '@kyma-project/luigi-client';
-import { GenericList } from 'react-shared';
+import { GenericList, StatusBadge } from 'react-shared';
 
 import { serviceClassConstants } from 'helpers/constants';
+import { getBadgeTypeForStatus } from 'helpers/getBadgeTypeForStatus';
 
 import { Link, LinkButton } from './styled';
 
@@ -30,7 +30,12 @@ export class ServiceClassInstancesTable extends Component {
           {instance.name}
         </Link>
       </LinkButton>,
-      <InstanceStatus status={instance.status.type} />,
+      <StatusBadge
+        status={instance.status.type}
+        type={getBadgeTypeForStatus(instance.status.type)}
+      >
+        {instance.status.message}
+      </StatusBadge>,
     ];
 
     return (

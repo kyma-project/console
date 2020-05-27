@@ -1,8 +1,7 @@
 import React from 'react';
 import Moment from 'react-moment';
 
-import { PageHeader, GenericList, Tooltip } from 'react-shared';
-import { Badge } from 'fundamental-react';
+import { PageHeader, GenericList, StatusBadge } from 'react-shared';
 import './ServiceBrokers.component.scss';
 
 class ServiceBrokers extends React.Component {
@@ -24,11 +23,9 @@ class ServiceBrokers extends React.Component {
           const type = item.status.ready === true ? 'success' : 'error';
 
           return (
-            <Tooltip content={item.status.message}>
-              <Badge type={type} modifier="filled">
-                {status}
-              </Badge>
-            </Tooltip>
+            <StatusBadge type={type} status={status}>
+              {item.status.message}
+            </StatusBadge>
           );
         })(),
       ];
