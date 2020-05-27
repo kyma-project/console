@@ -72,7 +72,7 @@ export const adminUser = Role(
 
 const chooseLoginRole = async t => {
   try {
-    await Selector('#login')();
+    await Selector('#login').visible();
     console.log('One login method detected...');
   } catch (e) {
     console.log(
