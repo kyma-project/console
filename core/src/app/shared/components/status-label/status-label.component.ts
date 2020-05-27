@@ -1,29 +1,37 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { TooltipComponent } from '../tooltip/tooltip.component';
+import { Component, Input } from '@angular/core';
+
+type Status = 'warning' | 'error' | 'info' | 'success' | 'ok' | undefined;
 
 @Component({
   selector: 'app-status-label',
   templateUrl: './status-label.component.html',
   styleUrls: ['./status-label.component.scss']
 })
-export class StatusLabelComponent implements OnInit {
-  @Input() statusType: string;
+export class StatusLabelComponent {
+  @Input() statusType: Status;
   @Input() description: string = null;
-  statusClass: string;
-  showTooltip: boolean;
 
-  public getStatusClass = (type: string) => {
+  showTooltip: boolean;
+  public get computedClasses(): string {
+    // Angular explodes once the given classes string can't be split by spaces nicely. Thank you Angular.
+    return `status-badge ${this.getStatusClass(this.statusType)} ${
+      this.description ? 'has-tooltip' : ''
+    }`.trim();
+  }
+
+  public getStatusClass = (type: Status) => {
     switch (type) {
       case 'warning':
-        return 'tn-label--warning';
+        return 'status-badge--warning';
       case 'error':
-        return 'tn-label--error';
+        return 'status-badge--error';
+      case 'info':
+        return 'status-badge--info';
+      case 'success':
+      case 'ok':
+        return 'status-badge--success';
       default:
-        return 'tn-label--success';
+        return '';
     }
   };
-
-  ngOnInit() {
-    this.statusClass = this.getStatusClass(this.statusType);
-  }
 }
