@@ -30,7 +30,10 @@ const RepositoryTableHeader: React.FunctionComponent<RepositoryTableHeaderProps>
     <th>{repository.url}</th>
     <th />
     <th>
-      <ReactShared.StatusBadge autoResolveType status={repository.status}>
+      <ReactShared.StatusBadge
+        autoResolveType={true}
+        status={repository.status}
+      >
         {repository.message}
       </ReactShared.StatusBadge>
     </th>
@@ -52,7 +55,7 @@ const RepositoryTableRow: React.FunctionComponent<RepositoryTableRowProps> = ({
     <td className="addon-table-padded">{addon.name}</td>
     <td>{addon.version}</td>
     <td>
-      <ReactShared.StatusBadge autoResolveType status={addon.status}>
+      <ReactShared.StatusBadge autoResolveType={true} status={addon.status}>
         {addon.message}
       </ReactShared.StatusBadge>
     </td>

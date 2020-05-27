@@ -87,7 +87,7 @@ const AddonPanel: React.FunctionComponent<AddonPanelProps> = ({ config }) => {
       collapseDisabled={!hasRepositories}
       additionalHeaderContent={
         <ReactShared.StatusBadge
-          autoResolveType
+          autoResolveType={true}
           className="fd-has-margin-left-s"
           status={config.status.phase}
         />
