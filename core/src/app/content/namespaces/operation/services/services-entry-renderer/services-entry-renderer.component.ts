@@ -68,9 +68,9 @@ export class ServicesEntryRendererComponent
 
   getStatus(entry) {
     if (this.isStatusOk(entry)) {
-      return 'running';
+      return 'RUNNING';
     } else {
-      return 'error';
+      return 'ERROR';
     }
   }
 

@@ -11,7 +11,10 @@
   <tbody fd-table-body *ngIf="!error">
     <tr *ngFor="let apiRule of apiRules" fd-table-row>
       <td class="fd-has-font-weight-bold">
-        <a href="javascript:void(null)" (click)="navigateToDetails(apiRule.name)">
+        <a
+          href="javascript:void(null)"
+          (click)="navigateToDetails(apiRule.name)"
+        >
           {{ apiRule.name }}
         </a>
       </td>
@@ -22,21 +25,26 @@
         {{ apiRule.service.port }}
       </td>
       <td>
-        <span fd-badge [status]="statusBadgeType" (mouseover)="showStatusDescription=true"
-          (mouseout)="showStatusDescription=false">
+        <app-status-label
+          [statusType]="getStatusType(apiRule)"
+          [description]="apiRule.status.apiRuleStatus.desc"
+        >
           {{ apiRule.status.apiRuleStatus.code }}
-        </span>
-        <app-tooltip position="left" width="300px" *ngIf="showStatusTooltip">
-          {{ apiRule.status.apiRuleStatus.desc }}
-        </app-tooltip>
+        </app-status-label>
       </td>
       <td class="fd-has-float-right">
-        <y-list-actions [entry]="apiRule" [entryEventHandler]="entryEventHandler" [actions]="actions"></y-list-actions>
+        <y-list-actions
+          [entry]="apiRule"
+          [entryEventHandler]="entryEventHandler"
+          [actions]="actions"
+        ></y-list-actions>
       </td>
     </tr>
   </tbody>
 </table>
-<p class="fd-has-margin-x-small fd-has-color-status-3" *ngIf="error">{{ error }}</p>
+<p class="fd-has-margin-x-small fd-has-color-status-3" *ngIf="error">
+  {{ error }}
+</p>
 
 <app-confirmation-modal #confirmationModal></app-confirmation-modal>
 <app-information-modal #infoModal></app-information-modal>
