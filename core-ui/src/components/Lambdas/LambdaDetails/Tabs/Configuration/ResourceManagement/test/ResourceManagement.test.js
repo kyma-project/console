@@ -411,7 +411,7 @@ describe('ResourceManagement', () => {
   }, 10000);
 
   it('should shows errors when backend returns incorrect resources', async () => {
-    const replicasLambda = {
+    const resourcesLambda = {
       ...lambdaMock,
       resources: {
         requests: {
@@ -425,7 +425,7 @@ describe('ResourceManagement', () => {
       },
     };
     const { getByText, getAllByText } = render(
-      <ResourceManagement lambda={replicasLambda} />,
+      <ResourceManagement lambda={resourcesLambda} />,
     );
 
     let editButton = getByText(editText);
@@ -442,7 +442,7 @@ describe('ResourceManagement', () => {
   });
 
   it('should shows errors when user types requests greater than limits memory', async () => {
-    const replicasLambda = {
+    const resourcesLambda = {
       ...lambdaMock,
       resources: {
         requests: {
@@ -456,7 +456,7 @@ describe('ResourceManagement', () => {
       },
     };
     const { getByText } = render(
-      <ResourceManagement lambda={replicasLambda} />,
+      <ResourceManagement lambda={resourcesLambda} />,
     );
 
     let editButton = getByText(editText);
@@ -480,7 +480,7 @@ describe('ResourceManagement', () => {
   });
 
   it('should shows errors when user types memory under minimum', async () => {
-    const replicasLambda = {
+    const resourcesLambda = {
       ...lambdaMock,
       resources: {
         requests: {
@@ -494,7 +494,7 @@ describe('ResourceManagement', () => {
       },
     };
     const { getByText, getAllByText } = render(
-      <ResourceManagement lambda={replicasLambda} />,
+      <ResourceManagement lambda={resourcesLambda} />,
     );
 
     let editButton = getByText(editText);
@@ -515,7 +515,7 @@ describe('ResourceManagement', () => {
   });
 
   it('should shows errors when user types requests greater than limits cpu', async () => {
-    const replicasLambda = {
+    const resourcesLambda = {
       ...lambdaMock,
       resources: {
         requests: {
@@ -529,7 +529,7 @@ describe('ResourceManagement', () => {
       },
     };
     const { getByText } = render(
-      <ResourceManagement lambda={replicasLambda} />,
+      <ResourceManagement lambda={resourcesLambda} />,
     );
 
     let editButton = getByText(editText);
@@ -551,7 +551,7 @@ describe('ResourceManagement', () => {
   });
 
   it('should shows errors when user types cpu under minimum', async () => {
-    const replicasLambda = {
+    const resourcesLambda = {
       ...lambdaMock,
       resources: {
         requests: {
@@ -565,7 +565,7 @@ describe('ResourceManagement', () => {
       },
     };
     const { getByText, getAllByText } = render(
-      <ResourceManagement lambda={replicasLambda} />,
+      <ResourceManagement lambda={resourcesLambda} />,
     );
 
     let editButton = getByText(editText);
@@ -583,5 +583,47 @@ describe('ResourceManagement', () => {
     await wait(() => {
       expect(getAllByText(message)).toHaveLength(2);
     });
+  });
+
+  it('should update form state after updating lambda', async () => {
+    const resourcesLambda = {
+      ...lambdaMock,
+      resources: {
+        requests: {
+          memory: '20Mi',
+          cpu: '20m',
+        },
+        limits: {
+          memory: '30Mi',
+          cpu: '30m',
+        },
+      },
+    };
+    const { rerender } = render(
+      <ResourceManagement lambda={resourcesLambda} />,
+    );
+
+    const requestsCpu = document.querySelector('#requestsCpu');
+    expect(requestsCpu.value).toEqual('20m');
+    const limitsCpu = document.querySelector('#requestsMemory');
+    expect(limitsCpu.value).toEqual('20Mi');
+
+    const resourcesLambdaAfterUpdate = {
+      ...lambdaMock,
+      resources: {
+        requests: {
+          memory: '18Mi',
+          cpu: '16m',
+        },
+        limits: {
+          memory: '30Mi',
+          cpu: '30m',
+        },
+      },
+    };
+    rerender(<ResourceManagement lambda={resourcesLambdaAfterUpdate} />);
+
+    expect(requestsCpu.value).toEqual('16m');
+    expect(limitsCpu.value).toEqual('18Mi');
   });
 });

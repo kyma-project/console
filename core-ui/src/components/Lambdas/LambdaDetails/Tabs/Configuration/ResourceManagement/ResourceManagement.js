@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { Panel, Button } from 'fundamental-react';
@@ -22,8 +22,8 @@ const editText = RESOURCES_MANAGEMENT_PANEL.EDIT_MODAL.OPEN_BUTTON.TEXT.EDIT;
 const popupMessage =
   RESOURCES_MANAGEMENT_PANEL.EDIT_MODAL.CONFIRM_BUTTON.POPUP_MESSAGE;
 
-export default function ResourcesManagement({ lambda }) {
-  const defaultValues = {
+function getDefaultFormValues(lambda) {
+  return {
     [inputNames.replicas.min]: lambda.replicas.min || '1',
     [inputNames.replicas.max]: lambda.replicas.max || '1',
     [inputNames.requests.cpu]: parseCpu(lambda.resources.requests.cpu || ''),
@@ -31,6 +31,10 @@ export default function ResourcesManagement({ lambda }) {
     [inputNames.requests.memory]: lambda.resources.requests.memory || '',
     [inputNames.limits.memory]: lambda.resources.limits.memory || '',
   };
+}
+
+export default function ResourcesManagement({ lambda }) {
+  const defaultValues = getDefaultFormValues(lambda);
 
   const {
     register,
@@ -51,8 +55,18 @@ export default function ResourcesManagement({ lambda }) {
     type: UPDATE_TYPE.RESOURCES_AND_REPLICAS,
   });
 
-  function resetFields() {
-    Object.entries(defaultValues).forEach(([name, val]) => setValue(name, val));
+  useEffect(() => {
+    if (!isEditMode) {
+      updateFields(getDefaultFormValues(lambda));
+    }
+    // it is intentional
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [lambda]);
+
+  function updateFields(data) {
+    Object.entries(data).forEach(
+      ([name, val]) => setValue && setValue(name, val),
+    );
   }
 
   async function retriggerValidation() {
@@ -61,10 +75,10 @@ export default function ResourcesManagement({ lambda }) {
     );
   }
 
-  function onSubmit(data) {
+  async function onSubmit(data) {
     const callback = ({ ok }) => {
       if (!ok) {
-        resetFields();
+        updateFields(defaultValues);
       }
     };
 
@@ -98,7 +112,7 @@ export default function ResourcesManagement({ lambda }) {
         glyph="sys-cancel"
         type="negative"
         onClick={async () => {
-          resetFields();
+          updateFields(defaultValues);
           setIsEditMode(false);
           retriggerValidation();
         }}
@@ -115,12 +129,7 @@ export default function ResourcesManagement({ lambda }) {
         glyph={isEditMode ? 'save' : 'edit'}
         option={isEditMode ? 'emphasized' : 'light'}
         typeAttr="submit"
-        onClick={async () => {
-          // this needs to be here and not in `onSumbit`,
-          // because we need to be able to turn on edit Mode when underlying data does not pass validation
-          setIsEditMode(prev => !prev);
-          await retriggerValidation();
-        }}
+        onClick={() => setIsEditMode(prev => !prev)}
         disabled={isEditMode && !formState.isValid}
       >
         {isEditMode ? saveText : editText}
