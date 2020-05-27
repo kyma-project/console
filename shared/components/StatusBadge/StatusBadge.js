@@ -13,6 +13,7 @@ const resolveType = status => {
     case 'READY':
     case 'RUNNING':
     case 'SUCCESS':
+    case 'SUCCEEDED':
       return 'success';
 
     case 'UNKNOWN':

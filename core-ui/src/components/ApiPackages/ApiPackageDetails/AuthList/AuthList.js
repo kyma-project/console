@@ -3,27 +3,16 @@ import PropTypes from 'prop-types';
 
 import AuthDetailsModal from '../AuthDetailsModal/AuthDetailsModal';
 import { Badge } from 'fundamental-react';
-import { GenericList, Tooltip } from 'react-shared';
+import { GenericList, StatusBadge } from 'react-shared';
 
 AuthList.propTypes = {
   auths: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
 };
 
-const getBadgeForCondition = condition => {
-  switch (condition.toUpperCase()) {
-    case 'SUCCEEDED':
-      return 'success';
-    case 'FAILED':
-      return 'error';
-    default:
-      return 'warning';
-  }
-};
-
 const AuthStatus = ({ timestamp, message, reason, condition }) => (
-  <Tooltip position="top" content={`[${timestamp}] ${reason} ${message}`}>
-    <Badge type={getBadgeForCondition(condition)}>{condition}</Badge>
-  </Tooltip>
+  <StatusBadge status={condition} autoResolveType>
+    {`[${timestamp}] ${reason}: ${message}`}
+  </StatusBadge>
 );
 
 const AuthContext = ({ context }) => {
