@@ -14,6 +14,7 @@ import {
 import CreateApplicationModal from './CreateApplicationModal/CreateApplicationModal.container';
 import CreateApplicationFromTemplateModal from './CreateApplicationFromTemplateModal/CreateApplicationFromTemplateModal';
 import ScenariosDisplay from './../Shared/ScenariosDisplay/ScenariosDisplay';
+import { getBadgeTypeForStatus } from './../Shared/getBadgeTypeForStatus';
 
 class Applications extends React.Component {
   static propTypes = {
@@ -47,7 +48,7 @@ class Applications extends React.Component {
     />,
     <Counter>{application.packages.totalCount}</Counter>,
     <StatusBadge
-      autoResolveType
+      type={getBadgeTypeForStatus(application.status)}
       status={
         application.status && application.status.condition
           ? application.status.condition
