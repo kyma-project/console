@@ -2,7 +2,7 @@ import React from 'react';
 import LuigiClient from '@kyma-project/luigi-client';
 
 import { Badge } from 'fundamental-react';
-import { GenericList, Labels, Tooltip } from 'react-shared';
+import { GenericList, Labels, Tooltip, StatusBadge } from 'react-shared';
 
 import { useDeleteLambda } from 'components/Lambdas/gql/hooks/mutations';
 
@@ -25,28 +25,19 @@ function LambdaStatusBadge({ status }) {
     badgeType = undefined;
   }
 
-  const badgeComponent = <Badge type={badgeType}>{texts.TITLE}</Badge>;
+  let tooltipText;
 
-  if (!LAMBDA_ERROR_PHASES.includes(statusPhase)) {
-    return badgeComponent;
+  if (LAMBDA_ERROR_PHASES.includes(statusPhase)) {
+    const formattedError = formatMessage(LAMBDA_PHASES.ERROR_SUFFIX, {
+      error: status.message,
+    });
+    tooltipText = `${texts.MESSAGE} ${formattedError}`;
   }
 
-  const formattedError = formatMessage(LAMBDA_PHASES.ERROR_SUFFIX, {
-    error: status.message,
-  });
-  const tooltipTitle = `${texts.MESSAGE} ${formattedError}`;
-
   return (
-    <Tooltip
-      content={tooltipTitle}
-      position="top"
-      trigger="mouseenter"
-      tippyProps={{
-        distance: 8,
-      }}
-    >
-      {badgeComponent}
-    </Tooltip>
+    <StatusBadge status={texts.TITLE} type={badgeType}>
+      {tooltipText}
+    </StatusBadge>
   );
 }
 
