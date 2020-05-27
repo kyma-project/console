@@ -16,7 +16,8 @@ exports[`AddonPanel Renders with minimal props 1`] = `
     </React.Fragment>
   }
   additionalHeaderContent={
-    <AddonConfigurationBadge
+    <StatusBadge
+      autoResolveType={true}
       className="fd-has-margin-left-s"
       status="ready"
     />
