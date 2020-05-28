@@ -18,16 +18,27 @@ export class StatusLabelComponent {
   }
 
   public getStatusClass = (type?: string) => {
-    switch (type) {
-      case 'warning':
-        return 'status-badge--warning';
-      case 'error':
-        return 'status-badge--error';
-      case 'info':
+    switch (type.toUpperCase()) {
+      case 'INITIAL':
+      case 'INFO':
         return 'status-badge--info';
-      case 'success':
-      case 'ok':
+
+      case 'READY':
+      case 'RUNNING':
+      case 'SUCCESS':
+      case 'SUCCEEDED':
         return 'status-badge--success';
+
+      case 'UNKNOWN':
+      case 'WARNING':
+      case 'TERMINATING':
+        return 'status-badge--warning';
+
+      case 'FAILED':
+      case 'ERROR':
+      case 'FAILURE':
+        return 'status-badge--error';
+
       default:
         return '';
     }
