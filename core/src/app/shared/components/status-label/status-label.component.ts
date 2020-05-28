@@ -1,14 +1,12 @@
 import { Component, Input } from '@angular/core';
 
-type Status = 'warning' | 'error' | 'info' | 'success' | 'ok' | undefined;
-
 @Component({
   selector: 'app-status-label',
   templateUrl: './status-label.component.html',
   styleUrls: ['./status-label.component.scss']
 })
 export class StatusLabelComponent {
-  @Input() statusType: Status;
+  @Input() statusType: string = null;
   @Input() description: string = null;
 
   showTooltip: boolean;
@@ -19,7 +17,7 @@ export class StatusLabelComponent {
     }`.trim();
   }
 
-  public getStatusClass = (type: Status) => {
+  public getStatusClass = (type?: string) => {
     switch (type) {
       case 'warning':
         return 'status-badge--warning';
