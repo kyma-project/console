@@ -22,7 +22,7 @@ export class StatusLabelComponent {
       case 'INITIAL':
       case 'INFO':
         return 'status-badge--info';
-
+      case 'OK':
       case 'READY':
       case 'RUNNING':
       case 'SUCCESS':
