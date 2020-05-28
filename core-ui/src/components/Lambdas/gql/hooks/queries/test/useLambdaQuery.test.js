@@ -59,6 +59,7 @@ describe('useLambdaQuery', () => {
         ),
         mocks: [
           GET_LAMBDA_DATA_MOCK(variables),
+          GET_LAMBDA_DATA_MOCK(variables),
           subscriptionMock,
           subscriptionMock,
         ],
@@ -68,7 +69,7 @@ describe('useLambdaQuery', () => {
     await wait(() => {
       expect(getByText(TESTING_STATE.DATA)).toBeInTheDocument();
     });
-  });
+  }, 10000);
 
   it('should see notification if there is an error', async () => {
     const mockProvider = withApolloMockProvider({
