@@ -71,7 +71,7 @@ export const adminUser = Role(
 );
 
 const chooseLoginRole = async t => {
-  const oneMethodDetected = await Selector('#login').visible;
+  const oneMethodDetected = await Selector('#login')();
   console.log(
     oneMethodDetected
       ? 'One login method detected...'
