@@ -9,10 +9,8 @@ import {
   createOwnerRef,
 } from 'components/Lambdas/helpers/eventTriggers';
 import { formatMessage } from 'components/Lambdas/helpers/misc';
-import {
-  TRIGGER_SUBSCRIBER,
-  GQL_MUTATIONS,
-} from 'components/Lambdas/constants';
+import { GQL_MUTATIONS } from 'components/Lambdas/constants';
+import { CONFIG } from 'components/Lambdas/config';
 
 export const useCreateManyEventTriggers = ({
   lambda = {
@@ -49,7 +47,7 @@ export const useCreateManyEventTriggers = ({
     return events.map(event => {
       const trigger = {
         namespace: lambda.namespace,
-        broker: TRIGGER_SUBSCRIBER.BROKER,
+        broker: CONFIG.triggerSubscriber.broker,
         filterAttributes: {
           type: event.eventType,
           source: event.source,

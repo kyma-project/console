@@ -1,5 +1,5 @@
 import { createSubscriberRef } from '../createSubscriberRef';
-import { TRIGGER_SUBSCRIBER } from '../../../constants';
+import { CONFIG } from '../../../config';
 
 describe('createSubscriberRef', () => {
   test('should return proper object if lambda exists', () => {
@@ -9,8 +9,8 @@ describe('createSubscriberRef', () => {
     });
     expect(result).toEqual({
       ref: {
-        apiVersion: TRIGGER_SUBSCRIBER.API_VERSION,
-        kind: TRIGGER_SUBSCRIBER.KIND,
+        apiVersion: CONFIG.triggerSubscriber.apiVersion,
+        kind: CONFIG.triggerSubscriber.kind,
         name: 'pico',
         namespace: 'bello',
       },
@@ -21,8 +21,8 @@ describe('createSubscriberRef', () => {
     const result = createSubscriberRef();
     expect(result).toEqual({
       ref: {
-        apiVersion: TRIGGER_SUBSCRIBER.API_VERSION,
-        kind: TRIGGER_SUBSCRIBER.KIND,
+        apiVersion: CONFIG.triggerSubscriber.apiVersion,
+        kind: CONFIG.triggerSubscriber.kind,
         name: '',
         namespace: '',
       },

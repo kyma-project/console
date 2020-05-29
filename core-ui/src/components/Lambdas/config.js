@@ -3,11 +3,18 @@ const defaultCode = `module.exports = {
     return "Hello World!";
   }
 }`;
+
 const defaultDeps = `{ 
   "name": "{lambdaName}",
   "version": "1.0.0",
   "dependencies": {}
 }`;
+
+const triggerSubscriber = {
+  kind: 'Service',
+  apiVersion: 'v1',
+  broker: 'default',
+};
 
 const defaultConfig = {
   functionUsageKind: 'serverless-function',
@@ -29,9 +36,10 @@ const defaultConfig = {
       cpu: '10m',
     },
   },
+  triggerSubscriber,
   defaultLambdaCode: defaultCode,
   defaultLambdaDeps: defaultDeps,
-};
+}
 
 function getConfigValue(field) {
   const serverlessConfig = window.clusterConfig?.serverless;
@@ -49,6 +57,7 @@ function loadConfig() {
     functionUsageKind: getConfigValue('functionUsageKind') || '',
     restrictedVariables: getConfigValue('restrictedVariables') || [],
     resources: getConfigValue('resources') || {},
+    triggerSubscriber: getConfigValue('triggerSubscriber') || {},
     defaultLambdaCode: getConfigValue('defaultLambdaCode') || '',
     defaultLambdaDeps: getConfigValue('defaultLambdaDeps') || '',
   };

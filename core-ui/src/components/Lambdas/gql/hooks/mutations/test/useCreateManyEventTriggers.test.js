@@ -14,10 +14,8 @@ import {
   createSubscriberRef,
   createOwnerRef,
 } from 'components/Lambdas/helpers/eventTriggers';
-import {
-  GQL_MUTATIONS,
-  TRIGGER_SUBSCRIBER,
-} from 'components/Lambdas/constants';
+import { GQL_MUTATIONS } from 'components/Lambdas/constants';
+import { CONFIG } from 'components/Lambdas/config';
 
 import { useCreateManyEventTriggers } from '../useCreateManyEventTriggers';
 import {
@@ -41,7 +39,7 @@ describe('useCreateManyEventTriggers', () => {
     triggers: [
       {
         namespace: lambdaMock.namespace,
-        broker: TRIGGER_SUBSCRIBER.BROKER,
+        broker: CONFIG.triggerSubscriber.broker,
         filterAttributes: {
           type: '1',
           eventtypeversion: '1',
