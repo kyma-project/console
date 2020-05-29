@@ -81,16 +81,6 @@ export class PodsEntryRendererComponent
     return [entry.status];
   }
 
-  getStatusType(entry) {
-    if (this.isPending(entry)) {
-      return 'warning';
-    } else if (this.isSucceeded(entry)) {
-      return 'ok';
-    } else {
-      return 'error';
-    }
-  }
-
   hasErrors(entry) {
     return entry.containerStates.some(s => s.state !== 'RUNNING' && s.message);
   }

@@ -12,9 +12,10 @@ export class StatusLabelComponent {
   showTooltip: boolean;
   public get computedClasses(): string {
     // Angular explodes once the given classes string can't be split by spaces nicely. Thank you Angular.
-    return `status-badge ${this.getStatusClass(this.statusType)} ${
-      this.description ? 'has-tooltip' : ''
-    }`.trim();
+    return (
+      `status-badge ${this.getStatusClass(this.statusType)}`.trim() +
+      `${this.description ? ' has-tooltip' : ''}`
+    ).trim();
   }
 
   public getStatusClass = (type?: string) => {

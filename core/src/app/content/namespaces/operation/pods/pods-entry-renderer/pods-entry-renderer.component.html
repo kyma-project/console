@@ -22,7 +22,7 @@
   </td>
   <td>
     <app-status-label
-      [statusType]="getStatusType(entry)"
+      [statusType]="getStatus(entry)[0]"
       [description]="getStatus(entry)[1]"
     >
       {{ getStatus(entry)[0] }}

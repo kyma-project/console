@@ -6,5 +6,7 @@
   (mouseleave)="showTooltip = false"
 >
   <ng-content></ng-content>
-  <app-tooltip *ngIf="description && showTooltip">{{ description }}</app-tooltip>
+  <app-tooltip *ngIf="description && showTooltip">{{
+    description
+  }}</app-tooltip>
 </span>
