@@ -55,18 +55,6 @@ export class PodsEntryRendererComponent
     }
   }
 
-  capitalize(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
-  }
-
-  isPending(entry) {
-    return entry.status === 'PENDING';
-  }
-
-  isSucceeded(entry) {
-    return entry.status === 'SUCCEEDED' || entry.status === 'RUNNING';
-  }
-
   getStatus(entry): [string, string?] {
     if (
       entry.status !== 'RUNNING' &&
