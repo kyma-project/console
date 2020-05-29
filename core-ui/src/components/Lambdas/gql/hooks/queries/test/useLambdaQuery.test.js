@@ -66,12 +66,9 @@ describe('useLambdaQuery', () => {
       }),
     );
 
-    await wait(
-      () => {
-        expect(getByText(TESTING_STATE.DATA)).toBeInTheDocument();
-      },
-      { timeout: 3000 },
-    );
+    await wait(() => {
+      expect(getByText(TESTING_STATE.DATA)).toBeInTheDocument();
+    });
   }, 10000);
 
   it('should see notification if there is an error', async () => {
