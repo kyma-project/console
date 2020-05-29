@@ -435,7 +435,7 @@ export const FUNCTION_CUSTOM_RESOURCE = {
 };
 
 export const TRIGGER_SUBSCRIBER = {
-  SERVING_SERVICE: 'Service',
-  SERVING_API_VERSION: 'serving.knative.dev/v1',
+  KIND: 'Service',
+  API_VERSION: 'v1',
   BROKER: 'default',
 };

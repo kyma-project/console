@@ -9,8 +9,8 @@ describe('createSubscriberRef', () => {
     });
     expect(result).toEqual({
       ref: {
-        apiVersion: TRIGGER_SUBSCRIBER.SERVING_API_VERSION,
-        kind: TRIGGER_SUBSCRIBER.SERVING_SERVICE,
+        apiVersion: TRIGGER_SUBSCRIBER.API_VERSION,
+        kind: TRIGGER_SUBSCRIBER.KIND,
         name: 'pico',
         namespace: 'bello',
       },
@@ -21,8 +21,8 @@ describe('createSubscriberRef', () => {
     const result = createSubscriberRef();
     expect(result).toEqual({
       ref: {
-        apiVersion: TRIGGER_SUBSCRIBER.SERVING_API_VERSION,
-        kind: TRIGGER_SUBSCRIBER.SERVING_SERVICE,
+        apiVersion: TRIGGER_SUBSCRIBER.API_VERSION,
+        kind: TRIGGER_SUBSCRIBER.KIND,
         name: '',
         namespace: '',
       },
