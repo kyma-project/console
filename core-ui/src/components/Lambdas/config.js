@@ -10,7 +10,7 @@ const defaultDeps = `{
   "dependencies": {}
 }`;
 
-const triggerSubscriber = {
+const defaultTriggerSubscriber = {
   kind: 'Service',
   apiVersion: 'v1',
   broker: 'default',
@@ -36,10 +36,14 @@ const defaultConfig = {
       cpu: '10m',
     },
   },
-  triggerSubscriber,
+  triggerSubscriber: defaultTriggerSubscriber,
+  logging: {
+    deploymentContainerName: 'function',
+    jobContainerName: 'executor',
+  },
   defaultLambdaCode: defaultCode,
   defaultLambdaDeps: defaultDeps,
-}
+};
 
 function getConfigValue(field) {
   const serverlessConfig = window.clusterConfig?.serverless;
@@ -58,6 +62,7 @@ function loadConfig() {
     restrictedVariables: getConfigValue('restrictedVariables') || [],
     resources: getConfigValue('resources') || {},
     triggerSubscriber: getConfigValue('triggerSubscriber') || {},
+    logging: getConfigValue('logging') || {},
     defaultLambdaCode: getConfigValue('defaultLambdaCode') || '',
     defaultLambdaDeps: getConfigValue('defaultLambdaDeps') || '',
   };
