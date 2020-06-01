@@ -311,11 +311,6 @@ describe('LambdaVariables + EditVariablesModal + EditVariablesForm', () => {
       );
       expect(editButton).toBeInTheDocument();
       expect(editButton).toBeDisabled();
-
-      const tooltip = document.querySelector(
-        `[data-original-title="${ENVIRONMENT_VARIABLES_PANEL.EDIT_MODAL.CONFIRM_BUTTON.POPUP_MESSAGES.ERROR}"]`,
-      );
-      expect(tooltip).toBeInTheDocument();
     },
     timeout,
   );

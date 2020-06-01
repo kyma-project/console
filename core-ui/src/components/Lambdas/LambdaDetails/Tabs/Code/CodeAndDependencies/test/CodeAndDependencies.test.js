@@ -53,11 +53,6 @@ describe('CodeAndDependencies', () => {
     await wait(() => {
       const button = getByText(CODE_AND_DEPENDENCIES_PANEL.SAVE_BUTTON.TEXT);
       expect(button).toBeDisabled();
-
-      const tooltip = document.querySelector(
-        `[data-original-title="${CODE_AND_DEPENDENCIES_PANEL.SAVE_BUTTON.POPUP_MESSAGE.EMPTY_SOURCE}"]`,
-      );
-      expect(tooltip).toBeInTheDocument();
     });
   });
 
@@ -69,11 +64,6 @@ describe('CodeAndDependencies', () => {
     await wait(() => {
       const button = getByText(CODE_AND_DEPENDENCIES_PANEL.SAVE_BUTTON.TEXT);
       expect(button).toBeDisabled();
-
-      const tooltip = document.querySelector(
-        `[data-original-title="${CODE_AND_DEPENDENCIES_PANEL.SAVE_BUTTON.POPUP_MESSAGE.INVALID_DEPS}"]`,
-      );
-      expect(tooltip).toBeInTheDocument();
     });
   });
 
@@ -83,11 +73,6 @@ describe('CodeAndDependencies', () => {
     await wait(() => {
       const button = getByText(CODE_AND_DEPENDENCIES_PANEL.SAVE_BUTTON.TEXT);
       expect(button).toBeDisabled();
-
-      const tooltip = document.querySelector(
-        `[data-original-title="${CODE_AND_DEPENDENCIES_PANEL.SAVE_BUTTON.POPUP_MESSAGE.NO_CHANGES}"]`,
-      );
-      expect(tooltip).toBeInTheDocument();
     });
   });
 });

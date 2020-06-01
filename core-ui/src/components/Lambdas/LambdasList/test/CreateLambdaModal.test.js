@@ -72,12 +72,6 @@ describe('CreateLambdaModal + CreateLambdaForm', () => {
       LAMBDAS_LIST.CREATE_MODAL.INPUTS.NAME.ERRORS.INVALID,
       LAMBDAS_LIST.CREATE_MODAL.INPUTS.NAME.ERRORS.DUPLICATED,
     ];
-    for (const error of errors) {
-      const tooltip = document.querySelector(
-        `[data-original-title="${error}"]`,
-      );
-      expect(tooltip).not.toBeInTheDocument();
-    }
 
     button = getByText(createButton);
     expect(button).toBeInTheDocument();
@@ -97,10 +91,6 @@ describe('CreateLambdaModal + CreateLambdaForm', () => {
 
     await wait(() => {
       const error = LAMBDAS_LIST.CREATE_MODAL.INPUTS.NAME.ERRORS.EMPTY;
-      const tooltip = document.querySelector(
-        `[data-original-title="${error}"]`,
-      );
-      expect(tooltip).toBeInTheDocument();
       expect(getByText(error)).toBeInTheDocument();
 
       button = getByText(createButton);
@@ -122,10 +112,6 @@ describe('CreateLambdaModal + CreateLambdaForm', () => {
 
     await wait(() => {
       const error = LAMBDAS_LIST.CREATE_MODAL.INPUTS.NAME.ERRORS.INVALID;
-      const tooltip = document.querySelector(
-        `[data-original-title="${error}"]`,
-      );
-      expect(tooltip).toBeInTheDocument();
       expect(getByText(error)).toBeInTheDocument();
 
       button = getByText(createButton);
@@ -151,10 +137,6 @@ describe('CreateLambdaModal + CreateLambdaForm', () => {
 
     await wait(() => {
       const error = LAMBDAS_LIST.CREATE_MODAL.INPUTS.NAME.ERRORS.DUPLICATED;
-      const tooltip = document.querySelector(
-        `[data-original-title="${error}"]`,
-      );
-      expect(tooltip).toBeInTheDocument();
       expect(getByText(error)).toBeInTheDocument();
 
       button = getByText(createButton);
@@ -186,10 +168,6 @@ describe('CreateLambdaModal + CreateLambdaForm', () => {
 
     await wait(() => {
       const error = LAMBDAS_LIST.CREATE_MODAL.INPUTS.NAME.ERRORS.TOO_LONG;
-      const tooltip = document.querySelector(
-        `[data-original-title="${error}"]`,
-      );
-      expect(tooltip).toBeInTheDocument();
       expect(getByText(error)).toBeInTheDocument();
 
       button = getByText(createButton);
