@@ -84,7 +84,7 @@ describe('CreateLambdaModal + CreateLambdaForm', () => {
     expect(button).not.toBeDisabled();
   });
 
-  it('should show name errors - empty Function name', async () => {
+  it('should show name errors - empty Function name aa', async () => {
     const { getByText } = render(
       <CreateLambdaModal serverDataError={false} serverDataLoading={false} />,
     );
