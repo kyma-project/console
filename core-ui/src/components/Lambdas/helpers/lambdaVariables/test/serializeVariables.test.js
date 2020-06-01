@@ -15,7 +15,7 @@ describe('retrieveVariablesFromBindingUsage', () => {
 });
 
 describe('serializeVariables', () => {
-  test('should return serialized arrays', () => {
+  test('should return serialized variables', () => {
     const lambdaVariables = lambdaMock.env;
     const bindingUsages = [serviceBindingUsageMock];
 
@@ -70,6 +70,140 @@ describe('serializeVariables', () => {
     ];
     delete injectedVariables[0].id;
     delete injectedVariables[1].id;
+    expect(injectedVariables).toEqual(expectedInjectedVariables);
+  });
+
+  test('should return serialized variables with CAN_OVERRIDE_BY_CUSTOM_ENV warnings', () => {
+    const lambdaVariables = [
+      {
+        name: 'PREFIX_FOO',
+        value: 'bar',
+        valueFrom: null,
+      },
+    ];
+    const bindingUsages = [serviceBindingUsageMock];
+
+    const { injectedVariables } = serializeVariables({
+      lambdaVariables,
+      bindingUsages,
+    });
+
+    const expectedInjectedVariables = [
+      {
+        type: VARIABLE_TYPE.BINDING_USAGE,
+        name: 'PREFIX_FOO',
+        value: '',
+        validation: VARIABLE_VALIDATION.CAN_OVERRIDE_BY_CUSTOM_ENV,
+        serviceInstanceName: 'serviceInstanceName',
+      },
+      {
+        type: VARIABLE_TYPE.BINDING_USAGE,
+        name: 'PREFIX_BAR',
+        value: '',
+        validation: VARIABLE_VALIDATION.NONE,
+        serviceInstanceName: 'serviceInstanceName',
+      },
+    ];
+    delete injectedVariables[0].id;
+    delete injectedVariables[1].id;
+    expect(injectedVariables).toEqual(expectedInjectedVariables);
+  });
+
+  test('should return serialized variables with CAN_OVERRIDE_BY_SBU warnings', () => {
+    const lambdaVariables = lambdaMock.env;
+    const bindingUsages = [serviceBindingUsageMock, serviceBindingUsageMock];
+
+    const { injectedVariables } = serializeVariables({
+      lambdaVariables,
+      bindingUsages,
+    });
+
+    const expectedInjectedVariables = [
+      {
+        type: VARIABLE_TYPE.BINDING_USAGE,
+        name: 'PREFIX_FOO',
+        value: '',
+        validation: VARIABLE_VALIDATION.CAN_OVERRIDE_BY_SBU,
+        serviceInstanceName: 'serviceInstanceName',
+      },
+      {
+        type: VARIABLE_TYPE.BINDING_USAGE,
+        name: 'PREFIX_BAR',
+        value: '',
+        validation: VARIABLE_VALIDATION.CAN_OVERRIDE_BY_SBU,
+        serviceInstanceName: 'serviceInstanceName',
+      },
+      {
+        type: VARIABLE_TYPE.BINDING_USAGE,
+        name: 'PREFIX_FOO',
+        value: '',
+        validation: VARIABLE_VALIDATION.CAN_OVERRIDE_BY_SBU,
+        serviceInstanceName: 'serviceInstanceName',
+      },
+      {
+        type: VARIABLE_TYPE.BINDING_USAGE,
+        name: 'PREFIX_BAR',
+        value: '',
+        validation: VARIABLE_VALIDATION.CAN_OVERRIDE_BY_SBU,
+        serviceInstanceName: 'serviceInstanceName',
+      },
+    ];
+    delete injectedVariables[0].id;
+    delete injectedVariables[1].id;
+    delete injectedVariables[2].id;
+    delete injectedVariables[3].id;
+    expect(injectedVariables).toEqual(expectedInjectedVariables);
+  });
+
+  test('should return serialized variables with CAN_OVERRIDE_BY_CUSTOM_ENV_AND_SBU warnings', () => {
+    const lambdaVariables = [
+      {
+        name: 'PREFIX_FOO',
+        value: 'bar',
+        valueFrom: null,
+      },
+    ];
+    const bindingUsages = [serviceBindingUsageMock, serviceBindingUsageMock];
+
+    const { injectedVariables } = serializeVariables({
+      lambdaVariables,
+      bindingUsages,
+    });
+
+    const expectedInjectedVariables = [
+      {
+        type: VARIABLE_TYPE.BINDING_USAGE,
+        name: 'PREFIX_FOO',
+        value: '',
+        validation: VARIABLE_VALIDATION.CAN_OVERRIDE_BY_CUSTOM_ENV_AND_SBU,
+        serviceInstanceName: 'serviceInstanceName',
+      },
+      {
+        type: VARIABLE_TYPE.BINDING_USAGE,
+        name: 'PREFIX_BAR',
+        value: '',
+        validation: VARIABLE_VALIDATION.CAN_OVERRIDE_BY_SBU,
+        serviceInstanceName: 'serviceInstanceName',
+      },
+      {
+        type: VARIABLE_TYPE.BINDING_USAGE,
+        name: 'PREFIX_FOO',
+        value: '',
+        validation: VARIABLE_VALIDATION.CAN_OVERRIDE_BY_CUSTOM_ENV_AND_SBU,
+        serviceInstanceName: 'serviceInstanceName',
+      },
+      {
+        type: VARIABLE_TYPE.BINDING_USAGE,
+        name: 'PREFIX_BAR',
+        value: '',
+        validation: VARIABLE_VALIDATION.CAN_OVERRIDE_BY_SBU,
+        serviceInstanceName: 'serviceInstanceName',
+      },
+    ];
+    delete injectedVariables[0].id;
+    delete injectedVariables[1].id;
+    delete injectedVariables[2].id;
+    delete injectedVariables[3].id;
     expect(injectedVariables).toEqual(expectedInjectedVariables);
   });
 });

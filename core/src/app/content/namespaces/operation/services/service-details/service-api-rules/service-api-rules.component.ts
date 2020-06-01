@@ -10,7 +10,7 @@ import { GET_API_RULES, DELETE_API_RULE } from './gql';
 
 @Component({
   selector: 'app-service-api-rules',
-  templateUrl: './service-api-rules.component.html',
+  templateUrl: './service-api-rules.component.html'
 })
 export class ServiceApiRulesComponent implements OnInit {
   @Input() serviceName: string;
@@ -19,7 +19,7 @@ export class ServiceApiRulesComponent implements OnInit {
   error = null;
   actions = [
     { function: 'delete', name: 'Delete' },
-    { function: 'edit', name: 'Edit'}
+    { function: 'edit', name: 'Edit' }
   ];
   entryEventHandler = this.getEntryEventHandler();
 
@@ -30,14 +30,18 @@ export class ServiceApiRulesComponent implements OnInit {
   @ViewChild('infoModal')
   private infoModal: InformationModalComponent;
 
-  constructor(private gqlClientService: GraphQLClientService,
-    private currentNamespaceService: CurrentNamespaceService) { }
+  constructor(
+    private gqlClientService: GraphQLClientService,
+    private currentNamespaceService: CurrentNamespaceService
+  ) {}
 
   ngOnInit(): void {
-    this.currentNamespaceService.getCurrentNamespaceId().subscribe(namespace => {
-      this.currentNamespace = namespace;
-      this.getApiRules();
-    })
+    this.currentNamespaceService
+      .getCurrentNamespaceId()
+      .subscribe(namespace => {
+        this.currentNamespace = namespace;
+        this.getApiRules();
+      });
   }
 
   navigateToDetails(apiRuleName: string) {
@@ -46,12 +50,23 @@ export class ServiceApiRulesComponent implements OnInit {
       .navigate(`cmf-apirules/details/${apiRuleName}`);
   }
 
+  getStatusType(apiRule) {
+    return apiRule.status &&
+      apiRule.status.apiRuleStatus &&
+      apiRule.status.apiRuleStatus.code.toUpperCase() === 'OK'
+      ? 'success'
+      : 'warning';
+  }
+
   private getEntryEventHandler(): any {
     return {
       delete: (entry: any) =>
         this.confirmationModal
           .show('Confirm delete', `Do you really want to delete ${entry.name}?`)
-          .then(() => this.deleteApiRule(entry), () => {}),
+          .then(
+            () => this.deleteApiRule(entry),
+            () => {}
+          ),
       navigateToEdit: (entry: any) =>
         LuigiClient.linkManager()
           .fromContext('namespaces')
@@ -60,21 +75,38 @@ export class ServiceApiRulesComponent implements OnInit {
   }
 
   private getApiRules() {
-    this.gqlClientService.gqlQuery(GET_API_RULES, { namespace: this.currentNamespace })
-      .subscribe(data => this.apiRules = data.APIRules.filter(rule => rule.service.name === this.serviceName),
-      error => {
-        this.error = error.message || error;
-        console.warn(error);
-      });
+    this.gqlClientService
+      .gqlQuery(GET_API_RULES, { namespace: this.currentNamespace })
+      .subscribe(
+        data =>
+          (this.apiRules = data.APIRules.filter(
+            rule => rule.service.name === this.serviceName
+          )),
+        error => {
+          this.error = error.message || error;
+          console.warn(error);
+        }
+      );
   }
 
   private deleteApiRule(entry: any) {
-    this.gqlClientService.gqlMutation(DELETE_API_RULE, { name: entry.name, namespace: this.currentNamespace })
-      .subscribe(() => this.apiRules = this.apiRules.filter(rule => rule.name !== entry.name),
-      error =>
-        this.infoModal.show(
-          'Error',
-          `There was an error while trying to delete ${entry.name}: ${error.message || error}`)
-    );
+    this.gqlClientService
+      .gqlMutation(DELETE_API_RULE, {
+        name: entry.name,
+        namespace: this.currentNamespace
+      })
+      .subscribe(
+        () =>
+          (this.apiRules = this.apiRules.filter(
+            rule => rule.name !== entry.name
+          )),
+        error =>
+          this.infoModal.show(
+            'Error',
+            `There was an error while trying to delete ${
+              entry.name
+            }: ${error.message || error}`
+          )
+      );
   }
 }

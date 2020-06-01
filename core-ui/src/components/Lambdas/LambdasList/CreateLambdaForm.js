@@ -1,14 +1,46 @@
-import React, { useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import LuigiClient from '@kyma-project/luigi-client';
 
 import { LambdaNameInput, LabelsInput } from 'components/Lambdas/components';
 
 import { useCreateLambda } from 'components/Lambdas/gql/hooks/mutations';
 
-export default function CreateLambdaForm({ onChange, formElementRef }) {
+import { randomNameGenerator, validateFunctionName } from './helpers';
+
+export default function CreateLambdaForm({
+  onChange,
+  formElementRef,
+  setValidity = () => void 0,
+  setInvalidModalPopupMessage = () => void 0,
+  functionNames = [],
+}) {
   const createLambda = useCreateLambda({ redirect: true });
-  const [labels, setLabels] = React.useState({});
-  const name = useRef(null);
+  const [name, setName] = useState(randomNameGenerator());
+  const [nameStatus, setNameStatus] = useState('');
+
+  const [labels, setLabels] = useState({});
+
+  useEffect(() => {
+    const validationMessage = validateFunctionName(name, functionNames);
+    setInvalidModalPopupMessage(validationMessage);
+    setNameStatus(validationMessage);
+
+    if (validationMessage) {
+      setValidity(false);
+    } else {
+      setValidity(true);
+    }
+  }, [
+    setValidity,
+    setInvalidModalPopupMessage,
+    setNameStatus,
+    functionNames,
+    name,
+  ]);
+
+  function updateName(event) {
+    setName(event.target.value);
+  }
 
   function updateLabels(newLabels) {
     setLabels(newLabels);
@@ -20,7 +52,7 @@ export default function CreateLambdaForm({ onChange, formElementRef }) {
     };
 
     await createLambda({
-      name: name.current.value,
+      name: name,
       namespace: LuigiClient.getEventData().environmentId,
       inputData,
     });
@@ -33,7 +65,12 @@ export default function CreateLambdaForm({ onChange, formElementRef }) {
       onChange={onChange}
       onSubmit={handleSubmit}
     >
-      <LambdaNameInput _ref={name} id="lambdaName" />
+      <LambdaNameInput
+        id="lambdaName"
+        value={name}
+        onChange={updateName}
+        nameStatus={nameStatus}
+      />
       <LabelsInput labels={labels} onChange={updateLabels} />
     </form>
   );

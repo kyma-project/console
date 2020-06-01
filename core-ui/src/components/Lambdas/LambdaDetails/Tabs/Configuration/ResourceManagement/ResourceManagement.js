@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { Panel, Button } from 'fundamental-react';
+import { Tooltip } from 'react-shared';
 
 import LambdaReplicas from './LambdaReplicas';
 import LambdaResources from './LambdaResources';
@@ -16,8 +17,13 @@ import { schema, inputNames } from './shared';
 
 import './ResourceManagement.scss';
 
-export default function ResourcesManagement({ lambda }) {
-  const defaultValues = {
+const saveText = RESOURCES_MANAGEMENT_PANEL.EDIT_MODAL.OPEN_BUTTON.TEXT.SAVE;
+const editText = RESOURCES_MANAGEMENT_PANEL.EDIT_MODAL.OPEN_BUTTON.TEXT.EDIT;
+const popupMessage =
+  RESOURCES_MANAGEMENT_PANEL.EDIT_MODAL.CONFIRM_BUTTON.POPUP_MESSAGE;
+
+function getDefaultFormValues(lambda) {
+  return {
     [inputNames.replicas.min]: lambda.replicas.min || '1',
     [inputNames.replicas.max]: lambda.replicas.max || '1',
     [inputNames.requests.cpu]: parseCpu(lambda.resources.requests.cpu || ''),
@@ -25,6 +31,10 @@ export default function ResourcesManagement({ lambda }) {
     [inputNames.requests.memory]: lambda.resources.requests.memory || '',
     [inputNames.limits.memory]: lambda.resources.limits.memory || '',
   };
+}
+
+export default function ResourcesManagement({ lambda }) {
+  const defaultValues = getDefaultFormValues(lambda);
 
   const {
     register,
@@ -45,8 +55,18 @@ export default function ResourcesManagement({ lambda }) {
     type: UPDATE_TYPE.RESOURCES_AND_REPLICAS,
   });
 
-  function resetFields() {
-    Object.entries(defaultValues).forEach(([name, val]) => setValue(name, val));
+  useEffect(() => {
+    if (!isEditMode) {
+      updateFields(getDefaultFormValues(lambda));
+    }
+    // it is intentional
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [lambda]);
+
+  function updateFields(data) {
+    Object.entries(data).forEach(
+      ([name, val]) => setValue && setValue(name, val),
+    );
   }
 
   async function retriggerValidation() {
@@ -55,10 +75,10 @@ export default function ResourcesManagement({ lambda }) {
     );
   }
 
-  function onSubmit(data) {
+  async function onSubmit(data) {
     const callback = ({ ok }) => {
       if (!ok) {
-        resetFields();
+        updateFields(defaultValues);
       }
     };
 
@@ -82,8 +102,56 @@ export default function ResourcesManagement({ lambda }) {
     }
   }
 
-  const saveText = RESOURCES_MANAGEMENT_PANEL.EDIT_MODAL.OPEN_BUTTON.TEXT.SAVE;
-  const editText = RESOURCES_MANAGEMENT_PANEL.EDIT_MODAL.OPEN_BUTTON.TEXT.EDIT;
+  function renderCancelButton() {
+    if (!isEditMode) {
+      return null;
+    }
+
+    return (
+      <Button
+        glyph="sys-cancel"
+        type="negative"
+        onClick={async () => {
+          updateFields(defaultValues);
+          setIsEditMode(false);
+          retriggerValidation();
+        }}
+      >
+        {BUTTONS.CANCEL}
+      </Button>
+    );
+  }
+
+  function renderConfirmButton() {
+    const disabled = isEditMode && !formState.isValid;
+    const button = (
+      <Button
+        glyph={isEditMode ? 'save' : 'edit'}
+        option={isEditMode ? 'emphasized' : 'light'}
+        typeAttr="submit"
+        onClick={() => setIsEditMode(prev => !prev)}
+        disabled={isEditMode && !formState.isValid}
+      >
+        {isEditMode ? saveText : editText}
+      </Button>
+    );
+
+    if (disabled) {
+      return (
+        <Tooltip
+          title={popupMessage}
+          position="top"
+          trigger="mouseenter"
+          tippyProps={{
+            distance: 16,
+          }}
+        >
+          {button}
+        </Tooltip>
+      );
+    }
+    return button;
+  }
 
   return (
     <Panel className="fd-has-margin-m lambda-resources-management">
@@ -91,33 +159,8 @@ export default function ResourcesManagement({ lambda }) {
         <Panel.Header className="fd-has-padding-xs">
           <Panel.Head title={RESOURCES_MANAGEMENT_PANEL.TITLE} />
           <Panel.Actions>
-            {isEditMode && (
-              <Button
-                glyph="sys-cancel"
-                type="negative"
-                onClick={async () => {
-                  resetFields();
-                  setIsEditMode(false);
-                  retriggerValidation();
-                }}
-              >
-                {BUTTONS.CANCEL}
-              </Button>
-            )}
-            <Button
-              glyph={isEditMode ? 'save' : 'edit'}
-              option={isEditMode ? 'emphasized' : 'light'}
-              typeAttr="submit"
-              onClick={async () => {
-                // this needs to be here and not in `onSumbit`,
-                //because we need to be able to turn on edit Mode when underlying data does not pass validation
-                setIsEditMode(prev => !prev);
-                await retriggerValidation();
-              }}
-              disabled={isEditMode && !formState.isValid}
-            >
-              {isEditMode ? saveText : editText}
-            </Button>
+            {renderCancelButton()}
+            {renderConfirmButton()}
           </Panel.Actions>
         </Panel.Header>
         <Panel.Body className="fd-has-padding-xs">
@@ -125,6 +168,7 @@ export default function ResourcesManagement({ lambda }) {
             register={register}
             disabledForm={!isEditMode}
             errors={errors}
+            triggerValidation={triggerValidation}
           />
         </Panel.Body>
         <Panel.Body className="fd-has-padding-xs">
@@ -132,6 +176,7 @@ export default function ResourcesManagement({ lambda }) {
             register={register}
             disabledForm={!isEditMode}
             errors={errors}
+            triggerValidation={triggerValidation}
           />
         </Panel.Body>
       </form>

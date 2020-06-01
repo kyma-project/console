@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Toggle } from 'fundamental-react';
 import { useDebouncedCallback } from 'use-debounce';
 
@@ -12,6 +12,13 @@ import { CODE_AND_DEPENDENCIES_PANEL } from 'components/Lambdas/constants';
 
 import './CodeAndDependencies.scss';
 
+const DISABLED_CAUSES = {
+  VALID: 'VALID',
+  EMPTY_SOURCE: 'EMPTY_SOURCE',
+  INVALID_DEPS: 'INVALID_DEPS',
+  NO_CHANGES: 'NO_CHANGES',
+};
+
 export default function CodeAndDependencies({ lambda }) {
   const updateLambda = useUpdateLambda({
     lambda,
@@ -19,7 +26,9 @@ export default function CodeAndDependencies({ lambda }) {
   });
 
   const [showDiff, setShowDiff] = useState(false);
-  const [disableButton, setDisableButton] = useState(true);
+  const [disabledCause, setDisabledCause] = useState(
+    DISABLED_CAUSES.NO_CHANGES,
+  );
 
   const [code, setCode] = useState(lambda.source);
   const [controlledCode, setControlledCode] = useState(lambda.source);
@@ -30,13 +39,35 @@ export default function CodeAndDependencies({ lambda }) {
   );
 
   const [debouncedCallback] = useDebouncedCallback(() => {
-    checkDifference();
+    checkValidity();
   }, 150);
 
-  function checkDifference() {
+  useEffect(() => {
+    checkValidity();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  function checkValidity() {
+    const trimmedCode = (code || '').trim();
+    if (!trimmedCode) {
+      setDisabledCause(DISABLED_CAUSES.EMPTY_SOURCE);
+      return;
+    }
+
+    const deps = (dependencies || '').trim();
+    if (!(deps.startsWith('{') && deps.endsWith('}'))) {
+      setDisabledCause(DISABLED_CAUSES.INVALID_DEPS);
+      return;
+    }
+
     const isDiff =
       lambda.source !== code || lambda.dependencies !== dependencies;
-    setDisableButton(!isDiff);
+    if (!isDiff) {
+      setDisabledCause(DISABLED_CAUSES.NO_CHANGES);
+      return;
+    }
+
+    setDisabledCause(DISABLED_CAUSES.VALID);
   }
 
   function onChangeToggle() {
@@ -50,25 +81,49 @@ export default function CodeAndDependencies({ lambda }) {
       source: code,
       dependencies,
     });
-    setDisableButton(true);
+    setDisabledCause(DISABLED_CAUSES.NO_CHANGES);
   }
+
+  function checkPopupMessage() {
+    const messages = CODE_AND_DEPENDENCIES_PANEL.SAVE_BUTTON.POPUP_MESSAGE;
+    let message = '';
+    switch (disabledCause) {
+      case DISABLED_CAUSES.EMPTY_SOURCE: {
+        message = messages.EMPTY_SOURCE;
+        break;
+      }
+      case DISABLED_CAUSES.INVALID_DEPS: {
+        message = messages.INVALID_DEPS;
+        break;
+      }
+      case DISABLED_CAUSES.NO_CHANGES: {
+        message = messages.NO_CHANGES;
+        break;
+      }
+      default:
+        message = '';
+    }
+    return message;
+  }
+
+  const popupMessage = checkPopupMessage();
+  const disabled = !!popupMessage;
 
   const button = (
     <Button
       glyph="save"
-      option={disableButton ? 'light' : 'default'}
+      option={disabled ? 'light' : 'default'}
       typeAttr="button"
-      disabled={disableButton}
+      disabled={disabled}
       onClick={handleSave}
     >
       {CODE_AND_DEPENDENCIES_PANEL.SAVE_BUTTON.TEXT}
     </Button>
   );
-  const saveButton = !disableButton ? (
-    button
-  ) : (
+
+  const saveButton = disabled ? (
     <Tooltip
-      content={CODE_AND_DEPENDENCIES_PANEL.SAVE_BUTTON.POPUP_MESSAGE}
+      content={popupMessage}
       position="top"
       trigger="mouseenter"
       tippyProps={{
@@ -77,6 +132,8 @@ export default function CodeAndDependencies({ lambda }) {
     >
       {button}
     </Tooltip>
+  ) : (
+    button
   );
 
   const toggle = (

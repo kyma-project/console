@@ -53,8 +53,7 @@ export function serializeVariables({
           variableName,
         );
         const canOverrideBySBU =
-          bindingUsageVariableNames.filter(v => v === variableName).length ===
-          2;
+          bindingUsageVariableNames.filter(v => v === variableName).length > 1;
 
         if (canOverrideByCustomVar && canOverrideBySBU) {
           validation = VARIABLE_VALIDATION.CAN_OVERRIDE_BY_CUSTOM_ENV_AND_SBU;

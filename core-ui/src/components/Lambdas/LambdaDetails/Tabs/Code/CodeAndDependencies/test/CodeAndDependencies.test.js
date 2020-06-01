@@ -44,4 +44,50 @@ describe('CodeAndDependencies', () => {
       expect(editors).toHaveLength(2);
     });
   });
+
+  it('should not be able to save when source is empty', async () => {
+    const { getByText } = render(
+      <CodeAndDependencies lambda={{ ...lambdaMock, source: '' }} />,
+    );
+
+    await wait(() => {
+      const button = getByText(CODE_AND_DEPENDENCIES_PANEL.SAVE_BUTTON.TEXT);
+      expect(button).toBeDisabled();
+
+      const tooltip = document.querySelector(
+        `[data-original-title="${CODE_AND_DEPENDENCIES_PANEL.SAVE_BUTTON.POPUP_MESSAGE.EMPTY_SOURCE}"]`,
+      );
+      expect(tooltip).toBeInTheDocument();
+    });
+  });
+
+  it('should not be able to save when dependencies has invalid form', async () => {
+    const { getByText } = render(
+      <CodeAndDependencies lambda={{ ...lambdaMock, dependencies: 'aaa' }} />,
+    );
+
+    await wait(() => {
+      const button = getByText(CODE_AND_DEPENDENCIES_PANEL.SAVE_BUTTON.TEXT);
+      expect(button).toBeDisabled();
+
+      const tooltip = document.querySelector(
+        `[data-original-title="${CODE_AND_DEPENDENCIES_PANEL.SAVE_BUTTON.POPUP_MESSAGE.INVALID_DEPS}"]`,
+      );
+      expect(tooltip).toBeInTheDocument();
+    });
+  });
+
+  it('should not be able to save when there are no changes', async () => {
+    const { getByText } = render(<CodeAndDependencies lambda={lambdaMock} />);
+
+    await wait(() => {
+      const button = getByText(CODE_AND_DEPENDENCIES_PANEL.SAVE_BUTTON.TEXT);
+      expect(button).toBeDisabled();
+
+      const tooltip = document.querySelector(
+        `[data-original-title="${CODE_AND_DEPENDENCIES_PANEL.SAVE_BUTTON.POPUP_MESSAGE.NO_CHANGES}"]`,
+      );
+      expect(tooltip).toBeInTheDocument();
+    });
+  });
 });

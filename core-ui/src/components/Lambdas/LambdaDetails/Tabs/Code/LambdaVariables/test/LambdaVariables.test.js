@@ -134,7 +134,7 @@ describe('LambdaVariables + EditVariablesModal + EditVariablesForm', () => {
   );
 
   it(
-    'should cannot save variables if there are any custom variables',
+    'should not able to save variables if there are any custom variables',
     async () => {
       const { getByText } = render(
         <LambdaVariables
@@ -244,7 +244,7 @@ describe('LambdaVariables + EditVariablesModal + EditVariablesForm', () => {
   );
 
   it(
-    'should cannot save when user type duplicated names',
+    'should not able to save when user types duplicated names',
     async () => {
       const { getByText, getAllByPlaceholderText, getAllByText } = render(
         <LambdaVariables
@@ -280,7 +280,48 @@ describe('LambdaVariables + EditVariablesModal + EditVariablesForm', () => {
   );
 
   it(
-    'should cannot save when user type empty names - case with existing variable',
+    'should not able to save when user types restricted names',
+    async () => {
+      const { getByText, getAllByPlaceholderText, getAllByText } = render(
+        <LambdaVariables
+          lambda={lambdaMock}
+          customVariables={customVariables}
+          customValueFromVariables={[]}
+          injectedVariables={injectedVariables}
+        />,
+      );
+
+      const button = getByText(
+        ENVIRONMENT_VARIABLES_PANEL.EDIT_MODAL.OPEN_BUTTON.TEXT,
+      );
+      fireEvent.click(button);
+
+      const inputs = getAllByPlaceholderText(
+        ENVIRONMENT_VARIABLES_PANEL.PLACEHOLDERS.VARIABLE_NAME,
+      );
+      expect(inputs).toHaveLength(2);
+
+      fireEvent.change(inputs[0], { target: { value: 'PORT' } });
+      expect(
+        getAllByText(ENVIRONMENT_VARIABLES_PANEL.ERRORS.RESTRICTED),
+      ).toHaveLength(1);
+
+      const editButton = getByText(
+        ENVIRONMENT_VARIABLES_PANEL.EDIT_MODAL.CONFIRM_BUTTON.TEXT,
+      );
+      expect(editButton).toBeInTheDocument();
+      expect(editButton).toBeDisabled();
+
+      const tooltip = document.querySelector(
+        `[data-original-title="${ENVIRONMENT_VARIABLES_PANEL.EDIT_MODAL.CONFIRM_BUTTON.POPUP_MESSAGES.ERROR}"]`,
+      );
+      expect(tooltip).toBeInTheDocument();
+    },
+    timeout,
+  );
+
+  it(
+    'should not able to save when user types empty names - case with existing variable',
     async () => {
       const { getByText, getAllByPlaceholderText } = render(
         <LambdaVariables
@@ -302,9 +343,6 @@ describe('LambdaVariables + EditVariablesModal + EditVariablesForm', () => {
       expect(inputs).toHaveLength(2);
 
       fireEvent.change(inputs[0], { target: { value: '' } });
-      // expect(
-      //   getAllByText(ENVIRONMENT_VARIABLES_PANEL.ERRORS.EMPTY),
-      // ).toHaveLength(1);
 
       const editButton = getByText(
         ENVIRONMENT_VARIABLES_PANEL.EDIT_MODAL.CONFIRM_BUTTON.TEXT,
@@ -316,7 +354,7 @@ describe('LambdaVariables + EditVariablesModal + EditVariablesForm', () => {
   );
 
   it(
-    'should cannot save when user add new variables - without empty error message',
+    'should not able to save when user add new variables - without empty error message',
     async () => {
       const { getByText } = render(
         <LambdaVariables

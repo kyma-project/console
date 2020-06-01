@@ -6,11 +6,8 @@ import { CREATE_LAMBDA } from 'components/Lambdas/gql/mutations';
 import extractGraphQlErrors from 'shared/graphqlErrorExtractor';
 
 import { formatMessage } from 'components/Lambdas/helpers/misc';
-import {
-  GQL_MUTATIONS,
-  DEFAULT_LAMBDA_CODE,
-  DEFAULT_LAMBDA_DEPS,
-} from 'components/Lambdas/constants';
+import { GQL_MUTATIONS } from 'components/Lambdas/constants';
+import { CONFIG } from 'components/Lambdas/config';
 
 export const useCreateLambda = ({ redirect = true }) => {
   const notificationManager = useNotification();
@@ -73,28 +70,19 @@ export const useCreateLambda = ({ redirect = true }) => {
 };
 
 export function prepareCreateLambdaInput(name) {
-  const dependencies = formatMessage(DEFAULT_LAMBDA_DEPS, {
+  const dependencies = formatMessage(CONFIG.defaultLambdaDeps, {
     lambdaName: name,
   });
 
   return {
     labels: {},
-    source: DEFAULT_LAMBDA_CODE,
+    source: CONFIG.defaultLambdaCode,
     dependencies,
     resources: {
-      requests: {
-        cpu: '50m',
-        memory: '64Mi',
-      },
-      limits: {
-        cpu: '100m',
-        memory: '128Mi',
-      },
+      requests: {},
+      limits: {},
     },
-    replicas: {
-      min: 1,
-      max: 1,
-    },
+    replicas: {},
     env: [],
   };
 }

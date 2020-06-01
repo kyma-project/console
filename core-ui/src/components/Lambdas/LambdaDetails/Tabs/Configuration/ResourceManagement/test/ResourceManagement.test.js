@@ -5,10 +5,12 @@ import { lambdaMock } from 'components/Lambdas/helpers/testing';
 
 import ResourceManagement from '../ResourceManagement';
 
+import { formatMessage } from 'components/Lambdas/helpers/misc';
 import {
   BUTTONS,
   RESOURCES_MANAGEMENT_PANEL,
 } from 'components/Lambdas/constants';
+import { CONFIG } from 'components/Lambdas/config';
 
 // remove it after add 'mutationobserver-shim' to jest config https://github.com/jsdom/jsdom/issues/639
 const mutationObserverMock = jest.fn(function MutationObserver(callback) {
@@ -88,38 +90,33 @@ describe('ResourceManagement', () => {
     });
   }, 10000);
 
-  const replicasTestCases = [
-    {
-      name: 'should cannot save when user type non negative min replicas',
-      id: '#minReplicas',
-      errorMessage:
-        RESOURCES_MANAGEMENT_PANEL.ERROR_MESSAGES.MIN_REPLICAS_NON_NEGATIVE,
-    },
-    {
-      name: 'should cannot save when user type non negative max replicas',
-      id: '#maxReplicas',
-      errorMessage:
-        RESOURCES_MANAGEMENT_PANEL.ERROR_MESSAGES.MAX_REPLICAS_NON_NEGATIVE,
-    },
-  ];
-  for (const testCase of replicasTestCases) {
-    it(testCase.name, async () => {
-      const { getByText } = render(<ResourceManagement lambda={lambdaMock} />);
+  test.each([
+    [
+      'should cannot save when user type non negative min replicas',
+      '#minReplicas',
+      RESOURCES_MANAGEMENT_PANEL.ERROR_MESSAGES.MIN_REPLICAS_NON_NEGATIVE,
+    ],
+    [
+      'should cannot save when user type non negative max replicas',
+      '#maxReplicas',
+      RESOURCES_MANAGEMENT_PANEL.ERROR_MESSAGES.MAX_REPLICAS_NON_NEGATIVE,
+    ],
+  ])('%s', async (_, inputId, errorMessage) => {
+    const { getByText } = render(<ResourceManagement lambda={lambdaMock} />);
 
-      let editButton = getByText(editText);
-      fireEvent.click(editButton);
+    let editButton = getByText(editText);
+    fireEvent.click(editButton);
 
-      const inputs = document.querySelectorAll(testCase.id);
-      expect(inputs).toHaveLength(1);
-      fireEvent.input(inputs[0], { target: { value: '-1' } });
+    const inputs = document.querySelectorAll(inputId);
+    expect(inputs).toHaveLength(1);
+    fireEvent.input(inputs[0], { target: { value: '-1' } });
 
-      await wait(() => {
-        expect(getByText(testCase.errorMessage)).toBeInTheDocument();
-        const saveButton = getByText(saveText);
-        expect(saveButton).toBeDisabled();
-      });
+    await wait(() => {
+      expect(getByText(errorMessage)).toBeInTheDocument();
+      const saveButton = getByText(saveText);
+      expect(saveButton).toBeDisabled();
     });
-  }
+  });
 
   it('should not be able to save when user types greater min replicas than max replicas', async () => {
     const { getByText } = render(<ResourceManagement lambda={lambdaMock} />);
@@ -234,26 +231,58 @@ describe('ResourceManagement', () => {
     });
   });
 
+  it('should shows errors when user types min greater than max replicas', async () => {
+    const replicasLambda = {
+      ...lambdaMock,
+      replicas: {
+        min: 1,
+        max: 2,
+      },
+    };
+    const { getByText } = render(
+      <ResourceManagement lambda={replicasLambda} />,
+    );
+
+    let editButton = getByText(editText);
+    fireEvent.click(editButton);
+
+    const minReplicas = document.querySelector('#minReplicas');
+    fireEvent.input(minReplicas, { target: { value: '3' } });
+
+    await wait(() => {
+      expect(
+        getByText(
+          RESOURCES_MANAGEMENT_PANEL.ERROR_MESSAGES.MIN_REPLICAS_TOO_HIGH,
+        ),
+      ).toBeInTheDocument();
+      expect(
+        getByText(
+          RESOURCES_MANAGEMENT_PANEL.ERROR_MESSAGES.MAX_REPLICAS_TOO_LOW,
+        ),
+      ).toBeInTheDocument();
+    });
+  });
+
   test.each([
     [
       'should can save when user type good memory format for requests',
       '#requestsMemory',
-      '128Mi',
+      '20M',
     ],
     [
-      'should can save when user type wrong cpu format for requests',
+      'should can save when user type good cpu format for requests',
       '#requestsCpu',
       '50m',
     ],
     [
-      'should can save when user type wrong memory format for limits',
+      'should can save when user type good memory format for limits',
       '#limitsMemory',
-      '128Mi',
+      '550Mi',
     ],
     [
-      'should can save when user type wrong cpu format for limits',
+      'should can save when user type good cpu format for limits',
       '#limitsCpu',
-      '50m',
+      '120m',
     ],
   ])('%s', async (_, inputId, value) => {
     const { getByText } = render(<ResourceManagement lambda={lambdaMock} />);
@@ -276,40 +305,44 @@ describe('ResourceManagement', () => {
     [
       'should cannot save when user type wrong memory format for requests',
       '#requestsMemory',
-      RESOURCES_MANAGEMENT_PANEL.ERROR_MESSAGES.MEMORY,
+      RESOURCES_MANAGEMENT_PANEL.ERROR_MESSAGES.MEMORY.DEFAULT,
     ],
     [
       'should cannot save when user type wrong cpu format for requests',
       '#requestsCpu',
-      RESOURCES_MANAGEMENT_PANEL.ERROR_MESSAGES.CPU,
+      RESOURCES_MANAGEMENT_PANEL.ERROR_MESSAGES.CPU.DEFAULT,
     ],
     [
       'should cannot save when user type wrong memory format for limits',
       '#limitsMemory',
-      RESOURCES_MANAGEMENT_PANEL.ERROR_MESSAGES.MEMORY,
+      RESOURCES_MANAGEMENT_PANEL.ERROR_MESSAGES.MEMORY.DEFAULT,
     ],
     [
       'should cannot save when user type wrong cpu format for limits',
       '#limitsCpu',
-      RESOURCES_MANAGEMENT_PANEL.ERROR_MESSAGES.CPU,
+      RESOURCES_MANAGEMENT_PANEL.ERROR_MESSAGES.CPU.DEFAULT,
     ],
-  ])('%s', async (_, inputId, errorMessage) => {
-    const { getByText } = render(<ResourceManagement lambda={lambdaMock} />);
+  ])(
+    '%s',
+    async (_, inputId, errorMessage) => {
+      const { getByText } = render(<ResourceManagement lambda={lambdaMock} />);
 
-    let editButton = getByText(editText);
-    fireEvent.click(editButton);
+      let editButton = getByText(editText);
+      fireEvent.click(editButton);
 
-    const inputs = document.querySelectorAll(inputId);
-    expect(inputs).toHaveLength(1);
+      const inputs = document.querySelectorAll(inputId);
+      expect(inputs).toHaveLength(1);
 
-    fireEvent.input(inputs[0], { target: { value: '2137epstein' } });
+      fireEvent.input(inputs[0], { target: { value: '2137epstein' } });
 
-    await wait(() => {
-      expect(getByText(errorMessage)).toBeInTheDocument();
-      const saveButton = getByText(saveText);
-      expect(saveButton).toBeDisabled();
-    });
-  });
+      await wait(() => {
+        expect(getByText(errorMessage)).toBeInTheDocument();
+        const saveButton = getByText(saveText);
+        expect(saveButton).toBeDisabled();
+      });
+    },
+    10000,
+  );
 
   it('should be able to save when user clears inputs for request and limits', async () => {
     const { getByText, getAllByText } = render(
@@ -357,10 +390,10 @@ describe('ResourceManagement', () => {
 
     await wait(() => {
       expect(
-        getAllByText(RESOURCES_MANAGEMENT_PANEL.ERROR_MESSAGES.MEMORY),
+        getAllByText(RESOURCES_MANAGEMENT_PANEL.ERROR_MESSAGES.MEMORY.DEFAULT),
       ).toHaveLength(2);
       expect(
-        getAllByText(RESOURCES_MANAGEMENT_PANEL.ERROR_MESSAGES.CPU),
+        getAllByText(RESOURCES_MANAGEMENT_PANEL.ERROR_MESSAGES.CPU.DEFAULT),
       ).toHaveLength(2);
       const saveButton = getByText(saveText);
       expect(saveButton).toBeDisabled();
@@ -375,10 +408,10 @@ describe('ResourceManagement', () => {
       expect(inputs[4].value).toEqual(defaultResourceValues[2]);
       expect(inputs[5].value).toEqual(defaultResourceValues[3]);
     });
-  });
+  }, 10000);
 
   it('should shows errors when backend returns incorrect resources', async () => {
-    const replicasLambda = {
+    const resourcesLambda = {
       ...lambdaMock,
       resources: {
         requests: {
@@ -392,7 +425,7 @@ describe('ResourceManagement', () => {
       },
     };
     const { getByText, getAllByText } = render(
-      <ResourceManagement lambda={replicasLambda} />,
+      <ResourceManagement lambda={resourcesLambda} />,
     );
 
     let editButton = getByText(editText);
@@ -400,11 +433,197 @@ describe('ResourceManagement', () => {
 
     await wait(() => {
       expect(
-        getAllByText(RESOURCES_MANAGEMENT_PANEL.ERROR_MESSAGES.MEMORY),
+        getAllByText(RESOURCES_MANAGEMENT_PANEL.ERROR_MESSAGES.MEMORY.DEFAULT),
       ).toHaveLength(2);
       expect(
-        getAllByText(RESOURCES_MANAGEMENT_PANEL.ERROR_MESSAGES.CPU),
+        getAllByText(RESOURCES_MANAGEMENT_PANEL.ERROR_MESSAGES.CPU.DEFAULT),
       ).toHaveLength(2);
     });
+  });
+
+  it('should shows errors when user types requests greater than limits memory', async () => {
+    const resourcesLambda = {
+      ...lambdaMock,
+      resources: {
+        requests: {
+          memory: '10Mi',
+          cpu: '100m',
+        },
+        limits: {
+          memory: '20Mi',
+          cpu: '100m',
+        },
+      },
+    };
+    const { getByText } = render(
+      <ResourceManagement lambda={resourcesLambda} />,
+    );
+
+    let editButton = getByText(editText);
+    fireEvent.click(editButton);
+
+    const requestsMemory = document.querySelector('#requestsMemory');
+    fireEvent.input(requestsMemory, { target: { value: '30Gi' } });
+
+    await wait(() => {
+      expect(
+        getByText(
+          RESOURCES_MANAGEMENT_PANEL.ERROR_MESSAGES.MEMORY.REQUEST_TOO_HIGH,
+        ),
+      ).toBeInTheDocument();
+      expect(
+        getByText(
+          RESOURCES_MANAGEMENT_PANEL.ERROR_MESSAGES.MEMORY.LIMITS_TOO_LOW,
+        ),
+      ).toBeInTheDocument();
+    });
+  });
+
+  it('should shows errors when user types memory under minimum', async () => {
+    const resourcesLambda = {
+      ...lambdaMock,
+      resources: {
+        requests: {
+          memory: '20Mi',
+          cpu: '20m',
+        },
+        limits: {
+          memory: '30Mi',
+          cpu: '30m',
+        },
+      },
+    };
+    const { getByText, getAllByText } = render(
+      <ResourceManagement lambda={resourcesLambda} />,
+    );
+
+    let editButton = getByText(editText);
+    fireEvent.click(editButton);
+
+    const requestsMemory = document.querySelector('#requestsMemory');
+    fireEvent.input(requestsMemory, { target: { value: '12Mi' } });
+    const limitsMemory = document.querySelector('#limitsMemory');
+    fireEvent.input(limitsMemory, { target: { value: '14Mi' } });
+
+    const message = formatMessage(
+      RESOURCES_MANAGEMENT_PANEL.ERROR_MESSAGES.MEMORY.TOO_LOW,
+      { minValue: CONFIG.resources.min.memory },
+    );
+    await wait(() => {
+      expect(getAllByText(message)).toHaveLength(2);
+    });
+  });
+
+  it('should shows errors when user types requests greater than limits cpu', async () => {
+    const resourcesLambda = {
+      ...lambdaMock,
+      resources: {
+        requests: {
+          memory: '20Mi',
+          cpu: '50m',
+        },
+        limits: {
+          memory: '20Mi',
+          cpu: '100m',
+        },
+      },
+    };
+    const { getByText } = render(
+      <ResourceManagement lambda={resourcesLambda} />,
+    );
+
+    let editButton = getByText(editText);
+    fireEvent.click(editButton);
+
+    const requestsCpu = document.querySelector('#requestsCpu');
+    fireEvent.input(requestsCpu, { target: { value: '0.5' } });
+
+    await wait(() => {
+      expect(
+        getByText(
+          RESOURCES_MANAGEMENT_PANEL.ERROR_MESSAGES.CPU.REQUEST_TOO_HIGH,
+        ),
+      ).toBeInTheDocument();
+      expect(
+        getByText(RESOURCES_MANAGEMENT_PANEL.ERROR_MESSAGES.CPU.LIMITS_TOO_LOW),
+      ).toBeInTheDocument();
+    });
+  });
+
+  it('should shows errors when user types cpu under minimum', async () => {
+    const resourcesLambda = {
+      ...lambdaMock,
+      resources: {
+        requests: {
+          memory: '20Mi',
+          cpu: '20m',
+        },
+        limits: {
+          memory: '30Mi',
+          cpu: '30m',
+        },
+      },
+    };
+    const { getByText, getAllByText } = render(
+      <ResourceManagement lambda={resourcesLambda} />,
+    );
+
+    let editButton = getByText(editText);
+    fireEvent.click(editButton);
+
+    const requestsCpu = document.querySelector('#requestsCpu');
+    fireEvent.input(requestsCpu, { target: { value: '0.005' } });
+    const limitsCpu = document.querySelector('#limitsCpu');
+    fireEvent.input(limitsCpu, { target: { value: '0.007' } });
+
+    const message = formatMessage(
+      RESOURCES_MANAGEMENT_PANEL.ERROR_MESSAGES.MEMORY.TOO_LOW,
+      { minValue: CONFIG.resources.min.cpu },
+    );
+    await wait(() => {
+      expect(getAllByText(message)).toHaveLength(2);
+    });
+  });
+
+  it('should update form state after updating lambda', async () => {
+    const resourcesLambda = {
+      ...lambdaMock,
+      resources: {
+        requests: {
+          memory: '20Mi',
+          cpu: '20m',
+        },
+        limits: {
+          memory: '30Mi',
+          cpu: '30m',
+        },
+      },
+    };
+    const { rerender } = render(
+      <ResourceManagement lambda={resourcesLambda} />,
+    );
+
+    const requestsCpu = document.querySelector('#requestsCpu');
+    expect(requestsCpu.value).toEqual('20m');
+    const limitsCpu = document.querySelector('#requestsMemory');
+    expect(limitsCpu.value).toEqual('20Mi');
+
+    const resourcesLambdaAfterUpdate = {
+      ...lambdaMock,
+      resources: {
+        requests: {
+          memory: '18Mi',
+          cpu: '16m',
+        },
+        limits: {
+          memory: '30Mi',
+          cpu: '30m',
+        },
+      },
+    };
+    rerender(<ResourceManagement lambda={resourcesLambdaAfterUpdate} />);
+
+    expect(requestsCpu.value).toEqual('16m');
+    expect(limitsCpu.value).toEqual('18Mi');
   });
 });

@@ -3,7 +3,13 @@ import * as yup from 'yup';
 import {
   CPU_REGEXP,
   MEMORY_REGEXP,
+  normalizeCPU,
+  normalizeMemory,
+  compareCpu,
+  compareMemory,
 } from 'components/Lambdas/helpers/resources';
+import { formatMessage } from 'components/Lambdas/helpers/misc';
+import { CONFIG } from 'components/Lambdas/config';
 import { RESOURCES_MANAGEMENT_PANEL } from 'components/Lambdas/constants';
 
 export const inputClassName = 'resource_input';
@@ -22,6 +28,13 @@ export const inputNames = {
 };
 
 const errorMessages = RESOURCES_MANAGEMENT_PANEL.ERROR_MESSAGES;
+const MIN_MEMORY_VALUE_ERROR = formatMessage(errorMessages.MEMORY.TOO_LOW, {
+  minValue: CONFIG.resources?.min?.memory || '',
+});
+const MIN_CPU_VALUE_ERROR = formatMessage(errorMessages.CPU.TOO_LOW, {
+  minValue: CONFIG.resources?.min?.cpu || '',
+});
+
 export const schema = yup.object().shape({
   [inputNames.replicas.min]: yup
     .number()
@@ -47,20 +60,94 @@ export const schema = yup.object().shape({
     ) {
       return arg >= this.parent.minReplicas;
     }),
-  [inputNames.requests.cpu]: yup.string().matches(CPU_REGEXP, {
-    excludeEmptyString: true,
-    message: errorMessages.CPU,
-  }),
-  [inputNames.limits.cpu]: yup.string().matches(CPU_REGEXP, {
-    excludeEmptyString: true,
-    message: errorMessages.CPU,
-  }),
-  [inputNames.requests.memory]: yup.string().matches(MEMORY_REGEXP, {
-    excludeEmptyString: true,
-    message: errorMessages.MEMORY,
-  }),
-  [inputNames.limits.memory]: yup.string().matches(MEMORY_REGEXP, {
-    excludeEmptyString: true,
-    message: errorMessages.MEMORY,
-  }),
+  [inputNames.requests.cpu]: yup
+    .string()
+    .matches(CPU_REGEXP, {
+      excludeEmptyString: true,
+      message: errorMessages.CPU.DEFAULT,
+    })
+    .test('matchMinRequestCPU', MIN_CPU_VALUE_ERROR, function(arg) {
+      return testMinCPU(arg);
+    })
+    .test('matchRequestCPU', errorMessages.CPU.REQUEST_TOO_HIGH, function(arg) {
+      const normalizedLimit = normalizeCPU(this.parent.limitsCpu);
+      if (!normalizedLimit) {
+        return true;
+      }
+
+      const normalizedRequest = normalizeCPU(arg);
+      return normalizedRequest <= normalizedLimit;
+    }),
+  [inputNames.limits.cpu]: yup
+    .string()
+    .matches(CPU_REGEXP, {
+      excludeEmptyString: true,
+      message: errorMessages.CPU.DEFAULT,
+    })
+    .test('matchMinLimitCPU', MIN_CPU_VALUE_ERROR, function(arg) {
+      return testMinCPU(arg);
+    })
+    .test('matchLimitCPU', errorMessages.CPU.LIMITS_TOO_LOW, function(arg) {
+      if (!arg) {
+        return true;
+      }
+
+      const normalizedRequest = normalizeCPU(this.parent.requestsCpu);
+      const normalizedLimit = normalizeCPU(arg);
+      return normalizedRequest <= normalizedLimit;
+    }),
+  [inputNames.requests.memory]: yup
+    .string()
+    .matches(MEMORY_REGEXP, {
+      excludeEmptyString: true,
+      message: errorMessages.MEMORY.DEFAULT,
+    })
+    .test('matchMinRequestMemory', MIN_MEMORY_VALUE_ERROR, function(arg) {
+      return testMinMemory(arg);
+    })
+    .test('matchRequestMemory', errorMessages.MEMORY.REQUEST_TOO_HIGH, function(
+      arg,
+    ) {
+      const normalizedLimit = normalizeMemory(this.parent.limitsMemory);
+      if (!normalizedLimit) {
+        return true;
+      }
+
+      const normalizedRequest = normalizeMemory(arg);
+      return normalizedRequest <= normalizedLimit;
+    }),
+  [inputNames.limits.memory]: yup
+    .string()
+    .matches(MEMORY_REGEXP, {
+      excludeEmptyString: true,
+      message: errorMessages.MEMORY.DEFAULT,
+    })
+    .test('matchMinLimitMemory', MIN_MEMORY_VALUE_ERROR, function(arg) {
+      return testMinMemory(arg);
+    })
+    .test('matchLimitMemory', errorMessages.MEMORY.LIMITS_TOO_LOW, function(
+      arg,
+    ) {
+      if (!arg) {
+        return true;
+      }
+
+      const normalizedRequest = normalizeMemory(this.parent.requestsMemory);
+      const normalizedLimit = normalizeMemory(arg);
+      return normalizedRequest <= normalizedLimit;
+    }),
 });
+
+function testMinCPU(arg) {
+  if (!arg) {
+    return true;
+  }
+  return compareCpu(CONFIG.resources?.min?.cpu, arg);
+}
+
+function testMinMemory(arg) {
+  if (!arg) {
+    return true;
+  }
+  return compareMemory(CONFIG.resources?.min?.memory, arg);
+}

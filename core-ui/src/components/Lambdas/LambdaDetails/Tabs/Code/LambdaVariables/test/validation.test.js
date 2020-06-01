@@ -7,6 +7,7 @@ import {
   VARIABLE_VALIDATION,
   VARIABLE_TYPE,
 } from 'components/Lambdas/helpers/lambdaVariables';
+import { CONFIG } from 'components/Lambdas/config';
 
 describe('validateVariables', () => {
   test('should return validated array', () => {
@@ -278,7 +279,30 @@ describe('getValidationStatus', () => {
     expect(getValidationStatus(args)).toEqual(VARIABLE_VALIDATION.DUPLICATED);
   });
 
-  test('should return DUPLICATED status', () => {
+  test('should return RESTRICTED status', () => {
+    const restrictedVariables = ['PORT', 'HOST'];
+
+    const userVariables = [
+      {
+        id: 'variable',
+        name: 'PORT',
+      },
+      {
+        id: 'variable1',
+        name: 'variable1',
+      },
+    ];
+    const args = {
+      userVariables,
+      restrictedVariables,
+      varID: 'variable',
+      varName: 'PORT',
+      varDirty: true,
+    };
+    expect(getValidationStatus(args)).toEqual(VARIABLE_VALIDATION.RESTRICTED);
+  });
+
+  test('should return CAN_OVERRIDE_SBU status', () => {
     const injectedVariables = [
       {
         id: 'variable1',

@@ -9,7 +9,12 @@ import { errorClassName, inputClassName, inputNames } from './shared';
 
 const replicasMode = RESOURCES_MANAGEMENT_PANEL.REPLICAS;
 
-export default function LambdaReplicas({ disabledForm, register, errors }) {
+export default function LambdaReplicas({
+  disabledForm,
+  register,
+  errors,
+  triggerValidation = () => void 0,
+}) {
   const panels = [
     {
       title: replicasMode.MIN_NUMBER.TITLE,
@@ -23,6 +28,9 @@ export default function LambdaReplicas({ disabledForm, register, errors }) {
             disabled={disabledForm}
             type="number"
             _ref={register}
+            onChange={async () => {
+              await triggerValidation(inputNames.replicas.max);
+            }}
             min="0"
           />
           {errors?.minReplicas?.message && (
@@ -43,6 +51,9 @@ export default function LambdaReplicas({ disabledForm, register, errors }) {
             min="0"
             name={inputNames.replicas.max}
             type="number"
+            onChange={async () => {
+              await triggerValidation(inputNames.replicas.min);
+            }}
             _ref={register}
           />
           {errors?.maxReplicas?.message && (

@@ -3,6 +3,7 @@ import {
   VARIABLE_VALIDATION,
   ERROR_VARIABLE_VALIDATION,
 } from 'components/Lambdas/helpers/lambdaVariables';
+import { CONFIG } from 'components/Lambdas/config';
 
 export function validateVariables(
   customVariables = [],
@@ -12,6 +13,7 @@ export function validateVariables(
     const validation = getValidationStatus({
       userVariables: array,
       injectedVariables,
+      restrictedVariables: CONFIG.restrictedVariables,
       varName: variable.name,
       varID: variable.id,
       varDirty: variable.dirty,
@@ -56,6 +58,7 @@ export function validateVariable(variables = [], currentVariable = {}) {
 export function getValidationStatus({
   userVariables = [],
   injectedVariables = [],
+  restrictedVariables = [],
   varName,
   varID,
   varDirty = false,
@@ -66,6 +69,10 @@ export function getValidationStatus({
       return VARIABLE_VALIDATION.EMPTY;
     }
     return VARIABLE_VALIDATION.NONE;
+  }
+
+  if (restrictedVariables.includes(varName)) {
+    return VARIABLE_VALIDATION.RESTRICTED;
   }
 
   // invalidate
