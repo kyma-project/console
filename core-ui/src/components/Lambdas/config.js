@@ -38,7 +38,7 @@ const defaultConfig = {
   },
   triggerSubscriber: defaultTriggerSubscriber,
   logging: {
-    deploymentContainerName: 'function',
+    deploymentContainerName: 'lambda',
     jobContainerName: 'executor',
   },
   defaultLambdaCode: defaultCode,
