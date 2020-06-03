@@ -10,7 +10,7 @@ const resolveType = status => {
     console.warn(`'autoResolveType' prop requires a non-string status value`);
     return undefined;
   }
-  console.log(typeof status);
+
   switch (status.toUpperCase()) {
     case 'INITIAL':
       return 'info';

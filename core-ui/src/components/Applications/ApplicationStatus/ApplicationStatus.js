@@ -7,15 +7,14 @@ export default function ApplicationStatus({ application }) {
   switch (status) {
     case STATUSES.NOT_INSTALLED:
       return (
-        <StatusBadge status={STATUSES.NOT_INSTALLED}>
-          This application is not active for your Runtime. You can edit it, but
-          you can't bind it to a Namespace.
+        <StatusBadge tooltipContent="This application is not active for your Runtime. You can edit it, but you can't bind it to a Namespace.">
+          {status}
         </StatusBadge>
       );
     case 'SERVING':
-      return <StatusBadge status={status} type="success" />;
+      return <StatusBadge type="success">{status}</StatusBadge>;
     default:
-      return <StatusBadge status={status} autoResolveType />;
+      return <StatusBadge autoResolveType>{status}</StatusBadge>;
   }
 }
 

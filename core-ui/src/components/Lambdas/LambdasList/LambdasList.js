@@ -34,8 +34,8 @@ function LambdaStatusBadge({ status }) {
   }
 
   return (
-    <StatusBadge status={texts.TITLE} type={badgeType}>
-      {tooltipText}
+    <StatusBadge tooltipContent={tooltipText} type={badgeType}>
+      {texts.TITLE}
     </StatusBadge>
   );
 }
