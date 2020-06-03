@@ -44,7 +44,8 @@ export const NODE_PARAM_PREFIX = `~`;
       },
       appLoadingIndicator: {
         hideAutomatically: false
-      }
+      },
+      customSandboxRules: ['allow-downloads'],
     },
     lifecycleHooks: {
       luigiAfterInit: () => {
