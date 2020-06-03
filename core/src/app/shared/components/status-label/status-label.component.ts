@@ -19,6 +19,10 @@ export class StatusLabelComponent {
   }
 
   public getStatusClass = (type?: string) => {
+    if (!type) {
+      return '';
+    }
+
     switch (type.toUpperCase()) {
       case 'INITIAL':
       case 'INFO':
