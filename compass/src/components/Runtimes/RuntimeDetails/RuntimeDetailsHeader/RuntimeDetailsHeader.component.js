@@ -24,7 +24,7 @@ class RuntimeDetailsHeader extends React.Component {
       <PageHeader breadcrumbItems={breadcrumbItems} title={name}>
         {status && (
           <PageHeader.Column title="Status" columnSpan={null}>
-            {<StatusBadge autoResolveType status={status.condition} />}
+            {<StatusBadge autoResolveType>{status.condition}</StatusBadge>}
           </PageHeader.Column>
         )}
         <PageHeader.Column title="Description" columnSpan={null}>

@@ -23,8 +23,8 @@ class ServiceBrokers extends React.Component {
           const type = item.status.ready === true ? 'success' : 'error';
 
           return (
-            <StatusBadge type={type} status={status}>
-              {item.status.message}
+            <StatusBadge tooltipContent={item.status.message} type={type}>
+              {status}
             </StatusBadge>
           );
         })(),

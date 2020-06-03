@@ -47,14 +47,11 @@ class Applications extends React.Component {
       scenarios={(application.labels && application.labels.scenarios) || []}
     />,
     <Counter>{application.packages.totalCount}</Counter>,
-    <StatusBadge
-      type={getBadgeTypeForStatus(application.status)}
-      status={
-        application.status && application.status.condition
-          ? application.status.condition
-          : 'UNKNOWN'
-      }
-    />,
+    <StatusBadge type={getBadgeTypeForStatus(application.status)}>
+      {application.status && application.status.condition
+        ? application.status.condition
+        : 'UNKNOWN'}
+    </StatusBadge>,
   ];
 
   actions = [

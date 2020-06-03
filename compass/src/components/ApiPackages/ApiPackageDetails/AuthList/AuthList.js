@@ -10,8 +10,11 @@ AuthList.propTypes = {
 };
 
 const AuthStatus = ({ timestamp, message, reason, condition }) => (
-  <StatusBadge status={condition} autoResolveType>
-    {`[${timestamp}] ${reason}: ${message}`}
+  <StatusBadge
+    tooltipContent={`[${timestamp}] ${reason}: ${message}`}
+    autoResolveType
+  >
+    {condition}
   </StatusBadge>
 );
 

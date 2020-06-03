@@ -160,8 +160,11 @@ const Status = ({ instance }) => {
   instance.status = undefined;
   const type = instance.status ? instance.status.type : 'UNKNOWN';
   return (
-    <StatusBadge status={type} type={getBadgeTypeForStatus(type)}>
-      {instance.status?.message}
+    <StatusBadge
+      tooltipContent={instance.status?.message}
+      type={getBadgeTypeForStatus(type)}
+    >
+      {type}
     </StatusBadge>
   );
 };

@@ -89,8 +89,9 @@ const AddonPanel: React.FunctionComponent<AddonPanelProps> = ({ config }) => {
         <ReactShared.StatusBadge
           autoResolveType={true}
           className="fd-has-margin-left-s"
-          status={config.status.phase}
-        />
+        >
+          {config.status.phase}
+        </ReactShared.StatusBadge>
       }
       className="fd-has-margin-bottom-s addon-collapsible-panel"
     >
