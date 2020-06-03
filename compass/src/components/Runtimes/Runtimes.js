@@ -30,10 +30,9 @@ const runtimeRowRenderer = r => [
   ['scenarios', <ScenariosDisplay scenarios={r.labels.scenarios || []} />],
   [
     'status',
-    <StatusBadge
-      type={getBadgeTypeForStatus(r.status)}
-      status={r.status && r.status.condition ? r.status.condition : 'UNKNOWN'}
-    />,
+    <StatusBadge type={getBadgeTypeForStatus(r.status)}>
+      {r.status && r.status.condition ? r.status.condition : 'UNKNOWN'}
+    </StatusBadge>,
   ],
 ];
 
