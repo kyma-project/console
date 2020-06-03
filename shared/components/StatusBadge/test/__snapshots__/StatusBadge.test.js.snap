@@ -2,6 +2,6 @@
 
 exports[`StatusBadge displays warning when autoResolveType is set and "children" is a node 1`] = `
 Array [
-  "'autoResolveType' prop requires a non-string status value",
+  "'autoResolveType' prop requires 'children' prop to be a string.",
 ]
 `;

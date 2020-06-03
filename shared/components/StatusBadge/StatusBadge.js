@@ -7,7 +7,9 @@ import { Tooltip } from '../Tooltip/Tooltip';
 
 const resolveType = status => {
   if (typeof status !== 'string') {
-    console.warn(`'autoResolveType' prop requires a non-string status value`);
+    console.warn(
+      `'autoResolveType' prop requires 'children' prop to be a string.`,
+    );
     return undefined;
   }
 
