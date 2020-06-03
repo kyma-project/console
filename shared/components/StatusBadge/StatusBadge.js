@@ -6,6 +6,11 @@ import classNames from 'classnames';
 import { Tooltip } from '../Tooltip/Tooltip';
 
 const resolveType = status => {
+  if (typeof status !== 'string') {
+    console.warn(`'autoResolveType' prop requires a non-string status value`);
+    return undefined;
+  }
+  console.log(typeof status);
   switch (status.toUpperCase()) {
     case 'INITIAL':
       return 'info';
@@ -31,32 +36,32 @@ const resolveType = status => {
 };
 
 export const StatusBadge = ({
-  status,
+  tooltipContent,
   type,
-  children,
+  children: value,
   autoResolveType = false,
   tooltipProps = {},
   className,
 }) => {
-  if (autoResolveType) type = resolveType(status);
+  if (autoResolveType) type = resolveType(value);
 
   const classes = classNames(
     'status-badge',
     {
       ['status-badge--' + type]: type,
-      'has-tooltip': children,
+      'has-tooltip': tooltipContent,
     },
     className,
   );
 
   const badgeElement = (
     <Badge role="status" modifier="filled" className={classes}>
-      {status}
+      {value}
     </Badge>
   );
 
-  return children ? (
-    <Tooltip content={children} {...tooltipProps}>
+  return tooltipContent ? (
+    <Tooltip content={tooltipContent} {...tooltipProps}>
       {badgeElement}
     </Tooltip>
   ) : (
@@ -65,6 +70,7 @@ export const StatusBadge = ({
 };
 
 StatusBadge.propTypes = {
+  tooltipContent: PropTypes.node,
   status: PropTypes.string.isRequired,
   type: PropTypes.oneOf(['success', 'warning', 'error', 'info']),
   autoResolveType: PropTypes.bool,
