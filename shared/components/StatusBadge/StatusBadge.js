@@ -71,7 +71,6 @@ export const StatusBadge = ({
 
 StatusBadge.propTypes = {
   tooltipContent: PropTypes.node,
-  status: PropTypes.string.isRequired,
   type: PropTypes.oneOf(['success', 'warning', 'error', 'info']),
   autoResolveType: PropTypes.bool,
   tooltipProps: PropTypes.object,
