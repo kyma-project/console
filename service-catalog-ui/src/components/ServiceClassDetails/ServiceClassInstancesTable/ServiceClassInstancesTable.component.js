@@ -31,10 +31,10 @@ export class ServiceClassInstancesTable extends Component {
         </Link>
       </LinkButton>,
       <StatusBadge
-        status={instance.status.type}
+        tooltipContent={instance.status.message}
         type={getBadgeTypeForStatus(instance.status.type)}
       >
-        {instance.status.message}
+        {instance.status.type}
       </StatusBadge>,
     ];
 
