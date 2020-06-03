@@ -71,13 +71,13 @@ export const adminUser = Role(
 );
 
 const chooseLoginRole = async t => {
-  try {
-    await Selector('#login').visible();
-    console.log('One login method detected...');
-  } catch (e) {
-    console.log(
-      'Multiple login methods detected, choosing the email method...',
-    );
+  const oneMethodDetected = await Selector('#login')();
+  console.log(
+    oneMethodDetected
+      ? 'One login method detected...'
+      : 'Multiple login methods detected, choosing the email method...',
+  );
+  if (!oneMethodDetected) {
     await t.click(Selector('.dex-btn-icon--local'));
   }
 };
