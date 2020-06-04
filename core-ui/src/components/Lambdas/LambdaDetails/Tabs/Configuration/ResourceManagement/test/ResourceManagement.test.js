@@ -92,14 +92,14 @@ describe('ResourceManagement', () => {
 
   test.each([
     [
-      'should cannot save when user type non negative min replicas',
+      'should not be able to save when user types non negative min replicas',
       '#minReplicas',
-      RESOURCES_MANAGEMENT_PANEL.ERROR_MESSAGES.MIN_REPLICAS_NON_NEGATIVE,
+      RESOURCES_MANAGEMENT_PANEL.ERROR_MESSAGES.MIN_REPLICAS_POSITIVE,
     ],
     [
-      'should cannot save when user type non negative max replicas',
+      'should not be able to save when user types non negative max replicas',
       '#maxReplicas',
-      RESOURCES_MANAGEMENT_PANEL.ERROR_MESSAGES.MAX_REPLICAS_NON_NEGATIVE,
+      RESOURCES_MANAGEMENT_PANEL.ERROR_MESSAGES.MAX_REPLICAS_POSITIVE,
     ],
   ])('%s', async (_, inputId, errorMessage) => {
     const { getByText } = render(<ResourceManagement lambda={lambdaMock} />);
@@ -146,7 +146,25 @@ describe('ResourceManagement', () => {
     });
   });
 
-  it('should can save when user type 0 for min and max replicas', async () => {
+  it('should not be able to save when user types 0 for min replicas', async () => {
+    const { getByText } = render(<ResourceManagement lambda={lambdaMock} />);
+
+    let editButton = getByText(editText);
+    fireEvent.click(editButton);
+
+    const minReplicas = document.querySelector('#minReplicas');
+    const maxReplicas = document.querySelector('#maxReplicas');
+
+    fireEvent.input(minReplicas, { target: { value: '0' } });
+    fireEvent.input(maxReplicas, { target: { value: '1' } });
+
+    await wait(() => {
+      const saveButton = getByText(saveText);
+      expect(saveButton).toBeDisabled();
+    });
+  });
+
+  it('should not be able to save when user types 0 for min and max replicas', async () => {
     const { getByText } = render(<ResourceManagement lambda={lambdaMock} />);
 
     let editButton = getByText(editText);
@@ -160,7 +178,7 @@ describe('ResourceManagement', () => {
 
     await wait(() => {
       const saveButton = getByText(saveText);
-      expect(saveButton).not.toBeDisabled();
+      expect(saveButton).toBeDisabled();
     });
   });
 

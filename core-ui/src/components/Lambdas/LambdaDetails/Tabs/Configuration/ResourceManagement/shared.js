@@ -41,8 +41,8 @@ export const schema = yup.object().shape({
     .transform((val, originalVal) => {
       return originalVal === '' ? -1 : val; // -1 so that instead of throwing errors about NaN it will pass validation here, but fail on min(0) with nicer error message
     })
-    .min(0, errorMessages.MIN_REPLICAS_NON_NEGATIVE)
-    .integer(errorMessages.MIN_REPLICAS_NON_NEGATIVE)
+    .positive(errorMessages.MIN_REPLICAS_POSITIVE)
+    .integer(errorMessages.MIN_REPLICAS_POSITIVE)
     .test('matchMinReplicas', errorMessages.MIN_REPLICAS_TOO_HIGH, function(
       arg,
     ) {
@@ -53,8 +53,8 @@ export const schema = yup.object().shape({
     .transform((val, originalVal) => {
       return originalVal === '' ? -1 : val; // -1 so that instead of throwing errors about NaN it will pass validation here, but fail on min(0) with nicer error message
     })
-    .min(0, errorMessages.MAX_REPLICAS_NON_NEGATIVE)
-    .integer(errorMessages.MAX_REPLICAS_NON_NEGATIVE)
+    .positive(errorMessages.MAX_REPLICAS_POSITIVE)
+    .integer(errorMessages.MAX_REPLICAS_POSITIVE)
     .test('matchMaxReplicas', errorMessages.MAX_REPLICAS_TOO_LOW, function(
       arg,
     ) {

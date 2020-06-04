@@ -19,9 +19,6 @@ const defaultTriggerSubscriber = {
 const defaultConfig = {
   functionUsageKind: 'serverless-function',
   restrictedVariables: [
-    'K_REVISION',
-    'K_CONFIGURATION',
-    'K_SERVICE',
     'FUNC_RUNTIME',
     'FUNC_HANDLER',
     'FUNC_TIMEOUT',
@@ -29,6 +26,8 @@ const defaultConfig = {
     'PORT',
     'MOD_NAME',
     'NODE_PATH',
+    'REQ_MB_LIMIT',
+    'FUNC_MEMORY_LIMIT', // https://github.com/kubeless/runtimes/blob/master/stable/nodejs/kubeless.js
   ],
   resources: {
     min: {

@@ -254,12 +254,10 @@ export const RESOURCES_MANAGEMENT_PANEL = {
     },
     MIN_REPLICAS_TOO_HIGH:
       'Minimum number of replicas has to be equal to or lower than maximum.',
-    MIN_REPLICAS_NON_NEGATIVE:
-      'Minimum replicas must be a non-negative integer.',
+    MIN_REPLICAS_POSITIVE: 'Minimum replicas must be a positive integer.',
     MAX_REPLICAS_TOO_LOW:
       'Maximum number of replicas has to be equal or greater than minimum.',
-    MAX_REPLICAS_NON_NEGATIVE:
-      'Maximum replicas must be a non-negative integer.',
+    MAX_REPLICAS_POSITIVE: 'Maximum replicas must be a positive integer.',
   },
   REPLICAS: {
     MIN_NUMBER: {
