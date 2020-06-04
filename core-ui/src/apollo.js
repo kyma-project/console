@@ -72,7 +72,7 @@ export function createCompassApolloClient(fromConfig, token) {
     link: ApolloLink.from([errorLink, authHttpLink]),
     cache: new InMemoryCache({
       fragmentMatcher,
-      dataIdFromObject: object => object.name || null,
+      dataIdFromObject: object => object.id || object.name || null,
     }),
   });
 }
@@ -103,7 +103,7 @@ export function createKymaApolloClient(fromConfig, token) {
     uri: graphqlApiUrl,
     link: ApolloLink.from([errorLink, link]),
     cache: new InMemoryCache({
-      dataIdFromObject: object => object.name || null,
+      dataIdFromObject: object => object.id || object.name || null,
     }),
   });
 }
