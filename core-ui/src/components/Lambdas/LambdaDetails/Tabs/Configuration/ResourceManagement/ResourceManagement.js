@@ -139,7 +139,7 @@ export default function ResourcesManagement({ lambda }) {
     if (disabled) {
       return (
         <Tooltip
-          title={popupMessage}
+          content={popupMessage}
           position="top"
           trigger="mouseenter"
           tippyProps={{
