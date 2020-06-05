@@ -16,15 +16,13 @@ import { TokenInterceptor } from './auth/token.interceptor';
 
 import { SortablejsModule } from 'angular-sortablejs';
 import { NamespacesContainerComponent } from './content/namespaces/namespaces-container/namespaces-container.component';
-import { WorkspaceOverviewComponent } from './content/workspace-overview/workspace-overview/workspace-overview.component';
 
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { ListModule } from 'app/generic-list/list.module';
-import { NamespaceCreateComponent } from './content/namespaces/namespace-create/namespace-create.component';
+
 import { NamespaceEditComponent } from './content/namespaces/namespace-edit/namespace-edit.component';
 import { CurrentNamespaceService } from './content/namespaces/services/current-namespace.service';
 import { NamespacesService } from './content/namespaces/services/namespaces.service';
-import { NamespaceCardComponent } from './content/workspace-overview/namespace-card/namespace-card.component';
 
 import { TimeAgoPipe } from 'time-ago-pipe';
 import { ApiDefinitionEntryRendererComponent } from './content/namespaces/configuration/apis/api-definition-entry-renderer/api-definition-entry-renderer.component';
@@ -128,10 +126,9 @@ import * as LuigiClient from '@luigi-project/client';
   declarations: [
     AppComponent,
     NamespacesContainerComponent,
-    WorkspaceOverviewComponent,
-    NamespaceCreateComponent,
+
     NamespaceEditComponent,
-    NamespaceCardComponent,
+
     DeploymentsComponent,
     PodsComponent,
     TimeAgoPipe,
@@ -244,7 +241,6 @@ import * as LuigiClient from '@luigi-project/client';
     GenericHelpersService
   ],
   entryComponents: [
-    NamespaceCardComponent,
     ReplicaSetsEntryRendererComponent,
     ReplicaSetsHeaderRendererComponent,
     DeploymentEntryRendererComponent,
@@ -278,7 +274,6 @@ import * as LuigiClient from '@luigi-project/client';
 })
 export class AppModule {
   constructor(private apollo: Apollo, private httpLink: HttpLink) {
-
     let apolloClientInitialized = false;
 
     LuigiClient.addContextUpdateListener(e => {
@@ -300,7 +295,10 @@ export class AppModule {
           // split based on operation type
           ({ query }) => {
             const definition = getMainDefinition(query);
-            return definition.kind === 'OperationDefinition' && definition.operation === 'subscription';
+            return (
+              definition.kind === 'OperationDefinition' &&
+              definition.operation === 'subscription'
+            );
           },
           ws,
           http

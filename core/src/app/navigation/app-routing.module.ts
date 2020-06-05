@@ -16,7 +16,6 @@ import { OrganisationComponent } from '../content/settings/organisation/organisa
 import { ApplicationDetailsComponent } from '../content/settings/applications/application-details/application-details.component';
 import { ApplicationsComponent } from '../content/settings/applications/applications.component';
 import { ServiceBrokersComponent } from '../content/settings/service-brokers/service-brokers.component';
-import { WorkspaceOverviewComponent } from '../content/workspace-overview/workspace-overview/workspace-overview.component';
 import { ExposeApiComponent } from '../content/namespaces/operation/services/service-details/expose-api/expose-api.component';
 import { PermissionsComponent } from '../shared/components/permissions/permissions.component';
 import { RoleDetailsComponent } from '../shared/components/permissions/role-details/role-details.component';
@@ -38,11 +37,7 @@ const appRoutes: Routes = [
         path: 'namespaces',
         component: NamespacesContainerComponent,
         data: { navCtx: 'namespace' },
-        children: [
-          { path: 'yVirtual', component: WorkspaceOverviewComponent },
-          { path: 'workspace', component: WorkspaceOverviewComponent },
-          { path: '', redirectTo: 'workspace', pathMatch: 'full' }
-        ]
+        children: [{ path: '', redirectTo: 'workspace', pathMatch: 'full' }]
       },
       {
         path: 'namespaces/:namespaceId',
@@ -51,7 +46,7 @@ const appRoutes: Routes = [
         children: [
           { path: 'yVirtual', component: NamespaceDetailsComponent },
           { path: 'details', component: NamespaceDetailsComponent },
-          { path: 'workspace', component: WorkspaceOverviewComponent },
+
           { path: 'deployments', component: DeploymentsComponent },
           { path: 'replicaSets', component: ReplicaSetsComponent },
           { path: 'pods', component: PodsComponent },
