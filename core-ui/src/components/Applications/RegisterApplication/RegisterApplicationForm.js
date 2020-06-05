@@ -123,7 +123,7 @@ export default function RegisterApplicationForm({
           maxLength={36}
           aria-required="true"
           required
-          pattern="[a-z]([-a-z0-9]*[a-z0-9])?"
+          pattern="^[a-z]([-a-z0-9]*[a-z0-9])?"
           onKeyDown={e => {
             if (e.keyCode === 13) {
               performManualSubmit();
