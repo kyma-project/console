@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { FormInput } from 'fundamental-react';
 
 const labelRegexp = new RegExp(
-  /[a-z0-9A-Z-_.]+(!?=|=~|!~)["`][a-z0-9A-Z-_.|*+\\\[\]]+["`]/,
+  /[a-z0-9A-Z-_.]+(!?=|=~|!~)["`][a-z0-9A-Z-_.|*+\\[\]]+["`]/,
 );
 
 const convertLabelsToString = labels => `{${labels.join(', ')}}`;
