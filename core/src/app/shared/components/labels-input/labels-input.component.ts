@@ -76,6 +76,47 @@ export class LabelsInputComponent implements OnInit {
     this.labelsChangeEmitter$.emit({ labels: [...this.labels] });
   }
 
+  private validateLabelKey(key: string): string {
+    const containsPrefix = key.includes('/');
+    if (containsPrefix) {
+      if (key.split('/').length > 2) {
+        return `Invalid key ${key}! Key can contain at most one "/".`;
+      }
+      const [prefix, name] = key.split('/');
+
+      if (prefix.length > 253) {
+        return `Invalid key prefix ${prefix}! Prefix length should not exceed 253.`;
+      }
+
+      const subdomain = '[A-Za-z0-9](?:[-A-Za-z0-9]{0,61}[A-Za-z0-9])?';
+      const prefixRegex = `^${subdomain}(?:\\.${subdomain})*$`;
+      if (!prefix.match(prefixRegex)) {
+        return `Invalid key prefix ${key}! Prefix should be a valid DNS subdomain.`;
+      }
+
+      key = name;
+    }
+
+    const regex = /([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9]/;
+    const foundKey = key.match(regex);
+    const isKeyValid = foundKey && foundKey[0] === key && key !== '';
+    return isKeyValid ? null : `Invalid key ${key}! Key consists of alphanumeric characters, '-', '_' or '.', and must start and end with an alphanumeric character.`;
+  }
+
+  private validateLabelValue(value: string): string {
+    if (value && value.length > 63) {
+      return `Invalid ${value}! Maximum length of value cannot exceed 63!`;
+    }
+
+    const regex = /([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9]/;
+    const foundVal = value.match(regex);
+    const isValueValid = foundVal && foundVal[0] === value || value === '';
+    if (!isValueValid) {
+      return `Invalid value ${value}! Value consists of alphanumeric characters, '-', '_' or '.', and must start and end with an alphanumeric character.`;
+    }
+    return null;
+  }
+
   private setWrongLabelMessage(label: string) {
     this.wrongLabelMessage = '';
 
@@ -88,18 +129,17 @@ export class LabelsInputComponent implements OnInit {
       return true;
     }
 
-    const key: string = label.split('=')[0];
-    const value: string = label.split('=')[1];
+    const [key, value] = label.split('=');
 
-    const regex = /([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9]/;
-    const foundKey = key.match(regex);
-    const isKeyValid = Boolean(foundKey && foundKey[0] === key && key !== '');
-    const foundVal = value.match(regex);
-    const isValueValid = Boolean(
-      (foundVal && foundVal[0] === value) || value === ''
-    );
-    if (!isKeyValid || !isValueValid) {
-      this.wrongLabelMessage = `Invalid label ${key}=${value}! In a valid label, a key cannot be empty, a key/value consists of alphanumeric characters, '-', '_' or '.', and must start and end with an alphanumeric character.`;
+    const keyError = this.validateLabelKey(key);
+    if (keyError) {
+      this.wrongLabelMessage = keyError;
+      return true;
+    }
+
+    const valueError = this.validateLabelValue(value);
+    if (valueError) {
+      this.wrongLabelMessage = valueError;
       return true;
     }
 

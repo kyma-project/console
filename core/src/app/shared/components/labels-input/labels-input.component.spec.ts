@@ -158,12 +158,63 @@ describe('LabelsInputComponent', () => {
       expect(result).toBe(true);
     });
 
-    it('if valid format and invalid characters, sets message and return true', () => {
-      const label = 'öö=val1';
-      const result: boolean = component['setWrongLabelMessage'](label);
-      const expected = `Invalid label öö=val1! In a valid label, a key cannot be empty, a key/value consists of alphanumeric characters, '-', '_' or '.', and must start and end with an alphanumeric character.`;
-      expect(component.wrongLabelMessage).toBe(expected);
-      expect(result).toBe(true);
+    describe('key', () => {
+      it('if multiple "/", sets message and return true', () => {
+        const label = 'a/b/c=d';
+        const result: boolean = component['setWrongLabelMessage'](label);
+        const expected = 'Key can contain at most one "/".';
+        expect(component.wrongLabelMessage).toMatch(expected);
+        expect(result).toBe(true);
+      });
+  
+      it('if prefix too long, sets message and return true', () => {
+        const label = `${'a'.repeat(253 + 1)}/b=c`;
+        const result: boolean = component['setWrongLabelMessage'](label);
+        const expected = 'Prefix length should not exceed 253.';
+        expect(component.wrongLabelMessage).toMatch(expected);
+        expect(result).toBe(true);
+      });
+
+      it('if prefix invalid, sets message and return true', () => {
+        const label = 'a.b@a/name=c';
+        const result: boolean = component['setWrongLabelMessage'](label);
+        const expected = 'Prefix should be a valid DNS subdomain.';
+        expect(component.wrongLabelMessage).toMatch(expected);
+        expect(result).toBe(true);
+      });
+
+      it('if valid format and invalid character in key, sets message and return true', () => {
+        const label = 'öö=val1';
+        const result: boolean = component['setWrongLabelMessage'](label);
+        const expected = `Invalid key öö! Key consists of alphanumeric characters, '-', '_' or '.', and must start and end with an alphanumeric character.`;
+        expect(component.wrongLabelMessage).toBe(expected);
+        expect(result).toBe(true);
+      });
+    });
+
+    describe('value', () => {
+      it('if valid format and value too long, sets message and return true', () => {
+        const label = `key=${'a'.repeat(63 + 1)}`;
+        const result: boolean = component['setWrongLabelMessage'](label);
+        const expected = 'Maximum length of value cannot exceed 63';
+        expect(component.wrongLabelMessage).toMatch(expected);
+        expect(result).toBe(true);
+      });
+  
+      it('if valid format and invalid character in value, sets message and return true', () => {
+        const label = 'key=öö';
+        const result: boolean = component['setWrongLabelMessage'](label);
+        const expected = "Value consists of alphanumeric characters, '-', '_' or '.', and must start and end with an alphanumeric character.";
+        expect(component.wrongLabelMessage).toMatch(expected);
+        expect(result).toBe(true);
+      });
+  
+      it('if key valid and label empty, return false', () => {
+        const label = 'a=';
+        const result: boolean = component['setWrongLabelMessage'](label);
+        expect(component.wrongLabelMessage).toBe('');
+        expect(result).toBe(false);
+      });
     });
 
     it('if valid format and valid characters but duplicated key, sets message and return true', () => {
@@ -177,7 +228,7 @@ describe('LabelsInputComponent', () => {
 
     it('if valid label, returns false ', () => {
       component.labels = ['k1=v1', 'k2=v2', 'k3=v3'];
-      const label = 'k4=v4';
+      const label = 'k4.com.ga/f=v4';
       const result: boolean = component['setWrongLabelMessage'](label);
       expect(component.wrongLabelMessage).toBe('');
       expect(result).toBe(false);
