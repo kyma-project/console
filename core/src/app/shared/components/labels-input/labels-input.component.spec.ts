@@ -186,7 +186,7 @@ describe('LabelsInputComponent', () => {
       it('if valid format and invalid character in key, sets message and return true', () => {
         const label = 'öö=val1';
         const result: boolean = component['setWrongLabelMessage'](label);
-        const expected = `Invalid key öö! Key consists of alphanumeric characters, '-', '_' or '.', and must start and end with an alphanumeric character.`;
+        const expected = `Invalid key öö! Key consists of alphanumeric characters, '-', '_' or '.', and must start and end with an alphanumeric character. It can be prefixed with DNS domain, separated with "/".`;
         expect(component.wrongLabelMessage).toBe(expected);
         expect(result).toBe(true);
       });

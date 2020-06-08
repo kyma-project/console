@@ -9,6 +9,8 @@ import {
 } from '@angular/core';
 import { ControlContainer, NgForm } from '@angular/forms';
 
+const commonLabelSchemaMessage = "It should consists of alphanumeric characters, '-', '_' or '.', and must start and end with an alphanumeric character";
+
 @Component({
   selector: 'app-labels-input',
   templateUrl: './labels-input.component.html',
@@ -100,7 +102,7 @@ export class LabelsInputComponent implements OnInit {
     const regex = /([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9]/;
     const foundKey = key.match(regex);
     const isKeyValid = foundKey && foundKey[0] === key && key !== '';
-    return isKeyValid ? null : `Invalid key ${key}! Key consists of alphanumeric characters, '-', '_' or '.', and must start and end with an alphanumeric character.`;
+    return isKeyValid ? null : `Invalid key ${key}! ${commonLabelSchemaMessage}. It can be prefixed with DNS domain, separated with "/".`;
   }
 
   private validateLabelValue(value: string): string {
@@ -112,7 +114,7 @@ export class LabelsInputComponent implements OnInit {
     const foundVal = value.match(regex);
     const isValueValid = foundVal && foundVal[0] === value || value === '';
     if (!isValueValid) {
-      return `Invalid value ${value}! Value consists of alphanumeric characters, '-', '_' or '.', and must start and end with an alphanumeric character.`;
+      return `Invalid value ${value}! ${commonLabelSchemaMessage}.`;
     }
     return null;
   }
