@@ -36,7 +36,10 @@ export default function NamespacesListHeader({
   return (
     <Panel className="namespace-list-header fd-has-padding-medium remove-after">
       <span className="fd-has-type-4">Namespaces</span>
-      <CircleProgress />
+      <CircleProgress color="purple" />
+      <CircleProgress color="green" />
+      <CircleProgress color="blue" />
+      <CircleProgress color="teal" />
       <div className="namespace-list-actions">
         <FormInput
           onChange={e => updateSearchPhrase(e.target.value)}

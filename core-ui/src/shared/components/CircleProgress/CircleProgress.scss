@@ -1,6 +1,5 @@
 $circle-size: 120px;
 $circle-background: var(--fd-color-background-2, #fff);
-$circle-color: purple;
 $transition-length: 0.7s;
 
 @mixin circle-shape($size) {
@@ -15,11 +14,12 @@ $transition-length: 0.7s;
   justify-content: center;
 }
 
-.circle-progress {
+@mixin circle-progress($circle-color) {
   @include circle-shape($circle-size);
   @include flex-center();
   background-color: $circle-background;
   position: relative;
+  $circle-color: red !default;
 
   .progress-bar {
     @include circle-shape($circle-size);
@@ -27,7 +27,7 @@ $transition-length: 0.7s;
     background-color: $circle-color;
     z-index: 5;
 
-    @mixin mask {
+    %mask {
       @include circle-shape($circle-size);
       position: absolute;
       background-color: $circle-background;
@@ -36,7 +36,7 @@ $transition-length: 0.7s;
       transform: rotate(0.5turn);
     }
     .mask--dynamic {
-      @include mask();
+      @extend %mask;
       z-index: 5;
 
       @for $i from 0 through 50 {
@@ -55,7 +55,7 @@ $transition-length: 0.7s;
       }
     }
     .mask--permanent {
-      @include mask();
+      @extend %mask;
       background-color: $circle-background;
     }
   }
@@ -73,5 +73,18 @@ $transition-length: 0.7s;
       border: 1px solid var(--fd-color-text-3);
       font-size: $circle-size/5;
     }
+  }
+}
+
+$colors: (
+  'purple': var(--fd-color-accent-4),
+  'green': var(--fd-color-accent-8),
+  'blue': var(--fd-color-accent-6),
+  'teal': teal,
+);
+
+@each $name, $value in $colors {
+  .circle-progress--#{$name} {
+    @include circle-progress($value) /* Any other rules which use $color here */;
   }
 }

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './CircleProgress.scss';
 // import classNames
 
-const CircleProgress = () => {
+const CircleProgress = ({ color = 'purple' }) => {
   const [p, setP] = useState(15);
   function handleChange(e) {
     setP(e.target.value);
@@ -18,7 +18,7 @@ const CircleProgress = () => {
         onChange={handleChange}
       ></input>
 
-      <div className="circle-progress">
+      <div className={`circle-progress--${color}`}>
         <div className="progress-bar">
           <div className={`mask mask--dynamic fill--${p}`}></div>
           <div className={`mask mask--permanent`}></div>
