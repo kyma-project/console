@@ -7,6 +7,7 @@ import NamespaceFilters from './NamespaceFilters/NamespaceFilters';
 import './NamespacesListHeader.scss';
 import ModalWithForm from '../../ModalWithForm/ModalWithForm';
 import CreateNamespaceForm from '../../CreateNamespaceForm/CreateNamespaceForm';
+import CircleProgress from '../../../shared/components/CircleProgress/CircleProgress';
 
 NamespacesListHeader.propTypes = {
   labelFilters: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
@@ -34,9 +35,8 @@ export default function NamespacesListHeader({
 
   return (
     <Panel className="namespace-list-header fd-has-padding-medium remove-after">
-      <span aria-label="title" className="fd-has-type-4">
-        Namespaces
-      </span>
+      <span className="fd-has-type-4">Namespaces</span>
+      <CircleProgress />
       <div className="namespace-list-actions">
         <FormInput
           onChange={e => updateSearchPhrase(e.target.value)}

@@ -1,0 +1,56 @@
+$circle-size: 120px;
+$circle-background: var(--fd-color-background-2, #fff);
+$circle-color: purple;
+$transition-length: 1s;
+
+@mixin circle-shape($size) {
+  border-radius: 50%;
+  width: $size;
+  height: $size;
+}
+
+.circle-progress {
+  margin: 40px;
+  @include circle-shape($circle-size);
+  background-color: $circle-background;
+  position: relative;
+
+  .progress-bar {
+    @include circle-shape($circle-size);
+    position: absolute;
+    background-color: $circle-color;
+    z-index: 5;
+
+    @mixin mask {
+      @include circle-shape($circle-size);
+      position: absolute;
+      backface-visibility: hidden;
+      background-color: $circle-background;
+      //   transition: transform 0.7s;
+      clip: rect(0px, $circle-size/2, $circle-size, 0px);
+      transform: rotate(0.5turn);
+      outline: 1px solid transparent;
+    }
+    .mask--dynamic {
+      @include mask();
+      z-index: 5;
+
+      @for $i from 0 through 50 {
+        &.fill--#{$i} {
+          transform: rotate(calc(#{$i} / -50 * 0.5turn));
+        }
+      }
+
+      @for $i from 51 through 100 {
+        &.fill--#{$i} {
+          background-color: $circle-color;
+          transform: rotate(calc((100 - #{$i} / 50) * 0.5turn + 0.5turn));
+        }
+      }
+    }
+    .mask--permanent {
+      @include mask();
+      background-color: $circle-background;
+    }
+  }
+}
