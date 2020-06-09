@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { ControlContainer, NgForm } from '@angular/forms';
 
-const commonLabelSchemaMessage = "It should consists of alphanumeric characters, '-', '_' or '.', and must start and end with an alphanumeric character";
+const commonLabelSchemaMessage = "It should consist of alphanumeric characters, '-', '_' or '.', and must start and end with an alphanumeric character";
 
 @Component({
   selector: 'app-labels-input',

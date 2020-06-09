@@ -186,7 +186,7 @@ describe('LabelsInputComponent', () => {
       it('if valid format and invalid character in key, sets message and return true', () => {
         const label = 'öö=val1';
         const result: boolean = component['setWrongLabelMessage'](label);
-        const expected = `Invalid key öö! Key consists of alphanumeric characters, '-', '_' or '.', and must start and end with an alphanumeric character. It can be prefixed with DNS domain, separated with "/".`;
+        const expected = `Invalid key öö! It should consist of alphanumeric characters, '-', '_' or '.', and must start and end with an alphanumeric character. It can be prefixed with DNS domain, separated with "/".`;
         expect(component.wrongLabelMessage).toBe(expected);
         expect(result).toBe(true);
       });
@@ -204,7 +204,7 @@ describe('LabelsInputComponent', () => {
       it('if valid format and invalid character in value, sets message and return true', () => {
         const label = 'key=öö';
         const result: boolean = component['setWrongLabelMessage'](label);
-        const expected = "Value consists of alphanumeric characters, '-', '_' or '.', and must start and end with an alphanumeric character.";
+        const expected = "It should consist of alphanumeric characters, '-', '_' or '.', and must start and end with an alphanumeric character.";
         expect(component.wrongLabelMessage).toMatch(expected);
         expect(result).toBe(true);
       });
