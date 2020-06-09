@@ -1,7 +1,7 @@
 $circle-size: 120px;
 $circle-background: var(--fd-color-background-2, #fff);
 $circle-color: purple;
-$transition-length: 1s;
+$transition-length: 0.7s;
 
 @mixin circle-shape($size) {
   border-radius: 50%;
@@ -9,9 +9,15 @@ $transition-length: 1s;
   height: $size;
 }
 
+@mixin flex-center() {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .circle-progress {
-  margin: 40px;
   @include circle-shape($circle-size);
+  @include flex-center();
   background-color: $circle-background;
   position: relative;
 
@@ -24,24 +30,24 @@ $transition-length: 1s;
     @mixin mask {
       @include circle-shape($circle-size);
       position: absolute;
-      backface-visibility: hidden;
       background-color: $circle-background;
-      //   transition: transform 0.7s;
+      transition: transform $transition-length;
       clip: rect(0px, $circle-size/2, $circle-size, 0px);
       transform: rotate(0.5turn);
-      outline: 1px solid transparent;
     }
     .mask--dynamic {
       @include mask();
       z-index: 5;
 
       @for $i from 0 through 50 {
+        // it is a mask for the left half of the circle
         &.fill--#{$i} {
           transform: rotate(calc(#{$i} / -50 * 0.5turn));
         }
       }
 
       @for $i from 51 through 100 {
+        // it becomes the right half of the circle
         &.fill--#{$i} {
           background-color: $circle-color;
           transform: rotate(calc((100 - #{$i} / 50) * 0.5turn + 0.5turn));
@@ -51,6 +57,21 @@ $transition-length: 1s;
     .mask--permanent {
       @include mask();
       background-color: $circle-background;
+    }
+  }
+
+  .inner-area {
+    @include circle-shape($circle-size/1.4);
+    @include flex-center();
+    background-color: $circle-background;
+    position: absolute;
+    z-index: 8;
+    color: var(--fd-color-text-3);
+    .percentage {
+      @include circle-shape($circle-size/1.6);
+      @include flex-center();
+      border: 1px solid var(--fd-color-text-3);
+      font-size: $circle-size/5;
     }
   }
 }
