@@ -7,6 +7,7 @@ $colors: (
   'blue': var(--fd-color-accent-6),
   'teal': teal,
 );
+$scale-compensation: 1.005; // enlarge masks a little bit to remove an unwanted "tiny border"effect in the browser
 
 @mixin circle-shape($size) {
   border-radius: 50%;
@@ -26,15 +27,14 @@ $colors: (
   background-color: $circle-background;
   transition: transform $transition-length;
   clip: rect(0px, $circle-size/2, $circle-size, 0px);
-  transform: rotate(0.5turn);
+  transform: rotate(0.5turn) scale($scale-compensation);
 }
 
 @mixin circle($circle-color: map-get($map: $colors, $key: 'blue')) {
-  @include circle-shape($circle-size);
+  width: $circle-size;
+  height: $circle-size;
   @extend %flex-center;
-
-  background-color: $circle-background;
-  position: relative;
+  margin: $circle-size/12;
 
   .progress-bar {
     @include circle-shape($circle-size);
@@ -49,7 +49,8 @@ $colors: (
       @for $i from 0 through 50 {
         // it is a mask for the left half of the circle
         &.fill--#{$i} {
-          transform: rotate(calc(#{$i} / -50 * 0.5turn));
+          transform: rotate(calc(#{$i} / -50 * 0.5turn))
+            scale($scale-compensation);
         }
       }
 
