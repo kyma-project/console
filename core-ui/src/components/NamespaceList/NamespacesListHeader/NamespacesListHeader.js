@@ -42,10 +42,10 @@ export default function NamespacesListHeader({
       <CircleProgress color="green" value={100}>
         Pods
       </CircleProgress>
-      <CircleProgress color="blue" value={Math.floor(Math.random() * 100)}>
+      <CircleProgress color="blue" value={45}>
         Replicas
       </CircleProgress>
-      <CircleProgress color="teal" value={Math.floor(Math.random() * 100)}>
+      <CircleProgress color="teal" value={77}>
         Services
       </CircleProgress>
       <div className="namespace-list-actions">

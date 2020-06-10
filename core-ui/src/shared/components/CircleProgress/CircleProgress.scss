@@ -1,13 +1,13 @@
 $circle-size: 100px; // must be set in px to save proportions
 $circle-background: var(--fd-color-background-2, #fff);
-$transition-length: 0s;
+$transition-length: 2s;
 $colors: (
   'purple': var(--fd-color-accent-4),
   'green': var(--fd-color-accent-8),
   'blue': var(--fd-color-accent-6),
   'teal': teal,
 );
-$scale-compensation: 1.005; // enlarge masks a little bit to remove an unwanted "tiny border"effect in the browser
+$scale-compensation: 1.01; // enlarge masks a little bit to remove an unwanted "tiny border"effect in the browser
 
 @mixin circle-shape($size) {
   border-radius: 50%;
@@ -45,7 +45,6 @@ $scale-compensation: 1.005; // enlarge masks a little bit to remove an unwanted 
     .mask--dynamic {
       @extend %mask;
       z-index: 5;
-
       @for $i from 0 through 50 {
         // it is a mask for the left half of the circle
         &.fill--#{$i} {
