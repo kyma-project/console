@@ -29,43 +29,38 @@ const config = {
 };
 
 describe('JwtDetails', () => {
+  it('loads presets', () => {
+    const setConfig = jest.fn();
+    //for Popovers's Warning: `NaN` is an invalid value for the `left` css style property.
+    console.error = jest.fn();
+
+    const { queryByLabelText } = render(
+      <JwtDetails
+        config={config}
+        setConfig={setConfig}
+        handleFormChanged={() => {}}
+      />,
+    );
+
+    expect(queryByLabelText('jwt-jwks-uri-0')).toBeInTheDocument();
+    expect(queryByLabelText('jwt-issuer-0')).toBeInTheDocument();
+  });
+
   it('allows to remove idp', () => {
     const setConfig = jest.fn();
     //for Popovers's Warning: `NaN` is an invalid value for the `left` css style property.
     console.error = jest.fn();
 
-    const { getByText, queryByText, queryByLabelText } = render(
+    const { queryByLabelText } = render(
       <JwtDetails
         config={config}
         setConfig={setConfig}
-        idpPresets={idpPresets}
         handleFormChanged={() => {}}
       />,
     );
-
     const deleteButton = queryByLabelText('remove-preset-0');
     fireEvent.click(deleteButton);
 
     expect(setConfig).toHaveBeenCalled();
-  });
-
-  it('loads presets list', () => {
-    //for Popovers's Warning: `NaN` is an invalid value for the `left` css style property.
-    console.error = jest.fn();
-
-    const { getByText, queryByText } = render(
-      <JwtDetails
-        config={config}
-        setConfig={() => {}}
-        idpPresets={idpPresets}
-        handleFormChanged={() => {}}
-      />,
-    );
-
-    // expand the list
-    const addPresetDropdown = getByText('Configure identity provider...');
-    fireEvent.click(addPresetDropdown);
-
-    expect(queryByText(idpPresets[0].name)).toBeInTheDocument();
   });
 });
