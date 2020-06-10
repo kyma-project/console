@@ -1,34 +1,37 @@
 import React, { useState } from 'react';
 import './CircleProgress.scss';
-// import classNames
-
-const CircleProgress = ({ color = 'purple' }) => {
-  const [p, setP] = useState(15);
-  function handleChange(e) {
-    setP(e.target.value);
-  }
+import PropTypes from 'prop-types';
+const CircleProgress = ({ value, color = 'blue', children }) => {
   return (
-    <>
-      <input
-        type="range"
-        id="vol"
-        name="vol"
-        min="0"
-        max="100"
-        onChange={handleChange}
-      ></input>
-
-      <div className={`circle-progress--${color}`}>
+    <div className="circle-progress">
+      <div className={`circle--${color}`}>
         <div className="progress-bar">
-          <div className={`mask mask--dynamic fill--${p}`}></div>
+          <div className={`mask mask--dynamic fill--${value}`}></div>
           <div className={`mask mask--permanent`}></div>
         </div>
         <div className="inner-area">
-          <div className="percentage">{p}%</div>
+          <div className="percentage">{value}%</div>
         </div>
       </div>
-    </>
+      {children}
+    </div>
   );
+};
+
+CircleProgress.propTypes = {
+  color: PropTypes.oneOf(['purple', 'green', 'blue', 'teal']),
+  value: function(props, propName) {
+    if (
+      !Number.isInteger(props[propName]) ||
+      props[propName] < 0 ||
+      props[propName] > 100
+    ) {
+      return new Error(
+        'Value property is required and must be an integer of range [0,100]',
+      );
+    }
+  },
+  children: PropTypes.node,
 };
 
 export default CircleProgress;

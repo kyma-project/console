@@ -36,10 +36,18 @@ export default function NamespacesListHeader({
   return (
     <Panel className="namespace-list-header fd-has-padding-medium remove-after">
       <span className="fd-has-type-4">Namespaces</span>
-      <CircleProgress color="purple" />
-      <CircleProgress color="green" />
-      <CircleProgress color="blue" />
-      <CircleProgress color="teal" />
+      <CircleProgress color="purple" value={Math.floor(Math.random() * 100)}>
+        Deployments
+      </CircleProgress>
+      <CircleProgress color="green" value={Math.floor(Math.random() * 100)}>
+        Pods
+      </CircleProgress>
+      <CircleProgress color="blue" value={Math.floor(Math.random() * 100)}>
+        Replicas
+      </CircleProgress>
+      <CircleProgress color="teal" value={Math.floor(Math.random() * 100)}>
+        Services
+      </CircleProgress>
       <div className="namespace-list-actions">
         <FormInput
           onChange={e => updateSearchPhrase(e.target.value)}

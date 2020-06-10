@@ -1,6 +1,6 @@
-$circle-size: 120px;
+$circle-size: 100px; // must be set in px to save proportions
 $circle-background: var(--fd-color-background-2, #fff);
-$transition-length: 0.7s;
+$transition-length: 0s;
 
 @mixin circle-shape($size) {
   border-radius: 50%;
@@ -14,7 +14,7 @@ $transition-length: 0.7s;
   justify-content: center;
 }
 
-@mixin circle-progress($circle-color) {
+@mixin circle($circle-color) {
   @include circle-shape($circle-size);
   @include flex-center();
   background-color: $circle-background;
@@ -83,8 +83,18 @@ $colors: (
   'teal': teal,
 );
 
-@each $name, $value in $colors {
-  .circle-progress--#{$name} {
-    @include circle-progress($value) /* Any other rules which use $color here */;
+.circle-progress {
+  @each $name, $value in $colors {
+    .circle--#{$name} {
+      @include circle($value);
+    }
   }
+
+  display: grid;
+  grid-template-columns: 1;
+  justify-items: center;
+  justify-content: center;
+  grid-gap: 1em;
+  color: var(--fd-color-text-3);
+  font-size: 1.2em;
 }
