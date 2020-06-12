@@ -1,6 +1,7 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
+import NamespaceDetails from '../NamespaceDetails/NamespaceDetails';
 import NamespaceList from '../NamespaceList/NamespaceList';
 import Lambdas from '../Lambdas/Lambdas';
 import LambdaDetailsWrapper from '../Lambdas/LambdaDetails/LambdaDetailsWrapper';
@@ -22,6 +23,10 @@ export default function App() {
   return (
     <Switch>
       <Route path="/preload" component={() => null} />
+      <Route
+        path="/home/namespaces/:namespace/details"
+        component={RoutedNamespaceDetails}
+      />
       <Route path="/namespaces" component={NamespaceList} />
 
       <Route path="/lambdas" exact component={Lambdas} />
@@ -73,6 +78,10 @@ export default function App() {
       />
     </Switch>
   );
+}
+
+function RoutedNamespaceDetails({ match }) {
+  return <NamespaceDetails name={match.params.namespace} />;
 }
 
 function RoutedLambdaDetails({ match }) {

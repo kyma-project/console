@@ -20,14 +20,12 @@ import { NamespacesContainerComponent } from './content/namespaces/namespaces-co
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { ListModule } from 'app/generic-list/list.module';
 
-import { NamespaceEditComponent } from './content/namespaces/namespace-edit/namespace-edit.component';
 import { CurrentNamespaceService } from './content/namespaces/services/current-namespace.service';
 import { NamespacesService } from './content/namespaces/services/namespaces.service';
 
 import { TimeAgoPipe } from 'time-ago-pipe';
 import { ApiDefinitionEntryRendererComponent } from './content/namespaces/configuration/apis/api-definition-entry-renderer/api-definition-entry-renderer.component';
 import { ApiDefinitionHeaderRendererComponent } from './content/namespaces/configuration/apis/api-definition-header-renderer/api-definition-header-renderer.component';
-import { NamespaceDetailsComponent } from './content/namespaces/namespace-details/namespace-details.component';
 import { DeploymentEntryRendererComponent } from './content/namespaces/operation/deployments/deployment-entry-renderer/deployment-entry-renderer.component';
 import { DeploymentHeaderRendererComponent } from './content/namespaces/operation/deployments/deployment-header-renderer/deployment-header-renderer.component';
 import { DeploymentsComponent } from './content/namespaces/operation/deployments/deployments.component';
@@ -126,16 +124,12 @@ import * as LuigiClient from '@luigi-project/client';
   declarations: [
     AppComponent,
     NamespacesContainerComponent,
-
-    NamespaceEditComponent,
-
     DeploymentsComponent,
     PodsComponent,
     TimeAgoPipe,
     ApplicationsComponent,
     ApplicationDetailsComponent,
     PreferencesComponent,
-    NamespaceDetailsComponent,
     ServiceBrokersComponent,
     ReplicaSetsComponent,
     ServicesComponent,

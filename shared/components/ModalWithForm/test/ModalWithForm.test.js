@@ -1,40 +1,25 @@
 import React from 'react';
-import renderer from 'react-test-renderer';
+import { render, fireEvent } from '@testing-library/react';
 import { ModalWithForm } from '../ModalWithForm';
 
-jest.mock('@kyma-project/luigi-client', () => ({
-  uxManager: () => ({
-    addBackdrop: jest.fn(),
-    removeBackdrop: jest.fn(),
-  }),
-}));
-
 describe('ModalWithForm', () => {
-  it('Renders with minimal props', () => {
-    const component = renderer.create(
-      <ModalWithForm
-        title=""
-        performRefetch={() => {}}
-        sendNotification={() => {}}
-        button={{ text: '' }}
-        renderForm={() => <span></span>}
-      />,
-    );
-    let tree = component.toJSON();
-    expect(tree).toMatchSnapshot();
-  });
-
   it('Renders child component', () => {
-    const component = renderer.create(
-      <ModalWithForm
-        title=""
-        performRefetch={() => {}}
-        sendNotification={() => {}}
-        button={{ text: '' }}
-        renderForm={() => <span>test</span>}
-      />,
+    const child = <span>test</span>;
+    const { getByText, queryByText } = render(
+      <div>
+        <ModalWithForm
+          title=""
+          performRefetch={() => {}}
+          sendNotification={() => {}}
+          confirmText="Create"
+          button={{ text: 'Open' }}
+          renderForm={() => child}
+        />
+      </div>,
     );
-    let tree = component.toJSON();
-    expect(tree).toMatchSnapshot();
+
+    fireEvent.click(getByText('Open'));
+
+    expect(queryByText('test')).toBeInTheDocument();
   });
 });

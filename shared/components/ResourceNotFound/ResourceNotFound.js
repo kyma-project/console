@@ -3,11 +3,21 @@ import PropTypes from 'prop-types';
 import LuigiClient from '@kyma-project/luigi-client';
 import { Breadcrumb, Panel, PanelBody } from '@kyma-project/react-components';
 
-export const ResourceNotFound = ({ resource, breadcrumb, path }) => {
-  const navigate = () =>
-    LuigiClient.linkManager()
-      .fromClosestContext()
-      .navigate(path);
+export const ResourceNotFound = ({
+  resource,
+  breadcrumb,
+  path,
+  fromClosestContext = true,
+}) => {
+  const navigate = () => {
+    if (fromClosestContext) {
+      LuigiClient.linkManager()
+        .fromClosestContext()
+        .navigate(path);
+    } else {
+      LuigiClient.linkManager().navigate(path);
+    }
+  };
 
   return (
     <>
@@ -36,4 +46,5 @@ ResourceNotFound.propTypes = {
   resource: PropTypes.string.isRequired,
   breadcrumb: PropTypes.string.isRequired,
   path: PropTypes.string.isRequired,
+  fromClosestContext: PropTypes.bool,
 };

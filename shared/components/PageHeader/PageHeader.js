@@ -6,9 +6,9 @@ import LuigiClient from '@kyma-project/luigi-client';
 
 const Column = ({ title, children, columnSpan = 1 }) => (
   <div className="page-header__column" style={{ gridColumn: columnSpan }}>
-    <p className="title fd-has-type-0 fd-has-color-text-4 fd-has-margin-bottom-none">
+    <div className="title fd-has-type-0 fd-has-color-text-4 fd-has-margin-bottom-none">
       {title}
-    </p>
+    </div>
     <span className="content fd-has-type-0 fd-has-color-text-1">
       {children}
     </span>
@@ -19,9 +19,13 @@ const performOnClick = item => {
   if (!item.path) {
     return null;
   }
-  const linkManager = item.fromContext
-    ? LuigiClient.linkManager().fromContext(item.fromContext)
-    : LuigiClient.linkManager().fromClosestContext();
+
+  let linkManager = LuigiClient.linkManager();
+  if (!item.fromAbsolutePath) {
+    linkManager = item.fromContext
+      ? linkManager.fromContext(item.fromContext)
+      : linkManager.fromClosestContext();
+  }
 
   if (!item.params) {
     return linkManager.navigate(item.path);
@@ -81,6 +85,7 @@ PageHeader.propTypes = {
       path: PropTypes.string,
       params: PropTypes.object,
       fromContext: PropTypes.string,
+      fromAbsolutePath: PropTypes.bool,
     }),
   ),
 };

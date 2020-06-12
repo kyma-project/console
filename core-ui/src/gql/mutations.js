@@ -124,6 +124,15 @@ export const CREATE_NAMESPACE = gql`
   }
 `;
 
+export const UPDATE_NAMESPACE = gql`
+  mutation UpdateNamespace($name: String!, $labels: Labels!) {
+    updateNamespace(name: $name, labels: $labels) {
+      name
+      labels
+    }
+  }
+`;
+
 export const CREATE_LIMIT_RANGE = gql`
   mutation createLimitRange(
     $namespace: String!

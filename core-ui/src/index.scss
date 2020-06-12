@@ -43,6 +43,10 @@ body {
     url('/fonts/72-Bold.woff') format('woff');
 }
 
+.cursor-pointer {
+  cursor: pointer;
+}
+
 .link {
   color: var(--fd-color-action-1);
   text-decoration: underline;
