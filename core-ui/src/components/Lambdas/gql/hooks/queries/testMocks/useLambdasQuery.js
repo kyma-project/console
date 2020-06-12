@@ -1,6 +1,10 @@
-import { GET_LAMBDAS } from 'components/Lambdas/gql/queries';
+import { GET_LAMBDAS, GET_CONFIGMAP } from 'components/Lambdas/gql/queries';
 import { LAMBDA_EVENT_SUBSCRIPTION } from 'components/Lambdas/gql/subscriptions';
-import { TESTING_STATE, lambdaMock } from 'components/Lambdas/helpers/testing';
+import {
+  TESTING_STATE,
+  lambdaMock,
+  configMapMock,
+} from 'components/Lambdas/helpers/testing';
 
 export const GET_LAMBDAS_ERROR_MOCK = variables => ({
   request: {
@@ -18,6 +22,18 @@ export const GET_LAMBDAS_DATA_MOCK = (variables, functions = [lambdaMock]) => ({
   result: {
     data: {
       functions,
+    },
+  },
+});
+
+export const GET_CONFIGMAP_DATA_MOCK = variables => ({
+  request: {
+    query: GET_CONFIGMAP,
+    variables,
+  },
+  result: {
+    data: {
+      configMapMock,
     },
   },
 });

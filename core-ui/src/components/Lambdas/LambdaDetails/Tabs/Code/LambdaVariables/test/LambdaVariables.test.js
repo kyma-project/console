@@ -1,7 +1,15 @@
 import React from 'react';
-import { render, fireEvent, wait } from '@testing-library/react';
+import { render, fireEvent, wait, act } from '@testing-library/react';
+import {
+  WEBHOOK_DEFAULTS_CM_NAME,
+  KYMA_SYSTEM_NAMESPACE,
+} from 'components/Lambdas/constants';
+import {
+  lambdaMock,
+  withApolloMockProvider,
+} from 'components/Lambdas/helpers/testing';
+import { GET_CONFIGMAP_DATA_MOCK } from 'components/Lambdas/gql/hooks/queries/testMocks/useLambdasQuery';
 
-import { lambdaMock } from 'components/Lambdas/helpers/testing';
 import {
   newVariableModel,
   VARIABLE_VALIDATION,
@@ -10,7 +18,6 @@ import {
 import { ENVIRONMENT_VARIABLES_PANEL } from 'components/Lambdas/constants';
 
 import LambdaVariables from '../LambdaVariables';
-import { formatMessage } from 'components/Lambdas/helpers/misc';
 
 const timeout = 10000;
 
@@ -54,16 +61,26 @@ describe('LambdaVariables + EditVariablesModal + EditVariablesForm', () => {
     }),
   ];
 
+  const configMapMock = GET_CONFIGMAP_DATA_MOCK({
+    name: WEBHOOK_DEFAULTS_CM_NAME,
+    namespace: KYMA_SYSTEM_NAMESPACE,
+  });
+
   it(
     'Render with minimal props',
     async () => {
       const { getByText } = render(
-        <LambdaVariables
-          lambda={lambdaMock}
-          customVariables={[]}
-          customValueFromVariables={[]}
-          injectedVariables={[]}
-        />,
+        withApolloMockProvider({
+          mocks: [configMapMock],
+          component: (
+            <LambdaVariables
+              lambda={lambdaMock}
+              customVariables={[]}
+              customValueFromVariables={[]}
+              injectedVariables={[]}
+            />
+          ),
+        }),
       );
 
       expect(
@@ -80,13 +97,20 @@ describe('LambdaVariables + EditVariablesModal + EditVariablesForm', () => {
   it(
     'should render table with some data',
     async () => {
+      GET_CONFIGMAP_DATA_MOCK;
+
       const { container, queryByRole, queryAllByRole, getAllByText } = render(
-        <LambdaVariables
-          lambda={lambdaMock}
-          customVariables={customVariables}
-          customValueFromVariables={[]}
-          injectedVariables={injectedVariables}
-        />,
+        withApolloMockProvider({
+          mocks: [configMapMock],
+          component: (
+            <LambdaVariables
+              lambda={lambdaMock}
+              customVariables={customVariables}
+              customValueFromVariables={[]}
+              injectedVariables={injectedVariables}
+            />
+          ),
+        }),
       );
 
       const table = queryByRole('table');
@@ -116,12 +140,17 @@ describe('LambdaVariables + EditVariablesModal + EditVariablesForm', () => {
     'should show modal after click action button',
     async () => {
       const { getByText, getByRole } = render(
-        <LambdaVariables
-          lambda={lambdaMock}
-          customVariables={[]}
-          customValueFromVariables={[]}
-          injectedVariables={injectedVariables}
-        />,
+        withApolloMockProvider({
+          mocks: [configMapMock],
+          component: (
+            <LambdaVariables
+              lambda={lambdaMock}
+              customVariables={[]}
+              customValueFromVariables={[]}
+              injectedVariables={injectedVariables}
+            />
+          ),
+        }),
       );
 
       const button = getByText(
@@ -134,15 +163,20 @@ describe('LambdaVariables + EditVariablesModal + EditVariablesForm', () => {
   );
 
   it(
-    'should not able to save variables if there are any custom variables',
+    'should not be able to save variables if there are any custom variables',
     async () => {
       const { getByText } = render(
-        <LambdaVariables
-          lambda={lambdaMock}
-          customVariables={[]}
-          customValueFromVariables={[]}
-          injectedVariables={injectedVariables}
-        />,
+        withApolloMockProvider({
+          mocks: [configMapMock],
+          component: (
+            <LambdaVariables
+              lambda={lambdaMock}
+              customVariables={[]}
+              customValueFromVariables={[]}
+              injectedVariables={injectedVariables}
+            />
+          ),
+        }),
       );
 
       const button = getByText(
@@ -163,12 +197,17 @@ describe('LambdaVariables + EditVariablesModal + EditVariablesForm', () => {
     'should can save variables when custom variables override injected variables',
     async () => {
       const { getByText } = render(
-        <LambdaVariables
-          lambda={lambdaMock}
-          customVariables={customVariables}
-          customValueFromVariables={[]}
-          injectedVariables={injectedVariables}
-        />,
+        withApolloMockProvider({
+          mocks: [configMapMock],
+          component: (
+            <LambdaVariables
+              lambda={lambdaMock}
+              customVariables={customVariables}
+              customValueFromVariables={[]}
+              injectedVariables={injectedVariables}
+            />
+          ),
+        }),
       );
 
       const button = getByText(
@@ -189,12 +228,17 @@ describe('LambdaVariables + EditVariablesModal + EditVariablesForm', () => {
     'should show warnings about override injected variables in edit form',
     async () => {
       const { getByText, getAllByText } = render(
-        <LambdaVariables
-          lambda={lambdaMock}
-          customVariables={customVariables}
-          customValueFromVariables={[]}
-          injectedVariables={injectedVariables}
-        />,
+        withApolloMockProvider({
+          mocks: [configMapMock],
+          component: (
+            <LambdaVariables
+              lambda={lambdaMock}
+              customVariables={customVariables}
+              customValueFromVariables={[]}
+              injectedVariables={injectedVariables}
+            />
+          ),
+        }),
       );
 
       const button = getByText(
@@ -215,12 +259,17 @@ describe('LambdaVariables + EditVariablesModal + EditVariablesForm', () => {
     'should can save if user delete all custom variables - case when custom variables exist',
     async () => {
       const { getByText, getAllByLabelText } = render(
-        <LambdaVariables
-          lambda={lambdaMock}
-          customVariables={customVariables}
-          customValueFromVariables={[]}
-          injectedVariables={injectedVariables}
-        />,
+        withApolloMockProvider({
+          mocks: [configMapMock],
+          component: (
+            <LambdaVariables
+              lambda={lambdaMock}
+              customVariables={customVariables}
+              customValueFromVariables={[]}
+              injectedVariables={injectedVariables}
+            />
+          ),
+        }),
       );
 
       const button = getByText(
@@ -247,12 +296,17 @@ describe('LambdaVariables + EditVariablesModal + EditVariablesForm', () => {
     'should not able to save when user types duplicated names',
     async () => {
       const { getByText, getAllByPlaceholderText, getAllByText } = render(
-        <LambdaVariables
-          lambda={lambdaMock}
-          customVariables={customVariables}
-          customValueFromVariables={[]}
-          injectedVariables={injectedVariables}
-        />,
+        withApolloMockProvider({
+          mocks: [configMapMock],
+          component: (
+            <LambdaVariables
+              lambda={lambdaMock}
+              customVariables={customVariables}
+              customValueFromVariables={[]}
+              injectedVariables={injectedVariables}
+            />
+          ),
+        }),
       );
 
       const button = getByText(
@@ -283,12 +337,17 @@ describe('LambdaVariables + EditVariablesModal + EditVariablesForm', () => {
     'should not able to save when user types restricted names',
     async () => {
       const { getByText, getAllByPlaceholderText, getAllByText } = render(
-        <LambdaVariables
-          lambda={lambdaMock}
-          customVariables={customVariables}
-          customValueFromVariables={[]}
-          injectedVariables={injectedVariables}
-        />,
+        withApolloMockProvider({
+          mocks: [configMapMock],
+          component: (
+            <LambdaVariables
+              lambda={lambdaMock}
+              customVariables={customVariables}
+              customValueFromVariables={[]}
+              injectedVariables={injectedVariables}
+            />
+          ),
+        }),
       );
 
       const button = getByText(
@@ -300,8 +359,10 @@ describe('LambdaVariables + EditVariablesModal + EditVariablesForm', () => {
         ENVIRONMENT_VARIABLES_PANEL.PLACEHOLDERS.VARIABLE_NAME,
       );
       expect(inputs).toHaveLength(2);
+      act(() => {
+        fireEvent.change(inputs[0], { target: { value: 'FUNC_PORT' } });
+      });
 
-      fireEvent.change(inputs[0], { target: { value: 'PORT' } });
       expect(
         getAllByText(ENVIRONMENT_VARIABLES_PANEL.ERRORS.RESTRICTED),
       ).toHaveLength(1);
@@ -319,12 +380,17 @@ describe('LambdaVariables + EditVariablesModal + EditVariablesForm', () => {
     'should not able to save when user types empty names - case with existing variable',
     async () => {
       const { getByText, getAllByPlaceholderText } = render(
-        <LambdaVariables
-          lambda={lambdaMock}
-          customVariables={customVariables}
-          customValueFromVariables={[]}
-          injectedVariables={injectedVariables}
-        />,
+        withApolloMockProvider({
+          mocks: [configMapMock],
+          component: (
+            <LambdaVariables
+              lambda={lambdaMock}
+              customVariables={customVariables}
+              customValueFromVariables={[]}
+              injectedVariables={injectedVariables}
+            />
+          ),
+        }),
       );
 
       const button = getByText(
@@ -352,12 +418,17 @@ describe('LambdaVariables + EditVariablesModal + EditVariablesForm', () => {
     'should not able to save when user add new variables - without empty error message',
     async () => {
       const { getByText } = render(
-        <LambdaVariables
-          lambda={lambdaMock}
-          customVariables={customVariables}
-          customValueFromVariables={[]}
-          injectedVariables={injectedVariables}
-        />,
+        withApolloMockProvider({
+          mocks: [configMapMock],
+          component: (
+            <LambdaVariables
+              lambda={lambdaMock}
+              customVariables={customVariables}
+              customValueFromVariables={[]}
+              injectedVariables={injectedVariables}
+            />
+          ),
+        }),
       );
 
       const button = getByText(

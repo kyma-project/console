@@ -44,13 +44,14 @@ export default function EditVariablesForm({
       name: WEBHOOK_DEFAULTS_CM_NAME,
       namespace: KYMA_SYSTEM_NAMESPACE,
     },
-    fetchPolicy: 'cache-and-network',
+    fetchPolicy: 'network-only',
   });
 
   const getReservedEnvs = configMap => {
     if (configMap.loading) {
       return CONFIG.restrictedVariables;
     }
+
     return configMap.data.configMap?.json.data.WEBHOOK_VALIDATION_RESERVED_ENVS.split(
       ',',
     );
@@ -139,7 +140,7 @@ export default function EditVariablesForm({
       setValidity,
       setCustomValid,
       setInvalidModalPopupMessage,
-      restricedVariables: getReservedEnvs(configMapWebhookDefaults),
+      restrictedVariables: getReservedEnvs(configMapWebhookDefaults),
     });
 
   function addNewVariable() {

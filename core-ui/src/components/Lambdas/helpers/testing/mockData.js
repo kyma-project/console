@@ -119,3 +119,14 @@ export const serviceInstanceMock = {
     ],
   },
 };
+
+export const configMapMock = {
+  confgMap: {
+    json: {
+      data: {
+        WEBHOOK_VALIDATION_RESERVED_ENVS:
+          'FUNC_RUNTIME, FUNC_HANDLER, FUNC_TIMEOUT, FUNC_PORT, MOD_NAME, NODE_PATH, REQ_MB_LIMIT, FUNC_MEMORY_LIMIT',
+      },
+    },
+  },
+};
