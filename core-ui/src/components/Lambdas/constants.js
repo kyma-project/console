@@ -431,3 +431,6 @@ export const FUNCTION_CUSTOM_RESOURCE = {
   KIND: 'Function',
   API_VERSION: 'serverless.kyma-project.io/v1alpha1',
 };
+
+export const WEBHOOK_DEFAULTS_CM_NAME = 'serverless-webhook-envs';
+export const KYMA_SYSTEM_NAMESPACE = 'kyma-system';

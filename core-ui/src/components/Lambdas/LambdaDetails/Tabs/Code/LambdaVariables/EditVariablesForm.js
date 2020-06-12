@@ -2,7 +2,13 @@ import React, { useState, useEffect } from 'react';
 
 import { Button } from 'fundamental-react';
 import { GenericList } from 'react-shared';
-
+import { useQuery } from 'react-apollo';
+import { CONFIG } from 'components/Lambdas/config';
+import { GET_CONFIGMAP } from 'components/Lambdas/gql/queries';
+import {
+  WEBHOOK_DEFAULTS_CM_NAME,
+  KYMA_SYSTEM_NAMESPACE,
+} from 'components/Lambdas/constants';
 import SingleVariableInput from './SingleVariableInput';
 
 import { useUpdateLambda, UPDATE_TYPE } from 'components/Lambdas/gql/hooks';
@@ -32,6 +38,24 @@ export default function EditVariablesForm({
     lambda,
     type: UPDATE_TYPE.VARIABLES,
   });
+
+  const configMapWebhookDefaults = useQuery(GET_CONFIGMAP, {
+    variables: {
+      name: WEBHOOK_DEFAULTS_CM_NAME,
+      namespace: KYMA_SYSTEM_NAMESPACE,
+    },
+    fetchPolicy: 'cache-and-network',
+  });
+
+  const getReservedEnvs = configMap => {
+    if (configMap.loading) {
+      return CONFIG.restrictedVariables;
+    }
+    return configMap.data.configMap?.json.data.WEBHOOK_VALIDATION_RESERVED_ENVS.split(
+      ',',
+    );
+  };
+
   const [variables, setVariables] = useState(
     validateVariables(customVariables, injectedVariables),
   );
@@ -115,6 +139,7 @@ export default function EditVariablesForm({
       setValidity,
       setCustomValid,
       setInvalidModalPopupMessage,
+      restricedVariables: getReservedEnvs(configMapWebhookDefaults),
     });
 
   function addNewVariable() {

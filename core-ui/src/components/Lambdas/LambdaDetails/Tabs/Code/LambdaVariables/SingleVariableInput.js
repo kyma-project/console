@@ -4,7 +4,6 @@ import { FormItem, FormInput, FormMessage } from 'fundamental-react';
 
 import { VARIABLE_VALIDATION } from 'components/Lambdas/helpers/lambdaVariables';
 import { ENVIRONMENT_VARIABLES_PANEL } from 'components/Lambdas/constants';
-import { CONFIG } from 'components/Lambdas/config';
 
 import { getValidationStatus, validateVariable } from './validation';
 
@@ -15,6 +14,7 @@ export default function SingleVariableInput({
   onUpdateVariables,
   setValidity,
   setInvalidModalPopupMessage,
+  restrictedVariables,
 }) {
   const [variable, setVariable] = useState(currentVariable);
   const [debouncedCallback] = useDebouncedCallback(newVariable => {
@@ -52,7 +52,7 @@ export default function SingleVariableInput({
     const validation = getValidationStatus({
       userVariables: variables,
       injectedVariables,
-      restrictedVariables: CONFIG.restrictedVariables,
+      restrictedVariables: restrictedVariables,
       varName: name,
       varID: variable.id,
       varDirty: variable.dirty,

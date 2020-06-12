@@ -23,7 +23,6 @@ const defaultConfig = {
     'FUNC_HANDLER',
     'FUNC_TIMEOUT',
     'FUNC_PORT',
-    'PORT',
     'MOD_NAME',
     'NODE_PATH',
     'REQ_MB_LIMIT',

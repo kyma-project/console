@@ -1,5 +1,13 @@
 import gql from 'graphql-tag';
 
+export const GET_CONFIGMAP = gql`
+  query configMap($name: String!, $namespace: String!) {
+    configMap(name: $name, namespace: $namespace) {
+      json
+    }
+  }
+`;
+
 export const GET_LAMBDAS = gql`
   query functions($namespace: String!) {
     functions(namespace: $namespace) {
