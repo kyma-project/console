@@ -33,10 +33,10 @@ export function HeaderLabelsEditor({
     <section style={{ gridColumn: columnSpan }}>
       <LabelSelectorInput labels={editedLabels} onChange={setEditedLabels} />
       <div className="header-label-editor__actions">
-        <span className="link" onClick={applyEdit}>
+        <span className="link fd-has-type-0" onClick={applyEdit}>
           Apply
         </span>
-        <span className="link" onClick={cancelEdit}>
+        <span className="link fd-has-type-0" onClick={cancelEdit}>
           Cancel
         </span>
       </div>
