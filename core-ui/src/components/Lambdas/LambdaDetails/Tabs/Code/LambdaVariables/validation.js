@@ -3,7 +3,6 @@ import {
   VARIABLE_VALIDATION,
   ERROR_VARIABLE_VALIDATION,
 } from 'components/Lambdas/helpers/lambdaVariables';
-import { CONFIG } from 'components/Lambdas/config';
 
 export function validateVariables(
   customVariables = [],
