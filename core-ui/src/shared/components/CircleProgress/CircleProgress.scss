@@ -92,7 +92,7 @@ $scale-compensation: 1.01; // enlarge masks a little bit to remove an unwanted "
   }
 
   display: grid;
-  grid-template-columns: 1;
+  grid-template-columns: 1fr;
   justify-items: center;
   justify-content: center;
   grid-gap: 1em;
