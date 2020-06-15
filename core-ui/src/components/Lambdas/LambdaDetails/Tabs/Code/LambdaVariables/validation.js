@@ -8,12 +8,13 @@ import { CONFIG } from 'components/Lambdas/config';
 export function validateVariables(
   customVariables = [],
   injectedVariables = [],
+  restrictedVariables = [],
 ) {
   return customVariables.map((variable, _, array) => {
     const validation = getValidationStatus({
       userVariables: array,
       injectedVariables,
-      restrictedVariables: CONFIG.restrictedVariables,
+      restrictedVariables: restrictedVariables,
       varName: variable.name,
       varID: variable.id,
       varDirty: variable.dirty,

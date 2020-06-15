@@ -58,7 +58,11 @@ export default function EditVariablesForm({
   };
 
   const [variables, setVariables] = useState(
-    validateVariables(customVariables, injectedVariables),
+    validateVariables(
+      customVariables,
+      injectedVariables,
+      getReservedEnvs(configMapWebhookDefaults),
+    ),
   );
 
   useEffect(() => {
@@ -99,7 +103,11 @@ export default function EditVariablesForm({
       }
       return oldVariable;
     });
-    newVariables = validateVariables(newVariables, injectedVariables);
+    newVariables = validateVariables(
+      newVariables,
+      injectedVariables,
+      getReservedEnvs(configMapWebhookDefaults),
+    );
     setVariables(newVariables);
   }
 
@@ -107,7 +115,11 @@ export default function EditVariablesForm({
     let newVariables = variables.filter(
       oldVariable => oldVariable.id !== variable.id,
     );
-    newVariables = validateVariables(newVariables, injectedVariables);
+    newVariables = validateVariables(
+      newVariables,
+      injectedVariables,
+      getReservedEnvs(configMapWebhookDefaults),
+    );
     setVariables(newVariables);
   }
 
