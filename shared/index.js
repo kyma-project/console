@@ -21,6 +21,8 @@ export { JSONEditor } from './components/JSONEditor/JSONEditor';
 export { TextFormItem } from './components/TextFormItem/TextFormItem';
 export { Tabs } from './components/Tabs/Tabs';
 export { Tab } from './components/Tabs/Tab.js';
+export { HeaderLabelsEditor } from './components/HeaderLabelsEditor/HeaderLabelsEditor';
+export { LabelSelectorInput } from './components/LabelSelectorInput/LabelSelectorInput';
 
 export * from './forms';
 export * from './hooks';

@@ -21,6 +21,7 @@ export const K8sNameInput = ({
               The name must consist of lower case alphanumeric characters or dashes, 
               and must start and end with an alphanumeric character (e.g. 'my-name1').
               "
+          className="fd-has-margin-left-tiny"
         />
       )}
     </FormLabel>

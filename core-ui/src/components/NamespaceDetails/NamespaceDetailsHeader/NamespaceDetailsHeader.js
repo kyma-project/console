@@ -5,9 +5,9 @@ import PropTypes from 'prop-types';
 import { useMutation } from '@apollo/react-hooks';
 import { DELETE_NAMESPACE } from 'gql/mutations';
 
-import { PageHeader, Labels, handleDelete } from 'react-shared';
+import { PageHeader, handleDelete } from 'react-shared';
 import { Button } from 'fundamental-react';
-import EditNamespaceLabelsModal from './EditNamespaceLabelsModal/EditNamespaceLabelsModal';
+import NamespaceLabels from './NamespaceLabels/NamespaceLabels';
 import DeployResourceModal from '../DeployResourceModal/DeployResourceModal';
 
 NamespaceDetailsHeader.propTypes = { namespace: PropTypes.object.isRequired };
@@ -43,22 +43,13 @@ export default function NamespaceDetailsHeader({ namespace }) {
     { name: '' },
   ];
 
-  const labelsTitle = (
-    <>
-      <span>Labels</span>
-      <EditNamespaceLabelsModal namespace={namespace} />
-    </>
-  );
-
   return (
     <PageHeader
       title={namespace.name}
       actions={actions}
       breadcrumbItems={breadcrumbs}
     >
-      <PageHeader.Column title={labelsTitle}>
-        <Labels labels={namespace.labels} />
-      </PageHeader.Column>
+      <NamespaceLabels namespace={namespace} />
     </PageHeader>
   );
 }

@@ -3,8 +3,6 @@ import classNames from 'classnames';
 import './LabelSelectorInput.scss';
 import { Token, InlineHelp, FormItem, FormLabel } from 'fundamental-react';
 
-//TODO: move this component to a shared "place"
-
 const domainSegmentRegexp = '([a-z0-9]([a-z0-9-_]{0,61}[a-z0-9])?)';
 
 // Dot needs to be escaped for regexp
@@ -27,7 +25,11 @@ export const NonRemovableLabel = ({ text }) => (
   <Token className="label-selector__label--non-removable">{text}</Token>
 );
 
-const LabelSelectorInput = ({ labels = {}, readonlyLabels = {}, onChange }) => {
+export const LabelSelectorInput = ({
+  labels = {},
+  readonlyLabels = {},
+  onChange,
+}) => {
   const [isValid, setValid] = useState(true);
   const inputRef = useRef(null);
 
@@ -92,6 +94,7 @@ const LabelSelectorInput = ({ labels = {}, readonlyLabels = {}, onChange }) => {
         <InlineHelp
           placement="bottom-right"
           text="A key and value should be separated by a '=', a key cannot be empty, a key/value consists of alphanumeric characters, '-', '_' or '.', and must start and end with an alphanumeric character."
+          className="fd-has-margin-left-tiny"
         />
       </FormLabel>
 
@@ -120,5 +123,3 @@ const LabelSelectorInput = ({ labels = {}, readonlyLabels = {}, onChange }) => {
     </FormItem>
   );
 };
-
-export default LabelSelectorInput;

@@ -1,19 +1,15 @@
 import React from 'react';
 import { fireEvent, render, wait } from '@testing-library/react';
-import EditNamespaceLabelsModal from '../EditNamespaceLabelsModal';
+import NamespaceLabels from '../NamespaceLabels';
 
 import { updateNamespaceMock, getNamespaceMock, namespaceMock } from './mocks';
 import { MockedProvider } from '@apollo/react-testing';
 
-describe('EditNamespaceLabelsModal', () => {
+describe('NamespaceLabels', () => {
   it('displays existing labels', async () => {
-    const { queryByText, getByLabelText } = render(
-      <EditNamespaceLabelsModal namespace={{ labels: { a: 'b' } }} />,
+    const { queryByText } = render(
+      <NamespaceLabels namespace={{ labels: { a: 'b' } }} />,
     );
-
-    // open modal
-    fireEvent.click(getByLabelText('Edit labels'));
-
     expect(queryByText('a=b')).toBeInTheDocument();
   });
 
@@ -28,14 +24,10 @@ describe('EditNamespaceLabelsModal', () => {
         mocks={[updateNamespaceMock, getNamespaceMock]}
         addTypename={false}
       >
-        <>
-          {/* fragment is required here */}
-          <EditNamespaceLabelsModal namespace={namespaceMock} />,
-        </>
+        <NamespaceLabels namespace={namespaceMock} />
       </MockedProvider>,
     );
 
-    // open modal
     fireEvent.click(getByLabelText('Edit labels'));
 
     // remove label
@@ -47,9 +39,7 @@ describe('EditNamespaceLabelsModal', () => {
     fireEvent.keyDown(input, { key: 'Enter', code: 'Enter' });
     expect(queryByText('e=f')).toBeInTheDocument();
 
-    expect(getByText('Save')).not.toBeDisabled();
-
-    fireEvent.click(getByText('Save'));
+    fireEvent.click(getByText('Apply'));
 
     await wait(() => expect(updateNamespaceMock.result).toHaveBeenCalled());
   }, 20000); // large timeout for fd-modal and MockedProvider
