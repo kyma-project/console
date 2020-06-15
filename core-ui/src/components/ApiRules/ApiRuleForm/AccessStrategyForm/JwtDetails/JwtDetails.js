@@ -5,31 +5,26 @@ import {
   FormInput,
   FormItem,
   FormLabel,
-  Dropdown,
-  Menu,
   Button,
-  Popover,
 } from 'fundamental-react';
-import { InputWithPrefix } from 'react-shared';
 import './JwtDetails.scss';
 import { getApiUrl as getURL } from '@kyma-project/common';
 
 JwtDetails.propTypes = {
   config: PropTypes.object.isRequired,
   setConfig: PropTypes.func.isRequired,
-  idpPresets: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
   handleFormChanged: PropTypes.func.isRequired,
 };
 
-export default function JwtDetails({
-  config,
-  setConfig,
-  idpPresets,
-  handleFormChanged,
-}) {
+export default function JwtDetails({ config, setConfig, handleFormChanged }) {
   const defaultIDPPreset = {
     jwksUri: getURL('defaultIdpJwksUri'),
     issuer: getURL('defaultIdpIssuer'),
+  };
+
+  const emptyIDPPreset = {
+    jwksUri: '',
+    issuer: '',
   };
 
   function addPreset(preset) {
@@ -57,37 +52,24 @@ export default function JwtDetails({
   }
 
   if (!config.jwks_urls) {
-    config.jwks_urls = [];
+    config.jwks_urls = [defaultIDPPreset.jwksUri]; //[];
   }
   if (!config.trusted_issuers) {
-    config.trusted_issuers = [];
+    config.trusted_issuers = [defaultIDPPreset.issuer]; //[];
   }
   const { jwks_urls, trusted_issuers } = config;
 
-  const configureIdpDropdown = (
-    <Dropdown>
-      <Popover
-        body={
-          <Menu>
-            <Menu.List>
-              <Menu.Item onClick={() => addPreset(defaultIDPPreset)}>
-                Default
-              </Menu.Item>
-              {idpPresets.map(preset => (
-                <Menu.Item key={preset.name} onClick={() => addPreset(preset)}>
-                  {preset.name}
-                </Menu.Item>
-              ))}
-            </Menu.List>
-          </Menu>
-        }
-        control={
-          <Button className="fd-dropdown__control" typeAttr="button">
-            Configure identity provider...
-          </Button>
-        }
-      />
-    </Dropdown>
+  const addPresetButton = (
+    <div className="preset-row">
+      <Button
+        onClick={() => addPreset(emptyIDPPreset)}
+        className="add-preset"
+        glyph="add"
+        typeAttr="button"
+      >
+        Add
+      </Button>
+    </div>
   );
 
   const idpList = jwks_urls.map((_, idx) => (
@@ -114,15 +96,13 @@ export default function JwtDetails({
             <FormLabel htmlFor={`jwt-jwks-uri-${idx}`} required>
               JWKS Uri
             </FormLabel>
-            <InputWithPrefix
-              prefix="https://"
-              replacePrefix={true}
+            <FormInput
               onChange={e => updateJwksUriAt(idx, e.target.value)}
               value={jwks_urls ? jwks_urls[idx] : ''}
               id={`jwt-jwks-uri-${idx}`}
               key={`jwt-jwks-uri-${idx}`}
               placeholder="JWKS Uri"
-              type="text"
+              type="url"
               required
               aria-label={`jwt-jwks-uri-${idx}`}
               title="JWKS Uri"
@@ -147,8 +127,8 @@ export default function JwtDetails({
 
   return (
     <section className="jwt-details">
-      {configureIdpDropdown}
       {idpList}
+      {addPresetButton}
     </section>
   );
 }

@@ -157,7 +157,6 @@ const BindingUsagesCount = ({ instance }) => {
 };
 
 const Status = ({ instance }) => {
-  instance.status = undefined;
   const type = instance.status ? instance.status.type : 'UNKNOWN';
   return (
     <StatusBadge

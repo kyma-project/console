@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  render,
-  waitForDomChange,
-  fireEvent,
-  queryByText,
-  prettyDOM,
-  getByText,
-} from '@testing-library/react';
+import { render, fireEvent, queryByText } from '@testing-library/react';
 import AccessStrategyForm from '../AccessStrategyForm';
 
 jest.mock('@kyma-project/common', () => ({
@@ -167,8 +160,6 @@ describe('AccessStrategyForm', () => {
     expect(getByLabelText('Access strategy type')).toHaveValue(
       jwtStrategy.accessStrategies[0].type,
     );
-    const addPresetDropdown = queryByText('Configure identity provider...');
-    expect(addPresetDropdown).toBeInTheDocument();
 
     expect(getByLabelText('jwt-issuer-0').value).toBe(
       jwtStrategy.accessStrategies[0].config.trusted_issuers[0],
