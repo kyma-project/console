@@ -1,0 +1,101 @@
+$circle-size: 100px; // must be set in px to save proportions
+$circle-background: var(--fd-color-background-2, #fff);
+$transition-length: 2s;
+$colors: (
+  'purple': var(--fd-color-accent-4),
+  'green': var(--fd-color-accent-8),
+  'blue': var(--fd-color-accent-6),
+  'teal': teal,
+);
+$scale-compensation: 1.01; // enlarge masks a little bit to remove an unwanted "tiny border"effect in the browser
+
+@mixin circle-shape($size) {
+  border-radius: 50%;
+  width: $size;
+  height: $size;
+}
+
+%flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+%mask {
+  @include circle-shape($circle-size);
+  position: absolute;
+  background-color: $circle-background;
+  transition: transform $transition-length;
+  clip: rect(0px, $circle-size/2, $circle-size, 0px);
+  transform: rotate(0.5turn) scale($scale-compensation);
+}
+
+@mixin circle($circle-color: map-get($map: $colors, $key: 'blue')) {
+  width: $circle-size;
+  height: $circle-size;
+  @extend %flex-center;
+  margin: $circle-size/12;
+
+  .progress-bar {
+    @include circle-shape($circle-size);
+    position: absolute;
+    background-color: $circle-color;
+    z-index: 5;
+
+    .mask--dynamic {
+      @extend %mask;
+      z-index: 5;
+      @for $i from 0 through 50 {
+        // it is a mask for the left half of the circle
+        &.fill--#{$i} {
+          transform: rotate(calc(#{$i} / -50 * 0.5turn))
+            scale($scale-compensation);
+        }
+      }
+
+      @for $i from 51 through 100 {
+        // it becomes the right half of the circle
+        &.fill--#{$i} {
+          background-color: $circle-color;
+          transform: rotate(calc((100 - #{$i} / 50) * 0.5turn + 0.5turn));
+        }
+      }
+    }
+    .mask--permanent {
+      @extend %mask;
+      background-color: $circle-background;
+    }
+  }
+
+  .inner-area {
+    @include circle-shape($circle-size/1.4);
+    @extend %flex-center;
+    background-color: $circle-background;
+    position: absolute;
+    z-index: 8;
+    color: var(--fd-color-text-3);
+
+    .percentage {
+      @include circle-shape($circle-size/1.6);
+      @extend %flex-center;
+      border: 1px solid var(--fd-color-text-3);
+      font-size: $circle-size/5;
+    }
+  }
+}
+
+.circle-progress {
+  @each $name, $value in $colors {
+    .circle--#{$name} {
+      @include circle($value);
+    }
+  }
+
+  display: grid;
+  grid-template-columns: 1;
+  justify-items: center;
+  justify-content: center;
+  grid-gap: 1em;
+  color: var(--fd-color-text-3);
+  font-size: 1.2em;
+}
