@@ -6,24 +6,24 @@ describe('HeaderLabelsEditor', () => {
   const labels = { a: 'b', c: 'd' };
 
   it('Switches between readonly and edit mode', () => {
-    const { queryByText, queryByLabelText } = render(
+    const { queryByText, queryByLabelText, getByLabelText } = render(
       <HeaderLabelsEditor labels={labels} onApply={() => {}} />,
     );
 
     // readonly state
-    expect(queryByText('Apply')).not.toBeInTheDocument();
+    expect(queryByLabelText('Apply')).not.toBeInTheDocument();
     expect(queryByText('a=b')).toBeInTheDocument();
     expect(queryByText('c=d')).toBeInTheDocument();
 
     // editor state
     fireEvent.click(queryByLabelText('Edit labels'));
-    expect(queryByText('Apply')).toBeInTheDocument();
+    expect(queryByLabelText('Apply')).toBeInTheDocument();
     expect(queryByText('a=b')).toBeInTheDocument();
     expect(queryByText('c=d')).toBeInTheDocument();
 
     // back to readonly state
-    fireEvent.click(queryByText('Cancel'));
-    expect(queryByText('Apply')).not.toBeInTheDocument();
+    fireEvent.click(getByLabelText('Cancel'));
+    expect(queryByLabelText('Apply')).not.toBeInTheDocument();
   });
 
   it('Allows for editing labels, resets on "Cancel"', () => {
@@ -50,7 +50,7 @@ describe('HeaderLabelsEditor', () => {
     expect(queryByText('e=f')).toBeInTheDocument();
 
     // switch to readonly state
-    fireEvent.click(getByText('Cancel'));
+    fireEvent.click(getByLabelText('Cancel'));
 
     expect(queryByText('a=b')).toBeInTheDocument();
     expect(queryByText('c=d')).toBeInTheDocument();
@@ -69,7 +69,7 @@ describe('HeaderLabelsEditor', () => {
     // remove label
     fireEvent.click(getByText('c=d'));
 
-    fireEvent.click(getByText('Apply'));
+    fireEvent.click(getByLabelText('Apply'));
 
     expect(onApply).toHaveBeenCalledWith({ a: 'b' });
   });

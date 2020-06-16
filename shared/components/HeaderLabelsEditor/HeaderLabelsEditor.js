@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { Tooltip, Labels, PageHeader, LabelSelectorInput } from './../..';
-import { Icon } from 'fundamental-react';
+import { Button, Icon } from 'fundamental-react';
 import './HeaderLabelsEditor.scss';
 
 HeaderLabelsEditor.propTypes = {
@@ -30,16 +30,26 @@ export function HeaderLabelsEditor({
   };
 
   const labelEditor = (
-    <section style={{ gridColumn: columnSpan }}>
-      <LabelSelectorInput labels={editedLabels} onChange={setEditedLabels} />
-      <div className="header-label-editor__actions">
-        <span className="link fd-has-type-0" onClick={applyEdit}>
-          Apply
-        </span>
-        <span className="link fd-has-type-0" onClick={cancelEdit}>
-          Cancel
-        </span>
-      </div>
+    <section className="header-label-editor" style={{ gridColumn: columnSpan }}>
+      <LabelSelectorInput
+        labels={editedLabels}
+        onChange={setEditedLabels}
+        showLabel={false}
+      />
+      <Button
+        compact
+        glyph="accept"
+        type="positive"
+        aria-label="Apply"
+        onClick={applyEdit}
+      />
+      <Button
+        compact
+        glyph="decline"
+        type="negative"
+        aria-label="Cancel"
+        onClick={cancelEdit}
+      />
     </section>
   );
 

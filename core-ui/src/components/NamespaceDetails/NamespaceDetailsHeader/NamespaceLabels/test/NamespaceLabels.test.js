@@ -39,7 +39,7 @@ describe('NamespaceLabels', () => {
     fireEvent.keyDown(input, { key: 'Enter', code: 'Enter' });
     expect(queryByText('e=f')).toBeInTheDocument();
 
-    fireEvent.click(getByText('Apply'));
+    fireEvent.click(getByLabelText('Apply'));
 
     await wait(() => expect(updateNamespaceMock.result).toHaveBeenCalled());
   }, 20000); // large timeout for fd-modal and MockedProvider
