@@ -54,10 +54,6 @@ export default function CreateApiRule() {
     if (createdApiRuleData) {
       notificationManager.notifySuccess({
         content: `API Rule ${createdApiRuleData.name} created successfully`,
-        title: 'Success',
-        color: '#107E3E',
-        icon: 'accept',
-        autoClose: true,
       });
 
       navigateToDetails(createdApiRuleData.name);

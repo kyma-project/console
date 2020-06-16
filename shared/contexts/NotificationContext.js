@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState } from 'react';
-import { Notification } from '../components/Notification/Notification'; //TODO: use our own Notification
+import { Notification } from '../components/Notification/Notification';
 
 export const NotificationContext = createContext({
   isOpen: false,
