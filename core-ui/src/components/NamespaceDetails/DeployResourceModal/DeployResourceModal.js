@@ -1,5 +1,4 @@
 import React from 'react';
-import LuigiClient from '@kyma-project/luigi-client';
 import PropTypes from 'prop-types';
 
 import {
@@ -9,7 +8,7 @@ import {
   useConfig,
 } from 'react-shared';
 import { Button } from 'fundamental-react';
-
+import { useNotification } from 'react-shared';
 import { parseFile, getResourceUrl } from './deployResourceHelpers';
 
 DeployResourceModal.propTypes = { name: PropTypes.string.isRequired };
@@ -17,6 +16,7 @@ DeployResourceModal.propTypes = { name: PropTypes.string.isRequired };
 export default function DeployResourceModal({ name }) {
   const { idToken } = useMicrofrontendContext();
   const { fromConfig } = useConfig();
+  const notification = useNotification();
   const [error, setError] = React.useState(null);
   const [content, setContent] = React.useState(null);
 
@@ -34,7 +34,7 @@ export default function DeployResourceModal({ name }) {
       name,
     );
     try {
-      await fetch(url, {
+      const response = await fetch(url, {
         method: 'POST',
         body: JSON.stringify(content),
         headers: {
@@ -42,12 +42,20 @@ export default function DeployResourceModal({ name }) {
           'Content-Type': 'application/json',
         },
       });
+      if (response.ok) {
+        notification.notifySuccess({
+          content: 'Successfully deployed new resource',
+        });
+      } else {
+        const { message } = await response.json();
+        notification.notifyError({
+          content: `Cannot create a k8s resource: ${message}.`,
+        });
+      }
     } catch (e) {
       console.warn(e);
-      LuigiClient.uxManager().showAlert({
-        text: `Cannot create a k8s resource due: ${e.message}.`,
-        type: 'error',
-        closeAfter: 10000,
+      notification.notifyError({
+        content: `Cannot create a k8s resource due: ${e.message}.`,
       });
     }
   };

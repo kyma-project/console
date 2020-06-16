@@ -6,43 +6,53 @@ import { useMutation } from '@apollo/react-hooks';
 import { UNBIND_NAMESPACE } from 'gql/mutations';
 import { GET_NAMESPACE } from 'gql/queries';
 
-import { GenericList } from 'react-shared';
+import { GenericList, useNotification } from 'react-shared';
 
 NamespaceApplications.propTypes = { namespace: PropTypes.object.isRequired };
 
 export default function NamespaceApplications({ namespace }) {
+  const notification = useNotification();
   const [unbindNamespace] = useMutation(UNBIND_NAMESPACE);
-
-  const unbind = async ({ name }) => {
-    try {
-      await unbindNamespace({
-        variables: {
-          namespace: namespace.name,
-          application: name,
-        },
-        refetchQueries: () => [
-          {
-            query: GET_NAMESPACE,
-            variables: {
-              name: namespace.name,
-            },
-          },
-        ],
-      });
-    } catch (e) {
-      console.warn(e);
-      LuigiClient.uxManager().showAlert({
-        text: `Cannot unbind ${name}: ${e.message}`,
-        type: 'error',
-        closeAfter: 10000,
-      });
-    }
-  };
 
   const actions = [
     {
       name: 'Unbind',
-      handler: unbind,
+      handler: ({ name }) => {
+        LuigiClient.uxManager()
+          .showConfirmationModal({
+            header: `Unbind ${name}`,
+            body: `Are you sure you want to unbind Application ${name}?`,
+            buttonConfirm: 'Confirm',
+            buttonDismiss: 'Cancel',
+          })
+          .then(() =>
+            unbindNamespace({
+              variables: {
+                namespace: namespace.name,
+                application: name,
+              },
+              refetchQueries: () => [
+                {
+                  query: GET_NAMESPACE,
+                  variables: {
+                    name: namespace.name,
+                  },
+                },
+              ],
+            })
+              .then(() => {
+                notification.notifySuccess({
+                  content: `Application ${name} unbound successfully`,
+                });
+              })
+              .catch(e => {
+                notification.notifyError({
+                  content: `Could not unbind Application: ${e.message}`,
+                });
+              }),
+          )
+          .catch(() => {});
+      },
     },
   ];
 

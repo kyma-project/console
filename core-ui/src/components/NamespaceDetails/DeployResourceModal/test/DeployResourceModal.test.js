@@ -30,7 +30,7 @@ describe('DeployResourceModal', () => {
   it('accepts valid file and sends out request on "Confirm"', async () => {
     helpers.parseFile = () => [{ kind: 'test' }, ''];
     helpers.getResourceUrl = () => 'sample-url';
-    const fetchMock = jest.fn();
+    const fetchMock = jest.fn().mockImplementation(() => ({ ok: true }));
     global.fetch = fetchMock;
 
     const { getByText, getByLabelText, queryByRole } = render(

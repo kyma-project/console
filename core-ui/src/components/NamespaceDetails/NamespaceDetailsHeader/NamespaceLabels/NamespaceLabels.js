@@ -1,17 +1,17 @@
 import React from 'react';
-import LuigiClient from '@kyma-project/luigi-client';
 import PropTypes from 'prop-types';
 
 import { useMutation } from '@apollo/react-hooks';
 import { UPDATE_NAMESPACE } from 'gql/mutations';
 import { GET_NAMESPACE } from 'gql/queries';
 
-import { HeaderLabelsEditor } from 'react-shared';
+import { HeaderLabelsEditor, useNotification } from 'react-shared';
 
 NamespaceLabels.propTypes = { namespace: PropTypes.object.isRequired };
 
 export default function NamespaceLabels({ namespace }) {
   const [updateNamespace] = useMutation(UPDATE_NAMESPACE);
+  const notification = useNotification();
 
   const updateLabels = async labels => {
     try {
@@ -24,12 +24,13 @@ export default function NamespaceLabels({ namespace }) {
           },
         ],
       });
+      notification.notifySuccess({
+        content: 'Labels updated successfully',
+      });
     } catch (e) {
       console.warn(e);
-      LuigiClient.uxManager().showAlert({
-        text: `Cannot update API: ${e.message}`,
-        type: 'error',
-        closeAfter: 10000,
+      notification.notifyError({
+        content: `Cannot update labels: ${e.message}.`,
       });
     }
   };
