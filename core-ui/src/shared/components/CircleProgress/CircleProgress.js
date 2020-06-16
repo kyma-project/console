@@ -1,11 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import './CircleProgress.scss';
 
-const CircleProgress = ({ value, color = 'blue', children }) => {
+const CircleProgress = ({ value, color = 'blue', onClick, children }) => {
+  const circleClasses = classNames(`circle--${color}`, {
+    'cursor-pointer': onClick,
+  });
+
   return (
-    <div className="circle-progress">
-      <div className={`circle--${color}`}>
+    <div className="circle-progress" onClick={onClick}>
+      <div className={circleClasses}>
         <div className="progress-bar">
           <div className={`mask--dynamic fill--${value}`}></div>
           <div className={`mask--permanent`}></div>
@@ -32,6 +37,7 @@ CircleProgress.propTypes = {
       );
     }
   },
+  onClick: PropTypes.func,
   children: PropTypes.node,
 };
 

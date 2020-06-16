@@ -6,6 +6,7 @@ import { GET_NAMESPACE } from 'gql/queries';
 
 import { ResourceNotFound } from 'react-shared';
 import NamespaceDetailsHeader from './NamespaceDetailsHeader/NamespaceDetailsHeader';
+import NamespaceWorkloads from './NamespaceWorkloads/NamespaceWorkloads';
 import NamespaceApplications from './NamespaceApplications/NamespaceApplications';
 
 NamespaceDetails.propTypes = { name: PropTypes.string.isRequired };
@@ -34,6 +35,7 @@ export default function NamespaceDetails({ name }) {
   return (
     <>
       <NamespaceDetailsHeader namespace={namespace} />
+      <NamespaceWorkloads namespace={namespace} />
       <NamespaceApplications namespace={namespace} />
     </>
   );

@@ -1,11 +1,20 @@
 import gql from 'graphql-tag';
 
 export const GET_NAMESPACE = gql`
-  query Function($name: String!) {
+  query Namespace($name: String!) {
     namespace(name: $name) {
       name
       labels
       applications
+      pods {
+        status
+      }
+      deployments {
+        status {
+          replicas
+          readyReplicas
+        }
+      }
     }
   }
 `;
