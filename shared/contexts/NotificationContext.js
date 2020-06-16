@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState } from 'react';
-import { Notification } from '@kyma-project/react-components'; //TODO: use our own Notification
+import { Notification } from '../components/Notification/Notification'; //TODO: use our own Notification
 
 export const NotificationContext = createContext({
   isOpen: false,
@@ -33,7 +33,7 @@ export const NotificationProvider = ({
     ) {
       notificationProps = {
         title: 'Success',
-        color: '#107E3E',
+        type: 'success',
         icon: 'accept',
         autoClose: true,
         ...notificationProps,
@@ -46,7 +46,7 @@ export const NotificationProvider = ({
     ) {
       notificationProps = {
         title: 'Error',
-        color: '#BB0000',
+        type: 'error',
         icon: 'decline',
         autoClose: false,
         ...notificationProps,
