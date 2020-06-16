@@ -6,6 +6,8 @@ export const namespace = {
     a: 'b',
     c: 'd',
   },
+  deployments: [],
+  pods: [],
 };
 
 export const deleteNamespaceMock = {

@@ -5,6 +5,8 @@ export const namespace = {
   name: 'ns',
   labels: {},
   applications: ['app 1', 'app 2'],
+  deployments: [],
+  pods: [],
 };
 
 export const unbindNamespace = {

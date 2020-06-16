@@ -1,7 +1,13 @@
 import { UPDATE_NAMESPACE } from 'gql/mutations';
 import { GET_NAMESPACE } from 'gql/queries';
 
-export const namespaceMock = { name: 'ns', labels: { a: 'b', c: 'd' } };
+export const namespaceMock = {
+  name: 'ns',
+  labels: { a: 'b', c: 'd' },
+  applications: [],
+  deployments: [],
+  pods: [],
+};
 
 export const updateNamespaceMock = {
   request: {
@@ -17,7 +23,7 @@ export const updateNamespaceMock = {
   result: jest.fn().mockReturnValue({
     data: {
       updateNamespace: {
-        name: namespaceMock.name,
+        ...namespaceMock,
         labels: {
           c: 'd',
           e: 'f',
@@ -36,7 +42,7 @@ export const getNamespaceMock = {
   },
   result: {
     data: {
-      namespace: { ...namespaceMock, applications: [] },
+      namespace: namespaceMock,
     },
   },
 };
