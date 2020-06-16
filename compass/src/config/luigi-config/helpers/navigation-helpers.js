@@ -20,13 +20,14 @@ export async function fetchTenants() {
       tenants {
         name
         id
+        initialized
       }
     }
     `,
   };
   try {
     const response = await fetchFromGraphql(payload);
-    const tenants = response.data.tenants;
+    const tenants = response.data.tenants.filter(t => t.initialized);
     cacheTenants(tenants);
     return tenants;
   } catch (err) {

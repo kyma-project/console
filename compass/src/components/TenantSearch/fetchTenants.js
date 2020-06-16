@@ -5,6 +5,7 @@ export default async function fetchTenants(token) {
     tenants {
       name
       id
+      initialized
     }
   }
   `,
@@ -20,5 +21,5 @@ export default async function fetchTenants(token) {
     body: JSON.stringify(query),
   });
   const json = await response.json();
-  return json.data.tenants;
+  return json.data.tenants.filter(t => t.initialized);
 }
