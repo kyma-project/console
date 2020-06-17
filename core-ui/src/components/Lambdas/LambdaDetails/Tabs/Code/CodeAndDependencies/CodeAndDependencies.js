@@ -20,6 +20,7 @@ const DISABLED_CAUSES = {
 };
 
 export default function CodeAndDependencies({ lambda }) {
+  // in tests UPDATE_TYPE is sometimes undefined...
   const updateLambda = useUpdateLambda({
     lambda,
     type: UPDATE_TYPE?.CODE_AND_DEPENDENCIES || 'CODE_AND_DEPENDENCIES',

@@ -9,7 +9,7 @@ import { GQL_QUERIES } from 'components/Lambdas/constants';
 import extractGraphQlErrors from 'shared/graphqlErrorExtractor';
 
 export const useConfigMapQuery = ({ name, namespace }) => {
-  const [cmData, setCmData] = useState([]);
+  const [cmData, setCmData] = useState({});
   const notificationManager = useNotification();
 
   const { data, error, loading } = useQuery(GET_CONFIG_MAP, {
@@ -30,13 +30,10 @@ export const useConfigMapQuery = ({ name, namespace }) => {
     if (error) {
       const errorToDisplay = extractGraphQlErrors(error);
 
-      const message = formatMessage(
-        GQL_QUERIES.EVENT_ACTIVATIONS.ERROR_MESSAGE,
-        {
-          namespace,
-          error: errorToDisplay,
-        },
-      );
+      const message = formatMessage(GQL_QUERIES.CONFIG_MAP.ERROR_MESSAGE, {
+        configMapName: name,
+        error: errorToDisplay,
+      });
 
       notificationManager.notifyError({
         content: message,

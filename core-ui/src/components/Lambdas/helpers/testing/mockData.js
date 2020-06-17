@@ -119,3 +119,11 @@ export const serviceInstanceMock = {
     ],
   },
 };
+
+export const configMapMock = {
+  json: {
+    data: {
+      key: 'value',
+    },
+  },
+};

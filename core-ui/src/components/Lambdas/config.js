@@ -81,5 +81,5 @@ export function updateConfig(key, value = null) {
   }
 }
 
-// this object will updated by reference by hook in helpers/misc/useConfigData.
+// this object will update by reference by hook in helpers/misc/useConfigData.
 export const CONFIG = loadConfig();

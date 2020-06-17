@@ -145,6 +145,9 @@ export const GQL_QUERIES = {
   SERVICE_INSTANCES: {
     ERROR_MESSAGE: `Couldn't fetch Service Instances due to this error: {error}`,
   },
+  CONFIG_MAP: {
+    ERROR_MESSAGE: `Couldn't fetch "{configMapName}" ConfigMap due to this error: {error}`,
+  },
 };
 
 export const GQL_MUTATIONS = {
