@@ -22,7 +22,7 @@ const DISABLED_CAUSES = {
 export default function CodeAndDependencies({ lambda }) {
   const updateLambda = useUpdateLambda({
     lambda,
-    type: UPDATE_TYPE.CODE_AND_DEPENDENCIES,
+    type: UPDATE_TYPE?.CODE_AND_DEPENDENCIES || 'CODE_AND_DEPENDENCIES',
   });
 
   const [showDiff, setShowDiff] = useState(false);

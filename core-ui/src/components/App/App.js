@@ -75,10 +75,6 @@ export default function App() {
   );
 }
 
-function RoutedLambdaDetails({ match }) {
-  return <LambdaDetailsWrapper lambdaName={match.params.name} />;
-}
-
 function RoutedApiRuleDetails({ match }) {
   return <ApiRuleDetails apiName={match.params.apiName} />;
 }
