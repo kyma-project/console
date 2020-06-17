@@ -86,7 +86,7 @@ export function Modal({
 
     const confirmButton = (
       <Button
-        type="emphasized"
+        option="emphasized"
         onClick={handleConfirmClicked}
         disabled={disabledConfirm}
         data-e2e-id="modal-confirmation-button"
