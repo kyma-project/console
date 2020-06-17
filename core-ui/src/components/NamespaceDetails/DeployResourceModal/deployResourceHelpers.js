@@ -42,24 +42,34 @@ export async function parseFile(file) {
     return [null, fileError];
   }
 
-  let content;
+  let contents;
   try {
-    content = jsyaml.safeLoad(await readFile(file));
+    contents = jsyaml.safeLoadAll(await readFile(file));
   } catch (_) {
     return [null, 'Cannot parse file content'];
   }
 
-  return [content, validateFileContent(content)];
+  if (!Array.isArray(contents)) {
+    contents = [contents];
+  }
+
+  let contentError = null;
+  for (const content of contents) {
+    contentError = contentError || validateFileContent(content);
+  }
+
+  return [contents, contentError];
 }
 
 export function getResourceUrl(domain, kind, apiVersion, namespace) {
-  const k8sApiServerUrl = `https://apiserver.${domain}/api/v1/`;
   const resource = kind.toLowerCase() + 's';
 
   switch (apiVersion) {
     case 'v1':
-      return `${k8sApiServerUrl}namespaces/${namespace}/${resource}`;
+      const k8sApiServerUrl = `https://apiserver.${domain}/api/v1`;
+      return `${k8sApiServerUrl}/namespaces/${namespace}/${resource}`;
     default:
-      return `${k8sApiServerUrl}/apis/${apiVersion}/namespaces/${namespace}/${resource}`;
+      const k8sServerUrl = `https://apiserver.${domain}`;
+      return `${k8sServerUrl}/apis/${apiVersion}/namespaces/${namespace}/${resource}`;
   }
 }

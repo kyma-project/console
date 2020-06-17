@@ -24,7 +24,7 @@ describe('DeploResource helpers', () => {
     it('creates url for non-v1 version', () => {
       const url = getResourceUrl(domain, kind, 'v0', namespace);
       expect(url).toBe(
-        'https://apiserver.test-domain/api/v1//apis/v0/namespaces/test-namespace/tests',
+        'https://apiserver.test-domain/apis/v0/namespaces/test-namespace/tests',
       );
     });
   });
@@ -76,7 +76,7 @@ describe('DeploResource helpers', () => {
         type: 'application/json',
       });
 
-      expect(content).toBe(true);
+      expect(content).toEqual([true]);
       expect(error).toBe('Resource must be an object');
     });
 
@@ -104,10 +104,33 @@ describe('DeploResource helpers', () => {
         type: 'application/json',
       });
 
-      expect(content).toMatchObject({ a: 0 });
+      expect(content).toMatchObject([{ a: 0 }]);
       expect(error).toBe(
         'Fields "apiVersion", "kind" and "metadata" are required',
       );
+    });
+
+    it('successfully parses multiple entries', async () => {
+      const testContent = `
+kind: 1
+apiVersion: v2
+metadata: 3
+---
+kind: 4
+apiVersion: v5
+metadata: 6`;
+
+      jest
+        .spyOn(global, 'FileReader')
+        .mockImplementation(mockFileReader(testContent));
+
+      const [content, error] = await parseFile({
+        size: 1,
+        type: 'application/json',
+      });
+
+      expect(content).toHaveLength(2);
+      expect(error).toBeFalsy();
     });
   });
 });

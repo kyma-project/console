@@ -18,23 +18,23 @@ export default function DeployResourceModal({ name }) {
   const { fromConfig } = useConfig();
   const notification = useNotification();
   const [error, setError] = React.useState(null);
-  const [content, setContent] = React.useState(null);
+  const [contents, setContents] = React.useState(null);
 
   const fileInputChanged = async file => {
     const [content, error] = await parseFile(file);
-    setContent(content);
+    setContents(content);
     setError(error);
   };
 
   const deployResource = async () => {
-    const url = getResourceUrl(
-      fromConfig('domain'),
-      content.kind,
-      content.apiVersion,
-      name,
-    );
-    try {
-      const response = await fetch(url, {
+    const promises = contents.map(async content => {
+      const url = getResourceUrl(
+        fromConfig('domain'),
+        content.kind,
+        content.apiVersion,
+        name,
+      );
+      const res = await fetch(url, {
         method: 'POST',
         body: JSON.stringify(content),
         headers: {
@@ -42,21 +42,29 @@ export default function DeployResourceModal({ name }) {
           'Content-Type': 'application/json',
         },
       });
-      if (response.ok) {
-        notification.notifySuccess({
-          content: 'Successfully deployed new resource',
-        });
-      } else {
-        const { message } = await response.json();
-        notification.notifyError({
-          content: `Cannot create a k8s resource: ${message}.`,
-        });
+      if (!res.ok) {
+        const { message } = await res.json();
+        throw Error(message);
       }
-    } catch (e) {
-      console.warn(e);
-      notification.notifyError({
-        content: `Cannot create a k8s resource due: ${e.message}.`,
+    });
+
+    const results = await Promise.allSettled(promises);
+    const succeeded = results.filter(r => r.status === 'fulfilled');
+
+    if (results.length === succeeded.length) {
+      notification.notifySuccess({
+        content: 'Successfully deployed new resource(s)',
       });
+    } else {
+      const failedCount = results.length - succeeded.length;
+      const firstError = results.filter(r => r.status !== 'fulfilled')[0]
+        .reason;
+      notification.notifyError(
+        {
+          content: `Could not deploy resources: (${failedCount}/${results.length} failed). ${firstError}`,
+        },
+        15000,
+      );
     }
   };
 
@@ -71,8 +79,8 @@ export default function DeployResourceModal({ name }) {
       confirmText="Deploy"
       cancelText="Cancel"
       onConfirm={deployResource}
-      disabledConfirm={!content || !!error}
-      onShow={() => setContent(null) || setError(null)}
+      disabledConfirm={!contents || !!error}
+      onShow={() => setContents(null) || setError(null)}
     >
       <form>
         <FileInput

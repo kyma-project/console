@@ -27,8 +27,8 @@ describe('DeployResourceModal', () => {
     expect(getByText('Deploy')).toBeDisabled();
   });
 
-  it('accepts valid file and sends out request on "Confirm"', async () => {
-    helpers.parseFile = () => [{ kind: 'test' }, ''];
+  it('accepts valid file and sends out requests on "Confirm"', async () => {
+    helpers.parseFile = () => [[{ kind: 'test' }, { kind: 'test2' }], ''];
     helpers.getResourceUrl = () => 'sample-url';
     const fetchMock = jest.fn().mockImplementation(() => ({ ok: true }));
     global.fetch = fetchMock;
@@ -55,6 +55,7 @@ describe('DeployResourceModal', () => {
 
     fireEvent.click(submitButton);
 
-    expect(fetchMock).toHaveBeenCalledWith('sample-url', expect.anything());
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+    expect(fetchMock).toHaveBeenLastCalledWith('sample-url', expect.anything());
   }, 20000);
 });
