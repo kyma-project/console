@@ -1,10 +1,30 @@
 import React from 'react';
-import { fireEvent, render, waitForDomChange } from '@testing-library/react';
+import {
+  fireEvent,
+  render,
+  waitForDomChange,
+  wait,
+} from '@testing-library/react';
 import DeployResourceModal from '../DeployResourceModal';
 import { ConfigContext } from 'react-shared';
 import * as helpers from '../deployResourceHelpers';
 
+const mockNotifySuccess = jest.fn();
+const mockNotifyError = jest.fn();
+jest.mock('react-shared', () => ({
+  ...jest.requireActual('react-shared'),
+  useNotification: () => ({
+    notifySuccess: mockNotifySuccess,
+    notifyError: mockNotifyError,
+  }),
+}));
+
 describe('DeployResourceModal', () => {
+  afterEach(() => {
+    mockNotifySuccess.mockReset();
+    mockNotifyError.mockReset();
+  });
+
   it('displays message when choosen file is invalid', async () => {
     helpers.parseFile = () => [null, 'some error here'];
 
@@ -27,8 +47,8 @@ describe('DeployResourceModal', () => {
     expect(getByText('Deploy')).toBeDisabled();
   });
 
-  it('accepts valid file and sends out requests on "Confirm"', async () => {
-    helpers.parseFile = () => [[{ kind: 'test' }, { kind: 'test2' }], ''];
+  it('accepts valid file and sends out requests on "Confirm" - all valid responses', async () => {
+    helpers.parseFile = () => [[{ kind: 'test' }], ''];
     helpers.getResourceUrl = () => 'sample-url';
     const fetchMock = jest.fn().mockImplementation(() => ({ ok: true }));
     global.fetch = fetchMock;
@@ -55,7 +75,41 @@ describe('DeployResourceModal', () => {
 
     fireEvent.click(submitButton);
 
-    expect(fetchMock).toHaveBeenCalledTimes(2);
-    expect(fetchMock).toHaveBeenLastCalledWith('sample-url', expect.anything());
+    await wait(() => {
+      expect(fetchMock).toHaveBeenCalled();
+      expect(fetchMock).toHaveBeenLastCalledWith(
+        'sample-url',
+        expect.anything(),
+      );
+      expect(mockNotifySuccess).toHaveBeenCalled();
+    });
+  }, 20000);
+
+  it('accepts valid file and sends out requests on "Confirm" - invalid response', async () => {
+    helpers.parseFile = () => [[{ kind: 'test' }, { kind: 'test2' }], ''];
+    helpers.getResourceUrl = () => 'sample-url';
+    const fetchMock = jest
+      .fn()
+      .mockImplementationOnce(() => ({ ok: true }))
+      .mockImplementationOnce(() => ({ ok: false }));
+    global.fetch = fetchMock;
+
+    const { getByText, getByLabelText } = render(
+      <ConfigContext.Provider value={{ fromConfig: () => '' }}>
+        <DeployResourceModal name="ns" />
+      </ConfigContext.Provider>,
+    );
+
+    // open modal
+    fireEvent.click(getByText('Deploy new resource'));
+
+    // set file
+    fireEvent.change(getByLabelText(/Browse/), { target: { files: [{}] } });
+
+    await waitForDomChange();
+
+    fireEvent.click(getByText('Deploy'));
+
+    await wait(() => expect(mockNotifyError).toHaveBeenCalled());
   }, 20000);
 });
