@@ -39,8 +39,8 @@ const defaultConfig = {
   ],
   resources: {
     min: {
-      memory: '8Mi',
-      cpu: '8m',
+      memory: '16Mi',
+      cpu: '10m',
     },
   },
   triggerSubscriber: defaultTriggerSubscriber,
