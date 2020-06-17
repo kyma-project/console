@@ -2,7 +2,6 @@ import React from 'react';
 import LuigiClient from '@kyma-project/luigi-client';
 
 import { useLambdaQuery } from 'components/Lambdas/gql/hooks/queries';
-import { useConfigData } from 'components/Lambdas/helpers/misc/useConfigData';
 
 import EntryNotFound from '../../EntryNotFound/EntryNotFound';
 import { Spinner } from 'react-shared';
@@ -12,7 +11,6 @@ import LambdaDetails from './LambdaDetails';
 import './LambdaDetails.scss';
 
 export default function LambdaDetailsWrapper({ lambdaName }) {
-  useConfigData();
   const { lambda, error, loading } = useLambdaQuery({
     name: lambdaName,
     namespace: LuigiClient.getEventData().environmentId,

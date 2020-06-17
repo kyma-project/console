@@ -144,11 +144,6 @@ function prepareSchema() {
   });
 }
 
-export function updateValidationSchema() {
-  Object.assign(schema, prepareSchema());
-}
-export const schema = prepareSchema();
-
 function testMinCPU(arg) {
   if (!arg) {
     return true;
@@ -162,3 +157,8 @@ function testMinMemory(arg) {
   }
   return compareMemory(CONFIG.resources?.min?.memory, arg);
 }
+
+export function updateResourcesValidationSchema() {
+  Object.assign(schema, prepareSchema());
+}
+export const schema = prepareSchema();

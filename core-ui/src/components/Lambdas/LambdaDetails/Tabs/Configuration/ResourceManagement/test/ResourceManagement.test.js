@@ -519,9 +519,9 @@ describe('ResourceManagement', () => {
     fireEvent.click(editButton);
 
     const requestsMemory = document.querySelector('#requestsMemory');
-    fireEvent.input(requestsMemory, { target: { value: '12Mi' } });
+    fireEvent.input(requestsMemory, { target: { value: '6Mi' } });
     const limitsMemory = document.querySelector('#limitsMemory');
-    fireEvent.input(limitsMemory, { target: { value: '14Mi' } });
+    fireEvent.input(limitsMemory, { target: { value: '7Mi' } });
 
     const message = formatMessage(
       RESOURCES_MANAGEMENT_PANEL.ERROR_MESSAGES.MEMORY.TOO_LOW,

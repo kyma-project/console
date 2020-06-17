@@ -8,7 +8,7 @@ import {
   updateConfig,
 } from 'components/Lambdas/config';
 
-import { updateValidationSchema } from 'components/Lambdas/LambdaDetails/Tabs/Configuration/ResourceManagement/shared';
+import { updateResourcesValidationSchema } from 'components/Lambdas/LambdaDetails/Tabs/Configuration/ResourceManagement/shared';
 
 export const useConfigData = () => {
   const { cmData } = useConfigMapQuery({
@@ -35,7 +35,7 @@ export const useConfigData = () => {
         },
       };
       updateConfig('resources', resources);
-      updateValidationSchema();
+      updateResourcesValidationSchema();
     }
   }
 
@@ -44,4 +44,6 @@ export const useConfigData = () => {
     updateResources();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cmData]);
+
+  return;
 };

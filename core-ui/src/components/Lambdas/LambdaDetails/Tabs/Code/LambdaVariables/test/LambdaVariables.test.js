@@ -301,7 +301,7 @@ describe('LambdaVariables + EditVariablesModal + EditVariablesForm', () => {
       );
       expect(inputs).toHaveLength(2);
 
-      fireEvent.change(inputs[0], { target: { value: 'PORT' } });
+      fireEvent.change(inputs[0], { target: { value: 'FUNC_PORT' } });
       expect(
         getAllByText(ENVIRONMENT_VARIABLES_PANEL.ERRORS.RESTRICTED),
       ).toHaveLength(1);
