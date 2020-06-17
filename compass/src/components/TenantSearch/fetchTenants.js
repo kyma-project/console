@@ -21,5 +21,5 @@ export default async function fetchTenants(token) {
     body: JSON.stringify(query),
   });
   const json = await response.json();
-  return json.data.tenants.filter(t => t.initialized);
+  return json.data.tenants;
 }

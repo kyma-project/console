@@ -214,7 +214,7 @@ const navigation = {
     defaultLabel: 'Select Tenant...',
     parentNodePath: '/tenant',
     lazyloadOptions: true,
-    options: () => getTenantNames(tenants),
+    options: () => getTenantNames(tenants.filter(t => t.initialized)),
     fallbackLabelResolver: tenantId => getTenantName(tenantId),
     actions: [
       {
