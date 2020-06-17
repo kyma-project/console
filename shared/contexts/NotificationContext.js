@@ -11,6 +11,7 @@ export const NotificationContext = createContext({
 export const NotificationProvider = ({
   children,
   defaultVisibilityTime = 5000,
+  defaultErrorVisibilityTime = 10000,
 }) => {
   const [state, setState] = useState({
     isOpen: false,
@@ -42,13 +43,13 @@ export const NotificationProvider = ({
     },
     notifyError: function(
       notificationProps,
-      visibilityTime = defaultVisibilityTime,
+      visibilityTime = defaultErrorVisibilityTime,
     ) {
       notificationProps = {
         title: 'Error',
         color: '#BB0000',
         icon: 'decline',
-        autoClose: false,
+        autoClose: true,
         ...notificationProps,
       };
       notify(notificationProps, visibilityTime);
