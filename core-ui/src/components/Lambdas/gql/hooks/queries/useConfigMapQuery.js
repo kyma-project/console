@@ -21,7 +21,12 @@ export const useConfigMapQuery = ({ name, namespace }) => {
   });
 
   useEffect(() => {
-    if (data?.configMap?.json?.data) {
+    if (
+      data &&
+      data.configMap &&
+      data.configMap.json &&
+      data.configMap.json.data
+    ) {
       setCmData(data.configMap.json.data);
     }
   }, [data]);

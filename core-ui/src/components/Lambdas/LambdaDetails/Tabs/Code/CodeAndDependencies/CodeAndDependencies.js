@@ -7,7 +7,10 @@ import { TabsWithActions } from 'components/Lambdas/components';
 
 import Editor from './Editor';
 
-import { useUpdateLambda, UPDATE_TYPE } from 'components/Lambdas/gql/hooks';
+import {
+  useUpdateLambda,
+  UPDATE_TYPE,
+} from 'components/Lambdas/gql/hooks/mutations/useUpdateLambda';
 import { CODE_AND_DEPENDENCIES_PANEL } from 'components/Lambdas/constants';
 
 import './CodeAndDependencies.scss';
@@ -20,10 +23,9 @@ const DISABLED_CAUSES = {
 };
 
 export default function CodeAndDependencies({ lambda }) {
-  // in tests UPDATE_TYPE is sometimes undefined...
   const updateLambda = useUpdateLambda({
     lambda,
-    type: UPDATE_TYPE?.CODE_AND_DEPENDENCIES || 'CODE_AND_DEPENDENCIES',
+    type: UPDATE_TYPE.CODE_AND_DEPENDENCIES,
   });
 
   const [showDiff, setShowDiff] = useState(false);
