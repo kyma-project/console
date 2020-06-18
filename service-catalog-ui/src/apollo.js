@@ -71,6 +71,10 @@ export function createKymaApolloClient() {
     cache: new InMemoryCache({
       dataIdFromObject: object => object.name || null,
     }),
+    defaultOptions: {
+      query: { fetchPolicy: 'cache-and-network' },
+      watchQuery: { fetchPolicy: 'cache-and-network' },
+    },
   });
 }
 
