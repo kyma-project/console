@@ -1,7 +1,10 @@
 import React from 'react';
 
 import { HeaderLabelsEditor } from 'react-shared';
-import { useUpdateLambda, UPDATE_TYPE } from 'components/Lambdas/gql/hooks';
+import {
+  useUpdateLambda,
+  UPDATE_TYPE,
+} from 'components/Lambdas/gql/hooks/mutations';
 
 export default function LambdaLabels({ lambda }) {
   const updateLambda = useUpdateLambda({
