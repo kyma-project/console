@@ -37,14 +37,12 @@ export function HeaderLabelsEditor({
         showLabel={false}
       />
       <Button
-        compact
         glyph="accept"
         type="positive"
         aria-label="Apply"
         onClick={applyEdit}
       />
       <Button
-        compact
         glyph="decline"
         type="negative"
         aria-label="Cancel"
