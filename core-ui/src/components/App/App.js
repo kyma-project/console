@@ -4,7 +4,7 @@ import { Route, Switch } from 'react-router-dom';
 import NamespaceDetails from '../NamespaceDetails/NamespaceDetails';
 import NamespaceList from '../NamespaceList/NamespaceList';
 import Lambdas from '../Lambdas/Lambdas';
-import LambdaDetailsWrapper from '../Lambdas/LambdaDetails/LambdaDetailsWrapper';
+import LambdaDetails from '../Lambdas/LambdaDetails';
 
 import CreateApiRule from '../ApiRules/CreateApiRule/CreateApiRule';
 
@@ -30,7 +30,7 @@ export default function App() {
       <Route path="/namespaces" component={NamespaceList} />
 
       <Route path="/lambdas" exact component={Lambdas} />
-      <Route path="/lambda/:name" component={RoutedLambdaDetails} />
+      <Route path="/lambda/:name" component={LambdaDetails} />
 
       <Route exact path="/applications" component={ApplicationList} />
       <Route
@@ -82,10 +82,6 @@ export default function App() {
 
 function RoutedNamespaceDetails({ match }) {
   return <NamespaceDetails name={match.params.namespace} />;
-}
-
-function RoutedLambdaDetails({ match }) {
-  return <LambdaDetailsWrapper lambdaName={match.params.name} />;
 }
 
 function RoutedApiRuleDetails({ match }) {

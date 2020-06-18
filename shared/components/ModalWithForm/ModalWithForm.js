@@ -87,12 +87,10 @@ export const ModalWithForm = ({
   }
 
   function handleFormError(title, message, isWarning) {
-    notificationManager.notify({
+    notificationManager.notifyError({
       content: message,
       title: title,
-      color: isWarning ? '#E9730C' : '#BB0000',
-      icon: 'decline',
-      autoClose: false,
+      type: isWarning ? 'warning' : 'error',
     });
   }
 

@@ -54,12 +54,8 @@ export default function EditApiRule({ apiName }) {
   }
 
   function handleError(error) {
-    notificationManager.notify({
+    notificationManager.notifyError({
       content: `Could not update API Rule: ${error.message}`,
-      title: 'Error',
-      color: '#BB0000',
-      icon: 'decline',
-      autoClose: false,
     });
   }
 
@@ -67,12 +63,8 @@ export default function EditApiRule({ apiName }) {
     const editedApiRuleData = data.updateAPIRule;
 
     if (editedApiRuleData) {
-      notificationManager.notify({
+      notificationManager.notifySuccess({
         content: `API Rule ${editedApiRuleData.name} updated successfully`,
-        title: 'Success',
-        color: '#107E3E',
-        icon: 'accept',
-        autoClose: true,
       });
     }
 

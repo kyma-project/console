@@ -14,12 +14,8 @@ export function useDeleteApiRule(onCompleted) {
   });
 
   function handleDeleteError(error) {
-    notificationManager.notify({
+    notificationManager.notifyError({
       content: `Could not delete API Rule: ${error.message}`,
-      title: 'Error',
-      color: '#BB0000',
-      icon: 'decline',
-      autoClose: false,
     });
   }
 
@@ -27,12 +23,8 @@ export function useDeleteApiRule(onCompleted) {
     if (onCompleted) {
       onCompleted();
     }
-    notificationManager.notify({
+    notificationManager.notifySuccess({
       content: `API Rule ${data.deleteAPIRule.name} deleted successfully`,
-      title: 'Success',
-      color: '#107E3E',
-      icon: 'accept',
-      autoClose: true,
     });
     LuigiClient.linkManager()
       .fromClosestContext()

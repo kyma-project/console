@@ -20,6 +20,7 @@ export async function fetchTenants() {
       tenants {
         name
         id
+        initialized
       }
     }
     `,

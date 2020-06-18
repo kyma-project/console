@@ -2,8 +2,9 @@ import React from 'react';
 import LuigiClient from '@kyma-project/luigi-client';
 import PropTypes from 'prop-types';
 import './Modal.scss';
-import { Modal as FdModal } from 'fundamental-react';
-import { Spinner, Button, Tooltip } from '@kyma-project/react-components';
+import { Modal as FdModal, Button } from 'fundamental-react';
+import { Tooltip } from '../Tooltip/Tooltip';
+import { Spinner } from '../Spinner/Spinner';
 
 Modal.propTypes = {
   title: PropTypes.any,

@@ -44,7 +44,7 @@ const setHeader = (header, value) => headers => ({
   [header]: value,
 });
 
-const setAuthorization = token => setHeader('authorization', `bearer ${token}`);
+const setAuthorization = token => setHeader('authorization', `Bearer ${token}`);
 
 const setTenant = tenant => setHeader('tenant', tenant ? tenant : null);
 

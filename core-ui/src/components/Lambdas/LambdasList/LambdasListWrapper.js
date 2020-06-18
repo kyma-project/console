@@ -12,7 +12,7 @@ import { TOOLBAR } from 'components/Lambdas/constants';
 
 import './LambdasList.scss';
 
-export default function LambdaDetailsWrapper() {
+export default function LambdaListWrapper() {
   const { lambdas, error, loading, loadedData, refetch } = useLambdasQuery({
     namespace: LuigiClient.getEventData().environmentId,
   });

@@ -43,12 +43,8 @@ export default function CreateApiRule() {
   }
 
   function handleCreateError(error) {
-    notificationManager.notify({
+    notificationManager.notifyError({
       content: `Could not create API Rule: ${error.message}`,
-      title: 'Error',
-      color: '#BB0000',
-      icon: 'decline',
-      autoClose: false,
     });
   }
 
@@ -56,12 +52,8 @@ export default function CreateApiRule() {
     const createdApiRuleData = data.createAPIRule;
 
     if (createdApiRuleData) {
-      notificationManager.notify({
+      notificationManager.notifySuccess({
         content: `API Rule ${createdApiRuleData.name} created successfully`,
-        title: 'Success',
-        color: '#107E3E',
-        icon: 'accept',
-        autoClose: true,
       });
 
       navigateToDetails(createdApiRuleData.name);

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import LuigiClient from '@kyma-project/luigi-client';
-import { Breadcrumb, Panel, PanelBody } from '@kyma-project/react-components';
+import { Breadcrumb, Panel } from 'fundamental-react';
 
 export const ResourceNotFound = ({
   resource,
@@ -34,9 +34,9 @@ export const ResourceNotFound = ({
         </section>
       </header>
       <Panel className="fd-has-margin-large">
-        <PanelBody className="fd-has-text-align-center fd-has-type-4">
-          Such {resource} doesn't exists.
-        </PanelBody>
+        <Panel.Body className="fd-has-text-align-center">
+          <span className="fd-has-type-4">Such {resource} doesn't exists.</span>
+        </Panel.Body>
       </Panel>
     </>
   );
