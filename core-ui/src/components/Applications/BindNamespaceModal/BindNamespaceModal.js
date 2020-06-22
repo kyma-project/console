@@ -4,7 +4,7 @@ import { Button } from 'fundamental-react';
 import PropTypes from 'prop-types';
 import LuigiClient from '@kyma-project/luigi-client';
 
-import { Modal, useNotification } from 'react-shared';
+import { Modal, useNotification, Spinner } from 'react-shared';
 import { GET_NAMESPACES_NAMES, GET_APPLICATION } from 'gql/queries';
 import { BIND_NAMESPACE } from 'gql/mutations';
 
@@ -61,8 +61,21 @@ export default function BindNamespaceModal({ appName, boundNamespaces }) {
       });
   };
 
-  const AvailableNamespacesList = () => {
-    if (!availableNamespaces.length) return 'No Namespaces avaliable to bind';
+  const AvailableNamespacesList = ({ error, loading }) => {
+    if (error)
+      return (
+        <span className="fd-has-color-status-3">
+          Could not fetch namespaces
+        </span>
+      );
+    if (loading) return <Spinner />;
+
+    if (!availableNamespaces.length)
+      return (
+        <span className="fd-has-color-status-2">
+          No Namespaces avaliable to bind
+        </span>
+      );
 
     return (
       <select
@@ -94,9 +107,7 @@ export default function BindNamespaceModal({ appName, boundNamespaces }) {
       confirmText="Bind"
       cancelText="Cancel"
       disabledConfirm={!selectedNamespace}
-      onConfirm={() => {
-        bindNamespaceToApp();
-      }}
+      onConfirm={bindNamespaceToApp}
     >
       {content}
     </Modal>
