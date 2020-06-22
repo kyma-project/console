@@ -1,5 +1,24 @@
 import gql from 'graphql-tag';
 
+export const GET_NAMESPACE = gql`
+  query Namespace($name: String!) {
+    namespace(name: $name) {
+      name
+      labels
+      applications
+      pods {
+        status
+      }
+      deployments {
+        status {
+          replicas
+          readyReplicas
+        }
+      }
+    }
+  }
+`;
+
 export const GET_NAMESPACES = gql`
   query Namespaces(
     $showSystemNamespaces: Boolean

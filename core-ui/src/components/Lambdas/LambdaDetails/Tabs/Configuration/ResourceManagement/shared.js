@@ -27,116 +27,122 @@ export const inputNames = {
   limits: { cpu: 'limitsCpu', memory: 'limitsMemory' },
 };
 
-const errorMessages = RESOURCES_MANAGEMENT_PANEL.ERROR_MESSAGES;
-const MIN_MEMORY_VALUE_ERROR = formatMessage(errorMessages.MEMORY.TOO_LOW, {
-  minValue: CONFIG.resources?.min?.memory || '',
-});
-const MIN_CPU_VALUE_ERROR = formatMessage(errorMessages.CPU.TOO_LOW, {
-  minValue: CONFIG.resources?.min?.cpu || '',
-});
+function prepareSchema() {
+  const errorMessages = RESOURCES_MANAGEMENT_PANEL.ERROR_MESSAGES;
+  const MIN_MEMORY_VALUE_ERROR = formatMessage(errorMessages.MEMORY.TOO_LOW, {
+    minValue: CONFIG.resources?.min?.memory || '',
+  });
+  const MIN_CPU_VALUE_ERROR = formatMessage(errorMessages.CPU.TOO_LOW, {
+    minValue: CONFIG.resources?.min?.cpu || '',
+  });
 
-export const schema = yup.object().shape({
-  [inputNames.replicas.min]: yup
-    .number()
-    .transform((val, originalVal) => {
-      return originalVal === '' ? -1 : val; // -1 so that instead of throwing errors about NaN it will pass validation here, but fail on min(0) with nicer error message
-    })
-    .positive(errorMessages.MIN_REPLICAS_POSITIVE)
-    .integer(errorMessages.MIN_REPLICAS_POSITIVE)
-    .test('matchMinReplicas', errorMessages.MIN_REPLICAS_TOO_HIGH, function(
-      arg,
-    ) {
-      return arg <= this.parent.maxReplicas;
-    }),
-  [inputNames.replicas.max]: yup
-    .number()
-    .transform((val, originalVal) => {
-      return originalVal === '' ? -1 : val; // -1 so that instead of throwing errors about NaN it will pass validation here, but fail on min(0) with nicer error message
-    })
-    .positive(errorMessages.MAX_REPLICAS_POSITIVE)
-    .integer(errorMessages.MAX_REPLICAS_POSITIVE)
-    .test('matchMaxReplicas', errorMessages.MAX_REPLICAS_TOO_LOW, function(
-      arg,
-    ) {
-      return arg >= this.parent.minReplicas;
-    }),
-  [inputNames.requests.cpu]: yup
-    .string()
-    .matches(CPU_REGEXP, {
-      excludeEmptyString: true,
-      message: errorMessages.CPU.DEFAULT,
-    })
-    .test('matchMinRequestCPU', MIN_CPU_VALUE_ERROR, function(arg) {
-      return testMinCPU(arg);
-    })
-    .test('matchRequestCPU', errorMessages.CPU.REQUEST_TOO_HIGH, function(arg) {
-      const normalizedLimit = normalizeCPU(this.parent.limitsCpu);
-      if (!normalizedLimit) {
-        return true;
-      }
+  return yup.object().shape({
+    [inputNames.replicas.min]: yup
+      .number()
+      .transform((val, originalVal) => {
+        return originalVal === '' ? -1 : val; // -1 so that instead of throwing errors about NaN it will pass validation here, but fail on min(0) with nicer error message
+      })
+      .positive(errorMessages.MIN_REPLICAS_POSITIVE)
+      .integer(errorMessages.MIN_REPLICAS_POSITIVE)
+      .test('matchMinReplicas', errorMessages.MIN_REPLICAS_TOO_HIGH, function(
+        arg,
+      ) {
+        return arg <= this.parent.maxReplicas;
+      }),
+    [inputNames.replicas.max]: yup
+      .number()
+      .transform((val, originalVal) => {
+        return originalVal === '' ? -1 : val; // -1 so that instead of throwing errors about NaN it will pass validation here, but fail on min(0) with nicer error message
+      })
+      .positive(errorMessages.MAX_REPLICAS_POSITIVE)
+      .integer(errorMessages.MAX_REPLICAS_POSITIVE)
+      .test('matchMaxReplicas', errorMessages.MAX_REPLICAS_TOO_LOW, function(
+        arg,
+      ) {
+        return arg >= this.parent.minReplicas;
+      }),
+    [inputNames.requests.cpu]: yup
+      .string()
+      .matches(CPU_REGEXP, {
+        excludeEmptyString: true,
+        message: errorMessages.CPU.DEFAULT,
+      })
+      .test('matchMinRequestCPU', MIN_CPU_VALUE_ERROR, function(arg) {
+        return testMinCPU(arg);
+      })
+      .test('matchRequestCPU', errorMessages.CPU.REQUEST_TOO_HIGH, function(
+        arg,
+      ) {
+        const normalizedLimit = normalizeCPU(this.parent.limitsCpu);
+        if (!normalizedLimit) {
+          return true;
+        }
 
-      const normalizedRequest = normalizeCPU(arg);
-      return normalizedRequest <= normalizedLimit;
-    }),
-  [inputNames.limits.cpu]: yup
-    .string()
-    .matches(CPU_REGEXP, {
-      excludeEmptyString: true,
-      message: errorMessages.CPU.DEFAULT,
-    })
-    .test('matchMinLimitCPU', MIN_CPU_VALUE_ERROR, function(arg) {
-      return testMinCPU(arg);
-    })
-    .test('matchLimitCPU', errorMessages.CPU.LIMITS_TOO_LOW, function(arg) {
-      if (!arg) {
-        return true;
-      }
+        const normalizedRequest = normalizeCPU(arg);
+        return normalizedRequest <= normalizedLimit;
+      }),
+    [inputNames.limits.cpu]: yup
+      .string()
+      .matches(CPU_REGEXP, {
+        excludeEmptyString: true,
+        message: errorMessages.CPU.DEFAULT,
+      })
+      .test('matchMinLimitCPU', MIN_CPU_VALUE_ERROR, function(arg) {
+        return testMinCPU(arg);
+      })
+      .test('matchLimitCPU', errorMessages.CPU.LIMITS_TOO_LOW, function(arg) {
+        if (!arg) {
+          return true;
+        }
 
-      const normalizedRequest = normalizeCPU(this.parent.requestsCpu);
-      const normalizedLimit = normalizeCPU(arg);
-      return normalizedRequest <= normalizedLimit;
-    }),
-  [inputNames.requests.memory]: yup
-    .string()
-    .matches(MEMORY_REGEXP, {
-      excludeEmptyString: true,
-      message: errorMessages.MEMORY.DEFAULT,
-    })
-    .test('matchMinRequestMemory', MIN_MEMORY_VALUE_ERROR, function(arg) {
-      return testMinMemory(arg);
-    })
-    .test('matchRequestMemory', errorMessages.MEMORY.REQUEST_TOO_HIGH, function(
-      arg,
-    ) {
-      const normalizedLimit = normalizeMemory(this.parent.limitsMemory);
-      if (!normalizedLimit) {
-        return true;
-      }
+        const normalizedRequest = normalizeCPU(this.parent.requestsCpu);
+        const normalizedLimit = normalizeCPU(arg);
+        return normalizedRequest <= normalizedLimit;
+      }),
+    [inputNames.requests.memory]: yup
+      .string()
+      .matches(MEMORY_REGEXP, {
+        excludeEmptyString: true,
+        message: errorMessages.MEMORY.DEFAULT,
+      })
+      .test('matchMinRequestMemory', MIN_MEMORY_VALUE_ERROR, function(arg) {
+        return testMinMemory(arg);
+      })
+      .test(
+        'matchRequestMemory',
+        errorMessages.MEMORY.REQUEST_TOO_HIGH,
+        function(arg) {
+          const normalizedLimit = normalizeMemory(this.parent.limitsMemory);
+          if (!normalizedLimit) {
+            return true;
+          }
 
-      const normalizedRequest = normalizeMemory(arg);
-      return normalizedRequest <= normalizedLimit;
-    }),
-  [inputNames.limits.memory]: yup
-    .string()
-    .matches(MEMORY_REGEXP, {
-      excludeEmptyString: true,
-      message: errorMessages.MEMORY.DEFAULT,
-    })
-    .test('matchMinLimitMemory', MIN_MEMORY_VALUE_ERROR, function(arg) {
-      return testMinMemory(arg);
-    })
-    .test('matchLimitMemory', errorMessages.MEMORY.LIMITS_TOO_LOW, function(
-      arg,
-    ) {
-      if (!arg) {
-        return true;
-      }
+          const normalizedRequest = normalizeMemory(arg);
+          return normalizedRequest <= normalizedLimit;
+        },
+      ),
+    [inputNames.limits.memory]: yup
+      .string()
+      .matches(MEMORY_REGEXP, {
+        excludeEmptyString: true,
+        message: errorMessages.MEMORY.DEFAULT,
+      })
+      .test('matchMinLimitMemory', MIN_MEMORY_VALUE_ERROR, function(arg) {
+        return testMinMemory(arg);
+      })
+      .test('matchLimitMemory', errorMessages.MEMORY.LIMITS_TOO_LOW, function(
+        arg,
+      ) {
+        if (!arg) {
+          return true;
+        }
 
-      const normalizedRequest = normalizeMemory(this.parent.requestsMemory);
-      const normalizedLimit = normalizeMemory(arg);
-      return normalizedRequest <= normalizedLimit;
-    }),
-});
+        const normalizedRequest = normalizeMemory(this.parent.requestsMemory);
+        const normalizedLimit = normalizeMemory(arg);
+        return normalizedRequest <= normalizedLimit;
+      }),
+  });
+}
 
 function testMinCPU(arg) {
   if (!arg) {
@@ -151,3 +157,8 @@ function testMinMemory(arg) {
   }
   return compareMemory(CONFIG.resources?.min?.memory, arg);
 }
+
+export function updateResourcesValidationSchema() {
+  Object.assign(schema, prepareSchema());
+}
+export const schema = prepareSchema();

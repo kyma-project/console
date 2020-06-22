@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState } from 'react';
-import { Notification } from '@kyma-project/react-components'; //TODO: use our own Notification
+import { Notification } from '../components/Notification/Notification';
 
 export const NotificationContext = createContext({
   isOpen: false,
@@ -11,6 +11,7 @@ export const NotificationContext = createContext({
 export const NotificationProvider = ({
   children,
   defaultVisibilityTime = 5000,
+  defaultErrorVisibilityTime = 10000,
 }) => {
   const [state, setState] = useState({
     isOpen: false,
@@ -33,7 +34,7 @@ export const NotificationProvider = ({
     ) {
       notificationProps = {
         title: 'Success',
-        color: '#107E3E',
+        type: 'success',
         icon: 'accept',
         autoClose: true,
         ...notificationProps,
@@ -42,13 +43,13 @@ export const NotificationProvider = ({
     },
     notifyError: function(
       notificationProps,
-      visibilityTime = defaultVisibilityTime,
+      visibilityTime = defaultErrorVisibilityTime,
     ) {
       notificationProps = {
         title: 'Error',
-        color: '#BB0000',
+        type: 'error',
         icon: 'decline',
-        autoClose: false,
+        autoClose: true,
         ...notificationProps,
       };
       notify(notificationProps, visibilityTime);

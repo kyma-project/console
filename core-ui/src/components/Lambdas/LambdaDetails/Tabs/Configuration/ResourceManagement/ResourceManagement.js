@@ -7,7 +7,10 @@ import { Tooltip } from 'react-shared';
 import LambdaReplicas from './LambdaReplicas';
 import LambdaResources from './LambdaResources';
 
-import { useUpdateLambda, UPDATE_TYPE } from 'components/Lambdas/gql/hooks';
+import {
+  useUpdateLambda,
+  UPDATE_TYPE,
+} from 'components/Lambdas/gql/hooks/mutations/useUpdateLambda';
 import {
   BUTTONS,
   RESOURCES_MANAGEMENT_PANEL,

@@ -1,0 +1,18 @@
+.header-label-editor {
+    display: grid;
+    column-gap: 4px;
+    grid-template-columns: 1fr auto auto;
+
+    & > :first-child {
+        margin-right: 12px;
+    }
+
+    & > :not(:first-child) {
+        // adjust margin to the first row of <input />
+        margin-top: 23px;
+    }
+
+    .fd-form__set, .fd-form-label {
+        margin-bottom: 0 !important;
+    }
+}

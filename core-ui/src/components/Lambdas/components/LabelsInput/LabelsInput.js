@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { FormLabel, InlineHelp } from 'fundamental-react';
-import LabelSelectorInput from 'components/LabelSelectorInput/LabelSelectorInput';
+import { LabelSelectorInput } from 'react-shared';
 
 import { LAMBDAS_LIST } from 'components/Lambdas/constants';
 

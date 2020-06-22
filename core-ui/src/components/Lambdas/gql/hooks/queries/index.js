@@ -1,3 +1,4 @@
+export * from './useConfigMapQuery';
 export * from './useEventActivationsQuery';
 export * from './useEventTriggersQuery';
 export * from './useLambdaQuery';

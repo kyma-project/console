@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ApisComponent } from '../content/namespaces/configuration/apis/apis.component';
 
-import { NamespaceDetailsComponent } from '../content/namespaces/namespace-details/namespace-details.component';
 import { NamespacesContainerComponent } from '../content/namespaces/namespaces-container/namespaces-container.component';
 import { DeploymentsComponent } from '../content/namespaces/operation/deployments/deployments.component';
 import { PodsComponent } from '../content/namespaces/operation/pods/pods.component';
@@ -44,9 +43,6 @@ const appRoutes: Routes = [
         component: NamespacesContainerComponent,
         data: { navCtx: 'namespace' },
         children: [
-          { path: 'yVirtual', component: NamespaceDetailsComponent },
-          { path: 'details', component: NamespaceDetailsComponent },
-
           { path: 'deployments', component: DeploymentsComponent },
           { path: 'replicaSets', component: ReplicaSetsComponent },
           { path: 'pods', component: PodsComponent },

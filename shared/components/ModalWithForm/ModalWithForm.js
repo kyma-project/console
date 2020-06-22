@@ -32,6 +32,8 @@ export const ModalWithForm = ({
   opened,
   customCloseAction,
   item,
+  modalOpeningComponent,
+  confirmText,
   ...props
 }) => {
   const [isOpen, setOpen] = useState(false);
@@ -85,12 +87,10 @@ export const ModalWithForm = ({
   }
 
   function handleFormError(title, message, isWarning) {
-    notificationManager.notify({
+    notificationManager.notifyError({
       content: message,
       title: title,
-      color: isWarning ? '#E9730C' : '#BB0000',
-      icon: 'decline',
-      autoClose: false,
+      type: isWarning ? 'warning' : 'error',
     });
   }
 
@@ -116,16 +116,22 @@ export const ModalWithForm = ({
   }
 
   return (
-    <div>
-      <Button
-        glyph={button.glyph || null}
-        onClick={() => {
-          setOpenStatus(true);
-        }}
-        disabled={!!button.disabled}
-      >
-        {button.text}
-      </Button>
+    <>
+      {modalOpeningComponent ? (
+        React.cloneElement(modalOpeningComponent, {
+          onClick: () => setOpenStatus(true),
+        })
+      ) : (
+        <Button
+          glyph={button.glyph || null}
+          option={button.option}
+          compact={button.compact || false}
+          disabled={!!button.disabled}
+          onClick={() => setOpenStatus(true)}
+        >
+          {button.text}
+        </Button>
+      )}
       <Modal
         {...props}
         show={isOpen}
@@ -144,7 +150,7 @@ export const ModalWithForm = ({
               onClick={handleFormSubmit}
               option="emphasized"
             >
-              Create
+              {confirmText}
             </Button>
           </>
         }
@@ -169,7 +175,7 @@ export const ModalWithForm = ({
           item: item,
         })}
       </Modal>
-    </div>
+    </>
   );
 };
 
@@ -180,12 +186,16 @@ ModalWithForm.propTypes = {
     text: PropTypes.string.isRequired,
     glyph: PropTypes.string,
     disabled: PropTypes.bool,
-  }).isRequired,
+    option: PropTypes.oneOf(['emphasized', 'light']),
+  }),
   renderForm: PropTypes.func.isRequired,
   opened: PropTypes.bool,
   customCloseAction: PropTypes.func,
   item: PropTypes.object,
+  modalOpeningComponent: PropTypes.node,
+  confirmText: PropTypes.string,
 };
 ModalWithForm.defaultProps = {
   performRefetch: () => {},
+  confirmText: 'Create',
 };

@@ -17,6 +17,20 @@ jest.mock('@kyma-project/luigi-client', () => ({
 }));
 
 describe('NamespacesListHeader', () => {
+  it('Renders with minimal props', () => {
+    const { queryByLabelText } = render(
+      <NamespacesListHeader
+        labelFilters={[]}
+        updateSearchPhrase={() => {}}
+        setLabelFilters={() => {}}
+      />,
+    );
+
+    const title = queryByLabelText('title');
+    expect(title).toBeInTheDocument();
+    expect(title).toHaveTextContent('Namespaces');
+  });
+
   it('Fires callback on input field change', () => {
     const mockCallback = jest.fn();
 

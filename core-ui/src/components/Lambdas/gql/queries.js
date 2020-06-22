@@ -138,3 +138,11 @@ export const GET_SERVICE_BINDING_USAGES = gql`
     }
   }
 `;
+
+export const GET_CONFIG_MAP = gql`
+  query configMap($name: String!, $namespace: String!) {
+    configMap(name: $name, namespace: $namespace) {
+      json
+    }
+  }
+`;

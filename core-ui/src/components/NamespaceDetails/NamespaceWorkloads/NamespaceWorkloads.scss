@@ -1,0 +1,8 @@
+.namespace-workloads__body {
+    display: flex;
+    justify-content: flex-start;
+
+    & > :first-child {
+        margin-right: 48px;
+    }
+}

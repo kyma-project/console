@@ -5,6 +5,7 @@ export default async function fetchTenants(token) {
     tenants {
       name
       id
+      initialized
     }
   }
   `,

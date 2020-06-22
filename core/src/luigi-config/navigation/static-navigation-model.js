@@ -30,8 +30,9 @@ export function getStaticChildrenNodesForNamespace(){
     {
       pathSegment: 'details',
       label: 'Overview',
-      viewUrl: '/consoleapp.html#/home/namespaces/:namespaceId/details',
-      icon: 'product'
+      viewUrl: config.coreModuleUrl + '/home/namespaces/:namespaceId/details',
+      icon: 'product',
+      viewGroup: '_core_ui_'
     },
     {
       category: { label: 'Service Management', icon: 'add-coursebook' },

@@ -1,3 +1,12 @@
+export const WEBHOOK_DEFAULTS_CM_NAME = 'serverless-webhook-envs';
+export const KYMA_SYSTEM_NAMESPACE = 'kyma-system';
+
+export const WEBHOOK_VALIDATION = {
+  RESERVED_ENVS: 'WEBHOOK_VALIDATION_RESERVED_ENVS',
+  MIN_REQUEST_CPU: 'WEBHOOK_VALIDATION_MIN_REQUEST_CPU',
+  MIN_REQUEST_MEMORY: 'WEBHOOK_VALIDATION_MIN_REQUEST_MEMORY',
+};
+
 const defaultCode = `module.exports = { 
   main: function (event, context) {
     return "Hello World!";
@@ -23,7 +32,6 @@ const defaultConfig = {
     'FUNC_HANDLER',
     'FUNC_TIMEOUT',
     'FUNC_PORT',
-    'PORT',
     'MOD_NAME',
     'NODE_PATH',
     'REQ_MB_LIMIT',
@@ -67,4 +75,11 @@ function loadConfig() {
   };
 }
 
+export function updateConfig(key, value = null) {
+  if (value && CONFIG.hasOwnProperty(key)) {
+    CONFIG[key] = value;
+  }
+}
+
+// this object will update by reference by hook in helpers/misc/useConfigData.
 export const CONFIG = loadConfig();

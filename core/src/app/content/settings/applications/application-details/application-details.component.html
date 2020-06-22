@@ -148,10 +148,7 @@
                 >
               </td>
               <td>
-                {{
-                  (namespace.allServices && application.services.length) ||
-                    namespace.services.length
-                }}/{{ application.services.length }}
+                {{ getBoundServices(namespace) }}/{{ application.services.length }}
               </td>
               <td class="fd-has-float-right">
                 <y-list-actions

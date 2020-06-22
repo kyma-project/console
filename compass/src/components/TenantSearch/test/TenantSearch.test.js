@@ -6,10 +6,12 @@ const mockedTenants = [
   {
     name: 'Tenant-1',
     id: 'id-1',
+    initialized: true,
   },
   {
     name: 'Tenant-2',
     id: 'id-2',
+    initialized: false,
   },
 ];
 
@@ -23,10 +25,10 @@ jest.mock('react-shared', () => ({
 }));
 
 describe('TenantSearch', () => {
-  it('Renders list of tenants', async () => {
+  it('Renders list of initalized tenants', async () => {
     const { queryAllByRole } = render(<TenantSearch />);
 
-    expect(queryAllByRole('row')).toHaveLength(mockedTenants.length);
+    expect(queryAllByRole('row')).toHaveLength(1);
   });
 
   it('Focuses search field on load', async () => {
@@ -55,6 +57,17 @@ describe('TenantSearch', () => {
 
     expect(queryByText(/Tenant-1/)).not.toBeInTheDocument();
     expect(queryByText(/Tenant-2/)).toBeInTheDocument();
+  });
+
+  it('Filters only full match', async () => {
+    const { getByRole, queryByText } = render(<TenantSearch />);
+
+    fireEvent.change(getByRole('search'), {
+      target: { value: 'id' },
+    });
+
+    expect(queryByText(/Tenant-1/)).not.toBeInTheDocument();
+    expect(queryByText(/Tenant-2/)).not.toBeInTheDocument();
   });
 
   it('Fires navigation event when user clicks tenant entry', async () => {

@@ -98,6 +98,14 @@ export class ApplicationDetailsComponent implements OnInit, OnDestroy {
     }
   }
 
+  public getBoundServices(namespace: any): number {
+    if (namespace.allServices) {
+      return this.application.services.length;
+    } else {
+      return namespace.services && namespace.services.length || 0;
+    }
+  }
+
   public getApplication() {
     this.applicationsService.getApplication(this.currentAppId).subscribe(
       data => {
