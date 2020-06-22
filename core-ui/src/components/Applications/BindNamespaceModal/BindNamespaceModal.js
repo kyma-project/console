@@ -61,7 +61,8 @@ export default function BindNamespaceModal({ appName, boundNamespaces }) {
       });
   };
 
-  const AvailableNamespacesList = ({ error, loading }) => {
+  const AvailableNamespacesList = _ => {
+    const { error, loading } = namespacesQuery;
     if (error)
       return (
         <span className="fd-has-color-status-3">
@@ -95,7 +96,7 @@ export default function BindNamespaceModal({ appName, boundNamespaces }) {
 
   const content = (
     <section className="create-binding-form">
-      <AvailableNamespacesList {...namespacesQuery} />
+      <AvailableNamespacesList />
     </section>
   );
 
