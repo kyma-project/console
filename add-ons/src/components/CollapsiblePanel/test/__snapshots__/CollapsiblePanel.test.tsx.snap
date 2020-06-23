@@ -6,6 +6,7 @@ exports[`CollapsiblePanel Renders with minimal props 1`] = `
 >
   <Panel.Header>
     <Button
+      aria-label="collapse"
       className="fd-has-margin-right-xs"
       disabled={false}
       glyph="navigation-up-arrow"

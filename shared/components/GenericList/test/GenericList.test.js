@@ -279,7 +279,6 @@ describe('GenericList', () => {
           rowRenderer={mockEntryRenderer}
         />,
       );
-      debug();
       expect(await queryAllByRole('row')).toHaveLength(mockEntries.length + 1); // header + {mockEntries.length} rows
 
       const searchInput = await getByLabelText('search-input');
