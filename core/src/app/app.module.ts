@@ -39,9 +39,6 @@ import { SecretDetailComponent } from './content/namespaces/operation/secrets/se
 import { SecretsEntryRendererComponent } from './content/namespaces/operation/secrets/secrets-entry-renderer/secrets-entry-renderer.component';
 import { SecretsHeaderRendererComponent } from './content/namespaces/operation/secrets/secrets-header-renderer/secrets-header-renderer.component';
 import { SecretsComponent } from './content/namespaces/operation/secrets/secrets.component';
-import { ExposeApiComponent } from './content/namespaces/operation/services/service-details/expose-api/expose-api.component';
-import { ExposeApiService } from './content/namespaces/operation/services/service-details/expose-api/expose-api.service';
-import { ServiceDetailsComponent } from './content/namespaces/operation/services/service-details/service-details.component';
 import { ServicesEntryRendererComponent } from './content/namespaces/operation/services/services-entry-renderer/services-entry-renderer.component';
 import { ServicesHeaderRendererComponent } from './content/namespaces/operation/services/services-header-renderer/services-header-renderer.component';
 import { ServicesComponent } from './content/namespaces/operation/services/services.component';
@@ -116,7 +113,6 @@ import { AppConfig } from './app.config';
 import { WebSocketLink } from './ws';
 import { GenericHelpersService } from './shared/services/generic-helpers.service';
 import { UrlLinkComponent } from 'shared/components/url-link/url-link.component';
-import { ServiceApiRulesComponent } from './content/namespaces/operation/services/service-details/service-api-rules/service-api-rules.component';
 
 import * as LuigiClient from '@luigi-project/client';
 
@@ -159,11 +155,9 @@ import * as LuigiClient from '@luigi-project/client';
     GraphqlMutatorModalComponent,
     JsonEditorComponent,
     EditResourceComponent,
-    ServiceDetailsComponent,
     UploaderComponent,
     ResourceUploaderModalComponent,
     ResourceUploaderComponent,
-    ExposeApiComponent,
     ApisComponent,
     ApiDefinitionEntryRendererComponent,
     ApiDefinitionHeaderRendererComponent,
@@ -200,7 +194,6 @@ import * as LuigiClient from '@luigi-project/client';
     LuigiClientCommunicationDirective,
     FilterAllOnSelectedDirective,
     UrlLinkComponent,
-    ServiceApiRulesComponent
   ],
   imports: [
     BrowserModule,
@@ -226,7 +219,6 @@ import * as LuigiClient from '@luigi-project/client';
     K8sResourceEditorService,
     ComponentCommunicationService,
     ResourceUploadService,
-    ExposeApiService,
     ApplicationBindingService,
     RbacService,
     GraphQLClientService,

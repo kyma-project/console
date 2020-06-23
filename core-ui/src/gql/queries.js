@@ -51,6 +51,17 @@ export const GET_NAMESPACES_NAMES = gql`
   }
 `;
 
+export const GET_SERVICE = gql`
+  query Service($name: String!, $namespace: String!) {
+    service(name: $name, namespace: $namespace) {
+      name
+      json
+      labels
+      clusterIP
+    }
+  }
+`;
+
 export const GET_LAMBDAS = gql`
   query Functions($namespace: String!) {
     functions(namespace: $namespace) {
@@ -139,6 +150,26 @@ export const GET_API_RULES = gql`
     }
   }
 `;
+
+export const GET_API_RULES_FOR_SERVICE = gql`
+  query APIRules($namespace: String!) {
+    APIRules(namespace: $namespace) {
+      name
+      service {
+        host
+        name
+        port
+      }
+      status {
+        apiRuleStatus {
+          code
+          desc
+        }
+      }
+    }
+  }
+`;
+
 export const GET_API_RULE = gql`
   query APIrule($name: String!, $namespace: String!) {
     APIRule(name: $name, namespace: $namespace) {

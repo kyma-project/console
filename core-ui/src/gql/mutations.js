@@ -165,6 +165,14 @@ export const CREATE_RESOURCE_QUOTA = gql`
   }
 `;
 
+export const UPDATE_SERVICE = gql`
+  mutation updateService($name: String!, $namespace: String!, $service: JSON!) {
+    updateService(name: $name, namespace: $namespace, service: $service) {
+      name
+    }
+  }
+`;
+
 export const CREATE_API_RULE = gql`
   mutation createAPIRule(
     $name: String!

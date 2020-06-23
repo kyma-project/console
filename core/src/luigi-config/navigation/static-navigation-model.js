@@ -117,9 +117,9 @@ export function getStaticChildrenNodesForNamespace(){
           pathSegment: 'details',
           children: [
             {
-              pathSegment: ':name',
-              viewUrl:
-                '/consoleapp.html#/home/namespaces/:namespaceId/services/:name',
+              pathSegment: ':serviceName',
+              viewUrl: config.coreModuleUrl + '/home/namespaces/:namespaceId/services/details/:serviceName',
+              viewGroup: '_core_ui_',
               children: [
                 {
                   pathSegment: 'apis',
