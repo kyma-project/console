@@ -2,6 +2,7 @@ import React from 'react';
 import LuigiClient from '@kyma-project/luigi-client';
 
 import { GenericList, Labels, StatusBadge } from 'react-shared';
+import { Link } from 'fundamental-react';
 
 import { useDeleteLambda } from 'components/Lambdas/gql/hooks/mutations';
 
@@ -67,7 +68,7 @@ export default function LambdasList({
     },
   ];
   const rowRenderer = lambda => [
-    <span
+    <Link
       className="link"
       data-test-id="lambda-name"
       onClick={() =>
@@ -75,7 +76,7 @@ export default function LambdasList({
       }
     >
       {lambda.name}
-    </span>,
+    </Link>,
     <Labels labels={lambda.labels} />,
     <LambdaStatusBadge status={lambda.status} />,
   ];

@@ -42,7 +42,11 @@ const Card = ({
             )}
           </CardThumbnail>
 
-          <CardHeaderContent data-e2e-id="card-title" title={title}>
+          <CardHeaderContent
+            aria-label={`go to service class ${title} link`}
+            data-e2e-id="card-title"
+            title={title}
+          >
             <span data-e2e-id="card-company">{company}</span>
           </CardHeaderContent>
           <PanelActions>

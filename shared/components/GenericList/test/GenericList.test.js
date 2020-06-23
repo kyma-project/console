@@ -272,14 +272,14 @@ describe('GenericList', () => {
     it('Finds proper entries when search text is entered', async () => {
       const searchText = 'first';
 
-      const { queryAllByRole, getByLabelText } = render(
+      const { queryAllByRole, getByLabelText, debug } = render(
         <GenericList
           entries={mockEntries}
           headerRenderer={mockHeaderRenderer}
           rowRenderer={mockEntryRenderer}
         />,
       );
-
+      debug();
       expect(await queryAllByRole('row')).toHaveLength(mockEntries.length + 1); // header + {mockEntries.length} rows
 
       const searchInput = await getByLabelText('search-input');

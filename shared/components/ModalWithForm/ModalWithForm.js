@@ -124,6 +124,7 @@ export const ModalWithForm = ({
       ) : (
         <Button
           glyph={button.glyph || null}
+          aria-label={button.label || null}
           option={button.option}
           compact={button.compact || false}
           disabled={!!button.disabled}
@@ -182,7 +183,7 @@ export const ModalWithForm = ({
 ModalWithForm.propTypes = {
   performRefetch: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
-  button: PropTypes.exact({
+  oldbutton: PropTypes.exact({
     text: PropTypes.string.isRequired,
     glyph: PropTypes.string,
     disabled: PropTypes.bool,
@@ -194,6 +195,37 @@ ModalWithForm.propTypes = {
   item: PropTypes.object,
   modalOpeningComponent: PropTypes.node,
   confirmText: PropTypes.string,
+  button: function(props, propName, componentName) {
+    function checkDataOrRequest() {
+      return (
+        !props.hasOwnProperty('text') &&
+        !props.hasOwnProperty('label') &&
+        new Error(`Either "text" or "label" is required`)
+      );
+    }
+
+    function checkTypes() {
+      if (
+        (propName === 'text' && props.constructor !== String) ||
+        (propName === 'disabled' && props.constructor !== Boolean) ||
+        (propName === 'glyph' && props.constructor !== String) ||
+        (propName === 'label' && props.constructor !== String)
+      ) {
+        return new Error(
+          'Invalid prop `' +
+            propName +
+            '` supplied to' +
+            ' `' +
+            componentName +
+            '`. Validation failed.',
+        );
+      }
+
+      return false;
+    }
+
+    return checkDataOrRequest() && checkTypes();
+  },
 };
 ModalWithForm.defaultProps = {
   performRefetch: () => {},

@@ -15,6 +15,7 @@ import './GenericList.scss';
 
 export const GenericList = ({
   entries = [],
+  entriesKind,
   actions,
   title,
   headerRenderer,
@@ -50,6 +51,7 @@ export const GenericList = ({
     <section className="generic-list__search">
       {showSearchField && (
         <SearchInput
+          entriesKind={entriesKind || title || ''}
           searchQuery={searchQuery}
           filteredEntries={filteredEntries}
           handleQueryChange={setSearchQuery}
@@ -162,6 +164,7 @@ const PaginationProps = PropTypes.shape({
 
 GenericList.propTypes = {
   title: PropTypes.string,
+  entriesKind: PropTypes.string,
   entries: PropTypes.arrayOf(
     PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
   ).isRequired,

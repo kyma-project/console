@@ -4,8 +4,13 @@ import LuigiClient from '@kyma-project/luigi-client';
 import './EventList.scss';
 
 import CreateEventForm from 'components/Apis/CreateEventForm/CreateEventForm';
-import { GenericList, handleDelete, useNotification } from 'react-shared';
-import ModalWithForm from 'components/ModalWithForm/ModalWithForm';
+import {
+  GenericList,
+  handleDelete,
+  ModalWithForm,
+  useNotification,
+} from 'react-shared';
+import { Link } from 'fundamental-react';
 
 import { useMutation } from '@apollo/react-hooks';
 import { DELETE_EVENT_DEFINITION } from 'gql/mutations';
@@ -39,12 +44,12 @@ export default function EventList({
   const headerRenderer = () => ['Name', 'Description'];
 
   const rowRenderer = api => [
-    <span
+    <Link
       className="link"
       onClick={() => LuigiClient.linkManager().navigate(`eventApi/${api.id}`)}
     >
       {api.name}
-    </span>,
+    </Link>,
 
     api.description,
   ];
@@ -73,7 +78,7 @@ export default function EventList({
   const extraHeaderContent = (
     <ModalWithForm
       title="Add Event Definition"
-      button={{ glyph: 'add', text: '' }}
+      button={{ glyph: 'add', label: 'Add Event Definition' }}
       renderForm={props => (
         <CreateEventForm
           applicationId={applicationId}

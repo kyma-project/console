@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import { Spinner, PageHeader, GenericList, Tooltip } from 'react-shared';
 import { getResourceDisplayName, isService } from 'helpers';
 import { sortByDisplayName } from 'helpers/sorting';
-import { Badge } from 'fundamental-react';
+import { Badge, Link } from 'fundamental-react';
 import './ServiceClassPlansList.scss';
 
 const DOC_TYPES_COLORS = new Map([
@@ -42,12 +42,12 @@ export const DocTypesList = ({ plan }) => (
           <Badge type={DOC_TYPES_COLORS.get(type)}>
             {type}
             {count > 1 && (
-              <span
+              <Link
                 className="fd-counter fd-counter--notification"
                 aria-label="api-type-count"
               >
                 {count}
-              </span>
+              </Link>
             )}
           </Badge>
         </Tooltip>
@@ -108,13 +108,13 @@ export default function ServiceClassPlansList({ name }) {
 
   const rowRenderer = item => [
     <div>
-      <span
+      <Link
         className="link link--bold"
         data-test-id="plan-name"
         onClick={() => goToDetails(item, serviceClass.name)}
       >
         {getResourceDisplayName(item)}
-      </span>
+      </Link>
       <p>{item.description}</p>
     </div>,
     <DocTypesList plan={item} />,

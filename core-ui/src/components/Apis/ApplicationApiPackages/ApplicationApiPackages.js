@@ -2,13 +2,18 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import LuigiClient from '@kyma-project/luigi-client';
 
-import { GenericList, useNotification, handleDelete } from 'react-shared';
+import {
+  GenericList,
+  ModalWithForm,
+  useNotification,
+  handleDelete,
+} from 'react-shared';
+import { Link } from 'fundamental-react';
 
 import { DELETE_API_PACKAGE } from 'gql/mutations';
 import { useMutation } from '@apollo/react-hooks';
 import { GET_APPLICATION_COMPASS } from 'gql/queries';
 
-import ModalWithForm from 'components/ModalWithForm/ModalWithForm';
 import CreateApiPackageForm from '../../ApiPackages/CreateApiPackageForm/CreateApiPackageForm';
 import { Counter } from 'fundamental-react';
 import { CompassGqlContext } from 'index';
@@ -41,9 +46,9 @@ export default function ApplicationApiPackages({ applicationId, apiPackages }) {
   ];
 
   const rowRenderer = apiPackage => [
-    <span className="link" onClick={() => navigateToDetails(apiPackage)}>
+    <Link className="link" onClick={() => navigateToDetails(apiPackage)}>
       {apiPackage.name}
-    </span>,
+    </Link>,
     apiPackage.description,
     <Counter>{apiPackage.apiDefinitions.totalCount}</Counter>,
     <Counter>{apiPackage.eventDefinitions.totalCount}</Counter>,
@@ -68,7 +73,7 @@ export default function ApplicationApiPackages({ applicationId, apiPackages }) {
   const extraHeaderContent = (
     <ModalWithForm
       title="Create Package"
-      button={{ glyph: 'add', text: '' }}
+      button={{ glyph: 'add', label: 'Create Package' }}
       renderForm={props => (
         <CreateApiPackageForm applicationId={applicationId} {...props} />
       )}

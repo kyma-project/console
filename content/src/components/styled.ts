@@ -16,7 +16,7 @@ export const ContentWrapper = styled.div`
   margin-top: 16px;
 `;
 
-export const GoBack = styled.div`
+export const GoBack = styled.a`
   margin: 0;
   color: #51555a;
   display: block;

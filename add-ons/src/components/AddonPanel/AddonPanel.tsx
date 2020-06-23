@@ -39,7 +39,14 @@ const ResyncButton: React.FunctionComponent<ResyncButtonProps> = ({
     }
   }
 
-  return <Button glyph="refresh" option="light" onClick={handleResync} />;
+  return (
+    <Button
+      glyph="refresh"
+      aria-label="refresh"
+      option="light"
+      onClick={handleResync}
+    />
+  );
 };
 
 interface AddonPanelProps {

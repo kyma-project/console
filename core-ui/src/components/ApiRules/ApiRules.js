@@ -2,7 +2,7 @@ import React from 'react';
 import { PageHeader, GenericList, Spinner } from 'react-shared';
 import { useQuery } from '@apollo/react-hooks';
 import LuigiClient from '@kyma-project/luigi-client';
-import { Button } from 'fundamental-react';
+import { Button, Link } from 'fundamental-react';
 
 import { GET_API_RULES } from 'gql/queries';
 import { useDeleteApiRule } from './useDeleteApiRule';
@@ -27,7 +27,7 @@ export default function ApiRules() {
   const headerRenderer = () => ['Name'];
 
   const rowRenderer = rule => [
-    <span
+    <Link
       className="link"
       onClick={() =>
         LuigiClient.linkManager()
@@ -36,7 +36,7 @@ export default function ApiRules() {
       }
     >
       {rule.name}
-    </span>,
+    </Link>,
   ];
 
   const actions = [

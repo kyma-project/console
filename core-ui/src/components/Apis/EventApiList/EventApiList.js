@@ -5,6 +5,7 @@ import LuigiClient from '@kyma-project/luigi-client';
 import CreateEventApiForm from '../CreateEventForm/CreateEventForm';
 
 import { GenericList, easyHandleDelete, useNotification } from 'react-shared';
+import { Link } from 'fundamental-react';
 import ModalWithForm from 'components/ModalWithForm/ModalWithForm';
 
 import { DELETE_EVENT_DEFINITION } from 'gql/mutations';
@@ -35,12 +36,12 @@ export default function EventApiList({ applicationId, eventApis }) {
   const headerRenderer = () => ['Name', 'Description'];
 
   const rowRenderer = api => [
-    <span
+    <Link
       className="link"
       onClick={() => LuigiClient.linkManager().navigate(`eventApi/${api.id}`)}
     >
       {api.name}
-    </span>,
+    </Link>,
     api.description,
   ];
 

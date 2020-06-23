@@ -30,7 +30,12 @@ export const NavigationGroup: React.FunctionComponent<Props> = ({
   return (
     <NavigationContainer key={title}>
       {title && icon && (
-        <NavigationHeader onClick={() => setShow(!show)}>
+        <NavigationHeader
+          onClick={() => setShow(!show)}
+          aria-label={
+            show ? `collapse ${title} category` : `expand  ${title} category`
+          }
+        >
           <Icon size="m" glyph={icon} />
           {title}
           <NavigationArrow>

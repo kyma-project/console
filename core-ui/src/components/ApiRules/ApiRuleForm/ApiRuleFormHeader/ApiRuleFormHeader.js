@@ -1,7 +1,7 @@
 import React from 'react';
 import LuigiClient from '@kyma-project/luigi-client';
 import PropTypes from 'prop-types';
-import { Button } from 'fundamental-react';
+import { Button, Link } from 'fundamental-react';
 import { PageHeader } from 'react-shared';
 
 const ApiRuleFormHeader = ({
@@ -15,7 +15,7 @@ const ApiRuleFormHeader = ({
 
   const serviceLink = serviceName && (
     <PageHeader.Column title="Service">
-      <span
+      <Link
         className="link"
         onClick={() =>
           LuigiClient.linkManager()
@@ -24,7 +24,7 @@ const ApiRuleFormHeader = ({
         }
       >
         {serviceName}
-      </span>
+      </Link>
     </PageHeader.Column>
   );
 

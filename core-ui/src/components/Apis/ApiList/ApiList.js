@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import LuigiClient from '@kyma-project/luigi-client';
 
 import { GenericList, useNotification, easyHandleDelete } from 'react-shared';
+import { Link } from 'fundamental-react';
 import ModalWithForm from 'components/ModalWithForm/ModalWithForm';
 import CreateApiForm from '../CreateApiForm/CreateApiForm';
 
@@ -34,12 +35,12 @@ export default function ApiList({ applicationId, apis }) {
   const headerRenderer = () => ['Name', 'Description', 'Target URL'];
 
   const rowRenderer = api => [
-    <span
+    <Link
       className="link"
       onClick={() => LuigiClient.linkManager().navigate(`api/${api.id}`)}
     >
       {api.name}
-    </span>,
+    </Link>,
     api.description,
     api.targetURL,
   ];

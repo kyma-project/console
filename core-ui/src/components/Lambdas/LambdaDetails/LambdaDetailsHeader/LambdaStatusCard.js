@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import LuigiClient from '@kyma-project/luigi-client';
 
-import { Panel, Icon, Modal, Button } from 'fundamental-react';
+import { Panel, Icon, Link, Modal, Button } from 'fundamental-react';
 
 import { statusType } from 'components/Lambdas/helpers/lambdas';
 import {
@@ -47,9 +47,9 @@ function ModalWithErrorLogs({ lambdaName, error }) {
 
   return (
     <>
-      <span className="link" onClick={onOpen}>
+      <Link className="link" onClick={onOpen}>
         {LAMBDA_DETAILS.STATUS.ERROR.LINK}
-      </span>
+      </Link>
       <Modal title={title} show={show} actions={actions} onClose={onClose}>
         {error}
       </Modal>

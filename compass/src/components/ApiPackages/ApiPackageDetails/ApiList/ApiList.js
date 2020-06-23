@@ -4,9 +4,9 @@ import LuigiClient from '@luigi-project/client';
 import './ApiList.scss';
 
 import CreateApiForm from 'components/Api/CreateApiForm/CreateApiForm';
-import { GenericList, handleDelete } from 'react-shared';
-import ModalWithForm from 'shared/components/ModalWithForm/ModalWithForm';
+import { GenericList, handleDelete, ModalWithForm } from 'react-shared';
 
+import { Link } from 'fundamental-react';
 import { useMutation } from '@apollo/react-hooks';
 import { DELETE_API_DEFINITION } from 'components/Api/gql';
 import { GET_API_PACKAGE } from '../../gql';
@@ -49,12 +49,12 @@ export default function ApiList({
   const headerRenderer = () => ['Name', 'Description', 'Target URL'];
 
   const rowRenderer = api => [
-    <span
+    <Link
       className="link"
       onClick={() => LuigiClient.linkManager().navigate(`api/${api.id}`)}
     >
       {api.name}
-    </span>,
+    </Link>,
     api.description,
     api.targetURL,
   ];
@@ -80,7 +80,7 @@ export default function ApiList({
   const extraHeaderContent = (
     <ModalWithForm
       title="Add API Definition"
-      button={{ glyph: 'add', text: '' }}
+      button={{ glyph: 'add', label: 'Add API Definition' }}
       confirmText="Create"
       modalClassName="create-api-modal"
       renderForm={props => (

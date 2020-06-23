@@ -13,7 +13,7 @@ import { APPLICATIONS_EVENT_SUBSCRIPTION } from 'gql/subscriptions';
 import handleApplicationEvent from './wsHandler';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import { CompassGqlContext } from 'index';
-import { Popover, Menu, Button, Badge } from 'fundamental-react';
+import { Popover, Menu, Button, Link, Badge } from 'fundamental-react';
 import { Counter } from 'fundamental-react/Badge';
 import { useNotification } from 'react-shared';
 import ModalWithForm from '../../ModalWithForm/ModalWithForm';
@@ -126,13 +126,13 @@ export default function ApplicationList() {
 
   const rowRenderer = item => {
     return [
-      <span
-        className="link"
+      <Link
         data-test-id="app-name"
+        className="link"
         onClick={() => LuigiClient.linkManager().navigate(`details/${item.id}`)}
       >
         {item.name}
-      </span>,
+      </Link>,
       item.providerName || EMPTY_TEXT_PLACEHOLDER,
       <ApplicationStatus application={item} />,
       Array.isArray(item.enabledInNamespaces) && item.enabledInNamespaces.length
@@ -200,6 +200,7 @@ export default function ApplicationList() {
         actionsStandaloneItems={1}
         actions={actions}
         entries={getSortedApplications(applicationList)}
+        entriesKind="applications"
         headerRenderer={headerRenderer}
         rowRenderer={rowRenderer}
         extraHeaderContent={extraHeaderContent}

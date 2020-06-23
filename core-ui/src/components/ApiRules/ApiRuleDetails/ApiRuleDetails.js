@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useQuery } from '@apollo/react-hooks';
 import LuigiClient from '@kyma-project/luigi-client';
-import { LayoutGrid, Panel, Button } from 'fundamental-react';
+import { LayoutGrid, Link, Panel, Button } from 'fundamental-react';
 
 import AccessStrategy from '../AccessStrategy/AccessStrategy';
 import { GET_API_RULE } from '../../../gql/queries';
@@ -115,9 +115,9 @@ function ApiRuleDetailsHeader({ data }) {
       }
     >
       <PageHeader.Column title="Service">
-        <span className="link" onClick={navigateToService}>
+        <Link className="link" onClick={navigateToService}>
           {`${data.service.name} (port: ${data.service.port})`}
-        </span>
+        </Link>
       </PageHeader.Column>
       <PageHeader.Column title="Host" columnSpan="2 / 4">
         <CopiableLink url={url} />

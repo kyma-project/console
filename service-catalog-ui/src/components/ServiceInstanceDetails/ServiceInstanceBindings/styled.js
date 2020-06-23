@@ -16,7 +16,7 @@ export const LinkButton = styled.span`
   font-weight: bold;
 `;
 
-export const SecretModalButton = styled.span`
+export const SecretModalButton = styled.a`
   cursor: pointer;
   color: #0a6ed1;
   margin: ${props => props.margin};

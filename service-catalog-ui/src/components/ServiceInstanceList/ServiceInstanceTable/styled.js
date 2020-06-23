@@ -12,7 +12,7 @@ export const Link = styled.a`
   text-decoration: none !important;
 `;
 
-export const ServiceClassButton = styled.span`
+export const ServiceClassButton = styled.a`
   color: #0a6ed1;
   cursor: pointer;
 `;
@@ -35,7 +35,7 @@ export const AddServiceInstanceRedirectButton = styled.button`
   cursor: pointer;
 `;
 
-export const ServicePlanButton = styled.span`
+export const ServicePlanButton = styled.a`
   padding: 0;
   background: none;
   border: 0;
