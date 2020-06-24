@@ -99,7 +99,6 @@ export default function ServiceApiRules({ namespaceId, service }) {
     apiRule.service.port,
     <ApiRuleStatus {...apiRule.status.apiRuleStatus} />,
   ];
-  console.log(apiRules);
 
   return (
     <GenericList
