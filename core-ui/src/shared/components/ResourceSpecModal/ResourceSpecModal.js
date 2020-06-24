@@ -25,6 +25,15 @@ export default function ResourceSpecModal({
 
   const [spec, setSpec] = React.useState('');
 
+  const isValid = text => {
+    try {
+      JSON.parse(text);
+      return true;
+    } catch (_) {
+      return false;
+    }
+  };
+
   return (
     <Modal
       title={`Update ${name}`}
@@ -34,6 +43,7 @@ export default function ResourceSpecModal({
       onChangeText={setSpec}
       onShow={() => setSpec(originalSpec)}
       onConfirm={() => updateResource(spec)}
+      disabledConfirm={!isValid(spec)}
     >
       <div style={{ height: '50vh' }}>
         <JSONEditor text={format(spec)} onChangeText={setSpec} />
