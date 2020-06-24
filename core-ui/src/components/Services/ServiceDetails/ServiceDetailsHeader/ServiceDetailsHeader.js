@@ -54,7 +54,7 @@ export default function ServiceDetailsHeader({ namespaceId, service }) {
       notification.notifyError({
         content: `Cannot update service: ${e.message}.`,
       });
-      return false;
+      return false; // so that HeaderLabelsEditor modal doesn't close
     }
   };
 
