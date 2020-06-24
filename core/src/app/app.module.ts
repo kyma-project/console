@@ -4,7 +4,6 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { ClipboardModule } from 'ngx-clipboard';
-import { ApisComponent } from './content/namespaces/configuration/apis/apis.component';
 import { EventService } from './content/settings/applications/application-details/services/event.service';
 import { ApplicationsService } from './content/settings/applications/services/applications.service';
 
@@ -24,8 +23,6 @@ import { CurrentNamespaceService } from './content/namespaces/services/current-n
 import { NamespacesService } from './content/namespaces/services/namespaces.service';
 
 import { TimeAgoPipe } from 'time-ago-pipe';
-import { ApiDefinitionEntryRendererComponent } from './content/namespaces/configuration/apis/api-definition-entry-renderer/api-definition-entry-renderer.component';
-import { ApiDefinitionHeaderRendererComponent } from './content/namespaces/configuration/apis/api-definition-header-renderer/api-definition-header-renderer.component';
 import { DeploymentEntryRendererComponent } from './content/namespaces/operation/deployments/deployment-entry-renderer/deployment-entry-renderer.component';
 import { DeploymentHeaderRendererComponent } from './content/namespaces/operation/deployments/deployment-header-renderer/deployment-header-renderer.component';
 import { DeploymentsComponent } from './content/namespaces/operation/deployments/deployments.component';
@@ -158,9 +155,6 @@ import * as LuigiClient from '@luigi-project/client';
     UploaderComponent,
     ResourceUploaderModalComponent,
     ResourceUploaderComponent,
-    ApisComponent,
-    ApiDefinitionEntryRendererComponent,
-    ApiDefinitionHeaderRendererComponent,
     Copy2ClipboardModalComponent,
     PermissionsComponent,
     RoleDetailsComponent,
@@ -241,8 +235,6 @@ import * as LuigiClient from '@luigi-project/client';
     ServicesEntryRendererComponent,
     ApplicationsHeaderRendererComponent,
     ApplicationsEntryRendererComponent,
-    ApiDefinitionEntryRendererComponent,
-    ApiDefinitionHeaderRendererComponent,
     BindingHeaderRendererComponent,
     BindingEntryRendererComponent,
     RolesHeaderRendererComponent,

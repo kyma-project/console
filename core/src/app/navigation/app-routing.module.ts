@@ -1,7 +1,6 @@
 import { AppConfig } from './../app.config';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ApisComponent } from '../content/namespaces/configuration/apis/apis.component';
 
 import { NamespacesContainerComponent } from '../content/namespaces/namespaces-container/namespaces-container.component';
 import { DeploymentsComponent } from '../content/namespaces/operation/deployments/deployments.component';
@@ -45,7 +44,6 @@ const appRoutes: Routes = [
           { path: 'replicaSets', component: ReplicaSetsComponent },
           { path: 'pods', component: PodsComponent },
           { path: 'services', component: ServicesComponent },
-          { path: 'apis', component: ApisComponent },
           { path: 'secrets', component: SecretsComponent },
           { path: 'secrets/:name', component: SecretDetailComponent },
           { path: 'configmaps', component: ConfigMapsComponent },
