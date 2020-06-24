@@ -183,12 +183,6 @@ export const ModalWithForm = ({
 ModalWithForm.propTypes = {
   performRefetch: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
-  oldbutton: PropTypes.exact({
-    text: PropTypes.string.isRequired,
-    glyph: PropTypes.string,
-    disabled: PropTypes.bool,
-    option: PropTypes.oneOf(['emphasized', 'light']),
-  }),
   renderForm: PropTypes.func.isRequired,
   opened: PropTypes.bool,
   customCloseAction: PropTypes.func,
@@ -198,18 +192,24 @@ ModalWithForm.propTypes = {
   button: function(props, propName, componentName) {
     function checkDataOrRequest() {
       return (
-        !props.hasOwnProperty('text') &&
-        !props.hasOwnProperty('label') &&
+        !props[propName].hasOwnProperty('text') &&
+        !props[propName].hasOwnProperty('label') &&
         new Error(`Either "text" or "label" is required`)
       );
     }
 
     function checkTypes() {
       if (
-        (propName === 'text' && props.constructor !== String) ||
-        (propName === 'disabled' && props.constructor !== Boolean) ||
-        (propName === 'glyph' && props.constructor !== String) ||
-        (propName === 'label' && props.constructor !== String)
+        (props[propName].hasOwnProperty('compact') &&
+          typeof props[propName]['compact'] !== 'boolean') ||
+        (props[propName].hasOwnProperty('disabled') &&
+          typeof props[propName]['disabled'] !== 'boolean') ||
+        (props[propName].hasOwnProperty('glyph') &&
+          typeof props[propName]['glyph'] !== 'string') ||
+        (props[propName].hasOwnProperty('label') &&
+          typeof props[propName]['label'] !== 'string') ||
+        (props[propName].hasOwnProperty('text') &&
+          typeof props[propName]['text'] !== 'string')
       ) {
         return new Error(
           'Invalid prop `' +
@@ -223,8 +223,7 @@ ModalWithForm.propTypes = {
 
       return false;
     }
-
-    return checkDataOrRequest() && checkTypes();
+    return checkDataOrRequest() || checkTypes();
   },
 };
 ModalWithForm.defaultProps = {

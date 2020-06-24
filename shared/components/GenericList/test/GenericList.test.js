@@ -272,7 +272,7 @@ describe('GenericList', () => {
     it('Finds proper entries when search text is entered', async () => {
       const searchText = 'first';
 
-      const { queryAllByRole, getByLabelText, debug } = render(
+      const { queryAllByRole, getByLabelText } = render(
         <GenericList
           entries={mockEntries}
           headerRenderer={mockHeaderRenderer}
