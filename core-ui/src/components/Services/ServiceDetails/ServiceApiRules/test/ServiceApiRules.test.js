@@ -5,7 +5,7 @@ import { namespaceId, service, apiRulesQuery, apiRules } from './mocks';
 import { MockedProvider } from '@apollo/react-testing';
 
 const mockNavigate = jest.fn();
-jest.mock('@kyma-project/luigi-client', () => ({
+jest.mock('@luigi-project/client', () => ({
   linkManager: () => ({
     fromContext: () => ({
       withParams: () => ({ navigate: mockNavigate }),
