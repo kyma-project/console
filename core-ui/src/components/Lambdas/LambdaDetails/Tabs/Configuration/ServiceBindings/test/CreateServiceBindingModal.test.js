@@ -11,7 +11,7 @@ import CreateServiceBindingModal from '../CreateServiceBindingModal';
 
 import { GET_SERVICE_INSTANCES_DATA_MOCK } from 'components/Lambdas/gql/hooks/queries/testMocks';
 
-jest.mock('@kyma-project/luigi-client', () => {
+jest.mock('@luigi-project/client', () => {
   return {
     uxManager: () => ({
       addBackdrop: () => {},

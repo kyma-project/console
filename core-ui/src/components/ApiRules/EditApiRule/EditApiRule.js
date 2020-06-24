@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useMutation, useQuery } from '@apollo/react-hooks';
-import LuigiClient from '@kyma-project/luigi-client';
+import LuigiClient from '@luigi-project/client';
 
 import { Spinner, useNotification } from 'react-shared';
 import { UPDATE_API_RULE } from '../../../gql/mutations';

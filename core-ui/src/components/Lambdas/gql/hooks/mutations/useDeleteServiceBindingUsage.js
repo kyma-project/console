@@ -1,4 +1,4 @@
-import LuigiClient from '@kyma-project/luigi-client';
+import LuigiClient from '@luigi-project/client';
 import { useMutation } from '@apollo/react-hooks';
 import { useNotification } from 'react-shared';
 

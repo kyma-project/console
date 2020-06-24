@@ -4,7 +4,7 @@ import { useMutation } from '@apollo/react-hooks';
 import { useNotification } from 'react-shared';
 import { CREATE_API_RULE } from '../../../gql/mutations';
 import ApiRuleForm from '../ApiRuleForm/ApiRuleForm';
-import LuigiClient from '@kyma-project/luigi-client';
+import LuigiClient from '@luigi-project/client';
 import { supportedMethodsList } from '../accessStrategyTypes';
 
 const DEFAULT_ACCESS_STRATEGY = {

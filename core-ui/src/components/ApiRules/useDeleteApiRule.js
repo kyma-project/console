@@ -1,5 +1,5 @@
 import { useMutation } from '@apollo/react-hooks';
-import LuigiClient from '@kyma-project/luigi-client';
+import LuigiClient from '@luigi-project/client';
 
 import { useNotification } from 'react-shared';
 import { DELETE_API_RULE } from 'gql/mutations';

@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Modal, Button } from 'fundamental-react';
-import LuigiClient from '@kyma-project/luigi-client';
+import LuigiClient from '@luigi-project/client';
 import { useNotification } from '../../contexts/NotificationContext';
 
 const isFormValid = (formRef, reportValidity = false) => {

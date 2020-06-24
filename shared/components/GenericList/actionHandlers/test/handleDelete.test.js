@@ -3,7 +3,7 @@ import { handleDelete } from '../simpleDelete';
 const mockModal = jest.fn();
 const mockAlert = jest.fn();
 
-jest.mock('@kyma-project/luigi-client', () => ({
+jest.mock('@luigi-project/client', () => ({
   uxManager: () => ({
     showConfirmationModal: mockModal,
     showAlert: mockAlert,

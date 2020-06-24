@@ -4,7 +4,7 @@ import Panel from 'fundamental-react/Panel/Panel';
 import { Button } from 'fundamental-react/Button';
 import { GenericComponent } from '@kyma-project/generic-documentation';
 import { useQuery } from 'react-apollo';
-import LuigiClient from '@kyma-project/luigi-client';
+import LuigiClient from '@luigi-project/client';
 
 import { PageHeader, ResourceNotFound } from 'react-shared';
 import { getApiType, getApiDisplayName } from '../ApiHelpers';

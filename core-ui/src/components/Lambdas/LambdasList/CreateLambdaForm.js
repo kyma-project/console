@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import LuigiClient from '@kyma-project/luigi-client';
+import LuigiClient from '@luigi-project/client';
 
 import { LambdaNameInput, LabelsInput } from 'components/Lambdas/components';
 

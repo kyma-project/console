@@ -10,7 +10,7 @@ import {
 import { DOCUMENTATION_PER_PLAN_LABEL } from 'helpers/constants';
 
 const mockNavigate = jest.fn();
-jest.mock('@kyma-project/luigi-client', () => ({
+jest.mock('@luigi-project/client', () => ({
   linkManager: () => ({
     fromClosestContext: () => ({
       navigate: mockNavigate,

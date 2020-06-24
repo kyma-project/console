@@ -27,7 +27,7 @@ jest.mock('react-shared', () => ({
   Tooltip: () => null,
 }));
 
-jest.mock('@kyma-project/luigi-client', () => ({
+jest.mock('@luigi-project/client', () => ({
   getContext: () => ({
     namespaceId: mockTestNamespace,
   }),

@@ -9,7 +9,7 @@ import { LAMBDA_EVENT_SUBSCRIPTION_MOCK } from 'components/Lambdas/gql/hooks/que
 
 import LambdaDetailsWrapper from '../LambdaDetailsWrapper';
 
-jest.mock('@kyma-project/luigi-client', () => {
+jest.mock('@luigi-project/client', () => {
   return {
     linkManager: () => ({
       navigate: () => {},

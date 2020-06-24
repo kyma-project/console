@@ -1,4 +1,4 @@
-import LuigiClient from '@kyma-project/luigi-client';
+import LuigiClient from '@luigi-project/client';
 
 function displayConfirmationMessage(entityType, entityName) {
   return new Promise(resolve => {

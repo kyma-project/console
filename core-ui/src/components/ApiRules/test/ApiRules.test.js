@@ -45,7 +45,7 @@ const apiRule = id => ({
   name: 'tets-api-rule' + id,
 });
 
-jest.mock('@kyma-project/luigi-client', () => ({
+jest.mock('@luigi-project/client', () => ({
   getContext: () => ({
     namespaceId: mockNamespace,
   }),

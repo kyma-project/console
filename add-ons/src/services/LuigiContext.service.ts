@@ -1,5 +1,5 @@
 import React from 'react';
-import { default as luigiClient } from '@kyma-project/luigi-client';
+import { default as luigiClient } from '@luigi-project/client';
 import createContainer from 'constate';
 
 function useLuigiContext() {

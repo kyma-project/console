@@ -17,7 +17,7 @@ import ServiceBindingsWrapper from '../ServiceBindingsWrapper';
 import { SERVICE_BINDINGS_PANEL } from 'components/Lambdas/constants';
 import { CONFIG } from 'components/Lambdas/config';
 
-jest.mock('@kyma-project/luigi-client', () => {
+jest.mock('@luigi-project/client', () => {
   return {
     uxManager: () => ({
       addBackdrop: () => {},

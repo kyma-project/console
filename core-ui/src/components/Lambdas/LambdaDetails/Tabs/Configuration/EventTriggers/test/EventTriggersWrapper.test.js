@@ -18,7 +18,7 @@ import { ERRORS, EVENT_TRIGGERS_PANEL } from 'components/Lambdas/constants';
 
 import EventTriggersWrapper from '../EventTriggersWrapper';
 
-jest.mock('@kyma-project/luigi-client', () => {
+jest.mock('@luigi-project/client', () => {
   return {
     linkManager: () => ({
       navigate: () => {},

@@ -1,1 +1,1 @@
-export { default as luigiClient } from '@kyma-project/luigi-client';
+export { default as luigiClient } from '@luigi-project/client';

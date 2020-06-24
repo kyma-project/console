@@ -1,7 +1,7 @@
 import { graphql } from 'react-apollo';
 import { compose } from 'recompose';
 import { checkInstanceExist } from './queries';
-import LuigiClient from '@kyma-project/luigi-client';
+import LuigiClient from '@luigi-project/client';
 import CreateInstanceModal from './CreateInstanceModal.component';
 
 export default compose(

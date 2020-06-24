@@ -7,7 +7,7 @@ import { render, fireEvent } from '@testing-library/react';
 
 const mockNavigate = jest.fn();
 
-jest.mock('@kyma-project/luigi-client', () => {
+jest.mock('@luigi-project/client', () => {
   return {
     linkManager: () => ({
       fromContext: () => ({

@@ -1,6 +1,6 @@
 import { graphql } from 'react-apollo';
 import { compose } from 'recompose';
-import LuigiClient from '@kyma-project/luigi-client';
+import LuigiClient from '@luigi-project/client';
 import {
   BINDING_USAGE_CREATE_MUTATION,
   BINDING_CREATE_MUTATION,

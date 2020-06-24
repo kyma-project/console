@@ -13,7 +13,7 @@ jest.mock('index', () => {
   };
 });
 
-jest.mock('@kyma-project/luigi-client', () => ({
+jest.mock('@luigi-project/client', () => ({
   uxManager: () => ({
     addBackdrop: () => {},
     removeBackdrop: () => {},

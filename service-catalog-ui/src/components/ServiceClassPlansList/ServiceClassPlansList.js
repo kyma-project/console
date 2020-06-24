@@ -1,6 +1,6 @@
 import React from 'react';
 import { useQuery } from '@apollo/react-hooks';
-import LuigiClient from '@kyma-project/luigi-client';
+import LuigiClient from '@luigi-project/client';
 import { getServiceClassPlans } from './queries';
 import { serviceClassConstants } from 'helpers/constants';
 import PropTypes from 'prop-types';

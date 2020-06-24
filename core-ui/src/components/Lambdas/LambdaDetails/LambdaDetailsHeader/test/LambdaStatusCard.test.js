@@ -7,7 +7,7 @@ import { LAMBDA_DETAILS, LAMBDA_PHASES } from 'components/Lambdas/constants';
 
 import LambdaStatusCard from '../LambdaStatusCard';
 
-jest.mock('@kyma-project/luigi-client', () => {
+jest.mock('@luigi-project/client', () => {
   return {
     uxManager: () => ({
       addBackdrop: () => {},

@@ -65,7 +65,10 @@ const InfiniteList = ({
           {entries.map(r => (
             <tr className="fd-table__row" key={r.id}>
               {rowRenderer(r).map(([key, value]) => (
-                <td className="fd-table__cell" key={key}>
+                <td
+                  className="fd-table__cell fd-has-padding-top-tiny fd-has-padding-bottom-tiny"
+                  key={key}
+                >
                   {value}
                 </td>
               ))}

@@ -3,9 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@luigi-project/client": "1.0.0",
-    "@luigi-project/core": "1.0.0",
-    "@luigi-project/plugin-auth-oidc": "1.0.0",
+    "@luigi-project/core": "1.2.1",
+    "@luigi-project/plugin-auth-oidc": "1.2.1",
     "asyncapi-converter": "^0.4.2",
     "jsoneditor": "^6.2.1",
     "react-ace": "^7.0.4",

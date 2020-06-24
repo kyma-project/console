@@ -3,7 +3,7 @@ import { render, fireEvent } from '@testing-library/react';
 import ApiRuleFormHeader from '../ApiRuleFormHeader';
 
 const mockNavigate = jest.fn();
-jest.mock('@kyma-project/luigi-client', () => ({
+jest.mock('@luigi-project/client', () => ({
   getNodeParams: () => ({ serviceName: 'service-name' }),
   linkManager: () => ({ fromContext: () => ({ navigate: mockNavigate }) }),
 }));

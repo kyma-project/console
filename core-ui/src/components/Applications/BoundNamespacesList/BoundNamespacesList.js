@@ -1,6 +1,6 @@
 import React from 'react';
 import { useMutation } from '@apollo/react-hooks';
-import LuigiClient from '@kyma-project/luigi-client';
+import LuigiClient from '@luigi-project/client';
 import PropTypes from 'prop-types';
 
 import { GenericList, useNotification } from 'react-shared';

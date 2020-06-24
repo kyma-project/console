@@ -1,4 +1,4 @@
-import LuigiClient from '@kyma-project/luigi-client';
+import LuigiClient from '@luigi-project/client';
 
 const DEFAULT_ENVIRONMENT_ID = 'production';
 

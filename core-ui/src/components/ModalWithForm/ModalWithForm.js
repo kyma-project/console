@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Modal, Button } from 'fundamental-react';
-import LuigiClient from '@kyma-project/luigi-client';
+import LuigiClient from '@luigi-project/client';
 import { useNotification, Tooltip } from 'react-shared';
 
 //TODO: move this component to a shared "place"

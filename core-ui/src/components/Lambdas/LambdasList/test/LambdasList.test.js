@@ -14,7 +14,7 @@ import { TOOLBAR } from 'components/Lambdas/constants';
 
 import LambdasListWrapper from '../LambdasListWrapper';
 
-jest.mock('@kyma-project/luigi-client', () => {
+jest.mock('@luigi-project/client', () => {
   return {
     linkManager: () => ({
       navigate: () => {},

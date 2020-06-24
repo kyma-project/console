@@ -1,6 +1,11 @@
 import React from 'react';
 import { MockedProvider } from '@apollo/react-testing';
-import { render, waitForDomChange, fireEvent } from '@testing-library/react';
+import {
+  render,
+  waitForDomChange,
+  fireEvent,
+  wait,
+} from '@testing-library/react';
 
 import { createMockLink } from 'react-shared';
 import BindNamespaceModal from '../BindNamespaceModal';
@@ -12,21 +17,23 @@ import {
   mockNamespacesError,
 } from './mocks';
 
-jest.mock('@kyma-project/luigi-client', () => ({
+jest.mock('@luigi-project/client', () => ({
   getContext: () => ({
     showSystemNamespaces: false,
   }),
 }));
 
+function openModal(selectorFn) {
+  const modalOpeningComponent = selectorFn('Create Binding');
+  modalOpeningComponent.click();
+}
+
 describe('BindNamespaceModal', () => {
   it('opens after buttons click', async () => {
-    const { link } = createMockLink([mockNamespaces]);
-    const { queryByText } = render(
-      <MockedProvider addTypename={false} link={link}>
-        <BindNamespaceModal
-          appName={exampleAppName}
-          boundNamespaces={exampleBoundNamespaces}
-        />
+    const { link } = createMockLink([mockNamespacesError]);
+    const { queryByText, getByText } = render(
+      <MockedProvider link={link}>
+        <BindNamespaceModal appName={exampleAppName} boundNamespaces={[]} />
       </MockedProvider>,
     );
 
@@ -35,19 +42,18 @@ describe('BindNamespaceModal', () => {
       queryByText('Create Namespace binding for Application'),
     ).not.toBeInTheDocument();
 
-    const modalOpeningComponent = queryByText('Create Binding');
-    expect(modalOpeningComponent).toBeInTheDocument();
-    fireEvent.click(modalOpeningComponent);
-    await waitForDomChange();
+    openModal(getByText);
 
-    expect(
-      queryByText('Create Namespace binding for Application'),
-    ).toBeInTheDocument();
-  }, 10000);
+    await wait(() => {
+      expect(
+        queryByText('Create Namespace binding for Application'),
+      ).toBeInTheDocument();
+    });
+  });
 
   it('shows a list of namespaces to bind', async () => {
     const { link } = createMockLink([mockNamespaces]);
-    const { queryByText } = render(
+    const { queryByText, getByText } = render(
       <MockedProvider addTypename={false} link={link}>
         <BindNamespaceModal
           appName={exampleAppName}
@@ -56,20 +62,20 @@ describe('BindNamespaceModal', () => {
       </MockedProvider>,
     );
 
-    const modalOpeningComponent = queryByText('Create Binding');
-    fireEvent.click(modalOpeningComponent);
+    openModal(getByText);
     await waitForDomChange();
 
     // namespace already bound to an app should not be shown
     expect(queryByText(exampleNamespaces[0].name)).not.toBeInTheDocument();
+
     // namespace not bound to an app should be shown
     expect(queryByText(exampleNamespaces[1].name)).toBeInTheDocument();
-  }, 10000);
+  });
 
   it('shows an error on failure', async () => {
     const { link } = createMockLink([mockNamespacesError]);
 
-    const { queryByText } = render(
+    const { queryByText, getByText } = render(
       <MockedProvider addTypename={false} link={link}>
         <BindNamespaceModal
           appName={exampleAppName}
@@ -78,13 +84,13 @@ describe('BindNamespaceModal', () => {
       </MockedProvider>,
     );
 
-    const modalOpeningComponent = queryByText('Create Binding');
-    fireEvent.click(modalOpeningComponent);
-    await waitForDomChange();
+    openModal(getByText);
 
-    const errorMessage = mockNamespacesError.error.message;
-    expect(queryByText(new RegExp(errorMessage))).toBeInTheDocument();
-  }, 10000);
+    await wait(() => {
+      const errorMessage = `Could not fetch namespaces`;
+      expect(queryByText(new RegExp(errorMessage))).toBeInTheDocument();
+    });
+  });
 
   it("shows the 'no namespaces available' message if all namespaces are already bound to an app", async () => {
     const { link } = createMockLink([mockNamespaces]);
@@ -93,7 +99,7 @@ describe('BindNamespaceModal', () => {
       exampleNamespaces[0].name,
       exampleNamespaces[1].name,
     ];
-    const { queryByText } = render(
+    const { queryByText, getByText } = render(
       <MockedProvider addTypename={false} link={link}>
         <BindNamespaceModal
           appName={exampleAppName}
@@ -102,10 +108,12 @@ describe('BindNamespaceModal', () => {
       </MockedProvider>,
     );
 
-    const modalOpeningComponent = queryByText('Create Binding');
-    fireEvent.click(modalOpeningComponent);
-    await waitForDomChange();
+    openModal(getByText);
 
-    expect(queryByText('No Namespaces avaliable to bind')).toBeInTheDocument();
-  }, 10000);
+    await wait(() => {
+      expect(
+        queryByText('No Namespaces avaliable to bind'),
+      ).toBeInTheDocument();
+    });
+  });
 });

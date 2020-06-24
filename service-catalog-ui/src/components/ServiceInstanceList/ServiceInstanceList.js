@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import LuigiClient from '@kyma-project/luigi-client';
+import LuigiClient from '@luigi-project/client';
 import { useMutation, useQuery } from '@apollo/react-hooks';
 import {
   instancesTabUtils,
