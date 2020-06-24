@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import LuigiClient from '@kyma-project/luigi-client';
+import LuigiClient from '@luigi-project/client';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import { createBrowserHistory } from 'history';
 

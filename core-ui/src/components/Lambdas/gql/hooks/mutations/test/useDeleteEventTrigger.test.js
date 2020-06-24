@@ -22,7 +22,7 @@ import {
   DELETE_ONE_EVENT_TRIGGER_DATA_MOCK,
 } from '../testMocks';
 
-jest.mock('@kyma-project/luigi-client', () => {
+jest.mock('@luigi-project/client', () => {
   return {
     uxManager: () => ({
       showConfirmationModal: () => {

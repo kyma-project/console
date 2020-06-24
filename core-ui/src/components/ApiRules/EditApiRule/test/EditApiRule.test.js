@@ -25,7 +25,7 @@ jest.mock('@kyma-project/common', () => ({
   getApiUrl: () => 'kyma.local',
 }));
 
-jest.mock('@kyma-project/luigi-client', () => ({
+jest.mock('@luigi-project/client', () => ({
   getEventData: () => ({
     environmentId: mockNamespace,
   }),

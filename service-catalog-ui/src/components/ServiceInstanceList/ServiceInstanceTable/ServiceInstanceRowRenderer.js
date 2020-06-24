@@ -1,5 +1,5 @@
 import React from 'react';
-import LuigiClient from '@kyma-project/luigi-client';
+import LuigiClient from '@luigi-project/client';
 
 import { Icon } from 'fundamental-react';
 import { Modal, StatusBadge } from 'react-shared';

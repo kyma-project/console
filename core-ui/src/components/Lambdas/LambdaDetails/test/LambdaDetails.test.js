@@ -18,7 +18,7 @@ const mutationObserverMock = jest.fn(function MutationObserver(callback) {
 });
 global.MutationObserver = mutationObserverMock;
 
-jest.mock('@kyma-project/luigi-client', () => {
+jest.mock('@luigi-project/client', () => {
   return {
     linkManager: () => ({
       navigate: () => {},

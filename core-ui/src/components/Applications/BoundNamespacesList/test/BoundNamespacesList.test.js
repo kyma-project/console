@@ -9,7 +9,7 @@ import {
   mockShowConfirmationModal,
 } from './mocks';
 
-jest.mock('@kyma-project/luigi-client', () => ({
+jest.mock('@luigi-project/client', () => ({
   getContext: () => ({
     namespaceId: 'test-namespace',
   }),

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import LuigiClient from '@kyma-project/luigi-client';
+import LuigiClient from '@luigi-project/client';
 import { Breadcrumb } from 'fundamental-react';
 import ServiceClassToolbar from '../ServiceClassToolbar/ServiceClassToolbar.component';
 import ServiceClassInfo from '../ServiceClassInfo/ServiceClassInfo.component';

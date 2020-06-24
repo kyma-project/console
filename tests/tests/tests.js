@@ -35,7 +35,7 @@ test('Namespaces view is rendered', async t => {
     .ok();
 });
 
-test('Deployments view is rendered', async t => {
+test.skip('Deployments view is rendered', async t => {
   //GIVEN
   const deploymentsLink = await leftNavLinkSelector('Deployments');
   //WHEN

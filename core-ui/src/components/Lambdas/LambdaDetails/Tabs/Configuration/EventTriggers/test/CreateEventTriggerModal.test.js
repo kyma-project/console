@@ -9,7 +9,7 @@ import { EVENT_TRIGGERS_PANEL } from 'components/Lambdas/constants';
 
 import CreateEventTriggerModal from '../CreateEventTriggerModal';
 
-jest.mock('@kyma-project/luigi-client', () => {
+jest.mock('@luigi-project/client', () => {
   return {
     uxManager: () => ({
       addBackdrop: () => {},

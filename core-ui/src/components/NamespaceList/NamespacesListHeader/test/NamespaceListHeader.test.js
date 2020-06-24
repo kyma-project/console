@@ -3,7 +3,7 @@ import { render, fireEvent } from '@testing-library/react';
 
 import NamespacesListHeader from '../NamespacesListHeader';
 
-jest.mock('@kyma-project/luigi-client', () => ({
+jest.mock('@luigi-project/client', () => ({
   getNodeParams: () => ({
     showModal: 'false',
   }),

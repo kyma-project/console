@@ -1,5 +1,5 @@
 import React from 'react';
-import LuigiClient from '@kyma-project/luigi-client';
+import LuigiClient from '@luigi-project/client';
 import PropTypes from 'prop-types';
 import { Button, Link } from 'fundamental-react';
 import { PageHeader } from 'react-shared';

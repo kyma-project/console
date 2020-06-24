@@ -24,7 +24,7 @@ RUN cd /app/${app_name} && make build
 
 
 ### Main image ###
-FROM alpine:3.11
+FROM alpine:3.12
 ARG app_name=content
 
 ### Install nginx package and remove cache ###

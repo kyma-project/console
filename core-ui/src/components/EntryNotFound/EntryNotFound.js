@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { ActionBar, Breadcrumb, Panel } from 'fundamental-react';
-import LuigiClient from '@kyma-project/luigi-client';
+import LuigiClient from '@luigi-project/client';
 
 EntryNotFound.propTypes = {
   entryType: PropTypes.string.isRequired,

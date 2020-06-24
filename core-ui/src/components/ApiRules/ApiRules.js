@@ -1,7 +1,7 @@
 import React from 'react';
 import { PageHeader, GenericList, Spinner } from 'react-shared';
 import { useQuery } from '@apollo/react-hooks';
-import LuigiClient from '@kyma-project/luigi-client';
+import LuigiClient from '@luigi-project/client';
 import { Button, Link } from 'fundamental-react';
 
 import { GET_API_RULES } from 'gql/queries';

@@ -1,6 +1,6 @@
 import { useMutation } from '@apollo/react-hooks';
 import { useNotification } from 'react-shared';
-import LuigiClient from '@kyma-project/luigi-client';
+import LuigiClient from '@luigi-project/client';
 
 import { CREATE_LAMBDA } from 'components/Lambdas/gql/mutations';
 import extractGraphQlErrors from 'shared/graphqlErrorExtractor';

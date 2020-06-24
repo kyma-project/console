@@ -17,7 +17,8 @@ export const Labels = labels => {
   return separatedLabels.map((label, id) => (
     <Token
       key={id}
-      className="y-fd-token y-fd-token--no-button y-fd-token--gap fd-has-margin fd-has-margin-bottom-tiny fd-has-margin-top-tiny"
+      style={{ marginTop: '4px', marginBottom: '4px' }}
+      className="y-fd-token y-fd-token--no-button y-fd-token--gap"
     >
       {label}
     </Token>

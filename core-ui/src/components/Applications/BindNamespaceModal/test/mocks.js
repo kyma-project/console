@@ -2,8 +2,6 @@ import { GET_NAMESPACES_NAMES } from 'gql/queries';
 
 export const exampleAppName = 'example-app-name';
 
-export const exampleBoundNamespaces = ['example-name-1'];
-
 export const exampleNamespaces = [
   {
     name: 'example-name-1',
@@ -12,6 +10,8 @@ export const exampleNamespaces = [
     name: 'example-name-2',
   },
 ];
+
+export const exampleBoundNamespaces = [exampleNamespaces[0].name];
 
 export const mockNamespaces = {
   request: {
@@ -34,5 +34,5 @@ export const mockNamespacesError = {
       showSystemNamespaces: false,
     },
   },
-  error: Error('Error'),
+  error: Error('Not displayed anyway. Have a good day :)'),
 };

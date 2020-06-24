@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { FormItem, FormLabel, Icon, Link } from 'fundamental-react';
 import { useMutation } from '@apollo/react-hooks';
-import * as LuigiClient from '@kyma-project/luigi-client';
+import * as LuigiClient from '@luigi-project/client';
 
 import SchemaData from './SchemaData.component';
 import { createServiceInstance } from './mutations';

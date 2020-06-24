@@ -5,7 +5,7 @@ import { deleteNamespaceMock, namespace } from './mocks';
 import { MockedProvider } from '@apollo/react-testing';
 
 const mockNavigate = jest.fn();
-jest.mock('@kyma-project/luigi-client', () => ({
+jest.mock('@luigi-project/client', () => ({
   uxManager: () => ({ showConfirmationModal: jest.fn() }),
   linkManager: () => ({ navigate: mockNavigate }),
 }));

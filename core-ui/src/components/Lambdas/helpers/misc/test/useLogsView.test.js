@@ -14,7 +14,7 @@ const mockOpenAsSplitView = jest.fn(() => ({
   expand: mockExpand,
 }));
 
-jest.mock('@kyma-project/luigi-client', () => {
+jest.mock('@luigi-project/client', () => {
   return {
     linkManager: () => ({
       withParams: () => ({

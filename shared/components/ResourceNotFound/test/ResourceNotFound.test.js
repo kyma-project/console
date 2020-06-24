@@ -6,7 +6,7 @@ import { ResourceNotFound } from '../ResourceNotFound';
 const mockNavigate = jest.fn();
 const mockAbsoluteNavigate = jest.fn();
 
-jest.mock('@kyma-project/luigi-client', () => ({
+jest.mock('@luigi-project/client', () => ({
   linkManager: () => ({
     fromClosestContext: () => ({
       navigate: mockNavigate,

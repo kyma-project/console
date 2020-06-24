@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useQuery } from '@apollo/react-hooks';
-import LuigiClient from '@kyma-project/luigi-client';
+import LuigiClient from '@luigi-project/client';
 import { LayoutGrid, Link, Panel, Button } from 'fundamental-react';
 
 import AccessStrategy from '../AccessStrategy/AccessStrategy';

@@ -4,7 +4,6 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { ClipboardModule } from 'ngx-clipboard';
-import { ApisComponent } from './content/namespaces/configuration/apis/apis.component';
 import { EventService } from './content/settings/applications/application-details/services/event.service';
 import { ApplicationsService } from './content/settings/applications/services/applications.service';
 
@@ -24,8 +23,6 @@ import { CurrentNamespaceService } from './content/namespaces/services/current-n
 import { NamespacesService } from './content/namespaces/services/namespaces.service';
 
 import { TimeAgoPipe } from 'time-ago-pipe';
-import { ApiDefinitionEntryRendererComponent } from './content/namespaces/configuration/apis/api-definition-entry-renderer/api-definition-entry-renderer.component';
-import { ApiDefinitionHeaderRendererComponent } from './content/namespaces/configuration/apis/api-definition-header-renderer/api-definition-header-renderer.component';
 import { DeploymentEntryRendererComponent } from './content/namespaces/operation/deployments/deployment-entry-renderer/deployment-entry-renderer.component';
 import { DeploymentHeaderRendererComponent } from './content/namespaces/operation/deployments/deployment-header-renderer/deployment-header-renderer.component';
 import { DeploymentsComponent } from './content/namespaces/operation/deployments/deployments.component';
@@ -39,9 +36,6 @@ import { SecretDetailComponent } from './content/namespaces/operation/secrets/se
 import { SecretsEntryRendererComponent } from './content/namespaces/operation/secrets/secrets-entry-renderer/secrets-entry-renderer.component';
 import { SecretsHeaderRendererComponent } from './content/namespaces/operation/secrets/secrets-header-renderer/secrets-header-renderer.component';
 import { SecretsComponent } from './content/namespaces/operation/secrets/secrets.component';
-import { ExposeApiComponent } from './content/namespaces/operation/services/service-details/expose-api/expose-api.component';
-import { ExposeApiService } from './content/namespaces/operation/services/service-details/expose-api/expose-api.service';
-import { ServiceDetailsComponent } from './content/namespaces/operation/services/service-details/service-details.component';
 import { ServicesEntryRendererComponent } from './content/namespaces/operation/services/services-entry-renderer/services-entry-renderer.component';
 import { ServicesHeaderRendererComponent } from './content/namespaces/operation/services/services-header-renderer/services-header-renderer.component';
 import { ServicesComponent } from './content/namespaces/operation/services/services.component';
@@ -116,7 +110,6 @@ import { AppConfig } from './app.config';
 import { WebSocketLink } from './ws';
 import { GenericHelpersService } from './shared/services/generic-helpers.service';
 import { UrlLinkComponent } from 'shared/components/url-link/url-link.component';
-import { ServiceApiRulesComponent } from './content/namespaces/operation/services/service-details/service-api-rules/service-api-rules.component';
 
 import * as LuigiClient from '@luigi-project/client';
 
@@ -159,14 +152,9 @@ import * as LuigiClient from '@luigi-project/client';
     GraphqlMutatorModalComponent,
     JsonEditorComponent,
     EditResourceComponent,
-    ServiceDetailsComponent,
     UploaderComponent,
     ResourceUploaderModalComponent,
     ResourceUploaderComponent,
-    ExposeApiComponent,
-    ApisComponent,
-    ApiDefinitionEntryRendererComponent,
-    ApiDefinitionHeaderRendererComponent,
     Copy2ClipboardModalComponent,
     PermissionsComponent,
     RoleDetailsComponent,
@@ -200,7 +188,6 @@ import * as LuigiClient from '@luigi-project/client';
     LuigiClientCommunicationDirective,
     FilterAllOnSelectedDirective,
     UrlLinkComponent,
-    ServiceApiRulesComponent
   ],
   imports: [
     BrowserModule,
@@ -226,7 +213,6 @@ import * as LuigiClient from '@luigi-project/client';
     K8sResourceEditorService,
     ComponentCommunicationService,
     ResourceUploadService,
-    ExposeApiService,
     ApplicationBindingService,
     RbacService,
     GraphQLClientService,
@@ -249,8 +235,6 @@ import * as LuigiClient from '@luigi-project/client';
     ServicesEntryRendererComponent,
     ApplicationsHeaderRendererComponent,
     ApplicationsEntryRendererComponent,
-    ApiDefinitionEntryRendererComponent,
-    ApiDefinitionHeaderRendererComponent,
     BindingHeaderRendererComponent,
     BindingEntryRendererComponent,
     RolesHeaderRendererComponent,

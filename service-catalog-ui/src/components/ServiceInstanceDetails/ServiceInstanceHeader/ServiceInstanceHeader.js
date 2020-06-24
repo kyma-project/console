@@ -1,5 +1,5 @@
 import React from 'react';
-import LuigiClient from '@kyma-project/luigi-client';
+import LuigiClient from '@luigi-project/client';
 import ServiceInstanceInfo from '../ServiceInstanceInfo/ServiceInstanceInfo';
 import { serviceInstanceConstants } from 'helpers/constants';
 import { Toolbar } from '@kyma-project/react-components';

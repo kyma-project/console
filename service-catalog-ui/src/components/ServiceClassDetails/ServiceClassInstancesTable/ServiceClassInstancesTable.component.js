@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import LuigiClient from '@kyma-project/luigi-client';
+import LuigiClient from '@luigi-project/client';
 import { GenericList, StatusBadge } from 'react-shared';
 
 import { serviceClassConstants } from 'helpers/constants';

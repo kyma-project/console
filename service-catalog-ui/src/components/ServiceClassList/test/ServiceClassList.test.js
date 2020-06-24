@@ -12,7 +12,7 @@ const mockNavigate = jest.fn();
 const servicesTabIndex = 0;
 const addonsTabIndex = 1;
 
-jest.mock('@kyma-project/luigi-client', () => ({
+jest.mock('@luigi-project/client', () => ({
   getContext: () => ({
     namespaceId: mockTestNamespace,
   }),

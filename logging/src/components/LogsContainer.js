@@ -1,5 +1,5 @@
 import React from 'react';
-import LuigiClient from '@kyma-project/luigi-client';
+import LuigiClient from '@luigi-project/client';
 import Logs from './Logs/Logs';
 
 import { QueryTransformServiceContext } from '../services/queryTransformService';

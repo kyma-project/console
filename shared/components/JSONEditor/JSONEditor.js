@@ -66,6 +66,7 @@ export class JSONEditor extends Component {
   render() {
     return (
       <div
+        style={{ height: '100%' }}
         className="jsoneditor-react-container"
         ref={elem => (this.container = elem)}
       />

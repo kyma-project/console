@@ -14,7 +14,7 @@ import { formatMessage } from 'components/Lambdas/helpers/misc';
 
 const timeout = 10000;
 
-jest.mock('@kyma-project/luigi-client', () => {
+jest.mock('@luigi-project/client', () => {
   return {
     linkManager: () => ({
       navigate: () => {},

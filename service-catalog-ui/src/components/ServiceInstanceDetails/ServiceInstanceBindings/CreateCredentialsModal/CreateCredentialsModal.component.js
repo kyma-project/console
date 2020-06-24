@@ -8,7 +8,7 @@ import SchemaData from './SchemaData.component';
 import { bindingVariables } from '../InfoButton/variables';
 
 import { clearEmptyPropertiesInObject } from 'helpers';
-import LuigiClient from '@kyma-project/luigi-client';
+import LuigiClient from '@luigi-project/client';
 
 import WithNotificationContext from '../WithNotificationContext/WithNotificationContext';
 

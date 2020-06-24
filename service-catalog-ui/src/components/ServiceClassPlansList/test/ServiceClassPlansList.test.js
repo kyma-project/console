@@ -18,7 +18,7 @@ import { assetGroupWithManyAssets } from 'testing/catalog/serviceClassesMocks';
 const mockNavigate = jest.fn();
 const mockShowConfirmationModal = jest.fn(() => Promise.resolve());
 
-jest.mock('@kyma-project/luigi-client', () => ({
+jest.mock('@luigi-project/client', () => ({
   getContext: () => ({
     namespaceId: mockTestNamespace,
   }),

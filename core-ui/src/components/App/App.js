@@ -18,6 +18,7 @@ import ApiDetails from 'components/Apis/ApiDetails/ApiDetails';
 import EditEventApi from 'components/Apis/EditEventApi/EditEventApi';
 import EditApi from 'components/Apis/EditApi/EditApi';
 import ApiPackageDetails from 'components/ApiPackages/ApiPackageDetails/ApiPackageDetails';
+import ServiceDetails from 'components/Services/ServiceDetails/ServiceDetails';
 
 export default function App() {
   return (
@@ -28,6 +29,11 @@ export default function App() {
         component={RoutedNamespaceDetails}
       />
       <Route path="/namespaces" component={NamespaceList} />
+
+      <Route
+        path="/home/namespaces/:namespaceId/services/details/:serviceName"
+        component={RoutedServiceDetails}
+      />
 
       <Route path="/lambdas" exact component={Lambdas} />
       <Route path="/lambda/:name" component={LambdaDetails} />
@@ -82,6 +88,15 @@ export default function App() {
 
 function RoutedNamespaceDetails({ match }) {
   return <NamespaceDetails name={match.params.namespace} />;
+}
+
+function RoutedServiceDetails({ match }) {
+  return (
+    <ServiceDetails
+      namespaceId={match.params.namespaceId}
+      serviceName={match.params.serviceName}
+    />
+  );
 }
 
 function RoutedApiRuleDetails({ match }) {

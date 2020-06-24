@@ -1,4 +1,4 @@
-import LuigiClient from '@kyma-project/luigi-client';
+import LuigiClient from '@luigi-project/client';
 
 import { formatMessage, backendModulesExist, BACKEND_MODULES } from '../misc';
 import { LOGS_AND_METRICS } from 'components/Lambdas/constants';

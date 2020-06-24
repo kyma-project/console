@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import LuigiClient from '@kyma-project/luigi-client';
+import LuigiClient from '@luigi-project/client';
 
 import { GenericDocumentation } from '@kyma-project/generic-documentation';
 import { DOCUMENTATION_PER_PLAN_LABEL } from 'helpers/constants';

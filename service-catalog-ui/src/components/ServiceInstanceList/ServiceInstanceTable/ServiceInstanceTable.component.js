@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import LuigiClient from '@kyma-project/luigi-client';
+import LuigiClient from '@luigi-project/client';
 import { Button } from 'fundamental-react';
 import { GenericList, handleDelete } from 'react-shared';
 

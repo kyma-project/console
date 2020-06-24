@@ -15,7 +15,7 @@ const mockNavigate = jest.fn();
 const mockAddBackdrop = jest.fn();
 const mockRemoveBackdrop = jest.fn();
 
-jest.mock('@kyma-project/luigi-client', () => ({
+jest.mock('@luigi-project/client', () => ({
   linkManager: () => ({
     fromContext: () => ({
       navigate: mockNavigate,

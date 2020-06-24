@@ -21,7 +21,7 @@ jest.mock('@kyma-project/generic-documentation', () => {
   return <div>GENERIC DOCUMENTATION COMPONENT</div>;
 });
 
-jest.mock('@kyma-project/luigi-client', () => ({
+jest.mock('@luigi-project/client', () => ({
   getContext: () => ({
     namespaceId: mockTestNamespace,
   }),

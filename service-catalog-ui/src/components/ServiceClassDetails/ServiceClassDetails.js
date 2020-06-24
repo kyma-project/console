@@ -16,7 +16,7 @@ import { Identifier, Button } from 'fundamental-react';
 import { isStringValueEqualToTrue } from 'helpers';
 import './ServiceClassDetails.scss';
 import { ServiceClassDetailsWrapper, EmptyList } from './styled';
-import LuigiClient from '@kyma-project/luigi-client';
+import LuigiClient from '@luigi-project/client';
 import {
   getResourceDisplayName,
   getDescription,

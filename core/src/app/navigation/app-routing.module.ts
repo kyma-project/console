@@ -1,7 +1,6 @@
 import { AppConfig } from './../app.config';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ApisComponent } from '../content/namespaces/configuration/apis/apis.component';
 
 import { NamespacesContainerComponent } from '../content/namespaces/namespaces-container/namespaces-container.component';
 import { DeploymentsComponent } from '../content/namespaces/operation/deployments/deployments.component';
@@ -9,13 +8,11 @@ import { PodsComponent } from '../content/namespaces/operation/pods/pods.compone
 import { ReplicaSetsComponent } from '../content/namespaces/operation/replica-sets/replica-sets.component';
 import { SecretDetailComponent } from '../content/namespaces/operation/secrets/secret-detail/secret-detail.component';
 import { SecretsComponent } from '../content/namespaces/operation/secrets/secrets.component';
-import { ServiceDetailsComponent } from '../content/namespaces/operation/services/service-details/service-details.component';
 import { ServicesComponent } from '../content/namespaces/operation/services/services.component';
 import { PreferencesComponent } from '../content/settings/preferences/preferences.component';
 import { ApplicationDetailsComponent } from '../content/settings/applications/application-details/application-details.component';
 import { ApplicationsComponent } from '../content/settings/applications/applications.component';
 import { ServiceBrokersComponent } from '../content/settings/service-brokers/service-brokers.component';
-import { ExposeApiComponent } from '../content/namespaces/operation/services/service-details/expose-api/expose-api.component';
 import { PermissionsComponent } from '../shared/components/permissions/permissions.component';
 import { RoleDetailsComponent } from '../shared/components/permissions/role-details/role-details.component';
 import { IdpPresetsComponent } from '../content/settings/idp-presets/idp-presets.component';
@@ -47,15 +44,6 @@ const appRoutes: Routes = [
           { path: 'replicaSets', component: ReplicaSetsComponent },
           { path: 'pods', component: PodsComponent },
           { path: 'services', component: ServicesComponent },
-          { path: 'services/:name', component: ServiceDetailsComponent },
-          {
-            path: 'services/:name/apis/details/:apiName',
-            component: ExposeApiComponent
-          },
-          { path: 'services/:name/apis/create', component: ExposeApiComponent },
-          { path: 'apis', component: ApisComponent },
-          { path: 'apis/details/:apiName', component: ExposeApiComponent },
-          { path: 'apis/create', component: ExposeApiComponent },
           { path: 'secrets', component: SecretsComponent },
           { path: 'secrets/:name', component: SecretDetailComponent },
           { path: 'configmaps', component: ConfigMapsComponent },

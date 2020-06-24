@@ -5,7 +5,7 @@ import { MockedProvider } from '@apollo/react-testing';
 import NamespaceDetailsCard from './../NamespaceDetailsCard';
 import { mockNavigate, deleteNamespaceMock } from './mocks';
 
-jest.mock('@kyma-project/luigi-client', () => ({
+jest.mock('@luigi-project/client', () => ({
   linkManager: () => ({
     navigate: mockNavigate,
   }),
