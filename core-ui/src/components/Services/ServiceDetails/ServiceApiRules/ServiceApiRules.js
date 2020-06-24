@@ -50,7 +50,7 @@ export default function ServiceApiRules({ namespaceId, service }) {
 
   const { data, loading, error } = useQuery(GET_API_RULES_FOR_SERVICE, {
     variables: { namespace: namespaceId },
-    fetchPolicy: 'network-only',
+    fetchPolicy: 'no-cache',
   });
 
   if (loading) return 'Loading...';
@@ -99,11 +99,12 @@ export default function ServiceApiRules({ namespaceId, service }) {
     apiRule.service.port,
     <ApiRuleStatus {...apiRule.status.apiRuleStatus} />,
   ];
+  console.log(apiRules);
 
   return (
     <GenericList
       extraHeaderContent={extraHeaderContent}
-      title={`API Rules from ${service.name}`}
+      title={`API Rules for ${service.name}`}
       notFoundMessage="No API Rules defined"
       actions={actions}
       entries={apiRules}
