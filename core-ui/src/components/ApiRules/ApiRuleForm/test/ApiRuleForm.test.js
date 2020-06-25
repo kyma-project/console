@@ -98,14 +98,11 @@ describe('ApiRuleForm', () => {
         namespace: mockNamespace,
         params: {
           gateway: DEFAULT_GATEWAY,
-          host: apiRule().service.host,
-          serviceName: apiRule().service.name,
-          servicePort: `${apiRule().service.port}`,
+          service: apiRule().service,
           rules: [
             ...apiRule().rules,
             {
               methods: [],
-              mutators: [],
               path: '/path',
               accessStrategies: [{ name: 'noop', config: {} }],
             },
@@ -142,9 +139,7 @@ describe('ApiRuleForm', () => {
         namespace: mockNamespace,
         params: {
           gateway: DEFAULT_GATEWAY,
-          host: apiRule().service.host,
-          serviceName: apiRule().service.name,
-          servicePort: `${apiRule().service.port}`,
+          service: apiRule().service,
           rules: [apiRule().rules[1]],
         },
       },
@@ -205,9 +200,7 @@ describe('ApiRuleForm', () => {
         namespace: mockNamespace,
         params: {
           gateway: DEFAULT_GATEWAY,
-          host: apiRule().service.host,
-          serviceName: apiRule().service.name,
-          servicePort: `${apiRule().service.port}`,
+          service: apiRule().service,
           rules: [
             {
               ...apiRule().rules[0],

@@ -32,9 +32,10 @@ const ApiRuleDetails = ({ apiName }) => {
     return <EntryNotFound entryType="API Rule" entryId={apiName} />;
   }
 
+  const { name, spec } = data.APIRule;
   return (
     <>
-      <ApiRuleDetailsHeader data={data.APIRule} />
+      <ApiRuleDetailsHeader service={spec.service} name={name} />
       <section className="fd-section api-rule-container">
         <LayoutGrid cols={1}>
           <Panel>
@@ -42,7 +43,7 @@ const ApiRuleDetails = ({ apiName }) => {
               <Panel.Head title="Access strategies" />
             </Panel.Header>
             <Panel.Body aria-label="Access strategies">
-              {data.APIRule.rules.map((rule, idx) => {
+              {spec.rules.map((rule, idx) => {
                 return <AccessStrategy strategy={rule} key={idx} />;
               })}
             </Panel.Body>
@@ -93,30 +94,30 @@ function navigateToEditView(apiRuleName) {
     .navigate(`/edit/${apiRuleName}`);
 }
 
-function ApiRuleDetailsHeader({ data }) {
-  const host = `https://${data.service.host}`;
+function ApiRuleDetailsHeader({ name, service }) {
+  const host = `https://${service.host}`;
   const DOMAIN = getApiUrl('domain');
   const url = host.split(`.${DOMAIN}`)[0] + `.${DOMAIN}`;
 
   const navigateToService = () =>
     LuigiClient.linkManager()
       .fromContext('namespaces')
-      .navigate(`services/details/${data.service.name}`);
+      .navigate(`services/details/${service.name}`);
 
   return (
     <PageHeader
-      title={data.name}
+      title={name}
       breadcrumbItems={breadcrumbItems}
       actions={
         <>
-          <DeleteButton apiRuleName={data.name} />
-          <EditButton apiRuleName={data.name} />
+          <DeleteButton apiRuleName={name} />
+          <EditButton apiRuleName={name} />
         </>
       }
     >
       <PageHeader.Column title="Service">
         <span className="link" onClick={navigateToService}>
-          {`${data.service.name} (port: ${data.service.port})`}
+          {`${service.name} (port: ${service.port})`}
         </span>
       </PageHeader.Column>
       <PageHeader.Column title="Host" columnSpan="2 / 4">

@@ -12,7 +12,6 @@ const defaultAccessStrategy = {
       config: {},
     },
   ],
-  mutators: [],
 };
 
 describe('AccessStrategy', () => {

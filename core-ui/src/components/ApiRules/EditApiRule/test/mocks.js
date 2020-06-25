@@ -25,7 +25,6 @@ export const apiRule = {
           config: {},
         },
       ],
-      mutators: [],
     },
   ],
 };

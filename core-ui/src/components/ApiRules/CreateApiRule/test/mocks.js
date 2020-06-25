@@ -30,7 +30,6 @@ export const sampleAPIRule = {
             config: {},
           },
         ],
-        mutators: [],
       },
     ],
   },

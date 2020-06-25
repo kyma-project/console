@@ -177,7 +177,7 @@ export const CREATE_API_RULE = gql`
   mutation createAPIRule(
     $name: String!
     $namespace: String!
-    $params: APIRuleInput!
+    $params: APIRuleSpecInput!
   ) {
     createAPIRule(name: $name, namespace: $namespace, params: $params) {
       name
@@ -189,7 +189,7 @@ export const UPDATE_API_RULE = gql`
   mutation updateAPIRule(
     $name: String!
     $namespace: String!
-    $params: APIRuleInput!
+    $params: APIRuleSpecInput!
   ) {
     updateAPIRule(name: $name, namespace: $namespace, params: $params) {
       name

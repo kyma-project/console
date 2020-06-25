@@ -16,7 +16,6 @@ const DEFAULT_ACCESS_STRATEGY = {
       config: {},
     },
   ],
-  mutators: [],
 };
 
 const emptyApiRule = {

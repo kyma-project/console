@@ -34,7 +34,6 @@ const EMPTY_ACCESS_STRATEGY = {
       config: {},
     },
   ],
-  mutators: [],
 };
 
 ApiRuleForm.propTypes = {
@@ -121,9 +120,11 @@ export default function ApiRuleForm({
       name: formValues.name.current.value,
       namespace,
       params: {
-        host: formValues.hostname.current.value + '.' + DOMAIN,
-        serviceName,
-        servicePort,
+        service: {
+          host: formValues.hostname.current.value + '.' + DOMAIN,
+          name: serviceName,
+          port: parseInt(servicePort),
+        },
         gateway: DEFAULT_GATEWAY,
         rules: rules.map(({ renderKey, ...actualRule }) => actualRule),
       },
