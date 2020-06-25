@@ -174,18 +174,20 @@ export const GET_API_RULE = gql`
   query APIrule($name: String!, $namespace: String!) {
     APIRule(name: $name, namespace: $namespace) {
       name
-      rules {
-        path
-        methods
-        accessStrategies {
-          name
-          config
+      spec {
+        rules {
+          path
+          methods
+          accessStrategies {
+            name
+            config
+          }
         }
-      }
-      service {
-        name
-        host
-        port
+        service {
+          name
+          host
+          port
+        }
       }
     }
   }
