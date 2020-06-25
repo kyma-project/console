@@ -28,9 +28,9 @@ test('Namespaces view is rendered', async t => {
     .expect(Selector('[aria-label="title"]').withText('Namespaces').exists)
     .ok()
     .expect(
-      Selector('[aria-label="namespace-name"]').withText(
-        config.DEFAULT_NAMESPACE_NAME,
-      ).exists,
+      Selector(
+        `[aria-label="go to namespace ${config.DEFAULT_NAMESPACE_NAME} link"]`,
+      ).withText(config.DEFAULT_NAMESPACE_NAME).exists,
     )
     .ok();
 });
@@ -43,9 +43,9 @@ test.skip('Deployments view is rendered', async t => {
 
   await t
     .click(
-      Selector('[aria-label="namespace-name"]').withText(
-        config.DEFAULT_NAMESPACE_NAME,
-      ),
+      Selector(
+        `[aria-label="go to namespace ${config.DEFAULT_NAMESPACE_NAME} link"]`,
+      ).withText(config.DEFAULT_NAMESPACE_NAME),
     )
     .switchToMainWindow()
     .click(deploymentsLink);
@@ -104,9 +104,9 @@ testIf(
     await findActiveFrame(t);
     await t
       .click(
-        Selector('[aria-label="namespace-name"]').withText(
-          config.DEFAULT_NAMESPACE_NAME,
-        ),
+        Selector(
+          `[aria-label="go to namespace ${config.DEFAULT_NAMESPACE_NAME} link"]`,
+        ).withText(config.DEFAULT_NAMESPACE_NAME),
       )
       .switchToMainWindow()
       .click(functionsLink);
@@ -158,9 +158,9 @@ testIf(
 
     await t
       .click(
-        Selector('[aria-label="namespace-name"]').withText(
-          config.DEFAULT_NAMESPACE_NAME,
-        ),
+        Selector(
+          `[aria-label="go to namespace ${config.DEFAULT_NAMESPACE_NAME} link"]`,
+        ).withText(config.DEFAULT_NAMESPACE_NAME),
       )
       .switchToMainWindow()
       .click(catalogLink);
@@ -187,9 +187,9 @@ testIf(
     await findActiveFrame(t);
     await t
       .click(
-        Selector('[aria-label="namespace-name"]').withText(
-          config.DEFAULT_NAMESPACE_NAME,
-        ),
+        Selector(
+          `[aria-label="go to namespace ${config.DEFAULT_NAMESPACE_NAME} link"]`,
+        ).withText(config.DEFAULT_NAMESPACE_NAME),
       )
       .switchToMainWindow()
       .click(brokersLink);
@@ -216,9 +216,9 @@ testIf(
     await findActiveFrame(t);
     await t
       .click(
-        Selector('[aria-label="namespace-name"]').withText(
-          config.DEFAULT_NAMESPACE_NAME,
-        ),
+        Selector(
+          `[aria-label="go to namespace ${config.DEFAULT_NAMESPACE_NAME} link"]`,
+        ).withText(config.DEFAULT_NAMESPACE_NAME),
       )
       .switchToMainWindow()
       .click(instancesLink);
