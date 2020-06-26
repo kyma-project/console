@@ -15,40 +15,44 @@ const mockShowConfirmationModal = jest.fn(() => Promise.resolve());
 
 const apiRule = {
   name: 'tets',
-  service: {
-    name: 'tets-service',
-    host: 'tets.kyma.cluster.com',
-    port: 8080,
+  spec: {
+    service: {
+      name: 'tets-service',
+      host: 'tets.kyma.cluster.com',
+      port: 8080,
+    },
+    rules: [
+      {
+        path: '/aaa',
+        methods: ['GET'],
+        accessStrategies: [
+          {
+            name: 'noop',
+          },
+        ],
+      },
+      {
+        path: '/bbb',
+        methods: ['POST'],
+        accessStrategies: [
+          {
+            name: 'noop',
+          },
+        ],
+      },
+    ],
   },
-  rules: [
-    {
-      path: '/aaa',
-      methods: ['GET'],
-      accessStrategies: [
-        {
-          name: 'noop',
-        },
-      ],
-    },
-    {
-      path: '/bbb',
-      methods: ['POST'],
-      accessStrategies: [
-        {
-          name: 'noop',
-        },
-      ],
-    },
-  ],
 };
 const apiRuleWithShortHost = {
   name: 'tets2',
-  service: {
-    name: 'tets-service',
-    host: 'tets',
-    port: 8080,
+  spec: {
+    service: {
+      name: 'tets-service',
+      host: 'tets',
+      port: 8080,
+    },
+    rules: [],
   },
-  rules: [],
 };
 const mockNamespace = 'nsp';
 const validResponseMock = {
@@ -129,7 +133,9 @@ describe('ApiRuleDetails', () => {
 
     await waitForDomChange(container);
 
-    expect(queryByText(new RegExp(apiRule.service.host))).toBeInTheDocument();
+    expect(
+      queryByText(new RegExp(apiRule.spec.service.host)),
+    ).toBeInTheDocument();
   });
 
   it('renders auto-completed host url', async () => {
@@ -143,7 +149,7 @@ describe('ApiRuleDetails', () => {
     expect(
       queryByText(
         new RegExp(
-          `${apiRuleWithShortHost.service.host}\\.kyma\\.cluster\\.com`,
+          `${apiRuleWithShortHost.spec.service.host}\\.kyma\\.cluster\\.com`,
         ),
       ),
     ).toBeInTheDocument();
@@ -158,10 +164,10 @@ describe('ApiRuleDetails', () => {
 
     await waitForDomChange(container);
 
-    const serviceNameField = queryByText(new RegExp(apiRule.service.name));
+    const serviceNameField = queryByText(new RegExp(apiRule.spec.service.name));
     expect(serviceNameField).toBeInTheDocument();
     expect(serviceNameField).toHaveTextContent(
-      new RegExp(apiRule.service.port),
+      new RegExp(apiRule.spec.service.port),
     );
   });
 

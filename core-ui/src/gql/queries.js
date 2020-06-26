@@ -208,16 +208,6 @@ export const GET_COMPASS_APPLICATIONS = gql`
   }
 `;
 
-export const GET_IDP_PRESETS = gql`
-  query IDPPresets {
-    IDPPresets {
-      name
-      issuer
-      jwksUri
-    }
-  }
-`;
-
 export const GET_KYMA_APPLICATIONS = gql`
   query KymaApplications {
     applications {

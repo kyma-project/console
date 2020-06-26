@@ -2,12 +2,7 @@ import React from 'react';
 import { render, waitForDomChange, fireEvent } from '@testing-library/react';
 import ApiRuleForm, { DEFAULT_GATEWAY } from '../ApiRuleForm';
 import { MockedProvider } from '@apollo/react-testing';
-import {
-  mockNamespace,
-  apiRule,
-  servicesQuery,
-  idpPresetsQuery,
-} from './mocks';
+import { mockNamespace, apiRule, servicesQuery } from './mocks';
 import { supportedMethodsList } from 'components/ApiRules/accessStrategyTypes';
 
 jest.mock('@kyma-project/common', () => ({
@@ -34,7 +29,7 @@ describe('ApiRuleForm', () => {
       queryAllByLabelText,
       container,
     } = render(
-      <MockedProvider mocks={[servicesQuery, idpPresetsQuery]}>
+      <MockedProvider mocks={[servicesQuery]}>
         <ApiRuleForm
           apiRule={apiRule()}
           mutation={mutation}
@@ -69,7 +64,7 @@ describe('ApiRuleForm', () => {
   it('allows to add new access strategy', async () => {
     const mutation = jest.fn();
     const { queryAllByPlaceholderText, getByText, container } = render(
-      <MockedProvider mocks={[servicesQuery, idpPresetsQuery]}>
+      <MockedProvider mocks={[servicesQuery]}>
         <ApiRuleForm
           apiRule={apiRule()}
           mutation={mutation}
@@ -115,7 +110,7 @@ describe('ApiRuleForm', () => {
   it('allows to remove access strategy', async () => {
     const mutation = jest.fn();
     const { getAllByLabelText, getByText, container } = render(
-      <MockedProvider mocks={[servicesQuery, idpPresetsQuery]}>
+      <MockedProvider mocks={[servicesQuery]}>
         <ApiRuleForm
           apiRule={apiRule()}
           mutation={mutation}
@@ -150,7 +145,7 @@ describe('ApiRuleForm', () => {
     const mutation = jest.fn();
     const rule = apiRule();
     const { getAllByLabelText, container } = render(
-      <MockedProvider mocks={[servicesQuery, idpPresetsQuery]}>
+      <MockedProvider mocks={[servicesQuery]}>
         <ApiRuleForm
           apiRule={rule}
           mutation={mutation}
@@ -174,7 +169,7 @@ describe('ApiRuleForm', () => {
   it('allows to modify exisitng access strategy', async () => {
     const mutation = jest.fn();
     const { getAllByLabelText, getByText, container } = render(
-      <MockedProvider mocks={[servicesQuery, idpPresetsQuery]}>
+      <MockedProvider mocks={[servicesQuery]}>
         <ApiRuleForm
           apiRule={apiRule()}
           mutation={mutation}
