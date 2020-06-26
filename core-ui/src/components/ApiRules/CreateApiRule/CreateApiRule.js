@@ -20,12 +20,14 @@ const DEFAULT_ACCESS_STRATEGY = {
 
 const emptyApiRule = {
   name: '',
-  service: {
-    host: '',
-    name: '',
-    port: '',
+  spec: {
+    service: {
+      host: '',
+      name: '',
+      port: '',
+    },
+    rules: [DEFAULT_ACCESS_STRATEGY],
   },
-  rules: [DEFAULT_ACCESS_STRATEGY],
 };
 
 export default function CreateApiRule() {

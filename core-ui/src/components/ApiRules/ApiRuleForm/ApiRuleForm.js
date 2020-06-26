@@ -184,7 +184,7 @@ export default function ApiRuleForm({
                         />
                       </FormLabel>
                       <InputWithSuffix
-                        defaultValue={apiRule.service.host.replace(
+                        defaultValue={apiRule.spec.service.host.replace(
                           `.${DOMAIN}`,
                           '',
                         )}
@@ -198,7 +198,7 @@ export default function ApiRuleForm({
                     </FormItem>
                     <ServicesDropdown
                       _ref={formValues.service}
-                      defaultValue={apiRule.service}
+                      defaultValue={apiRule.spec.service}
                       serviceName={serviceName}
                       {...servicesQueryResult}
                     />

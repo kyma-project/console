@@ -36,11 +36,11 @@ export default function EditApiRule({ apiName }) {
     return <h1>Couldn't fetch API rule data</h1>;
   }
 
-  if (!data.APIRule) {
+  if (!data.APIRule || !data.APIRule.spec) {
     return <EntryNotFound entryType="API Rule" entryId={apiName} />;
   }
 
-  data.APIRule.rules.forEach(rule => {
+  data.APIRule.spec.rules.forEach(rule => {
     delete rule.__typename;
     rule.accessStrategies.forEach(as => {
       delete as.__typename;
