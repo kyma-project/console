@@ -14,9 +14,8 @@ body {
   top: 0 !important;
 }
 
-.ReactModal__Overlay {
-  background-color: rgba(74, 80, 92, 0.3) !important;
-  z-index: 200;
+.fd-overlay.fd-overlay--modal {
+  --fd-overlay-background-color: rgba(0, 0, 0, 0.6);
 }
 
 @font-face {
@@ -98,7 +97,9 @@ body {
     min-width: 1036px;
   }
 
-  .fd-modal, .fd-modal__content, .fd-modal__body {
+  .fd-modal,
+  .fd-modal__content,
+  .fd-modal__body {
     min-width: 1036px;
   }
 
@@ -112,11 +113,13 @@ body {
       padding: 0 32px;
     }
 
-    .fd-modal, .fd-modal__content, .fd-modal__body {
+    .fd-modal,
+    .fd-modal__content,
+    .fd-modal__body {
       min-width: 100%;
     }
   }
-} 
+}
 
 .action-bar-wrapper {
   @media (min-width: 500px) {
