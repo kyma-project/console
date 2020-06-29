@@ -52,6 +52,9 @@ export let navigation = {
     ]
   },
   profile: {
+    logout: {
+      label: 'Logout'
+    },
     items: [
       {
         icon: 'settings',

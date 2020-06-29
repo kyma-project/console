@@ -224,6 +224,11 @@ const navigation = {
     ],
     customOptionsRenderer,
   },
+  profile: {
+    logout: {
+      label: 'Logout',
+    },
+  },
 };
 
 export default navigation;
