@@ -180,7 +180,7 @@ describe('ApiRuleDetails', () => {
     await waitForDomChange(container);
 
     const accessStrategiesSection = getByLabelText('Access strategies');
-    apiRule.rules.forEach(rule => {
+    apiRule.spec.rules.forEach(rule => {
       expect(
         queryByText(accessStrategiesSection, rule.path),
       ).toBeInTheDocument();

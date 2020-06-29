@@ -13,7 +13,7 @@ export const apiRule = {
     service: {
       host: `${oldHostname}.kyma.local`,
       name: 'test',
-      port: '80',
+      port: 80,
     },
     gateway: 'kyma-gateway.kyma-system.svc.cluster.local',
     rules: [
@@ -72,8 +72,8 @@ export const updateApiRuleMutation = {
           ...apiRule.spec.service,
           host: `${newHostname}.kyma.local`,
         },
-        gateway: apiRule.gateway,
-        rules: apiRule.rules,
+        gateway: apiRule.spec.gateway,
+        rules: apiRule.spec.rules,
       },
     },
   },

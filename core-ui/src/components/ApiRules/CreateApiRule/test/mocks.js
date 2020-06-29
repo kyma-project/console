@@ -16,9 +16,11 @@ export const sampleAPIRule = {
   name: apiRuleName,
   namespace: mockNamespace,
   params: {
-    host: `${hostname}.kyma.local`,
-    serviceName: 'test',
-    servicePort: '80',
+    service: {
+      name: 'test',
+      port: 80,
+      host: `${hostname}.kyma.local`,
+    },
     gateway: 'kyma-gateway.kyma-system.svc.cluster.local',
     rules: [
       {
