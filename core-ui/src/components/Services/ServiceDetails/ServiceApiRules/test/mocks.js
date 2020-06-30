@@ -16,13 +16,13 @@ export const service = {
 export const apiRules = [
   {
     name: 'api-rule-1',
-    service,
-    status: { apiRuleStatus: { code: 'OK', desc: '' } },
+    spec: { service },
+    status: { apiRuleStatus: { code: 'OK', description: '' } },
   },
   {
     name: 'api-rule-2',
-    service,
-    status: { apiRuleStatus: { code: 'SKIPPED', desc: 'desc' } },
+    spec: { service },
+    status: { apiRuleStatus: { code: 'SKIPPED', description: 'desc' } },
   },
 ];
 

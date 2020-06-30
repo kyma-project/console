@@ -115,6 +115,7 @@ export default function ApiRuleForm({
     const variables = {
       name: formValues.name.current.value,
       namespace,
+      generation: apiRule.generation,
       params: {
         service: {
           host: formValues.hostname.current.value + '.' + DOMAIN,

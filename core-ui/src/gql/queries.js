@@ -155,15 +155,17 @@ export const GET_API_RULES_FOR_SERVICE = gql`
   query APIRules($namespace: String!) {
     APIRules(namespace: $namespace) {
       name
-      service {
-        host
-        name
-        port
+      spec {
+        service {
+          host
+          name
+          port
+        }
       }
       status {
         apiRuleStatus {
           code
-          desc
+          description
         }
       }
     }
@@ -189,6 +191,7 @@ export const GET_API_RULE = gql`
           port
         }
       }
+      generation
     }
   }
 `;

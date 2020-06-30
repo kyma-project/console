@@ -5,10 +5,10 @@ import { StatusBadge } from 'react-shared';
 
 ApiRuleStatus.propTypes = {
   code: PropTypes.oneOf(['OK', 'SKIPPED', 'ERROR']),
-  desc: PropTypes.string,
+  description: PropTypes.string,
 };
 
-export default function ApiRuleStatus({ desc, code }) {
+export default function ApiRuleStatus({ description, code }) {
   const resolveAPIRuleStatus = statusCode => {
     switch (statusCode) {
       case 'OK':
@@ -23,7 +23,7 @@ export default function ApiRuleStatus({ desc, code }) {
   };
 
   return (
-    <StatusBadge type={resolveAPIRuleStatus(code)} tooltipContent={desc}>
+    <StatusBadge type={resolveAPIRuleStatus(code)} tooltipContent={description}>
       {code}
     </StatusBadge>
   );

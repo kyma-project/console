@@ -189,9 +189,15 @@ export const UPDATE_API_RULE = gql`
   mutation updateAPIRule(
     $name: String!
     $namespace: String!
+    $generation: Int!
     $params: APIRuleSpecInput!
   ) {
-    updateAPIRule(name: $name, namespace: $namespace, params: $params) {
+    updateAPIRule(
+      name: $name
+      namespace: $namespace
+      generation: $generation
+      params: $params
+    ) {
       name
     }
   }

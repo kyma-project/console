@@ -57,7 +57,9 @@ export default function ServiceApiRules({ namespaceId, service }) {
   if (error) return `Error! ${error.message}`;
 
   // TODO use query with service param when https://github.com/kyma-project/kyma/pull/8878 is merged
-  const apiRules = data.APIRules.filter(aR => aR.service.name === service.name);
+  const apiRules = data.APIRules.filter(
+    aR => aR.spec.service.name === service.name,
+  );
 
   const extraHeaderContent = (
     <Button glyph="add" onClick={() => navigateToCreate(service)}>
@@ -95,8 +97,8 @@ export default function ServiceApiRules({ namespaceId, service }) {
     <span className="link" onClick={() => navigateToAPIRuleDetails(apiRule)}>
       {apiRule.name}
     </span>,
-    apiRule.service.host,
-    apiRule.service.port,
+    apiRule.spec.service.host,
+    apiRule.spec.service.port,
     <ApiRuleStatus {...apiRule.status.apiRuleStatus} />,
   ];
 

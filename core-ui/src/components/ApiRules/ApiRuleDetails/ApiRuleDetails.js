@@ -29,6 +29,7 @@ const ApiRuleDetails = ({ apiName }) => {
   }
 
   if (!data.APIRule) {
+    console.warn(error);
     return <EntryNotFound entryType="API Rule" entryId={apiName} />;
   }
 
