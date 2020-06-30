@@ -14,7 +14,7 @@ import {
   GET_EVENT_TRIGGERS_DATA_MOCK,
   EVENT_TRIGGER_EVENT_SUBSCRIPTION_MOCK,
 } from 'components/Lambdas/gql/hooks/queries/testMocks';
-import { ERRORS, EVENT_TRIGGERS_PANEL } from 'components/Lambdas/constants';
+import { ERRORS, EVENT_TRIGGERS_PANEL } from 'shared/constants';
 
 import EventTriggersWrapper from '../EventTriggersWrapper';
 

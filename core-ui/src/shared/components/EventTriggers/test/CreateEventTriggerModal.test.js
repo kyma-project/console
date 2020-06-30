@@ -5,7 +5,7 @@ import {
   lambdaMock,
   eventActivationMock,
 } from 'components/Lambdas/helpers/testing';
-import { EVENT_TRIGGERS_PANEL } from 'components/Lambdas/constants';
+import { EVENT_TRIGGERS_PANEL } from 'shared/constants';
 
 import CreateEventTriggerModal from '../CreateEventTriggerModal';
 
