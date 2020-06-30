@@ -1,10 +1,7 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
 
-import {
-  lambdaMock,
-  eventActivationMock,
-} from 'components/Lambdas/helpers/testing';
+import { eventActivationMock } from 'components/Lambdas/helpers/testing';
 import { EVENT_TRIGGERS_PANEL } from 'shared/constants';
 
 import CreateEventTriggerModal from '../CreateEventTriggerModal';
@@ -19,16 +16,14 @@ jest.mock('@luigi-project/client', () => {
 });
 
 describe('CreateEventTriggerModal + CreateEventTriggerForm', () => {
-  const events = [
-    eventActivationMock.events.map(event => ({
-      ...event,
-      source: eventActivationMock.sourceId,
-    })),
-  ];
+  const events = eventActivationMock.events.map(event => ({
+    ...event,
+    source: eventActivationMock.sourceId,
+  }));
 
   it('should disable open button if there are not available events', async () => {
     const { getByText } = render(
-      <CreateEventTriggerModal lambda={lambdaMock} availableEvents={[]} />,
+      <CreateEventTriggerModal availableEvents={[]} />,
     );
 
     const button = getByText(EVENT_TRIGGERS_PANEL.ADD_MODAL.OPEN_BUTTON.TEXT);
@@ -38,7 +33,7 @@ describe('CreateEventTriggerModal + CreateEventTriggerForm', () => {
 
   it('should not disable button if there are available events', async () => {
     const { getByText } = render(
-      <CreateEventTriggerModal lambda={lambdaMock} availableEvents={events} />,
+      <CreateEventTriggerModal availableEvents={events} />,
     );
 
     const button = getByText(EVENT_TRIGGERS_PANEL.ADD_MODAL.OPEN_BUTTON.TEXT);
@@ -48,7 +43,7 @@ describe('CreateEventTriggerModal + CreateEventTriggerForm', () => {
 
   it('should show modal after click action button', async () => {
     const { getByText, getByRole } = render(
-      <CreateEventTriggerModal lambda={lambdaMock} availableEvents={events} />,
+      <CreateEventTriggerModal availableEvents={events} />,
     );
 
     const button = getByText(EVENT_TRIGGERS_PANEL.ADD_MODAL.OPEN_BUTTON.TEXT);
@@ -58,7 +53,7 @@ describe('CreateEventTriggerModal + CreateEventTriggerForm', () => {
 
   it("should show tooltip on modal's create button if any events are checked", async () => {
     const { getByText } = render(
-      <CreateEventTriggerModal lambda={lambdaMock} availableEvents={events} />,
+      <CreateEventTriggerModal availableEvents={events} />,
     );
 
     const button = getByText(EVENT_TRIGGERS_PANEL.ADD_MODAL.OPEN_BUTTON.TEXT);
@@ -73,7 +68,7 @@ describe('CreateEventTriggerModal + CreateEventTriggerForm', () => {
 
   it("should not show tooltip on modal's create button if at least one of events is checked", async () => {
     const { getByText } = render(
-      <CreateEventTriggerModal lambda={lambdaMock} availableEvents={events} />,
+      <CreateEventTriggerModal availableEvents={events} />,
     );
 
     const button = getByText(EVENT_TRIGGERS_PANEL.ADD_MODAL.OPEN_BUTTON.TEXT);

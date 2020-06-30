@@ -14,10 +14,8 @@ import {
 
 import { BACKEND_MODULES } from 'components/Lambdas/helpers/misc';
 import { createSubscriberRef } from 'components/Lambdas/helpers/eventTriggers';
-import {
-  EVENT_TRIGGERS_PANEL,
-  SERVICE_BINDINGS_PANEL,
-} from 'components/Lambdas/constants';
+import { SERVICE_BINDINGS_PANEL } from 'components/Lambdas/constants';
+import { EVENT_TRIGGERS_PANEL } from 'shared/constants';
 import { CONFIG } from 'components/Lambdas/config';
 
 import ConfigurationTab from '../ConfigurationTab';
