@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { bemClasses } from '../../../../../helpers/misc';
+import { bemClasses } from '../../../helpers';
 
 const classes = {
   code: bemClasses.element(`code`),

@@ -209,13 +209,6 @@ export const GQL_MUTATIONS = {
   },
 };
 
-export const TRIGGER_SCHEMA = {
-  CSS_PREFIX: 'schema-event-trigger',
-  PAYLOAD_TEXT: 'Payload',
-  EXAMPLE_TEXT: 'Example',
-  COLUMN_NAMES: ['Name', 'Title', 'Type', 'Format', 'Default', 'Description'],
-};
-
 export const MODALS = {
   CREATE_BINDING: {
     CREATE_BUTTON_POPUP_MESSAGE: 'At least one event must be marked.',
@@ -287,29 +280,6 @@ export const RESOURCES_MANAGEMENT_PANEL = {
     },
     CPU: {
       TITLE: 'CPU',
-    },
-  },
-};
-
-export const EVENT_TRIGGERS_PANEL = {
-  LIST: {
-    TITLE: 'Event Triggers',
-    ERRORS: {
-      RESOURCES_NOT_FOUND: "This Function doesn't have any Event Triggers yet.",
-      NOT_MATCHING_SEARCH_QUERY:
-        "Couldn't find Event Triggers matching this query.",
-    },
-  },
-  ADD_MODAL: {
-    TITLE: 'Add Event Trigger',
-    OPEN_BUTTON: {
-      TEXT: 'Add Event Trigger',
-      NOT_ENTRIES_POPUP_MESSAGE:
-        'No Events available to connect in this Namespace.',
-    },
-    CONFIRM_BUTTON: {
-      TEXT: 'Add',
-      INVALID_POPUP_MESSAGE: 'At least one Event must be checked.',
     },
   },
 };

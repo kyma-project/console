@@ -3,13 +3,13 @@ import React from 'react';
 import { Button } from 'fundamental-react';
 import { Tooltip } from 'react-shared';
 
-import ModalWithForm from 'components/ModalWithForm/ModalWithForm';
+import { ModalWithForm } from 'react-shared';
 import CreateEventTriggerForm from './CreateEventTriggerForm';
 
-import { EVENT_TRIGGERS_PANEL } from 'components/Lambdas/constants';
+import { EVENT_TRIGGERS_PANEL } from '../../constants';
 
 export default function CreateEventTriggerModal({
-  lambda,
+  onSubmit,
   queryError,
   availableEvents = [],
 }) {
@@ -55,7 +55,7 @@ export default function CreateEventTriggerModal({
       renderForm={props => (
         <CreateEventTriggerForm
           {...props}
-          lambda={lambda}
+          onSubmit={onSubmit}
           availableEvents={availableEvents}
         />
       )}

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { GenericList } from 'react-shared';
 
 import Checkbox from 'components/Lambdas/Checkbox/Checkbox';
-import { useCreateManyEventTriggers } from 'components/Lambdas/gql/hooks/mutations';
 
 import { SchemaComponent } from './Schema/Schema';
 
@@ -19,12 +18,11 @@ const headerRenderer = () => [
 const textSearchProperties = ['eventType', 'version', 'source', 'description'];
 
 export default function CreateEventTriggerForm({
-  lambda,
   availableEvents = [],
   formElementRef,
   setValidity = () => void 0,
+  onSubmit,
 }) {
-  const createManyEventTriggers = useCreateManyEventTriggers({ lambda });
   const [checkedEvents, setCheckedEvents] = useState([]);
 
   useEffect(() => {
@@ -78,7 +76,7 @@ export default function CreateEventTriggerForm({
   });
 
   async function handleSubmit() {
-    await createManyEventTriggers(checkedEvents);
+    await onSubmit(checkedEvents);
   }
 
   return (

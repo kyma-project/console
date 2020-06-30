@@ -1,17 +1,25 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import EventTriggers from './EventTriggers';
+import EventTriggers from 'shared/components/EventTriggers/EventTriggers';
 import {
   useEventActivationsQuery,
   useEventTriggersQuery,
 } from 'components/Lambdas/gql/hooks/queries';
+
+import {
+  useDeleteEventTrigger,
+  useCreateManyEventTriggers,
+} from 'components/Lambdas/gql/hooks/mutations';
 import {
   serializeEvents,
   createSubscriberRef,
 } from 'components/Lambdas/helpers/eventTriggers';
 
 export default function EventTriggersWrapper({ lambda }) {
+  const deleteEventTrigger = useDeleteEventTrigger({ lambda });
+  const createManyEventTriggers = useCreateManyEventTriggers({ lambda });
+
   const [
     events = [],
     activationsError,
@@ -35,7 +43,8 @@ export default function EventTriggersWrapper({ lambda }) {
 
   return (
     <EventTriggers
-      lambda={lambda}
+      onTriggerDelete={deleteEventTrigger}
+      onTriggersAdd={createManyEventTriggers}
       eventTriggers={usedEvents || []}
       availableEvents={availableEvents || []}
       serverDataError={activationsError || triggersError || false}

@@ -1,4 +1,4 @@
-import { TRIGGER_SCHEMA } from '../../constants';
+import { TRIGGER_SCHEMA } from 'shared/constants';
 
 export const bemClasses = {
   element(element) {

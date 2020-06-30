@@ -4,8 +4,8 @@ import { SchemaProperties } from './SchemaProperties';
 import { SchemaExample } from './SchemaExample';
 import { Table } from './Table';
 
-import { bemClasses, searchForObject } from '../../../../../helpers/misc';
-import { TRIGGER_SCHEMA } from '../../../../../constants';
+import { bemClasses, searchForObject } from '../../../helpers';
+import { TRIGGER_SCHEMA } from '../../../constants';
 
 import './Schema.scss';
 

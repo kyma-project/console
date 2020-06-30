@@ -2,8 +2,8 @@ import React from 'react';
 
 import { CodeComponent } from './CodeComponent';
 
-import { bemClasses } from '../../../../../helpers/misc';
-import { TRIGGER_SCHEMA } from '../../../../../constants';
+import { bemClasses } from '../../../helpers';
+import { TRIGGER_SCHEMA } from '../../../constants';
 
 const classes = {
   schemaExample: bemClasses.element(`schema-example`),

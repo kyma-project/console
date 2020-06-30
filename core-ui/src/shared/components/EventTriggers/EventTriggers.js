@@ -6,8 +6,7 @@ import { GenericList } from 'react-shared';
 
 import { SchemaComponent } from './Schema/Schema';
 
-import { useDeleteEventTrigger } from '../../../../gql/hooks/mutations';
-import { EVENT_TRIGGERS_PANEL, ERRORS } from '../../../../constants';
+import { EVENT_TRIGGERS_PANEL, ERRORS } from '../../constants';
 
 import CreateEventTriggerModal from './CreateEventTriggerModal';
 
@@ -43,9 +42,9 @@ export default function EventTriggers({
   availableEvents = [],
   serverDataError,
   serverDataLoading,
+  onTriggersAdd,
+  onTriggerDelete,
 }) {
-  const deleteEventTrigger = useDeleteEventTrigger({ lambda });
-
   function showCollapseControl(schema) {
     return !!(schema && schema.properties && !schema.anyOf);
   }
@@ -53,9 +52,7 @@ export default function EventTriggers({
   const actions = [
     {
       name: 'Delete',
-      handler: eventTrigger => {
-        deleteEventTrigger(eventTrigger);
-      },
+      handler: onTriggerDelete,
     },
   ];
   const rowRenderer = eventTrigger => ({
@@ -80,7 +77,7 @@ export default function EventTriggers({
 
   const createEventTrigger = (
     <CreateEventTriggerModal
-      lambda={lambda}
+      onSubmit={onTriggersAdd}
       queryError={serverDataError}
       availableEvents={availableEvents}
     />
