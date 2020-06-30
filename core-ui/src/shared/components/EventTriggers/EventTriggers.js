@@ -37,7 +37,6 @@ function EventTriggerSource({ source }) {
 }
 
 export default function EventTriggers({
-  lambda,
   eventTriggers = [],
   availableEvents = [],
   serverDataError,
@@ -108,9 +107,10 @@ export default function EventTriggers({
 }
 
 EventTriggers.propTypes = {
-  lambda: PropTypes.object.isRequired,
   eventTriggers: PropTypes.array.isRequired,
   availableEvents: PropTypes.array.isRequired,
   serverDataError: PropTypes.any,
   serverDataLoading: PropTypes.bool,
+  onTriggerDelete: PropTypes.func.isRequired,
+  onTriggersAdd: PropTypes.func.isRequired,
 };

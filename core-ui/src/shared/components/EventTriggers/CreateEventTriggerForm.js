@@ -20,18 +20,19 @@ const textSearchProperties = ['eventType', 'version', 'source', 'description'];
 export default function CreateEventTriggerForm({
   availableEvents = [],
   formElementRef,
-  setValidity = () => void 0,
+  setCustomValid = () => void 0,
   onSubmit,
+  onChange,
 }) {
   const [checkedEvents, setCheckedEvents] = useState([]);
 
   useEffect(() => {
-    setValidity(false);
-  }, [setValidity]);
+    setCustomValid(false);
+  }, [setCustomValid]);
 
   useEffect(() => {
-    setValidity(!!checkedEvents.length);
-  }, [checkedEvents, setValidity]);
+    setCustomValid(!!checkedEvents.length);
+  }, [checkedEvents, setCustomValid]);
 
   function isChecked(event) {
     return checkedEvents.some(e => event.uniqueID === e.uniqueID);
@@ -83,6 +84,7 @@ export default function CreateEventTriggerForm({
     <form
       ref={formElementRef}
       onSubmit={handleSubmit}
+      onChange={onChange}
       className="create-event-trigger-form"
     >
       <GenericList
