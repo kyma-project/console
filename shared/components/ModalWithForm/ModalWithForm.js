@@ -57,9 +57,9 @@ export const ModalWithForm = ({
     }
   }
 
-  useEffect(() => {
-    setTimeout(() => checkAllForms(true));
-  });
+  // useEffect(() => {
+  //   setTimeout(() => checkAllForms(true));
+  // });
 
   function setOpenStatus(status) {
     if (status) {
