@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Modal, Button } from 'fundamental-react';
 import LuigiClient from '@luigi-project/client';
 import { useNotification } from '../../contexts/NotificationContext';
+import { Tooltip } from '../Tooltip/Tooltip';
 
 const isFormValid = (formRef, reportValidity = false) => {
   if (!formRef || !formRef.current) return true;
@@ -34,6 +35,7 @@ export const ModalWithForm = ({
   item,
   modalOpeningComponent,
   confirmText,
+  invalidPopupMessage,
   ...props
 }) => {
   const [isOpen, setOpen] = useState(false);
@@ -115,6 +117,36 @@ export const ModalWithForm = ({
     }
   }
 
+  function renderConfirmButton() {
+    const disabled = !isValid || !customValid;
+    const button = (
+      <Button
+        disabled={disabled}
+        aria-disabled={disabled}
+        onClick={handleFormSubmit}
+        option="emphasized"
+      >
+        {confirmText}
+      </Button>
+    );
+
+    if (invalidPopupMessage && disabled) {
+      return (
+        <Tooltip
+          content={invalidPopupMessage}
+          position="top"
+          trigger="mouseenter"
+          tippyProps={{
+            distance: 16,
+          }}
+        >
+          {button}
+        </Tooltip>
+      );
+    }
+    return button;
+  }
+
   return (
     <>
       {modalOpeningComponent ? (
@@ -146,13 +178,7 @@ export const ModalWithForm = ({
             >
               Cancel
             </Button>
-            <Button
-              aria-disabled={!isValid || !customValid}
-              onClick={handleFormSubmit}
-              option="emphasized"
-            >
-              {confirmText}
-            </Button>
+            {renderConfirmButton()}
           </>
         }
         onClose={() => {
@@ -189,6 +215,7 @@ ModalWithForm.propTypes = {
   item: PropTypes.object,
   modalOpeningComponent: PropTypes.node,
   confirmText: PropTypes.string,
+  invalidPopupMessage: PropTypes.string,
   button: function(props, propName, componentName) {
     function checkDataOrRequest() {
       return (
@@ -223,10 +250,12 @@ ModalWithForm.propTypes = {
 
       return false;
     }
-    return checkDataOrRequest() || checkTypes();
+    return props[propName] && (checkDataOrRequest() || checkTypes());
   },
 };
+
 ModalWithForm.defaultProps = {
   performRefetch: () => {},
   confirmText: 'Create',
+  invalidPopupMessage: '',
 };
