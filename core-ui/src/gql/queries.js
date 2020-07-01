@@ -58,6 +58,7 @@ export const GET_SERVICE = gql`
       json
       labels
       clusterIP
+      UID
     }
   }
 `;

@@ -8,6 +8,7 @@ import { GET_EVENT_TRIGGERS } from 'components/Lambdas/gql/queries';
 import {
   serializeEvents,
   createSubscriberRef,
+  createOwnerRef,
 } from 'components/Lambdas/helpers/eventTriggers';
 import { useQuery } from '@apollo/react-hooks';
 
@@ -20,9 +21,20 @@ import {
 export default function EventTriggersWrapper({ service }) {
   // const deleteEventTrigger = useDeleteEventTrigger({ lambda });
   // const createManyEventTriggers = useCreateManyEventTriggers({ lambda });
-
-  const createManyEventTriggers = useCreateManyEventTriggers({ lambda: {} });
+  const subscriberRef = createSubscriberRef(service);
+  const ownerRef = createOwnerRef({
+    name: service.name,
+    UID: service.UID,
+    kind: 'Service',
+  });
   const { namespaceId: namespace } = useMicrofrontendContext();
+  const createManyEventTriggers = useCreateManyEventTriggers({
+    name: service.name,
+    namespace,
+    subscriberRef,
+    ownerRef,
+  });
+
   const [
     events = [],
     activationsError,
@@ -50,19 +62,17 @@ export default function EventTriggersWrapper({ service }) {
   const { data, error, loading } = useQuery(GET_EVENT_TRIGGERS, {
     variables: {
       namespace,
-      subscriber: createSubscriberRef(service),
+      subscriber: subscriberRef,
     },
     fetchPolicy: 'network-only',
   });
 
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
-
   const { availableEvents, usedEvents } = serializeEvents({
     events,
-    eventTriggers: [],
+    eventTriggers: data.triggers,
   });
+
+  console.log(data);
 
   function handleTriggerDelete(trigger) {
     //TODO

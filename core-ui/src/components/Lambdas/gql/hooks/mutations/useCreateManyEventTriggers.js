@@ -13,13 +13,10 @@ import { GQL_MUTATIONS } from 'components/Lambdas/constants';
 import { CONFIG } from 'components/Lambdas/config';
 
 export const useCreateManyEventTriggers = ({
-  // lambda = {
-  //   name: '',
-  //   namespace: '',
-  // },
   name,
   namespace,
   subscriberRef,
+  ownerRef,
 }) => {
   const notificationManager = useNotification();
   const [createManyEventTriggersMutation] = useMutation(
@@ -66,14 +63,13 @@ export const useCreateManyEventTriggers = ({
   }
 
   async function createManyEventTriggers(events) {
-    const ownerRef = createOwnerRef(lambda);
     const triggers = prepareEventTriggersInput(events);
     const isSingleTrigger = triggers.length === 1;
 
     try {
       const response = await createManyEventTriggersMutation({
         variables: {
-          namespace: namespace,
+          namespace,
           triggers,
           ownerRef: [ownerRef],
         },
