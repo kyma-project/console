@@ -27,7 +27,7 @@ export default function EventTriggersWrapper({ lambda }) {
     UID: lambda.UID,
   };
 
-  const deleteEventTrigger = useDeleteEventTrigger({ lambda });
+  const deleteEventTrigger = useDeleteEventTrigger(lambda);
   const createManyEventTriggers = useCreateManyEventTriggers({
     ...lambda,
     subscriberRef,

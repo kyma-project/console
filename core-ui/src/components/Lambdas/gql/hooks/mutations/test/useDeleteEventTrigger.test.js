@@ -36,7 +36,7 @@ jest.mock('@luigi-project/client', () => {
 
 describe('useDeleteEventTrigger', () => {
   const hookInput = {
-    lambda: lambdaMock,
+    name: lambdaMock.name,
   };
   const variables = {
     namespace: eventTriggerMock.namespace,

@@ -1,5 +1,5 @@
 export const lambdaMock = {
-  name: 'lambda',
+  name: 'lambda-pico-bello',
   namespace: 'namespace',
   UID: 'pico-bello-123',
   labels: {
