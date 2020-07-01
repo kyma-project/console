@@ -6,6 +6,7 @@ import {
   useEventActivationsQuery,
   useEventTriggersQuery,
 } from 'components/Lambdas/gql/hooks/queries';
+import { SERVERLESS_API_VERSION } from 'shared/constants';
 
 import {
   useDeleteEventTrigger,
@@ -17,8 +18,21 @@ import {
 } from 'components/Lambdas/helpers/eventTriggers';
 
 export default function EventTriggersWrapper({ lambda }) {
+  const subscriberRef = createSubscriberRef(lambda);
+
+  const ownerRef = {
+    apiVersion: SERVERLESS_API_VERSION,
+    kind: 'Function',
+    name: lambda.name,
+    UID: lambda.UID,
+  };
+
   const deleteEventTrigger = useDeleteEventTrigger({ lambda });
-  const createManyEventTriggers = useCreateManyEventTriggers({ lambda });
+  const createManyEventTriggers = useCreateManyEventTriggers({
+    ...lambda,
+    subscriberRef,
+    ownerRef,
+  });
 
   const [
     events = [],
@@ -32,7 +46,7 @@ export default function EventTriggersWrapper({ lambda }) {
     triggersError,
     triggersLoading,
   ] = useEventTriggersQuery({
-    subscriber: createSubscriberRef(lambda),
+    subscriber: subscriberRef,
     lambda,
   });
 

@@ -8,10 +8,10 @@ import { GET_EVENT_TRIGGERS } from 'components/Lambdas/gql/queries';
 import {
   serializeEvents,
   createSubscriberRef,
-  createOwnerRef,
 } from 'components/Lambdas/helpers/eventTriggers';
 import { useQuery } from '@apollo/react-hooks';
 import { EVENT_TRIGGERS } from '../../constants';
+import { SERVERLESS_API_VERSION } from 'shared/constants';
 
 import {
   useDeleteEventTrigger,
@@ -21,6 +21,14 @@ import {
 export default function EventTriggersWrapper({ service }) {
   const { namespaceId: namespace } = useMicrofrontendContext();
   const subscriberRef = createSubscriberRef(service);
+
+  const ownerRef = {
+    apiVersion: SERVERLESS_API_VERSION,
+    kind: 'Service',
+    name: service.name,
+    UID: service.UID,
+  };
+
   const getEventTriggersVariables = {
     variables: {
       namespace,
@@ -36,12 +44,6 @@ export default function EventTriggersWrapper({ service }) {
       },
     ],
   };
-
-  const ownerRef = createOwnerRef({
-    name: service.name,
-    UID: service.UID,
-    kind: EVENT_TRIGGERS.TYPE,
-  });
 
   const createManyEventTriggers = useCreateManyEventTriggers(
     {

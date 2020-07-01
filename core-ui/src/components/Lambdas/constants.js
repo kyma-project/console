@@ -399,8 +399,3 @@ export const ENVIRONMENT_VARIABLES_PANEL = {
 export const FIRST_BREADCRUMB_NODE = 'Functions';
 
 export const REFETCH_LAMBDAS_TIMEOUT = 2000;
-
-export const FUNCTION_CUSTOM_RESOURCE = {
-  KIND: 'Function',
-  API_VERSION: 'serverless.kyma-project.io/v1alpha1',
-};
