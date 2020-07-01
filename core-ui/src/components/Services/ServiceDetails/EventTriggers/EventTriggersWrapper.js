@@ -10,11 +10,18 @@ import {
   createSubscriberRef,
 } from 'components/Lambdas/helpers/eventTriggers';
 import { useQuery } from '@apollo/react-hooks';
+
+import {
+  useDeleteEventTrigger,
+  useCreateManyEventTriggers,
+} from 'components/Lambdas/gql/hooks/mutations';
 // import { CONFIG } from '../../Lambdas/config';
 
 export default function EventTriggersWrapper({ service }) {
   // const deleteEventTrigger = useDeleteEventTrigger({ lambda });
   // const createManyEventTriggers = useCreateManyEventTriggers({ lambda });
+
+  const createManyEventTriggers = useCreateManyEventTriggers({ lambda: {} });
   const { namespaceId: namespace } = useMicrofrontendContext();
   const [
     events = [],
@@ -68,7 +75,7 @@ export default function EventTriggersWrapper({ service }) {
   return (
     <EventTriggers
       onTriggerDelete={handleTriggerDelete}
-      onTriggersAdd={handleTriggersAdd}
+      onTriggersAdd={createManyEventTriggers}
       eventTriggers={usedEvents || []}
       availableEvents={availableEvents || []}
       serverDataError={!!activationsError}
