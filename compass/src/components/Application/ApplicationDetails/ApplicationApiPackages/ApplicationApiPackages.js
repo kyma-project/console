@@ -2,16 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import LuigiClient from '@luigi-project/client';
 
-import { GenericList, handleDelete } from 'react-shared';
+import { GenericList, handleDelete, ModalWithForm } from 'react-shared';
 
 import { SEND_NOTIFICATION } from 'gql';
 import { DELETE_API_PACKAGE } from './../../../ApiPackages/gql';
 import { useMutation } from '@apollo/react-hooks';
 import { GET_APPLICATION } from 'components/Application/gql';
 
-import ModalWithForm from 'shared/components/ModalWithForm/ModalWithForm';
 import CreateApiPackageForm from 'components/ApiPackages/CreateApiPackageForm/CreateApiPackageForm';
-import { Counter } from 'fundamental-react';
+import { Counter, Link } from 'fundamental-react';
 
 ApplicationApiPackages.propTypes = {
   applicationId: PropTypes.string.isRequired,
@@ -50,9 +49,9 @@ export default function ApplicationApiPackages({ applicationId, apiPackages }) {
   ];
 
   const rowRenderer = apiPackage => [
-    <span className="link" onClick={() => navigateToDetails(apiPackage)}>
+    <Link className="link" onClick={() => navigateToDetails(apiPackage)}>
       {apiPackage.name}
-    </span>,
+    </Link>,
     apiPackage.description,
     <Counter>{apiPackage.apiDefinitions.totalCount}</Counter>,
     <Counter>{apiPackage.eventDefinitions.totalCount}</Counter>,
@@ -75,7 +74,7 @@ export default function ApplicationApiPackages({ applicationId, apiPackages }) {
   const extraHeaderContent = (
     <ModalWithForm
       title="Create Package"
-      button={{ glyph: 'add', text: '' }}
+      button={{ glyph: 'add', text: 'Create Package' }}
       confirmText="Create"
       renderForm={props => (
         <CreateApiPackageForm applicationId={applicationId} {...props} />

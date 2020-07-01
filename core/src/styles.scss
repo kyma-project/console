@@ -7,6 +7,8 @@ $fd-fonts-path: '~fiori-fundamentals/dist/fonts/';
 @import '~fiori-fundamentals/dist/icons.min.css';
 @import 'fiori-fundamentals-overrides';
 
+
+
 body,
 html {
   font-family: '72', sans-serif;
@@ -17,6 +19,10 @@ html {
 }
 
 @import '~jsoneditor/dist/jsoneditor.min.css';
+
+.fd-overlay.fd-overlay--modal {
+  --fd-overlay-background-color: rgba(0, 0, 0, 0.6);
+}
 
 fd-icon.clickable {
   cursor: pointer;
@@ -33,7 +39,7 @@ fd-icon.clickable {
   display: inline;
 }
 .y-fd-popover {
-  .fd-popover-container-custom {        
+  .fd-popover-container-custom {
     overflow-y: auto;
     overflow-x: hidden;
     max-height: calc(100% - 7em);

@@ -15,7 +15,10 @@ export default function LabelsDisplay() {
       <ul>
         {readonlyLabels.map(label => (
           <li key={label}>
-            <Token className="caption-muted y-fd-token--no-button">
+            <Token
+              className="caption-muted y-fd-token--no-button"
+              aria-label={`label-${label}`}
+            >
               {label}
             </Token>
           </li>
@@ -27,6 +30,7 @@ export default function LabelsDisplay() {
               onClick={() =>
                 actions.setLabels(getLabelsExceptOne(labels, label))
               }
+              aria-label={`remove-label-${label}`}
             >
               {label}
             </Token>

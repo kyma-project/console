@@ -85,10 +85,11 @@
   list-style-type: none;
 }
 
-.fd-dropdown[fullwidth=true] {
+.fd-dropdown[fullwidth='true'] {
   width: 100%;
 
-  .fd-popper__body, .fd-popover {
+  .fd-popper__body,
+  .fd-popover {
     width: 100%;
   }
 
@@ -107,4 +108,8 @@
       content: unset;
     }
   }
+}
+
+.fd-overlay.fd-overlay--modal {
+  --fd-overlay-background-color: rgba(0, 0, 0, 0.6);
 }

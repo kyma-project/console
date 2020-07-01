@@ -3,6 +3,7 @@ import { bootstrap, BackendModules } from '@kyma-project/common';
 import { NotificationContainer } from '@kyma-project/components';
 
 import App from './core/App';
+import './index.scss';
 
 import {
   QueriesProvider,

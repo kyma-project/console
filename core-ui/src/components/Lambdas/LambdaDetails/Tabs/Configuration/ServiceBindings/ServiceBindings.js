@@ -2,6 +2,7 @@ import React from 'react';
 import LuigiClient from '@luigi-project/client';
 
 import { GenericList } from 'react-shared';
+import { Link } from 'fundamental-react';
 
 import { useDeleteServiceBindingUsage } from 'components/Lambdas/gql/hooks/mutations';
 
@@ -47,7 +48,7 @@ export default function ServiceBindings({
     },
   ];
   const rowRenderer = bindingUsage => [
-    <span
+    <Link
       className="link"
       data-test-id="service-instance-name"
       onClick={() =>
@@ -59,7 +60,7 @@ export default function ServiceBindings({
       }
     >
       {bindingUsage.serviceBinding.serviceInstanceName}
-    </span>,
+    </Link>,
     renderEnvs(bindingUsage),
   ];
 

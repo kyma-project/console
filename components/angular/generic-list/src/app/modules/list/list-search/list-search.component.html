@@ -1,8 +1,10 @@
 <ng-container *ngIf="hasSearch()">
   <div (clickOutside)="closeIfEmpty()" clickOutsideEvents="click,mousedown" excludeBeforeClick="true">
-    <button fd-button [glyph]="'search'" [options]="'light'" *ngIf="!searching" (click)="openSearch($event)"></button>
+    <button fd-button aria-label="search" [glyph]="'search'" [options]="'light'" *ngIf="!searching"
+      (click)="openSearch($event)"></button>
 
-    <fd-input-group-search *ngIf="searching" [ngModel]="searchText" (ngModelChange)="searchTextChange($event)" class="search">
+    <fd-input-group-search *ngIf="searching" [ngModel]="searchText" (ngModelChange)="searchTextChange($event)"
+      class="search">
     </fd-input-group-search>
 
   </div>

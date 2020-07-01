@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
-import { FormItem, FormLabel, Icon } from 'fundamental-react';
+import { FormItem, FormLabel, Icon, Link } from 'fundamental-react';
 import { useMutation } from '@apollo/react-hooks';
 import * as LuigiClient from '@luigi-project/client';
 
@@ -299,7 +299,7 @@ export default function CreateInstanceModal({
         <>
           <div className="fd-has-margin-top-s fd-has-margin-bottom-tiny instance-schema-panel">
             <div>
-              <span
+              <Link
                 className="link fd-has-margin-right-tiny clear-underline"
                 onClick={() =>
                   setCustomParametersProvided(!customParametersProvided)
@@ -308,7 +308,7 @@ export default function CreateInstanceModal({
                 {customParametersProvided
                   ? 'Remove parameters'
                   : 'Add parameters'}
-              </span>
+              </Link>
               <Tooltip
                 position="top"
                 content="The service provider did not define specific parameters for the selected plan. Refer to the documentation to learn about the required parameters, and define them as JSON in the editor."

@@ -9,6 +9,7 @@ exports[` 1`] = `
   >
     Advanced Settings
     <span
+      aria-label="hide advanced settings"
       className="sap-icon--decline sap-icon--s cursor-pointer"
       onClick={[Function]}
     />
@@ -89,7 +90,7 @@ exports[` 1`] = `
       />
       <label
         className="caption-muted"
-        htmlFor="previous-logs"
+        htmlFor="istio-logs"
       >
         Istio logs
       </label>

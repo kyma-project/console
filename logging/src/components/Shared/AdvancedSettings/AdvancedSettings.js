@@ -80,7 +80,7 @@ const ShowIstioLogsInput = ({ state, actions }) => (
       defaultChecked={state.showIstioLogs}
       onChange={e => actions.setShowIstioLogs(e.target.checked)}
     />
-    <label className="caption-muted" htmlFor="previous-logs">
+    <label className="caption-muted" htmlFor="istio-logs">
       Istio logs
     </label>
   </>
@@ -98,6 +98,7 @@ export default function AdvancedSettings({ hideSettings }) {
           glyph="decline"
           size="s"
           className="cursor-pointer"
+          aria-label="hide advanced settings"
           onClick={hideSettings}
         />
       </h2>

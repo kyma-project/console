@@ -22,6 +22,7 @@ const RepositoryTableHeader: React.FunctionComponent<RepositoryTableHeaderProps>
     <th>
       <Button
         glyph={isOpen ? 'navigation-up-arrow' : 'navigation-down-arrow'}
+        aria-label={isOpen ? 'collapse' : 'expand'}
         option="light"
         onClick={() => setIsOpen(!isOpen)}
         disabled={!repository.addons.length}

@@ -82,7 +82,7 @@ export const customOptionsRenderer = opt => {
 
   const label = sanitizeHtml(opt.label);
 
-  return `<a href="javascript:void(0)" class="fd-menu__item ${
+  return `<a href="javascript:void(0)" class="fd-menu__link ${
     isSelected ? 'is-selected' : ''
   } svelte-1ldh2pm" title="${label}">${label}</a>`;
 };

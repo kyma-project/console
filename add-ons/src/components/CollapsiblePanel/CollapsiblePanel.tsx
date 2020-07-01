@@ -29,6 +29,7 @@ const CollapsiblePanel: React.FunctionComponent<CollapsiblePanelProps> = ({
       <Button
         className="fd-has-margin-right-xs"
         glyph={isOpen ? 'navigation-up-arrow' : 'navigation-down-arrow'}
+        aria-label={isOpen ? 'collapse' : 'expand'}
         option="light"
         onClick={() => setIsOpen(!isOpen)}
         disabled={collapseDisabled}

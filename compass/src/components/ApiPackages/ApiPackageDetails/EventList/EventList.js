@@ -4,8 +4,8 @@ import LuigiClient from '@luigi-project/client';
 import './EventList.scss';
 
 import CreateEventApiForm from 'components/Api/CreateEventApiForm/CreateEventApiForm';
-import { GenericList, handleDelete } from 'react-shared';
-import ModalWithForm from 'shared/components/ModalWithForm/ModalWithForm';
+import { GenericList, handleDelete, ModalWithForm } from 'react-shared';
+import { Link } from 'fundamental-react';
 
 import { useMutation } from '@apollo/react-hooks';
 import { DELETE_EVENT_DEFINITION } from 'components/Api/gql';
@@ -49,12 +49,12 @@ export default function EventList({
   const headerRenderer = () => ['Name', 'Description'];
 
   const rowRenderer = api => [
-    <span
+    <Link
       className="link"
       onClick={() => LuigiClient.linkManager().navigate(`eventApi/${api.id}`)}
     >
       {api.name}
-    </span>,
+    </Link>,
 
     api.description,
   ];
@@ -80,7 +80,7 @@ export default function EventList({
   const extraHeaderContent = (
     <ModalWithForm
       title="Add Event Definition"
-      button={{ glyph: 'add', text: '' }}
+      button={{ glyph: 'add', label: 'Add Event Definition' }}
       confirmText="Create"
       modalClassName="create-event-api-modal"
       renderForm={props => (

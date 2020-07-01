@@ -124,6 +124,7 @@ export const ModalWithForm = ({
       ) : (
         <Button
           glyph={button.glyph || null}
+          aria-label={button.label || null}
           option={button.option}
           compact={button.compact || false}
           disabled={!!button.disabled}
@@ -182,18 +183,48 @@ export const ModalWithForm = ({
 ModalWithForm.propTypes = {
   performRefetch: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
-  button: PropTypes.exact({
-    text: PropTypes.string.isRequired,
-    glyph: PropTypes.string,
-    disabled: PropTypes.bool,
-    option: PropTypes.oneOf(['emphasized', 'light']),
-  }),
   renderForm: PropTypes.func.isRequired,
   opened: PropTypes.bool,
   customCloseAction: PropTypes.func,
   item: PropTypes.object,
   modalOpeningComponent: PropTypes.node,
   confirmText: PropTypes.string,
+  button: function(props, propName, componentName) {
+    function checkDataOrRequest() {
+      return (
+        !props[propName].hasOwnProperty('text') &&
+        !props[propName].hasOwnProperty('label') &&
+        new Error(`Either "text" or "label" is required`)
+      );
+    }
+
+    function checkTypes() {
+      if (
+        (props[propName].hasOwnProperty('compact') &&
+          typeof props[propName]['compact'] !== 'boolean') ||
+        (props[propName].hasOwnProperty('disabled') &&
+          typeof props[propName]['disabled'] !== 'boolean') ||
+        (props[propName].hasOwnProperty('glyph') &&
+          typeof props[propName]['glyph'] !== 'string') ||
+        (props[propName].hasOwnProperty('label') &&
+          typeof props[propName]['label'] !== 'string') ||
+        (props[propName].hasOwnProperty('text') &&
+          typeof props[propName]['text'] !== 'string')
+      ) {
+        return new Error(
+          'Invalid prop `' +
+            propName +
+            '` supplied to' +
+            ' `' +
+            componentName +
+            '`. Validation failed.',
+        );
+      }
+
+      return false;
+    }
+    return checkDataOrRequest() || checkTypes();
+  },
 };
 ModalWithForm.defaultProps = {
   performRefetch: () => {},

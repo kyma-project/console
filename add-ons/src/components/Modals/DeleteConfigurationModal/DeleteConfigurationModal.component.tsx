@@ -14,7 +14,7 @@ const DeleteConfigurationModalComponent: React.FunctionComponent<Props> = ({
   handleDelete,
 }) => {
   const openingComponentModal = (
-    <Button glyph="delete" option="light" compact={true} />
+    <Button glyph="delete" aria-label="delete" option="light" compact={true} />
   );
 
   return (

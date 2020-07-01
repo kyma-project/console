@@ -7,6 +7,7 @@ import { MESSAGES } from './constants';
 
 SearchInput.propTypes = {
   searchQuery: PropTypes.string,
+  entriesKind: PropTypes.string,
   entries: PropTypes.arrayOf(PropTypes.object.isRequired),
   handleQueryChange: PropTypes.func.isRequired,
   suggestionProperties: PropTypes.arrayOf(PropTypes.string.isRequired)
@@ -18,6 +19,7 @@ SearchInput.propTypes = {
 
 export default function SearchInput({
   searchQuery,
+  entriesKind,
   filteredEntries,
   handleQueryChange,
   suggestionProperties,
@@ -95,7 +97,11 @@ export default function SearchInput({
 
   const showControl = showSearchControl && isSearchHidden && !searchQuery;
   return (
-    <section className="generic-list-search" role="search">
+    <section
+      className="generic-list-search"
+      role="search"
+      aria-label={`search-${entriesKind}`}
+    >
       <div
         className="fd-popover"
         style={{ display: showControl ? 'none' : 'initial' }}
@@ -136,7 +142,7 @@ export default function SearchInput({
             disabled ? 'is-disabled' : ''
           }`}
           onClick={openSearchList}
-          aria-label="open-search"
+          aria-label={`open-search`}
         />
       )}
     </section>
