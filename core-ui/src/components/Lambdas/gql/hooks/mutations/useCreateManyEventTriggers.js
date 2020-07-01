@@ -4,23 +4,18 @@ import { useNotification } from 'react-shared';
 import { CREATE_MANY_EVENT_TRIGGERS } from 'components/Lambdas/gql/mutations';
 import extractGraphQlErrors from 'shared/graphqlErrorExtractor';
 
-import {
-  createSubscriberRef,
-  createOwnerRef,
-} from 'components/Lambdas/helpers/eventTriggers';
 import { formatMessage } from 'components/Lambdas/helpers/misc';
 import { GQL_MUTATIONS } from 'components/Lambdas/constants';
 import { CONFIG } from 'components/Lambdas/config';
 
-export const useCreateManyEventTriggers = ({
-  name,
-  namespace,
-  subscriberRef,
-  ownerRef,
-}) => {
+export const useCreateManyEventTriggers = (
+  { name, namespace, subscriberRef, ownerRef },
+  mutationOptions = {},
+) => {
   const notificationManager = useNotification();
   const [createManyEventTriggersMutation] = useMutation(
     CREATE_MANY_EVENT_TRIGGERS,
+    mutationOptions,
   );
 
   function handleError(error, isSingleTrigger) {

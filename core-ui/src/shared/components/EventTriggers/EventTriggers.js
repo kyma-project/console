@@ -43,6 +43,7 @@ export default function EventTriggers({
   serverDataLoading,
   onTriggersAdd,
   onTriggerDelete,
+  notFoundMessage = EVENT_TRIGGERS_PANEL.LIST.ERRORS.RESOURCES_NOT_FOUND,
 }) {
   function showCollapseControl(schema) {
     return !!(schema && schema.properties && !schema.anyOf);
@@ -96,7 +97,7 @@ export default function EventTriggers({
         rowRenderer={rowRenderer}
         serverDataError={serverDataError}
         serverDataLoading={serverDataLoading}
-        notFoundMessage={EVENT_TRIGGERS_PANEL.LIST.ERRORS.RESOURCES_NOT_FOUND}
+        notFoundMessage={notFoundMessage}
         noSearchResultMessage={
           EVENT_TRIGGERS_PANEL.LIST.ERRORS.NOT_MATCHING_SEARCH_QUERY
         }

@@ -8,13 +8,12 @@ import extractGraphQlErrors from 'shared/graphqlErrorExtractor';
 import { formatMessage } from 'components/Lambdas/helpers/misc';
 import { GQL_MUTATIONS, BUTTONS } from 'components/Lambdas/constants';
 
-export const useDeleteEventTrigger = ({
-  lambda = {
-    name: '',
-  },
-}) => {
+export const useDeleteEventTrigger = ({ name }, mutationOptions = {}) => {
   const notificationManager = useNotification();
-  const [deleteEventTriggerMutation] = useMutation(DELETE_ONE_EVENT_TRIGGER);
+  const [deleteEventTriggerMutation] = useMutation(
+    DELETE_ONE_EVENT_TRIGGER,
+    mutationOptions,
+  );
 
   function handleError(eventTrigger, error) {
     const eventTriggerName = processTriggerName(eventTrigger);
@@ -22,7 +21,7 @@ export const useDeleteEventTrigger = ({
 
     const message = formatMessage(GQL_MUTATIONS.DELETE_TRIGGER.ERROR_MESSAGE, {
       triggerName: eventTriggerName,
-      lambdaName: lambda.name,
+      lambdaName: name,
       error: errorToDisplay,
     });
 
@@ -69,7 +68,7 @@ export const useDeleteEventTrigger = ({
       GQL_MUTATIONS.DELETE_TRIGGER.CONFIRM_MODAL.MESSAGE,
       {
         triggerName: eventTriggerName,
-        lambdaName: lambda.name,
+        lambdaName: name,
       },
     );
 
