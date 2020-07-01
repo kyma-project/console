@@ -7,7 +7,7 @@ import { GET_SERVICE } from 'gql/queries';
 import { ResourceNotFound } from 'react-shared';
 import ServiceDetailsHeader from './ServiceDetailsHeader/ServiceDetailsHeader';
 import ServiceApiRules from './ServiceApiRules/ServiceApiRules';
-import EventTriggersWrapper from './EventTriggers/EventTriggersWrapper';
+import ServiceEventTriggers from './ServiceEventTriggers/ServiceEventTriggers';
 
 ServiceDetails.propTypes = {
   namespaceId: PropTypes.string.isRequired,
@@ -42,7 +42,7 @@ export default function ServiceDetails({ namespaceId, serviceName }) {
     <>
       <ServiceDetailsHeader service={service} namespaceId={namespaceId} />
       <ServiceApiRules service={service} namespaceId={namespaceId} />
-      <EventTriggersWrapper service={service} />
+      <ServiceEventTriggers service={service} />
     </>
   );
 }

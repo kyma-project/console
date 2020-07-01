@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import { useMicrofrontendContext } from 'react-shared';
@@ -18,7 +18,7 @@ import {
   useCreateManyEventTriggers,
 } from 'components/Lambdas/gql/hooks/mutations';
 
-export default function EventTriggersWrapper({ service }) {
+export default function ServiceEventTriggersWrapper({ service }) {
   const { namespaceId: namespace } = useMicrofrontendContext();
   const subscriberRef = createSubscriberRef(service);
 
@@ -74,7 +74,7 @@ export default function EventTriggersWrapper({ service }) {
 
   const { availableEvents, usedEvents } = serializeEvents({
     events,
-    eventTriggers: data.triggers,
+    eventTriggers: data ? data.triggers : [],
   });
 
   return (
@@ -90,6 +90,6 @@ export default function EventTriggersWrapper({ service }) {
   );
 }
 
-EventTriggersWrapper.propTypes = {
+ServiceEventTriggersWrapper.propTypes = {
   service: PropTypes.object.isRequired,
 };

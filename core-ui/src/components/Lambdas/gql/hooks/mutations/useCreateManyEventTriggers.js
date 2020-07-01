@@ -61,6 +61,19 @@ export const useCreateManyEventTriggers = (
     const triggers = prepareEventTriggersInput(events);
     const isSingleTrigger = triggers.length === 1;
 
+    console.log(
+      'actual',
+      JSON.stringify(
+        {
+          namespace,
+          triggers,
+          ownerRef,
+        },
+        null,
+        2,
+      ),
+    );
+
     try {
       const response = await createManyEventTriggersMutation({
         variables: {
@@ -71,6 +84,7 @@ export const useCreateManyEventTriggers = (
       });
 
       if (response.error) {
+        console.log('response.error', response.error);
         handleError(response.error, isSingleTrigger);
         return;
       }
@@ -83,6 +97,7 @@ export const useCreateManyEventTriggers = (
         content: message,
       });
     } catch (err) {
+      console.log('err', err);
       handleError(err, isSingleTrigger);
     }
   }
