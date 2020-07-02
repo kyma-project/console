@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react';
+import { render, fireEvent, wait } from '@testing-library/react';
 
 import {
   MutationComponent,
@@ -25,14 +25,12 @@ describe('useCreateManyEventTriggers', () => {
   const hookInput = {
     name: lambdaMock.name,
     namespace: lambdaMock.namespace,
-    ownerRef: [
-      {
-        apiVersion: SERVERLESS_API_VERSION,
-        kind: 'Function',
-        name: lambdaMock.name,
-        UID: lambdaMock.UID,
-      },
-    ],
+    ownerRef: {
+      apiVersion: SERVERLESS_API_VERSION,
+      kind: 'Function',
+      name: lambdaMock.name,
+      UID: lambdaMock.UID,
+    },
     subscriberRef: createSubscriberRef(lambdaMock),
   };
   const events = [
@@ -65,8 +63,7 @@ describe('useCreateManyEventTriggers', () => {
       },
     ],
   };
-  fit('should see notification with error message if there is an error', async () => {
-    console.log('mutate', JSON.stringify(variables, null, 2));
+  it('should see notification with error message if there is an error', async () => {
     const mockProvider = withApolloMockProvider({
       component: (
         <MutationComponent
@@ -84,22 +81,20 @@ describe('useCreateManyEventTriggers', () => {
       }),
     );
 
-    // const message = formatMessage(
-    //   GQL_MUTATIONS.CREATE_TRIGGERS.ERROR_MESSAGE_SINGLE,
-    //   {
-    //     lambdaName: lambdaMock.name,
-    //     error: `Network error: ${TESTING_STATE.ERROR}`,
-    //   },
-    // );
+    const message = formatMessage(
+      GQL_MUTATIONS.CREATE_TRIGGERS.ERROR_MESSAGE_SINGLE,
+      {
+        lambdaName: lambdaMock.name,
+        error: `Network error: ${TESTING_STATE.ERROR}`,
+      },
+    );
 
     const button = getByTestId(BUTTON_TEST_ID);
     fireEvent.click(button);
-    await wait(1000);
-    debug();
 
-    // await wait(() => {
-    //   expect(getByText(message)).toBeInTheDocument();
-    // });
+    await wait(() => {
+      expect(getByText(message)).toBeInTheDocument();
+    });
   });
 
   it('should see notification with error message if there is an error', async () => {
