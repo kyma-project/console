@@ -1,8 +1,9 @@
 import React from 'react';
 
-import ServiceBindingsWrapper from './ServiceBindings/ServiceBindingsWrapper';
-import EventTriggersWrapper from './EventTriggers/EventTriggersWrapper';
 import ResourcesManagement from './ResourceManagement/ResourceManagement';
+import EventTriggersWrapper from './EventTriggers/EventTriggersWrapper';
+import ServiceBindingsWrapper from './ServiceBindings/ServiceBindingsWrapper';
+import ApiRules from './ApiRules/ApiRules';
 import {
   BACKEND_MODULES,
   backendModulesExist,
@@ -30,9 +31,16 @@ export default function ConfigurationTab({
     <EventTriggersWrapper lambda={lambda} />
   ) : null;
 
+  const apiRules = backendModulesExist(backendModules, [
+    BACKEND_MODULES.API_GATEWAY,
+  ]) ? (
+    <ApiRules lambda={lambda} />
+  ) : null;
+
   return (
     <>
       <ResourcesManagement lambda={lambda} />
+      {apiRules}
       {eventTriggers}
       {serviceBindings}
     </>

@@ -1,3 +1,9 @@
+.page-header {
+  .fd-panel__header {
+    padding: 16px 32px;
+  }
+}
+
 .fd-panel {
   .fd-form-item {
     margin-bottom: 0;
@@ -96,8 +102,7 @@
 
 .api-rule-container {
   padding-bottom: 71px;
-  padding-left: 24px;
-  padding-right: 24px;
+  padding: 32px;
 }
 
 .string-list-input {
@@ -127,5 +132,24 @@
   .fd-form__label {
     line-height: 23px;
     height: 23px;
+  }
+}
+
+.api-rule-form {
+  .api-rule-form__form {
+    padding: 32px;
+  }
+}
+
+.api-rule-form--in-modal {
+  .api-rule-form__header {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    z-index: 999;
+  }
+
+  .api-rule-form__form {
+    margin-bottom: 62px;
   }
 }

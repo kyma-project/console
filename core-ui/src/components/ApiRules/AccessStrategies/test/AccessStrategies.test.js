@@ -1,6 +1,7 @@
 import React from 'react';
-import AccessStrategy from '../AccessStrategy';
 import { render } from '@testing-library/react';
+
+import AccessStrategies from '../AccessStrategies';
 import { supportedMethodsList } from '../../accessStrategyTypes';
 
 const defaultAccessStrategy = {
@@ -12,13 +13,12 @@ const defaultAccessStrategy = {
       config: {},
     },
   ],
-  mutators: [],
 };
 
-describe('AccessStrategy', () => {
-  it('Renders default AccessStrategy', async () => {
+describe('AccessStrategies', () => {
+  it('Renders single AccessStrategy', async () => {
     const { queryByText, queryAllByLabelText } = render(
-      <AccessStrategy strategy={defaultAccessStrategy} />,
+      <AccessStrategies strategies={[defaultAccessStrategy]} />,
     );
 
     expect(queryByText(defaultAccessStrategy.path)).toBeTruthy();
@@ -26,5 +26,15 @@ describe('AccessStrategy', () => {
       defaultAccessStrategy.methods.length,
     );
     expect(queryByText('noop')).toBeTruthy();
+  });
+
+  it('Apply empty array', async () => {
+    const { queryByText, queryAllByLabelText } = render(
+      <AccessStrategies strategies={[]} />,
+    );
+
+    expect(queryByText(defaultAccessStrategy.path)).toBeFalsy();
+    expect(await queryAllByLabelText('method')).toHaveLength(0);
+    expect(queryByText('noop')).toBeFalsy();
   });
 });

@@ -9,25 +9,26 @@ export const newHostname = 'different-hostname';
 
 export const apiRule = {
   name: 'test-123',
-  service: {
-    host: `${oldHostname}.kyma.local`,
-    name: 'test',
-    port: '80',
-  },
-  gateway: 'kyma-gateway.kyma-system.svc.cluster.local',
-  rules: [
-    {
-      path: '/.*',
-      methods: ['PUT', 'POST', 'GET', 'DELETE'],
-      accessStrategies: [
-        {
-          name: 'noop',
-          config: {},
-        },
-      ],
-      mutators: [],
+  spec: {
+    service: {
+      host: `${oldHostname}.kyma.local`,
+      name: 'test',
+      port: 80,
     },
-  ],
+    gateway: 'kyma-gateway.kyma-system.svc.cluster.local',
+    rules: [
+      {
+        path: '/.*',
+        methods: ['PUT', 'POST', 'GET', 'DELETE'],
+        accessStrategies: [
+          {
+            name: 'noop',
+            config: {},
+          },
+        ],
+      },
+    ],
+  },
 };
 
 export const getApiRuleQuery = {
@@ -67,11 +68,12 @@ export const updateApiRuleMutation = {
       name: apiRule.name,
       namespace: mockNamespace,
       params: {
-        host: `${newHostname}.kyma.local`,
-        serviceName: apiRule.service.name,
-        servicePort: apiRule.service.port,
-        gateway: apiRule.gateway,
-        rules: apiRule.rules,
+        service: {
+          ...apiRule.spec.service,
+          host: `${newHostname}.kyma.local`,
+        },
+        gateway: apiRule.spec.gateway,
+        rules: apiRule.spec.rules,
       },
     },
   },

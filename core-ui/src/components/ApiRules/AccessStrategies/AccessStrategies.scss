@@ -1,0 +1,15 @@
+.api-rules__access-strategies {
+  .methods > li {
+    display: inline-block;
+    margin-right: 6px;
+  }
+}
+
+.api-rules__access-strategies--compact {
+  > div {
+    margin: 0 !important; // override important from class `has-margin-m` 
+    box-shadow: none;
+    border-radius: 5px;
+    border: solid 1px #d4d4d4;
+  }
+}

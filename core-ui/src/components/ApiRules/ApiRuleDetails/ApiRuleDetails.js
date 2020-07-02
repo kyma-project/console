@@ -2,14 +2,20 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useQuery } from '@apollo/react-hooks';
 import LuigiClient from '@luigi-project/client';
-import { LayoutGrid, Link, Panel, Button } from 'fundamental-react';
+import { Button } from 'fundamental-react';
 
-import AccessStrategy from '../AccessStrategy/AccessStrategy';
 import { GET_API_RULE } from '../../../gql/queries';
-import { Spinner, PageHeader, CopiableLink } from 'react-shared';
-import { useDeleteApiRule } from '../useDeleteApiRule';
+import { Spinner, PageHeader } from 'react-shared';
 import EntryNotFound from 'components/EntryNotFound/EntryNotFound';
-import { getApiUrl } from '@kyma-project/common';
+
+import AccessStrategies from '../AccessStrategies/AccessStrategies';
+import ApiRuleStatus from '../ApiRuleStatus/ApiRuleStatus';
+import {
+  CopiableApiRuleHost,
+  ApiRuleServiceInfo,
+} from 'components/ApiRules/ApiRulesList/components';
+
+import { useDeleteApiRule } from '../gql/useDeleteApiRule';
 
 const ApiRuleDetails = ({ apiName }) => {
   const { error, loading, data } = useQuery(GET_API_RULE, {
@@ -29,26 +35,14 @@ const ApiRuleDetails = ({ apiName }) => {
   }
 
   if (!data.APIRule) {
+    console.warn(error);
     return <EntryNotFound entryType="API Rule" entryId={apiName} />;
   }
 
   return (
     <>
-      <ApiRuleDetailsHeader data={data.APIRule} />
-      <section className="fd-section api-rule-container">
-        <LayoutGrid cols={1}>
-          <Panel>
-            <Panel.Header>
-              <Panel.Head title="Access strategies" />
-            </Panel.Header>
-            <Panel.Body aria-label="Access strategies">
-              {data.APIRule.rules.map((rule, idx) => {
-                return <AccessStrategy strategy={rule} key={idx} />;
-              })}
-            </Panel.Body>
-          </Panel>
-        </LayoutGrid>
-      </section>
+      <ApiRuleDetailsHeader apiRule={data.APIRule} />
+      <AccessStrategies strategies={data.APIRule?.spec?.rules || []} />
     </>
   );
 };
@@ -59,10 +53,14 @@ ApiRuleDetails.propTypes = {
 
 export default ApiRuleDetails;
 
-const breadcrumbItems = [{ name: 'API Rules', path: '/' }, { name: '' }];
+function onDeleteSuccess() {
+  LuigiClient.linkManager()
+    .fromClosestContext()
+    .navigate('');
+}
 
 function DeleteButton({ apiRuleName }) {
-  const [handleAPIRuleDelete] = useDeleteApiRule();
+  const [handleAPIRuleDelete] = useDeleteApiRule(onDeleteSuccess);
   return (
     <Button
       onClick={() => handleAPIRuleDelete(apiRuleName)}
@@ -93,34 +91,34 @@ function navigateToEditView(apiRuleName) {
     .navigate(`/edit/${apiRuleName}`);
 }
 
-function ApiRuleDetailsHeader({ data }) {
-  const host = `https://${data.service.host}`;
-  const DOMAIN = getApiUrl('domain');
-  const url = host.split(`.${DOMAIN}`)[0] + `.${DOMAIN}`;
+const breadcrumbItems = [{ name: 'API Rules', path: '/' }, { name: '' }];
 
-  const navigateToService = () =>
-    LuigiClient.linkManager()
-      .fromContext('namespaces')
-      .navigate(`services/details/${data.service.name}`);
+function ApiRuleDetailsHeader({ apiRule }) {
+  const name = apiRule.name;
+  const { openedInModal = false } = LuigiClient.getNodeParams() || {};
+  const openedInModalBool = openedInModal.toString().toLowerCase() === 'true';
 
   return (
     <PageHeader
-      title={data.name}
-      breadcrumbItems={breadcrumbItems}
+      title={openedInModalBool ? '' : name}
+      breadcrumbItems={openedInModalBool ? [] : breadcrumbItems}
       actions={
-        <>
-          <DeleteButton apiRuleName={data.name} />
-          <EditButton apiRuleName={data.name} />
-        </>
+        openedInModalBool ? null : (
+          <>
+            <DeleteButton apiRuleName={name} />
+            <EditButton apiRuleName={name} />
+          </>
+        )
       }
     >
       <PageHeader.Column title="Service">
-        <Link className="link" onClick={navigateToService}>
-          {`${data.service.name} (port: ${data.service.port})`}
-        </Link>
+        <ApiRuleServiceInfo apiRule={apiRule} />
       </PageHeader.Column>
       <PageHeader.Column title="Host" columnSpan="2 / 4">
-        <CopiableLink url={url} />
+        <CopiableApiRuleHost apiRule={apiRule} />
+      </PageHeader.Column>
+      <PageHeader.Column title="Status" columnSpan="4 / 4">
+        <ApiRuleStatus apiRule={apiRule} />
       </PageHeader.Column>
     </PageHeader>
   );

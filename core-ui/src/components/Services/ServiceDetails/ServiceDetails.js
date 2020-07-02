@@ -16,6 +16,7 @@ ServiceDetails.propTypes = {
 export default function ServiceDetails({ namespaceId, serviceName }) {
   const applicationModuleEnabled = useModuleEnabled('application');
   const eventingModuleEnabled = useModuleEnabled('eventing');
+  const apiGatewayModuleEnabled = useModuleEnabled('apigateway');
   const { data, loading, error } = useQuery(GET_SERVICE, {
     variables: {
       namespace: namespaceId,
@@ -43,11 +44,15 @@ export default function ServiceDetails({ namespaceId, serviceName }) {
       <ServiceEventTriggers service={service} />
     ) : null;
 
+  const apiRules = apiGatewayModuleEnabled ? (
+    <ServiceApiRules service={service} namespace={namespaceId} />
+  ) : null;
+
   return (
     <>
       <ServiceDetailsHeader service={service} namespaceId={namespaceId} />
-      <ServiceApiRules service={service} namespaceId={namespaceId} />
       {eventTriggers}
+      {apiRules}
     </>
   );
 }

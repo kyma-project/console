@@ -145,26 +145,28 @@ export const GET_SERVICES = gql`
 `;
 
 export const GET_API_RULES = gql`
-  query APIrules($namespace: String!) {
-    APIRules(namespace: $namespace) {
+  query APIRules($namespace: String!, $serviceName: String) {
+    APIRules(namespace: $namespace, serviceName: $serviceName) {
       name
-    }
-  }
-`;
-
-export const GET_API_RULES_FOR_SERVICE = gql`
-  query APIRules($namespace: String!) {
-    APIRules(namespace: $namespace) {
-      name
-      service {
-        host
-        name
-        port
+      spec {
+        rules {
+          path
+          methods
+          accessStrategies {
+            name
+            config
+          }
+        }
+        service {
+          host
+          name
+          port
+        }
       }
       status {
         apiRuleStatus {
           code
-          desc
+          description
         }
       }
     }
@@ -172,21 +174,29 @@ export const GET_API_RULES_FOR_SERVICE = gql`
 `;
 
 export const GET_API_RULE = gql`
-  query APIrule($name: String!, $namespace: String!) {
+  query APIRule($name: String!, $namespace: String!) {
     APIRule(name: $name, namespace: $namespace) {
       name
-      rules {
-        path
-        methods
-        accessStrategies {
+      spec {
+        rules {
+          path
+          methods
+          accessStrategies {
+            name
+            config
+          }
+        }
+        service {
+          host
           name
-          config
+          port
         }
       }
-      service {
-        name
-        host
-        port
+      status {
+        apiRuleStatus {
+          code
+          description
+        }
       }
     }
   }

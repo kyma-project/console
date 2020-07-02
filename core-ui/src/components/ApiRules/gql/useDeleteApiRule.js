@@ -4,6 +4,9 @@ import LuigiClient from '@luigi-project/client';
 import { useNotification } from 'react-shared';
 import { DELETE_API_RULE } from 'gql/mutations';
 
+import { formatMessage } from 'components/Lambdas/helpers/misc';
+import { GQL_MUTATIONS } from '../constants';
+
 export function useDeleteApiRule(onCompleted) {
   const namespace = LuigiClient.getContext().namespaceId;
 
@@ -15,27 +18,33 @@ export function useDeleteApiRule(onCompleted) {
 
   function handleDeleteError(error) {
     notificationManager.notifyError({
-      content: `Could not delete API Rule: ${error.message}`,
+      content: formatMessage(GQL_MUTATIONS.DELETE_API_RULE.ERROR_MESSAGE, {
+        error: error.message,
+      }),
     });
   }
 
   function handleDeleteSuccess(data) {
+    notificationManager.notifySuccess({
+      content: formatMessage(GQL_MUTATIONS.DELETE_API_RULE.SUCCESS_MESSAGE, {
+        apiRuleName: data.deleteAPIRule.name,
+      }),
+    });
     if (onCompleted) {
       onCompleted();
     }
-    notificationManager.notifySuccess({
-      content: `API Rule ${data.deleteAPIRule.name} deleted successfully`,
-    });
-    LuigiClient.linkManager()
-      .fromClosestContext()
-      .navigate('');
   }
 
   function handleDelete(name) {
     LuigiClient.uxManager()
       .showConfirmationModal({
-        header: `Remove ${name}`,
-        body: `Are you sure you want to delete rule "${name}"?`,
+        header: GQL_MUTATIONS.DELETE_API_RULE.CONFIRM_MODAL.TITLE,
+        body: formatMessage(
+          GQL_MUTATIONS.DELETE_API_RULE.CONFIRM_MODAL.MESSAGE,
+          {
+            apiRuleName: name,
+          },
+        ),
         buttonConfirm: 'Delete',
         buttonDismiss: 'Cancel',
       })
@@ -45,5 +54,6 @@ export function useDeleteApiRule(onCompleted) {
         }),
       );
   }
+
   return [handleDelete, opts];
 }

@@ -4,43 +4,38 @@ import ApiRuleStatus from 'components/ApiRules/ApiRuleStatus/ApiRuleStatus';
 import {
   GoToApiRuleDetails,
   CopiableApiRuleHost,
-  ApiRuleServiceInfo,
   ApiRuleAccessStrategiesList,
 } from 'components/ApiRules/ApiRulesList/components';
 
 import ApiRulesListWrapper from 'components/ApiRules/ApiRulesList/ApiRulesListWrapper';
 
-const headerRenderer = () => ['', 'Name', 'Host', 'Port', 'Status'];
+const headerRenderer = () => ['', 'Name', 'Host', 'Status'];
 const textSearchProperties = [
   'name',
-  'spec.service.host',
-  'spec.service.port',
+  'service.host',
   'status.apiRuleStatus.code',
 ];
 
-export default function ApiRules({ service, namespace }) {
+export default function ApiRules({ lambda }) {
   const rowRenderer = apiRule => ({
     cells: [
       <GoToApiRuleDetails apiRule={apiRule} />,
       <CopiableApiRuleHost apiRule={apiRule} />,
-      <ApiRuleServiceInfo apiRule={apiRule} withName={false} />,
       <ApiRuleStatus apiRule={apiRule} />,
     ],
-    collapseContent: (
-      <ApiRuleAccessStrategiesList apiRule={apiRule} colSpan="6" />
-    ),
+    collapseContent: <ApiRuleAccessStrategiesList apiRule={apiRule} />,
     showCollapseControl: !!apiRule.spec.rules,
     withCollapseControl: true,
   });
 
   return (
     <ApiRulesListWrapper
-      service={service}
-      resourceType="Service"
-      namespace={namespace}
+      service={lambda}
+      resourceType="Function"
       inSubView={true}
       redirectCtx="namespaces"
-      redirectPath={`services/details/${service.name}`}
+      redirectPath={`cmf-functions/details/${lambda.name}`}
+      portForCreate="80"
       headerRenderer={headerRenderer}
       rowRenderer={rowRenderer}
       textSearchProperties={textSearchProperties}

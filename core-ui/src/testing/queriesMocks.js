@@ -70,7 +70,6 @@ const sampleAPIRule = {
             config: {},
           },
         ],
-        mutators: [],
       },
     ],
   },

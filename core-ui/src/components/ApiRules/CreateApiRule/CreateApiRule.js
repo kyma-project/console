@@ -16,47 +16,59 @@ const DEFAULT_ACCESS_STRATEGY = {
       config: {},
     },
   ],
-  mutators: [],
 };
 
 const emptyApiRule = {
   name: '',
-  service: {
-    host: '',
-    name: '',
-    port: '',
+  spec: {
+    service: {
+      host: '',
+      name: '',
+      port: '',
+    },
+    rules: [DEFAULT_ACCESS_STRATEGY],
   },
-  rules: [DEFAULT_ACCESS_STRATEGY],
 };
 
 export default function CreateApiRule() {
+  const { redirectPath, redirectCtx = 'namespaces' } =
+    LuigiClient.getNodeParams() || {};
   const [createApiRuleMutation] = useMutation(CREATE_API_RULE, {
     onError: handleCreateError,
     onCompleted: handleCreateSuccess,
   });
   const notificationManager = useNotification();
 
-  function navigateToDetails(name) {
-    LuigiClient.linkManager()
-      .fromClosestContext()
-      .navigate(`/details/${name}`);
-  }
-
   function handleCreateError(error) {
+    if (redirectPath) {
+      LuigiClient.linkManager()
+        .fromContext(redirectCtx)
+        .navigate(redirectPath.split('&sol;').join('/'));
+      return;
+    }
+
     notificationManager.notifyError({
       content: `Could not create API Rule: ${error.message}`,
     });
   }
 
   function handleCreateSuccess(data) {
-    const createdApiRuleData = data.createAPIRule;
+    if (redirectPath) {
+      LuigiClient.linkManager()
+        .fromContext(redirectCtx)
+        .navigate(redirectPath.split('&sol;').join('/'));
+      return;
+    }
 
+    const createdApiRuleData = data.createAPIRule;
     if (createdApiRuleData) {
       notificationManager.notifySuccess({
         content: `API Rule ${createdApiRuleData.name} created successfully`,
       });
 
-      navigateToDetails(createdApiRuleData.name);
+      LuigiClient.linkManager()
+        .fromClosestContext()
+        .navigate(`/details/${createdApiRuleData.name}`);
     }
   }
 

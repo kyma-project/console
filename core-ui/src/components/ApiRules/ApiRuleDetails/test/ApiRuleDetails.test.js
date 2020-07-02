@@ -15,40 +15,56 @@ const mockShowConfirmationModal = jest.fn(() => Promise.resolve());
 
 const apiRule = {
   name: 'tets',
-  service: {
-    name: 'tets-service',
-    host: 'tets.kyma.cluster.com',
-    port: 8080,
+  spec: {
+    service: {
+      name: 'tets-service',
+      host: 'tets.kyma.cluster.com',
+      port: 8080,
+    },
+    rules: [
+      {
+        path: '/aaa',
+        methods: ['GET'],
+        accessStrategies: [
+          {
+            name: 'noop',
+          },
+        ],
+      },
+      {
+        path: '/bbb',
+        methods: ['POST'],
+        accessStrategies: [
+          {
+            name: 'noop',
+          },
+        ],
+      },
+    ],
   },
-  rules: [
-    {
-      path: '/aaa',
-      methods: ['GET'],
-      accessStrategies: [
-        {
-          name: 'noop',
-        },
-      ],
+  status: {
+    apiRuleStatus: {
+      code: 'OK',
+      desc: '',
     },
-    {
-      path: '/bbb',
-      methods: ['POST'],
-      accessStrategies: [
-        {
-          name: 'noop',
-        },
-      ],
-    },
-  ],
+  },
 };
 const apiRuleWithShortHost = {
   name: 'tets2',
-  service: {
-    name: 'tets-service',
-    host: 'tets',
-    port: 8080,
+  spec: {
+    service: {
+      name: 'tets-service',
+      host: 'tets',
+      port: 8080,
+    },
+    rules: [],
   },
-  rules: [],
+  status: {
+    apiRuleStatus: {
+      code: 'OK',
+      desc: '',
+    },
+  },
 };
 const mockNamespace = 'nsp';
 const validResponseMock = {
@@ -101,6 +117,7 @@ jest.mock('@luigi-project/client', () => ({
   uxManager: () => ({
     showConfirmationModal: mockShowConfirmationModal,
   }),
+  getNodeParams: () => ({}),
 }));
 
 jest.mock('@kyma-project/common', () => ({
@@ -129,7 +146,23 @@ describe('ApiRuleDetails', () => {
 
     await waitForDomChange(container);
 
-    expect(queryByText(new RegExp(apiRule.service.host))).toBeInTheDocument();
+    expect(
+      queryByText(new RegExp(apiRule.spec.service.host)),
+    ).toBeInTheDocument();
+  });
+
+  it('renders rule status', async () => {
+    const { queryByText, container } = render(
+      <MockedProvider addTypename={false} mocks={[validResponseMock]}>
+        <ApiRuleDetails apiName={apiRule.name} />
+      </MockedProvider>,
+    );
+
+    await waitForDomChange(container);
+
+    expect(
+      queryByText(new RegExp(apiRule.status.apiRuleStatus.code)),
+    ).toBeInTheDocument();
   });
 
   it('renders auto-completed host url', async () => {
@@ -143,7 +176,7 @@ describe('ApiRuleDetails', () => {
     expect(
       queryByText(
         new RegExp(
-          `${apiRuleWithShortHost.service.host}\\.kyma\\.cluster\\.com`,
+          `${apiRuleWithShortHost.spec.service.host}\\.kyma\\.cluster\\.com`,
         ),
       ),
     ).toBeInTheDocument();
@@ -158,10 +191,10 @@ describe('ApiRuleDetails', () => {
 
     await waitForDomChange(container);
 
-    const serviceNameField = queryByText(new RegExp(apiRule.service.name));
+    const serviceNameField = queryByText(new RegExp(apiRule.spec.service.name));
     expect(serviceNameField).toBeInTheDocument();
     expect(serviceNameField).toHaveTextContent(
-      new RegExp(apiRule.service.port),
+      new RegExp(apiRule.spec.service.port),
     );
   });
 
@@ -174,7 +207,7 @@ describe('ApiRuleDetails', () => {
     await waitForDomChange(container);
 
     const accessStrategiesSection = getByLabelText('Access strategies');
-    apiRule.rules.forEach(rule => {
+    apiRule.spec.rules.forEach(rule => {
       expect(
         queryByText(accessStrategiesSection, rule.path),
       ).toBeInTheDocument();

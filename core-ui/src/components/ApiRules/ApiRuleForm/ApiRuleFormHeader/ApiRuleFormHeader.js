@@ -1,8 +1,11 @@
 import React from 'react';
 import LuigiClient from '@luigi-project/client';
 import PropTypes from 'prop-types';
+
 import { Button, Link } from 'fundamental-react';
 import { PageHeader } from 'react-shared';
+
+import './ApiRuleFormHeader.scss';
 
 const ApiRuleFormHeader = ({
   handleSave,
@@ -10,10 +13,10 @@ const ApiRuleFormHeader = ({
   title,
   saveButtonText,
   breadcrumbItems,
+  serviceName = undefined,
+  openedInModalBool = false,
 }) => {
-  const { serviceName } = LuigiClient.getNodeParams();
-
-  const serviceLink = serviceName && (
+  const serviceLink = !openedInModalBool && serviceName && (
     <PageHeader.Column title="Service">
       <Link
         className="link"
@@ -29,22 +32,24 @@ const ApiRuleFormHeader = ({
   );
 
   return (
-    <PageHeader
-      title={title}
-      breadcrumbItems={breadcrumbItems}
-      actions={
-        <Button
-          onClick={handleSave}
-          disabled={!isValid}
-          option="emphasized"
-          aria-label="submit-form"
-        >
-          {saveButtonText}
-        </Button>
-      }
-    >
-      {serviceLink}
-    </PageHeader>
+    <div className="api-rule-form__header">
+      <PageHeader
+        title={openedInModalBool ? '' : title}
+        breadcrumbItems={openedInModalBool ? [] : breadcrumbItems}
+        actions={
+          <Button
+            onClick={handleSave}
+            disabled={!isValid}
+            option="emphasized"
+            aria-label="submit-form"
+          >
+            {saveButtonText}
+          </Button>
+        }
+      >
+        {serviceLink}
+      </PageHeader>
+    </div>
   );
 };
 

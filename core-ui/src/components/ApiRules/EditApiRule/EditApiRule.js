@@ -14,6 +14,8 @@ EditApiRule.propTypes = {
 };
 
 export default function EditApiRule({ apiName }) {
+  const { redirectPath, redirectCtx = 'namespaces' } =
+    LuigiClient.getNodeParams() || {};
   const [updateApiRuleMutation] = useMutation(UPDATE_API_RULE, {
     onError: handleError,
     onCompleted: handleSuccess,
@@ -36,39 +38,48 @@ export default function EditApiRule({ apiName }) {
     return <h1>Couldn't fetch API rule data</h1>;
   }
 
-  if (!data.APIRule) {
+  if (!data.APIRule || !data.APIRule.spec) {
     return <EntryNotFound entryType="API Rule" entryId={apiName} />;
   }
 
-  data.APIRule.rules.forEach(rule => {
+  data.APIRule.spec.rules.forEach(rule => {
     delete rule.__typename;
     rule.accessStrategies.forEach(as => {
       delete as.__typename;
     });
   });
 
-  function navigateToDetails() {
-    LuigiClient.linkManager()
-      .fromClosestContext()
-      .navigate(`/details/${apiName}`);
-  }
-
   function handleError(error) {
+    if (redirectPath) {
+      LuigiClient.linkManager()
+        .fromContext(redirectCtx)
+        .navigate(redirectPath.split('&sol;').join('/'));
+      return;
+    }
+
     notificationManager.notifyError({
       content: `Could not update API Rule: ${error.message}`,
     });
   }
 
   function handleSuccess(data) {
-    const editedApiRuleData = data.updateAPIRule;
+    if (redirectPath) {
+      LuigiClient.linkManager()
+        .fromContext(redirectCtx)
+        .navigate(redirectPath.split('&sol;').join('/'));
+      return;
+    }
 
+    const editedApiRuleData = data.updateAPIRule;
     if (editedApiRuleData) {
       notificationManager.notifySuccess({
         content: `API Rule ${editedApiRuleData.name} updated successfully`,
       });
-    }
 
-    navigateToDetails();
+      LuigiClient.linkManager()
+        .fromClosestContext()
+        .navigate(`/details/${apiName}`);
+    }
   }
 
   const breadcrumbItems = [

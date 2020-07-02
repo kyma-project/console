@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { v4 as uuid } from 'uuid';
 import { useQuery } from '@apollo/react-hooks';
 import LuigiClient from '@luigi-project/client';
+import classNames from 'classnames';
 import { K8sNameInput, InputWithSuffix } from 'react-shared';
 import {
   LayoutGrid,
@@ -34,7 +35,6 @@ const EMPTY_ACCESS_STRATEGY = {
       config: {},
     },
   ],
-  mutators: [],
 };
 
 ApiRuleForm.propTypes = {
@@ -58,16 +58,18 @@ export default function ApiRuleForm({
   breadcrumbItems,
 }) {
   const namespace = LuigiClient.getEventData().environmentId;
-  const [rules, setRules] = useState(
-    apiRule.rules.map(r => ({ ...r, renderKey: uuid() })),
-  );
+  const { serviceName, port, openedInModal = false } =
+    LuigiClient.getNodeParams() || {};
+  const openedInModalBool = openedInModal.toString().toLowerCase() === 'true';
 
+  const [rules, setRules] = useState(
+    apiRule.spec.rules.map(r => ({ ...r, renderKey: uuid() })),
+  );
   const [isValid, setValid] = useState(false);
-  const { serviceName, port } = LuigiClient.getNodeParams();
 
   if (serviceName && port) {
-    apiRule.service.name = serviceName;
-    apiRule.service.port = port;
+    apiRule.spec.service.name = serviceName;
+    apiRule.spec.service.port = port;
   }
 
   const servicesQueryResult = useQuery(GET_SERVICES, {
@@ -116,10 +118,13 @@ export default function ApiRuleForm({
     const variables = {
       name: formValues.name.current.value,
       namespace,
+      generation: apiRule.generation,
       params: {
-        host: formValues.hostname.current.value + '.' + DOMAIN,
-        serviceName,
-        servicePort,
+        service: {
+          host: formValues.hostname.current.value + '.' + DOMAIN,
+          name: serviceName,
+          port: parseInt(servicePort),
+        },
         gateway: DEFAULT_GATEWAY,
         rules: rules.map(({ renderKey, ...actualRule }) => actualRule),
       },
@@ -141,15 +146,21 @@ export default function ApiRuleForm({
   }
 
   return (
-    <>
+    <div
+      className={classNames('api-rule-form', {
+        'api-rule-form--in-modal': openedInModalBool,
+      })}
+    >
       <ApiRuleFormHeader
         isValid={isValid}
         handleSave={save}
-        title={headerTitle}
         saveButtonText={saveButtonText}
+        title={headerTitle}
         breadcrumbItems={breadcrumbItems}
+        serviceName={serviceName}
+        openedInModalBool={openedInModalBool}
       />
-      <section className="fd-section api-rule-container">
+      <section className="api-rule-form__form">
         <form
           onSubmit={e => e.preventDefault()}
           onChange={e => handleFormChanged(e)}
@@ -183,7 +194,7 @@ export default function ApiRuleForm({
                         />
                       </FormLabel>
                       <InputWithSuffix
-                        defaultValue={apiRule.service.host.replace(
+                        defaultValue={apiRule.spec.service.host.replace(
                           `.${DOMAIN}`,
                           '',
                         )}
@@ -197,7 +208,7 @@ export default function ApiRuleForm({
                     </FormItem>
                     <ServicesDropdown
                       _ref={formValues.service}
-                      defaultValue={apiRule.service}
+                      defaultValue={apiRule.spec.service}
                       serviceName={serviceName}
                       {...servicesQueryResult}
                     />
@@ -248,6 +259,6 @@ export default function ApiRuleForm({
           </LayoutGrid>
         </form>
       </section>
-    </>
+    </div>
   );
 }

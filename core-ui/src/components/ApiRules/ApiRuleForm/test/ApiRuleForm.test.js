@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, waitForDomChange, fireEvent } from '@testing-library/react';
-import ApiRuleForm, { DEFAULT_GATEWAY } from '../ApiRuleForm';
+import ApiRuleForm from '../ApiRuleForm';
 import { MockedProvider } from '@apollo/react-testing';
 import { mockNamespace, apiRule, servicesQuery } from './mocks';
 import { supportedMethodsList } from 'components/ApiRules/accessStrategyTypes';
@@ -43,9 +43,9 @@ describe('ApiRuleForm', () => {
     await waitForDomChange({ container });
 
     const inputs = queryAllByPlaceholderText('Enter the path');
-    expect(inputs).toHaveLength(apiRule().rules.length);
+    expect(inputs).toHaveLength(apiRule().spec.rules.length);
     inputs.forEach((input, idx) => {
-      expect(input).toHaveValue(apiRule().rules[idx].path);
+      expect(input).toHaveValue(apiRule().spec.rules[idx].path);
     });
 
     supportedMethodsList.forEach(method =>
@@ -53,10 +53,10 @@ describe('ApiRuleForm', () => {
     );
 
     const typeSelects = queryAllByLabelText('Access strategy type');
-    expect(typeSelects).toHaveLength(apiRule().rules.length);
+    expect(typeSelects).toHaveLength(apiRule().spec.rules.length);
     typeSelects.forEach((typeSelect, idx) => {
       expect(typeSelect).toHaveValue(
-        apiRule().rules[idx].accessStrategies[0].name,
+        apiRule().spec.rules[idx].accessStrategies[0].name,
       );
     });
   });
@@ -80,9 +80,9 @@ describe('ApiRuleForm', () => {
     getByText('Add access strategy').click();
 
     const paths = queryAllByPlaceholderText('Enter the path');
-    expect(paths).toHaveLength(apiRule().rules.length + 1);
+    expect(paths).toHaveLength(apiRule().spec.rules.length + 1);
 
-    fireEvent.change(paths[apiRule().rules.length], {
+    fireEvent.change(paths[apiRule().spec.rules.length], {
       target: { value: '/path' },
     });
 
@@ -92,15 +92,11 @@ describe('ApiRuleForm', () => {
         name: apiRule().name,
         namespace: mockNamespace,
         params: {
-          gateway: DEFAULT_GATEWAY,
-          host: apiRule().service.host,
-          serviceName: apiRule().service.name,
-          servicePort: `${apiRule().service.port}`,
+          ...apiRule().spec,
           rules: [
-            ...apiRule().rules,
+            ...apiRule().spec.rules,
             {
               methods: [],
-              mutators: [],
               path: '/path',
               accessStrategies: [{ name: 'noop', config: {} }],
             },
@@ -136,11 +132,8 @@ describe('ApiRuleForm', () => {
         name: apiRule().name,
         namespace: mockNamespace,
         params: {
-          gateway: DEFAULT_GATEWAY,
-          host: apiRule().service.host,
-          serviceName: apiRule().service.name,
-          servicePort: `${apiRule().service.port}`,
-          rules: [apiRule().rules[1]],
+          ...apiRule().spec,
+          rules: [apiRule().spec.rules[1]],
         },
       },
     });
@@ -167,7 +160,7 @@ describe('ApiRuleForm', () => {
     await waitForDomChange({ container });
 
     const strategySelects = getAllByLabelText('Access strategy type');
-    const nonRemovedRule = rule.rules[1].accessStrategies[0];
+    const nonRemovedRule = rule.spec.rules[1].accessStrategies[0];
     expect(strategySelects[0].value).toBe(nonRemovedRule.name);
   });
 
@@ -199,16 +192,13 @@ describe('ApiRuleForm', () => {
         name: apiRule().name,
         namespace: mockNamespace,
         params: {
-          gateway: DEFAULT_GATEWAY,
-          host: apiRule().service.host,
-          serviceName: apiRule().service.name,
-          servicePort: `${apiRule().service.port}`,
+          ...apiRule().spec,
           rules: [
             {
-              ...apiRule().rules[0],
+              ...apiRule().spec.rules[0],
               path: '/path',
             },
-            apiRule().rules[1],
+            apiRule().spec.rules[1],
           ],
         },
       },
@@ -218,10 +208,12 @@ describe('ApiRuleForm', () => {
 
 function verifyMethodCheckboxes(queryAllByLabelText, method) {
   const checkboxes = queryAllByLabelText(method);
-  expect(checkboxes).toHaveLength(apiRule().rules.length);
-  checkboxes.forEach((checkboxe, idx) => {
-    if (apiRule().rules[idx].methods.indexOf(method) !== -1)
-      expect(checkboxe).toBeChecked();
-    else expect(checkboxe).not.toBeChecked();
+  expect(checkboxes).toHaveLength(apiRule().spec.rules.length);
+  checkboxes.forEach((checkbox, idx) => {
+    if (apiRule().spec.rules[idx].methods.includes(method)) {
+      expect(checkbox).toBeChecked();
+    } else {
+      expect(checkbox).not.toBeChecked();
+    }
   });
 }

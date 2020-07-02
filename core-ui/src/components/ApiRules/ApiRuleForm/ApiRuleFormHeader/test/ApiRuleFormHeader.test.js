@@ -4,7 +4,6 @@ import ApiRuleFormHeader from '../ApiRuleFormHeader';
 
 const mockNavigate = jest.fn();
 jest.mock('@luigi-project/client', () => ({
-  getNodeParams: () => ({ serviceName: 'service-name' }),
   linkManager: () => ({ fromContext: () => ({ navigate: mockNavigate }) }),
 }));
 
@@ -17,6 +16,7 @@ describe('ApiRuleFormHeader', () => {
         title={'api rule title'}
         saveButtonText={'save'}
         breadcrumbItems={[]}
+        serviceName="service-name"
       />,
     );
 
@@ -31,6 +31,7 @@ describe('ApiRuleFormHeader', () => {
         title={'api rule title'}
         saveButtonText={'save'}
         breadcrumbItems={[]}
+        serviceName="service-name"
       />,
     );
 

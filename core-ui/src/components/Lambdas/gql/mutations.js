@@ -102,3 +102,11 @@ export const DELETE_SERVICE_BINDING_USAGE = gql`
     }
   }
 `;
+
+export const DELETE_API_RULE = gql`
+  mutation deleteAPIRule($name: String!, $namespace: String!) {
+    deleteAPIRule(name: $name, namespace: $namespace) {
+      name
+    }
+  }
+`;
