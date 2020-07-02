@@ -55,6 +55,7 @@ describe('CreateInstanceModal', () => {
     const component = renderer.create(
       <MockedProvider>
         <CreateInstanceModal
+          setCustomValid={jest.fn()}
           checkInstanceExistQuery={{ serviceInstances: [] }}
           item={mockServiceClass(1, false, [mockPlan(1)])}
           formElementRef={{ current: null }}
@@ -74,6 +75,7 @@ describe('CreateInstanceModal', () => {
     const component = mount(
       <MockedProvider>
         <CreateInstanceModal
+          setCustomValid={jest.fn()}
           checkInstanceExistQuery={{ serviceInstances: [] }}
           item={mockService}
           formElementRef={{ current: null }}
@@ -123,6 +125,7 @@ describe('CreateInstanceModal', () => {
     const component = mount(
       <MockedProvider>
         <CreateInstanceModal
+          setCustomValid={jest.fn()}
           checkInstanceExistQuery={{ serviceInstances: [] }}
           item={mockServiceClass(1, false, [planWithImagePullPolicy])}
           formElementRef={{ current: null }}
@@ -159,6 +162,7 @@ describe('CreateInstanceModal', () => {
     const component = mount(
       <MockedProvider mocks={[gqlMock]} addTypename={false}>
         <CreateInstanceModal
+          setCustomValid={jest.fn()}
           checkInstanceExistQuery={{ serviceInstances: [] }}
           item={mockService}
           formElementRef={ref}
@@ -203,6 +207,7 @@ describe('CreateInstanceModal', () => {
     const component = mount(
       <MockedProvider mocks={[gqlMock]} addTypename={false}>
         <CreateInstanceModal
+          setCustomValid={jest.fn()}
           checkInstanceExistQuery={{ serviceInstances: [] }}
           item={mockService}
           formElementRef={ref}
@@ -243,6 +248,7 @@ describe('CreateInstanceModal', () => {
     const component = mount(
       <MockedProvider mocks={[gqlMock]} addTypename={false}>
         <CreateInstanceModal
+          setCustomValid={jest.fn()}
           checkInstanceExistQuery={{ serviceInstances: [] }}
           item={mockService}
           formElementRef={ref}
@@ -293,6 +299,7 @@ describe('CreateInstanceModal', () => {
       const { queryByText } = render(
         <MockedProvider mocks={[gqlMock]} addTypename={false}>
           <CreateInstanceModal
+            setCustomValid={jest.fn()}
             checkInstanceExistQuery={{ serviceInstances: [] }}
             item={mockService}
             formElementRef={{ current: null }}
@@ -312,6 +319,7 @@ describe('CreateInstanceModal', () => {
       const { queryByLabelText } = render(
         <MockedProvider mocks={[gqlMock]} addTypename={false}>
           <CreateInstanceModal
+            setCustomValid={jest.fn()}
             checkInstanceExistQuery={{ serviceInstances: [] }}
             item={mockService}
             formElementRef={{ current: null }}
