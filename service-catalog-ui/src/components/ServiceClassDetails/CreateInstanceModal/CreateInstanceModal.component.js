@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { FormItem, FormLabel, Icon, Link } from 'fundamental-react';
 import { useMutation } from '@apollo/react-hooks';
@@ -102,6 +102,8 @@ PlanColumnContent.proTypes = {
   allPlans: PropTypes.arrayOf(SERVICE_PLAN_SHAPE),
 };
 
+const isNonNullObject = o => typeof o === 'object' && !!o;
+
 export default function CreateInstanceModal({
   onCompleted,
   onChange,
@@ -127,6 +129,13 @@ export default function CreateInstanceModal({
   const plan = preselectedPlan ? preselectedPlan.name : plans[0].name;
 
   const [instanceCreateParameters, setInstanceCreateParameters] = useState({});
+  useEffect(() => {
+    setCustomValid(true);
+    // Make the form initially valid because a form without instanceCreateParameters is always valid.
+    // It'll be immiediately overwritten once plan or instanceCreateParameters are changed
+
+    // eslint-disable-next-line
+  }, []);
 
   const [
     instanceCreateParameterSchema,
@@ -173,7 +182,6 @@ export default function CreateInstanceModal({
   };
 
   const handleCustomParametersChange = input => {
-    const isNonNullObject = o => typeof o === 'object' && !!o;
     try {
       const parsedInput = JSON.parse(input);
       if (isNonNullObject(parsedInput)) {
@@ -279,7 +287,7 @@ export default function CreateInstanceModal({
         <SchemaData
           key={formValues.plan.current.value}
           schemaFormRef={jsonSchemaFormRef}
-          data={instanceCreateParameters}
+          data={instanceCreateParameters || {}}
           instanceCreateParameterSchema={instanceCreateParameterSchema}
           planName={
             (formValues.plan &&
