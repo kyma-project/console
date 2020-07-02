@@ -152,8 +152,8 @@ export const GET_API_RULES = gql`
 `;
 
 export const GET_API_RULES_FOR_SERVICE = gql`
-  query APIRules($namespace: String!) {
-    APIRules(namespace: $namespace) {
+  query APIRulesForService($namespace: String!, $serviceName: String!) {
+    APIRules(namespace: $namespace, serviceName: $serviceName) {
       name
       spec {
         service {

@@ -29,7 +29,7 @@ export const apiRules = [
 export const apiRulesQuery = {
   request: {
     query: GET_API_RULES_FOR_SERVICE,
-    variables: { namespace: namespaceId },
+    variables: { namespace: namespaceId, serviceName: service.name },
   },
   result: {
     data: { APIRules: apiRules },

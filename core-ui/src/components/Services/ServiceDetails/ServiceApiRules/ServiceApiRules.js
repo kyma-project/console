@@ -38,28 +38,20 @@ function navigateToCreate(service) {
 }
 
 export default function ServiceApiRules({ namespaceId, service }) {
-  const [deleteApiRule] = useMutation(DELETE_API_RULE, {
-    refetchQueries: () => [
-      {
-        query: GET_API_RULES_FOR_SERVICE,
-        variables: { namespace: namespaceId },
-      },
-    ],
-  });
   const notification = useNotification();
+  const queryVariables = { namespace: namespaceId, serviceName: service.name };
+
+  const [deleteApiRule] = useMutation(DELETE_API_RULE, {
+    refetchQueries: () => ['APIRulesForService'],
+  });
 
   const { data, loading, error } = useQuery(GET_API_RULES_FOR_SERVICE, {
-    variables: { namespace: namespaceId },
+    variables: queryVariables,
     fetchPolicy: 'no-cache',
   });
 
   if (loading) return 'Loading...';
   if (error) return `Error! ${error.message}`;
-
-  // TODO use query with service param when https://github.com/kyma-project/kyma/pull/8878 is merged
-  const apiRules = data.APIRules.filter(
-    aR => aR.spec.service.name === service.name,
-  );
 
   const extraHeaderContent = (
     <Button glyph="add" onClick={() => navigateToCreate(service)}>
@@ -108,7 +100,7 @@ export default function ServiceApiRules({ namespaceId, service }) {
       title={`API Rules for ${service.name}`}
       notFoundMessage="No API Rules defined"
       actions={actions}
-      entries={apiRules}
+      entries={data.APIRules}
       headerRenderer={headerRenderer}
       rowRenderer={rowRenderer}
       textSearchProperties={['name', 'host', 'port']}

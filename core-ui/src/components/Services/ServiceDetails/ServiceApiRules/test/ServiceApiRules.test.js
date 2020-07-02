@@ -31,42 +31,36 @@ describe('ServiceApiRules', () => {
   });
 
   it('Navigates to API Rule creator after clicking on "Expose API"', async () => {
-    const { getByText } = render(
+    const { findByText } = render(
       <MockedProvider mocks={[apiRulesQuery]} addTypename={false}>
         <ServiceApiRules namespaceId={namespaceId} service={service} />
       </MockedProvider>,
     );
 
-    await wait(50);
-
-    fireEvent.click(getByText(/Expose API/));
+    fireEvent.click(await findByText(/Expose API/));
     expect(mockNavigate).toHaveBeenCalledWith('cmf-apirules/create');
   });
 
   it('Navigates to API Rule details"', async () => {
-    const { getByText } = render(
+    const { findByText } = render(
       <MockedProvider mocks={[apiRulesQuery]} addTypename={false}>
         <ServiceApiRules namespaceId={namespaceId} service={service} />
       </MockedProvider>,
     );
 
-    await wait(50);
-
     const name = apiRules[0].name;
-    fireEvent.click(getByText(name));
+    fireEvent.click(await findByText(name));
     expect(mockNavigate).toHaveBeenCalledWith(`cmf-apirules/details/${name}`);
   });
 
   it('Navigates to API Rule details - edit mode', async () => {
-    const { getAllByLabelText } = render(
+    const { findAllByLabelText } = render(
       <MockedProvider mocks={[apiRulesQuery]} addTypename={false}>
         <ServiceApiRules namespaceId={namespaceId} service={service} />
       </MockedProvider>,
     );
 
-    await wait(50);
-
-    fireEvent.click(getAllByLabelText('Edit')[0]);
+    fireEvent.click((await findAllByLabelText('Edit'))[0]);
     expect(mockNavigate).toHaveBeenCalledWith(
       `cmf-apirules/edit/${apiRules[0].name}`,
     );
