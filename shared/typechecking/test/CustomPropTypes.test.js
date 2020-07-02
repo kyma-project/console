@@ -46,4 +46,60 @@ describe('CustomPropTypes', () => {
       });
     });
   });
+
+  describe('button', () => {
+    it('Passes on proper value', () => {
+      const buttonProp = {
+        compact: true,
+        disabled: true,
+        text: 'tttt',
+        label: 'llll',
+        glyph: 'gggg',
+      };
+      const result = CustomPropTypes.button(
+        {
+          button: buttonProp,
+        },
+
+        'button',
+        'David H',
+      );
+
+      expect(result).toBe(true);
+    });
+
+    it('Fails on empty value', () => {
+      const buttonProp = {};
+      const result = CustomPropTypes.button(
+        {
+          button: buttonProp,
+        },
+
+        'button',
+        'David H',
+      );
+
+      expect(result).toBeInstanceOf(Error);
+    });
+
+    it('Passes when one of the props has wrong type', () => {
+      const buttonProp = {
+        compact: 'I should not be a string',
+        disabled: true,
+        text: 'tttt',
+        label: 'llll',
+        glyph: 'gggg',
+      };
+      const result = CustomPropTypes.button(
+        {
+          button: buttonProp,
+        },
+
+        'button',
+        'David H',
+      );
+
+      expect(result).toBeInstanceOf(Error);
+    });
+  });
 });

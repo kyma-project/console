@@ -4,6 +4,7 @@ import { Modal, Button } from 'fundamental-react';
 import LuigiClient from '@luigi-project/client';
 import { useNotification } from '../../contexts/NotificationContext';
 import { Tooltip } from '../Tooltip/Tooltip';
+import CustomPropTypes from '../../typechecking/CustomPropTypes';
 
 const isFormValid = (formRef, reportValidity = false) => {
   if (!formRef || !formRef.current) return true;
@@ -216,42 +217,7 @@ ModalWithForm.propTypes = {
   modalOpeningComponent: PropTypes.node,
   confirmText: PropTypes.string,
   invalidPopupMessage: PropTypes.string,
-  button: function(props, propName, componentName) {
-    function checkDataOrRequest() {
-      return (
-        !props[propName].hasOwnProperty('text') &&
-        !props[propName].hasOwnProperty('label') &&
-        new Error(`Either "text" or "label" is required`)
-      );
-    }
-
-    function checkTypes() {
-      if (
-        (props[propName].hasOwnProperty('compact') &&
-          typeof props[propName]['compact'] !== 'boolean') ||
-        (props[propName].hasOwnProperty('disabled') &&
-          typeof props[propName]['disabled'] !== 'boolean') ||
-        (props[propName].hasOwnProperty('glyph') &&
-          typeof props[propName]['glyph'] !== 'string') ||
-        (props[propName].hasOwnProperty('label') &&
-          typeof props[propName]['label'] !== 'string') ||
-        (props[propName].hasOwnProperty('text') &&
-          typeof props[propName]['text'] !== 'string')
-      ) {
-        return new Error(
-          'Invalid prop `' +
-            propName +
-            '` supplied to' +
-            ' `' +
-            componentName +
-            '`. Validation failed.',
-        );
-      }
-
-      return false;
-    }
-    return props[propName] && (checkDataOrRequest() || checkTypes());
-  },
+  button: CustomPropTypes.button,
 };
 
 ModalWithForm.defaultProps = {
