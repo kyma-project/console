@@ -23,6 +23,7 @@ const errorLink = onError(
 
       if (networkError) console.log(`[Network error]: ${networkError}`);
     }
+    response.errors = null;
   },
 );
 
