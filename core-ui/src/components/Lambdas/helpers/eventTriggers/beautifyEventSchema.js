@@ -14,22 +14,26 @@ export function beautifyEventSchema(eventSchema) {
     const newProperties = properties;
 
     for (const [key, prop] of Object.entries(properties)) {
-      if (prop.description) {
-        prop.description = renderMd(prop.description);
-      }
-      if (prop.properties) {
-        const propProperties = prop.properties;
-        const newPropProperties = {};
+      try {
+        if (prop.description) {
+          prop.description = renderMd(prop.description);
+        }
+        if (prop.properties) {
+          const propProperties = prop.properties;
+          const newPropProperties = {};
 
-        for (const [propKey, propValue] of Object.entries(propProperties)) {
-          newPropProperties[propKey] =
-            beautifyEventSchema(propValue) || propValue;
+          for (const [propKey, propValue] of Object.entries(propProperties)) {
+            newPropProperties[propKey] =
+              beautifyEventSchema(propValue) || propValue;
+          }
+
+          prop.properties = newPropProperties;
         }
 
-        prop.properties = newPropProperties;
+        newProperties[key] = prop;
+      } catch (error) {
+        console.error(error);
       }
-
-      newProperties[key] = prop;
     }
     schema.properties = newProperties;
   }
