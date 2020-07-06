@@ -3,13 +3,15 @@ import PropTypes from 'prop-types';
 
 import { useMicrofrontendContext } from 'react-shared';
 import EventTriggers from 'shared/components/EventTriggers/EventTriggers';
-import { useEventActivationsQuery } from 'components/Lambdas/gql/hooks/queries';
+import {
+  useEventActivationsQuery,
+  useEventTriggersQuery,
+} from 'components/Lambdas/gql/hooks/queries';
 import { GET_EVENT_TRIGGERS } from 'components/Lambdas/gql/queries';
 import {
   serializeEvents,
   createSubscriberRef,
 } from 'components/Lambdas/helpers/eventTriggers';
-import { useQuery } from '@apollo/react-hooks';
 import { EVENT_TRIGGERS, SERVICE_API_VERSION } from '../../constants';
 
 import {
@@ -28,18 +30,14 @@ export default function ServiceEventTriggersWrapper({ service }) {
     UID: service.UID,
   };
 
-  const getEventTriggersVariables = {
-    variables: {
-      namespace,
-      subscriber: subscriberRef,
-    },
-    fetchPolicy: 'network-only',
-  };
   const mutationOptions = {
     refetchQueries: () => [
       {
         query: GET_EVENT_TRIGGERS,
-        variables: getEventTriggersVariables.variables,
+        variables: {
+          namespace,
+          subscriber: subscriberRef,
+        },
       },
     ],
   };
@@ -66,14 +64,19 @@ export default function ServiceEventTriggersWrapper({ service }) {
     namespace,
   });
 
-  const { data, error: triggersError, loading: triggersLoading } = useQuery(
-    GET_EVENT_TRIGGERS,
-    getEventTriggersVariables,
-  );
+  const [
+    eventTriggers = [],
+    triggersError,
+    triggersLoading,
+  ] = useEventTriggersQuery({
+    subscriber: subscriberRef,
+    namespace,
+    name: service.name,
+  });
 
   const { availableEvents, usedEvents } = serializeEvents({
     events,
-    eventTriggers: data ? data.triggers : [],
+    eventTriggers,
   });
 
   return (

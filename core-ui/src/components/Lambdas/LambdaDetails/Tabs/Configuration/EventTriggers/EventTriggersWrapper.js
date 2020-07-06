@@ -47,7 +47,8 @@ export default function EventTriggersWrapper({ lambda }) {
     triggersLoading,
   ] = useEventTriggersQuery({
     subscriber: subscriberRef,
-    lambda,
+    namespace: lambda.namespace,
+    name: lambda.name,
   });
 
   const { availableEvents, usedEvents } = serializeEvents({
