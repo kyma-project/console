@@ -75,7 +75,7 @@ describe('useCreateManyEventTriggers', () => {
       mocks: [CREATE_MANY_EVENT_TRIGGERS_ERROR_MOCK(variables)],
     });
 
-    const { getByText, getByTestId, debug } = render(
+    const { getByText, getByTestId } = render(
       withNotificationProvider({
         component: mockProvider,
       }),
