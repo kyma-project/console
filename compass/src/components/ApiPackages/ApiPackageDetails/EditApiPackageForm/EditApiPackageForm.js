@@ -57,14 +57,12 @@ export default function EditApiPackageForm({
     JSON.parse(apiPackage.instanceAuthRequestInputSchema || '{}'),
   );
 
-  const credentials =
-    apiPackage.defaultInstanceAuth && apiPackage.defaultInstanceAuth.credential;
   const [credentialsType, setCredentialsType] = React.useState(
-    inferCredentialType(credentials),
+    inferCredentialType(apiPackage.defaultInstanceAuth),
   );
   const defaultCredentials = inferDefaultCredentials(
     credentialsType,
-    credentials,
+    apiPackage.defaultInstanceAuth,
   );
 
   const handleSchemaChange = schema => {
@@ -80,7 +78,7 @@ export default function EditApiPackageForm({
 
   const handleFormSubmit = async () => {
     const apiName = name.current.value;
-    const creds = getCredentialsRefsValue(credentialRefs);
+    const creds = getCredentialsRefsValue(credentialRefs, credentialsType);
     const input = {
       name: apiName,
       description: description.current.value,
@@ -128,7 +126,7 @@ export default function EditApiPackageForm({
         <Tab
           key="package-credentials"
           id="package-credentials"
-          title="Credentials"
+          title="Default credentials"
         >
           <FormSet>
             <CredentialsForm

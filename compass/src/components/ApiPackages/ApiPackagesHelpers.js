@@ -2,10 +2,15 @@ import {
   CREDENTIAL_TYPE_NONE,
   CREDENTIAL_TYPE_OAUTH,
   CREDENTIAL_TYPE_BASIC,
+  CREDENTIAL_TYPE_EMPTY,
   getRefsValues,
 } from 'react-shared';
 
-export const inferCredentialType = credentials => {
+export const inferCredentialType = instanceAuth => {
+  if (!instanceAuth) {
+    return CREDENTIAL_TYPE_NONE;
+  }
+  const credentials = instanceAuth.credential;
   if (credentials && credentials.__typename) {
     if (credentials.__typename === 'OAuthCredentialData') {
       return CREDENTIAL_TYPE_OAUTH;
@@ -13,34 +18,31 @@ export const inferCredentialType = credentials => {
       return CREDENTIAL_TYPE_BASIC;
     }
   }
-  return CREDENTIAL_TYPE_NONE;
+  return CREDENTIAL_TYPE_EMPTY;
 };
 
-export const inferDefaultCredentials = (credentialsType, credentials) => {
-  if (credentialsType === CREDENTIAL_TYPE_OAUTH) {
-    return {
-      oAuth: {
-        ...credentials,
-      },
-    };
-  } else if (credentialsType === CREDENTIAL_TYPE_BASIC) {
-    return {
-      basic: {
-        ...credentials,
-      },
-    };
+export const inferDefaultCredentials = (credentialType, instanceAuth) => {
+  switch (credentialType) {
+    case CREDENTIAL_TYPE_BASIC:
+      return { basic: instanceAuth ? instanceAuth.credential : {} };
+    case CREDENTIAL_TYPE_OAUTH:
+      return { oAuth: instanceAuth ? instanceAuth.credential : {} };
+    default:
+      return null;
   }
-  return null;
 };
 
-export const getCredentialsRefsValue = credentialRefs => {
-  const oAuthValues = getRefsValues(credentialRefs.oAuth);
-  const basicValues = getRefsValues(credentialRefs.basic);
-  let credentials = null;
-  if (oAuthValues && Object.keys(oAuthValues).length !== 0) {
-    credentials = { credential: { oauth: oAuthValues } };
-  } else if (basicValues && Object.keys(basicValues).length !== 0) {
-    credentials = { credential: { basic: basicValues } };
+export const getCredentialsRefsValue = (credentialRefs, credentialsType) => {
+  switch (credentialsType) {
+    case CREDENTIAL_TYPE_BASIC:
+      const basicValues = getRefsValues(credentialRefs.basic);
+      return { credential: { basic: basicValues } };
+    case CREDENTIAL_TYPE_OAUTH:
+      const oAuthValues = getRefsValues(credentialRefs.oAuth);
+      return { credential: { oauth: oAuthValues } };
+    case CREDENTIAL_TYPE_EMPTY:
+      return { credential: null };
+    default:
+      return null;
   }
-  return credentials;
 };

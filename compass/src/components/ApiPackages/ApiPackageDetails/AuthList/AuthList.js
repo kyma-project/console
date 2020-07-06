@@ -9,14 +9,19 @@ AuthList.propTypes = {
   auths: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
 };
 
-const AuthStatus = ({ timestamp, message, reason, condition }) => (
-  <StatusBadge
-    tooltipContent={`[${timestamp}] ${reason}: ${message}`}
-    autoResolveType
-  >
-    {condition}
-  </StatusBadge>
-);
+const AuthStatus = ({ timestamp, message, reason, condition }) => {
+  if (condition === 'PENDING' && !message) {
+    message = 'No default auth provided.';
+  }
+  return (
+    <StatusBadge
+      tooltipContent={`[${timestamp}] ${reason}: ${message}`}
+      autoResolveType
+    >
+      {condition}
+    </StatusBadge>
+  );
+};
 
 const AuthContext = ({ context }) => {
   const valuesToDisplay = 2;

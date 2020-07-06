@@ -68,7 +68,10 @@ export default function CreateApiPackageForm({
 
   const handleFormSubmit = async () => {
     const apiName = name.current.value;
-    const credentials = getCredentialsRefsValue(credentialRefs);
+    const credentials = getCredentialsRefsValue(
+      credentialRefs,
+      credentialsType,
+    );
     const input = {
       name: apiName,
       description: description.current.value,
