@@ -10,8 +10,7 @@ import {
   createSubscriberRef,
 } from 'components/Lambdas/helpers/eventTriggers';
 import { useQuery } from '@apollo/react-hooks';
-import { EVENT_TRIGGERS } from '../../constants';
-import { SERVERLESS_API_VERSION } from 'shared/constants';
+import { EVENT_TRIGGERS, SERVICE_API_VERSION } from '../../constants';
 
 import {
   useDeleteEventTrigger,
@@ -23,7 +22,7 @@ export default function ServiceEventTriggersWrapper({ service }) {
   const subscriberRef = createSubscriberRef(service);
 
   const ownerRef = {
-    apiVersion: SERVERLESS_API_VERSION,
+    apiVersion: SERVICE_API_VERSION,
     kind: 'Service',
     name: service.name,
     UID: service.UID,

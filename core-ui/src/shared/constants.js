@@ -37,5 +37,3 @@ export const TRIGGER_SCHEMA = {
   EXAMPLE_TEXT: 'Example',
   COLUMN_NAMES: ['Name', 'Title', 'Type', 'Format', 'Default', 'Description'],
 };
-
-export const SERVERLESS_API_VERSION = 'serverless.kyma-project.io/v1alpha1';

@@ -6,7 +6,7 @@ import {
   useEventActivationsQuery,
   useEventTriggersQuery,
 } from 'components/Lambdas/gql/hooks/queries';
-import { SERVERLESS_API_VERSION } from 'shared/constants';
+import { SERVERLESS_API_VERSION } from '../../../../constants';
 
 import {
   useDeleteEventTrigger,
