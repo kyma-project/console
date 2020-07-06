@@ -1,12 +1,7 @@
-import React, { memo } from 'react';
+import React from 'react';
 import renderer from 'react-test-renderer';
 import { mount } from 'enzyme';
-import {
-  render,
-  fireEvent,
-  waitForDomChange,
-  wait,
-} from '@testing-library/react';
+import { render, fireEvent, wait } from '@testing-library/react';
 import { MockedProvider } from '@apollo/react-testing';
 import { componentUpdate } from '../../../testing';
 import { act } from 'react-dom/test-utils';
