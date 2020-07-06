@@ -65,6 +65,7 @@ const MemoryQuotasCheckbox = ({ checkboxRef, children }) => {
           type="checkbox"
           id="memory-quotas"
           onChange={e => setIsExpanded(e.target.checked)}
+          aria-label="memory-quotas"
         />
         <FormLabel
           htmlFor="memory-quotas"
@@ -363,7 +364,12 @@ const CreateNamespaceForm = ({
   }
 
   return (
-    <form onChange={onChange} ref={formElementRef} onSubmit={handleFormSubmit}>
+    <form
+      role="form"
+      onChange={onChange}
+      ref={formElementRef}
+      onSubmit={handleFormSubmit}
+    >
       <div className="fd-form__set">
         <div className="fd-form__item">
           <K8sNameInput

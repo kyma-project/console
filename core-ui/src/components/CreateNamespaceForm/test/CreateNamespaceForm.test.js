@@ -1,6 +1,12 @@
-import React from 'react';
+import React, { memo } from 'react';
 import renderer from 'react-test-renderer';
 import { mount } from 'enzyme';
+import {
+  render,
+  fireEvent,
+  waitForDomChange,
+  wait,
+} from '@testing-library/react';
 import { MockedProvider } from '@apollo/react-testing';
 import { componentUpdate } from '../../../testing';
 import { act } from 'react-dom/test-utils';
@@ -204,7 +210,7 @@ describe('CreateNamespaceForm', () => {
       createResourceQuotaErrorMock(),
     ];
 
-    const component = mount(
+    const { getByRole, getByLabelText } = render(
       <MockedProvider mocks={gqlMock} addTypename={false}>
         <CreateNamespaceForm
           onError={onError}
@@ -214,24 +220,21 @@ describe('CreateNamespaceForm', () => {
       </MockedProvider>,
     );
 
-    const form = component.find('form');
-    const memoryQuotasCheckboxId = '#memory-quotas';
+    const form = getByRole('form');
+    const memoryQuotasCheckbox = getByLabelText('memory-quotas');
 
-    const memoryQuotasCheckbox = component.find(memoryQuotasCheckboxId);
-    memoryQuotasCheckbox.getDOMNode().checked = true;
-    memoryQuotasCheckbox.simulate('change', { target: { checked: true } });
+    fireEvent.click(memoryQuotasCheckbox);
 
-    form.simulate('submit');
-
-    await componentUpdate(component, 100);
-
-    expect(gqlMock[0].result).toHaveBeenCalled();
-    expect(onCompleted).not.toHaveBeenCalled();
-    expect(onError).toHaveBeenCalledWith(
-      expect.anything(),
-      expect.anything(),
-      true,
-    );
+    fireEvent.submit(form);
+    await wait(() => {
+      expect(gqlMock[0].result).toHaveBeenCalled();
+      expect(onCompleted).not.toHaveBeenCalled();
+      expect(onError).toHaveBeenCalledWith(
+        expect.anything(),
+        expect.anything(),
+        true,
+      );
+    });
   });
 
   it('Exits with an error, and does not proceed with subsequent calls if create Namespace request failed', async () => {
