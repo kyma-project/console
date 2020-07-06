@@ -19,8 +19,10 @@ const oauth2_introspection = {
 const accessStrategyTypes = { noop, allow, oauth2_introspection, jwt };
 
 export default accessStrategyTypes;
-export const usesMethods = strategyType =>
-  !accessStrategyTypes[strategyType].methodsIrrelevant;
+export const usesMethods = strategyType => {
+  const ast = accessStrategyTypes[strategyType];
+  return ast ? !ast.methodsIrrelevant : true;
+};
 
 export const supportedMethodsList = [
   'GET',

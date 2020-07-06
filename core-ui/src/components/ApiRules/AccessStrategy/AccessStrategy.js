@@ -22,7 +22,9 @@ const AccessStrategy = ({ strategy }) => {
               }
               size="s"
             />
-            {accessStrategyTypes[selectedType].displayName}
+            {accessStrategyTypes[selectedType]
+              ? accessStrategyTypes[selectedType].displayName
+              : selectedType}
           </Badge>
         </div>
         <div

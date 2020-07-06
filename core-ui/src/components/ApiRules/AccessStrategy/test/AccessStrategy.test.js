@@ -26,4 +26,27 @@ describe('AccessStrategy', () => {
     );
     expect(queryByText('noop')).toBeTruthy();
   });
+
+  it('Renders AccessStrategy with custom name', async () => {
+    const customAccessStrategy = {
+      path: '/.*',
+      methods: ['GET'],
+      accessStrategies: [
+        {
+          name: 'custom',
+          config: {},
+        },
+      ],
+    };
+
+    const { queryByText, queryByLabelText } = render(
+      <AccessStrategy strategy={customAccessStrategy} />,
+    );
+
+    expect(queryByText('custom')).toBeInTheDocument();
+
+    const label = queryByLabelText('method');
+    expect(label).toBeInTheDocument();
+    expect(label).toHaveTextContent('GET');
+  });
 });
