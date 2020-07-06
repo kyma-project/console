@@ -14,7 +14,6 @@ export const config = {
   graphqlApiUrl: 'https://console-backend.' + k8sDomain + '/graphql',
   apiserverUrl: 'https://apiserver.' + k8sDomain,
   disabledNavigationNodes: '',
-  compassDefaultTenant:'',
   systemNamespaces:
     'compass-system istio-system knative-eventing knative-serving kube-public kube-system kyma-backup kyma-installer kyma-integration kyma-system natss kube-node-lease kubernetes-dashboard serverless-system',
     ...clusterConfig

@@ -44,6 +44,7 @@ export class JsonEditorModalComponent {
 
   cancel(event: Event) {
     this.isActive = false;
+    this.error = null;
     this.modalService.dismissAll();
   }
 

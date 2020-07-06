@@ -14,22 +14,26 @@ export function beautifyEventSchema(eventSchema) {
     const newProperties = properties;
 
     for (const [key, prop] of Object.entries(properties)) {
-      if (prop.description) {
-        prop.description = renderMd(prop.description);
-      }
-      if (prop.properties) {
-        const propProperties = prop.properties;
-        const newPropProperties = {};
+      try {
+        if (prop.description) {
+          prop.description = renderMd(prop.description);
+        }
+        if (prop.properties) {
+          const propProperties = prop.properties;
+          const newPropProperties = {};
 
-        for (const [propKey, propValue] of Object.entries(propProperties)) {
-          newPropProperties[propKey] =
-            beautifyEventSchema(propValue) || propValue;
+          for (const [propKey, propValue] of Object.entries(propProperties)) {
+            newPropProperties[propKey] =
+              beautifyEventSchema(propValue) || propValue;
+          }
+
+          prop.properties = newPropProperties;
         }
 
-        prop.properties = newPropProperties;
+        newProperties[key] = prop;
+      } catch (error) {
+        console.error(error);
       }
-
-      newProperties[key] = prop;
     }
     schema.properties = newProperties;
   }
@@ -39,23 +43,27 @@ export function beautifyEventSchema(eventSchema) {
     const newAdditionalProperties = additionalProperties;
 
     for (const [key, prop] of Object.entries(additionalProperties)) {
-      if (prop.description) {
-        prop.description = renderMd(prop.description);
-      }
-      if (prop.additionalProperties) {
-        const propAdditionalProperties = prop.additionalProperties;
-        const newPropAdditionalProperties = {};
-
-        for (const [propKey, propValue] of Object.entries(
-          propAdditionalProperties,
-        )) {
-          newPropAdditionalProperties[propKey] =
-            beautifyEventSchema(propValue) || propValue;
+      try {
+        if (prop.description) {
+          prop.description = renderMd(prop.description);
         }
-        prop.properties = newPropAdditionalProperties;
-      }
+        if (prop.additionalProperties) {
+          const propAdditionalProperties = prop.additionalProperties;
+          const newPropAdditionalProperties = {};
 
-      newAdditionalProperties[key] = prop;
+          for (const [propKey, propValue] of Object.entries(
+            propAdditionalProperties,
+          )) {
+            newPropAdditionalProperties[propKey] =
+              beautifyEventSchema(propValue) || propValue;
+          }
+          prop.properties = newPropAdditionalProperties;
+        }
+
+        newAdditionalProperties[key] = prop;
+      } catch (err) {
+        console.error(err);
+      }
     }
     schema.additionalProperties = newAdditionalProperties;
   }

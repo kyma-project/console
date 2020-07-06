@@ -1,8 +1,5 @@
 import { ApolloClient } from 'apollo-client';
-import {
-  InMemoryCache,
-  IntrospectionFragmentMatcher,
-} from 'apollo-cache-inmemory';
+import { InMemoryCache } from 'apollo-cache-inmemory';
 import { onError } from 'apollo-link-error';
 import { ApolloLink } from 'apollo-link';
 import { split } from 'apollo-link';
@@ -45,37 +42,6 @@ const setHeader = (header, value) => headers => ({
 });
 
 const setAuthorization = token => setHeader('authorization', `Bearer ${token}`);
-
-const setTenant = tenant => setHeader('tenant', tenant ? tenant : null);
-
-export function createCompassApolloClient(fromConfig, token) {
-  const fragmentMatcher = new IntrospectionFragmentMatcher({
-    introspectionQueryResultData: {
-      __schema: {
-        types: [],
-      },
-    },
-  });
-
-  const graphqlApiUrl = fromConfig('compassApiUrl');
-  const tenant = fromConfig('compassDefaultTenant');
-
-  const httpLink = createHttpLink({
-    uri: graphqlApiUrl,
-  });
-
-  const authLink = modifyHeaders([setAuthorization(token), setTenant(tenant)]);
-  const authHttpLink = authLink.concat(httpLink);
-
-  return new ApolloClient({
-    uri: graphqlApiUrl,
-    link: ApolloLink.from([errorLink, authHttpLink]),
-    cache: new InMemoryCache({
-      fragmentMatcher,
-      dataIdFromObject: object => object.id || object.name || null,
-    }),
-  });
-}
 
 export function createKymaApolloClient(fromConfig, token) {
   const graphqlApiUrl = fromConfig(
