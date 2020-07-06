@@ -18,7 +18,7 @@ OAuthCredentialsForm.propTypes = {
 
 export function OAuthCredentialsForm({ refs, defaultValues }) {
   return (
-    <section className="fd-has-margin-top-medium">
+    <>
       <TextFormItem
         inputKey="client-id"
         required
@@ -43,6 +43,6 @@ export function OAuthCredentialsForm({ refs, defaultValues }) {
         inputRef={refs.url}
         defaultValue={defaultValues && defaultValues.url}
       />
-    </section>
+    </>
   );
 }

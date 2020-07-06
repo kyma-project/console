@@ -24,6 +24,7 @@ CredentialsForm.propTypes = {
   }).isRequired,
   defaultValues: PropTypes.shape({
     oAuth: PropTypes.object,
+    basic: PropTypes.object,
   }),
 };
 
@@ -57,7 +58,9 @@ export function CredentialsForm({
         onSelect={setCredentialType}
         width="100%"
       />
-
+      <p className="fd-has-color-text-3 fd-has-margin-bottom-small fd-has-margin-top-tiny">
+        {credentialsMessage(credentialType)}
+      </p>
       {credentialType === CREDENTIAL_TYPE_OAUTH && (
         <OAuthCredentialsForm
           refs={credentialRefs.oAuth}
@@ -70,9 +73,6 @@ export function CredentialsForm({
           defaultValues={defaultValues && defaultValues.basic}
         />
       )}
-      <p className="fd-has-margin-top-tiny fd-has-color-text-3">
-        {credentialsMessage(credentialType)}
-      </p>
     </section>
   );
 }

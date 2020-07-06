@@ -17,7 +17,7 @@ BasicCredentialsForm.propTypes = {
 
 export function BasicCredentialsForm({ refs, defaultValues }) {
   return (
-    <section className="fd-has-margin-top-medium">
+    <>
       <TextFormItem
         inputKey="username"
         required
@@ -34,6 +34,6 @@ export function BasicCredentialsForm({ refs, defaultValues }) {
         inputRef={refs.password}
         defaultValue={defaultValues && defaultValues.password}
       />
-    </section>
+    </>
   );
 }
