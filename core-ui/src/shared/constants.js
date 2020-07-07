@@ -3,7 +3,7 @@ export const REFETCH_TIMEOUT = 600;
 
 export const ERRORS = {
   SERVER: 'Server error. Contact your cluster admin.',
-  RESOURCES_NOT_FOUND: "This lambda doesn't have any related resources yet.",
+  RESOURCES_NOT_FOUND: 'There are no related resources yet.',
   NOT_MATCHING_SEARCH_QUERY: "Couldn't find resources matching this query.",
   NOT_MATCHING_FILTERS: "Couldn't find resources matching these filters.",
 };
@@ -12,7 +12,7 @@ export const EVENT_TRIGGERS_PANEL = {
   LIST: {
     TITLE: 'Event Triggers',
     ERRORS: {
-      RESOURCES_NOT_FOUND: "This Function doesn't have any Event Triggers yet.",
+      RESOURCES_NOT_FOUND: 'There are no Event Triggers connected yet.',
       NOT_MATCHING_SEARCH_QUERY:
         "Couldn't find Event Triggers matching this query.",
     },
