@@ -8,10 +8,7 @@ import {
   useEventTriggersQuery,
 } from 'components/Lambdas/gql/hooks/queries';
 import { GET_EVENT_TRIGGERS } from 'components/Lambdas/gql/queries';
-import {
-  serializeEvents,
-  createSubscriberRef,
-} from 'components/Lambdas/helpers/eventTriggers';
+import { serializeEvents } from 'components/Lambdas/helpers/eventTriggers';
 import { EVENT_TRIGGERS, SERVICE_API_VERSION } from '../../constants';
 
 import {
@@ -21,7 +18,14 @@ import {
 
 export default function ServiceEventTriggersWrapper({ service }) {
   const { namespaceId: namespace } = useMicrofrontendContext();
-  const subscriberRef = createSubscriberRef(service);
+  const subscriberRef = {
+    ref: {
+      name: service.name,
+      namespace,
+      kind: 'Service',
+      apiVersion: 'v1',
+    },
+  };
 
   const ownerRef = {
     apiVersion: SERVICE_API_VERSION,
