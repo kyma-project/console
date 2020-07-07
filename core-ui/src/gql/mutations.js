@@ -205,33 +205,6 @@ export const DELETE_API_RULE = gql`
   }
 `;
 
-export const UNREGISTER_APPLICATION = gql`
-  mutation unregisterApplication($id: ID!) {
-    unregisterApplication(id: $id) {
-      name
-      id
-    }
-  }
-`;
-
-export const CONNECT_APPLICATION = gql`
-  mutation requestOneTimeTokenForApplication($id: ID!) {
-    requestOneTimeTokenForApplication(id: $id) {
-      rawEncoded
-      legacyConnectorURL
-    }
-  }
-`;
-
-export const REGISTER_APPLICATION = gql`
-  mutation registerApplication($in: ApplicationRegisterInput!) {
-    registerApplication(in: $in) {
-      name
-      id
-    }
-  }
-`;
-
 export const BIND_NAMESPACE = gql`
   mutation($namespace: String!, $application: String!) {
     enableApplication(
@@ -250,88 +223,6 @@ export const UNBIND_NAMESPACE = gql`
     disableApplication(namespace: $namespace, application: $application) {
       namespace
       application
-    }
-  }
-`;
-
-export const DELETE_API_PACKAGE = gql`
-  mutation deletePackage($id: ID!) {
-    deletePackage(id: $id) {
-      id
-    }
-  }
-`;
-
-export const CREATE_API_PACKAGE = gql`
-  mutation addPackage($applicationId: ID!, $in: PackageCreateInput!) {
-    addPackage(applicationID: $applicationId, in: $in) {
-      name
-    }
-  }
-`;
-
-export const DELETE_API_DEFINITION = gql`
-  mutation deleteApi($id: ID!) {
-    deleteAPIDefinition(id: $id) {
-      name
-    }
-  }
-`;
-
-export const DELETE_EVENT_DEFINITION = gql`
-  mutation deleteEventApi($id: ID!) {
-    deleteEventDefinition(id: $id) {
-      name
-    }
-  }
-`;
-
-export const ADD_API_DEFINITION = gql`
-  mutation addAPI($apiPackageId: ID!, $in: APIDefinitionInput!) {
-    addAPIDefinitionToPackage(packageID: $apiPackageId, in: $in) {
-      name
-    }
-  }
-`;
-
-export const ADD_EVENT_DEFINITION = gql`
-  mutation addEventDefinition($apiPackageId: ID!, $in: EventDefinitionInput!) {
-    addEventDefinitionToPackage(packageID: $apiPackageId, in: $in) {
-      name
-    }
-  }
-`;
-
-export const UPDATE_API_DEFINITION = gql`
-  mutation updateAPIDefinition($id: ID!, $in: APIDefinitionInput!) {
-    updateAPIDefinition(id: $id, in: $in) {
-      id
-      name
-    }
-  }
-`;
-
-export const UPDATE_EVENT_DEFINITION = gql`
-  mutation updateEventDefinition($id: ID!, $in: EventDefinitionInput!) {
-    updateEventDefinition(id: $id, in: $in) {
-      id
-      name
-    }
-  }
-`;
-
-export const REGISTER_APPLICATION_FROM_TEMPLATE = gql`
-  mutation registerApplicationFromTemplate($in: ApplicationFromTemplateInput!) {
-    registerApplicationFromTemplate(in: $in) {
-      name
-    }
-  }
-`;
-
-export const UPDATE_API_PACKAGE = gql`
-  mutation updatePackage($id: ID!, $in: PackageUpdateInput!) {
-    updatePackage(id: $id, in: $in) {
-      name
     }
   }
 `;

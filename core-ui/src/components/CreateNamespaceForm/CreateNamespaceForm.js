@@ -65,6 +65,7 @@ const MemoryQuotasCheckbox = ({ checkboxRef, children }) => {
           type="checkbox"
           id="memory-quotas"
           onChange={e => setIsExpanded(e.target.checked)}
+          aria-label="memory-quotas"
         />
         <FormLabel
           htmlFor="memory-quotas"
@@ -363,7 +364,14 @@ const CreateNamespaceForm = ({
   }
 
   return (
-    <form onChange={onChange} ref={formElementRef} onSubmit={handleFormSubmit}>
+    // although HTML spec assigns the role by default to a <form> element, @testing-library ignores it
+    // eslint-disable-next-line jsx-a11y/no-redundant-roles
+    <form
+      role="form"
+      onChange={onChange}
+      ref={formElementRef}
+      onSubmit={handleFormSubmit}
+    >
       <div className="fd-form__set">
         <div className="fd-form__item">
           <K8sNameInput

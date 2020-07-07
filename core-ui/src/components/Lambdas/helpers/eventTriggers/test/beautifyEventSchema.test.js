@@ -116,4 +116,17 @@ describe('beautifyEventSchema', () => {
     const result = beautifyEventSchema(schema);
     expect(result).toEqual(expected);
   });
+
+  test('should not crash when additionalProperties is set as string', () => {
+    const schema = {
+      additionalProperties: 'false',
+    };
+    const expected = {
+      additionalProperties: 'false',
+      example: {},
+    };
+
+    const result = beautifyEventSchema(schema);
+    expect(result).toEqual(expected);
+  });
 });

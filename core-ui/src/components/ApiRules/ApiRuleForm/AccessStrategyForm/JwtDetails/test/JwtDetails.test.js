@@ -15,14 +15,6 @@ jest.mock('@kyma-project/common', () => ({
   },
 }));
 
-const idpPresets = [
-  {
-    name: 'preset-1',
-    jwks_urls: 'http://jwks_2',
-    trusted_issuers: 'https://issuer_2',
-  },
-];
-
 const config = {
   jwks_urls: ['http://jwks_2'],
   trusted_issuers: ['https://issuer_2'],

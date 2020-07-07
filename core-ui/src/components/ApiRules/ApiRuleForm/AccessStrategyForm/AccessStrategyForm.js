@@ -25,7 +25,6 @@ export default function AccessStrategyForm({
   setStrategy,
   removeStrategy,
   canDelete,
-  idpPresets,
   handleFormChanged,
 }) {
   const selectedType = strategy.accessStrategies[0].name;
@@ -105,7 +104,6 @@ export default function AccessStrategyForm({
               accessStrategies: [{ ...strategy.accessStrategies[0], config }],
             })
           }
-          idpPresets={idpPresets}
           handleFormChanged={handleFormChanged}
         />
       </div>
@@ -129,7 +127,6 @@ AccessStrategyForm.propTypes = {
   setStrategy: PropTypes.func.isRequired,
   removeStrategy: PropTypes.func.isRequired,
   canDelete: PropTypes.bool.isRequired,
-  idpPresets: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
   handleFormChanged: PropTypes.func.isRequired,
 };
 

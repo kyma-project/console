@@ -17,16 +17,3 @@ export const NAMESPACES_EVENT_SUBSCRIPTION = gql`
     }
   }
 `;
-
-export const APPLICATIONS_EVENT_SUBSCRIPTION = gql`
-  subscription Application {
-    applicationEvent {
-      application {
-        name
-        status
-        enabledInNamespaces
-      }
-      type
-    }
-  }
-`;

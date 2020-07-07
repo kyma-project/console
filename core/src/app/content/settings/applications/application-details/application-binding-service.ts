@@ -65,29 +65,4 @@ export class ApplicationBindingService {
 
     return this.graphQLClientService.gqlMutation(query, variables);
   }
-
-  public getBoundNamespaces(application) {
-    const query = `query Namespace($application: String!){
-      namespaces(application: $application) {
-        name
-      }
-    }`;
-    const variables = { application };
-
-    return this.graphQLClientService.gqlQuery(query, variables);
-  }
-
-  public getBoundApplications(namespace) {
-    const query = `query Application($namespace: String!){
-      applications(namespace: $namespace) {
-        name
-        compassMetadata {
-          applicationId
-        }
-      }
-    }`;
-    const variables = { namespace };
-
-    return this.graphQLClientService.gqlQuery(query, variables);
-  }
 }

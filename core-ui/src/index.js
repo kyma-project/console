@@ -7,31 +7,15 @@ import './index.scss';
 import App from './components/App/App';
 import { Microfrontend } from 'react-shared';
 
-import {
-  ApolloClientProvider,
-  createKymaApolloClient,
-  createCompassApolloClient,
-} from './apollo';
-
-export const CompassGqlContext = React.createContext(null);
-const CompassGqlProvider = ({ client, children }) => (
-  <CompassGqlContext.Provider value={client}>
-    {children}
-  </CompassGqlContext.Provider>
-);
+import { ApolloClientProvider, createKymaApolloClient } from './apollo';
 
 preloadingStrategy(async () => {
   ReactDOM.render(
     <Microfrontend env={process.env}>
       <ApolloClientProvider createClient={createKymaApolloClient}>
-        <ApolloClientProvider
-          createClient={createCompassApolloClient}
-          provider={CompassGqlProvider}
-        >
-          <BrowserRouter>
-            <App />
-          </BrowserRouter>
-        </ApolloClientProvider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
       </ApolloClientProvider>
     </Microfrontend>,
     document.getElementById('root'),
