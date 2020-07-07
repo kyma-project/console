@@ -65,7 +65,7 @@ describe('CustomPropTypes', () => {
         'David H',
       );
 
-      expect(result).toBe(true);
+      expect(result).toBe(null);
     });
 
     it('Fails on empty value', () => {
