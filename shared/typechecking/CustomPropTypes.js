@@ -34,12 +34,12 @@ export const button = function(props, propName, componentName) {
   }
 
   const hasRequiredProps = hasTextOrLabel();
-  if (hasRequiredProps) return hasRequiredProps;
+  if (hasRequiredProps) return hasRequiredProps || null;
 
   const hasPropsOfValidTypes = checkTypes();
-  if (hasPropsOfValidTypes) return hasPropsOfValidTypes;
+  if (hasPropsOfValidTypes) return hasPropsOfValidTypes || null;
 
-  return true;
+  return null;
 };
 
 export default {
