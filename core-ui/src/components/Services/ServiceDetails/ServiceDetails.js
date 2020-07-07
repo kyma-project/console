@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 
 import { useQuery } from '@apollo/react-hooks';
 import { GET_SERVICE } from 'gql/queries';
-
-import { ResourceNotFound } from 'react-shared';
+import { ResourceNotFound, useModuleEnabled } from 'react-shared';
 import ServiceDetailsHeader from './ServiceDetailsHeader/ServiceDetailsHeader';
 import ServiceApiRules from './ServiceApiRules/ServiceApiRules';
 import ServiceEventTriggers from './ServiceEventTriggers/ServiceEventTriggers';
@@ -15,6 +14,8 @@ ServiceDetails.propTypes = {
 };
 
 export default function ServiceDetails({ namespaceId, serviceName }) {
+  const applicationModuleEnabled = useModuleEnabled('application');
+  const eventingModuleEnabled = useModuleEnabled('eventing');
   const { data, loading, error } = useQuery(GET_SERVICE, {
     variables: {
       namespace: namespaceId,
@@ -37,12 +38,16 @@ export default function ServiceDetails({ namespaceId, serviceName }) {
       />
     );
   }
+  const eventTriggers =
+    applicationModuleEnabled && eventingModuleEnabled ? (
+      <ServiceEventTriggers service={service} />
+    ) : null;
 
   return (
     <>
       <ServiceDetailsHeader service={service} namespaceId={namespaceId} />
       <ServiceApiRules service={service} namespaceId={namespaceId} />
-      <ServiceEventTriggers service={service} />
+      {eventTriggers}
     </>
   );
 }
