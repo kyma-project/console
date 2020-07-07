@@ -22,7 +22,8 @@ import {
 describe('useEventTriggersQuery', () => {
   const hookInput = {
     subscriber: createSubscriberRef(lambdaMock),
-    lambda: lambdaMock,
+    name: lambdaMock.name,
+    namespace: lambdaMock.namespace,
   };
   const variables = {
     subscriber: hookInput.subscriber,
