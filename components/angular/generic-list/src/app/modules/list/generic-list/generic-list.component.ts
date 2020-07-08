@@ -60,7 +60,7 @@ export class GenericListComponent implements OnChanges, OnInit {
 
   onPageChanged(pagingState) {
     this.pagingState.pageNumber = pagingState.pageNumber;
-    this.applyState();
+    this.applyState(false);
   }
 
   onFilterChanged(filterState) {
@@ -72,7 +72,7 @@ export class GenericListComponent implements OnChanges, OnInit {
       .subscribe(() => {
         this.filterState = filterState;
         this.pagingState.pageNumber = 1;
-        this.applyState();
+        this.applyState(false);
       });
   }
 
@@ -81,7 +81,7 @@ export class GenericListComponent implements OnChanges, OnInit {
   }
 
   applyState(noCache?: boolean) {
-    
+
     this.reloadResults(noCache);
 
     if (!(this.changeDetector as ViewRef).destroyed) {

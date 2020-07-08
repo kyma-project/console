@@ -38,7 +38,9 @@ export class GraphQLDataProvider implements DataProvider {
           this.resourceQuery = this.graphQLClientService.gqlWatchQuery(this.query, this.variables, false);
         }
       } else {
-        this.resourceQuery = this.graphQLClientService.gqlWatchQuery(this.query, this.variables, true);
+        if(noCache) {
+          this.resourceQuery = this.graphQLClientService.gqlWatchQuery(this.query, this.variables, true);
+        }
         this.resourceQuery.subscribeToMore({
           document: gql`${this.subscriptions}`,
           variables: this.variables,
