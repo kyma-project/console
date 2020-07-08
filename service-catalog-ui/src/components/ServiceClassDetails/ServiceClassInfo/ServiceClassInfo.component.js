@@ -146,7 +146,7 @@ const ServiceClassInfo = ({
                   <LabelWrapper key={`${tag.type}-${tag.name}`}>
                     <Tooltip content={tagsDescription[tag.type]}>
                       <Label cursorType="help" data-e2e-id="service-label">
-                        {tag.name}lolo
+                        {tag.name}
                       </Label>
                     </Tooltip>
                   </LabelWrapper>
