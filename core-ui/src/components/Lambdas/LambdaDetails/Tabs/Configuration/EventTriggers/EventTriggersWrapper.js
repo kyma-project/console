@@ -6,7 +6,10 @@ import {
   useEventActivationsQuery,
   useEventTriggersQuery,
 } from 'components/Lambdas/gql/hooks/queries';
-import { SERVERLESS_API_VERSION } from '../../../../constants';
+import {
+  SERVERLESS_API_VERSION,
+  SERVERLESS_RESOURCE_KIND,
+} from '../../../../constants';
 
 import {
   useDeleteEventTrigger,
@@ -22,7 +25,7 @@ export default function EventTriggersWrapper({ lambda }) {
 
   const ownerRef = {
     apiVersion: SERVERLESS_API_VERSION,
-    kind: 'Function',
+    kind: SERVERLESS_RESOURCE_KIND,
     name: lambda.name,
     UID: lambda.UID,
   };

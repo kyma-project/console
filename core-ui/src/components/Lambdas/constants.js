@@ -401,3 +401,5 @@ export const FIRST_BREADCRUMB_NODE = 'Functions';
 export const REFETCH_LAMBDAS_TIMEOUT = 2000;
 
 export const SERVERLESS_API_VERSION = 'serverless.kyma-project.io/v1alpha1';
+
+export const SERVERLESS_RESOURCE_KIND = 'Function';
