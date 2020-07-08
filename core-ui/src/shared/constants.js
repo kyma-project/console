@@ -12,7 +12,7 @@ export const EVENT_TRIGGERS_PANEL = {
   LIST: {
     TITLE: 'Event Triggers',
     ERRORS: {
-      RESOURCES_NOT_FOUND: 'There are no Event Triggers connected yet.',
+      RESOURCES_NOT_FOUND: 'There are no Event Triggers yet.',
       NOT_MATCHING_SEARCH_QUERY:
         "Couldn't find Event Triggers matching this query.",
     },
