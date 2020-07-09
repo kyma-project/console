@@ -27,8 +27,10 @@ jest.mock('@luigi-project/client', () => {
           expand: () => {},
           close: () => {},
         }),
+        pathExists: () => Promise.resolve(true),
       }),
     }),
+    addContextUpdateListener: () => {},
     uxManager: () => ({
       addBackdrop: () => {},
       removeBackdrop: () => {},

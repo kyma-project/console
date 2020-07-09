@@ -2,10 +2,18 @@ import { useEffect, useState } from 'react';
 import LuigiClient from '@luigi-project/client';
 
 import { CONFIG } from 'components/Lambdas/config';
+import { LOGS_AND_METRICS } from 'components/Lambdas/constants';
 
 const CMF_LOGS_PATH = '/home/cmf-logs';
 
-export const useLogsView = (uid, namespace) => {
+function runFnOnContextUpdate(url, cleanupFn) {
+  if (url !== window.location.pathname) {
+    cleanupFn();
+  }
+  LuigiClient.removeContextUpdateListener(runFnOnContextUpdate);
+}
+
+export const useLogsView = (uid, namespace, initialCollapse = true) => {
   const [logsViewExists, setLogViewExists] = useState(false);
 
   useEffect(() => {
@@ -22,13 +30,19 @@ export const useLogsView = (uid, namespace) => {
 
     let logsViewHandle;
     if (logsViewExists) {
-      logsViewHandle = openLogsView(linkManager);
+      logsViewHandle = openLogsView(linkManager, initialCollapse);
     }
 
-    return () => {
-      !!logsViewHandle && logsViewExists && logsViewHandle.collapse();
-    };
-  }, [namespace, uid, logsViewExists]);
+    const cleanup = () => logsViewHandle && logsViewHandle.close();
+
+    // when user switches to another MF, useEffects's cleanup
+    // function may not be fired - detect it manually
+    LuigiClient.addContextUpdateListener(() =>
+      runFnOnContextUpdate(window.location.pathname, cleanup),
+    );
+
+    return cleanup;
+  }, [namespace, uid, logsViewExists, initialCollapse]);
 };
 
 const checkLogsViewExists = async (manager, setViewExists) => {
@@ -41,13 +55,10 @@ const checkLogsViewExists = async (manager, setViewExists) => {
   }
 };
 
-const openLogsView = manager => {
-  const logsViewHandle = manager.openAsSplitView(CMF_LOGS_PATH, {
-    title: 'Logs',
+const openLogsView = (manager, initialCollapse) => {
+  return manager.openAsSplitView(CMF_LOGS_PATH, {
+    title: LOGS_AND_METRICS.LOGS.SPLIT_VIEW.TITLE,
     size: 40,
-    collapsed: true,
+    collapsed: initialCollapse,
   });
-
-  logsViewHandle.collapse();
-  return logsViewHandle;
 };
