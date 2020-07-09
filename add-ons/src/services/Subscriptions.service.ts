@@ -11,6 +11,8 @@ import { NOTIFICATION, CONFIGURATION_VARIABLE } from '../constants';
 import { SubscriptionType } from './types';
 import { ADDONS_CONFIGURATION_FRAGMENT } from './Queries.service';
 
+import * as ReactShared from '../react-shared';
+
 export const CLUSTER_ADDONS_CONFIGURATION_EVENT_SUBSCRIPTION = gql`
   subscription clusterAddonsConfigurationEvent {
     clusterAddonsConfigurationEvent {
@@ -55,12 +57,13 @@ interface AddonsConfigurationSubscriptionVariables {
 const useSubscriptions = () => {
   const { namespaceId: currentNamespace } = useContext(LuigiContext);
   const { setOriginalConfigs } = useContext(ConfigurationsService);
-  const { successNotification, errorNotification } = useContext(
-    NotificationsService,
-  );
+  const { errorNotification } = useContext(NotificationsService);
+
+  const notificationManager = ReactShared.useNotification();
 
   const onAdd = (item: Configuration) => {
-    successNotification({
+    console.log('add');
+    notificationManager.notifySuccess({
       title: NOTIFICATION.ADD_CONFIGURATION.TITLE,
       content: NOTIFICATION.ADD_CONFIGURATION.CONTENT.replace(
         CONFIGURATION_VARIABLE,
@@ -71,7 +74,8 @@ const useSubscriptions = () => {
   };
 
   const onUpdate = (item: Configuration) => {
-    successNotification({
+    console.log('upd');
+    notificationManager.notifySuccess({
       title: NOTIFICATION.UPDATE_CONFIGURATION.TITLE,
       content: NOTIFICATION.UPDATE_CONFIGURATION.CONTENT.replace(
         CONFIGURATION_VARIABLE,
@@ -84,7 +88,7 @@ const useSubscriptions = () => {
   };
 
   const onDelete = (item: Configuration) => {
-    successNotification({
+    notificationManager.notifySuccess({
       title: NOTIFICATION.DELETE_CONFIGURATION.TITLE,
       content: NOTIFICATION.DELETE_CONFIGURATION.CONTENT.replace(
         CONFIGURATION_VARIABLE,
