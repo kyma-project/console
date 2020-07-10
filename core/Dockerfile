@@ -23,7 +23,7 @@ RUN printf "%s%s%s\n" \
     "http://nginx.org/packages/mainline/alpine/v" \
     `egrep -o '^[0-9]+\.[0-9]+' /etc/alpine-release` \
     "/main" \
-    | sudo tee -a /etc/apk/repositories
+    | tee -a /etc/apk/repositories
 RUN curl -o /tmp/nginx_signing.rsa.pub https://nginx.org/keys/nginx_signing.rsa.pub
 RUN openssl rsa -pubin -in /tmp/nginx_signing.rsa.pub -text -noout
 RUN mv /tmp/nginx_signing.rsa.pub /etc/apk/keys/
