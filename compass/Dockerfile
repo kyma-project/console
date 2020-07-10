@@ -27,7 +27,7 @@ RUN cd /app/${app_name} && make build
 FROM alpine:3.12
 
 ### Install nginx package and remove cache ###
-RUN apk add --update nginx && rm -rf /var/cache/apk/*
+RUN apk add --update nginx=1.19.1 && rm -rf /var/cache/apk/*
 
 LABEL source git@github.com:kyma-project/console.git
 ARG app_name=compass
