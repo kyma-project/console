@@ -18,7 +18,7 @@ RUN cd /app/${app_name} && \
 FROM alpine:3.12
 
 ### Install nginx package and remove cache ###
-RUN update && apk add openssl curl ca-certificates
+RUN apk update && apk add openssl curl ca-certificates
 RUN printf "%s%s%s\n" \
     "http://nginx.org/packages/mainline/alpine/v" \
     `egrep -o '^[0-9]+\.[0-9]+' /etc/alpine-release` \
