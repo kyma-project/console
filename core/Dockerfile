@@ -27,7 +27,7 @@ RUN printf "%s%s%s\n" \
 RUN curl -o /tmp/nginx_signing.rsa.pub https://nginx.org/keys/nginx_signing.rsa.pub
 RUN openssl rsa -pubin -in /tmp/nginx_signing.rsa.pub -text -noout
 RUN mv /tmp/nginx_signing.rsa.pub /etc/apk/keys/
-RUN apk add nginx=1.19.1 && rm -rf /var/cache/apk/*
+RUN apk add nginx=1.19.0 && rm -rf /var/cache/apk/*
 
 LABEL source git@github.com:kyma-project/console.git
 ARG app_name=core
