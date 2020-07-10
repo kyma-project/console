@@ -43,7 +43,7 @@ export default function CreateApiRule() {
     if (redirectPath) {
       LuigiClient.linkManager()
         .fromContext(redirectCtx)
-        .navigate(redirectPath.split('&sol;').join('/'));
+        .navigate(decodeURIComponent(redirectPath));
       return;
     }
 
@@ -56,7 +56,7 @@ export default function CreateApiRule() {
     if (redirectPath) {
       LuigiClient.linkManager()
         .fromContext(redirectCtx)
-        .navigate(redirectPath.split('&sol;').join('/'));
+        .navigate(decodeURIComponent(redirectPath));
       return;
     }
 

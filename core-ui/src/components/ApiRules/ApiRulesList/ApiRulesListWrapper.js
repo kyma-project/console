@@ -15,6 +15,7 @@ export default function ApiRulesListWrapper({
   headerRenderer = undefined,
   rowRenderer = undefined,
   textSearchProperties = undefined,
+  disableExposeButton = false,
 }) {
   const { apiRules = [], error, loading } = useApiRulesQuery({
     namespace: namespace || service?.namespace,
@@ -36,6 +37,7 @@ export default function ApiRulesListWrapper({
       apiRules={apiRules}
       serverDataError={error || false}
       serverDataLoading={loading || false}
+      disableExposeButton={disableExposeButton}
     />
   );
 }

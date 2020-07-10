@@ -26,7 +26,7 @@ describe('useApiRulesQuery', () => {
   const subscriptionMock = API_RULE_EVENT_SUBSCRIPTION_MOCK(variables);
 
   it('should see loading state', async () => {
-    const { getByText } = render(
+    const { findByText } = render(
       withApolloMockProvider({
         component: (
           <QueryComponent hook={useApiRulesQuery} hookInput={hookInput} />
@@ -35,7 +35,7 @@ describe('useApiRulesQuery', () => {
       }),
     );
 
-    expect(getByText(TESTING_STATE.LOADING)).toBeInTheDocument();
+    expect(findByText(TESTING_STATE.LOADING)).toBeInTheDocument();
     await wait();
   });
 
@@ -47,7 +47,7 @@ describe('useApiRulesQuery', () => {
       mocks: [GET_API_RULES_ERROR_MOCK(variables), subscriptionMock],
     });
 
-    const { getByText } = render(
+    const { findByText } = render(
       withNotificationProvider({
         component: mockProvider,
       }),
@@ -59,7 +59,7 @@ describe('useApiRulesQuery', () => {
     });
 
     await wait(() => {
-      expect(getByText(message)).toBeInTheDocument();
+      expect(findByText(message)).toBeInTheDocument();
     });
   });
 });

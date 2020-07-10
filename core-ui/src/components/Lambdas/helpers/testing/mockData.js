@@ -127,3 +127,7 @@ export const configMapMock = {
     },
   },
 };
+
+export const serviceMock = {
+  name: 'name',
+};

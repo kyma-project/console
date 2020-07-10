@@ -9,6 +9,9 @@ import {
 
 import ApiRulesListWrapper from 'components/ApiRules/ApiRulesList/ApiRulesListWrapper';
 
+import { useServiceQuery } from 'components/Lambdas/gql/hooks/queries';
+import { LAMBDA_PHASES } from 'components/Lambdas/constants';
+
 const headerRenderer = () => ['', 'Name', 'Host', 'Status'];
 const textSearchProperties = [
   'name',
@@ -17,6 +20,10 @@ const textSearchProperties = [
 ];
 
 export default function ApiRules({ lambda }) {
+  const { service = undefined } = useServiceQuery({
+    ...lambda,
+  });
+
   const rowRenderer = apiRule => ({
     cells: [
       <GoToApiRuleDetails apiRule={apiRule} />,
@@ -27,6 +34,10 @@ export default function ApiRules({ lambda }) {
     showCollapseControl: !!apiRule.spec.rules,
     withCollapseControl: true,
   });
+
+  const disableExposeButton = !(
+    !!service || lambda.status.phase === LAMBDA_PHASES.RUNNING.TYPE
+  );
 
   return (
     <ApiRulesListWrapper
@@ -39,6 +50,7 @@ export default function ApiRules({ lambda }) {
       headerRenderer={headerRenderer}
       rowRenderer={rowRenderer}
       textSearchProperties={textSearchProperties}
+      disableExposeButton={disableExposeButton}
     />
   );
 }

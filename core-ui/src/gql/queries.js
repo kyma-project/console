@@ -148,6 +148,7 @@ export const GET_API_RULES = gql`
   query APIRules($namespace: String!, $serviceName: String) {
     APIRules(namespace: $namespace, serviceName: $serviceName) {
       name
+      generation
       spec {
         rules {
           path
@@ -177,6 +178,7 @@ export const GET_API_RULE = gql`
   query APIRule($name: String!, $namespace: String!) {
     APIRule(name: $name, namespace: $namespace) {
       name
+      generation
       spec {
         rules {
           path

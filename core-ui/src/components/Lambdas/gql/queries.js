@@ -146,3 +146,11 @@ export const GET_CONFIG_MAP = gql`
     }
   }
 `;
+
+export const GET_SERVICE = gql`
+  query service($name: String!, $namespace: String!) {
+    service(name: $name, namespace: $namespace) {
+      name
+    }
+  }
+`;

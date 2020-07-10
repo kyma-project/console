@@ -43,7 +43,7 @@ function editApiRuleModal(
       port: apiRule.spec.service.port,
       openedInModal: true,
       redirectCtx: redirectCtx,
-      redirectPath: redirectPath,
+      redirectPath: encodeURIComponent(redirectPath),
     })
     .openAsModal(`cmf-apirules/edit/${apiRule.name}`, {
       title: formattedTitle,
@@ -71,7 +71,7 @@ function createApiRuleModal(
       port: portForCreate,
       openedInModal: true,
       redirectCtx: redirectCtx,
-      redirectPath: redirectPath,
+      redirectPath: encodeURIComponent(redirectPath),
     })
     .openAsModal(`cmf-apirules/create`, {
       title: PANEL.CREATE_MODAL.TITLE,
@@ -109,6 +109,7 @@ export default function ApiRules({
   apiRules = [],
   serverDataError,
   serverDataLoading,
+  disableExposeButton = false,
 }) {
   const [deleteApiRule] = useDeleteApiRule(() => onDeleteSuccess(inSubView));
 
@@ -140,7 +141,7 @@ export default function ApiRules({
           portForCreate,
         )
       }
-      disabled={!!(serverDataLoading || serverDataError)}
+      disabled={disableExposeButton || !!(serverDataLoading || serverDataError)}
     >
       {exposeButtonText(resourceType)}
     </Button>

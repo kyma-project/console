@@ -4,6 +4,7 @@ import { TESTING_STATE } from 'components/Lambdas/helpers/testing';
 
 export const apiRuleMock = {
   name: 'apiRule',
+  generation: 'generation',
   spec: {
     rules: [
       {

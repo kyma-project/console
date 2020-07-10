@@ -24,6 +24,7 @@ export const API_RULE_EVENT_SUBSCRIPTION = gql`
       type
       apiRule {
         name
+        generation
         spec {
           rules {
             path

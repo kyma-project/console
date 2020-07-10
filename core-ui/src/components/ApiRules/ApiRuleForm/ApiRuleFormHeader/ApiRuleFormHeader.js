@@ -13,7 +13,7 @@ const ApiRuleFormHeader = ({
   title,
   saveButtonText,
   breadcrumbItems,
-  serviceName = undefined,
+  serviceName = '',
   openedInModalBool = false,
 }) => {
   const serviceLink = !openedInModalBool && serviceName && (
