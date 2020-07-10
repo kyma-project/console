@@ -92,3 +92,55 @@
     margin: '0';
   }
 }
+
+.message-toast--wrapper {
+  position: fixed;
+  transition: all ease-in-out 0.4s;
+  z-index: 1000;
+  cursor: pointer;
+  left: -1000px;
+  bottom:50px;
+
+  &.visible {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .fd-message-toast{
+    line-height:1.42857;
+    color:var(--sapTextColor,#32363a);
+    font-weight:400;
+    -webkit-font-smoothing:antialiased;
+    -webkit-box-sizing:border-box;
+    box-sizing:border-box;
+    padding:0;
+    margin:0;
+    border:0;
+    display:-webkit-inline-box;
+    display:-ms-inline-flexbox;
+    display:inline-flex;
+    width:auto;
+    max-width:15rem;
+    -webkit-box-shadow:0 0 0 .0625rem rgba(0,0,0,.42),0 .625rem 1.875rem 0 rgba(0,0,0,.3);
+    -webkit-box-shadow:var(--sapContent_Shadow2,0 0 0 .0625rem rgba(0,0,0,.42),0 .625rem 1.875rem 0 rgba(0,0,0,.3));
+    box-shadow:0 0 0 .0625rem rgba(0,0,0,.42),0 .625rem 1.875rem 0 rgba(0,0,0,.3);
+    box-shadow:var(--sapContent_Shadow2,0 0 0 .0625rem rgba(0,0,0,.42),0 .625rem 1.875rem 0 rgba(0,0,0,.3));
+    background-color:#fff;
+    background-color:var(--sapList_Background,#fff);
+    border-radius:.25rem;
+    border-radius:var(--sapElement_BorderCornerRadius,.25rem);
+    padding:1rem;
+    font-family:"72","72full",Arial,Helvetica,sans-serif;
+    font-family:var(--sapFontFamily,"72","72full",Arial,Helvetica,sans-serif);
+    font-size:.875rem;
+    font-size:var(--sapFontSize,.875rem);
+    color:#32363a;
+    color:var(--sapList_TextColor,#32363a);
+    
+    &:after,&:before{
+      -webkit-box-sizing:inherit;
+      box-sizing:inherit;
+      font-size:inherit;
+    }
+  }
+}
