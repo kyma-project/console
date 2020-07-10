@@ -18,16 +18,7 @@ RUN cd /app/${app_name} && \
 FROM alpine:3.12
 
 ### Install nginx package and remove cache ###
-RUN apk update && apk add openssl curl ca-certificates
-RUN printf "%s%s%s\n" \
-    "http://nginx.org/packages/mainline/alpine/v" \
-    `egrep -o '^[0-9]+\.[0-9]+' /etc/alpine-release` \
-    "/main" \
-    | tee -a /etc/apk/repositories
-RUN curl -o /tmp/nginx_signing.rsa.pub https://nginx.org/keys/nginx_signing.rsa.pub
-RUN openssl rsa -pubin -in /tmp/nginx_signing.rsa.pub -text -noout
-RUN mv /tmp/nginx_signing.rsa.pub /etc/apk/keys/
-RUN apk add nginx=1.19.0 && rm -rf /var/cache/apk/*
+RUN apk add --update nginx=1.19.0 && rm -rf /var/cache/apk/*
 
 LABEL source git@github.com:kyma-project/console.git
 ARG app_name=core
