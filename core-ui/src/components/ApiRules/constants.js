@@ -27,7 +27,7 @@ export const PANEL = {
     },
   },
   EDIT_MODAL: {
-    TITLE: 'Edit "{apiRuleName}" API Rule',
+    TITLE: 'Edit API Rule "{apiRuleName}"',
   },
 };
 
@@ -43,7 +43,7 @@ export const ACCESS_STRATEGIES_PANEL = {
 
 export const GQL_QUERIES = {
   API_RULES: {
-    ERROR_MESSAGE: `Couldn't fetch API Rules due to this error: {error}`,
+    ERROR_MESSAGE: `Couldn't fetch API Rule due to this error: {error}`,
   },
 };
 
@@ -53,7 +53,7 @@ export const GQL_MUTATIONS = {
     ERROR_MESSAGE: `Couldn't delete the API Rule due to this error: {error}`,
     CONFIRM_MODAL: {
       TITLE: `Delete API Rule`,
-      MESSAGE: `Are you sure you want to delete the "{apiRuleName}" API Rule?`,
+      MESSAGE: `Are you sure you want to delete API Rule "{apiRuleName}"?`,
     },
   },
 };
