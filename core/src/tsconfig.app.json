@@ -5,6 +5,7 @@
     "baseUrl": "./",
     "module": "es2015",
     "types": ["node"],
+    "skipLibCheck": true,
     "paths": {
       "shared/*": ["app/shared/*"],
       "namespaces/*": ["app/content/namespaces/*"]

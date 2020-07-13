@@ -5,6 +5,7 @@
     "baseUrl": "./",
     "module": "commonjs",
     "target": "es5",
+    "skipLibCheck": true,
     "types": ["jasmine", "node"],
     "paths": {
       "shared/*": ["app/shared/*"],
