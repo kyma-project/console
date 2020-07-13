@@ -2,6 +2,12 @@
   height: fit-content;
 
   .fd-table {
+    thead {
+      th {
+        font-size: 12.5px;
+      }
+    }
+
     tr {
       cursor: default;
     }
