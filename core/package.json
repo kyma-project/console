@@ -40,6 +40,7 @@
     "fundamental-ngx": "^0.8.0",
     "js-yaml": "^3.13.1",
     "jsoneditor": "^5.24.3",
+    "lodash": "^4.17.19",
     "ng-click-outside": "^4.0.0",
     "ngx-clipboard": "^11.1.7",
     "rxjs": "^6.3.1",
