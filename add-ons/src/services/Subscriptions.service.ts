@@ -57,9 +57,9 @@ interface AddonsConfigurationSubscriptionVariables {
 const useSubscriptions = () => {
   const { namespaceId: currentNamespace } = useContext(LuigiContext);
   const { setOriginalConfigs } = useContext(ConfigurationsService);
-  const { errorNotification } = useContext(NotificationsService);
+  const { errorNotification } = useContext(NotificationsService); // old notifications
 
-  const notificationManager = ReactShared.useNotification();
+  const notificationManager = ReactShared.useNotification(); // new notifications
 
   const onAdd = (item: Configuration) => {
     notificationManager.notifySuccess({
