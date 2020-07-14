@@ -19,6 +19,7 @@ import {
 
 (async () => {
   const services = [
+    ReactShared.Microfrontend,
     LuigiContextProvider,
     QueriesProvider,
     MutationsProvider,
@@ -27,15 +28,13 @@ import {
     LabelsProvider,
     UrlsProvider,
     SubscriptionsProvider,
-  ];
+  ] as any[];
 
   await bootstrap({
     app: (
       <>
-        <NotificationContainer />
-        <ReactShared.Microfrontend env={process.env}>
-          <App />
-        </ReactShared.Microfrontend>
+        <NotificationContainer /> {/* // old error notifications*/}
+        <App />
       </>
     ),
     requiredBackendModules: [
