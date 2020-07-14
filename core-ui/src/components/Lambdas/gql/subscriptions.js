@@ -52,8 +52,10 @@ export const EVENT_TRIGGER_EVENT_SUBSCRIPTION = gql`
       trigger {
         name
         namespace
-        broker
-        filterAttributes
+        spec {
+          broker
+          filter
+        }
         status {
           reason
           status

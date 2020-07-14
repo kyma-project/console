@@ -78,8 +78,10 @@ export const GET_EVENT_TRIGGERS = gql`
     triggers(namespace: $namespace, subscriber: $subscriber) {
       name
       namespace
-      broker
-      filterAttributes
+      spec {
+        broker
+        filter
+      }
       status {
         reason
         status

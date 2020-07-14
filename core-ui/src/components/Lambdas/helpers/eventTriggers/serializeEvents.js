@@ -1,7 +1,7 @@
 export function serializeEvents({ events = [], eventTriggers = [] }) {
   if (!events.length) {
     const usedEvents = eventTriggers.map(event => {
-      const filterAttributes = event.filterAttributes;
+      const filterAttributes = event.spec.filter;
       return {
         ...event,
         eventType: filterAttributes.type,
@@ -22,7 +22,7 @@ export function serializeEvents({ events = [], eventTriggers = [] }) {
   events.forEach(event => {
     let usedEvent = false;
     for (const trigger of eventTriggers) {
-      const filterAttributes = trigger.filterAttributes;
+      const filterAttributes = trigger.spec.filter;
 
       if (
         event.eventType === filterAttributes.type &&
@@ -43,13 +43,12 @@ export function serializeEvents({ events = [], eventTriggers = [] }) {
   });
 
   eventTriggers.forEach(trigger => {
-    const filterAttributes = trigger.filterAttributes;
+    const filterAttributes = trigger.spec.filter;
     const exists = usedEvents.some(
       e =>
-        e.filterAttributes.type === filterAttributes.type &&
-        e.filterAttributes.source === filterAttributes.source &&
-        e.filterAttributes.eventtypeversion ===
-          filterAttributes.eventtypeversion,
+        e.spec.filter.type === filterAttributes.type &&
+        e.spec.filter.source === filterAttributes.source &&
+        e.spec.filter.eventtypeversion === filterAttributes.eventtypeversion,
     );
 
     if (!exists) {

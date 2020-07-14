@@ -44,7 +44,6 @@ describe('useCreateManyEventTriggers', () => {
     namespace: lambdaMock.namespace,
     triggers: [
       {
-        namespace: lambdaMock.namespace,
         broker: CONFIG.triggerSubscriber.broker,
         filterAttributes: {
           type: '1',

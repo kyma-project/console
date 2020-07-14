@@ -52,8 +52,8 @@ export const CREATE_MANY_EVENT_TRIGGERS = gql`
 `;
 
 export const DELETE_ONE_EVENT_TRIGGER = gql`
-  mutation deleteTrigger($namespace: String!, $trigger: TriggerMetadataInput!) {
-    deleteTrigger(namespace: $namespace, trigger: $trigger) {
+  mutation deleteTrigger($namespace: String!, $triggerName: String!) {
+    deleteTrigger(namespace: $namespace, triggerName: $triggerName) {
       name
     }
   }

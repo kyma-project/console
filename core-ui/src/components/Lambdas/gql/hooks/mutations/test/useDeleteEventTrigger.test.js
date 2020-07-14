@@ -40,10 +40,7 @@ describe('useDeleteEventTrigger', () => {
   };
   const variables = {
     namespace: eventTriggerMock.namespace,
-    trigger: {
-      name: eventTriggerMock.name,
-      namespace: eventTriggerMock.namespace,
-    },
+    triggerName: eventTriggerMock.name,
   };
 
   it('should see notification with error message if there is an error', async () => {

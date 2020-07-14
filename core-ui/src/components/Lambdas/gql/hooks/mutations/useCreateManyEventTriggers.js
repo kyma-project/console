@@ -39,7 +39,6 @@ export const useCreateManyEventTriggers = (
   function prepareEventTriggersInput(events) {
     return events.map(event => {
       const trigger = {
-        namespace,
         broker: CONFIG.triggerSubscriber.broker,
         filterAttributes: {
           type: event.eventType,

@@ -34,10 +34,7 @@ export const useDeleteEventTrigger = ({ name }, mutationOptions = {}) => {
   async function handleDeleteEventTrigger(eventTrigger) {
     const variables = {
       namespace: eventTrigger.namespace,
-      trigger: {
-        name: eventTrigger.name,
-        namespace: eventTrigger.namespace,
-      },
+      triggerName: eventTrigger.name,
     };
 
     try {
@@ -87,7 +84,7 @@ export const useDeleteEventTrigger = ({ name }, mutationOptions = {}) => {
 };
 
 export function processTriggerName(eventTrigger) {
-  const filterAttributes = eventTrigger.filterAttributes || {};
+  const filterAttributes = eventTrigger.spec.filter || {};
   return `${filterAttributes.source ||
     ''}/${filterAttributes.eventtypeversion || ''}.${filterAttributes.type ||
     ''}`;

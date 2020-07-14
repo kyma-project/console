@@ -6,10 +6,12 @@ describe('serializeEvents', () => {
       events: [],
       eventTriggers: [
         {
-          filterAttributes: {
-            type: '1',
-            source: '1',
-            eventtypeversion: '1',
+          spec: {
+            filter: {
+              type: '1',
+              source: '1',
+              eventtypeversion: '1',
+            },
           },
         },
       ],
@@ -50,17 +52,21 @@ describe('serializeEvents', () => {
       version: '3',
     };
     const eventTrigger1 = {
-      filterAttributes: {
-        type: '1',
-        source: '1',
-        eventtypeversion: '1',
+      spec: {
+        filter: {
+          type: '1',
+          source: '1',
+          eventtypeversion: '1',
+        },
       },
     };
     const eventTrigger2 = {
-      filterAttributes: {
-        type: '2',
-        source: '2',
-        eventtypeversion: '2',
+      spec: {
+        filter: {
+          type: '2',
+          source: '2',
+          eventtypeversion: '2',
+        },
       },
     };
 
@@ -93,28 +99,36 @@ describe('serializeEvents', () => {
       version: '3',
     };
     const eventTrigger1 = {
-      filterAttributes: {
-        type: '1',
-        eventtypeversion: '1',
+      spec: {
+        filter: {
+          type: '1',
+          eventtypeversion: '1',
+        },
       },
     };
     const eventTrigger2 = {
-      filterAttributes: {
-        type: '2',
-        source: '2',
+      spec: {
+        filter: {
+          type: '2',
+          source: '2',
+        },
       },
     };
     const eventTrigger3 = {
-      filterAttributes: {
-        source: '3',
-        eventtypeversion: '3',
+      spec: {
+        filter: {
+          source: '3',
+          eventtypeversion: '3',
+        },
       },
     };
     const eventTrigger4 = {
-      filterAttributes: {
-        type: '1',
-        source: '1',
-        eventtypeversion: '1',
+      spec: {
+        filter: {
+          type: '1',
+          source: '1',
+          eventtypeversion: '1',
+        },
       },
     };
 
@@ -151,24 +165,30 @@ describe('serializeEvents', () => {
       version: '3',
     };
     const eventTrigger1 = {
-      filterAttributes: {
-        type: '1',
-        source: '1',
-        eventtypeversion: '1',
+      spec: {
+        filter: {
+          type: '1',
+          source: '1',
+          eventtypeversion: '1',
+        },
       },
     };
     const eventTrigger2 = {
-      filterAttributes: {
-        type: '2',
-        source: '2',
-        eventtypeversion: '2',
+      spec: {
+        filter: {
+          type: '2',
+          source: '2',
+          eventtypeversion: '2',
+        },
       },
     };
     const eventTrigger3 = {
-      filterAttributes: {
-        type: '2',
-        source: '2',
-        eventtypeversion: '2',
+      spec: {
+        filter: {
+          type: '2',
+          source: '2',
+          eventtypeversion: '2',
+        },
       },
     };
 

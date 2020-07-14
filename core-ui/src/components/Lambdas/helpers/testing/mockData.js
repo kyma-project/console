@@ -68,11 +68,13 @@ export const eventActivationMock = {
 export const eventTriggerMock = {
   name: 'eventTrigger',
   namespace: 'namespace',
-  broker: 'default',
-  filterAttributes: {
-    source: 'mockApp',
-    eventtypeversion: 'v1',
-    type: 'type',
+  spec: {
+    broker: 'default',
+    filter: {
+      source: 'mockApp',
+      eventtypeversion: 'v1',
+      type: 'type',
+    },
   },
   status: {
     reason: 'reason',
