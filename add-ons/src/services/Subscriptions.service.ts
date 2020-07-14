@@ -2,7 +2,6 @@ import { useContext } from 'react';
 import gql from 'graphql-tag';
 import createUseContext from 'constate';
 import { useSubscription } from '@apollo/react-hooks';
-import { NotificationsService } from '@kyma-project/common';
 import { LuigiContext } from './LuigiContext.service';
 
 import { ConfigurationsService } from '../services';
@@ -57,9 +56,8 @@ interface AddonsConfigurationSubscriptionVariables {
 const useSubscriptions = () => {
   const { namespaceId: currentNamespace } = useContext(LuigiContext);
   const { setOriginalConfigs } = useContext(ConfigurationsService);
-  const { errorNotification } = useContext(NotificationsService); // old notifications
 
-  const notificationManager = ReactShared.useNotification(); // new notifications
+  const notificationManager = ReactShared.useNotification();
 
   const onAdd = (item: Configuration) => {
     notificationManager.notifySuccess({
@@ -112,7 +110,7 @@ const useSubscriptions = () => {
 
       if (error) {
         // errorNotification('Error', ERRORS.SERVER);
-        errorNotification({
+        notificationManager.notifyError({
           title: 'Error',
           content: '',
         });

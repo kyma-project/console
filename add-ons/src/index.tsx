@@ -1,6 +1,5 @@
 import React from 'react';
 import { bootstrap, BackendModules } from '@kyma-project/common';
-import { NotificationContainer } from '@kyma-project/components';
 import * as ReactShared from './react-shared';
 
 import App from './core/App';
@@ -31,17 +30,12 @@ import {
   ] as any[];
 
   await bootstrap({
-    app: (
-      <>
-        <NotificationContainer /> {/* // old error notifications*/}
-        <App />
-      </>
-    ),
+    app: <App />,
     requiredBackendModules: [
       BackendModules.SERVICE_CATALOG,
       BackendModules.SERVICE_CATALOG_ADDONS,
     ],
-    enableNotifications: true,
+    enableNotifications: false,
     enableSubscriptions: true,
     services,
   });

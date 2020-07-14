@@ -1,7 +1,6 @@
 export * from './Configurations.service';
 export * from './Labels.service';
 export * from './Filters.service';
-export * from './Notifications.service';
 export * from './Urls.service';
 
 export * from './Queries.service';
