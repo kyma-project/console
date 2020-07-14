@@ -62,7 +62,6 @@ const useSubscriptions = () => {
   const notificationManager = ReactShared.useNotification();
 
   const onAdd = (item: Configuration) => {
-    console.log('add');
     notificationManager.notifySuccess({
       title: NOTIFICATION.ADD_CONFIGURATION.TITLE,
       content: NOTIFICATION.ADD_CONFIGURATION.CONTENT.replace(
@@ -74,7 +73,6 @@ const useSubscriptions = () => {
   };
 
   const onUpdate = (item: Configuration) => {
-    console.log('upd');
     notificationManager.notifySuccess({
       title: NOTIFICATION.UPDATE_CONFIGURATION.TITLE,
       content: NOTIFICATION.UPDATE_CONFIGURATION.CONTENT.replace(
