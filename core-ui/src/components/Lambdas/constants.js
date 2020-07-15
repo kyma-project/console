@@ -53,7 +53,7 @@ export const TOOLBAR = {
 
 export const LAMBDAS_LIST = {
   ERRORS: {
-    RESOURCES_NOT_FOUND: "This Namespace doesn't have any Functions yet.",
+    RESOURCES_NOT_FOUND: "There are no Functions in this Namespace yet.",
     NOT_MATCHING_SEARCH_QUERY: "Couldn't find Functions matching this query.",
   },
   CREATE_MODAL: {
@@ -90,7 +90,7 @@ export const LAMBDA_DETAILS = {
     ERROR: {
       LINK: 'See error logs.',
       MODAL: {
-        TITLE: 'Error logs from "{lambdaName}"',
+        TITLE: 'Error logs from Function "{lambdaName}"',
       },
     },
   },
@@ -121,93 +121,93 @@ export const LOGS_AND_METRICS = {
       TITLE: 'Logs',
     },
     MODAL: {
-      TITLE: 'Logs from "{lambdaName}"',
+      TITLE: 'Logs from Function "{lambdaName}"',
     },
   },
 };
 
 export const GQL_QUERIES = {
   LAMBDA: {
-    ERROR_MESSAGE: `Couldn't fetch "{lambdaName}" due to this error: {error}`,
+    ERROR_MESSAGE: `Couldn't fetch Function "{lambdaName}" due to this error: {error}`,
   },
   LAMBDAS: {
-    ERROR_MESSAGE: `Couldn't fetch Functions from "{namespace}" due to this error: {error}`,
+    ERROR_MESSAGE: `Couldn't fetch Functions from Namespace "{namespace}" due to this error: {error}`,
   },
   EVENT_ACTIVATIONS: {
-    ERROR_MESSAGE: `Couldn't fetch available Events from "{namespace}" due to this error: {error}`,
+    ERROR_MESSAGE: `Couldn't fetch available Events from Namespace "{namespace}" due to this error: {error}`,
   },
   EVENT_TRIGGERS: {
-    ERROR_MESSAGE: `Couldn't fetch Event Triggers for "{lambdaName}" due to this error: {error}`,
+    ERROR_MESSAGE: `Couldn't fetch Event Triggers for Function "{lambdaName}" due to this error: {error}`,
   },
   SERVICE_BINDING_USAGES: {
-    ERROR_MESSAGE: `Couldn't fetch Service Binding Usages injected in "{lambdaName}" due to this error: {error}`,
+    ERROR_MESSAGE: `Couldn't fetch Service Binding Usages injected in Function "{lambdaName}" due to this error: {error}`,
   },
   SERVICE_INSTANCES: {
     ERROR_MESSAGE: `Couldn't fetch Service Instances due to this error: {error}`,
   },
   CONFIG_MAP: {
-    ERROR_MESSAGE: `Couldn't fetch "{configMapName}" ConfigMap due to this error: {error}`,
+    ERROR_MESSAGE: `Couldn't fetch ConfigMap "{configMapName}" due to this error: {error}`,
   },
   SERVICE: {
-    ERROR_MESSAGE: `Couldn't fetch "{serviceName}" Service due to this error: {error}`,
+    ERROR_MESSAGE: `Couldn't fetch Service "{serviceName}" due to this error: {error}`,
   },
 };
 
 export const GQL_MUTATIONS = {
   CREATE_LAMBDA: {
-    SUCCESS_MESSAGE: `"{lambdaName}" was successfully created`,
-    ERROR_MESSAGE: `Couldn't create "{lambdaName}" due to this error: {error}`,
+    SUCCESS_MESSAGE: `Function "{lambdaName}" was successfully created`,
+    ERROR_MESSAGE: `Couldn't create Function "{lambdaName}" due to this error: {error}`,
   },
   UPDATE_LAMBDA: {
     GENERAL_CONFIGURATION: {
-      SUCCESS_MESSAGE: `General configuration for "{lambdaName}" was successfully updated`,
-      ERROR_MESSAGE: `Couldn't update general configuration for "{lambdaName}" due to this error: {error}`,
+      SUCCESS_MESSAGE: `General configuration for Function "{lambdaName}" was successfully updated`,
+      ERROR_MESSAGE: `Couldn't update general configuration for Function "{lambdaName}" due to this error: {error}`,
     },
     CODE_AND_DEPENDENCIES: {
-      SUCCESS_MESSAGE: `Code and dependencies for "{lambdaName}" were successfully updated`,
-      ERROR_MESSAGE: `Couldn't update code and dependencies for "{lambdaName}" due to this error: {error}`,
+      SUCCESS_MESSAGE: `Code and dependencies for Function "{lambdaName}" were successfully updated`,
+      ERROR_MESSAGE: `Couldn't update code and dependencies for Function "{lambdaName}" due to this error: {error}`,
     },
     RESOURCES_AND_REPLICAS: {
-      SUCCESS_MESSAGE: `Resources and replicas for "{lambdaName}" were successfully updated`,
-      ERROR_MESSAGE: `Couldn't update resources and replicas for "{lambdaName}" due to this error: {error}`,
+      SUCCESS_MESSAGE: `Resources and replicas for Function "{lambdaName}" were successfully updated`,
+      ERROR_MESSAGE: `Couldn't update resources and replicas for Function "{lambdaName}" due to this error: {error}`,
     },
     VARIABLES: {
-      SUCCESS_MESSAGE: `Environment variables for "{lambdaName}" were successfully updated`,
-      ERROR_MESSAGE: `Couldn't update environment variables for "{lambdaName}" due to this error: {error}`,
+      SUCCESS_MESSAGE: `Environment variables for Function "{lambdaName}" were successfully updated`,
+      ERROR_MESSAGE: `Couldn't update environment variables for Function "{lambdaName}" due to this error: {error}`,
     },
   },
   DELETE_LAMBDA: {
-    SUCCESS_MESSAGE: `"{lambdaName}" was successfully deleted`,
-    ERROR_MESSAGE: `Couldn't delete "{lambdaName}" due to this error: {error}`,
+    SUCCESS_MESSAGE: `Function "{lambdaName}" was successfully deleted`,
+    ERROR_MESSAGE: `Couldn't delete Function "{lambdaName}" due to this error: {error}`,
     CONFIRM_MODAL: {
-      TITLE: `Delete {lambdaName}`,
-      MESSAGE: `Are you sure you want to delete "{lambdaName}" and all related resources?`,
+      TITLE: `Delete Function {lambdaName}`,
+      MESSAGE: `Are you sure you want to delete Function "{lambdaName}" and all related resources?`,
     },
   },
   CREATE_TRIGGERS: {
     SUCCESS_MESSAGE_SINGLE: `Event Trigger created successfully`,
     SUCCESS_MESSAGE_MANY: `Event Triggers created successfully`,
-    ERROR_MESSAGE_SINGLE: `Event Trigger for "{lambdaName}" couldn't be created due to this error: {error}`,
-    ERROR_MESSAGE_MANY: `Couldn't create Event Triggers for "{lambdaName}" due to this error: {error}`,
+    ERROR_MESSAGE_SINGLE: `Event Trigger for Function "{lambdaName}" couldn't be created due to this error: {error}`,
+    ERROR_MESSAGE_MANY: `Couldn't create Event Triggers for Function "{lambdaName}" due to this error: {error}`,
   },
   DELETE_TRIGGER: {
     SUCCESS_MESSAGE: `Event Trigger was successfully deleted`,
-    ERROR_MESSAGE: `Couldn't delete the "{triggerName}" Event Trigger for the "{lambdaName}" Function due to this error: {error}`,
+    ERROR_MESSAGE: `Couldn't delete Event Trigger "{triggerName}" for Function "{lambdaName}" due to this error: {error}`,
     CONFIRM_MODAL: {
       TITLE: `Delete Event Trigger`,
-      MESSAGE: `Are you sure you want to delete the "{triggerName}" Event Trigger for the "{lambdaName}" Function?`,
+      MESSAGE: `Are you sure you want to delete Event Trigger "{triggerName}" for Function "{lambdaName}"?`,
     },
   },
   CREATE_BINDING_USAGE: {
-    SUCCESS_MESSAGE: `Service Binding referencing the "{serviceInstanceName}" Service Instance was successfully created`,
-    ERROR_MESSAGE: `Couldn't create a Service Binding referencing the "{serviceInstanceName}" Service Instance due to this error: {error}`,
+    SUCCESS_MESSAGE: `Service Binding referencing Service Instance "{serviceInstanceName}" was successfully created`,
+    ERROR_MESSAGE: `Couldn't create the Service Binding referencing Service Instance "{serviceInstanceName}" due to this error: {error}`,
   },
   DELETE_BINDING_USAGE: {
-    SUCCESS_MESSAGE: `Service Binding referencing the "{serviceInstanceName}" Service Instance was successfully deleted`,
-    ERROR_MESSAGE: `Couldn't delete the Service Binding referencing the "{serviceInstanceName}" Service Instance due to this error: {error}`,
+    SUCCESS_MESSAGE: `Service Binding referencing Service Instance "{serviceInstanceName}" was successfully deleted`,
+    ERROR_MESSAGE: `Couldn't delete the Service Binding referencing Service Instance "{serviceInstanceName}" due to this error: {error}`,
     CONFIRM_MODAL: {
       TITLE: `Delete Service Binding`,
-      MESSAGE: `Are you sure you want to delete the Service Binding referencing the "{serviceInstanceName}" Service Instance?`,
+      MESSAGE: `Are you sure you want to delete the Service Binding referencing Service Instance "{serviceInstanceName}"?`,
     },
   },
 };
@@ -394,7 +394,7 @@ export const ENVIRONMENT_VARIABLES_PANEL = {
     BINDING_USAGE: {
       TEXT: 'Service Binding',
       TOOLTIP_MESSAGE:
-        'This variable was injected by the Service Binding referencing the "{serviceInstanceName}" Service Instance.',
+        'This variable was injected by the Service Binding referencing Service Instance "{serviceInstanceName}".',
     },
   },
 };
