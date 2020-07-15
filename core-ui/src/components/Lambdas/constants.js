@@ -53,7 +53,7 @@ export const TOOLBAR = {
 
 export const LAMBDAS_LIST = {
   ERRORS: {
-    RESOURCES_NOT_FOUND: "There are no Functions in this Namespace yet.",
+    RESOURCES_NOT_FOUND: 'There are no Functions in this Namespace yet.',
     NOT_MATCHING_SEARCH_QUERY: "Couldn't find Functions matching this query.",
   },
   CREATE_MODAL: {
