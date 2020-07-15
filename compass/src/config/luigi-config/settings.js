@@ -4,6 +4,7 @@ const settings = {
     title: 'Management Plane',
     favicon: '/compass-logo.png',
   },
+  customSandboxRules: ['allow-downloads'],
 };
 
 export default settings;

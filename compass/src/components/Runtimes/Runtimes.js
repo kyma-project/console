@@ -8,6 +8,7 @@ import { GET_RUNTIMES } from './gql';
 import InfiniteList from './InfiniteList';
 import { Panel } from 'fundamental-react';
 import LuigiClient from '@luigi-project/client';
+import { useGetKubeconfig } from 'shared/hooks/useGetKubeconfig';
 
 const runtimeHeaderRenderer = () => [
   'Name',
@@ -38,6 +39,14 @@ const runtimeRowRenderer = r => [
 
 const Runtimes = () => {
   const { tenantId } = useMicrofrontendContext();
+  const downladKubeconfig = useGetKubeconfig();
+
+  const actions = [
+    {
+      name: 'Get Kubeconfig',
+      handler: e => downladKubeconfig(e.id),
+    },
+  ];
 
   return (
     <>
@@ -50,6 +59,7 @@ const Runtimes = () => {
             noMoreEntriesMessage="No more runtimes to show"
             headerRenderer={runtimeHeaderRenderer}
             rowRenderer={runtimeRowRenderer}
+            actions={actions}
           />
         </Panel.Body>
       </Panel>

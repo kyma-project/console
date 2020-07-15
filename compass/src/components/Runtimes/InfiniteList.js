@@ -1,8 +1,35 @@
 import React, { useState, useEffect } from 'react';
+import { Popover, Menu, Button } from 'fundamental-react';
 import { useQuery } from 'react-apollo';
 import PropTypes from 'prop-types';
 
 const SCROLL_MARGIN = 20;
+
+const ListActions = ({ actions, entry }) => {
+  return (
+    <Popover
+      body={
+        <Menu>
+          <Menu.List>
+            {actions.map(a => (
+              <Menu.Item onClick={() => a.handler(entry)} key={a.name}>
+                {a.name}
+              </Menu.Item>
+            ))}
+          </Menu.List>
+        </Menu>
+      }
+      control={
+        <Button
+          glyph="vertical-grip"
+          option="light"
+          aria-label="more-actions"
+        />
+      }
+      placement="bottom-end"
+    />
+  );
+};
 
 const InfiniteList = ({
   query,
@@ -10,6 +37,7 @@ const InfiniteList = ({
   headerRenderer,
   rowRenderer,
   noMoreEntriesMessage,
+  actions,
 }) => {
   const [cursor, setCursor] = useState(null);
   const [entries, setEntries] = useState([]);
@@ -59,6 +87,7 @@ const InfiniteList = ({
                 {h}
               </th>
             ))}
+            {actions.length && <th></th>}
           </tr>
         </thead>
         <tbody className="fd-table__body">
@@ -72,6 +101,11 @@ const InfiniteList = ({
                   {value}
                 </td>
               ))}
+              {actions.length && (
+                <td>
+                  <ListActions actions={actions} entry={r} />
+                </td>
+              )}
             </tr>
           ))}
         </tbody>
@@ -105,8 +139,15 @@ InfiniteList.propTypes = {
   headerRenderer: PropTypes.func.isRequired,
   rowRenderer: PropTypes.func.isRequired,
   noMoreEntriesMessage: PropTypes.string,
+  actions: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string,
+      handler: PropTypes.func.isRequired,
+    }),
+  ).isRequired,
 };
 
 InfiniteList.defaultProps = {
   noMoreEntriesMessage: 'No more data',
+  actions: [],
 };

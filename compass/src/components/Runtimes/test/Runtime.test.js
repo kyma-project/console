@@ -4,6 +4,12 @@ import Runtimes from '../Runtimes';
 import { MockedProvider } from '@apollo/react-testing';
 import { GET_RUNTIMES } from '../gql';
 
+jest.mock('react-shared', () => ({
+  ...jest.requireActual('react-shared'),
+  useConfig: () => ({ fromConfig: () => 'test-value' }),
+  useMicrofrontendContext: () => ({}),
+}));
+
 describe('Runtimes', () => {
   it('Renders initial runtimes', async () => {
     const test = render(
