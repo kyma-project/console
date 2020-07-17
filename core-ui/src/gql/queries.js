@@ -7,9 +7,11 @@ export const GET_NAMESPACE = gql`
       labels
       applications
       pods {
+        name
         status
       }
       deployments {
+        name
         status {
           replicas
           readyReplicas
