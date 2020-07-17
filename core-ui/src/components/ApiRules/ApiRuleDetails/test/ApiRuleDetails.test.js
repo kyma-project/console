@@ -215,15 +215,13 @@ describe('ApiRuleDetails', () => {
   });
 
   it('renders loading state', async () => {
-    const { queryByLabelText, container } = render(
+    const { queryByLabelText } = render(
       <MockedProvider addTypename={false} mocks={[validResponseMock]}>
         <ApiRuleDetails apiName={apiRule.name} />
       </MockedProvider>,
     );
 
     expect(queryByLabelText('Loading')).toBeInTheDocument();
-
-    await waitForDomChange(container);
   });
 
   it('renders error', async () => {
@@ -250,29 +248,18 @@ describe('ApiRuleDetails', () => {
     expect(queryAllByLabelText('breadcrumb-item')).toMatchSnapshot();
   });
 
-  test.todo(
-    'Clicking on "Delete" deletes element - "Timed out in waitForDomChange"',
-  );
-  // it('Clicking on "Delete" deletes element', async () => {
-  //   const { container, getByText } = render(
-  //     <MockedProvider
-  //       addTypename={false}
-  //       mocks={[validResponseMock, gqlDeleteRequest]}
-  //     >
-  //       <ApiRuleDetails apiName={apiRule.name} />
-  //     </MockedProvider>,
-  //   );
+  it('renders delete and edit buttons', async () => {
+    const { container, queryByText } = render(
+      <MockedProvider
+        addTypename={false}
+        mocks={[validResponseMock, gqlDeleteRequest]}
+      >
+        <ApiRuleDetails apiName={apiRule.name} />
+      </MockedProvider>,
+    );
 
-  //   await waitForDomChange(container);
-
-  //   getByText('Delete').click();
-
-  //   await waitForDomChange(container);
-
-  //   await wait(() => {
-  //     expect(mockShowConfirmationModal).toHaveBeenCalled();
-  //     expect(gqlDeleteRequest.result).toHaveBeenCalled();
-  //     expect(mockNavigate).toHaveBeenCalledWith('');
-  //   });
-  // });
+    await waitForDomChange(container);
+    expect(queryByText('Delete')).toBeInTheDocument();
+    expect(queryByText('Edit')).toBeInTheDocument();
+  });
 });
