@@ -35,21 +35,7 @@ export function handleDeploymentEvent(
   const event = subscriptionData.deploymentEvent;
   const changedDeployment = event.deployment;
 
-  const setDeployments2 = d => {
-    console.group('DEPLOY EVENT ' + event.type + ' ' + changedDeployment.name);
-    console.log('before count: ', deployments.length);
-    console.log(
-      'setting to ',
-      getHealthyDeploymentsCount(d) + ' / ' + d.length,
-    );
-    console.log('setting to ', d);
-    console.groupEnd(
-      'DEPLOY EVENT ' + event.type + ' ' + changedDeployment.name,
-    );
-    setDeployments(d);
-  };
-
-  handleEvent(deployments, setDeployments2, event.type, changedDeployment);
+  handleEvent(deployments, setDeployments, event.type, changedDeployment);
 }
 
 export function handlePodsEvent(pods, setPods, subscriptionData) {
@@ -58,14 +44,5 @@ export function handlePodsEvent(pods, setPods, subscriptionData) {
   const event = subscriptionData.podEvent;
   const changedPod = event.pod;
 
-  const setPods2 = d => {
-    console.group('POD EVENT ' + event.type + ' ' + changedPod.name);
-    console.log('before count: ', pods.length);
-    console.log('setting to ', getHealthyPodsCount(d) + ' / ' + d.length);
-    console.log('setting to ', d);
-    console.groupEnd('POD EVENT ' + event.type + ' ' + changedPod.name);
-    setPods(d);
-  };
-
-  handleEvent(pods, setPods2, event.type, changedPod);
+  handleEvent(pods, setPods, event.type, changedPod);
 }
