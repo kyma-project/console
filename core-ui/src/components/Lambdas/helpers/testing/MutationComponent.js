@@ -9,8 +9,9 @@ export function MutationComponent({
   userCallback = () => void 0,
 }) {
   const mutateAction = hook(hookInput);
+  const isFunction = elem => typeof elem === 'function';
   const mutateActionFunction = Array.isArray(mutateAction)
-    ? mutateAction[0]
+    ? mutateAction.find(isFunction)
     : mutateAction;
   return (
     <button
