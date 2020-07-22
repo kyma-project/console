@@ -132,6 +132,7 @@
     font-size: 12px;
     background-color: var(--fd-color-shell-1);
     color: var(--fd-color-text-5);
+    word-break: break-word;
     
     &:after,&:before{
       -webkit-box-sizing:inherit;
