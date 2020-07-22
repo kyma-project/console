@@ -119,7 +119,7 @@
     display: -ms-inline-flexbox;
     display: inline-flex;
     width: auto;
-    max-width: 15rem;
+    max-width: 20rem;
     -webkit-box-shadow: 0 0 0 .0625rem rgba(0,0,0,.42),0 .625rem 1.875rem 0 rgba(0,0,0,.3);
     -webkit-box-shadow: var(--sapContent_Shadow2,0 0 0 .0625rem rgba(0,0,0,.42),0 .625rem 1.875rem 0 rgba(0,0,0,.3));
     box-shadow: 0 0 0 .0625rem rgba(0,0,0,.42),0 .625rem 1.875rem 0 rgba(0,0,0,.3);
@@ -133,6 +133,7 @@
     background-color: var(--fd-color-shell-1);
     color: var(--fd-color-text-5);
     word-break: break-word;
+    text-align: center;
     
     &:after,&:before{
       -webkit-box-sizing:inherit;
