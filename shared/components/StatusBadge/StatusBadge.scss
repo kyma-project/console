@@ -1,5 +1,5 @@
 .fd-badge.status-badge {
-  font-size: var(--sapFontSize, 0.875rem);
+  // font-size: var(--sapFontSize, 0.875rem);
   font-family: var(
     --sapFontFamily,
     '72',
@@ -15,8 +15,6 @@
 
   margin: 0;
   padding: 0.14rem 0.4rem;
-
-  font-size: 1.2rem;
 
   display: inline-block;
   max-width: 100%;

@@ -14,8 +14,7 @@ import {
   FormLabel,
   Button,
 } from 'fundamental-react';
-import FileInput from '../../Shared/FileInput/FileInput';
-import { Modal } from 'react-shared';
+import { Modal, FileInput } from 'react-shared';
 import { readFile } from 'components/Api/ApiHelpers';
 
 export default class CreateMDmodal extends React.Component {
