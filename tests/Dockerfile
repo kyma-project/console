@@ -1,11 +1,11 @@
-FROM testcafe/testcafe:alpha
+FROM node:alpine
 
 USER root
 WORKDIR /usr/src/app
 
-RUN apk add curl
+RUN apk add --no-cache curl chromium firefox-esr
 
 COPY package*.json ./
-RUN npm install
+RUN npm ci
 LABEL source git@github.com:kyma-project/console.git
 COPY . .
