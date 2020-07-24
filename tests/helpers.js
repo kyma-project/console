@@ -10,7 +10,7 @@ export const testIf = (condition, testName, testToRun) => {
   }
 };
 
-const retry = async (t, retries, func, message) => {
+const retry = async (t, retries, func, message, waitAfterFail = 1000) => {
   try {
     return await func(t);
   } catch (err) {
@@ -19,7 +19,8 @@ const retry = async (t, retries, func, message) => {
         1}`,
     );
     if (retries === 1) throw err;
-    return await retry(t, retries - 1, func, message);
+    await new Promise(res => setTimeout(res, waitAfterFail));
+    return await retry(t, retries - 1, func, message, waitAfterFail);
   }
 };
 
