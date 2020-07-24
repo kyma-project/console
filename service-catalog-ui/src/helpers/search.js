@@ -46,10 +46,7 @@ export function determineAvailableLabels(
   );
 
   const allLabels = serviceInstances.reduce(
-    (labelsCombined, instance) => [
-      ...labelsCombined,
-      ...(instance.labels || []),
-    ],
+    (labelsCombined, instance) => [...labelsCombined, ...instance.labels],
     [],
   );
 
@@ -62,7 +59,7 @@ export function determineAvailableLabels(
   );
 
   displayedInstances.forEach(instance => {
-    (instance.labels || []).forEach(label => {
+    instance.labels.forEach(label => {
       ++labelsWithOccurrences[label];
     });
   });
