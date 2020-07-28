@@ -1,5 +1,5 @@
 {
-  "name": "ui-tests",
+  "name": "smoke-tests",
   "description": "Smoke tests for Console",
   "scripts": {
     "test": "PASSWORD=$(kubectl get secret admin-user -n kyma-system -o jsonpath='{.data.password}' | base64 -D) testcafe chrome tests/tests.js",

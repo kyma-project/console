@@ -27,7 +27,7 @@ const retry = async (t, retries, func, message, waitAfterFail = 1000) => {
 export const findActiveFrame = async t => {
   return await retry(
     t,
-    3,
+    5,
     async t => {
       const iframe = Selector('iframe').filterVisible();
       await t.switchToIframe(iframe);
