@@ -3,7 +3,6 @@ import { Selector, Role, ClientFunction } from 'testcafe';
 import chalk from 'chalk';
 
 const getLocation = ClientFunction(() => window.location.pathname);
-const reloadPage = ClientFunction(() => location.reload(true));
 
 export async function expectPathnameToBe(t, pathname) {
   return await retry(
@@ -32,7 +31,6 @@ const retry = async (t, retries, func, message, waitAfterFail = 1000) => {
     );
     if (retries === 1) throw err;
     await new Promise(res => setTimeout(res, waitAfterFail));
-    await reloadPage();
     return await retry(t, retries - 1, func, message, waitAfterFail);
   }
 };

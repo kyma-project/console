@@ -2,8 +2,8 @@
   "assertionTimeout": 10000,
   "selectorTimeout": 10000,
   "pageLoadTimeout": 30000,
-  "speed": 0.1,
+  "speed": 1,
   "screenshots": {
-    "takeOnFails": true
+    "takeOnFails": false
   }
 }
