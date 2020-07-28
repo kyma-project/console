@@ -233,7 +233,7 @@ testIf(
   },
 );
 
-test('Docs view is rendered', async t => {
+test.skip('Docs view is rendered', async t => {
   //GIVEN
   const docsLink = Selector('[data-testid=docs_docs]');
   const kymaCategoryHeader = Selector(
