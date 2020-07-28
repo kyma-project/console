@@ -1,6 +1,18 @@
 import config from './config';
-import { Selector, Role } from 'testcafe';
+import { Selector, Role, ClientFunction } from 'testcafe';
 import chalk from 'chalk';
+
+const getLocation = ClientFunction(() => window.location.pathname);
+const reloadPage = ClientFunction(() => location.reload(true));
+
+export async function expectPathnameToBe(t, pathname) {
+  return await retry(
+    t,
+    3,
+    async t => await t.expect(getLocation()).eql(pathname),
+    'Checking pathname',
+  );
+}
 
 export const testIf = (condition, testName, testToRun) => {
   if (condition) {
@@ -20,6 +32,7 @@ const retry = async (t, retries, func, message, waitAfterFail = 1000) => {
     );
     if (retries === 1) throw err;
     await new Promise(res => setTimeout(res, waitAfterFail));
+    await reloadPage();
     return await retry(t, retries - 1, func, message, waitAfterFail);
   }
 };
@@ -27,8 +40,9 @@ const retry = async (t, retries, func, message, waitAfterFail = 1000) => {
 export const findActiveFrame = async t => {
   return await retry(
     t,
-    5,
+    3,
     async t => {
+      await t.expect(Selector('#luigi-app-loading-indicator').exists).notOk();
       const iframe = Selector('iframe').filterVisible();
       await t.switchToIframe(iframe);
       await t.expect(Selector('body')()).ok();

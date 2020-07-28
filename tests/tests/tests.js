@@ -6,12 +6,13 @@ import {
   adminUser,
   toBoolean,
   leftNavLinkSelector,
+  expectPathnameToBe,
 } from '../helpers';
 import config from '../config';
 
-fixture`Console UI Smoke tests`.beforeEach(
-  async t => await t.useRole(adminUser),
-);
+fixture`Console UI Smoke tests`
+  .beforeEach(async t => await t.useRole(adminUser))
+  .afterEach(async t => await t.switchToMainWindow());
 
 test('Luigi navigation is rendered', async t => {
   //GIVEN
@@ -23,6 +24,7 @@ test('Luigi navigation is rendered', async t => {
 
 test('Namespaces view is rendered', async t => {
   //GIVEN; THEN
+  await expectPathnameToBe(t, '/home/workspace');
   await findActiveFrame(t);
   await t
     .expect(Selector('[aria-label="title"]').withText('Namespaces').exists)
@@ -39,6 +41,7 @@ test('Deployments view is rendered', async t => {
   //GIVEN
   const deploymentsLink = await leftNavLinkSelector('Deployments');
   //WHEN
+
   await findActiveFrame(t);
 
   await t
@@ -52,7 +55,7 @@ test('Deployments view is rendered', async t => {
 
   //THEN
   await findActiveFrame(t);
-
+  await expectPathnameToBe(t, `/consoleapp.html`);
   await t
     .expect(Selector('[aria-label="title"]').withText('Deployments').exists)
     .ok();
@@ -67,6 +70,7 @@ testIf(
 
     //WHEN
     await t.click(applicationLink);
+    await expectPathnameToBe(t, `/home/cmf-apps`);
 
     //THEN
     await findActiveFrame(t);
@@ -101,7 +105,9 @@ testIf(
     const functionsLink = await leftNavLinkSelector('Functions');
 
     //WHEN
+
     await findActiveFrame(t);
+
     await t
       .click(
         Selector(
@@ -112,6 +118,7 @@ testIf(
       .click(functionsLink);
 
     //THEN
+    await expectPathnameToBe(t, `/home/namespaces/default/cmf-functions`);
     await findActiveFrame(t);
     await t
       .expect(Selector('[aria-label="title"]').withText(/Functions/).exists)
@@ -166,6 +173,7 @@ testIf(
       .click(catalogLink);
 
     //THEN
+    await expectPathnameToBe(t, `/home/namespaces/default/cmf-service-catalog`);
     await findActiveFrame(t);
 
     await t
@@ -184,6 +192,7 @@ testIf(
     const brokersLink = await leftNavLinkSelector('Brokers');
 
     //WHEN
+
     await findActiveFrame(t);
     await t
       .click(
@@ -195,6 +204,7 @@ testIf(
       .click(brokersLink);
 
     //THEN
+    await expectPathnameToBe(t, `/home/namespaces/default/cmf-brokers`);
     await findActiveFrame(t);
 
     await t
@@ -213,6 +223,7 @@ testIf(
     const instancesLink = await leftNavLinkSelector('Instances');
 
     //WHEN
+
     await findActiveFrame(t);
     await t
       .click(
@@ -224,6 +235,7 @@ testIf(
       .click(instancesLink);
 
     //THEN
+    await expectPathnameToBe(t, `/home/namespaces/default/cmf-instances`);
     await findActiveFrame(t);
     await t
       .expect(
