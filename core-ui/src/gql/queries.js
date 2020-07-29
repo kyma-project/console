@@ -217,6 +217,7 @@ export const GET_OAUTH_CLIENTS = gql`
       spec {
         grantTypes
         responseTypes
+        secretName
       }
     }
   }
@@ -226,6 +227,7 @@ export const GET_OAUTH_CLIENT = gql`
   query oAuthClient($namespace: String!, $name: String!) {
     oAuth2Client(namespace: $namespace, name: $name) {
       name
+      namespace
       generation
       error {
         code

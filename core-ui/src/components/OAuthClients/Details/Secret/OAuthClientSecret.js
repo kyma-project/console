@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { useQuery } from '@apollo/react-hooks';
 import { GET_SECRET } from 'gql/queries';
 
-import { Panel, FormItem, FormLabel } from 'fundamental-react';
+import { Button, Panel, FormItem, FormLabel } from 'fundamental-react';
 import { Spinner } from 'react-shared';
 import './OAuthClientSecret.scss';
 
@@ -14,7 +14,7 @@ OAuthClientSecret.propTypes = {
 };
 
 export default function OAuthClientSecret({ namespace, name }) {
-  const { data, loading, error } = useQuery(GET_SECRET, {
+  const { data, loading, error, refetch } = useQuery(GET_SECRET, {
     fetchPolicy: 'cache-and-network',
     variables: { namespace, name },
   });
@@ -37,7 +37,7 @@ export default function OAuthClientSecret({ namespace, name }) {
     if (!data.secret) {
       return <SecretWrapper>Secret not found.</SecretWrapper>;
     }
-    if (!data.secret.client_id) {
+    if (!data.secret.data.client_id) {
       return <SecretWrapper>Invalid secret.</SecretWrapper>;
     }
 
@@ -59,6 +59,14 @@ export default function OAuthClientSecret({ namespace, name }) {
     <Panel className="fd-has-margin-m oauth-client-panel">
       <Panel.Header>
         <Panel.Head title={`Secret ${name}`} />
+        <Panel.Actions>
+          <Button
+            glyph="refresh"
+            option="light"
+            aria-label="refresh"
+            onClick={() => refetch()}
+          />
+        </Panel.Actions>
       </Panel.Header>
       {body()}
     </Panel>

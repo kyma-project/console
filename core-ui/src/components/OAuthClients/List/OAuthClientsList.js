@@ -35,22 +35,19 @@ export default function OAuthClientsList({ namespace }) {
 
   useSubscription(OAUTH_CLIENT_EVENT_SUBSCRIPTION, {
     variables: { namespace },
-    onSubscriptionData: ({ subscriptionData }) => console.log(subscriptionData),
+    onSubscriptionData: ({ subscriptionData }) => {
+      const { type, client } = subscriptionData.data.oAuth2ClientEvent;
+      handleSubscriptionArrayEvent(clients, setClients, type, client);
+    },
   });
 
-  const [deleteClient] = useMutation(DELETE_OAUTH_CLIENT, {
-    refetchQueries: () => [
-      {
-        query: GET_OAUTH_CLIENTS,
-        variables: { namespace },
-      },
-    ],
-  });
+  const [deleteClient] = useMutation(DELETE_OAUTH_CLIENT);
 
-  const headerRenderer = () => ['Name', 'Status'];
+  const headerRenderer = () => ['Name', 'Secret', 'Status'];
 
   const rowRenderer = client => [
     <ClientLink name={client.name} />,
+    client.spec.secretName,
     <ClientStatus error={client.error} />,
   ];
 
@@ -92,6 +89,7 @@ export default function OAuthClientsList({ namespace }) {
         rowRenderer={rowRenderer}
         serverDataLoading={loading}
         serverDataError={error}
+        textSearchProperties={['name', 'spec.secretName']}
       />
     </>
   );
