@@ -3,6 +3,7 @@ import { Selector, Role, ClientFunction } from 'testcafe';
 import chalk from 'chalk';
 
 const getLocation = ClientFunction(() => window.location.pathname);
+export const reloadPage = ClientFunction(() => window.location.reload(true));
 
 export async function expectPathnameToBe(t, pathname) {
   return await retry(
@@ -21,7 +22,7 @@ export const testIf = (condition, testName, testToRun) => {
   }
 };
 
-const retry = async (t, retries, func, message, waitAfterFail = 1000) => {
+const retry = async (t, retries, func, message, waitAfterFail = 3000) => {
   try {
     return await func(t);
   } catch (err) {
@@ -36,6 +37,7 @@ const retry = async (t, retries, func, message, waitAfterFail = 1000) => {
 };
 
 export const findActiveFrame = async t => {
+  reloadPage();
   return await retry(
     t,
     3,
