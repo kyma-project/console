@@ -232,3 +232,11 @@ export const UNBIND_NAMESPACE = gql`
     }
   }
 `;
+
+export const DELETE_OAUTH_CLIENT = gql`
+  mutation deleteOAuthClient($namespace: String!, $name: String!) {
+    deleteOAuth2Client(name: $name, namespace: $namespace) {
+      name
+    }
+  }
+`;
