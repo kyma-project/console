@@ -5,8 +5,8 @@ import { StatusBadge } from 'react-shared';
 
 OAuthClientStatus.propTypes = {
   error: PropTypes.shape({
-    code: PropTypes.string,
-    description: PropTypes.string,
+    code: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
   }),
 };
 

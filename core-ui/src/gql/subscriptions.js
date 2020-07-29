@@ -8,6 +8,9 @@ export function handleSubscriptionArrayEvent(
 ) {
   switch (eventType) {
     case 'ADD':
+      if (resource.find(r => r.name === changedResource.name)) {
+        throw Error(`Duplicate name: ${changedResource.name}.`);
+      }
       setResource([...resource, changedResource]);
       return;
     case 'DELETE':

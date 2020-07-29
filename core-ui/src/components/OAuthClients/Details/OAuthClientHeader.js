@@ -12,7 +12,7 @@ import { GET_OAUTH_CLIENT } from 'gql/queries';
 
 OAuthClientHeader.propTypes = {
   client: PropTypes.object.isRequired,
-  canSave: PropTypes.bool.isRequired,
+  isEditMode: PropTypes.bool.isRequired,
   canSave: PropTypes.bool.isRequired,
   setEditMode: PropTypes.func.isRequired,
   updatedSpec: PropTypes.object.isRequired,
