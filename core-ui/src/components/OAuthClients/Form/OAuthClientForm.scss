@@ -1,5 +1,12 @@
-.oauth-client-form > * {
+.oauth-client-panel > :first-child {
+    margin-bottom: 8px;
+}
+
+.oauth-client-panel > *:not(:first-child) {
+    margin-left: 32px !important; 
+    margin-right: 32px !important;
+
     display: grid;
-    grid-template-columns: 8em 1fr;
+    grid-template-columns: 1fr 2fr;
     margin-bottom: 8px !important;
 }

@@ -9,9 +9,13 @@ import {
 } from 'react-shared';
 import { Button } from 'fundamental-react';
 
-import { useQuery, useMutation } from '@apollo/react-hooks';
+import { useQuery, useMutation, useSubscription } from '@apollo/react-hooks';
 import { GET_OAUTH_CLIENTS } from 'gql/queries';
 import { DELETE_OAUTH_CLIENT } from 'gql/mutations';
+import {
+  OAUTH_CLIENT_EVENT_SUBSCRIPTION,
+  handleSubscriptionArrayEvent,
+} from 'gql/subscriptions';
 
 import ClientStatus from '../Status/OAuthClientStatus';
 import ClientLink from './OAuthClientLink';
@@ -21,9 +25,17 @@ OAuthClientsList.propTypes = { namespace: PropTypes.string.isRequired };
 export default function OAuthClientsList({ namespace }) {
   const notificationManager = useNotification();
 
+  const [clients, setClients] = React.useState([]);
+
   const { data, loading, error } = useQuery(GET_OAUTH_CLIENTS, {
     fetchPolicy: 'cache-and-network',
     variables: { namespace },
+    onCompleted: data => setClients(data.oAuth2Clients),
+  });
+
+  useSubscription(OAUTH_CLIENT_EVENT_SUBSCRIPTION, {
+    variables: { namespace },
+    onSubscriptionData: ({ subscriptionData }) => console.log(subscriptionData),
   });
 
   const [deleteClient] = useMutation(DELETE_OAUTH_CLIENT, {
@@ -75,7 +87,7 @@ export default function OAuthClientsList({ namespace }) {
         extraHeaderContent={extraHeaderContent}
         notFoundMessage="There are no OAuth clients in this Namespace"
         actions={actions}
-        entries={(data && data.oAuth2Clients) || []}
+        entries={clients || data.oAuth2Clients}
         headerRenderer={headerRenderer}
         rowRenderer={rowRenderer}
         serverDataLoading={loading}

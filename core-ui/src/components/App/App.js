@@ -17,7 +17,6 @@ import ServiceDetails from 'components/Services/ServiceDetails/ServiceDetails';
 import OAuthClientsList from 'components/OAuthClients/List/OAuthClientsList';
 import CreateOAuthClient from 'components/OAuthClients/Create/CreateOAuthClient';
 import OAuthClientsDetails from 'components/OAuthClients/Details/OAuthClientDetails';
-import EditOAuthClient from 'components/OAuthClients/Edit/EditOAuthClient';
 
 export default function App() {
   return (
@@ -44,13 +43,8 @@ export default function App() {
         component={RoutedCreateOAuthClients}
       />
       <Route
-        exact
         path="/home/namespaces/:namespaceId/oauth-clients/details/:clientName"
         component={RoutedOAuthClientDetails}
-      />
-      <Route
-        path="/home/namespaces/:namespaceId/oauth-clients/details/:clientName/edit"
-        component={RoutedEditOAuthClients}
       />
 
       <Route path="/lambdas" exact component={Lambdas} />
@@ -87,15 +81,6 @@ function RoutedCreateOAuthClients({ match }) {
 function RoutedOAuthClientDetails({ match }) {
   return (
     <OAuthClientsDetails
-      namespace={match.params.namespaceId}
-      name={match.params.clientName}
-    />
-  );
-}
-
-function RoutedEditOAuthClients({ match }) {
-  return (
-    <EditOAuthClient
       namespace={match.params.namespaceId}
       name={match.params.clientName}
     />

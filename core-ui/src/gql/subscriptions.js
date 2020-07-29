@@ -1,5 +1,27 @@
 import gql from 'graphql-tag';
 
+export function handleSubscriptionArrayEvent(
+  resource,
+  setResource,
+  eventType,
+  changedResource,
+) {
+  switch (eventType) {
+    case 'ADD':
+      setResource([...resource, changedResource]);
+      return;
+    case 'DELETE':
+      setResource(resource.filter(r => r.name !== changedResource.name));
+      return;
+    case 'UPDATE':
+      const newResource = resource.filter(r => r.name !== changedResource.name);
+      setResource([...newResource, changedResource]);
+      return;
+    default:
+      return;
+  }
+}
+
 export const NAMESPACES_EVENT_SUBSCRIPTION = gql`
   subscription Namespaces($showSystemNamespaces: Boolean) {
     namespaceEvent(withSystemNamespaces: $showSystemNamespaces) {
@@ -73,6 +95,25 @@ export const POD_EVENT_SUBSCRIPTION = gql`
       pod {
         name
         status
+      }
+    }
+  }
+`;
+
+export const OAUTH_CLIENT_EVENT_SUBSCRIPTION = gql`
+  subscription oAuthClientEvent($namespace: String!) {
+    oAuth2ClientEvent(namespace: $namespace) {
+      type
+      client {
+        name
+        error {
+          code
+          description
+        }
+        spec {
+          grantTypes
+          responseTypes
+        }
       }
     }
   }

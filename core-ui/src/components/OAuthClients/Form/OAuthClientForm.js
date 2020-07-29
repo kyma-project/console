@@ -1,16 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import {
-  FormItem,
-  FormLabel,
-  FormInput,
-  Panel,
-  FormRadioGroup,
-  Checkbox,
-} from 'fundamental-react';
+import { FormItem, FormLabel, FormInput, Panel } from 'fundamental-react';
 import { StringInput } from 'react-shared';
+import CheckboxFormControl from './CheckboxFormControl';
 import './OAuthClientForm.scss';
+import { grantTypes, responseTypes } from '../common';
 
 function validateSpec({ grantTypes, responseTypes, scope, secretName }) {
   return (
@@ -20,48 +15,6 @@ function validateSpec({ grantTypes, responseTypes, scope, secretName }) {
     !!secretName
   );
 }
-
-const grantTypes = {
-  client_credentials: 'Client credentials',
-  authorization_code: 'Authorization code',
-  implicit: 'Implicit',
-  refresh_token: 'Refresh token',
-};
-
-const responseTypes = {
-  id_token: 'ID token',
-  code: 'Code',
-  token: 'Token',
-};
-
-const Potem = ({ availableValues, values, name, setSpec }) => {
-  const onChange = (value, checked) => {
-    if (checked) {
-      values = [...values, value];
-    } else {
-      values = values.filter(v => v !== value);
-    }
-    setSpec(values);
-  };
-
-  return (
-    <>
-      <FormLabel htmlFor={name} required>
-        {name}
-      </FormLabel>
-      <FormRadioGroup inline className="inline-radio-group">
-        {Object.entries(availableValues).map(([value, displayName]) => (
-          <Checkbox
-            key={value}
-            value={displayName}
-            defaultChecked={values.includes(value)}
-            onChange={e => onChange(value, e.target.checked)}
-          />
-        ))}
-      </FormRadioGroup>
-    </>
-  );
-};
 
 OAuthClientForm.propTypes = {
   spec: PropTypes.shape({
@@ -80,21 +33,24 @@ export default function OAuthClientForm({ spec, onChange }) {
   };
 
   return (
-    <Panel className="fd-has-margin-m fd-has-padding-m oauth-client-form">
+    <Panel className="fd-has-margin-m fd-has-padding-bottom-s oauth-client-panel">
+      <Panel.Header>
+        <Panel.Head title="Configuration" />
+      </Panel.Header>
       <FormItem>
-        <Potem
+        <CheckboxFormControl
           name="Response types"
           availableValues={responseTypes}
           values={spec.responseTypes}
-          setSpec={values => updateSpec({ ...spec, responseTypes: values })}
+          onChange={values => updateSpec({ ...spec, responseTypes: values })}
         />
       </FormItem>
       <FormItem>
-        <Potem
+        <CheckboxFormControl
           name="Grant types"
           availableValues={grantTypes}
           values={spec.grantTypes}
-          setSpec={values => updateSpec({ ...spec, grantTypes: values })}
+          onChange={values => updateSpec({ ...spec, grantTypes: values })}
         />
       </FormItem>
       <FormItem>
@@ -117,6 +73,7 @@ export default function OAuthClientForm({ spec, onChange }) {
           id="secret-name"
           placeholder="Secret name"
           onChange={e => updateSpec({ ...spec, secretName: e.target.value })}
+          value={spec.secretName}
         />
       </FormItem>
     </Panel>

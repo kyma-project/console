@@ -65,13 +65,6 @@ export function getStaticChildrenNodesForNamespace(){
               pathSegment: ':clientName',
               viewUrl: config.coreModuleUrl + '/home/namespaces/:namespaceId/oauth-clients/details/:clientName',
               viewGroup: '_core_ui_',
-              children: [
-                {
-                  pathSegment: 'edit',
-                  viewUrl: config.coreModuleUrl + '/home/namespaces/:namespaceId/oauth-clients/details/:clientName/edit',
-                  viewGroup: '_core_ui_',
-                }
-              ]
             }
           ]
         }
