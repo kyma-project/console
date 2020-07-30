@@ -26,10 +26,15 @@ OAuthClientForm.propTypes = {
   onChange: PropTypes.func.isRequired,
 };
 
-export default function OAuthClientForm({ spec, onChange }) {
+export default function OAuthClientForm({ spec, onChange, isCreate = false }) {
   const updateSpec = spec => {
     const isValid = validateSpec(spec);
     onChange(spec, isValid);
+  };
+
+  const updateSpecAndName = (spec, name) => {
+    const isValid = validateSpec(spec) && !!name;
+    onChange(spec, isValid, name);
   };
 
   return (
@@ -37,6 +42,19 @@ export default function OAuthClientForm({ spec, onChange }) {
       <Panel.Header>
         <Panel.Head title="Configuration" />
       </Panel.Header>
+      {isCreate && (
+        <FormItem>
+          <FormLabel htmlFor="name" required>
+            Name
+          </FormLabel>
+          <FormInput
+            required
+            id="name"
+            placeholder="Name"
+            onChange={e => updateSpecAndName(spec, e.target.value)}
+          />
+        </FormItem>
+      )}
       <FormItem>
         <CheckboxFormControl
           name="Response types"

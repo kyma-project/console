@@ -258,3 +258,14 @@ export const DELETE_OAUTH_CLIENT = gql`
     }
   }
 `;
+export const CREATE_OAUTH_CLIENT = gql`
+  mutation createOAuth2Client(
+    $namespace: String!
+    $name: String!
+    $params: OAuth2ClientSpecInput!
+  ) {
+    createOAuth2Client(name: $name, namespace: $namespace, params: $params) {
+      name
+    }
+  }
+`;
