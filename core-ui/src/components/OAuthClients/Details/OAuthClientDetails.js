@@ -5,7 +5,7 @@ import { useQuery } from '@apollo/react-hooks';
 import { GET_OAUTH_CLIENT } from 'gql/queries';
 
 import ClientSecret from './Secret/OAuthClientSecret';
-import SpecForm from '../Form/OAuthClientForm'; // todo rename
+import ClientForm from '../Form/OAuthClientForm';
 import SpecPanel from './OAuthClientSpecPanel';
 import Header from './OAuthClientHeader';
 
@@ -49,7 +49,7 @@ export default function OAuthClientsDetails({ namespace, name }) {
       />
       {spec &&
         (isEditMode ? (
-          <SpecForm spec={spec} onChange={specChanged} />
+          <ClientForm spec={spec} onChange={specChanged} />
         ) : (
           <SpecPanel spec={spec} />
         ))}

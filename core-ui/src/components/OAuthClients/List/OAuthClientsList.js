@@ -6,16 +6,14 @@ import {
   PageHeader,
   handleDelete,
   useNotification,
+  handleSubscriptionArrayEvent,
 } from 'react-shared';
 import { Button } from 'fundamental-react';
 
 import { useQuery, useMutation, useSubscription } from '@apollo/react-hooks';
 import { GET_OAUTH_CLIENTS } from 'gql/queries';
 import { DELETE_OAUTH_CLIENT } from 'gql/mutations';
-import {
-  OAUTH_CLIENT_EVENT_SUBSCRIPTION,
-  handleSubscriptionArrayEvent,
-} from 'gql/subscriptions';
+import { OAUTH_CLIENT_EVENT_SUBSCRIPTION } from 'gql/subscriptions';
 
 import ClientStatus from '../Status/OAuthClientStatus';
 import ClientLink from './OAuthClientLink';

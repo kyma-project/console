@@ -1,4 +1,4 @@
-import { handleSubscriptionArrayEvent } from 'gql/subscriptions';
+import { handleSubscriptionArrayEvent } from 'react-shared';
 
 export function getHealthyDeploymentsCount(deployments) {
   return deployments.filter(d => d.status.replicas === d.status.readyReplicas)

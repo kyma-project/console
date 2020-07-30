@@ -24,16 +24,20 @@ OAuthClientForm.propTypes = {
     secretName: PropTypes.string.isRequired,
   }),
   onChange: PropTypes.func.isRequired,
+  isCreate: PropTypes.bool,
 };
 
 export default function OAuthClientForm({ spec, onChange, isCreate = false }) {
+  const [name, setName] = React.useState('');
+
   const updateSpec = spec => {
-    const isValid = validateSpec(spec);
-    onChange(spec, isValid);
+    const isValid = validateSpec(spec) && (!isCreate || !!name);
+    onChange(spec, isValid, name);
   };
 
-  const updateSpecAndName = (spec, name) => {
-    const isValid = validateSpec(spec) && !!name;
+  const updateName = name => {
+    setName(name);
+    const isValid = validateSpec(spec) && (!isCreate || !!name);
     onChange(spec, isValid, name);
   };
 
@@ -51,7 +55,7 @@ export default function OAuthClientForm({ spec, onChange, isCreate = false }) {
             required
             id="name"
             placeholder="Name"
-            onChange={e => updateSpecAndName(spec, e.target.value)}
+            onChange={e => updateName(e.target.value)}
           />
         </FormItem>
       )}

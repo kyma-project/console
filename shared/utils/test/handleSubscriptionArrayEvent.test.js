@@ -1,4 +1,4 @@
-import { handleSubscriptionArrayEvent } from 'gql/subscriptions';
+import { handleSubscriptionArrayEvent } from '../handleSubscriptionArrayEvent';
 
 describe('handleSubscriptionArrayEvent', () => {
   const resource = [{ name: 'a' }, { name: 'b' }];

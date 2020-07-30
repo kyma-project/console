@@ -16,8 +16,7 @@ const emptySpec = {
   secretName: '',
 };
 
-export default function CreateOAuthClient() {
-  const namespace = LuigiClient.getEventData().environmentId;
+export default function CreateOAuthClient({ namespace }) {
   const [spec, setSpec] = React.useState(emptySpec);
   const [name, setName] = React.useState('');
   const [isValid, setIsValid] = React.useState(false);

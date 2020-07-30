@@ -215,8 +215,6 @@ export const GET_OAUTH_CLIENTS = gql`
         description
       }
       spec {
-        grantTypes
-        responseTypes
         secretName
       }
     }
