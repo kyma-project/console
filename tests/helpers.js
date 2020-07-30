@@ -24,6 +24,7 @@ export const testIf = (condition, testName, testToRun) => {
 
 const retry = async (t, retries, func, message, waitAfterFail = 3000) => {
   try {
+    reloadPage();
     return await func(t);
   } catch (err) {
     console.log(
@@ -37,7 +38,6 @@ const retry = async (t, retries, func, message, waitAfterFail = 3000) => {
 };
 
 export const findActiveFrame = async t => {
-  reloadPage();
   return await retry(
     t,
     3,
