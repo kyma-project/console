@@ -8,12 +8,21 @@ import { Button, Panel, FormItem, FormLabel } from 'fundamental-react';
 import { Spinner } from 'react-shared';
 import './OAuthClientSecret.scss';
 
+const SecretComponent = ({ name, value, showEncoded }) => (
+  <FormItem>
+    <FormLabel>{name}</FormLabel>
+    {showEncoded ? btoa(value) : value}
+  </FormItem>
+);
+
 OAuthClientSecret.propTypes = {
   namespace: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
 };
 
 export default function OAuthClientSecret({ namespace, name }) {
+  const [isEncoded, setEncoded] = React.useState(true);
+
   const { data, loading, error, refetch } = useQuery(GET_SECRET, {
     fetchPolicy: 'cache-and-network',
     variables: { namespace, name },
@@ -43,14 +52,16 @@ export default function OAuthClientSecret({ namespace, name }) {
 
     return (
       <>
-        <FormItem>
-          <FormLabel>Client ID</FormLabel>
-          {data.secret.data.client_id}
-        </FormItem>
-        <FormItem>
-          <FormLabel>Client Secret</FormLabel>
-          {data.secret.data.client_secret}
-        </FormItem>
+        <SecretComponent
+          name="Client Id"
+          value={data.secret.data.client_id}
+          showEncoded={isEncoded}
+        />
+        <SecretComponent
+          name="Client Secret"
+          value={data.secret.data.client_secret}
+          showEncoded={isEncoded}
+        />
       </>
     );
   };
@@ -60,6 +71,13 @@ export default function OAuthClientSecret({ namespace, name }) {
       <Panel.Header>
         <Panel.Head title={`Secret ${name}`} />
         <Panel.Actions>
+          <Button
+            option="emphasized"
+            disabled={!data?.secret?.data.client_id}
+            onClick={() => setEncoded(!isEncoded)}
+          >
+            {isEncoded ? 'Decode' : 'Hide decoded'}
+          </Button>
           <Button
             glyph="refresh"
             option="light"

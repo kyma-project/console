@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, fireEvent } from '@testing-library/react';
 import OAuthClientSecret from '../OAuthClientSecret';
 import { MockedProvider } from '@apollo/react-testing';
 
@@ -13,8 +13,8 @@ import {
 } from './mocks';
 
 describe('OAuthClientSecret', () => {
-  it('Renders loading and valid state', async () => {
-    const { queryByText, queryByLabelText, findByText } = render(
+  it('Renders loading and valid state, decodes and encodes values', async () => {
+    const { queryByText, queryByLabelText, findByText, getByText } = render(
       <MockedProvider addTypename={false} mocks={[successMock]}>
         <OAuthClientSecret namespace={namespace} name={name} />
       </MockedProvider>,
@@ -23,6 +23,13 @@ describe('OAuthClientSecret', () => {
     expect(queryByText(`Secret ${name}`)).toBeInTheDocument();
 
     expect(queryByLabelText('Loading')).toBeInTheDocument();
+
+    expect(await findByText(btoa(secret.data.client_id))).toBeInTheDocument();
+    expect(
+      await findByText(btoa(secret.data.client_secret)),
+    ).toBeInTheDocument();
+
+    fireEvent.click(await findByText('Decode'));
 
     expect(await findByText(secret.data.client_id)).toBeInTheDocument();
     expect(await findByText(secret.data.client_secret)).toBeInTheDocument();
