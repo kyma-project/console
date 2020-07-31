@@ -7,6 +7,7 @@ import {
   handleDelete,
   useNotification,
   handleSubscriptionArrayEvent,
+  Link,
 } from 'react-shared';
 import { Button } from 'fundamental-react';
 
@@ -75,9 +76,20 @@ export default function OAuthClientsList({ namespace }) {
     </Button>
   );
 
+  const description = (
+    <span>
+      {'See '}
+      <Link
+        url="https://kyma-project.io/docs/components/security/#details-o-auth2-and-open-id-connect-server"
+        text="OAuth documentation"
+      />
+      {' to find out more.'}
+    </span>
+  );
+
   return (
     <>
-      <PageHeader title="OAuth Clients" />
+      <PageHeader title="OAuth Clients" description={description} />
       <GenericList
         extraHeaderContent={extraHeaderContent}
         notFoundMessage="There are no OAuth clients in this Namespace"

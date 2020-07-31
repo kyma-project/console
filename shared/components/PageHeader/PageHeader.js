@@ -60,11 +60,9 @@ export const PageHeader = ({
           </section>
         ) : null}
 
-        <Panel.Head
-          title={title}
-          description={description}
-          aria-label="title"
-        />
+        <Panel.Head title={title} aria-label="title" />
+        {/* don't use Panel.Head's description, as it accepts only strings */}
+        {description && <p className="description">{description}</p>}
         <section className="column-wrapper"> {children}</section>
       </section>
 
@@ -76,7 +74,7 @@ PageHeader.Column = Column;
 
 PageHeader.propTypes = {
   title: PropTypes.string.isRequired,
-  description: PropTypes.string,
+  description: PropTypes.node,
   breadcrumbItems: PropTypes.arrayOf(
     PropTypes.shape({
       name: PropTypes.string.isRequired,
