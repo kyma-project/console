@@ -3,16 +3,24 @@ import PropTypes from 'prop-types';
 import CustomPropTypes from '../../typechecking/CustomPropTypes';
 import { InlineHelp, FormLabel } from 'fundamental-react';
 
+const pattern = '^[a-z0-9]([-a-z0-9]*[a-z0-9])?$';
+const regex = new RegExp(pattern);
+
+export const isK8SNameValid = name => {
+  return regex.test(name);
+};
+
 export const K8sNameInput = ({
   _ref,
   id,
   kind,
   showHelp = true,
   label = 'Name',
+  required = true,
   ...props
 }) => (
   <>
-    <FormLabel required htmlFor={id}>
+    <FormLabel required={required} htmlFor={id}>
       {label}
       {showHelp && (
         <InlineHelp
@@ -32,9 +40,9 @@ export const K8sNameInput = ({
       type="text"
       id={id}
       placeholder={kind + ' name'}
-      aria-required="true"
-      required
-      pattern="^[a-z]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$"
+      aria-required={required ? 'true' : 'false'}
+      required={required}
+      pattern={pattern}
       {...props}
     />
   </>
@@ -43,6 +51,7 @@ export const K8sNameInput = ({
 K8sNameInput.propTypes = {
   _ref: CustomPropTypes.ref,
   id: PropTypes.string,
-  kind: PropTypes.string,
+  kind: PropTypes.string.isRequired,
   showHelp: PropTypes.bool,
+  required: PropTypes.bool,
 };

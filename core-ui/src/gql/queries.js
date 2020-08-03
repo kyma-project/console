@@ -248,3 +248,11 @@ export const GET_SECRET = gql`
     }
   }
 `;
+
+export const GET_SECRETS = gql`
+  query secrets($namespace: String!) {
+    secrets(namespace: $namespace) {
+      name
+    }
+  }
+`;

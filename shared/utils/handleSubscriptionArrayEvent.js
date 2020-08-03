@@ -15,8 +15,11 @@ export function handleSubscriptionArrayEvent(
       setResource(resource.filter(r => r.name !== changedResource.name));
       return;
     case 'UPDATE':
-      const newResource = resource.filter(r => r.name !== changedResource.name);
-      setResource([...newResource, changedResource]);
+      setResource(
+        resource.map(r =>
+          r.name === changedResource.name ? changedResource : r,
+        ),
+      );
       return;
     default:
       return;

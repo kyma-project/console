@@ -67,6 +67,10 @@ export default function CreateOAuthClient({ namespace }) {
       return;
     }
 
+    if (!spec.secretName) {
+      spec.secretName = name;
+    }
+
     const variables = {
       name,
       namespace,
@@ -100,6 +104,7 @@ export default function CreateOAuthClient({ namespace }) {
           setIsValid(isValid);
         }}
         isCreate={true}
+        namespace={namespace}
       />
     </>
   );

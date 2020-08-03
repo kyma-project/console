@@ -15,7 +15,7 @@ describe('CreateOAuthClient', () => {
     const submitButton = getByLabelText('submit-form');
     expect(submitButton).toBeDisabled();
 
-    fireEvent.change(getByPlaceholderText('Name'), {
+    fireEvent.change(getByPlaceholderText('Client name'), {
       target: { value: clientName },
     });
     fireEvent.click(getByText('ID token'));

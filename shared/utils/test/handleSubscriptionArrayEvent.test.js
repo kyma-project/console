@@ -26,14 +26,7 @@ describe('handleSubscriptionArrayEvent', () => {
     };
     handleSubscriptionArrayEvent(resource, setResource, 'UPDATE', updated);
 
-    expect(setResource).toHaveBeenCalledWith([{ name: 'b' }, updated]);
-  });
-
-  it('handles UPDATE - adds when updated resource did not exist', () => {
-    const updated = { name: 'c' };
-    handleSubscriptionArrayEvent(resource, setResource, 'UPDATE', updated);
-
-    expect(setResource).toHaveBeenCalledWith([...resource, updated]);
+    expect(setResource).toHaveBeenCalledWith([updated, { name: 'b' }]);
   });
 
   it('handles DELETE', () => {

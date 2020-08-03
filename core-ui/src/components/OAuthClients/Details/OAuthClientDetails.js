@@ -49,7 +49,11 @@ export default function OAuthClientsDetails({ namespace, name }) {
       />
       {spec &&
         (isEditMode ? (
-          <ClientForm spec={spec} onChange={specChanged} />
+          <ClientForm
+            spec={spec}
+            onChange={specChanged}
+            namespace={namespace}
+          />
         ) : (
           <SpecPanel spec={spec} />
         ))}
