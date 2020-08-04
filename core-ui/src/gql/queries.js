@@ -33,10 +33,9 @@ export const GET_NAMESPACES = gql`
       name
       labels
       status
-      pods {
-        status
-      }
-      applications
+      podsCount
+      healthyPodsCount
+      applicationsCount
       isSystemNamespace
     }
   }
