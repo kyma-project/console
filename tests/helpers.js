@@ -22,7 +22,7 @@ export const testIf = (condition, testName, testToRun) => {
   }
 };
 
-const retry = async (t, retries, func, message, waitAfterFail = 3000) => {
+const retry = async (t, retries, func, message, waitAfterFail = 10000) => {
   try {
     reloadPage();
     return await func(t);
@@ -40,7 +40,7 @@ const retry = async (t, retries, func, message, waitAfterFail = 3000) => {
 export const findActiveFrame = async t => {
   return await retry(
     t,
-    3,
+    12,
     async t => {
       await t.expect(Selector('#luigi-app-loading-indicator').exists).notOk();
       const iframe = Selector('iframe').filterVisible();
