@@ -6,7 +6,7 @@ import ServiceClassDetails from '../ServiceClassDetails/ServiceClassDetails';
 import ServiceClassPlansList from '../ServiceClassPlansList/ServiceClassPlansList';
 import ServiceInstancesList from '../ServiceInstanceList/ServiceInstanceList';
 import ServiceInstancesDetails from '../ServiceInstanceDetails/ServiceInstanceDetails';
-import ServiceBrokers from '../ServiceBrokers/ServiceBrokers.container';
+import ServiceBrokers from '../ServiceBrokers/ServiceBrokers';
 import { NotificationProvider } from 'react-shared';
 
 const App = () => (
