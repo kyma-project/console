@@ -68,7 +68,7 @@ export default function OAuthClientHeader({
       });
       setEditMode(false);
     } catch (e) {
-      console.log(e);
+      console.error(e);
       notificationManager.notifyError({
         content: `An error occurred while updating OAuth Client: ${e.message}`,
       });

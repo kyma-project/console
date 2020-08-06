@@ -13,8 +13,28 @@ import {
 } from './mocks';
 
 describe('OAuthClientSecret', () => {
-  it('Renders loading and valid state, decodes and encodes values', async () => {
-    const { queryByText, queryByLabelText, findByText, getByText } = render(
+  const expectEncodedState = async ({ findByText, queryByText }) => {
+    expect(await findByText(btoa(secret.data.client_id))).toBeInTheDocument();
+    expect(
+      await findByText(btoa(secret.data.client_secret)),
+    ).toBeInTheDocument();
+
+    expect(queryByText(secret.data.client_id)).not.toBeInTheDocument();
+    expect(queryByText(secret.data.client_secret)).not.toBeInTheDocument();
+  };
+
+  const expectDecodedState = async ({ findByText, queryByText }) => {
+    expect(await findByText(secret.data.client_id)).toBeInTheDocument();
+    expect(await findByText(secret.data.client_secret)).toBeInTheDocument();
+
+    expect(queryByText(btoa(secret.data.client_id))).not.toBeInTheDocument();
+    expect(
+      queryByText(btoa(secret.data.client_secret)),
+    ).not.toBeInTheDocument();
+  };
+
+  it('Renders loading and loaded state', async () => {
+    const { queryByText, queryByLabelText, findByText } = render(
       <MockedProvider addTypename={false} mocks={[successMock]}>
         <OAuthClientSecret namespace={namespace} name={name} />
       </MockedProvider>,
@@ -23,16 +43,21 @@ describe('OAuthClientSecret', () => {
     expect(queryByText(`Secret ${name}`)).toBeInTheDocument();
 
     expect(queryByLabelText('Loading')).toBeInTheDocument();
+    await expectEncodedState({ findByText, queryByText });
+  });
 
-    expect(await findByText(btoa(secret.data.client_id))).toBeInTheDocument();
-    expect(
-      await findByText(btoa(secret.data.client_secret)),
-    ).toBeInTheDocument();
+  it('Decodes and encodes secret values', async () => {
+    const { findByText, queryByText } = render(
+      <MockedProvider addTypename={false} mocks={[successMock]}>
+        <OAuthClientSecret namespace={namespace} name={name} />
+      </MockedProvider>,
+    );
 
     fireEvent.click(await findByText('Decode'));
+    await expectDecodedState({ findByText, queryByText });
 
-    expect(await findByText(secret.data.client_id)).toBeInTheDocument();
-    expect(await findByText(secret.data.client_secret)).toBeInTheDocument();
+    fireEvent.click(await findByText('Hide decoded'));
+    await expectEncodedState({ findByText, queryByText });
   });
 
   it('Renders error state', async () => {

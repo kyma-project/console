@@ -66,7 +66,11 @@ export const PageHeader = ({
         <section className="column-wrapper"> {children}</section>
       </section>
 
-      {actions && <Panel.Actions>{actions}</Panel.Actions>}
+      {actions && (
+        <Panel.Actions className="fd-has-margin-left-s">
+          {actions}
+        </Panel.Actions>
+      )}
     </Panel.Header>
   </Panel>
 );

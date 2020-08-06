@@ -1,6 +1,11 @@
 .page-header {
   .fd-panel__title {
     font-size: 24px;
+    word-break: break-word;
+  }
+
+  .fd-panel__actions {
+    display: flex;
   }
 
   .description {

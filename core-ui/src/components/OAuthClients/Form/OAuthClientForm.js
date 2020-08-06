@@ -27,7 +27,7 @@ OAuthClientForm.propTypes = {
     secretName: PropTypes.string.isRequired,
   }),
   onChange: PropTypes.func.isRequired,
-  isCreate: PropTypes.bool,
+  isInCreateMode: PropTypes.bool,
   namespace: PropTypes.string.isRequired,
 };
 
@@ -35,14 +35,14 @@ export default function OAuthClientForm({
   spec,
   onChange,
   namespace,
-  isCreate = false,
+  isInCreateMode = false,
 }) {
   const [name, setName] = React.useState('');
 
   const { data } = useQuery(GET_SECRETS, { variables: { namespace } });
   const secrets = data?.secrets?.map(s => s.name) || [];
 
-  const isNameValid = name => !isCreate || isK8SNameValid(name);
+  const isNameValid = name => !isInCreateMode || isK8SNameValid(name);
 
   const updateSpec = spec => {
     const isValid = validateSpec(spec) && isNameValid(name);
@@ -71,7 +71,7 @@ export default function OAuthClientForm({
       <Panel.Header>
         <Panel.Head title="Configuration" />
       </Panel.Header>
-      {isCreate && (
+      {isInCreateMode && (
         <FormItem>
           <K8sNameInput
             label="Name"

@@ -11,4 +11,8 @@
         grid-template-columns: 1fr 2fr;
         margin-bottom: 8px !important;
     }
+
+    .fd-panel__footer {
+        word-break: break-word;
+    }
 }

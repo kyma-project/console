@@ -5,16 +5,7 @@ import { MockedProvider } from '@apollo/react-testing';
 import { requestMock, namespace, clientName, secretName } from './mocks';
 
 describe('CreateOAuthClient', () => {
-  it('displays form validation and creates client', async () => {
-    const { getByLabelText, getByPlaceholderText, getByText } = render(
-      <MockedProvider addTypename={false} mocks={[requestMock]}>
-        <CreateOAuthClient namespace={namespace} />
-      </MockedProvider>,
-    );
-
-    const submitButton = getByLabelText('submit-form');
-    expect(submitButton).toBeDisabled();
-
+  const fillForm = ({ getByPlaceholderText, getByText }) => {
     fireEvent.change(getByPlaceholderText('Client name'), {
       target: { value: clientName },
     });
@@ -23,11 +14,41 @@ describe('CreateOAuthClient', () => {
     fireEvent.change(getByPlaceholderText('Secret name'), {
       target: { value: secretName },
     });
+  };
 
-    expect(submitButton).not.toBeDisabled();
+  it('disables "Create" button when form data is invalid', async () => {
+    const { findByLabelText, getByPlaceholderText, getByText } = render(
+      <MockedProvider addTypename={false} mocks={[]}>
+        <CreateOAuthClient namespace={namespace} />
+      </MockedProvider>,
+    );
+
+    expect(await findByLabelText('submit-form')).toBeDisabled();
+  });
+
+  it('enables "Create" button when form is filled', async () => {
+    const { findByLabelText, getByPlaceholderText, getByText } = render(
+      <MockedProvider addTypename={false} mocks={[]}>
+        <CreateOAuthClient namespace={namespace} />
+      </MockedProvider>,
+    );
+
+    fillForm({ getByPlaceholderText, getByText });
+
+    expect(await findByLabelText('submit-form')).not.toBeDisabled();
+  });
+
+  it('sends out a request on submit', async () => {
+    const { findByLabelText, getByPlaceholderText, getByText } = render(
+      <MockedProvider addTypename={false} mocks={[requestMock]}>
+        <CreateOAuthClient namespace={namespace} />
+      </MockedProvider>,
+    );
+
+    fillForm({ getByPlaceholderText, getByText });
 
     await act(async () => {
-      fireEvent.click(submitButton);
+      fireEvent.click(await findByLabelText('submit-form'));
       return await wait(() => expect(requestMock.result).toHaveBeenCalled());
     });
   });

@@ -103,7 +103,7 @@ export default function CreateOAuthClient({ namespace }) {
           setName(name);
           setIsValid(isValid);
         }}
-        isCreate={true}
+        isInCreateMode={true}
         namespace={namespace}
       />
     </>

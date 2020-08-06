@@ -36,7 +36,7 @@ describe('OAuthClientForm', () => {
           spec={spec}
           onChange={() => {}}
           namespace={namespace}
-          isCreate={true}
+          isInCreateMode={true}
         />
       </MockedProvider>,
     );

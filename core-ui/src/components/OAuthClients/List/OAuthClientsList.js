@@ -10,6 +10,7 @@ import {
   Link,
 } from 'react-shared';
 import { Button } from 'fundamental-react';
+import { OAUTH_DOC_URL } from 'shared/constants';
 
 import { useQuery, useMutation, useSubscription } from '@apollo/react-hooks';
 import { GET_OAUTH_CLIENTS } from 'gql/queries';
@@ -79,10 +80,7 @@ export default function OAuthClientsList({ namespace }) {
   const description = (
     <span>
       {'See '}
-      <Link
-        url="https://kyma-project.io/docs/components/security/#details-o-auth2-and-open-id-connect-server"
-        text="OAuth documentation"
-      />
+      <Link url={OAUTH_DOC_URL} text="OAuth documentation" />
       {' to find out more.'}
     </span>
   );
