@@ -29,6 +29,13 @@ const ServiceInstanceTabs = ({ serviceClass, currentPlan }) => {
     ? currentPlan.assetGroup || currentPlan.clusterAssetGroup
     : serviceClass.assetGroup || serviceClass.clusterAssetGroup;
 
+  if (!assetGroup)
+    return (
+      <h4 className="fd-has-text-align-center">
+        No assetGroup assigned. Documentation/API specification will be
+        available once an assetGroup is assigned.
+      </h4>
+    );
   return (
     <GenericDocumentation
       assetGroup={assetGroup}
