@@ -127,8 +127,8 @@ testIf(
 );
 
 testIf(toBoolean(config.loggingEnabled), 'Logs view is rendered', async t => {
-  const integrationCategoryLink = await leftNavLinkSelector('Diagnostics');
-  await t.click(integrationCategoryLink);
+  const diagnosticsCategoryLink = await leftNavLinkSelector('Diagnostics');
+  await t.click(diagnosticsCategoryLink);
 
   //GIVEN
   const logsLink = await leftNavLinkSelector('Logs');
