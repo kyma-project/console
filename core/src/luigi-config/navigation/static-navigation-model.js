@@ -35,12 +35,12 @@ export function getStaticChildrenNodesForNamespace(){
       viewGroup: '_core_ui_'
     },
     {
-      category: { label: 'Service Management', icon: 'add-coursebook' },
+      category: { label: 'Service Management', icon: 'add-coursebook', collapsible: true },
       pathSegment: '_service_management_category_placeholder_',
       hideFromNav: true
     },
     {
-      category: { label: 'Configuration', icon: 'key-user-settings' },
+      category: { label: 'Configuration', icon: 'key-user-settings', collapsible: true },
       pathSegment: '_configuration_category_placeholder_',
       hideFromNav: true
     },
@@ -80,12 +80,12 @@ export function getStaticChildrenNodesForNamespace(){
       viewUrl: '/consoleapp.html#/home/namespaces/:namespaceId/configmaps'
     },
     {
-      category: { label: 'Development', icon: 'source-code' },
+      category: { label: 'Development', icon: 'source-code', collapsible: true },
       pathSegment: '_development_category_placeholder_',
       hideFromNav: true
     },
     {
-      category: { label: 'Operation', icon: 'instance' },
+      category: { label: 'Operation', icon: 'instance', collapsible: true },
       pathSegment: 'deployments',
       navigationContext: 'deployments',
       label: 'Deployments',
@@ -168,7 +168,7 @@ export function getStaticChildrenNodesForNamespace(){
       ]
     },
     {
-      category: { label: 'Experimental', icon: 'lab' },
+      category: { label: 'Experimental', icon: 'lab', collapsible: true },
       hideFromNav: true
     }
   ];
@@ -202,7 +202,7 @@ export function getStaticRootNodes(namespaceChildrenNodesResolver){
       ]
     },
     {
-      category: { label: 'Integration', icon: 'overview-chart' },
+      category: { label: 'Integration', icon: 'overview-chart', collapsible: true },
       pathSegment: '_integration_category_placeholder_',
       hideFromNav: true
     },
@@ -223,7 +223,7 @@ export function getStaticRootNodes(namespaceChildrenNodesResolver){
       pathSegment: 'global-permissions',
       navigationContext: 'global-permissions',
       label: 'Global Permissions',
-      category: { label: 'Administration', icon: 'settings' },
+        category: { label: 'Administration', icon: 'settings', collapsible: true },
       viewUrl: '/consoleapp.html#/home/settings/globalPermissions',
       keepSelectedForChildren: true,
       viewGroup: consoleViewGroupName,
@@ -250,13 +250,14 @@ export function getStaticRootNodes(namespaceChildrenNodesResolver){
     {
       category: {
         label: 'Diagnostics',
-        icon: 'electrocardiogram'
+        icon: 'electrocardiogram',
+        collapsible: true,
       },
       pathSegment: '_integration_category_placeholder_',
       hideFromNav: true
     },
     {
-      category: { label: 'Experimental', icon: 'lab' },
+      category: { label: 'Experimental', icon: 'lab', collapsible: true },
       hideFromNav: true
     }
   ];

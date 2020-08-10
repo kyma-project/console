@@ -1,5 +1,5 @@
 import config from './config';
-import { Selector, Role } from 'testcafe';
+import { ClientFunction, Selector, Role } from 'testcafe';
 import chalk from 'chalk';
 
 export const testIf = (condition, testName, testToRun) => {
@@ -88,4 +88,10 @@ export const toBoolean = value => {
   } else {
     return value === 'true';
   }
+};
+
+export const clearExpandedCategories = () => {
+  ClientFunction(() =>
+    localStorage.setItem('luigi.preferences.navigation.expandedCategories', []),
+  );
 };
