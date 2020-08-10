@@ -7,16 +7,18 @@ const sampleNamespaces = [
   {
     name: 'first-namespace',
     status: 'Active',
-    pods: [{ status: 'ACTIVE' }],
+    allPodsCount: 3,
+    healthyPodsCount: 2,
     isSystemNamespace: false,
-    applications: [{}, {}],
+    applications: 2,
   },
   {
     name: 'second-namespace',
     status: 'Active',
-    pods: [{ status: 'ACTIVE' }],
+    allPodsCount: 4,
+    healthyPodsCount: 3,
     isSystemNamespace: true,
-    applications: [{}, {}, {}],
+    applications: 3,
   },
 ];
 

@@ -8,10 +8,9 @@ export const NAMESPACES_EVENT_SUBSCRIPTION = gql`
         name
         labels
         status
-        pods {
-          status
-        }
-        applications
+        podsCount
+        healthyPodsCount
+        applicationsCount
         isSystemNamespace
       }
     }

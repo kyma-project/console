@@ -15,7 +15,7 @@ NamespaceDetailsCard.propTypes = {
   healthyPodsCount: PropTypes.number.isRequired,
   status: PropTypes.string.isRequired,
   isSystemNamespace: PropTypes.bool.isRequired,
-  applications: PropTypes.array,
+  applicationsCount: PropTypes.number,
 };
 
 export function getPodsRatioColor(healthyPods, allPods) {
@@ -55,7 +55,7 @@ export default function NamespaceDetailsCard({
   healthyPodsCount,
   status,
   isSystemNamespace,
-  applications,
+  applicationsCount,
 }) {
   const [deleteNamespace] = useMutation(DELETE_NAMESPACE);
 
@@ -148,13 +148,13 @@ export default function NamespaceDetailsCard({
             </p>
             <p>Pods are healthy</p>
           </div>
-          {applications !== null && (
+          {applicationsCount !== null && (
             <div>
               <p className="fd-has-type-4 fd-has-font-weight-light">
-                {applications.length}
+                {applicationsCount}
               </p>
               <p>
-                {applications.length === 1
+                {applicationsCount === 1
                   ? 'Bound Application'
                   : 'Bound Applications'}
               </p>
