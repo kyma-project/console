@@ -12,7 +12,7 @@ export interface ContentUILayoutProps {
 export const ContentUILayout: React.FunctionComponent<ContentUILayoutProps> = ({
   renderers,
 }) => (
-  <Grid.Container className="grid-container">
+  <Grid.Container width="auto" padding="0" className="grid-container">
     <StickyContainer>
       <Grid.Row>
         <Grid.Unit df={9} sm={12} className="grid-unit-content">

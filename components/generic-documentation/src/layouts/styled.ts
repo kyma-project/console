@@ -4,11 +4,6 @@ import { tabsStyling } from '../renderers/styled';
 export const ContentUIWrapper = styled.div`
   &&& {
     width: 100%;
-
-    .grid-container {
-      margin-left: 295px;
-      padding: 15px;
-    }
   }
 `;
 
@@ -43,11 +38,6 @@ export const CatalogUIWrapper = styled.div`
 
     .grid-unit-content > div {
       border: none;
-      margin: 0;
-    }
-
-    .grid-container {
-      padding: 0;
       margin: 0;
     }
 
@@ -101,11 +91,6 @@ export const InstancesUIWrapper = styled.div`
       > section {
         padding: 16px;
       }
-    }
-
-    .grid-container {
-      padding: 0;
-      margin: 0;
     }
 
     .grid-unit-content > div {
