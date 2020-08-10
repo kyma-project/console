@@ -42,12 +42,12 @@ export const DocTypesList = ({ plan }) => (
           <Badge type={DOC_TYPES_COLORS.get(type)}>
             {type}
             {count > 1 && (
-              <Link
-                className="fd-counter fd-counter--notification"
+              <span
+                className="fd-counter fd-counter--notification "
                 aria-label="api-type-count"
               >
                 {count}
-              </Link>
+              </span>
             )}
           </Badge>
         </Tooltip>
