@@ -43,6 +43,7 @@ export const DocTypesList = ({ plan }) => (
             {type}
             {count > 1 && (
               <span
+                role="link"
                 className="fd-counter fd-counter--notification "
                 aria-label="api-type-count"
               >
