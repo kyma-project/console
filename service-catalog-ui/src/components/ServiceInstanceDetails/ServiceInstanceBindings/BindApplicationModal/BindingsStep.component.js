@@ -1,6 +1,6 @@
 import React from 'react';
 
-// import { Select } from '@kyma-project/react-components';
+import { Select } from '@kyma-project/react-components';
 
 import deepEqual from 'deep-equal';
 
@@ -78,30 +78,31 @@ class BindingsStep extends React.Component {
   };
 
   content = () => {
-    // const { existingServiceBindings } = this.props;
-    // const { checkbox, selectedExistingBinding } = this.state;
+    const { existingServiceBindings } = this.props;
+    const { checkbox, selectedExistingBinding } = this.state;
 
-    // if (checkbox) {
-    //   return null;
-    // }
+    if (checkbox) {
+      return null;
+    }
 
-    // const items = existingServiceBindings.map((binding, index) => (
-    //   <option key={index} value={binding.name}>
-    //     {binding.name}
-    //   </option>
-    // ));
+    const items = existingServiceBindings.map((binding, index) => (
+      <option key={index} value={binding.name}>
+        {binding.name}
+      </option>
+    ));
 
-    return 'Um ok haha';
-    // <Select
-    //   label={'Select Existing Credentials'}
-    //   handleChange={this.handleSelect}
-    //   name={'selectedExistingBinding'}
-    //   current={selectedExistingBinding}
-    //   items={items}
-    //   firstEmptyValue
-    //   required={true}
-    //   noBottomMargin
-    // />
+    return (
+      <Select
+        label={'Select Existing Credentials'}
+        handleChange={this.handleSelect}
+        name={'selectedExistingBinding'}
+        current={selectedExistingBinding}
+        items={items}
+        firstEmptyValue
+        required={true}
+        noBottomMargin
+      />
+    );
   };
 
   render() {
