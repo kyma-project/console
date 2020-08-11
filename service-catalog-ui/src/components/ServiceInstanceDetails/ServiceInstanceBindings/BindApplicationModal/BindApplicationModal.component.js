@@ -1,23 +1,23 @@
-import React, { Fragment } from 'react';
-import dcopy from 'deep-copy';
-import 'core-js/es/array/flat-map';
+import React from 'react';
+// import dcopy from 'deep-copy';
+// import 'core-js/es/array/flat-map';
 
-import { Separator } from '@kyma-project/react-components';
+// import { Separator } from '@kyma-project/react-components';
 import { Button } from 'fundamental-react';
 import { Modal, Tooltip } from 'react-shared';
 
-import BindingsStep from './BindingsStep.component';
-import Resources from './Resources.component';
-import SchemaData from './SchemaData.component';
+// import BindingsStep from './BindingsStep.component';
+// import Resources from './Resources.component';
+// import SchemaData from './SchemaData.component';
 
-import { bindingVariables } from '../InfoButton/variables';
-import InfoButton from '../InfoButton/InfoButton.component';
+// import { bindingVariables } from '../InfoButton/variables';
+// import InfoButton from '../InfoButton/InfoButton.component';
 
-import { SubSectionTitle } from './styled';
+// import { SubSectionTitle } from './styled';
 
-import { clearEmptyPropertiesInObject } from 'helpers';
-import LuigiClient from '@luigi-project/client';
-import WithNotificationContext from '../WithNotificationContext/WithNotificationContext';
+// import { clearEmptyPropertiesInObject } from 'helpers';
+// import LuigiClient from '@luigi-project/client';
+// import WithNotificationContext from '../WithNotificationContext/WithNotificationContext';
 
 class BindApplicationModal extends React.Component {
   constructor(props) {
@@ -105,76 +105,76 @@ class BindApplicationModal extends React.Component {
     };
   };
 
-  create = async params => {
-    const { checkbox } = this.state;
-    const { serviceInstance, createBinding, createBindingUsage } = this.props;
+  // create = async params => {
+  //   const { checkbox } = this.state;
+  //   const { serviceInstance, createBinding, createBindingUsage } = this.props;
 
-    let success = true;
+  //   let success = true;
 
-    try {
-      let createdBindingName, createdBindingUsageName;
-      if (checkbox) {
-        let bindingCreateParameters;
-        if (this.state.bindingCreateParameters) {
-          bindingCreateParameters = dcopy(this.state.bindingCreateParameters);
-          clearEmptyPropertiesInObject(bindingCreateParameters);
-        } else {
-          bindingCreateParameters = {};
-        }
-        const createdBinding = await createBinding(
-          serviceInstance.name,
-          bindingCreateParameters,
-        );
+  //   try {
+  //     let createdBindingName, createdBindingUsageName;
+  //     if (checkbox) {
+  //       let bindingCreateParameters;
+  //       if (this.state.bindingCreateParameters) {
+  //         bindingCreateParameters = dcopy(this.state.bindingCreateParameters);
+  //         clearEmptyPropertiesInObject(bindingCreateParameters);
+  //       } else {
+  //         bindingCreateParameters = {};
+  //       }
+  //       const createdBinding = await createBinding(
+  //         serviceInstance.name,
+  //         bindingCreateParameters,
+  //       );
 
-        if (
-          createdBinding &&
-          createdBinding.data &&
-          createdBinding.data.createServiceBinding &&
-          createdBinding.data.createServiceBinding.name
-        ) {
-          createdBindingName = createdBinding.data.createServiceBinding.name;
-        }
-      }
-      const dataToSend = this.prepareData(createdBindingName);
-      const createdBindingUsage = await createBindingUsage(dataToSend);
-      if (
-        createdBindingUsage &&
-        createdBindingUsage.data &&
-        createdBindingUsage.data.createServiceBindingUsage &&
-        createdBindingUsage.data.createServiceBindingUsage.name
-      ) {
-        createdBindingUsageName =
-          createdBindingUsage.data.createServiceBindingUsage.name;
-      }
+  //       if (
+  //         createdBinding &&
+  //         createdBinding.data &&
+  //         createdBinding.data.createServiceBinding &&
+  //         createdBinding.data.createServiceBinding.name
+  //       ) {
+  //         createdBindingName = createdBinding.data.createServiceBinding.name;
+  //       }
+  //     }
+  //     const dataToSend = this.prepareData(createdBindingName);
+  //     const createdBindingUsage = await createBindingUsage(dataToSend);
+  //     if (
+  //       createdBindingUsage &&
+  //       createdBindingUsage.data &&
+  //       createdBindingUsage.data.createServiceBindingUsage &&
+  //       createdBindingUsage.data.createServiceBindingUsage.name
+  //     ) {
+  //       createdBindingUsageName =
+  //         createdBindingUsage.data.createServiceBindingUsage.name;
+  //     }
 
-      this.props.notification.open({
-        content: `Application binding "${createdBindingUsageName}" created successfully`,
-        title: `${createdBindingUsageName}`,
-        color: '#359c46',
-        icon: 'accept',
-        instanceName: createdBindingUsageName,
-        visible: true,
-      });
-    } catch (e) {
-      success = false;
-      this.setState({
-        tooltipData: {
-          type: 'error',
-          title: 'Error occored during creation',
-          content: e.message,
-          show: true,
-          minWidth: '261px',
-        },
-      });
-    }
-    if (success) {
-      this.clearState();
-      LuigiClient.uxManager().removeBackdrop();
-    }
-  };
+  //     this.props.notification.open({
+  //       content: `Application binding "${createdBindingUsageName}" created successfully`,
+  //       title: `${createdBindingUsageName}`,
+  //       color: '#359c46',
+  //       icon: 'accept',
+  //       instanceName: createdBindingUsageName,
+  //       visible: true,
+  //     });
+  //   } catch (e) {
+  //     success = false;
+  //     this.setState({
+  //       tooltipData: {
+  //         type: 'error',
+  //         title: 'Error occored during creation',
+  //         content: e.message,
+  //         show: true,
+  //         minWidth: '261px',
+  //       },
+  //     });
+  //   }
+  //   if (success) {
+  //     this.clearState();
+  //     LuigiClient.uxManager().removeBackdrop();
+  //   }
+  // };
 
   handleConfirmation = () => {
-    this.create();
+    //this.create();
   };
 
   handleOpen = () => {
@@ -196,156 +196,154 @@ class BindApplicationModal extends React.Component {
       bindableResourcesError,
     } = this.state;
 
-    const { serviceInstance, usageKinds, id } = this.props;
+    // const { serviceInstance, usageKinds, id } = this.props;
 
-    const servicePlan =
-      (serviceInstance &&
-        (serviceInstance.servicePlan || serviceInstance.clusterServicePlan)) ||
-      [];
+    // const servicePlan =
+    //   (serviceInstance &&
+    //     (serviceInstance.servicePlan || serviceInstance.clusterServicePlan)) ||
+    //   [];
 
-    const bindingCreateParameterSchema =
-      (servicePlan && servicePlan.bindingCreateParameterSchema) || null;
+    // const bindingCreateParameterSchema =
+    //   (servicePlan && servicePlan.bindingCreateParameterSchema) || null;
 
-    const disabled = !bindingsStepFilled || !resourcesFilled;
+    // const disabled = !bindingsStepFilled || !resourcesFilled;
 
-    const resourcesData = {
-      resourcesFilled: bindingsStepFilled,
-      selectedKind: selectedKind,
-      selectedResource: selectedResource,
-      prefixEnvironmentValue: prefixEnvironmentValue,
-    };
+    // const resourcesData = {
+    //   resourcesFilled: bindingsStepFilled,
+    //   selectedKind: selectedKind,
+    //   selectedResource: selectedResource,
+    //   prefixEnvironmentValue: prefixEnvironmentValue,
+    // };
 
-    const schemaData = {
-      bindingCreateParameters: bindingCreateParameters,
-    };
+    // const schemaData = {
+    //   bindingCreateParameters: bindingCreateParameters,
+    // };
 
-    const bindingsStepData = {
-      checkbox: checkbox,
-      selectedExistingBinding: selectedExistingBinding,
-      bindingsStepFilled: bindingsStepFilled,
-    };
+    // const bindingsStepData = {
+    //   checkbox: checkbox,
+    //   selectedExistingBinding: selectedExistingBinding,
+    //   bindingsStepFilled: bindingsStepFilled,
+    // };
 
-    const bindingCreateParameterSchemaExists =
-      bindingCreateParameterSchema &&
-      (bindingCreateParameterSchema.$ref ||
-        bindingCreateParameterSchema.properties);
+    // const bindingCreateParameterSchemaExists =
+    //   bindingCreateParameterSchema &&
+    //   (bindingCreateParameterSchema.$ref ||
+    //     bindingCreateParameterSchema.properties);
 
-    const content = [
-      <div key={serviceInstance.name}>
-        <Resources
-          data={resourcesData}
-          usageKinds={usageKinds.usageKinds}
-          bindableResources={bindableResources}
-          callback={this.callback}
-        />
-        {bindingCreateParameterSchemaExists && (
-          <Fragment>
-            <Separator margin="16px -16px" />
+    // const content = [
+    //   <div key={serviceInstance.name}>
+    //     <Resources
+    //       data={resourcesData}
+    //       usageKinds={usageKinds.usageKinds}
+    //       bindableResources={bindableResources}
+    //       callback={this.callback}
+    //     />
+    //     {bindingCreateParameterSchemaExists && (
+    //       <Fragment>
+    //         <Separator margin="16px -16px" />
 
-            <SubSectionTitle bold>
-              Create Credentials
-              <InfoButton content={bindingVariables.serviceBinding} />
-            </SubSectionTitle>
-          </Fragment>
-        )}
+    //         <SubSectionTitle bold>
+    //           Create Credentials
+    //           <InfoButton content={bindingVariables.serviceBinding} />
+    //         </SubSectionTitle>
+    //       </Fragment>
+    //     )}
 
-        {bindingCreateParameterSchemaExists && (
-          <Fragment>
-            {!checkbox ? null : (
-              <SchemaData
-                data={schemaData}
-                bindingCreateParameterSchema={bindingCreateParameterSchema}
-                onSubmitSchemaForm={this.create}
-                callback={this.callback}
-              />
-            )}
-          </Fragment>
-        )}
-        <BindingsStep
-          data={bindingsStepData}
-          existingServiceBindings={serviceInstance.serviceBindings.items}
-          showInfo={bindingCreateParameterSchema ? true : false}
-          callback={this.callback}
-        />
-      </div>,
-    ];
+    //     {bindingCreateParameterSchemaExists && (
+    //       <Fragment>
+    //         {!checkbox ? null : (
+    //           <SchemaData
+    //             data={schemaData}
+    //             bindingCreateParameterSchema={bindingCreateParameterSchema}
+    //             onSubmitSchemaForm={this.create}
+    //             callback={this.callback}
+    //           />
+    //         )}
+    //       </Fragment>
+    //     )}
+    //     {/* <BindingsStep
+    //       data={bindingsStepData}
+    //       existingServiceBindings={serviceInstance.serviceBindings.items}
+    //       showInfo={bindingCreateParameterSchema ? true : false}
+    //       callback={this.callback}
+    //     /> */}
+    //   </div>,
+    // ];
 
-    const bindApplicationButton = (
-      <Tooltip content={bindingVariables.serviceBingingUsage}>
-        <Button
-          compact
-          option="light"
-          data-e2e-id={id}
-          onClick={this.handleOpen}
-        >
-          + Bind Application
-        </Button>
-      </Tooltip>
-    );
+    // const bindApplicationButton = (
+    //   <Tooltip content={bindingVariables.serviceBingingUsage}>
+    //     <Button
+    //       compact
+    //       option="light"
+    //       data-e2e-id={id}
+    //       onClick={this.handleOpen}
+    //     >
+    //       + Bind Application
+    //     </Button>
+    //   </Tooltip>
+    // );
 
-    if (serviceInstance.status.type !== 'RUNNING') {
-      return (
-        <Tooltip
-          type="error"
-          content={
-            <span>
-              Instance must be in a <strong>Running</strong> state
-            </span>
-          }
-          minWidth="161px"
-        >
-          <Button compact option="light" disabled={true}>
-            + Bind Application
-          </Button>
-        </Tooltip>
-      );
-    }
+    // if (serviceInstance.status.type !== 'RUNNING') {
+    //   return (
+    //     <Tooltip
+    //       type="error"
+    //       content={
+    //         <span>
+    //           Instance must be in a <strong>Running</strong> state
+    //         </span>
+    //       }
+    //       minWidth="161px"
+    //     >
+    //       <Button compact option="light" disabled={true}>
+    //         + Bind Application
+    //       </Button>
+    //     </Tooltip>
+    //   );
+    // }
 
-    const createDisabledBindApplicationButton = content => (
-      <Tooltip type="error" content={content} minWidth="161px">
-        <Button compact data-e2e-id={id} option="light" disabled={true}>
-          + Bind Application
-        </Button>
-      </Tooltip>
-    );
+    // const createDisabledBindApplicationButton = content => (
+    //   <Tooltip type="error" content={content} minWidth="161px">
+    //     <Button compact data-e2e-id={id} option="light" disabled={true}>
+    //       + Bind Application
+    //     </Button>
+    //   </Tooltip>
+    // );
 
-    const noApplicationsAvailable =
-      bindableResources && !bindableResources.flatMap(r => r.resources).length;
+    // const noApplicationsAvailable =
+    //   bindableResources && !bindableResources.flatMap(r => r.resources).length;
 
-    if (bindableResourcesError && bindableResourcesError.message) {
-      return createDisabledBindApplicationButton(
-        `Error while getting the list of bindable resources: ${bindableResourcesError.message}`,
-      );
-    }
+    // if (bindableResourcesError && bindableResourcesError.message) {
+    //   return createDisabledBindApplicationButton(
+    //     `Error while getting the list of bindable resources: ${bindableResourcesError.message}`,
+    //   );
+    // }
 
-    if (noApplicationsAvailable) {
-      return createDisabledBindApplicationButton(
-        'There are no applications available',
-      );
-    }
+    // if (noApplicationsAvailable) {
+    //   return createDisabledBindApplicationButton(
+    //     'There are no applications available',
+    //   );
+    // }
 
-    if (!serviceInstance.serviceClass && !serviceInstance.clusterServiceClass) {
-      return createDisabledBindApplicationButton(
-        'Service Class does not exist. Contact the cluster administrator.',
-      );
-    }
+    // if (!serviceInstance.serviceClass && !serviceInstance.clusterServiceClass) {
+    //   return createDisabledBindApplicationButton(
+    //     'Service Class does not exist. Contact the cluster administrator.',
+    //   );
+    // }
 
     return (
       <Modal
         title="Bind Application"
         confirmText="Bind Application"
-        onConfirm={this.handleConfirmation}
-        modalOpeningComponent={bindApplicationButton}
-        disabledConfirm={disabled}
+        onConfirm={console.log}
+        modalOpeningComponent={<Button>AA</Button>}
+        // disabledConfirm={disabled}
         tooltipData={tooltipData}
         handleClose={this.clearState}
       >
-        {content}
+        tets
       </Modal>
     );
   }
 }
 
-export default function BindApplicationModalWithContext(props) {
-  return WithNotificationContext(BindApplicationModal, props);
-}
+export default BindApplicationModal;
