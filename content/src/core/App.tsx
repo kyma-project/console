@@ -22,10 +22,10 @@ export const App: React.FunctionComponent = () => {
 
   return (
     <Wrapper>
-      <Grid.Container className="grid-container" width="auto">
+      <Grid.Container className="grid-container" padding="0" width="auto">
         <StickyContainer>
-          <Grid.Row>
-            <Grid.Unit df={3} sm={0}>
+          <Grid.Row style={{ margin: 0 }}>
+            <Grid.Unit style={{ padding: 0 }} df={3} sm={0}>
               <Sticky>
                 {({ style }: any) => (
                   <div style={{ ...style, zIndex: 200 }}>
