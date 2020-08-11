@@ -4,7 +4,7 @@ import React from 'react';
 
 // import { Separator } from '@kyma-project/react-components';
 import { Button } from 'fundamental-react';
-import { Modal } from 'react-shared';
+import { Modal, Tooltip } from 'react-shared';
 
 // import BindingsStep from './BindingsStep.component';
 // import Resources from './Resources.component';
@@ -183,53 +183,60 @@ class BindApplicationModal extends React.Component {
 
   render() {
     const {
-      // checkbox,
-      // selectedExistingBinding,
-      // selectedKind,
-      // selectedResource,
-      // prefixEnvironmentValue,
-      // bindingCreateParameters,
-      // bindableResources,
-      // bindingsStepFilled,
-      // resourcesFilled,
+      checkbox,
+      selectedExistingBinding,
+      selectedKind,
+      selectedResource,
+      prefixEnvironmentValue,
+      bindingCreateParameters,
+      bindableResources,
+      bindingsStepFilled,
+      resourcesFilled,
       tooltipData,
-      // bindableResourcesError,
+      bindableResourcesError,
     } = this.state;
 
-    // const { serviceInstance, usageKinds, id } = this.props;
+    const { serviceInstance, usageKinds, id } = this.props;
 
-    // const servicePlan =
-    //   (serviceInstance &&
-    //     (serviceInstance.servicePlan || serviceInstance.clusterServicePlan)) ||
-    //   [];
+    const servicePlan =
+      (serviceInstance &&
+        (serviceInstance.servicePlan || serviceInstance.clusterServicePlan)) ||
+      [];
 
-    // const bindingCreateParameterSchema =
-    //   (servicePlan && servicePlan.bindingCreateParameterSchema) || null;
+    const bindingCreateParameterSchema =
+      (servicePlan && servicePlan.bindingCreateParameterSchema) || null;
 
-    // const disabled = !bindingsStepFilled || !resourcesFilled;
+    const disabled = !bindingsStepFilled || !resourcesFilled;
 
-    // const resourcesData = {
-    //   resourcesFilled: bindingsStepFilled,
-    //   selectedKind: selectedKind,
-    //   selectedResource: selectedResource,
-    //   prefixEnvironmentValue: prefixEnvironmentValue,
-    // };
+    const resourcesData = {
+      resourcesFilled: bindingsStepFilled,
+      selectedKind: selectedKind,
+      selectedResource: selectedResource,
+      prefixEnvironmentValue: prefixEnvironmentValue,
+    };
 
-    // const schemaData = {
-    //   bindingCreateParameters: bindingCreateParameters,
-    // };
+    const schemaData = {
+      bindingCreateParameters: bindingCreateParameters,
+    };
 
-    // const bindingsStepData = {
-    //   checkbox: checkbox,
-    //   selectedExistingBinding: selectedExistingBinding,
-    //   bindingsStepFilled: bindingsStepFilled,
-    // };
+    const bindingsStepData = {
+      checkbox: checkbox,
+      selectedExistingBinding: selectedExistingBinding,
+      bindingsStepFilled: bindingsStepFilled,
+    };
 
-    // const bindingCreateParameterSchemaExists =
-    //   bindingCreateParameterSchema &&
-    //   (bindingCreateParameterSchema.$ref ||
-    //     bindingCreateParameterSchema.properties);
+    const bindingCreateParameterSchemaExists =
+      bindingCreateParameterSchema &&
+      (bindingCreateParameterSchema.$ref ||
+        bindingCreateParameterSchema.properties);
 
+    console.log(
+      schemaData,
+      bindingsStepData,
+      bindingCreateParameterSchemaExists,
+      resourcesData,
+      usageKinds,
+    );
     // const content = [
     //   <div key={serviceInstance.name}>
     //     <Resources
@@ -301,34 +308,34 @@ class BindApplicationModal extends React.Component {
     //   );
     // }
 
-    // const createDisabledBindApplicationButton = content => (
-    //   <Tooltip type="error" content={content} minWidth="161px">
-    //     <Button compact data-e2e-id={id} option="light" disabled={true}>
-    //       + Bind Application
-    //     </Button>
-    //   </Tooltip>
-    // );
+    const createDisabledBindApplicationButton = content => (
+      <Tooltip type="error" content={content} minWidth="161px">
+        <Button compact data-e2e-id={id} option="light" disabled={true}>
+          + Bind Application
+        </Button>
+      </Tooltip>
+    );
 
-    // const noApplicationsAvailable =
-    //   bindableResources && !bindableResources.flatMap(r => r.resources).length;
+    const noApplicationsAvailable =
+      bindableResources && !bindableResources.flatMap(r => r.resources).length;
 
-    // if (bindableResourcesError && bindableResourcesError.message) {
-    //   return createDisabledBindApplicationButton(
-    //     `Error while getting the list of bindable resources: ${bindableResourcesError.message}`,
-    //   );
-    // }
+    if (bindableResourcesError && bindableResourcesError.message) {
+      return createDisabledBindApplicationButton(
+        `Error while getting the list of bindable resources: ${bindableResourcesError.message}`,
+      );
+    }
 
-    // if (noApplicationsAvailable) {
-    //   return createDisabledBindApplicationButton(
-    //     'There are no applications available',
-    //   );
-    // }
+    if (noApplicationsAvailable) {
+      return createDisabledBindApplicationButton(
+        'There are no applications available',
+      );
+    }
 
-    // if (!serviceInstance.serviceClass && !serviceInstance.clusterServiceClass) {
-    //   return createDisabledBindApplicationButton(
-    //     'Service Class does not exist. Contact the cluster administrator.',
-    //   );
-    // }
+    if (!serviceInstance.serviceClass && !serviceInstance.clusterServiceClass) {
+      return createDisabledBindApplicationButton(
+        'Service Class does not exist. Contact the cluster administrator.',
+      );
+    }
 
     return (
       <Modal
@@ -336,7 +343,7 @@ class BindApplicationModal extends React.Component {
         confirmText="Bind Application"
         onConfirm={console.log}
         modalOpeningComponent={<Button>AA</Button>}
-        // disabledConfirm={disabled}
+        disabledConfirm={disabled}
         tooltipData={tooltipData}
         handleClose={this.clearState}
       >

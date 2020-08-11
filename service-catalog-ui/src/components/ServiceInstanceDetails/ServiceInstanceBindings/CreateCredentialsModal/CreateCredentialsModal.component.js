@@ -10,7 +10,7 @@ import { bindingVariables } from '../InfoButton/variables';
 import { clearEmptyPropertiesInObject } from 'helpers';
 import LuigiClient from '@luigi-project/client';
 
-// import WithNotificationContext from '../WithNotificationContext/WithNotificationContext';
+import WithNotificationContext from '../WithNotificationContext/WithNotificationContext';
 
 class CreateCredentialsModal extends React.Component {
   constructor(props) {
@@ -223,4 +223,6 @@ class CreateCredentialsModal extends React.Component {
   }
 }
 
-export default CreateCredentialsModal;
+export default function CreateCredentialsModalWithContext(props) {
+  return WithNotificationContext(CreateCredentialsModal, props);
+}
