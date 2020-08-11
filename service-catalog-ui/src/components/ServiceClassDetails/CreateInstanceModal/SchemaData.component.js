@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 
 import { ErrorBoundary, Icon } from '@kyma-project/react-components';
 import { Bold, Flex, JsonSchemaForm } from './styled';
-const [draft04, draft06] = [
-  require('ajv/lib/refs/json-schema-draft-04.json'),
-  require('ajv/lib/refs/json-schema-draft-06.json'),
-];
+// const [draft04, draft06] = [
+//   require('ajv/lib/refs/json-schema-draft-04.json'),
+//   require('ajv/lib/refs/json-schema-draft-06.json'),
+// ];
 
 const SchemaData = ({
   onFormChange,
@@ -39,10 +39,10 @@ const SchemaData = ({
 
   const getAdditionalMetaSchemas = currentSchema => {
     let additionalSchemaArray = [];
-    if (currentSchema) {
-      currentSchema.includes('draft-04') && additionalSchemaArray.push(draft04);
-      currentSchema.includes('draft-06') && additionalSchemaArray.push(draft06);
-    }
+    // if (currentSchema) {
+    //   currentSchema.includes('draft-04') && additionalSchemaArray.push(draft04);
+    //   currentSchema.includes('draft-06') && additionalSchemaArray.push(draft06);
+    // }
     return additionalSchemaArray;
   };
 
