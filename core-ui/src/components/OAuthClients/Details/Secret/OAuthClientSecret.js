@@ -72,7 +72,7 @@ export default function OAuthClientSecret({ namespace, name }) {
         <Panel.Head title={`Secret ${name}`} />
         <Panel.Actions>
           <Button
-            option="emphasized"
+            option="light"
             glyph={isEncoded ? 'show' : 'hide'}
             disabled={!data?.secret?.data.client_id}
             onClick={() => setEncoded(!isEncoded)}
