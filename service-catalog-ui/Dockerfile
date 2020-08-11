@@ -12,7 +12,8 @@ RUN apk update && \
 # Install root and app dependencies
 COPY . /app
 RUN cd /app/${app_name} && \
-  make resolve
+  make resolve && \
+  make verify
 
 
 # Set env variables
@@ -33,7 +34,7 @@ ARG app_name=service-catalog-ui
 
 COPY ./${app_name}/nginx.conf /etc/nginx/nginx.conf
 COPY --from=builder /app/${app_name}/build var/public
-# COPY --from=builder /app/${app_name}/licenses/ /app/licenses/
+COPY --from=builder /app/${app_name}/licenses/ /app/licenses/
 
 RUN touch /var/run/nginx.pid && \
   chown -R nginx:nginx /var/run/nginx.pid
