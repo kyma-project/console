@@ -10,7 +10,7 @@ import { Modal, Tooltip } from 'react-shared';
 // import Resources from './Resources.component';
 // import SchemaData from './SchemaData.component';
 
-// import { bindingVariables } from '../InfoButton/variables';
+import { bindingVariables } from '../InfoButton/variables';
 // import InfoButton from '../InfoButton/InfoButton.component';
 
 // import { SubSectionTitle } from './styled';
@@ -277,36 +277,36 @@ class BindApplicationModal extends React.Component {
     //   </div>,
     // ];
 
-    // const bindApplicationButton = (
-    //   <Tooltip content={bindingVariables.serviceBingingUsage}>
-    //     <Button
-    //       compact
-    //       option="light"
-    //       data-e2e-id={id}
-    //       onClick={this.handleOpen}
-    //     >
-    //       + Bind Application
-    //     </Button>
-    //   </Tooltip>
-    // );
+    const bindApplicationButton = (
+      <Tooltip content={bindingVariables.serviceBingingUsage}>
+        <Button
+          compact
+          option="light"
+          data-e2e-id={id}
+          onClick={this.handleOpen}
+        >
+          + Bind Application
+        </Button>
+      </Tooltip>
+    );
 
-    // if (serviceInstance.status.type !== 'RUNNING') {
-    //   return (
-    //     <Tooltip
-    //       type="error"
-    //       content={
-    //         <span>
-    //           Instance must be in a <strong>Running</strong> state
-    //         </span>
-    //       }
-    //       minWidth="161px"
-    //     >
-    //       <Button compact option="light" disabled={true}>
-    //         + Bind Application
-    //       </Button>
-    //     </Tooltip>
-    //   );
-    // }
+    if (serviceInstance.status.type !== 'RUNNING') {
+      return (
+        <Tooltip
+          type="error"
+          content={
+            <span>
+              Instance must be in a <strong>Running</strong> state
+            </span>
+          }
+          minWidth="161px"
+        >
+          <Button compact option="light" disabled={true}>
+            + Bind Application
+          </Button>
+        </Tooltip>
+      );
+    }
 
     const createDisabledBindApplicationButton = content => (
       <Tooltip type="error" content={content} minWidth="161px">
@@ -342,12 +342,12 @@ class BindApplicationModal extends React.Component {
         title="Bind Application"
         confirmText="Bind Application"
         onConfirm={console.log}
-        modalOpeningComponent={<Button>AA</Button>}
+        modalOpeningComponent={bindApplicationButton}
         disabledConfirm={disabled}
         tooltipData={tooltipData}
         handleClose={this.clearState}
       >
-        tets
+        ale halo
       </Modal>
     );
   }
