@@ -1,4 +1,5 @@
 import { GET_SECRET } from 'gql/queries';
+import { SECRET_EVENT_SUBSCRIPTION } from 'gql/subscriptions';
 
 export const namespace = 'test-namespace';
 export const name = 'test-name';
@@ -28,4 +29,12 @@ export const errorMock = {
 export const invalidSecretMock = {
   request,
   result: { data: { secret: { data: {} } } },
+};
+
+export const subscriptionMock = {
+  request: {
+    query: SECRET_EVENT_SUBSCRIPTION,
+    variables: { namespace },
+  },
+  result: { data: null },
 };

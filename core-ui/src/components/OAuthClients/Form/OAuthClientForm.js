@@ -10,12 +10,13 @@ import { grantTypes, responseTypes } from '../common';
 import { useQuery } from 'react-apollo';
 import { GET_SECRETS } from 'gql/queries';
 
-function validateSpec({ grantTypes, responseTypes, scope, secretName }) {
+function validateSpec(spec, validateSecret) {
+  const { grantTypes, responseTypes, scope, secretName } = spec;
   return (
     grantTypes.length >= 1 &&
     responseTypes.length >= 1 &&
     !!scope &&
-    (!secretName || isK8SNameValid(secretName))
+    (!validateSecret || isK8SNameValid(secretName))
   );
 }
 
@@ -27,44 +28,41 @@ OAuthClientForm.propTypes = {
     secretName: PropTypes.string.isRequired,
   }),
   onChange: PropTypes.func.isRequired,
+  showCustomSecret: PropTypes.bool,
   isInCreateMode: PropTypes.bool,
   namespace: PropTypes.string.isRequired,
+  name: PropTypes.string,
 };
 
 export default function OAuthClientForm({
-  spec,
+  spec: originalSpec,
   onChange,
-  namespace,
+  showCustomSecret,
   isInCreateMode = false,
+  namespace,
+  name: originalName = '',
 }) {
-  const [name, setName] = React.useState('');
+  const [name, setName] = React.useState(originalName);
+  const [spec, setSpec] = React.useState(originalSpec);
+  const [useCustomSecret, setUseCustomSecret] = React.useState(
+    showCustomSecret,
+  );
 
   const { data } = useQuery(GET_SECRETS, { variables: { namespace } });
   const secrets = data?.secrets?.map(s => s.name) || [];
 
-  const isNameValid = name => !isInCreateMode || isK8SNameValid(name);
+  const revalidate = () => {
+    const isNameValid = !isInCreateMode || isK8SNameValid(name);
+    const isSpecValid = validateSpec(spec, useCustomSecret);
 
-  const updateSpec = spec => {
-    const isValid = validateSpec(spec) && isNameValid(name);
-    onChange(spec, isValid, name);
+    onChange(
+      useCustomSecret ? spec : { ...spec, secretName: name },
+      isNameValid && isSpecValid,
+      name,
+    );
   };
 
-  const updateName = name => {
-    setName(name);
-    const isValid = validateSpec(spec) && isNameValid(name);
-    onChange(spec, isValid, name);
-  };
-
-  const secretMessage = () => {
-    if (!spec.secretName) {
-      return 'Secret name will be the same as client name.';
-    }
-    if (secrets.includes(spec.secretName)) {
-      return `Secret ${spec.secretName} will be used for this client.`;
-    } else {
-      return `Secret ${spec.secretName} will be created and used for this client.`;
-    }
-  };
+  React.useEffect(revalidate, [spec, name, useCustomSecret]);
 
   return (
     <Panel className="fd-has-margin-m fd-has-padding-bottom-s oauth-client-panel">
@@ -76,7 +74,7 @@ export default function OAuthClientForm({
           <K8sNameInput
             label="Name"
             kind="Client"
-            onChange={e => updateName(e.target.value)}
+            onChange={e => setName(e.target.value)}
           />
         </FormItem>
       )}
@@ -85,7 +83,7 @@ export default function OAuthClientForm({
           name="Response types"
           availableValues={responseTypes}
           values={spec.responseTypes}
-          onChange={values => updateSpec({ ...spec, responseTypes: values })}
+          onChange={values => setSpec({ ...spec, responseTypes: values })}
         />
       </FormItem>
       <FormItem>
@@ -93,7 +91,7 @@ export default function OAuthClientForm({
           name="Grant types"
           availableValues={grantTypes}
           values={spec.grantTypes}
-          onChange={values => updateSpec({ ...spec, grantTypes: values })}
+          onChange={values => setSpec({ ...spec, grantTypes: values })}
         />
       </FormItem>
       <FormItem>
@@ -102,22 +100,34 @@ export default function OAuthClientForm({
         </FormLabel>
         <StringInput
           stringList={spec.scope.split(' ').filter(scope => scope)}
-          onChange={scope => updateSpec({ ...spec, scope: scope.join(' ') })}
+          onChange={scope => setSpec({ ...spec, scope: scope.join(' ') })}
           id="scope"
         />
       </FormItem>
-      <FormItem>
-        <K8sNameInput
-          label="Secret name"
-          kind="Secret"
-          onChange={e => updateSpec({ ...spec, secretName: e.target.value })}
-          value={spec.secretName}
-          required={false}
-        />
-      </FormItem>
-      <Panel.Footer style={{ display: 'block' }}>
-        {secretMessage()}
-      </Panel.Footer>
+      <p
+        className="link fd-has-display-block fd-has-margin-top-small"
+        onClick={() => setUseCustomSecret(!useCustomSecret)}
+      >
+        {useCustomSecret
+          ? 'Create secret with the same name as client.'
+          : 'Define custom secret name for this client.'}
+      </p>
+      {useCustomSecret && (
+        <>
+          <FormItem>
+            <K8sNameInput
+              label="Secret name"
+              kind="Secret"
+              onChange={e => setSpec({ ...spec, secretName: e.target.value })}
+              value={spec.secretName}
+            />
+          </FormItem>
+          <p className="fd-has-display-block fd-has-color-text-3">
+            {secrets?.includes(spec.secretName) &&
+              `Secret "${spec.secretName}" exists and will be used for this client.`}
+          </p>
+        </>
+      )}
     </Panel>
   );
 }

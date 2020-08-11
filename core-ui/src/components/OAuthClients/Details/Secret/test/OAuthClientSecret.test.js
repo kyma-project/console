@@ -10,6 +10,7 @@ import {
   successMock,
   errorMock,
   invalidSecretMock,
+  subscriptionMock,
 } from './mocks';
 
 describe('OAuthClientSecret', () => {
@@ -35,7 +36,10 @@ describe('OAuthClientSecret', () => {
 
   it('Renders loading and loaded state', async () => {
     const { queryByText, queryByLabelText, findByText } = render(
-      <MockedProvider addTypename={false} mocks={[successMock]}>
+      <MockedProvider
+        addTypename={false}
+        mocks={[successMock, subscriptionMock]}
+      >
         <OAuthClientSecret namespace={namespace} name={name} />
       </MockedProvider>,
     );
@@ -48,7 +52,10 @@ describe('OAuthClientSecret', () => {
 
   it('Decodes and encodes secret values', async () => {
     const { findByText, queryByText } = render(
-      <MockedProvider addTypename={false} mocks={[successMock]}>
+      <MockedProvider
+        addTypename={false}
+        mocks={[successMock, subscriptionMock]}
+      >
         <OAuthClientSecret namespace={namespace} name={name} />
       </MockedProvider>,
     );
@@ -62,7 +69,7 @@ describe('OAuthClientSecret', () => {
 
   it('Renders error state', async () => {
     const { findByText } = render(
-      <MockedProvider addTypename={false} mocks={[errorMock]}>
+      <MockedProvider addTypename={false} mocks={[errorMock, subscriptionMock]}>
         <OAuthClientSecret namespace={namespace} name={name} />
       </MockedProvider>,
     );
@@ -74,7 +81,10 @@ describe('OAuthClientSecret', () => {
 
   it('Renders invalid secret', async () => {
     const { findByText } = render(
-      <MockedProvider addTypename={false} mocks={[invalidSecretMock]}>
+      <MockedProvider
+        addTypename={false}
+        mocks={[invalidSecretMock, subscriptionMock]}
+      >
         <OAuthClientSecret namespace={namespace} name={name} />
       </MockedProvider>,
     );

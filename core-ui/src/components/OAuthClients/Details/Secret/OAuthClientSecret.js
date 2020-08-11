@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery, useSubscription } from '@apollo/react-hooks';
 import { GET_SECRET } from 'gql/queries';
+import { SECRET_EVENT_SUBSCRIPTION } from 'gql/subscriptions';
 
 import { Button, Panel, FormItem, FormLabel } from 'fundamental-react';
-import { Spinner } from 'react-shared';
+import { Spinner, handleSubscriptionEvent } from 'react-shared';
 import './OAuthClientSecret.scss';
 
 const SecretComponent = ({ name, value, showEncoded }) => (
@@ -21,11 +22,21 @@ OAuthClientSecret.propTypes = {
 };
 
 export default function OAuthClientSecret({ namespace, name }) {
+  const [secret, setSecret] = React.useState(null);
   const [isEncoded, setEncoded] = React.useState(true);
 
-  const { data, loading, error, refetch } = useQuery(GET_SECRET, {
+  const { loading, error } = useQuery(GET_SECRET, {
     fetchPolicy: 'cache-and-network',
     variables: { namespace, name },
+    onCompleted: data => setSecret(data.secret),
+  });
+
+  useSubscription(SECRET_EVENT_SUBSCRIPTION, {
+    variables: { namespace },
+    onSubscriptionData: ({ subscriptionData }) => {
+      const { type, secret } = subscriptionData.data.secretEvent;
+      handleSubscriptionEvent(type, setSecret, secret, s => s.name === name);
+    },
   });
 
   const body = () => {
@@ -43,10 +54,10 @@ export default function OAuthClientSecret({ namespace, name }) {
     if (error) {
       return <SecretWrapper>{`Error ${error.message}`}</SecretWrapper>;
     }
-    if (!data.secret) {
+    if (!secret) {
       return <SecretWrapper>Secret not found.</SecretWrapper>;
     }
-    if (!data.secret.data.client_id) {
+    if (!secret.data.client_id) {
       return <SecretWrapper>Invalid secret.</SecretWrapper>;
     }
 
@@ -54,12 +65,12 @@ export default function OAuthClientSecret({ namespace, name }) {
       <>
         <SecretComponent
           name="Client Id"
-          value={data.secret.data.client_id}
+          value={secret.data.client_id}
           showEncoded={isEncoded}
         />
         <SecretComponent
           name="Client Secret"
-          value={data.secret.data.client_secret}
+          value={secret.data.client_secret}
           showEncoded={isEncoded}
         />
       </>
@@ -74,17 +85,11 @@ export default function OAuthClientSecret({ namespace, name }) {
           <Button
             option="light"
             glyph={isEncoded ? 'show' : 'hide'}
-            disabled={!data?.secret?.data.client_id}
+            disabled={!secret?.data.client_id}
             onClick={() => setEncoded(!isEncoded)}
           >
             {isEncoded ? 'Decode' : 'Hide decoded'}
           </Button>
-          <Button
-            glyph="refresh"
-            option="light"
-            aria-label="refresh"
-            onClick={() => refetch()}
-          />
         </Panel.Actions>
       </Panel.Header>
       {body()}

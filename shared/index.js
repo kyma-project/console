@@ -35,6 +35,7 @@ export * from './contexts/NotificationContext';
 export * from './contexts/Microfrontend';
 export * from './utils/apollo';
 export * from './utils/handleSubscriptionArrayEvent';
+export * from './utils/handleSubscriptionEvent';
 export * from './components/GenericList/actionHandlers/simpleDelete';
 export * from './components/CredentialForms';
 export * from './constants/constants';

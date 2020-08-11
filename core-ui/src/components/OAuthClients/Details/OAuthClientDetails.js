@@ -53,6 +53,8 @@ export default function OAuthClientsDetails({ namespace, name }) {
             spec={spec}
             onChange={specChanged}
             namespace={namespace}
+            name={name}
+            showCustomSecret={spec.secretName !== name}
           />
         ) : (
           <SpecPanel spec={spec} />

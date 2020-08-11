@@ -11,13 +11,14 @@ describe('CreateOAuthClient', () => {
     });
     fireEvent.click(getByText('ID token'));
     fireEvent.click(getByText('Client credentials'));
+    fireEvent.click(getByText('Define custom secret name for this client.'));
     fireEvent.change(getByPlaceholderText('Secret name'), {
       target: { value: secretName },
     });
   };
 
   it('disables "Create" button when form data is invalid', async () => {
-    const { findByLabelText, getByPlaceholderText, getByText } = render(
+    const { findByLabelText } = render(
       <MockedProvider addTypename={false} mocks={[]}>
         <CreateOAuthClient namespace={namespace} />
       </MockedProvider>,
