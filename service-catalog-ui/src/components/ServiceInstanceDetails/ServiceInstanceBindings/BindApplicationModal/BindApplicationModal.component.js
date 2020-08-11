@@ -1,12 +1,12 @@
 import React, { Fragment } from 'react';
-// import dcopy from 'deep-copy';
-// import 'core-js/es/array/flat-map';
+import dcopy from 'deep-copy';
+import 'core-js/es/array/flat-map';
 
 import { Separator } from '@kyma-project/react-components';
 import { Button } from 'fundamental-react';
 import { Modal, Tooltip } from 'react-shared';
 
-// import BindingsStep from './BindingsStep.component';
+import BindingsStep from './BindingsStep.component';
 import Resources from './Resources.component';
 // import SchemaData from './SchemaData.component';
 
@@ -15,9 +15,9 @@ import InfoButton from '../InfoButton/InfoButton.component';
 
 import { SubSectionTitle } from './styled';
 
-// import { clearEmptyPropertiesInObject } from 'helpers';
-// import LuigiClient from '@luigi-project/client';
-// import WithNotificationContext from '../WithNotificationContext/WithNotificationContext';
+import { clearEmptyPropertiesInObject } from 'helpers';
+import LuigiClient from '@luigi-project/client';
+import WithNotificationContext from '../WithNotificationContext/WithNotificationContext';
 
 class BindApplicationModal extends React.Component {
   constructor(props) {
@@ -105,76 +105,76 @@ class BindApplicationModal extends React.Component {
     };
   };
 
-  // create = async params => {
-  //   const { checkbox } = this.state;
-  //   const { serviceInstance, createBinding, createBindingUsage } = this.props;
+  create = async params => {
+    const { checkbox } = this.state;
+    const { serviceInstance, createBinding, createBindingUsage } = this.props;
 
-  //   let success = true;
+    let success = true;
 
-  //   try {
-  //     let createdBindingName, createdBindingUsageName;
-  //     if (checkbox) {
-  //       let bindingCreateParameters;
-  //       if (this.state.bindingCreateParameters) {
-  //         bindingCreateParameters = dcopy(this.state.bindingCreateParameters);
-  //         clearEmptyPropertiesInObject(bindingCreateParameters);
-  //       } else {
-  //         bindingCreateParameters = {};
-  //       }
-  //       const createdBinding = await createBinding(
-  //         serviceInstance.name,
-  //         bindingCreateParameters,
-  //       );
+    try {
+      let createdBindingName, createdBindingUsageName;
+      if (checkbox) {
+        let bindingCreateParameters;
+        if (this.state.bindingCreateParameters) {
+          bindingCreateParameters = dcopy(this.state.bindingCreateParameters);
+          clearEmptyPropertiesInObject(bindingCreateParameters);
+        } else {
+          bindingCreateParameters = {};
+        }
+        const createdBinding = await createBinding(
+          serviceInstance.name,
+          bindingCreateParameters,
+        );
 
-  //       if (
-  //         createdBinding &&
-  //         createdBinding.data &&
-  //         createdBinding.data.createServiceBinding &&
-  //         createdBinding.data.createServiceBinding.name
-  //       ) {
-  //         createdBindingName = createdBinding.data.createServiceBinding.name;
-  //       }
-  //     }
-  //     const dataToSend = this.prepareData(createdBindingName);
-  //     const createdBindingUsage = await createBindingUsage(dataToSend);
-  //     if (
-  //       createdBindingUsage &&
-  //       createdBindingUsage.data &&
-  //       createdBindingUsage.data.createServiceBindingUsage &&
-  //       createdBindingUsage.data.createServiceBindingUsage.name
-  //     ) {
-  //       createdBindingUsageName =
-  //         createdBindingUsage.data.createServiceBindingUsage.name;
-  //     }
+        if (
+          createdBinding &&
+          createdBinding.data &&
+          createdBinding.data.createServiceBinding &&
+          createdBinding.data.createServiceBinding.name
+        ) {
+          createdBindingName = createdBinding.data.createServiceBinding.name;
+        }
+      }
+      const dataToSend = this.prepareData(createdBindingName);
+      const createdBindingUsage = await createBindingUsage(dataToSend);
+      if (
+        createdBindingUsage &&
+        createdBindingUsage.data &&
+        createdBindingUsage.data.createServiceBindingUsage &&
+        createdBindingUsage.data.createServiceBindingUsage.name
+      ) {
+        createdBindingUsageName =
+          createdBindingUsage.data.createServiceBindingUsage.name;
+      }
 
-  //     this.props.notification.open({
-  //       content: `Application binding "${createdBindingUsageName}" created successfully`,
-  //       title: `${createdBindingUsageName}`,
-  //       color: '#359c46',
-  //       icon: 'accept',
-  //       instanceName: createdBindingUsageName,
-  //       visible: true,
-  //     });
-  //   } catch (e) {
-  //     success = false;
-  //     this.setState({
-  //       tooltipData: {
-  //         type: 'error',
-  //         title: 'Error occored during creation',
-  //         content: e.message,
-  //         show: true,
-  //         minWidth: '261px',
-  //       },
-  //     });
-  //   }
-  //   if (success) {
-  //     this.clearState();
-  //     LuigiClient.uxManager().removeBackdrop();
-  //   }
-  // };
+      this.props.notification.open({
+        content: `Application binding "${createdBindingUsageName}" created successfully`,
+        title: `${createdBindingUsageName}`,
+        color: '#359c46',
+        icon: 'accept',
+        instanceName: createdBindingUsageName,
+        visible: true,
+      });
+    } catch (e) {
+      success = false;
+      this.setState({
+        tooltipData: {
+          type: 'error',
+          title: 'Error occored during creation',
+          content: e.message,
+          show: true,
+          minWidth: '261px',
+        },
+      });
+    }
+    if (success) {
+      this.clearState();
+      LuigiClient.uxManager().removeBackdrop();
+    }
+  };
 
   handleConfirmation = () => {
-    //this.create();
+    this.create();
   };
 
   handleOpen = () => {
@@ -259,12 +259,12 @@ class BindApplicationModal extends React.Component {
         {bindingCreateParameterSchemaExists && (
           <Fragment>{!checkbox ? null : <p>schemadata</p>}</Fragment>
         )}
-        {/* <BindingsStep
+        <BindingsStep
           data={bindingsStepData}
           existingServiceBindings={serviceInstance.serviceBindings.items}
           showInfo={bindingCreateParameterSchema ? true : false}
           callback={this.callback}
-        /> */}
+        />
       </div>,
     ];
 
@@ -332,7 +332,7 @@ class BindApplicationModal extends React.Component {
       <Modal
         title="Bind Application"
         confirmText="Bind Application"
-        // onConfirm={console.log}
+        onConfirm={this.handleConfirmation}
         modalOpeningComponent={bindApplicationButton}
         disabledConfirm={disabled}
         tooltipData={tooltipData}
@@ -344,4 +344,6 @@ class BindApplicationModal extends React.Component {
   }
 }
 
-export default BindApplicationModal;
+export default function BindApplicationModalWithContext(props) {
+  return WithNotificationContext(BindApplicationModal, props);
+}
