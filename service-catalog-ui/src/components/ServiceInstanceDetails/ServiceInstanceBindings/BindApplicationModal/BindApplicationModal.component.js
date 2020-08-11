@@ -230,13 +230,6 @@ class BindApplicationModal extends React.Component {
       (bindingCreateParameterSchema.$ref ||
         bindingCreateParameterSchema.properties);
 
-    console.log(
-      schemaData,
-      bindingsStepData,
-      bindingCreateParameterSchemaExists,
-      resourcesData,
-      usageKinds,
-    );
     const content = [
       <div key={serviceInstance.name}>
         <Resources
