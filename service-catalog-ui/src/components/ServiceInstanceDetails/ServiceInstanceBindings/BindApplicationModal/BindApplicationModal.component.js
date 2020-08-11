@@ -1,19 +1,19 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 // import dcopy from 'deep-copy';
 // import 'core-js/es/array/flat-map';
 
-// import { Separator } from '@kyma-project/react-components';
+import { Separator } from '@kyma-project/react-components';
 import { Button } from 'fundamental-react';
 import { Modal, Tooltip } from 'react-shared';
 
 // import BindingsStep from './BindingsStep.component';
-// import Resources from './Resources.component';
+import Resources from './Resources.component';
 // import SchemaData from './SchemaData.component';
 
 import { bindingVariables } from '../InfoButton/variables';
-// import InfoButton from '../InfoButton/InfoButton.component';
+import InfoButton from '../InfoButton/InfoButton.component';
 
-// import { SubSectionTitle } from './styled';
+import { SubSectionTitle } from './styled';
 
 // import { clearEmptyPropertiesInObject } from 'helpers';
 // import LuigiClient from '@luigi-project/client';
@@ -237,45 +237,36 @@ class BindApplicationModal extends React.Component {
       resourcesData,
       usageKinds,
     );
-    // const content = [
-    //   <div key={serviceInstance.name}>
-    //     <Resources
-    //       data={resourcesData}
-    //       usageKinds={usageKinds.usageKinds}
-    //       bindableResources={bindableResources}
-    //       callback={this.callback}
-    //     />
-    //     {bindingCreateParameterSchemaExists && (
-    //       <Fragment>
-    //         <Separator margin="16px -16px" />
+    const content = [
+      <div key={serviceInstance.name}>
+        <Resources
+          data={resourcesData}
+          usageKinds={usageKinds.usageKinds}
+          bindableResources={bindableResources}
+          callback={this.callback}
+        />
+        {bindingCreateParameterSchemaExists && (
+          <Fragment>
+            <Separator margin="16px -16px" />
 
-    //         <SubSectionTitle bold>
-    //           Create Credentials
-    //           <InfoButton content={bindingVariables.serviceBinding} />
-    //         </SubSectionTitle>
-    //       </Fragment>
-    //     )}
+            <SubSectionTitle bold>
+              Create Credentials
+              <InfoButton content={bindingVariables.serviceBinding} />
+            </SubSectionTitle>
+          </Fragment>
+        )}
 
-    //     {bindingCreateParameterSchemaExists && (
-    //       <Fragment>
-    //         {!checkbox ? null : (
-    //           <SchemaData
-    //             data={schemaData}
-    //             bindingCreateParameterSchema={bindingCreateParameterSchema}
-    //             onSubmitSchemaForm={this.create}
-    //             callback={this.callback}
-    //           />
-    //         )}
-    //       </Fragment>
-    //     )}
-    //     {/* <BindingsStep
-    //       data={bindingsStepData}
-    //       existingServiceBindings={serviceInstance.serviceBindings.items}
-    //       showInfo={bindingCreateParameterSchema ? true : false}
-    //       callback={this.callback}
-    //     /> */}
-    //   </div>,
-    // ];
+        {bindingCreateParameterSchemaExists && (
+          <Fragment>{!checkbox ? null : <p>schemadata</p>}</Fragment>
+        )}
+        {/* <BindingsStep
+          data={bindingsStepData}
+          existingServiceBindings={serviceInstance.serviceBindings.items}
+          showInfo={bindingCreateParameterSchema ? true : false}
+          callback={this.callback}
+        /> */}
+      </div>,
+    ];
 
     const bindApplicationButton = (
       <Tooltip content={bindingVariables.serviceBingingUsage}>
@@ -347,7 +338,7 @@ class BindApplicationModal extends React.Component {
         tooltipData={tooltipData}
         handleClose={this.clearState}
       >
-        ale halo
+        {content}
       </Modal>
     );
   }
