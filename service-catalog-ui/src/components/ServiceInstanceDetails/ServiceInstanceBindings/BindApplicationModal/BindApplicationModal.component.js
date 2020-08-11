@@ -341,7 +341,7 @@ class BindApplicationModal extends React.Component {
       <Modal
         title="Bind Application"
         confirmText="Bind Application"
-        onConfirm={console.log}
+        // onConfirm={console.log}
         modalOpeningComponent={bindApplicationButton}
         disabledConfirm={disabled}
         tooltipData={tooltipData}
