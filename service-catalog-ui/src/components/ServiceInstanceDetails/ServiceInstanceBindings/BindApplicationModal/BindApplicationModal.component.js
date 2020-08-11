@@ -4,7 +4,7 @@ import React from 'react';
 
 // import { Separator } from '@kyma-project/react-components';
 import { Button } from 'fundamental-react';
-import { Modal, Tooltip } from 'react-shared';
+import { Modal } from 'react-shared';
 
 // import BindingsStep from './BindingsStep.component';
 // import Resources from './Resources.component';
@@ -183,17 +183,17 @@ class BindApplicationModal extends React.Component {
 
   render() {
     const {
-      checkbox,
-      selectedExistingBinding,
-      selectedKind,
-      selectedResource,
-      prefixEnvironmentValue,
-      bindingCreateParameters,
-      bindableResources,
-      bindingsStepFilled,
-      resourcesFilled,
+      // checkbox,
+      // selectedExistingBinding,
+      // selectedKind,
+      // selectedResource,
+      // prefixEnvironmentValue,
+      // bindingCreateParameters,
+      // bindableResources,
+      // bindingsStepFilled,
+      // resourcesFilled,
       tooltipData,
-      bindableResourcesError,
+      // bindableResourcesError,
     } = this.state;
 
     // const { serviceInstance, usageKinds, id } = this.props;
