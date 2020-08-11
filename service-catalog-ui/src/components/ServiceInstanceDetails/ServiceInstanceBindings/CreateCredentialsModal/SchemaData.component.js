@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import {
-  JsonSchemaForm,
+  // JsonSchemaForm,
   Icon,
   ErrorBoundary,
 } from '@kyma-project/react-components';
@@ -37,12 +37,12 @@ class SchemaData extends React.Component {
 
   render() {
     const {
-      bindingCreateParameterSchema,
-      onSubmitSchemaForm,
-      children,
+      // bindingCreateParameterSchema,
+      // onSubmitSchemaForm,
+      // children,
       planName,
     } = this.props;
-    const { bindingCreateParameters } = this.state;
+    // const { bindingCreateParameters } = this.state;
 
     return (
       <ErrorBoundary
@@ -53,7 +53,8 @@ class SchemaData extends React.Component {
           </div>
         }
       >
-        <JsonSchemaForm
+        <p>hm</p>
+        {/* <JsonSchemaForm
           schema={bindingCreateParameterSchema}
           onChange={this.onChangeSchemaForm}
           liveValidate={true}
@@ -61,7 +62,7 @@ class SchemaData extends React.Component {
           formData={bindingCreateParameters}
         >
           {children}
-        </JsonSchemaForm>
+        </JsonSchemaForm> */}
       </ErrorBoundary>
     );
   }
