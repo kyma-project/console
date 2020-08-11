@@ -8,7 +8,7 @@ import { Modal, Tooltip } from 'react-shared';
 
 import BindingsStep from './BindingsStep.component';
 import Resources from './Resources.component';
-import SchemaData from './SchemaData.component';
+// import SchemaData from './SchemaData.component';
 
 import { bindingVariables } from '../InfoButton/variables';
 import InfoButton from '../InfoButton/InfoButton.component';
@@ -218,6 +218,7 @@ class BindApplicationModal extends React.Component {
     const schemaData = {
       bindingCreateParameters: bindingCreateParameters,
     };
+    console.log(schemaData);
 
     const bindingsStepData = {
       checkbox: checkbox,
@@ -252,12 +253,13 @@ class BindApplicationModal extends React.Component {
         {bindingCreateParameterSchemaExists && (
           <Fragment>
             {!checkbox ? null : (
-              <SchemaData
-                data={schemaData}
-                bindingCreateParameterSchema={bindingCreateParameterSchema}
-                onSubmitSchemaForm={this.create}
-                callback={this.callback}
-              />
+              <p>Hmst.</p>
+              // <SchemaData
+              //   data={schemaData}
+              //   bindingCreateParameterSchema={bindingCreateParameterSchema}
+              //   onSubmitSchemaForm={this.create}
+              //   callback={this.callback}
+              // />
             )}
           </Fragment>
         )}

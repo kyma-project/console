@@ -4,7 +4,7 @@ import { Tooltip as StatusTooltip } from '@kyma-project/react-components';
 import { Button } from 'fundamental-react';
 import { Modal, Tooltip } from 'react-shared';
 
-import SchemaData from './SchemaData.component';
+// import SchemaData from './SchemaData.component';
 import { bindingVariables } from '../InfoButton/variables';
 
 import { clearEmptyPropertiesInObject } from 'helpers';
@@ -129,7 +129,7 @@ class CreateCredentialsModal extends React.Component {
       bindingCreateParameters,
       tooltipData,
       bindingCreateParameterSchema,
-      servicePlan,
+      // servicePlan,
     } = this.state;
 
     const { serviceInstance, id } = this.props;
@@ -139,6 +139,7 @@ class CreateCredentialsModal extends React.Component {
     const schemaData = {
       bindingCreateParameters: bindingCreateParameters,
     };
+    console.log(schemaData);
 
     const bindingCreateParameterSchemaExists =
       bindingCreateParameterSchema &&
@@ -147,13 +148,13 @@ class CreateCredentialsModal extends React.Component {
 
     const content = [
       <Fragment key={serviceInstance.name}>
-        <SchemaData
+        {/* <SchemaData
           data={schemaData}
           bindingCreateParameterSchema={bindingCreateParameterSchema}
           onSubmitSchemaForm={el => this.create(true)}
           planName={servicePlan.displayName}
           callback={this.callback}
-        />
+        /> */}
       </Fragment>,
     ];
 
