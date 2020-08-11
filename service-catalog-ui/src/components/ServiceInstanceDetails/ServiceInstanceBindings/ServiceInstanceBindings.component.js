@@ -5,7 +5,7 @@ import {
   Tooltip as StatusTooltip,
 } from '@kyma-project/react-components';
 import { Tabs, Tab, Tooltip, GenericList } from 'react-shared';
-import BindApplicationModal from './BindApplicationModal/BindApplicationModal.container';
+// import BindApplicationModal from './BindApplicationModal/BindApplicationModal.container';
 import CreateCredentialsModal from './CreateCredentialsModal/CreateCredentialsModal.component';
 import SecretDataModal from './SecretDataModal/SecretDataModal.component';
 import ParametersDataModal from './ParametersDataModal/ParametersDataModal.component';
@@ -84,14 +84,7 @@ class ServiceInstanceBindings extends React.Component {
       );
     }
 
-    const bindApplication = (
-      <BindApplicationModal
-        createBinding={createBinding}
-        createBindingUsage={createBindingUsage}
-        serviceInstance={serviceInstance}
-        id={`create-service-binding`}
-      />
-    );
+    const bindApplication = <p>tutaj bind app</p>;
 
     const boundApplicationContent = (
       <>
