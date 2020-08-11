@@ -218,6 +218,7 @@ class BindApplicationModal extends React.Component {
     const schemaData = {
       bindingCreateParameters: bindingCreateParameters,
     };
+    console.log(schemaData);
 
     const bindingsStepData = {
       checkbox: checkbox,
