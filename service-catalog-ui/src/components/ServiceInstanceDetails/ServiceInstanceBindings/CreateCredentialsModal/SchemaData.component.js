@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import {
-  JsonSchemaForm,
-  Icon,
-  ErrorBoundary,
-} from '@kyma-project/react-components';
+// import {
+//   JsonSchemaForm,
+//   Icon,
+//   ErrorBoundary,
+// } from '@kyma-project/react-components';
 import { Bold } from './styled';
 
 class SchemaData extends React.Component {
@@ -36,34 +36,35 @@ class SchemaData extends React.Component {
   };
 
   render() {
-    const {
-      bindingCreateParameterSchema,
-      onSubmitSchemaForm,
-      children,
-      planName,
-    } = this.props;
-    const { bindingCreateParameters } = this.state;
+    return <Bold>?</Bold>;
+    // const {
+    //   bindingCreateParameterSchema,
+    //   onSubmitSchemaForm,
+    //   children,
+    //   planName,
+    // } = this.props;
+    // const { bindingCreateParameters } = this.state;
 
-    return (
-      <ErrorBoundary
-        content={
-          <div>
-            <Icon glyph="error" style={{ padding: '0 5px 0 0' }} /> Incorrect
-            Binding Create Parameter schema in <Bold>{planName}</Bold> plan
-          </div>
-        }
-      >
-        <JsonSchemaForm
-          schema={bindingCreateParameterSchema}
-          onChange={this.onChangeSchemaForm}
-          liveValidate={true}
-          onSubmit={onSubmitSchemaForm}
-          formData={bindingCreateParameters}
-        >
-          {children}
-        </JsonSchemaForm>
-      </ErrorBoundary>
-    );
+    // return (
+    //   <ErrorBoundary
+    //     content={
+    //       <div>
+    //         <Icon glyph="error" style={{ padding: '0 5px 0 0' }} /> Incorrect
+    //         Binding Create Parameter schema in <Bold>{planName}</Bold> plan
+    //       </div>
+    //     }
+    //   >
+    //     <JsonSchemaForm
+    //       schema={bindingCreateParameterSchema}
+    //       onChange={this.onChangeSchemaForm}
+    //       liveValidate={true}
+    //       onSubmit={onSubmitSchemaForm}
+    //       formData={bindingCreateParameters}
+    //     >
+    //       {children}
+    //     </JsonSchemaForm>
+    //   </ErrorBoundary>
+    // );
   }
 }
 
