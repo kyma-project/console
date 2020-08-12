@@ -31,7 +31,7 @@ const retry = async (t, retries, func, message, waitAfterFail = 10000) => {
         1}`,
     );
     if (retries === 1) throw err;
-    if (retries % 3 === 0) reloadPage();
+    if (retries % 3 === 0) await reloadPage();
     await new Promise(res => setTimeout(res, waitAfterFail));
     return await retry(t, retries - 1, func, message, waitAfterFail);
   }
