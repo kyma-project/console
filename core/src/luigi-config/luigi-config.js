@@ -1,5 +1,6 @@
 import { saveCurrentLocation, getToken } from './navigation/navigation-helpers';
 import { communication } from './communication';
+import { settings } from './settings';
 import { config } from './config';
 import createAuth from './auth';
 import {
@@ -26,26 +27,7 @@ export const NODE_PARAM_PREFIX = `~`;
       nodeParamPrefix: NODE_PARAM_PREFIX,
       skipRoutingForUrlPatterns: [/access_token=/, /id_token=/]
     },
-    settings: {
-      responsiveNavigation: 'simpleMobileOnly',
-      sideNavFooterText: '',
-      header: () => {
-        const logo =
-          config && config.headerLogoUrl
-            ? config.headerLogoUrl
-            : '/assets/logo.svg';
-        const title = config ? config.headerTitle : undefined;
-        const favicon = config ? config.faviconUrl : undefined;
-        return {
-          logo,
-          title,
-          favicon
-        };
-      },
-      appLoadingIndicator: {
-        hideAutomatically: false
-      }
-    },
+    settings,
     lifecycleHooks: {
       luigiAfterInit: () => {
         const token = getToken();

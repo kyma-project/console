@@ -1,3 +1,4 @@
+import { WindowTitleService } from 'shared/services/window-title.service';
 import { HttpClient } from '@angular/common/http';
 import { ChangeDetectorRef, Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
@@ -31,9 +32,11 @@ export class DeploymentsComponent extends AbstractKubernetesElementListComponent
     private currentNamespaceService: CurrentNamespaceService,
     private commService: ComponentCommunicationService,
     private graphQLClientService: GraphQLClientService,
-    changeDetector: ChangeDetectorRef
+    changeDetector: ChangeDetectorRef,
+    windowTitle: WindowTitleService
   ) {
     super(currentNamespaceService, changeDetector, http, commService);
+    windowTitle.set(this.title);
 
     const query = `query Deployments($namespace: String!) {
       deployments(namespace: $namespace) {

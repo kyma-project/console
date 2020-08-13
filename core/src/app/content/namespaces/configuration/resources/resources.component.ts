@@ -1,3 +1,4 @@
+import { WindowTitleService } from 'shared/services/window-title.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ResourceUploaderModalComponent } from 'shared/components/resource-uploader/resource-uploader-modal/resource-uploader-modal.component';
 import { map } from 'rxjs/operators';
@@ -15,7 +16,9 @@ export class ResourcesComponent implements OnInit {
   public limitRangesTabExpanded: boolean;
   public resourceQuotasTabExpanded: boolean;
 
-  constructor() { }
+  constructor(windowTitle: WindowTitleService) {
+    windowTitle.set('Resources');
+  }
 
   ngOnInit() {
     const selectedTab = luigiClient.getNodeParams().selectedTab;

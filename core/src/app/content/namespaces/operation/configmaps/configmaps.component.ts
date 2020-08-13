@@ -1,3 +1,4 @@
+import { WindowTitleService } from 'shared/services/window-title.service';
 import { ChangeDetectorRef, Component, OnInit, OnDestroy } from '@angular/core';
 import { CurrentNamespaceService } from 'namespaces/services/current-namespace.service';
 import { ComponentCommunicationService } from 'shared/services/component-communication.service';
@@ -23,7 +24,8 @@ export class ConfigMapsComponent extends AbstractGraphqlElementListComponent imp
     currentEnvironmentService: CurrentNamespaceService,
     commService: ComponentCommunicationService,
     graphQLClientService: GraphQLClientService,
-    changeDetector: ChangeDetectorRef
+    changeDetector: ChangeDetectorRef,
+    windowTitle: WindowTitleService
   ) {
     super(
       currentEnvironmentService,
@@ -31,6 +33,7 @@ export class ConfigMapsComponent extends AbstractGraphqlElementListComponent imp
       graphQLClientService,
       changeDetector
     );
+    windowTitle.set(this.title);
   }
 
   public ngOnInit() {

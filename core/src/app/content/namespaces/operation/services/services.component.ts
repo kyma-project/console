@@ -1,3 +1,4 @@
+import { WindowTitleService } from 'shared/services/window-title.service';
 import { ChangeDetectorRef, Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Subscription } from 'rxjs';
@@ -32,9 +33,11 @@ export class ServicesComponent extends AbstractKubernetesElementListComponent
     private http: HttpClient,
     private currentNamespaceService: CurrentNamespaceService,
     private commService: ComponentCommunicationService,
-    changeDetector: ChangeDetectorRef
+    changeDetector: ChangeDetectorRef,
+    windowTitle: WindowTitleService
   ) {
     super(currentNamespaceService, changeDetector, http, commService);
+    windowTitle.set(this.title);
     const converter: DataConverter<IService, Service> = {
       convert(entry: IService) {
         return new Service(entry);

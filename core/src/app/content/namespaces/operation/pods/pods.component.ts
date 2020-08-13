@@ -1,3 +1,4 @@
+import { WindowTitleService } from 'shared/services/window-title.service';
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { CurrentNamespaceService } from 'namespaces/services/current-namespace.service';
 import { ComponentCommunicationService } from 'shared/services/component-communication.service';
@@ -26,7 +27,8 @@ export class PodsComponent extends AbstractGraphqlElementListComponent
     currentNamespaceService: CurrentNamespaceService,
     commService: ComponentCommunicationService,
     graphQLClientService: GraphQLClientService,
-    changeDetector: ChangeDetectorRef
+    changeDetector: ChangeDetectorRef,
+    windowTitle: WindowTitleService
   ) {
     super(
       currentNamespaceService,
@@ -34,6 +36,7 @@ export class PodsComponent extends AbstractGraphqlElementListComponent
       graphQLClientService,
       changeDetector
     );
+    windowTitle.set(this.title);
   }
 
   public ngOnDestroy() {

@@ -1,3 +1,4 @@
+import { WindowTitleService } from 'shared/services/window-title.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ConfirmationModalComponent } from '../confirmation-modal/confirmation-modal.component';
@@ -20,7 +21,7 @@ export class PermissionsComponent implements OnInit {
 
   public isGlobalMode = false;
 
-  constructor(private route: ActivatedRoute) {
+  constructor(private route: ActivatedRoute, windowTitle: WindowTitleService) {
     this.route.data.subscribe(routeData => {
       this.isGlobalMode = routeData && routeData.global;
 
@@ -28,6 +29,7 @@ export class PermissionsComponent implements OnInit {
         ? 'Cluster Role Bindings'
         : 'Role Bindings';
     });
+    windowTitle.set(this.title);
   }
 
   public ngOnInit() {

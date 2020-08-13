@@ -112,6 +112,7 @@ import { GenericHelpersService } from './shared/services/generic-helpers.service
 import { UrlLinkComponent } from 'shared/components/url-link/url-link.component';
 
 import * as LuigiClient from '@luigi-project/client';
+import { WindowTitleService } from 'shared/services/window-title.service';
 
 @NgModule({
   declarations: [
@@ -218,7 +219,8 @@ import * as LuigiClient from '@luigi-project/client';
     GraphQLClientService,
     IdpPresetsService,
     LuigiClientService,
-    GenericHelpersService
+    GenericHelpersService,
+    WindowTitleService,
   ],
   entryComponents: [
     ReplicaSetsEntryRendererComponent,
