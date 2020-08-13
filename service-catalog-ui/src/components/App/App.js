@@ -7,14 +7,24 @@ import ServiceClassPlansList from '../ServiceClassPlansList/ServiceClassPlansLis
 import ServiceInstancesList from '../ServiceInstanceList/ServiceInstanceList';
 import ServiceInstancesDetails from '../ServiceInstanceDetails/ServiceInstanceDetails';
 import ServiceBrokers from '../ServiceBrokers/ServiceBrokers';
-import { NotificationProvider } from 'react-shared';
+import { NotificationProvider, setWindowTitle } from 'react-shared';
+
+const withTitle = (title, component) => {
+  setWindowTitle(title);
+  return component;
+};
 
 const App = () => (
   <NotificationProvider>
     <Switch>
       <Route path="/preload" component={() => null} />
 
-      <Route exact path="/catalog" component={ServiceClassList} />
+      <Route
+        exact
+        path="/catalog"
+        component={withTitle('Catalog', ServiceClassList)}
+      />
+
       <Route
         exact
         path="/catalog/details/:name"
@@ -43,12 +53,15 @@ const App = () => (
   </NotificationProvider>
 );
 
-const RoutedCatalogDetails = ({ match }) => (
-  <ServiceClassDetails name={match.params.name} plan={match.params.plan} />
-);
-
-const RoutedServicePlanList = ({ match }) => (
-  <ServiceClassPlansList name={match.params.name} />
-);
+const RoutedCatalogDetails = ({ match }) => {
+  setWindowTitle('Catalog');
+  return (
+    <ServiceClassDetails name={match.params.name} plan={match.params.plan} />
+  );
+};
+const RoutedServicePlanList = ({ match }) => {
+  setWindowTitle('Catalog');
+  return <ServiceClassPlansList name={match.params.name} />;
+};
 
 export default App;

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { useQuery } from '@apollo/react-hooks';
 import { GET_NAMESPACE } from 'gql/queries';
 
-import { ResourceNotFound, useWindowTitle } from 'react-shared';
+import { ResourceNotFound, setWindowTitle } from 'react-shared';
 import NamespaceDetailsHeader from './NamespaceDetailsHeader/NamespaceDetailsHeader';
 import NamespaceWorkloads from './NamespaceWorkloads/NamespaceWorkloads';
 import NamespaceApplications from './NamespaceApplications/NamespaceApplications';
@@ -12,7 +12,7 @@ import NamespaceApplications from './NamespaceApplications/NamespaceApplications
 NamespaceDetails.propTypes = { name: PropTypes.string.isRequired };
 
 export default function NamespaceDetails({ name }) {
-  useWindowTitle('Namespace Details');
+  setWindowTitle('Namespace Details');
   const { data, error, loading } = useQuery(GET_NAMESPACE, {
     variables: { name },
     fetchPolicy: 'cache-and-network',
