@@ -6,7 +6,7 @@ import {
   NotificationMessage,
   ThemeWrapper,
 } from '@kyma-project/react-components';
-import { Tab, Tabs, Spinner, Tooltip, setWindowTitle } from 'react-shared';
+import { Tab, Tabs, Spinner, Tooltip } from 'react-shared';
 import { Identifier } from 'fundamental-react';
 
 import { getAllServiceInstances } from 'helpers/instancesGQL/queries';

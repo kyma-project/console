@@ -14,9 +14,9 @@ export const communication = {
     },
     'console.setWindowTitle': ({ title }) => {
       const prefix = config?.headerTitle || 'Kyma';
-      
-      const config = Luigi.getConfig();
-      config.settings.header.title = `${prefix} - ${title}`;
+
+      const luigiConfig = Luigi.getConfig();
+      luigiConfig.settings.header.title = `${prefix} - ${title}`;
       Luigi.configChanged('settings.header');
     },
     'console.silentNavigate': ({ newParams }) => {

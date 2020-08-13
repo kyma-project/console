@@ -1,4 +1,4 @@
 import useMutationObserver from './useMutationObserver';
 
 export { useMutationObserver };
-export * from './setWindowTitle';
+export * from './useWindowTitle';

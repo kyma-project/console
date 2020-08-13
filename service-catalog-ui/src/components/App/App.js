@@ -7,12 +7,7 @@ import ServiceClassPlansList from '../ServiceClassPlansList/ServiceClassPlansLis
 import ServiceInstancesList from '../ServiceInstanceList/ServiceInstanceList';
 import ServiceInstancesDetails from '../ServiceInstanceDetails/ServiceInstanceDetails';
 import ServiceBrokers from '../ServiceBrokers/ServiceBrokers';
-import { NotificationProvider, setWindowTitle } from 'react-shared';
-
-const withTitle = (title, component) => {
-  setWindowTitle(title);
-  return component;
-};
+import { NotificationProvider, withTitle } from 'react-shared';
 
 const App = () => (
   <NotificationProvider>
@@ -53,15 +48,13 @@ const App = () => (
   </NotificationProvider>
 );
 
-const RoutedCatalogDetails = ({ match }) => {
-  setWindowTitle('Catalog');
-  return (
-    <ServiceClassDetails name={match.params.name} plan={match.params.plan} />
+const RoutedCatalogDetails = ({ match }) =>
+  withTitle(
+    'Catalog',
+    <ServiceClassDetails name={match.params.name} plan={match.params.plan} />,
   );
-};
-const RoutedServicePlanList = ({ match }) => {
-  setWindowTitle('Catalog');
-  return <ServiceClassPlansList name={match.params.name} />;
-};
+
+const RoutedServicePlanList = ({ match }) =>
+  withTitle('Catalog', <ServiceClassPlansList name={match.params.name} />);
 
 export default App;
