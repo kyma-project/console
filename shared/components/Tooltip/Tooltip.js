@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import { Tooltip as TippyTooltip } from 'react-tippy';
 import 'react-tippy/dist/tippy.css';
+import './Tooltip.scss';
 
 export const Tooltip = ({
   children,

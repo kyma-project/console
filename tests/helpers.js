@@ -1,5 +1,5 @@
 import config from './config';
-import { Selector, Role, ClientFunction } from 'testcafe';
+import { ClientFunction, Selector, Role } from 'testcafe';
 import chalk from 'chalk';
 
 const getLocation = ClientFunction(() => window.location.pathname);
@@ -103,4 +103,10 @@ export const toBoolean = value => {
   } else {
     return value === 'true';
   }
+};
+
+export const clearExpandedCategories = () => {
+  ClientFunction(() =>
+    localStorage.setItem('luigi.preferences.navigation.expandedCategories', []),
+  );
 };

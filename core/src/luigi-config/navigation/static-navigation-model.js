@@ -35,14 +35,40 @@ export function getStaticChildrenNodesForNamespace(){
       viewGroup: '_core_ui_'
     },
     {
-      category: { label: 'Service Management', icon: 'add-coursebook' },
+      category: { label: 'Service Management', icon: 'add-coursebook', collapsible: true },
       pathSegment: '_service_management_category_placeholder_',
       hideFromNav: true
     },
     {
-      category: { label: 'Configuration', icon: 'key-user-settings' },
+      category: { label: 'Configuration', icon: 'key-user-settings', collapsible: true },
       pathSegment: '_configuration_category_placeholder_',
       hideFromNav: true
+    },
+    {
+      category: 'Configuration',
+      pathSegment: 'oauth-clients',
+      navigationContext: 'oauth-clients',
+      label: 'OAuth Clients',
+      viewUrl: config.coreModuleUrl + '/home/namespaces/:namespaceId/oauth-clients',
+      viewGroup: '_core_ui_',
+      keepSelectedForChildren: true,
+      children: [
+        {
+          pathSegment: 'create',
+          viewUrl: config.coreModuleUrl + '/home/namespaces/:namespaceId/oauth-clients/create',
+          viewGroup: '_core_ui_',
+        },
+        {
+          pathSegment: 'details',
+          children: [
+            {
+              pathSegment: ':clientName',
+              viewUrl: config.coreModuleUrl + '/home/namespaces/:namespaceId/oauth-clients/details/:clientName',
+              viewGroup: '_core_ui_',
+            }
+          ]
+        }
+      ]
     },
     {
       category: 'Configuration',
@@ -76,16 +102,16 @@ export function getStaticChildrenNodesForNamespace(){
       category: 'Configuration',
       pathSegment: 'config-maps',
       navigationContext: 'config-maps',
-      label: 'Config maps',
+      label: 'Config Maps',
       viewUrl: '/consoleapp.html#/home/namespaces/:namespaceId/configmaps'
     },
     {
-      category: { label: 'Development', icon: 'source-code' },
+      category: { label: 'Development', icon: 'source-code', collapsible: true },
       pathSegment: '_development_category_placeholder_',
       hideFromNav: true
     },
     {
-      category: { label: 'Operation', icon: 'instance' },
+      category: { label: 'Operation', icon: 'instance', collapsible: true },
       pathSegment: 'deployments',
       navigationContext: 'deployments',
       label: 'Deployments',
@@ -168,7 +194,7 @@ export function getStaticChildrenNodesForNamespace(){
       ]
     },
     {
-      category: { label: 'Experimental', icon: 'lab' },
+      category: { label: 'Experimental', icon: 'lab', collapsible: true },
       hideFromNav: true
     }
   ];
@@ -202,7 +228,7 @@ export function getStaticRootNodes(namespaceChildrenNodesResolver){
       ]
     },
     {
-      category: { label: 'Integration', icon: 'overview-chart' },
+      category: { label: 'Integration', icon: 'overview-chart', collapsible: true },
       pathSegment: '_integration_category_placeholder_',
       hideFromNav: true
     },
@@ -223,7 +249,7 @@ export function getStaticRootNodes(namespaceChildrenNodesResolver){
       pathSegment: 'global-permissions',
       navigationContext: 'global-permissions',
       label: 'Global Permissions',
-      category: { label: 'Administration', icon: 'settings' },
+        category: { label: 'Administration', icon: 'settings', collapsible: true },
       viewUrl: '/consoleapp.html#/home/settings/globalPermissions',
       keepSelectedForChildren: true,
       viewGroup: consoleViewGroupName,
@@ -250,13 +276,14 @@ export function getStaticRootNodes(namespaceChildrenNodesResolver){
     {
       category: {
         label: 'Diagnostics',
-        icon: 'electrocardiogram'
+        icon: 'electrocardiogram',
+        collapsible: true,
       },
       pathSegment: '_integration_category_placeholder_',
       hideFromNav: true
     },
     {
-      category: { label: 'Experimental', icon: 'lab' },
+      category: { label: 'Experimental', icon: 'lab', collapsible: true },
       hideFromNav: true
     }
   ];

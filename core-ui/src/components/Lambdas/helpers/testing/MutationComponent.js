@@ -9,11 +9,14 @@ export function MutationComponent({
   userCallback = () => void 0,
 }) {
   const mutateAction = hook(hookInput);
-
+  const isFunction = elem => typeof elem === 'function';
+  const mutateActionFunction = Array.isArray(mutateAction)
+    ? mutateAction.find(isFunction)
+    : mutateAction;
   return (
     <button
       data-testid={BUTTON_TEST_ID}
-      onClick={() => mutateAction(mutationInput, userCallback)}
+      onClick={() => mutateActionFunction(mutationInput, userCallback)}
     >
       Action!
     </button>

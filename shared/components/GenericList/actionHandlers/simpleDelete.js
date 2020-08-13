@@ -56,6 +56,7 @@ export function easyHandleDelete(
             notificationManager.notifySuccess({
               content: `${entityName} deleted`,
             });
+            callback();
           } else {
             throw Error();
           }
@@ -63,9 +64,6 @@ export function easyHandleDelete(
           throw e;
         }
       }
-    })
-    .then(() => {
-      callback();
     })
     .catch(err => {
       notificationManager.notifyError({

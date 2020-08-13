@@ -8,9 +8,10 @@ class Builder {
   backendModules = [];
 
   addEventListeners(callback) {
-    LuigiClient.addInitListener(e => {
+    const eventId = LuigiClient.addInitListener(e => {
       this.setCurrentContext(e);
       callback();
+      LuigiClient.removeInitListener(eventId);
     });
 
     LuigiClient.addContextUpdateListener(e => {

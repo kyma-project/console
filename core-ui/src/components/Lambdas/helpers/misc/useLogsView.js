@@ -33,7 +33,12 @@ export const useLogsView = (uid, namespace, initialCollapse = true) => {
       logsViewHandle = openLogsView(linkManager, initialCollapse);
     }
 
-    const cleanup = () => logsViewHandle && logsViewHandle.close();
+    const cleanup = () => {
+      // workaround for destroy splitView with navigation from details to list view
+      // close doesn't work with collapsed state, so first expand and then close
+      logsViewHandle && logsViewHandle.expand();
+      logsViewHandle && logsViewHandle.close();
+    };
 
     // when user switches to another MF, useEffects's cleanup
     // function may not be fired - detect it manually

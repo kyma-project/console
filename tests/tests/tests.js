@@ -7,11 +7,15 @@ import {
   toBoolean,
   leftNavLinkSelector,
   expectPathnameToBe,
+  clearExpandedCategories,
 } from '../helpers';
 import config from '../config';
 
 fixture`Console UI Smoke tests`
-  .beforeEach(async t => await t.useRole(adminUser))
+  .beforeEach(async t => {
+    clearExpandedCategories();
+    await t.useRole(adminUser);
+  })
   .afterEach(async t => await t.switchToMainWindow());
 
 test('Luigi navigation is rendered', async t => {
@@ -66,9 +70,11 @@ testIf(
   'Applications view is rendered',
   async t => {
     //GIVEN
-    const applicationLink = await leftNavLinkSelector('Applications');
+    const integrationCategoryLink = await leftNavLinkSelector('Integration');
+    await t.click(integrationCategoryLink);
 
     //WHEN
+    const applicationLink = await leftNavLinkSelector('Applications');
     await t.click(applicationLink);
     await expectPathnameToBe(t, `/home/cmf-apps`);
 
@@ -102,7 +108,7 @@ testIf(
   toBoolean(config.functionsEnabled),
   'Functions view is rendered',
   async t => {
-    const functionsLink = await leftNavLinkSelector('Functions');
+    const developmentCategoryLink = await leftNavLinkSelector('Development');
 
     //WHEN
 
@@ -115,7 +121,10 @@ testIf(
         ).withText(config.DEFAULT_NAMESPACE_NAME),
       )
       .switchToMainWindow()
-      .click(functionsLink);
+      .click(developmentCategoryLink);
+
+    const functionsLink = await leftNavLinkSelector('Functions');
+    await t.click(functionsLink);
 
     //THEN
     await expectPathnameToBe(t, `/home/namespaces/default/cmf-functions`);
@@ -127,6 +136,9 @@ testIf(
 );
 
 testIf(toBoolean(config.loggingEnabled), 'Logs view is rendered', async t => {
+  const diagnosticsCategoryLink = await leftNavLinkSelector('Diagnostics');
+  await t.click(diagnosticsCategoryLink);
+
   //GIVEN
   const logsLink = await leftNavLinkSelector('Logs');
 
@@ -158,7 +170,9 @@ testIf(
   'Catalog view is rendered',
   async t => {
     //GIVEN
-    const catalogLink = await leftNavLinkSelector('Catalog');
+    const serviceManagementCategoryLink = await leftNavLinkSelector(
+      'Service Management',
+    );
 
     //WHEN
     await findActiveFrame(t);
@@ -170,7 +184,10 @@ testIf(
         ).withText(config.DEFAULT_NAMESPACE_NAME),
       )
       .switchToMainWindow()
-      .click(catalogLink);
+      .click(serviceManagementCategoryLink);
+
+    const catalogLink = await leftNavLinkSelector('Catalog');
+    await t.click(catalogLink);
 
     //THEN
     await expectPathnameToBe(t, `/home/namespaces/default/cmf-service-catalog`);
@@ -189,7 +206,9 @@ testIf(
   'Service Brokers view is rendered',
   async t => {
     //GIVEN
-    const brokersLink = await leftNavLinkSelector('Brokers');
+    const serviceManagementCategoryLink = await leftNavLinkSelector(
+      'Service Management',
+    );
 
     //WHEN
 
@@ -201,7 +220,10 @@ testIf(
         ).withText(config.DEFAULT_NAMESPACE_NAME),
       )
       .switchToMainWindow()
-      .click(brokersLink);
+      .click(serviceManagementCategoryLink);
+
+    const brokersLink = await leftNavLinkSelector('Brokers');
+    await t.click(brokersLink);
 
     //THEN
     await expectPathnameToBe(t, `/home/namespaces/default/cmf-brokers`);
@@ -220,7 +242,9 @@ testIf(
   'Instances view is rendered',
   async t => {
     //GIVEN
-    const instancesLink = await leftNavLinkSelector('Instances');
+    const serviceManagementCategoryLink = await leftNavLinkSelector(
+      'Service Management',
+    );
 
     //WHEN
 
@@ -232,7 +256,10 @@ testIf(
         ).withText(config.DEFAULT_NAMESPACE_NAME),
       )
       .switchToMainWindow()
-      .click(instancesLink);
+      .click(serviceManagementCategoryLink);
+
+    const instancesLink = await leftNavLinkSelector('Instances');
+    await t.click(instancesLink);
 
     //THEN
     await expectPathnameToBe(t, `/home/namespaces/default/cmf-instances`);

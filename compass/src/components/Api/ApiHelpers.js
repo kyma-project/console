@@ -124,7 +124,6 @@ export async function verifyEventApiFile(file) {
 
 export async function verifyApiFile(file, expectedType) {
   const format = checkApiFormat(file);
-  console.log(format);
   if (format === null) {
     return { error: 'Error: Invalid file type' };
   }

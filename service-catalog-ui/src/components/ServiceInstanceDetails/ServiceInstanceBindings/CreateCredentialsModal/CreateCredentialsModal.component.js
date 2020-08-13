@@ -9,6 +9,7 @@ import { bindingVariables } from '../InfoButton/variables';
 
 import { clearEmptyPropertiesInObject } from 'helpers';
 import LuigiClient from '@luigi-project/client';
+import * as _ from 'lodash';
 
 import WithNotificationContext from '../WithNotificationContext/WithNotificationContext';
 
@@ -119,7 +120,10 @@ class CreateCredentialsModal extends React.Component {
   };
   createWithoutOpening = () => {
     const { bindingCreateParameterSchema } = this.state;
-    if (!bindingCreateParameterSchema) {
+    if (
+      !bindingCreateParameterSchema ||
+      _.isEmpty(bindingCreateParameterSchema)
+    ) {
       this.create();
     }
   };

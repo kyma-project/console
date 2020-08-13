@@ -1,9 +1,12 @@
 import React from 'react';
-import NamespaceWorkloads, {
-  getDeploymentsRatio,
-  getPodsRatio,
-} from './../NamespaceWorkloads';
+import NamespaceWorkloads from './../NamespaceWorkloads';
+import {
+  getHealthyDeploymentsCount,
+  getHealthyPodsCount,
+} from './../namespaceWorkloadsHelpers';
 import { render, fireEvent } from '@testing-library/react';
+import { MockedProvider } from '@apollo/react-testing';
+import { namespace, subscriptionMocks } from './mocks';
 
 const mockNavigate = jest.fn();
 
@@ -17,73 +20,51 @@ jest.mock('@luigi-project/client', () => {
   };
 });
 
-const namespace = {
-  deployments: [
-    { status: { replicas: 1, readyReplicas: 1 } },
-    { status: { replicas: 0, readyReplicas: 1 } },
-    { status: { replicas: 4, readyReplicas: 4 } },
-  ],
-  pods: [
-    { status: 'SUCCEEDED' },
-    { status: 'FAILED' },
-    { status: 'NONE' },
-    { status: 'SUCCEEDED' },
-    { status: 'RUNNING' },
-  ],
-};
+describe('getHealthyDeploymentsCount', () => {
+  it('counts healthy deployments', () => {
+    const count = getHealthyDeploymentsCount(namespace.deployments);
 
-describe('getDeploymentsRatio', () => {
-  it('returns valid ratio', () => {
-    const ratio = getDeploymentsRatio(namespace);
-
-    expect(ratio).toBe(2 / 3);
-  });
-
-  it('returns 0 when there are no deployments', () => {
-    const ratio = getDeploymentsRatio({ deployments: [] });
-
-    expect(ratio).toBe(0);
+    expect(count).toBe(2);
   });
 });
 
-describe('getPodsRatio', () => {
-  it('returns valid ratio', () => {
-    const ratio = getPodsRatio(namespace);
+describe('getHealthyPodsCount', () => {
+  it('counts healthy pods', () => {
+    const count = getHealthyPodsCount(namespace.pods);
 
-    expect(ratio).toBe(3 / 5);
-  });
-
-  it('returns 0 when there are no pods', () => {
-    const ratio = getPodsRatio({ pods: [] });
-
-    expect(ratio).toBe(0);
+    expect(count).toBe(3);
   });
 });
 
 describe('NamespaceWorkloads', () => {
-  it('displays workload statuses', () => {
+  it('displays workload statuses', async () => {
     const { queryByText } = render(
-      <NamespaceWorkloads namespace={namespace} />,
+      <MockedProvider addTypename={false} mocks={subscriptionMocks}>
+        <NamespaceWorkloads namespace={namespace} />
+      </MockedProvider>,
     );
-
-    expect(queryByText('60%')).toBeInTheDocument();
-    expect(queryByText('67%')).toBeInTheDocument();
+    await wait(() => {
+      expect(queryByText('3/5')).toBeInTheDocument();
+      expect(queryByText('2/3')).toBeInTheDocument();
+    });
   });
 
   const testCases = [
-    ['67%', '/deployments'],
-    ['60%', '/pods'],
+    ['2/3', '/deployments'],
+    ['3/5', '/pods'],
   ];
 
   for (const [clickTarget, destination] of testCases) {
-    it(`navigates to ${destination} on click on chart`, () => {
+    it(`navigates to ${destination} on click on chart`, async () => {
       const { getByText } = render(
-        <NamespaceWorkloads namespace={namespace} />,
+        <MockedProvider addTypename={false} mocks={subscriptionMocks}>
+          <NamespaceWorkloads namespace={namespace} />
+        </MockedProvider>,
       );
 
       fireEvent.click(getByText(clickTarget));
 
-      expect(mockNavigate).toHaveBeenCalledWith(destination);
+      await wait(() => expect(mockNavigate).toHaveBeenCalledWith(destination));
     });
   }
 });

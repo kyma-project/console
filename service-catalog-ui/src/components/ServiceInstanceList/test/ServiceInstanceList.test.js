@@ -70,13 +70,10 @@ const consoleWarn = jest.spyOn(global.console, 'warn').mockImplementation();
 const planSpecCode = `{
   "imagePullPolicy": "IfNotPresent"
 }`;
-afterAll(() => {
-  consoleWarn.mockReset();
-});
 
 describe('InstancesList UI', () => {
   beforeEach(() => {
-    consoleWarn.mockClear();
+    consoleWarn.mockReset();
   });
 
   it('Shows loading indicator only when data is not yet loaded', async () => {
@@ -275,7 +272,7 @@ describe('InstancesList UI', () => {
     expect(planContent.exists()).toBe(true);
     expect(planContent.text()).toBe(planSpecCode);
     expectKnownConsoleWarnings();
-  });
+  }, 10000);
 
   it('No modal for plan with empty spec', async () => {
     const { link } = createMockLink([allServiceInstancesQuery]);

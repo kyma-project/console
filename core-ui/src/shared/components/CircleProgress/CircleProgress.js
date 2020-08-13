@@ -3,20 +3,23 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import './CircleProgress.scss';
 
-const CircleProgress = ({ value, color = 'blue', onClick, children }) => {
+const CircleProgress = ({ value, max, color = 'blue', onClick, children }) => {
   const circleClasses = classNames(`circle--${color}`, {
     'cursor-pointer': onClick,
   });
 
+  const percent = Math.round((value * 100) / max);
   return (
     <div className="circle-progress" onClick={onClick}>
       <div className={circleClasses}>
         <div className="progress-bar">
-          <div className={`mask--dynamic fill--${value}`}></div>
+          <div className={`mask--dynamic fill--${percent}`}></div>
           <div className={`mask--permanent`}></div>
         </div>
         <div className="inner-area">
-          <div className="percentage">{value}%</div>
+          <div className="percentage">
+            {value}/{max}
+          </div>
         </div>
       </div>
       {children}
@@ -26,17 +29,8 @@ const CircleProgress = ({ value, color = 'blue', onClick, children }) => {
 
 CircleProgress.propTypes = {
   color: PropTypes.oneOf(['purple', 'green', 'blue', 'teal']),
-  value: (props, propName) => {
-    if (
-      !Number.isInteger(props[propName]) ||
-      props[propName] < 0 ||
-      props[propName] > 100
-    ) {
-      return new Error(
-        `'value' property is required and must be an integer of range [0,100]`,
-      );
-    }
-  },
+  value: PropTypes.number.isRequired,
+  max: PropTypes.number.isRequired,
   onClick: PropTypes.func,
   children: PropTypes.node,
 };

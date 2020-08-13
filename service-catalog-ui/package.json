@@ -8,7 +8,7 @@
   "scripts": {
     "start": ". ../scripts/load-cluster-config.sh && BROWSER=none PORT=8000 HOST=console-dev.kyma.local ../node_modules/.bin/react-scripts start",
     "start:kyma": "npm run start",
-    "build": " . ../scripts/load-cluster-config.sh && ../node_modules/.bin/react-scripts build",
+    "build": " . ../scripts/load-cluster-config.sh && INLINE_RUNTIME_CHUNK=false ../node_modules/.bin/react-scripts build",
     "test": "../node_modules/.bin/react-scripts test"
   },
   "eslintConfig": {

@@ -37,3 +37,6 @@ export const TRIGGER_SCHEMA = {
   EXAMPLE_TEXT: 'Example',
   COLUMN_NAMES: ['Name', 'Title', 'Type', 'Format', 'Default', 'Description'],
 };
+
+export const OAUTH_DOC_URL =
+  'https://kyma-project.io/docs/components/security/#details-o-auth2-and-open-id-connect-server';

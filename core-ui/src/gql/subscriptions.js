@@ -8,10 +8,9 @@ export const NAMESPACES_EVENT_SUBSCRIPTION = gql`
         name
         labels
         status
-        pods {
-          status
-        }
-        applications
+        podsCount
+        healthyPodsCount
+        applicationsCount
         isSystemNamespace
       }
     }
@@ -46,6 +45,64 @@ export const API_RULE_EVENT_SUBSCRIPTION = gql`
             description
           }
         }
+      }
+    }
+  }
+`;
+
+export const DEPLOYMENT_EVENT_SUBSCRIPTION = gql`
+  subscription Deployments($namespace: String!) {
+    deploymentEvent(namespace: $namespace) {
+      type
+      deployment {
+        name
+        status {
+          replicas
+          readyReplicas
+        }
+      }
+    }
+  }
+`;
+
+export const POD_EVENT_SUBSCRIPTION = gql`
+  subscription Pods($namespace: String!) {
+    podEvent(namespace: $namespace) {
+      type
+      pod {
+        name
+        status
+      }
+    }
+  }
+`;
+
+export const OAUTH_CLIENT_EVENT_SUBSCRIPTION = gql`
+  subscription oAuthClientEvent($namespace: String!) {
+    oAuth2ClientEvent(namespace: $namespace) {
+      type
+      client {
+        name
+        error {
+          code
+          description
+        }
+        spec {
+          grantTypes
+          responseTypes
+        }
+      }
+    }
+  }
+`;
+
+export const SECRET_EVENT_SUBSCRIPTION = gql`
+  subscription secretEvent($namespace: String!) {
+    secretEvent(namespace: $namespace) {
+      type
+      secret {
+        name
+        data
       }
     }
   }

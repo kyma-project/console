@@ -1,13 +1,6 @@
 import styled from 'styled-components';
 
-export const Wrapper = styled.div`
-  &&& {
-    .grid-container {
-      margin: 0;
-      padding: 0;
-    }
-  }
-`;
+export const Wrapper = styled.div``;
 
 export const ErrorWrapper = styled.div`
   padding: 16px;

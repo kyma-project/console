@@ -76,9 +76,12 @@ class ServiceInstanceBindings extends React.Component {
   render() {
     const { createBinding, createBindingUsage, serviceInstance } = this.props;
 
-    const bindable = serviceInstance.bindable;
-    if (!bindable) {
-      return null;
+    if (!serviceInstance.bindable) {
+      return (
+        <h4 className="fd-has-text-align-center">
+          ServiceInstance not bindable. Binding panel not available.
+        </h4>
+      );
     }
 
     const bindApplication = (

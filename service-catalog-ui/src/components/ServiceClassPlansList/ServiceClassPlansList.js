@@ -42,12 +42,13 @@ export const DocTypesList = ({ plan }) => (
           <Badge type={DOC_TYPES_COLORS.get(type)}>
             {type}
             {count > 1 && (
-              <Link
-                className="fd-counter fd-counter--notification"
+              <span
+                role="link"
+                className="fd-counter fd-counter--notification "
                 aria-label="api-type-count"
               >
                 {count}
-              </Link>
+              </span>
             )}
           </Badge>
         </Tooltip>
@@ -122,6 +123,12 @@ export default function ServiceClassPlansList({ name }) {
 
   const serviceClass = queryData.clusterServiceClass || queryData.serviceClass;
 
+  if (!serviceClass) {
+    return (
+      <div className="empty-list"> {serviceClassConstants.noClassText}</div>
+    );
+  }
+
   const breadcrumbItems = [
     {
       name: `${serviceClassConstants.title} - ${
@@ -139,11 +146,6 @@ export default function ServiceClassPlansList({ name }) {
     },
   ];
 
-  if (!serviceClass) {
-    return (
-      <div className="empty-list"> {serviceClassConstants.noClassText}</div>
-    );
-  }
   return (
     <article>
       <PageHeader

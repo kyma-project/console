@@ -18,8 +18,8 @@ jest.mock('@luigi-project/client', () => ({
 }));
 
 describe('NamespaceDetailsCard', () => {
-  const applications = [{}, {}];
   it('Displays basic namespace data', () => {
+    const applicationsCount = 2;
     const { queryByText } = render(
       <NamespaceDetailsCard
         name="test-namespace-name"
@@ -27,11 +27,11 @@ describe('NamespaceDetailsCard', () => {
         healthyPodsCount={9}
         status="Active"
         isSystemNamespace={false}
-        applications={applications}
+        applicationsCount={applicationsCount}
       />,
     );
     expect(queryByText('9/10')).toBeInTheDocument();
-    expect(queryByText(applications.length.toString())).toBeInTheDocument();
+    expect(queryByText(applicationsCount.toString())).toBeInTheDocument();
     expect(queryByText('Bound Applications')).toBeInTheDocument();
     expect(queryByText('test-namespace-name')).toBeInTheDocument();
     expect(queryByText('System')).not.toBeInTheDocument();
@@ -59,7 +59,7 @@ describe('NamespaceDetailsCard', () => {
         healthyPodsCount={10}
         status="Active"
         isSystemNamespace={true}
-        applications={applications}
+        applications={2}
       />,
     );
 
@@ -74,7 +74,7 @@ describe('NamespaceDetailsCard', () => {
         healthyPodsCount={10}
         status="Active"
         isSystemNamespace={true}
-        applications={applications}
+        applications={3}
       />,
     );
 
@@ -99,7 +99,7 @@ describe('NamespaceDetailsCard', () => {
           healthyPodsCount={10}
           status="Active"
           isSystemNamespace={true}
-          applications={applications}
+          applications={4}
         />
       </MockedProvider>,
     );
