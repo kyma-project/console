@@ -48,7 +48,7 @@ export class LimitRangeEntryRendererComponent
 
   listMaxMemoryLimits() {
     return this.entry.limits
-      .map(limit => `${limit.max.memory} (${limit.limitType})`)
+      .map(limit => `${limit.max && limit.max.memory || 'None'} (${limit.limitType})`)
       .join(', ');
   }
 }
