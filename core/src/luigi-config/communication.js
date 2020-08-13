@@ -14,8 +14,7 @@ export const communication = {
     },
     'console.setWindowTitle': ({ title }) => {
       const prefix = config?.headerTitle || 'Kyma';
-      // console.log('set title to', `${prefix} - ${title}`);
-      // setImmediate(()=>document.title = `${prefix} - ${title}`);
+      
       const config = Luigi.getConfig();
       config.settings.header.title = `${prefix} - ${title}`;
       Luigi.configChanged('settings.header');
