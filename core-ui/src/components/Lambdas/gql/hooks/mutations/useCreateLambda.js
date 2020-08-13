@@ -5,7 +5,10 @@ import LuigiClient from '@luigi-project/client';
 import { CREATE_LAMBDA } from 'components/Lambdas/gql/mutations';
 import extractGraphQlErrors from 'shared/graphqlErrorExtractor';
 
-import { formatMessage } from 'components/Lambdas/helpers/misc';
+import {
+  formatMessage,
+  getDefaultDependencies,
+} from 'components/Lambdas/helpers/misc';
 import { GQL_MUTATIONS } from 'components/Lambdas/constants';
 import { CONFIG } from 'components/Lambdas/config';
 
@@ -30,7 +33,7 @@ export const useCreateLambda = ({ redirect = true }) => {
   async function createLambda({ name, namespace, inputData }) {
     try {
       const params = {
-        ...prepareCreateLambdaInput(name),
+        ...prepareCreateLambdaInput(name, inputData.runtime),
         ...inputData,
       };
 
@@ -69,15 +72,11 @@ export const useCreateLambda = ({ redirect = true }) => {
   return createLambda;
 };
 
-export function prepareCreateLambdaInput(name) {
-  const dependencies = formatMessage(CONFIG.defaultLambdaDeps, {
-    lambdaName: name,
-  });
-
+export function prepareCreateLambdaInput(name, runtime = 'nodejs12') {
   return {
     labels: {},
-    source: CONFIG.defaultLambdaCode,
-    dependencies,
+    source: CONFIG.defaultLambdaCodeAndDeps[runtime].code,
+    dependencies: getDefaultDependencies(name, runtime),
     resources: {
       requests: {},
       limits: {},

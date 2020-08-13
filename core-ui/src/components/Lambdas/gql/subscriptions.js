@@ -10,6 +10,7 @@ export const LAMBDA_EVENT_SUBSCRIPTION = gql`
         UID
         labels
         source
+        runtime
         dependencies
         replicas {
           min

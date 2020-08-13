@@ -11,6 +11,7 @@ import LambdaStatusCard from './LambdaStatusCard';
 import { BUTTONS, FIRST_BREADCRUMB_NODE } from 'components/Lambdas/constants';
 
 import './LambdaDetailsHeader.scss';
+import { prettyRuntime } from 'components/Lambdas/helpers/misc';
 
 const breadcrumbItems = [
   {
@@ -43,6 +44,10 @@ export default function LambdaDetailsHeader({ lambda }) {
       <div className="fd-panel-grid fd-panel-grid--3col lambda-details-header__content">
         <div className="fd-has-grid-column-span-2">
           <LambdaLabels lambda={lambda} />
+          <div className="fd-has-margin-bottom-l">
+            <span className="fd-has-color-text-4 ">{'Runtime: '}</span>
+            <span>{prettyRuntime(lambda.runtime)}</span>
+          </div>
         </div>
         <div className="fd-has-grid-column-span-1">
           <LambdaStatusCard lambdaName={lambda.name} status={lambda.status} />

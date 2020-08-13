@@ -15,7 +15,7 @@ export default function LambdaLabels({ lambda }) {
   const handleLabelsUpdate = labels => updateLambda({ labels });
 
   return (
-    <div className="fd-has-margin-bottom-l">
+    <div className="fd-has-margin-bottom-s lambda-details-labels">
       <HeaderLabelsEditor
         labels={lambda.labels || {}}
         onApply={handleLabelsUpdate}

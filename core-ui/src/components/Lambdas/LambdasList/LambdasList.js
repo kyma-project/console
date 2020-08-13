@@ -7,7 +7,7 @@ import { Link } from 'fundamental-react';
 import { useDeleteLambda } from 'components/Lambdas/gql/hooks/mutations';
 
 import { statusType } from 'components/Lambdas/helpers/lambdas';
-import { formatMessage } from 'components/Lambdas/helpers/misc';
+import { formatMessage, prettyRuntime } from 'components/Lambdas/helpers/misc';
 import {
   LAMBDAS_LIST,
   LAMBDA_PHASES,
@@ -41,8 +41,8 @@ function LambdaStatusBadge({ status }) {
   );
 }
 
-const headerRenderer = () => ['Name', 'Labels', 'Status'];
-const textSearchProperties = ['name', 'status.phase'];
+const headerRenderer = () => ['Name', 'Runtime', 'Labels', 'Status'];
+const textSearchProperties = ['name', 'runtime', 'status.phase'];
 
 export default function LambdasList({
   lambdas,
@@ -77,6 +77,7 @@ export default function LambdasList({
     >
       {lambda.name}
     </Link>,
+    <span>{prettyRuntime(lambda.runtime)}</span>,
     <Labels labels={lambda.labels} />,
     <LambdaStatusBadge status={lambda.status} />,
   ];

@@ -1,11 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import LuigiClient from '@luigi-project/client';
 
 import { LambdaNameInput, LabelsInput } from 'components/Lambdas/components';
 
 import { useCreateLambda } from 'components/Lambdas/gql/hooks/mutations';
 
+import { RuntimesDropdown } from './RuntimeDropdown';
+
 import { randomNameGenerator, validateFunctionName } from './helpers';
+import { functionAvailableLanguages } from '../helpers/misc';
 
 export default function CreateLambdaForm({
   onChange,
@@ -17,7 +20,7 @@ export default function CreateLambdaForm({
   const createLambda = useCreateLambda({ redirect: true });
   const [name, setName] = useState(randomNameGenerator());
   const [nameStatus, setNameStatus] = useState('');
-
+  const runtimeRef = useRef('');
   const [labels, setLabels] = useState({});
 
   useEffect(() => {
@@ -49,6 +52,8 @@ export default function CreateLambdaForm({
   async function handleSubmit() {
     const inputData = {
       labels,
+      runtime:
+        runtimeRef?.current?.value || functionAvailableLanguages.nodejs12,
     };
 
     await createLambda({
@@ -72,6 +77,7 @@ export default function CreateLambdaForm({
         nameStatus={nameStatus}
       />
       <LabelsInput labels={labels} onChange={updateLabels} />
+      <RuntimesDropdown _ref={runtimeRef}></RuntimesDropdown>
     </form>
   );
 }

@@ -7,17 +7,28 @@ export const WEBHOOK_VALIDATION = {
   MIN_REQUEST_MEMORY: 'WEBHOOK_VALIDATION_MIN_REQUEST_MEMORY',
 };
 
-const defaultCode = `module.exports = { 
+const jsCodeAndDeps = {
+  code: `module.exports = { 
   main: function (event, context) {
     return "Hello World!";
   }
-}`;
-
-const defaultDeps = `{ 
+}`,
+  deps: `{ 
   "name": "{lambdaName}",
   "version": "1.0.0",
   "dependencies": {}
-}`;
+}`,
+};
+
+const defaultCodeAndDeps = {
+  nodejs10: { ...jsCodeAndDeps },
+  nodejs12: { ...jsCodeAndDeps },
+  python37: {
+    code: `def main(event, context):
+    return "Hello World"`,
+    deps: '',
+  },
+};
 
 const defaultTriggerSubscriber = {
   kind: 'Service',
@@ -48,8 +59,7 @@ const defaultConfig = {
     deploymentContainerName: 'lambda',
     jobContainerName: 'executor',
   },
-  defaultLambdaCode: defaultCode,
-  defaultLambdaDeps: defaultDeps,
+  defaultLambdaCodeAndDeps: defaultCodeAndDeps,
 };
 
 function getConfigValue(field) {
@@ -70,8 +80,7 @@ function loadConfig() {
     resources: getConfigValue('resources') || {},
     triggerSubscriber: getConfigValue('triggerSubscriber') || {},
     logging: getConfigValue('logging') || {},
-    defaultLambdaCode: getConfigValue('defaultLambdaCode') || '',
-    defaultLambdaDeps: getConfigValue('defaultLambdaDeps') || '',
+    defaultLambdaCodeAndDeps: getConfigValue('defaultLambdaCodeAndDeps') || {},
   };
 }
 

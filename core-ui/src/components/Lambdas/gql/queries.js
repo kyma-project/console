@@ -5,6 +5,7 @@ export const GET_LAMBDAS = gql`
     functions(namespace: $namespace) {
       name
       namespace
+      runtime
       labels
       status {
         phase
@@ -24,6 +25,7 @@ export const GET_LAMBDA = gql`
       labels
       source
       dependencies
+      runtime
       replicas {
         min
         max
