@@ -1,15 +1,21 @@
 import { CONFIG } from 'components/Lambdas/config';
 import { formatMessage } from 'components/Lambdas/helpers/misc';
 
+import {
+  PRETTY_RUNTIME_NODEJS10_NAME,
+  PRETTY_RUNTIME_NODEJS12_NAME,
+  PRETTY_RUNTIME_PYTHON37_NAME,
+} from '../../constants';
+
 export const nodejs12 = 'nodejs12';
 export const nodejs10 = 'nodejs10';
 export const python37 = 'python37';
 
 export const functionAvailableLanguages = {
   // order of those keys is the same as order of available runtimes shown in Create Lambda Modal
-  [nodejs12]: 'Node.js 12',
-  [nodejs10]: 'Node.js 10',
-  [python37]: 'Python 3.7',
+  [nodejs12]: PRETTY_RUNTIME_NODEJS12_NAME,
+  [nodejs10]: PRETTY_RUNTIME_NODEJS10_NAME,
+  [python37]: PRETTY_RUNTIME_PYTHON37_NAME,
 };
 
 export const prettyRuntime = runtime =>

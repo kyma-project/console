@@ -40,6 +40,10 @@ export const LAMBDA_PHASES = {
   ERROR_SUFFIX: 'Error: {error}',
 };
 
+export const PRETTY_RUNTIME_NODEJS12_NAME = 'Node.js 12';
+export const PRETTY_RUNTIME_NODEJS10_NAME = 'Node.js 10';
+export const PRETTY_RUNTIME_PYTHON37_NAME = 'Python 3.7';
+
 export const LAMBDA_ERROR_PHASES = [
   LAMBDA_PHASES.FAILED.TYPE,
   LAMBDA_PHASES.NEW_REVISION_ERROR.TYPE,
@@ -79,6 +83,9 @@ export const LAMBDAS_LIST = {
       LABEL: {
         LABEL: 'Labels',
         INLINE_HELP: `The key/value pair should be separated by '=', consist of alphanumeric characters, '-', '_' or '.', and must start and end with an alphanumeric character. The key cannot be empty.`,
+      },
+      RUNTIME: {
+        NAME: 'Runtime',
       },
     },
   },

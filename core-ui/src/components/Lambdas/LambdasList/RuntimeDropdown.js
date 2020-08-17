@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { CustomPropTypes } from 'react-shared';
 import { functionAvailableLanguages } from 'components/Lambdas/helpers/misc';
 import { FormItem, FormLabel, FormSelect } from 'fundamental-react';
+import { LAMBDAS_LIST } from '../constants';
 
 function getKeyByValue(object, value) {
   return Object.keys(object).find(key => object[key] === value);
@@ -14,7 +15,9 @@ export const RuntimesDropdown = ({
 }) => {
   return (
     <FormItem>
-      <FormLabel htmlFor="runtime-dropdon">Runtime</FormLabel>
+      <FormLabel htmlFor="runtime-dropdon">
+        {LAMBDAS_LIST.CREATE_MODAL.INPUTS.RUNTIME.NAME}
+      </FormLabel>
       <FormSelect
         ref={_ref}
         id="runtime-dropdon"
