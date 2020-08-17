@@ -5,9 +5,7 @@ import { functionAvailableLanguages } from 'components/Lambdas/helpers/misc';
 import { FormItem, FormLabel, FormSelect } from 'fundamental-react';
 import { LAMBDAS_LIST } from '../constants';
 
-function getKeyByValue(object, value) {
-  return Object.keys(object).find(key => object[key] === value);
-}
+import { getKeyByValue } from './helpers';
 
 export const RuntimesDropdown = ({
   _ref,

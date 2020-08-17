@@ -29,3 +29,12 @@ export function randomNameGenerator(functionNames = []) {
   } while (functionNames.includes(name));
   return name;
 }
+
+export function getKeyByValue(object, value) {
+  //https://github.com/lodash/lodash/blob/4.17.15/lodash.js#L11772
+  if (object != null && typeof object == 'object') {
+    return Object.keys(object).find(key => object[key] === value);
+  }
+
+  return undefined;
+}
