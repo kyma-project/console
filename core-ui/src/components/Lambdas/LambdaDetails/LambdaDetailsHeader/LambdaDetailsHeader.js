@@ -40,7 +40,7 @@ export default function LambdaDetailsHeader({ lambda }) {
         breadcrumbItems={breadcrumbItems}
         actions={actions}
       />
-      <div className="fd-panel-grid fd-panel-grid--3col lambda-details-header__content">
+      <div className="fd-panel-grid fd-panel-grid--3col lambda-details-header__content class-random-1">
         <div className="fd-has-grid-column-span-2">
           <LambdaLabels lambda={lambda} />
         </div>
