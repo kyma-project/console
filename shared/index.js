@@ -1,5 +1,8 @@
 export { GenericList } from './components/GenericList/GenericList';
-export { K8sNameInput } from './components/K8sNameInput/K8sNameInput';
+export {
+  K8sNameInput,
+  isK8SNameValid,
+} from './components/K8sNameInput/K8sNameInput';
 export { StringInput } from './components/StringInput/StringInput';
 export { InputWithSuffix } from './components/InputWithSuffix/InputWithSuffix';
 export { InputWithPrefix } from './components/InputWithPrefix/InputWithPrefix';
@@ -31,6 +34,8 @@ export * from './contexts/ConfigContext';
 export * from './contexts/NotificationContext';
 export * from './contexts/Microfrontend';
 export * from './utils/apollo';
+export * from './utils/handleSubscriptionArrayEvent';
+export * from './utils/handleSubscriptionEvent';
 export * from './components/GenericList/actionHandlers/simpleDelete';
 export * from './components/CredentialForms';
 export * from './constants/constants';

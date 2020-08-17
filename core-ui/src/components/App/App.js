@@ -16,6 +16,10 @@ import EditApiRule from 'components/ApiRules/EditApiRule/EditApiRule';
 import ServiceDetails from 'components/Services/ServiceDetails/ServiceDetails';
 import { FUNCTIONS_WINDOW_TITLE } from 'components/Lambdas/constants';
 
+import OAuthClientsList from 'components/OAuthClients/List/OAuthClientsList';
+import CreateOAuthClient from 'components/OAuthClients/Create/CreateOAuthClient';
+import OAuthClientsDetails from 'components/OAuthClients/Details/OAuthClientDetails';
+
 export default function App() {
   return (
     <Switch>
@@ -44,6 +48,20 @@ export default function App() {
         render={withTitle(FUNCTIONS_WINDOW_TITLE, LambdaDetails)}
       />
 
+      <Route
+        exact
+        path="/home/namespaces/:namespaceId/oauth-clients"
+        render={withTitle('OAuth Clients', RoutedOAuthClientsList)}
+      />
+      <Route
+        path="/home/namespaces/:namespaceId/oauth-clients/create"
+        render={withTitle('OAuth Clients', RoutedCreateOAuthClients)}
+      />
+      <Route
+        path="/home/namespaces/:namespaceId/oauth-clients/details/:clientName"
+        render={withTitle('OAuth Clients', RoutedOAuthClientDetails)}
+      />
+
       <Route exact path="/apirules" render={withTitle('API Rules', ApiRules)} />
       <Route
         exact
@@ -66,6 +84,23 @@ export default function App() {
 
 function RoutedNamespaceDetails({ match }) {
   return <NamespaceDetails name={match.params.namespace} />;
+}
+
+function RoutedOAuthClientsList({ match }) {
+  return <OAuthClientsList namespace={match.params.namespaceId} />;
+}
+
+function RoutedCreateOAuthClients({ match }) {
+  return <CreateOAuthClient namespace={match.params.namespaceId} />;
+}
+
+function RoutedOAuthClientDetails({ match }) {
+  return (
+    <OAuthClientsDetails
+      namespace={match.params.namespaceId}
+      name={match.params.clientName}
+    />
+  );
 }
 
 function RoutedServiceDetails({ match }) {

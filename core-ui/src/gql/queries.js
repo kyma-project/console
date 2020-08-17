@@ -204,3 +204,54 @@ export const GET_API_RULE = gql`
     }
   }
 `;
+
+export const GET_OAUTH_CLIENTS = gql`
+  query oAuthClients($namespace: String!) {
+    oAuth2Clients(namespace: $namespace) {
+      name
+      error {
+        code
+        description
+      }
+      spec {
+        secretName
+      }
+    }
+  }
+`;
+
+export const GET_OAUTH_CLIENT = gql`
+  query oAuthClient($namespace: String!, $name: String!) {
+    oAuth2Client(namespace: $namespace, name: $name) {
+      name
+      namespace
+      generation
+      error {
+        code
+        description
+      }
+      spec {
+        grantTypes
+        responseTypes
+        scope
+        secretName
+      }
+    }
+  }
+`;
+
+export const GET_SECRET = gql`
+  query secret($namespace: String!, $name: String!) {
+    secret(namespace: $namespace, name: $name) {
+      data
+    }
+  }
+`;
+
+export const GET_SECRETS = gql`
+  query secrets($namespace: String!) {
+    secrets(namespace: $namespace) {
+      name
+    }
+  }
+`;

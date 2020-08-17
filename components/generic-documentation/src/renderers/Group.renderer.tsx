@@ -135,7 +135,7 @@ export const GroupRenderer: React.FunctionComponent<GroupRendererProps> = ({
       {markdownsExists && (
         <Tab label={TabsLabels.DOCUMENTATION} id={TabsLabels.DOCUMENTATION}>
           <MarkdownWrapper className="custom-markdown-styling">
-            <Grid.Container className="grid-container">
+            <Grid.Container width="auto" className="grid-container">
               <StickyContainer>
                 <Grid.Row>
                   <Grid.Unit df={9} sm={12} className="grid-unit-content">

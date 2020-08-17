@@ -232,3 +232,40 @@ export const UNBIND_NAMESPACE = gql`
     }
   }
 `;
+
+export const UPDATE_OAUTH_CLIENT = gql`
+  mutation updateOAuthClient(
+    $namespace: String!
+    $name: String!
+    $generation: Int!
+    $params: OAuth2ClientSpecInput!
+  ) {
+    updateOAuth2Client(
+      name: $name
+      namespace: $namespace
+      generation: $generation
+      params: $params
+    ) {
+      name
+    }
+  }
+`;
+
+export const DELETE_OAUTH_CLIENT = gql`
+  mutation deleteOAuthClient($namespace: String!, $name: String!) {
+    deleteOAuth2Client(name: $name, namespace: $namespace) {
+      name
+    }
+  }
+`;
+export const CREATE_OAUTH_CLIENT = gql`
+  mutation createOAuth2Client(
+    $namespace: String!
+    $name: String!
+    $params: OAuth2ClientSpecInput!
+  ) {
+    createOAuth2Client(name: $name, namespace: $namespace, params: $params) {
+      name
+    }
+  }
+`;

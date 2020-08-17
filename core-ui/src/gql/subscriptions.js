@@ -76,3 +76,34 @@ export const POD_EVENT_SUBSCRIPTION = gql`
     }
   }
 `;
+
+export const OAUTH_CLIENT_EVENT_SUBSCRIPTION = gql`
+  subscription oAuthClientEvent($namespace: String!) {
+    oAuth2ClientEvent(namespace: $namespace) {
+      type
+      client {
+        name
+        error {
+          code
+          description
+        }
+        spec {
+          grantTypes
+          responseTypes
+        }
+      }
+    }
+  }
+`;
+
+export const SECRET_EVENT_SUBSCRIPTION = gql`
+  subscription secretEvent($namespace: String!) {
+    secretEvent(namespace: $namespace) {
+      type
+      secret {
+        name
+        data
+      }
+    }
+  }
+`;
