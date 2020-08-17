@@ -66,7 +66,7 @@ export default function CreateLambdaForm({
       onSubmit={handleSubmit}
     >
       <LambdaNameInput
-        id="lambdaName"
+        id="lambdaNamez"
         value={name}
         onChange={updateName}
         nameStatus={nameStatus}
