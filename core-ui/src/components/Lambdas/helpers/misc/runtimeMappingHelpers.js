@@ -1,9 +1,9 @@
 import { CONFIG } from 'components/Lambdas/config';
 import { formatMessage } from 'components/Lambdas/helpers/misc';
 
-const nodejs12 = 'nodejs12';
-const nodejs10 = 'nodejs10';
-const python37 = 'python37';
+export const nodejs12 = 'nodejs12';
+export const nodejs10 = 'nodejs10';
+export const python37 = 'python37';
 
 export const functionAvailableLanguages = {
   // order of those keys is the same as order of available runtimes shown in Create Lambda Modal

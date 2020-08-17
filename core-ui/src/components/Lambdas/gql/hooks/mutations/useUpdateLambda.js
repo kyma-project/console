@@ -86,6 +86,7 @@ export function prepareUpdateLambdaInput(lambda = {}) {
     resources: lambda.resources || {},
     replicas: lambda.replicas || {},
     env: lambda.env || [],
+    runtime: lambda.runtime || '',
   };
 
   return omitTypenames(preparedLambda);

@@ -14,7 +14,11 @@ import {
 import { CODE_AND_DEPENDENCIES_PANEL } from 'components/Lambdas/constants';
 
 import './CodeAndDependencies.scss';
-import { runtimeToMonacoEditorLang } from 'components/Lambdas/helpers/misc';
+import {
+  runtimeToMonacoEditorLang,
+  nodejs10,
+  nodejs12,
+} from 'components/Lambdas/helpers/misc';
 
 const DISABLED_CAUSES = {
   VALID: 'VALID',
@@ -59,9 +63,16 @@ export default function CodeAndDependencies({ lambda }) {
     }
 
     const deps = (dependencies || '').trim();
-    if (!(deps.startsWith('{') && deps.endsWith('}'))) {
-      setDisabledCause(DISABLED_CAUSES.INVALID_DEPS);
-      return;
+
+    switch (lambda.runtime) {
+      case nodejs10:
+      case nodejs12:
+        if (!(deps.startsWith('{') && deps.endsWith('}'))) {
+          setDisabledCause(DISABLED_CAUSES.INVALID_DEPS);
+          return;
+        }
+        break;
+      default:
     }
 
     const isDiff =

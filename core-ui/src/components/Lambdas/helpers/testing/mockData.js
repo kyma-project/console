@@ -22,6 +22,7 @@ export const lambdaMock = {
       cpu: '100m',
     },
   },
+  runtime: 'python37',
   env: [
     {
       name: 'FOO',
