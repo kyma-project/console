@@ -30,7 +30,7 @@ export class LimitRangesComponent extends AbstractKubernetesElementListComponent
     private currentNamespaceService: CurrentNamespaceService,
     private commService: ComponentCommunicationService,
     private graphQLClientService: GraphQLClientService,
-    changeDetector: ChangeDetectorRef,
+    changeDetector: ChangeDetectorRef
   ) {
     super(currentNamespaceService, changeDetector, http, commService);
 
