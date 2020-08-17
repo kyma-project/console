@@ -1,3 +1,4 @@
+import { WindowTitleService } from 'shared/services/window-title.service';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ReplicaSetsComponent } from './replica-sets.component';
@@ -12,7 +13,9 @@ describe('ReplicaSetsComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [AppModule, ListModule],
-      providers: [[{ provide: APP_BASE_HREF, useValue: '/my/app' }]]
+      providers: [[{ provide: APP_BASE_HREF, useValue: '/my/app' }, {
+        provide: WindowTitleService, useValue: { set: () => { } }
+      }]]
     }).compileComponents();
   }));
   beforeEach(() => {

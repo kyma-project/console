@@ -3,6 +3,7 @@ import { SecretsComponent } from './secrets.component';
 import { AppModule } from '../../../../app.module';
 import { ListModule } from 'app/generic-list';
 import { APP_BASE_HREF } from '@angular/common';
+import { WindowTitleService } from 'shared/services/window-title.service';
 
 describe('SecretsComponent', () => {
   let component: SecretsComponent;
@@ -11,7 +12,8 @@ describe('SecretsComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [AppModule, ListModule],
-      providers: [[{ provide: APP_BASE_HREF, useValue: '/my/app' }]]
+      providers: [[{ provide: APP_BASE_HREF, useValue: '/my/app' },
+        { provide: WindowTitleService, useValue: { set: () => { } } }]]
     }).compileComponents();
   }));
 

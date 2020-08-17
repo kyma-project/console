@@ -3,6 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SecretDetailComponent } from './secret-detail.component';
 import { AppModule } from '../../../../../app.module';
 import { APP_BASE_HREF } from '@angular/common';
+import { WindowTitleService } from 'shared/services/window-title.service';
 
 describe('SecretDetailComponent', () => {
   let component: SecretDetailComponent;
@@ -11,7 +12,7 @@ describe('SecretDetailComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [AppModule],
-      providers: [[{ provide: APP_BASE_HREF, useValue: '/my/app' }]]
+      providers: [[{ provide: APP_BASE_HREF, useValue: '/my/app' }, { provide: WindowTitleService, useValue: { set: () => { } } }]]
     }).compileComponents();
   }));
 

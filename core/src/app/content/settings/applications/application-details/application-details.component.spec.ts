@@ -7,6 +7,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { ApplicationsService } from '../services/applications.service';
 import { ComponentCommunicationService } from '../../../../shared/services/component-communication.service';
 import { ApplicationBindingService } from './application-binding-service';
+import { WindowTitleService } from 'shared/services/window-title.service';
 
 describe('ApplicationDetailsComponent', () => {
   let component: ApplicationDetailsComponent;
@@ -32,7 +33,8 @@ describe('ApplicationDetailsComponent', () => {
         {
           provide: ApplicationBindingService,
           useValue: {}
-        }
+        },
+        { provide: WindowTitleService, useValue: { set: () => { } } }
       ]
     })
       .overrideTemplate(ApplicationDetailsComponent, '')
