@@ -1,3 +1,4 @@
+import { WindowTitleService } from 'shared/services/window-title.service';
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { CurrentNamespaceService } from '../../../services/current-namespace.service';
@@ -27,9 +28,11 @@ export class SecretDetailComponent implements OnInit, OnDestroy {
     private http: HttpClient,
     private currentNamespaceService: CurrentNamespaceService,
     private route: ActivatedRoute,
-    private communicationService: ComponentCommunicationService
+    private communicationService: ComponentCommunicationService,
+    titleService: WindowTitleService
   ) {
     this.subscribeToRefreshComponent();
+    titleService.set('Secrets');
   }
 
   ngOnInit() {

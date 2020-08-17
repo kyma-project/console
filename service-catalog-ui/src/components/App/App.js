@@ -17,42 +17,47 @@ const App = () => (
       <Route
         exact
         path="/catalog"
-        component={withTitle('Catalog', ServiceClassList)}
+        render={withTitle('Catalog', ServiceClassList)}
       />
 
       <Route
         exact
         path="/catalog/details/:name"
-        component={RoutedCatalogDetails}
+        render={withTitle('Catalog', RoutedCatalogDetails)}
       />
       <Route
         exact
         path="/catalog/details/:name/plan/:plan"
-        component={RoutedCatalogDetails}
+        render={withTitle('Catalog', RoutedCatalogDetails)}
       />
       <Route
         exact
         path="/catalog/details/:name/plans"
-        component={RoutedServicePlanList}
+        render={withTitle('Catalog', RoutedServicePlanList)}
       />
 
-      <Route exact path="/instances" component={ServiceInstancesList} />
+      <Route
+        exact
+        path="/instances"
+        render={withTitle('Instances', ServiceInstancesList)}
+      />
       <Route
         exact
         path="/instances/details/:name"
-        component={ServiceInstancesDetails}
+        render={withTitle('Instance', ServiceInstancesDetails)}
       />
 
-      <Route path="/brokers" component={ServiceBrokers} />
+      <Route
+        path="/brokers"
+        render={withTitle('Service Brokers', ServiceBrokers)}
+      />
     </Switch>
   </NotificationProvider>
 );
 
-const RoutedCatalogDetails = ({ match }) =>
-  withTitle(
-    'Catalog',
-    <ServiceClassDetails name={match.params.name} plan={match.params.plan} />,
-  );
+const RoutedCatalogDetails = ({ match }) => (
+  <ServiceClassDetails name={match.params.name} plan={match.params.plan} />
+);
 
 const RoutedServicePlanList = ({ match }) =>
   withTitle('Catalog', <ServiceClassPlansList name={match.params.name} />);

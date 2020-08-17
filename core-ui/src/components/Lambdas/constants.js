@@ -1,3 +1,5 @@
+export const FUNCTIONS_WINDOW_TITLE = 'Functions';
+
 export const BUTTONS = {
   CANCEL: 'Cancel',
   DELETE: 'Delete',

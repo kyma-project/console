@@ -1,5 +1,6 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
+import { withTitle } from 'react-shared';
 
 import NamespaceDetails from '../NamespaceDetails/NamespaceDetails';
 import NamespaceList from '../NamespaceList/NamespaceList';
@@ -13,6 +14,7 @@ import ApiRuleDetails from 'components/ApiRules/ApiRuleDetails/ApiRuleDetails';
 import EditApiRule from 'components/ApiRules/EditApiRule/EditApiRule';
 
 import ServiceDetails from 'components/Services/ServiceDetails/ServiceDetails';
+import { FUNCTIONS_WINDOW_TITLE } from 'components/Lambdas/constants';
 
 export default function App() {
   return (
@@ -20,29 +22,43 @@ export default function App() {
       <Route path="/preload" component={() => null} />
       <Route
         path="/home/namespaces/:namespace/details"
-        component={RoutedNamespaceDetails}
+        render={withTitle('Namespace Details', RoutedNamespaceDetails)}
       />
-      <Route path="/namespaces" component={NamespaceList} />
+      <Route
+        path="/namespaces"
+        render={withTitle('Namespaces', NamespaceList)}
+      />
 
       <Route
         path="/home/namespaces/:namespaceId/services/details/:serviceName"
-        component={RoutedServiceDetails}
+        render={withTitle('Services', RoutedServiceDetails)}
       />
 
-      <Route path="/lambdas" exact component={Lambdas} />
-      <Route path="/lambda/:name" component={LambdaDetails} />
+      <Route
+        path="/lambdas"
+        exact
+        render={withTitle(FUNCTIONS_WINDOW_TITLE, Lambdas)}
+      />
+      <Route
+        path="/lambda/:name"
+        render={withTitle(FUNCTIONS_WINDOW_TITLE, LambdaDetails)}
+      />
 
-      <Route exact path="/apirules" component={ApiRules} />
-      <Route exact path="/apirules/create" component={CreateApiRule} />
+      <Route exact path="/apirules" render={withTitle('API Rules', ApiRules)} />
+      <Route
+        exact
+        path="/apirules/create"
+        render={withTitle('API Rules', CreateApiRule)}
+      />
       <Route
         exact
         path="/apirules/details/:apiName"
-        component={RoutedApiRuleDetails}
+        render={withTitle('API Rules', RoutedApiRuleDetails)}
       />
       <Route
         exact
         path="/apirules/edit/:apiName"
-        component={RoutedEditApiRule}
+        render={withTitle('API Rules', RoutedEditApiRule)}
       />
     </Switch>
   );

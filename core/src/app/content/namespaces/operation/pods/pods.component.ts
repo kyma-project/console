@@ -28,7 +28,7 @@ export class PodsComponent extends AbstractGraphqlElementListComponent
     commService: ComponentCommunicationService,
     graphQLClientService: GraphQLClientService,
     changeDetector: ChangeDetectorRef,
-    windowTitle: WindowTitleService
+    titleService: WindowTitleService
   ) {
     super(
       currentNamespaceService,
@@ -36,7 +36,7 @@ export class PodsComponent extends AbstractGraphqlElementListComponent
       graphQLClientService,
       changeDetector
     );
-    windowTitle.set(this.title);
+    titleService.set(this.title);
   }
 
   public ngOnDestroy() {

@@ -16,8 +16,8 @@ export class ResourcesComponent implements OnInit {
   public limitRangesTabExpanded: boolean;
   public resourceQuotasTabExpanded: boolean;
 
-  constructor(windowTitle: WindowTitleService) {
-    windowTitle.set('Resources');
+  constructor(titleService: WindowTitleService) {
+    titleService.set('Resources');
   }
 
   ngOnInit() {

@@ -21,15 +21,16 @@ export class PermissionsComponent implements OnInit {
 
   public isGlobalMode = false;
 
-  constructor(private route: ActivatedRoute, windowTitle: WindowTitleService) {
+  constructor(private route: ActivatedRoute, titleService: WindowTitleService) {
     this.route.data.subscribe(routeData => {
       this.isGlobalMode = routeData && routeData.global;
 
       this.bindingsTabTitle = this.isGlobalMode
         ? 'Cluster Role Bindings'
         : 'Role Bindings';
+
+      titleService.set(this.isGlobalMode ? 'Global Permissions' : 'Permissions');
     });
-    windowTitle.set(this.title);
   }
 
   public ngOnInit() {

@@ -6,6 +6,7 @@ import AddNewConfigurationModal from '../Modals/AddNewConfigurationModal/AddNewC
 
 import { CORE } from '../../constants';
 import { StyledActionBar } from './styled';
+import * as ReactShared from '../../react-shared';
 
 const Toolbar: React.FunctionComponent = () => {
   const { namespaceId: currentNamespace } = React.useContext(LuigiContext);
@@ -15,6 +16,12 @@ const Toolbar: React.FunctionComponent = () => {
   const description = currentNamespace
     ? CORE.ADD_ONS_CONFIGURATION_DESCRIPTION
     : CORE.CLUSTER_ADD_ONS_CONFIGURATION_DESCRIPTION;
+
+  ReactShared.useWindowTitle(
+    currentNamespace
+      ? CORE.SHORT_ADD_ONS_CONFIGURATION_TITLE
+      : CORE.SHORT_CLUSTER_ADD_ONS_CONFIGURATION_TITLE,
+  );
 
   return (
     <StyledActionBar>

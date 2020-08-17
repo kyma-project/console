@@ -1,3 +1,4 @@
+import React from 'react';
 import LuigiClient from '@luigi-project/client';
 import { useEffect } from 'react';
 
@@ -11,7 +12,9 @@ export function useWindowTitle(title) {
   useEffect(() => setWindowTitle(title), [title]);
 }
 
-export function withTitle(title, component) {
-  setWindowTitle(title);
-  return component;
+export function withTitle(title, Component) {
+  return props => {
+    setWindowTitle(title);
+    return <Component {...props} />;
+  };
 }

@@ -1,3 +1,4 @@
+import { WindowTitleService } from 'shared/services/window-title.service';
 import { Component, OnInit } from '@angular/core';
 import { AppConfig } from '../../../app.config';
 import { SHOW_SYSTEM_NAMESPACES_CHANGED_EVENT } from '../../../shared/constants/constants';
@@ -12,9 +13,10 @@ export class PreferencesComponent implements OnInit {
   public showExperimentalViews = false;
   public shouldShowNamespacesToggle = true;
 
-  constructor() {
+  constructor(titleService: WindowTitleService) {
     this.showExperimentalViews =
       localStorage.getItem('console.showExperimentalViews') === 'true';
+    titleService.set('Preferences');
   }
 
   ngOnInit() {

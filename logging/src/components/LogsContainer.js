@@ -1,6 +1,7 @@
 import React from 'react';
 import LuigiClient from '@luigi-project/client';
 import Logs from './Logs/Logs';
+import { setWindowTitle } from 'react-shared';
 
 import { QueryTransformServiceContext } from '../services/queryTransformService';
 import { HttpServiceContext } from '../services/httpService';
@@ -34,6 +35,10 @@ export default function LogsContainer() {
 
   const isCompactMode = isCompact();
   const readOnlyLabels = getLabelValuesFromViewParams();
+
+  if (!isCompactMode) {
+    setWindowTitle('Logs');
+  }
 
   return (
     <Logs

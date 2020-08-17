@@ -33,10 +33,10 @@ export class DeploymentsComponent extends AbstractKubernetesElementListComponent
     private commService: ComponentCommunicationService,
     private graphQLClientService: GraphQLClientService,
     changeDetector: ChangeDetectorRef,
-    windowTitle: WindowTitleService
+    titleService: WindowTitleService
   ) {
     super(currentNamespaceService, changeDetector, http, commService);
-    windowTitle.set(this.title);
+    titleService.set(this.title);
 
     const query = `query Deployments($namespace: String!) {
       deployments(namespace: $namespace) {

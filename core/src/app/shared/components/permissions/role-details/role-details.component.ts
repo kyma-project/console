@@ -1,3 +1,4 @@
+import { WindowTitleService } from 'shared/services/window-title.service';
 import { Location } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
@@ -29,7 +30,8 @@ export class RoleDetailsComponent implements OnInit, OnDestroy {
     private http: HttpClient,
     private currentNamespaceService: CurrentNamespaceService,
     private route: ActivatedRoute,
-    private location: Location
+    private location: Location,
+    private titleService: WindowTitleService
   ) { }
 
   public ngOnInit() {
@@ -59,6 +61,7 @@ export class RoleDetailsComponent implements OnInit, OnDestroy {
           this.fetchDetails(url);
         });
       }
+      this.titleService.set(this.isGlobalMode ? 'Global Permissions' : 'Permissions');
     });
   }
 

@@ -33,10 +33,10 @@ export class SecretsComponent extends AbstractKubernetesElementListComponent
     private currentNamespaceService: CurrentNamespaceService,
     private commService: ComponentCommunicationService,
     changeDetector: ChangeDetectorRef,
-    windowTitle: WindowTitleService
+    titleService: WindowTitleService
   ) {
     super(currentNamespaceService, changeDetector, http, commService);
-    windowTitle.set(this.title);
+    titleService.set(this.title);
     const converter: DataConverter<ISecret, Secret> = {
       convert(entry: ISecret) {
         return new Secret(entry);

@@ -5,7 +5,7 @@ import { useQuery } from '@apollo/react-hooks';
 import { GET_NAMESPACES } from '../../gql/queries';
 import { NAMESPACES_EVENT_SUBSCRIPTION } from '../../gql/subscriptions';
 
-import { Spinner, setWindowTitle } from 'react-shared';
+import { Spinner } from 'react-shared';
 import NamespacesGrid from './NamespacesGrid/NamespacesGrid';
 import NamespacesListHeader from './NamespacesListHeader/NamespacesListHeader';
 import * as storage from './storage';
@@ -21,9 +21,6 @@ function sortByName(array) {
 }
 
 export default function NamespaceList() {
-  console.log(setWindowTitle);
-  setWindowTitle('Namespaces');
-
   const [searchPhrase, setSearchPhrase] = useState('');
   const [labelFilters, setLabelFilters] = useState([]);
   const { showSystemNamespaces } = useMicrofrontendContext();

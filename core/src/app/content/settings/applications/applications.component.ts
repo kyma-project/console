@@ -1,3 +1,4 @@
+import { WindowTitleService } from 'shared/services/window-title.service';
 import { Application } from '../../../shared/datamodel/k8s/kyma-api/application';
 import {
   Component,
@@ -43,7 +44,8 @@ export class ApplicationsComponent extends AbstractGraphqlElementListComponent
     currentNamespaceService: CurrentNamespaceService,
     commService: ComponentCommunicationService,
     graphQLClientService: GraphQLClientService,
-    changeDetector: ChangeDetectorRef
+    changeDetector: ChangeDetectorRef,
+    titleService: WindowTitleService
   ) {
     super(
       currentNamespaceService,
@@ -51,6 +53,7 @@ export class ApplicationsComponent extends AbstractGraphqlElementListComponent
       graphQLClientService,
       changeDetector
     );
+    titleService.set(this.title);
 
     this.contextListenerId = LuigiClient.addContextUpdateListener(context => {
       if (context.settings) {

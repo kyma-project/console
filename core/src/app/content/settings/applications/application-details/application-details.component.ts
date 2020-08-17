@@ -1,3 +1,4 @@
+import { WindowTitleService } from 'shared/services/window-title.service';
 import { ApplicationBindingService } from './application-binding-service';
 import { ComponentCommunicationService } from '../../../../shared/services/component-communication.service';
 import { ApplicationsService } from '../services/applications.service';
@@ -59,9 +60,11 @@ export class ApplicationDetailsComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private applicationsService: ApplicationsService,
     private communication: ComponentCommunicationService,
-    private applicationBindingService: ApplicationBindingService
+    private applicationBindingService: ApplicationBindingService,
+    titleService: WindowTitleService
   ) {
     this.applicationBindingService = applicationBindingService;
+    titleService.set('Applications/Systems');
   }
 
   ngOnInit() {

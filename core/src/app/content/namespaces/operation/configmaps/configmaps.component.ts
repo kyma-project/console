@@ -25,7 +25,7 @@ export class ConfigMapsComponent extends AbstractGraphqlElementListComponent imp
     commService: ComponentCommunicationService,
     graphQLClientService: GraphQLClientService,
     changeDetector: ChangeDetectorRef,
-    windowTitle: WindowTitleService
+    titleService: WindowTitleService
   ) {
     super(
       currentEnvironmentService,
@@ -33,7 +33,7 @@ export class ConfigMapsComponent extends AbstractGraphqlElementListComponent imp
       graphQLClientService,
       changeDetector
     );
-    windowTitle.set(this.title);
+    titleService.set(this.title);
   }
 
   public ngOnInit() {
