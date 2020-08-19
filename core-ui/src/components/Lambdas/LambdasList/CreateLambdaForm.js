@@ -8,7 +8,7 @@ import { useCreateLambda } from 'components/Lambdas/gql/hooks/mutations';
 import { RuntimesDropdown } from './RuntimeDropdown';
 
 import { randomNameGenerator, validateFunctionName } from './helpers';
-import { functionAvailableLanguages } from '../helpers/misc';
+import { functionAvailableLanguages } from '../helpers/runtime';
 
 export default function CreateLambdaForm({
   onChange,

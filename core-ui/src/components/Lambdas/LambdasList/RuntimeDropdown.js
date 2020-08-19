@@ -1,11 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { CustomPropTypes } from 'react-shared';
-import { functionAvailableLanguages } from 'components/Lambdas/helpers/misc';
+import { functionAvailableLanguages } from 'components/Lambdas/helpers/runtime';
 import { FormItem, FormLabel, FormSelect } from 'fundamental-react';
 import { LAMBDAS_LIST } from '../constants';
-
-import { getKeyByValue } from './helpers';
 
 export const RuntimesDropdown = ({
   _ref,
@@ -22,12 +20,8 @@ export const RuntimesDropdown = ({
         role="select"
         defaultValue={defaultRuntime}
       >
-        {Object.values(functionAvailableLanguages).map(lang => (
-          <option
-            aria-label="option"
-            key={lang}
-            value={getKeyByValue(functionAvailableLanguages, lang)}
-          >
+        {Object.entries(functionAvailableLanguages).map(([runtime, lang]) => (
+          <option aria-label="option" key={lang} value={runtime}>
             {lang}
           </option>
         ))}

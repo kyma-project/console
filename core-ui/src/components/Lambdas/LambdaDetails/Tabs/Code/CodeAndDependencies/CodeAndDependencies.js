@@ -16,9 +16,8 @@ import { CODE_AND_DEPENDENCIES_PANEL } from 'components/Lambdas/constants';
 import './CodeAndDependencies.scss';
 import {
   runtimeToMonacoEditorLang,
-  nodejs10,
-  nodejs12,
-} from 'components/Lambdas/helpers/misc';
+  checkDepsValidity,
+} from 'components/Lambdas/helpers/runtime';
 
 const DISABLED_CAUSES = {
   VALID: 'VALID',
@@ -64,15 +63,9 @@ export default function CodeAndDependencies({ lambda }) {
 
     const deps = (dependencies || '').trim();
 
-    switch (lambda.runtime) {
-      case nodejs10:
-      case nodejs12:
-        if (!(deps.startsWith('{') && deps.endsWith('}'))) {
-          setDisabledCause(DISABLED_CAUSES.INVALID_DEPS);
-          return;
-        }
-        break;
-      default:
+    if (!checkDepsValidity(lambda.runtime, deps)) {
+      setDisabledCause(DISABLED_CAUSES.INVALID_DEPS);
+      return;
     }
 
     const isDiff =
@@ -127,7 +120,7 @@ export default function CodeAndDependencies({ lambda }) {
   const button = (
     <Button
       glyph="save"
-      option={disabled ? 'light' : 'default'}
+      option={disabled ? 'light' : 'emphasized'}
       typeAttr="button"
       disabled={disabled}
       onClick={handleSave}

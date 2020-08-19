@@ -57,3 +57,34 @@ export const getDefaultDependencies = (name, runtime) => {
       return '';
   }
 };
+
+export const checkDepsValidity = (runtime, deps) => {
+  switch (runtime) {
+    case nodejs10:
+    case nodejs12:
+      if (!isJson(deps)) {
+        return false;
+      }
+      break;
+    default:
+      return true;
+  }
+};
+
+export const isJson = item => {
+  if (typeof item !== 'string') {
+    return false;
+  }
+
+  try {
+    item = JSON.parse(item);
+  } catch (e) {
+    return false;
+  }
+
+  if (typeof item === 'object' && item !== null) {
+    return true;
+  }
+
+  return false;
+};

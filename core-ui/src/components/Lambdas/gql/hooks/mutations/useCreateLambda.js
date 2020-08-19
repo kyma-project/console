@@ -5,10 +5,9 @@ import LuigiClient from '@luigi-project/client';
 import { CREATE_LAMBDA } from 'components/Lambdas/gql/mutations';
 import extractGraphQlErrors from 'shared/graphqlErrorExtractor';
 
-import {
-  formatMessage,
-  getDefaultDependencies,
-} from 'components/Lambdas/helpers/misc';
+import { formatMessage } from 'components/Lambdas/helpers/misc';
+import { getDefaultDependencies } from 'components/Lambdas/helpers/runtime';
+
 import { GQL_MUTATIONS } from 'components/Lambdas/constants';
 import { CONFIG } from 'components/Lambdas/config';
 

@@ -334,7 +334,7 @@ export const CODE_AND_DEPENDENCIES_PANEL = {
     TEXT: 'Save',
     POPUP_MESSAGE: {
       EMPTY_SOURCE: 'Source cannot be empty.',
-      INVALID_DEPS: "Dependencies should start with '{' and end with '}'.",
+      INVALID_DEPS: 'Dependencies should be a valid JSON',
       NO_CHANGES: 'No changes made.',
     },
   },

@@ -11,7 +11,7 @@ import LambdaStatusCard from './LambdaStatusCard';
 import { BUTTONS, FIRST_BREADCRUMB_NODE } from 'components/Lambdas/constants';
 
 import './LambdaDetailsHeader.scss';
-import { prettyRuntime } from 'components/Lambdas/helpers/misc';
+import { prettyRuntime } from 'components/Lambdas/helpers/runtime';
 
 const breadcrumbItems = [
   {

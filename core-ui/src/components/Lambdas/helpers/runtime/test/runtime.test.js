@@ -2,7 +2,8 @@ import {
   prettyRuntime,
   runtimeToMonacoEditorLang,
   getDefaultDependencies,
-} from '../runtimeMappingHelpers';
+  isJson,
+} from '../runtime';
 
 describe('prettyRuntime', () => {
   test.each([
@@ -59,6 +60,23 @@ describe('getDefaultDependencies', () => {
     ['', 'nodejs12', ``],
   ])('.getDefaultDependencies(%s, %s)', (name, runtime, expected) => {
     const result = getDefaultDependencies(name, runtime);
+    expect(result).toEqual(expected);
+  });
+});
+
+describe('isJson', () => {
+  test.each([
+    [JSON.stringify({ a: 1, b: 2 }), true],
+    [JSON.stringify({ a: 1, b: 2 }).slice(1), false],
+    [9, false],
+    ['data', false],
+    [null, false],
+    [undefined, false],
+    [{}, false],
+    [{ a: 2, b: 2 }, false], // should fail on objects, as we accept string input!
+    [[1, 2, 3], false],
+  ])('.isJson(%s)', (item, expected) => {
+    const result = isJson(item);
     expect(result).toEqual(expected);
   });
 });

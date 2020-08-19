@@ -7,7 +7,8 @@ import { Link } from 'fundamental-react';
 import { useDeleteLambda } from 'components/Lambdas/gql/hooks/mutations';
 
 import { statusType } from 'components/Lambdas/helpers/lambdas';
-import { formatMessage, prettyRuntime } from 'components/Lambdas/helpers/misc';
+import { formatMessage } from 'components/Lambdas/helpers/misc';
+import { prettyRuntime } from 'components/Lambdas/helpers/runtime';
 import {
   LAMBDAS_LIST,
   LAMBDA_PHASES,
