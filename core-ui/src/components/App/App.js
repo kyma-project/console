@@ -14,11 +14,19 @@ import ApiRuleDetails from 'components/ApiRules/ApiRuleDetails/ApiRuleDetails';
 import EditApiRule from 'components/ApiRules/EditApiRule/EditApiRule';
 
 import ServiceDetails from 'components/Services/ServiceDetails/ServiceDetails';
-import { FUNCTIONS_WINDOW_TITLE } from 'components/Lambdas/constants';
 
 import OAuthClientsList from 'components/OAuthClients/List/OAuthClientsList';
 import CreateOAuthClient from 'components/OAuthClients/Create/CreateOAuthClient';
 import OAuthClientsDetails from 'components/OAuthClients/Details/OAuthClientDetails';
+
+import { FUNCTIONS_WINDOW_TITLE } from 'components/Lambdas/constants';
+import {
+  API_RULES_TITLE,
+  OAUTH_CLIENTS_TITLE,
+  NAMESPACE_DETAILS_TITLE,
+  NAMESPACES_TITLE,
+  SERVICES_TITLE,
+} from 'shared/constants';
 
 export default function App() {
   return (
@@ -26,16 +34,16 @@ export default function App() {
       <Route path="/preload" component={() => null} />
       <Route
         path="/home/namespaces/:namespace/details"
-        render={withTitle('Namespace Details', RoutedNamespaceDetails)}
+        render={withTitle(NAMESPACE_DETAILS_TITLE, RoutedNamespaceDetails)}
       />
       <Route
         path="/namespaces"
-        render={withTitle('Namespaces', NamespaceList)}
+        render={withTitle(NAMESPACES_TITLE, NamespaceList)}
       />
 
       <Route
         path="/home/namespaces/:namespaceId/services/details/:serviceName"
-        render={withTitle('Services', RoutedServiceDetails)}
+        render={withTitle(SERVICES_TITLE, RoutedServiceDetails)}
       />
 
       <Route
@@ -51,32 +59,36 @@ export default function App() {
       <Route
         exact
         path="/home/namespaces/:namespaceId/oauth-clients"
-        render={withTitle('OAuth Clients', RoutedOAuthClientsList)}
+        render={withTitle(OAUTH_CLIENTS_TITLE, RoutedOAuthClientsList)}
       />
       <Route
         path="/home/namespaces/:namespaceId/oauth-clients/create"
-        render={withTitle('OAuth Clients', RoutedCreateOAuthClients)}
+        render={withTitle(OAUTH_CLIENTS_TITLE, RoutedCreateOAuthClients)}
       />
       <Route
         path="/home/namespaces/:namespaceId/oauth-clients/details/:clientName"
-        render={withTitle('OAuth Clients', RoutedOAuthClientDetails)}
+        render={withTitle(OAUTH_CLIENTS_TITLE, RoutedOAuthClientDetails)}
       />
 
-      <Route exact path="/apirules" render={withTitle('API Rules', ApiRules)} />
+      <Route
+        exact
+        path="/apirules"
+        render={withTitle(API_RULES_TITLE, ApiRules)}
+      />
       <Route
         exact
         path="/apirules/create"
-        render={withTitle('API Rules', CreateApiRule)}
+        render={withTitle(API_RULES_TITLE, CreateApiRule)}
       />
       <Route
         exact
         path="/apirules/details/:apiName"
-        render={withTitle('API Rules', RoutedApiRuleDetails)}
+        render={withTitle(API_RULES_TITLE, RoutedApiRuleDetails)}
       />
       <Route
         exact
         path="/apirules/edit/:apiName"
-        render={withTitle('API Rules', RoutedEditApiRule)}
+        render={withTitle(API_RULES_TITLE, RoutedEditApiRule)}
       />
     </Switch>
   );

@@ -9,6 +9,12 @@ import ServiceInstancesDetails from '../ServiceInstanceDetails/ServiceInstanceDe
 import ServiceBrokers from '../ServiceBrokers/ServiceBrokers';
 import { NotificationProvider, withTitle } from 'react-shared';
 
+import {
+  CATALOG_TITLE,
+  INSTANCES_TITLE,
+  SERVICE_BROKERS_TITLE,
+} from '../../shared/constants';
+
 const App = () => (
   <NotificationProvider>
     <Switch>
@@ -17,39 +23,39 @@ const App = () => (
       <Route
         exact
         path="/catalog"
-        render={withTitle('Catalog', ServiceClassList)}
+        render={withTitle(CATALOG_TITLE, ServiceClassList)}
       />
 
       <Route
         exact
         path="/catalog/details/:name"
-        render={withTitle('Catalog', RoutedCatalogDetails)}
+        render={withTitle(CATALOG_TITLE, RoutedCatalogDetails)}
       />
       <Route
         exact
         path="/catalog/details/:name/plan/:plan"
-        render={withTitle('Catalog', RoutedCatalogDetails)}
+        render={withTitle(CATALOG_TITLE, RoutedCatalogDetails)}
       />
       <Route
         exact
         path="/catalog/details/:name/plans"
-        render={withTitle('Catalog', RoutedServicePlanList)}
+        render={withTitle(CATALOG_TITLE, RoutedServicePlanList)}
       />
 
       <Route
         exact
         path="/instances"
-        render={withTitle('Instances', ServiceInstancesList)}
+        render={withTitle(INSTANCES_TITLE, ServiceInstancesList)}
       />
       <Route
         exact
         path="/instances/details/:name"
-        render={withTitle('Instance', ServiceInstancesDetails)}
+        render={withTitle(INSTANCES_TITLE, ServiceInstancesDetails)}
       />
 
       <Route
         path="/brokers"
-        render={withTitle('Service Brokers', ServiceBrokers)}
+        render={withTitle(SERVICE_BROKERS_TITLE, ServiceBrokers)}
       />
     </Switch>
   </NotificationProvider>
@@ -60,6 +66,6 @@ const RoutedCatalogDetails = ({ match }) => (
 );
 
 const RoutedServicePlanList = ({ match }) =>
-  withTitle('Catalog', <ServiceClassPlansList name={match.params.name} />);
+  withTitle(CATALOG_TITLE, <ServiceClassPlansList name={match.params.name} />);
 
 export default App;
