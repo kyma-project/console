@@ -8,7 +8,11 @@ import { useDeleteLambda } from 'components/Lambdas/gql/hooks/mutations';
 import LambdaLabels from './LambdaLabels';
 import LambdaStatusCard from './LambdaStatusCard';
 
-import { BUTTONS, FIRST_BREADCRUMB_NODE } from 'components/Lambdas/constants';
+import {
+  BUTTONS,
+  FIRST_BREADCRUMB_NODE,
+  LAMBDA_DETAILS,
+} from 'components/Lambdas/constants';
 
 import './LambdaDetailsHeader.scss';
 import { prettyRuntime } from 'components/Lambdas/helpers/runtime';
@@ -45,7 +49,9 @@ export default function LambdaDetailsHeader({ lambda }) {
         <div className="fd-has-grid-column-span-2">
           <LambdaLabels lambda={lambda} />
           <div className="fd-has-margin-bottom-l">
-            <span className="fd-has-color-text-4 ">{'Runtime: '}</span>
+            <span className="fd-has-color-text-4 ">
+              {LAMBDA_DETAILS.RUNTIME.TEXT}
+            </span>
             <span>{prettyRuntime(lambda.runtime)}</span>
           </div>
         </div>

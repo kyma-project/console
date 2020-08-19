@@ -45,8 +45,7 @@ const defaultConfig = {
     'FUNC_PORT',
     'MOD_NAME',
     'NODE_PATH',
-    'REQ_MB_LIMIT',
-    'FUNC_MEMORY_LIMIT', // https://github.com/kubeless/runtimes/blob/master/stable/nodejs/kubeless.js
+    'PYTHON_PATH',
   ],
   resources: {
     min: {

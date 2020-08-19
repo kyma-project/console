@@ -112,6 +112,9 @@ export const LAMBDA_DETAILS = {
       },
     },
   },
+  RUNTIME: {
+    TEXT: 'Runtime: ',
+  },
   TABS: {
     CODE: {
       TITLE: 'Code',
