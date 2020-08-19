@@ -1,9 +1,7 @@
-FROM testcafe/testcafe:alpha
+FROM cypress/included:3.2.0
 
 USER root
 WORKDIR /usr/src/app
-
-RUN apk add curl
 
 COPY package*.json ./
 RUN npm install
