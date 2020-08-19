@@ -62,10 +62,7 @@ export const checkDepsValidity = (runtime, deps) => {
   switch (runtime) {
     case nodejs10:
     case nodejs12:
-      if (!isJson(deps)) {
-        return false;
-      }
-      break;
+      return isJson(deps);
     default:
       return true;
   }
