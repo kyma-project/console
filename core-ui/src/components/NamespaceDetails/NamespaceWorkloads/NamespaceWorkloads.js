@@ -55,7 +55,7 @@ export default function NamespaceWorkloads({ namespace }) {
   return (
     <Panel className="fd-has-margin-m">
       <Panel.Header>
-        <Panel.Head title="Workloads" />
+        <Panel.Head title="Healthy Resources" />
       </Panel.Header>
       <Panel.Body className="namespace-workloads__body">
         <CircleProgress

@@ -7,7 +7,6 @@ import {
   handleDelete,
   useNotification,
   handleSubscriptionArrayEvent,
-  Link,
 } from 'react-shared';
 import { Button } from 'fundamental-react';
 import { OAUTH_DOC_URL } from 'shared/constants';
@@ -79,8 +78,13 @@ export default function OAuthClientsList({ namespace }) {
 
   const description = (
     <span>
-      {'See '}
-      <Link url={OAUTH_DOC_URL} text="OAuth documentation" />
+      {'See "OAuth2 and OpenID Connect server" section in '}
+      <span
+        className="link"
+        onClick={() => LuigiClient.linkManager().navigate(OAUTH_DOC_URL)}
+      >
+        documentation
+      </span>
       {' to find out more.'}
     </span>
   );
