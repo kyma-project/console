@@ -17,19 +17,22 @@ context('Console Smoke Tests', () => {
   });
 
   beforeEach(() => {
+    cy.wait(2000);
     // return to main view
-    cy.visit(ADDRESS);
+    cy.visit(ADDRESS + '/home/workspace');
     // wait until all the pushStates calm down
     cy.wait(1000);
   });
 
   it('Renders navigation nodes', () => {
+    cy.title().then(cy.log);
     ['Namespaces', 'Integration', 'Administration'].forEach(node => {
       cy.contains(node).should('exist');
     });
   });
 
   it('Renders namespaces details', () => {
+    cy.title().then(cy.log);
     cy.getIframeBody().then(result => {
       cy.wrap(result)
         .contains(config.DEFAULT_NAMESPACE_NAME)
@@ -41,6 +44,7 @@ context('Console Smoke Tests', () => {
   });
 
   it('Renders deployments', () => {
+    cy.title().then(cy.log);
     cy.getIframeBody().then(result => {
       cy.wrap(result)
         .contains(config.DEFAULT_NAMESPACE_NAME)
@@ -57,6 +61,7 @@ context('Console Smoke Tests', () => {
   });
 
   it('Renders cluster addons', () => {
+    cy.title().then(cy.log);
     cy.contains('Integration').click();
     cy.contains('Cluster Addons').click();
     cy.getIframeBody().then(result => {
@@ -67,6 +72,7 @@ context('Console Smoke Tests', () => {
   });
 
   it('Renders logging', () => {
+    cy.title().then(cy.log);
     cy.contains('Diagnostics').click();
     cy.contains('Logs').click();
     cy.getIframeBody().then(result => {
@@ -77,6 +83,8 @@ context('Console Smoke Tests', () => {
   });
 
   it('Renders catalog', () => {
+    cy.title().then(cy.log);
+    // todo make awaitable?
     cy.getIframeBody().then(result => {
       cy.wrap(result)
         .contains(config.DEFAULT_NAMESPACE_NAME)

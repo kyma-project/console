@@ -1,3 +1,7 @@
+Cypress.Commands.overwrite('log', (subject, message) =>
+  cy.task('log', message),
+);
+
 Cypress.Commands.add(
   'getIframeBody',
   (getIframeOpts = {}, index = 0, containerSelector = '.iframeContainer') => {
