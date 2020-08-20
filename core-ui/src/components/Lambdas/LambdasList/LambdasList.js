@@ -43,7 +43,7 @@ function LambdaStatusBadge({ status }) {
 }
 
 const headerRenderer = () => ['Name', 'Runtime', 'Labels', 'Status'];
-const textSearchProperties = ['name', 'runtime', 'status.phase'];
+const textSearchProperties = ['name', 'prettyRuntime', 'status.phase'];
 
 export default function LambdasList({
   lambdas,
@@ -86,7 +86,10 @@ export default function LambdasList({
   return (
     <GenericList
       actions={actions}
-      entries={lambdas}
+      entries={lambdas.map(lambda => ({
+        ...lambda,
+        prettyRuntime: prettyRuntime(lambda.runtime),
+      }))}
       showSearchField={true}
       showSearchSuggestion={false}
       textSearchProperties={textSearchProperties}
