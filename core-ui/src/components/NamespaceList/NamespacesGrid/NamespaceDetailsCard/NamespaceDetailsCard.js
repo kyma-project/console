@@ -7,6 +7,7 @@ import { DELETE_NAMESPACE } from './../../../../gql/mutations';
 import { useMutation } from '@apollo/react-hooks';
 
 import { Button, Menu, Panel, Badge, Popover } from 'fundamental-react';
+
 import './NamespaceDetailsCard.scss';
 
 NamespaceDetailsCard.propTypes = {
@@ -87,7 +88,7 @@ export default function NamespaceDetailsCard({
   };
 
   const popoverBody = (
-    <Menu>
+    <Menu className="namespace-action-list">
       <Menu.List>
         <Menu.Item
           onClick={e => {
@@ -132,8 +133,9 @@ export default function NamespaceDetailsCard({
         <Popover
           body={popoverBody}
           control={popoverControl}
-          placement="right"
+          placement="bottom-end"
           noArrow
+          widthSizingType="maxTarget"
           disabled={isTerminating}
         />
       </Panel.Header>

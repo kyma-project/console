@@ -20,6 +20,13 @@
     }
 }
 
+.fd-popover__popper {
+    .fd-menu.namespace-action-list {
+        width: auto;
+        max-width: 100%;
+    }
+}
+
 .namespace-details-card--terminating {
     pointer-events: none;
 
