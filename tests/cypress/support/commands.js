@@ -1,6 +1,4 @@
-Cypress.Commands.overwrite('log', (subject, message) =>
-  cy.task('log', message),
-);
+Cypress.Commands.overwrite('log', (_, message) => cy.task('log', message));
 
 Cypress.Commands.add(
   'getIframeBody',

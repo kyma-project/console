@@ -2,8 +2,7 @@
   "name": "ui-tests",
   "description": "Smoke tests for Console",
   "scripts": {
-    "test": "$(npm bin)/cypress run -s cypress/integration/console-smoke-tests.spec.js",
-    "test:cluster": "$(npm bin)/cypress run -s cypress/integration/console-smoke-tests.spec.js",
+    "test:cluster": "$(npm bin)/cypress run -s cypress/integration/console-smoke-tests.spec.js --browser chrome --headless",
     "start": "CYPRESS_PASSWORD= CYPRESS_DOMAIN= $(npm bin)/cypress open"
   },
   "devDependencies": {

@@ -1,7 +1,7 @@
 /// <reference types="cypress" />
 import config from '../../config';
 
-export const ADDRESS = `${
+const ADDRESS = `${
   config.localDev ? 'http://console-dev' : 'https://console'
 }.${config.domain}${config.localDev ? ':4200' : ''}`;
 
@@ -10,18 +10,20 @@ context('Console Smoke Tests', () => {
     cy.window().then(win => win.sessionStorage.clear());
     cy.clearLocalStorage();
 
-    cy.visit(ADDRESS);
-    cy.get('#login').type(config.login);
-    cy.get('#password').type(config.password);
-    cy.get('#submit-login').click();
+    cy.visit(ADDRESS)
+      .get('#login')
+      .type(config.login)
+      .get('#password')
+      .type(config.password)
+      .get('#submit-login')
+      .click();
   });
 
   beforeEach(() => {
-    cy.wait(2000);
     // return to main view
-    cy.visit(ADDRESS + '/home/workspace');
-    // wait until all the pushStates calm down
-    cy.wait(1000);
+    cy.visit(ADDRESS + '/home/workspace')
+      // wait for all pushStates to calm down
+      .wait(3000);
   });
 
   it('Renders navigation nodes', () => {
@@ -36,9 +38,9 @@ context('Console Smoke Tests', () => {
     cy.getIframeBody().then(result => {
       cy.wrap(result)
         .contains(config.DEFAULT_NAMESPACE_NAME)
-        .click();
-      cy.wrap(result)
-        .contains('Connected Applications')
+        .click()
+        .get('body')
+        .contains('Namespaces')
         .should('exist');
     });
   });
@@ -48,55 +50,75 @@ context('Console Smoke Tests', () => {
     cy.getIframeBody().then(result => {
       cy.wrap(result)
         .contains(config.DEFAULT_NAMESPACE_NAME)
-        .click();
-      cy.contains('Operation').click();
-      cy.contains('Deployments').click();
-
-      cy.getIframeBody().then(result => {
-        cy.wrap(result)
-          .contains('Deployments')
-          .should('exist');
-      });
+        .click()
+        .get('body')
+        .contains('Operation')
+        .click()
+        .get('body')
+        .contains('Deployments')
+        .click()
+        .getIframeBody()
+        .then(result => {
+          cy.wrap(result)
+            .contains('Deployments')
+            .should('exist');
+        });
     });
   });
 
   it('Renders cluster addons', () => {
     cy.title().then(cy.log);
-    cy.contains('Integration').click();
-    cy.contains('Cluster Addons').click();
-    cy.getIframeBody().then(result => {
-      cy.wrap(result)
-        .contains('Cluster Addons Configuration')
-        .should('exist');
-    });
-  });
-
-  it('Renders logging', () => {
-    cy.title().then(cy.log);
-    cy.contains('Diagnostics').click();
-    cy.contains('Logs').click();
-    cy.getIframeBody().then(result => {
-      cy.wrap(result)
-        .contains('Logs')
-        .should('exist');
-    });
-  });
-
-  it('Renders catalog', () => {
-    cy.title().then(cy.log);
-    // todo make awaitable?
-    cy.getIframeBody().then(result => {
-      cy.wrap(result)
-        .contains(config.DEFAULT_NAMESPACE_NAME)
-        .click();
-      cy.contains('Service Management').click();
-      cy.contains('Catalog').click();
-
-      cy.getIframeBody().then(result => {
+    cy.contains('Integration')
+      .click()
+      .get('body')
+      .contains('Cluster Addons')
+      .click()
+      .getIframeBody()
+      .then(result => {
         cy.wrap(result)
-          .contains('Service Catalog')
+          .contains('Cluster Addons Configuration')
           .should('exist');
       });
-    });
   });
+
+  if (config.loggingEnabled) {
+    it('Renders logging', () => {
+      cy.title().then(cy.log);
+      cy.contains('Diagnostics')
+        .click()
+        .get('body')
+        .contains('Logs')
+        .click()
+        .getIframeBody()
+        .then(result => {
+          cy.wrap(result)
+            .contains('Logs')
+            .should('exist');
+        });
+    });
+  }
+
+  if (config.serviceCatalogEnabled) {
+    it('Renders catalog', () => {
+      cy.title().then(cy.log);
+      // todo make awaitable?
+      cy.getIframeBody().then(result => {
+        cy.wrap(result)
+          .contains(config.DEFAULT_NAMESPACE_NAME)
+          .click()
+          .get('body')
+          .contains('Service Management')
+          .click()
+          .get('body')
+          .contains('Catalog')
+          .click()
+          .getIframeBody()
+          .then(result => {
+            cy.wrap(result)
+              .contains('Service Catalog')
+              .should('exist');
+          });
+      });
+    });
+  }
 });
