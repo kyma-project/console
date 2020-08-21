@@ -1,84 +1,25 @@
 Cypress.Commands.overwrite('log', (_, message) => cy.task('log', message));
 
-Cypress.Commands.add(
-  'getIframeBody',
-  (getIframeOpts = {}, index = 0, containerSelector = '.iframeContainer') => {
+Cypress.Commands.add('handleLoginMethod', $elem => {
+  const singleLoginClass = '.dex-btn-icon--local';
+  const singleLoginButton = Cypress.$(singleLoginClass);
+  if (singleLoginButton.length !== 0) {
+    cy.log('Multiple login methods detected, choosing the email method...');
     return cy
-      .get(`${containerSelector} iframe`, getIframeOpts)
-      .eq(index)
-      .iframe();
-  },
-);
-
-Cypress.Commands.add('iframe', { prevSubject: 'element' }, $iframe => {
-  Cypress.log({
-    name: 'iframe',
-    consoleProps() {
-      return {
-        iframe: $iframe,
-      };
-    },
-  });
-  return new Cypress.Promise(resolve => {
-    onIframeReady(
-      $iframe,
-      () => {
-        resolve($iframe.contents().find('body'));
-      },
-      () => {
-        $iframe.on('load', () => {
-          resolve($iframe.contents().find('body'));
-        });
-      },
-    );
-  });
+      .wrap($elem)
+      .get(singleLoginClass)
+      .click()
+      .get('body');
+  } else {
+    cy.log('One login method detected, trying to login using email...');
+    return cy.wrap($elem).get('body');
+  }
 });
 
-function onIframeReady($iframe, successFn, errorFn) {
-  try {
-    const iCon = $iframe.first()[0].contentWindow,
-      bl = 'about:blank',
-      compl = 'complete';
-    const callCallback = () => {
-      try {
-        const $con = $iframe.contents();
-        if ($con.length === 0) {
-          // https://git.io/vV8yU
-          throw new Error('iframe inaccessible');
-        }
-        successFn($con);
-      } catch (e) {
-        // accessing contents failed
-        errorFn();
-      }
-    };
-    const observeOnload = () => {
-      $iframe.on('load.jqueryMark', () => {
-        try {
-          const src = $iframe.attr('src').trim(),
-            href = iCon.location.href;
-          if (href !== bl || src === bl || src === '') {
-            $iframe.off('load.jqueryMark');
-            callCallback();
-          }
-        } catch (e) {
-          errorFn();
-        }
-      });
-    };
-    if (iCon.document.readyState === compl) {
-      const src = $iframe.attr('src').trim(),
-        href = iCon.location.href;
-      if (href === bl && src !== bl && src !== '') {
-        observeOnload();
-      } else {
-        callCallback();
-      }
-    } else {
-      observeOnload();
-    }
-  } catch (e) {
-    // accessing contentWindow failed
-    errorFn();
+Cypress.Commands.add('handleInvalidLoginData', $elem => {
+  const loginErrorAlert = Cypress.$('#login-error');
+  if (loginErrorAlert.length !== 0) {
+    throw Error(`Login failed with message: ${loginErrorAlert.text()}`);
   }
-}
+  return cy.wrap($elem);
+});

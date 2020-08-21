@@ -11,12 +11,14 @@ context('Console Smoke Tests', () => {
     cy.clearLocalStorage();
 
     cy.visit(ADDRESS)
+      .handleLoginMethod()
       .get('#login')
       .type(config.login)
       .get('#password')
       .type(config.password)
       .get('#submit-login')
-      .click();
+      .click()
+      .handleInvalidLoginData();
   });
 
   beforeEach(() => {
