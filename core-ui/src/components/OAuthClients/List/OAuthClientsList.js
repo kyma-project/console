@@ -83,7 +83,7 @@ export default function OAuthClientsList({ namespace }) {
         className="link"
         onClick={() => LuigiClient.linkManager().navigate(OAUTH_DOC_URL)}
       >
-        documentation
+        the documentation
       </span>
       {' to find out more.'}
     </span>
