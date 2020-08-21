@@ -1,6 +1,6 @@
 FROM cypress/browsers:chrome65-ff57
 
-USER root
+# USER root
 WORKDIR /usr/src/app
 
 COPY package*.json ./
