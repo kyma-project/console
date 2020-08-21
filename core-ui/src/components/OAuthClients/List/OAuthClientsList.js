@@ -78,7 +78,7 @@ export default function OAuthClientsList({ namespace }) {
 
   const description = (
     <span>
-      {'See "OAuth2 and OpenID Connect server" section in '}
+      {'See the "OAuth2 and OpenID Connect server" section in '}
       <span
         className="link"
         onClick={() => LuigiClient.linkManager().navigate(OAUTH_DOC_URL)}
