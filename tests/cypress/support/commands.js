@@ -1,6 +1,6 @@
 Cypress.Commands.overwrite('log', (_, message) => cy.task('log', message));
 
-Cypress.Commands.add('handleLoginMethod', $elem => {
+Cypress.Commands.add('chooseLoginMethod', $elem => {
   const singleLoginClass = '.dex-btn-icon--local';
   const singleLoginButton = Cypress.$(singleLoginClass);
   if (singleLoginButton.length !== 0) {
