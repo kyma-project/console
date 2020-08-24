@@ -23,7 +23,7 @@ const jsCodeAndDeps = {
 const defaultCodeAndDeps = {
   nodejs10: { ...jsCodeAndDeps },
   nodejs12: { ...jsCodeAndDeps },
-  python37: {
+  python38: {
     code: `def main(event, context):
     return "Hello World"`,
     deps: '',

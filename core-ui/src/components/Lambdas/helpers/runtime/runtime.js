@@ -4,18 +4,18 @@ import { formatMessage } from 'components/Lambdas/helpers/misc';
 import {
   PRETTY_RUNTIME_NODEJS10_NAME,
   PRETTY_RUNTIME_NODEJS12_NAME,
-  PRETTY_RUNTIME_PYTHON37_NAME,
+  PRETTY_RUNTIME_PYTHON38_NAME,
 } from '../../constants';
 
 export const nodejs12 = 'nodejs12';
 export const nodejs10 = 'nodejs10';
-export const python37 = 'python37';
+export const python38 = 'python38';
 
 export const functionAvailableLanguages = {
   // order of those keys is the same as order of available runtimes shown in Create Lambda Modal
   [nodejs12]: PRETTY_RUNTIME_NODEJS12_NAME,
   [nodejs10]: PRETTY_RUNTIME_NODEJS10_NAME,
-  [python37]: PRETTY_RUNTIME_PYTHON37_NAME,
+  [python38]: PRETTY_RUNTIME_PYTHON38_NAME,
 };
 
 export const prettyRuntime = runtime =>
@@ -23,7 +23,7 @@ export const prettyRuntime = runtime =>
 
 export const runtimeToMonacoEditorLang = runtime => {
   switch (runtime) {
-    case python37:
+    case python38:
       return {
         language: 'python',
         dependencies: 'plaintext',
@@ -44,8 +44,8 @@ export const runtimeToMonacoEditorLang = runtime => {
 
 export const getDefaultDependencies = (name, runtime) => {
   switch (runtime) {
-    case python37:
-      return CONFIG.defaultLambdaCodeAndDeps.python37.deps;
+    case 8:
+      return CONFIG.defaultLambdaCodeAndDeps.python38.deps;
     case nodejs12:
     case nodejs10:
       return !name
