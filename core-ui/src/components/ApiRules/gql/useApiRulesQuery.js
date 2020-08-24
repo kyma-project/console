@@ -22,6 +22,10 @@ export const useApiRulesQuery = ({ namespace, serviceName = undefined }) => {
   const [apiRules, setApiRules] = useStateWithCallback([]);
   const apolloClient = useApolloClient();
 
+  useEffect(() => {
+    setLoadedData(false);
+  }, [namespace]);
+
   function processQueue(event, done) {
     const newApiRules = handleSubscriptionEvent(
       {
