@@ -7,8 +7,8 @@ import {
   toBoolean,
   leftNavLinkSelector,
   clearExpandedCategories,
-} from '../helpers';
-import config from '../config';
+} from './helpers';
+import config from './config';
 
 fixture`Console UI Smoke tests`.beforeEach(async t => {
   clearExpandedCategories();

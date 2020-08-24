@@ -1,9 +1,9 @@
 /// <reference types="cypress" />
-import config from '../../config';
+import config from '../config';
 
 const ADDRESS = config.localDev
-  ? `https://console.${config.domain}`
-  : `http://console-dev.${config.domain}:4200`;
+  ? `http://console-dev.${config.domain}:4200`
+  : `https://console.${config.domain}`;
 
 context('Console Smoke Tests', () => {
   before(() => {

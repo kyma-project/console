@@ -1,5 +1,10 @@
 {
   "chromeWebSecurity": false,
   "video": false,
-  "defaultCommandTimeout": 10000
+  "defaultCommandTimeout": 10000,
+
+  "integrationFolder": "tests",
+  "pluginsFile": "plugins/index.js",
+  "supportFile": "support/index.js",
+  "fixturesFolder": false
 }
