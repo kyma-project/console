@@ -7,8 +7,7 @@ const ADDRESS = config.localDev
 
 context('Console Smoke Tests', () => {
   before(() => {
-    cy.window().then(win => win.sessionStorage.clear());
-    cy.clearLocalStorage();
+    cy.clearSessionStorage().clearLocalStorage();
 
     cy.visit(ADDRESS)
       .chooseLoginMethod()
@@ -69,6 +68,19 @@ context('Console Smoke Tests', () => {
       .should('exist');
   });
 
+  if (!config.disableLegacyConnectivity || true) {
+    it('Renders applications', () => {
+      cy.contains('Integration')
+        .click()
+        .get('body')
+        .contains('Applications/Systems')
+        .click()
+        .getIframeBody()
+        .contains('Applications/Systems')
+        .should('exist');
+    });
+  }
+
   if (config.loggingEnabled) {
     it('Renders logging', () => {
       cy.contains('Diagnostics')
@@ -83,19 +95,32 @@ context('Console Smoke Tests', () => {
   }
 
   if (config.serviceCatalogEnabled) {
-    it('Renders catalog', () => {
+    it('Renders service catalog', () => {
       cy.getIframeBody()
         .contains(config.DEFAULT_NAMESPACE_NAME)
         .click()
         .get('body')
         .contains('Service Management')
         .click()
+        // catalog
         .get('body')
         .contains('Catalog')
         .click()
         .getIframeBody()
         .contains('Service Catalog')
-        .should('exist');
+        .should('exist')
+        // instances
+        .get('body')
+        .contains('Instances')
+        .click()
+        .getIframeBody()
+        .contains('Service Instances')
+        // brokers
+        .get('body')
+        .contains('Brokers')
+        .click()
+        .getIframeBody()
+        .contains('Service Brokers');
     });
   }
 
@@ -115,4 +140,31 @@ context('Console Smoke Tests', () => {
         .should('exist');
     });
   }
+
+  if (config.loggingEnabled) {
+    it('Renders logs', () => {
+      cy.contains('Diagnostics')
+        .click()
+        .get('body')
+        .contains('Logs')
+        .click()
+        .getIframeBody()
+        .contains('Logs')
+        .should('exist');
+    });
+  }
+
+  it('Renders docs', () => {
+    cy.get('[data-testid="mobile-menu"]')
+      .click()
+      .get('body')
+      .get('a[data-testid="docs_docs"]')
+      .click({ force: true }) // force, as contaier may still be `visibility: hidden`
+      .getIframeBody()
+      .contains('Kyma')
+      .should('exist') // check title
+      .getIframeBody()
+      .contains('In a nutshell')
+      .should('exist'); // check docs rendering
+  });
 });

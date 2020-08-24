@@ -1,5 +1,9 @@
 Cypress.Commands.overwrite('log', (_, message) => cy.task('log', message));
 
+Cypress.Commands.add('clearSessionStorage', () =>
+  cy.window().then(win => win.sessionStorage.clear()),
+);
+
 Cypress.Commands.add('chooseLoginMethod', $elem => {
   const singleLoginClass = '.dex-btn-icon--local';
   const singleLoginButton = Cypress.$(singleLoginClass);
