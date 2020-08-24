@@ -3,7 +3,9 @@ import { ClientFunction, Selector, Role } from 'testcafe';
 import chalk from 'chalk';
 
 const getLocation = ClientFunction(() => window.location.pathname);
-export const reloadPage = ClientFunction(() => window.location.reload(true));
+export const reloadPage = ClientFunction(() => {
+  window.location.reload(true);
+});
 
 export async function expectPathnameToBe(t, pathname) {
   return await retry(
