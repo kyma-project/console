@@ -44,7 +44,7 @@ export const runtimeToMonacoEditorLang = runtime => {
 
 export const getDefaultDependencies = (name, runtime) => {
   switch (runtime) {
-    case 8:
+    case python38:
       return CONFIG.defaultLambdaCodeAndDeps.python38.deps;
     case nodejs12:
     case nodejs10:
