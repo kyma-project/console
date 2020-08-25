@@ -68,4 +68,17 @@ describe('ServicesDropdown', () => {
     );
     expect(getAllByLabelText('option')).toMatchSnapshot();
   });
+
+  it('Show message if there are no services', async () => {
+    const { getByText } = render(
+      <ServicesDropdown
+        _ref={ref}
+        loading={false}
+        data={{
+          services: [],
+        }}
+      />,
+    );
+    expect(getByText('No services in this namespace')).toBeInTheDocument();
+  });
 });

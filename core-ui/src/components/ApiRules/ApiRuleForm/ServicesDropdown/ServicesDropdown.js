@@ -24,12 +24,9 @@ const ServicesDropdown = ({
     ? `${defaultValue.name}:${defaultValue.port}`
     : null;
 
-  const getServices = () => {
-    if (serviceName) {
-      return data.services.filter(s => s.name === serviceName);
-    }
-    return data.services;
-  };
+  const services = serviceName
+    ? data.services.filter(s => s.name === serviceName)
+    : data.services;
 
   return (
     <FormItem>
@@ -38,18 +35,23 @@ const ServicesDropdown = ({
         ref={_ref}
         id="service"
         role="select"
+        required
         defaultValue={defaultService}
       >
-        {getServices().map(service =>
-          service.ports.map(port => (
-            <option
-              aria-label="option"
-              key={service.name + port.port}
-              value={`${service.name}:${port.port}`}
-            >
-              {service.name} (port: {port.port})
-            </option>
-          )),
+        {services.length ? (
+          services.map(service =>
+            service.ports.map(port => (
+              <option
+                aria-label="option"
+                key={service.name + port.port}
+                value={`${service.name}:${port.port}`}
+              >
+                {service.name} (port: {port.port})
+              </option>
+            )),
+          )
+        ) : (
+          <option disabled>No services in this namespace</option>
         )}
       </FormSelect>
     </FormItem>
