@@ -5,13 +5,12 @@ Cypress.Commands.add('clearSessionStorage', () =>
 );
 
 Cypress.Commands.add('chooseLoginMethod', $elem => {
-  const singleLoginClass = '.dex-btn-icon--local';
-  const singleLoginButton = Cypress.$(singleLoginClass);
-  if (singleLoginButton.length !== 0) {
+  const loginButtonn = Cypress.$('#login');
+  if (loginButtonn.length === 0) {
     cy.log('Multiple login methods detected, choosing the email method...');
     return cy
       .wrap($elem)
-      .get(singleLoginClass)
+      .contains('Log in with Email')
       .click()
       .get('body');
   } else {
