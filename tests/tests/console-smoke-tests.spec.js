@@ -59,14 +59,18 @@ context('Console Smoke Tests', () => {
       .should('exist');
   });
 
-  it('Renders cluster addons', () => {
-    cy.contains('Integration')
+  it('Renders addons', () => {
+    cy.getIframeBody()
+      .contains(config.DEFAULT_NAMESPACE_NAME)
       .click()
       .get('body')
-      .contains('Cluster Addons')
+      .contains('Configuration')
+      .click()
+      .get('body')
+      .contains('Addons')
       .click()
       .getIframeBody()
-      .contains('Cluster Addons Configuration')
+      .contains('Addons Configuration')
       .should('exist');
   });
 
