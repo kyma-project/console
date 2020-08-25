@@ -5,8 +5,8 @@ Cypress.Commands.add('clearSessionStorage', () =>
 );
 
 Cypress.Commands.add('chooseLoginMethod', $elem => {
-  const loginButtonn = Cypress.$('#login');
-  if (loginButtonn.length === 0) {
+  const loginButton = Cypress.$('#submit-login');
+  if (loginButton.length === 0) {
     cy.log('Multiple login methods detected, choosing the email method...');
     return cy
       .wrap($elem)
@@ -19,10 +19,10 @@ Cypress.Commands.add('chooseLoginMethod', $elem => {
   }
 });
 
-Cypress.Commands.add('handleInvalidLoginData', $elem => {
+Cypress.Commands.add('handleInvalidLoginData', () => {
   const loginErrorAlert = Cypress.$('#login-error');
   if (loginErrorAlert.length !== 0) {
     throw Error(`Login failed with message: ${loginErrorAlert.text()}`);
   }
-  return cy.wrap($elem);
+  return cy.end();
 });

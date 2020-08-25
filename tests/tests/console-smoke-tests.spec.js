@@ -10,6 +10,7 @@ context('Console Smoke Tests', () => {
     cy.clearSessionStorage().clearLocalStorage();
 
     cy.visit(ADDRESS)
+      .wait(5000) // wait for redirect, as chooseLoginMethod is synchronous
       .chooseLoginMethod()
       .get('#login')
       .type(config.login)
@@ -22,7 +23,8 @@ context('Console Smoke Tests', () => {
 
   beforeEach(() => {
     // return to main view
-    cy.visit(ADDRESS + '/home/workspace')
+    cy.wait(1000)
+      .visit(ADDRESS + '/home/workspace')
       // wait for all pushStates to calm down
       .wait(3000);
   });
