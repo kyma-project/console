@@ -49,6 +49,10 @@ body {
 .link {
   color: var(--fd-color-action-1);
   cursor: pointer;
+  
+  &.no-border {
+    border:none;
+  }
 }
 
 .fd-panel.fd-panel--no-background {

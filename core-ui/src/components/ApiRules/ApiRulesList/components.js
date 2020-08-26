@@ -7,7 +7,6 @@ import { CopiableLink } from 'react-shared';
 import AccessStrategies from 'components/ApiRules/AccessStrategies/AccessStrategies';
 import { getApiRuleUrl } from 'components/ApiRules/helpers';
 
-import './ApiRuleList.scss';
 function goToApiRuleDetails(apiRule) {
   LuigiClient.linkManager()
     .fromContext('namespaces')
