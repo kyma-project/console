@@ -1,6 +1,5 @@
-FROM cypress/browsers:chrome65-ff57
+FROM cypress/browsers:node12.18.0-chrome83-ff77
 
-# USER root
 WORKDIR /usr/src/app
 
 COPY package*.json ./
