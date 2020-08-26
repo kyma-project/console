@@ -7,6 +7,7 @@ import { CopiableLink } from 'react-shared';
 import AccessStrategies from 'components/ApiRules/AccessStrategies/AccessStrategies';
 import { getApiRuleUrl } from 'components/ApiRules/helpers';
 
+import './ApiRuleList.scss';
 function goToApiRuleDetails(apiRule) {
   LuigiClient.linkManager()
     .fromContext('namespaces')
@@ -34,7 +35,10 @@ export function CopiableApiRuleHost({ apiRule }) {
 export function ApiRuleServiceInfo({ apiRule, withName = true }) {
   if (withName) {
     return (
-      <Link className="link" onClick={() => navigateToService(apiRule)}>
+      <Link
+        className="link no-border"
+        onClick={() => navigateToService(apiRule)}
+      >
         {`${apiRule.spec.service.name} (port: ${apiRule.spec.service.port})`}
       </Link>
     );

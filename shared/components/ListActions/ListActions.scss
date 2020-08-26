@@ -1,5 +1,6 @@
 .list-actions {
   float: right;
+  display: flex;
   &__standalone:not(:last-child) {
     margin-right: 4px;
   }
