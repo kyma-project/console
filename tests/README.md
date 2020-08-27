@@ -16,7 +16,7 @@ To run UI tests inside a container in the cluster using a Chrome browser, use th
 npm run test:cluster
 ```
 
-To run UI tests during development against a cluster, use this command:
+To run UI tests on a cluster, use this command:
 
 ``` bash
 CYPRESS_DOMAIN=<your domain> CYPRESS_PASSWORD=<your cluster password> npm start
