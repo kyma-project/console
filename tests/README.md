@@ -10,26 +10,14 @@ To install dependencies, run the `npm install` command.
 
 ## Development
 
-To run UI tests inside a container in the cluster using a Chromium browser, use this command:
+To run UI tests inside a container in the cluster using a Chrome browser, use this command:
 
 ``` bash
 npm run test:cluster
 ```
 
-To run UI tests inside a container in the cluster using a Firefox browser, use this command:
+To run UI tests during development against a cluster, use this command:
 
 ``` bash
-npm run test:cluster_firefox
-```
-
-To run UI tests during development against `http://console-dev.kyma.local:4200`, use this command:
-
-``` bash
-npm run test
-```
-
-To run UI tests during development against `http://console-dev.kyma.local:4200` using a headless browser, use this command:
-
-``` bash
-npm run test:headless
+CYPRESS_DOMAIN=<your domain> CYPRESS_PASSWORD=<your cluster password> npm start
 ```

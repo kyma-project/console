@@ -3,10 +3,9 @@
   "description": "Smoke tests for Console",
   "scripts": {
     "test:cluster": "$(npm bin)/cypress run --browser chrome --headless",
-    "start": "CYPRESS_PASSWORD= CYPRESS_DOMAIN= $(npm bin)/cypress open"
+    "start": "$(npm bin)/cypress open"
   },
   "devDependencies": {
-    "cypress": "^4.12.1",
-    "testcafe": "v1.8.5-alpha.1"
+    "cypress": "^4.12.1"
   }
 }
