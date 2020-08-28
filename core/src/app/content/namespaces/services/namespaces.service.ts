@@ -1,104 +1,70 @@
-import { AppConfig } from '../../../app.config';
 import { Injectable, EventEmitter } from '@angular/core';
 import { NamespaceInfo } from '../namespace-info';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import * as _ from 'lodash';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { GraphQLClientService } from '../../../shared/services/graphql-client-service';
-import LuigiClient from '@luigi-project/client';
 
 @Injectable()
 export class NamespacesService {
   public namespaceChangeStateEmitter$: EventEmitter<boolean>;
 
+  private readonly namespacesQuery = `query Namespace($showSystemNamespaces: Boolean) {
+    namespaces(withSystemNamespaces: $showSystemNamespaces, withInactiveStatus: true){
+      name
+    }
+  }`;
+
   constructor(
-    private http: HttpClient,
     private graphQLClientService: GraphQLClientService
   ) {
     this.namespaceChangeStateEmitter$ = new EventEmitter();
   }
 
-  public getNamespaces(): Observable<NamespaceInfo[]> {
-    return this.http
-      .get<any>(AppConfig.k8sApiServerUrl + 'namespaces')
-      .pipe(
-        map(
-          response => {
-            const namespaces: NamespaceInfo[] = [];
-
-            if (response.items) {
-              response.items.forEach(namespace => {
-                if (namespace.status.phase === 'Active') {
-                  namespaces.push(
-                    new NamespaceInfo(
-                      namespace.metadata
-                    )
-                  );
-                }
-              });
-            }
-            return namespaces;
-          },
-          err => console.log(err)
-        )
-      );
-  }
-
   public getFilteredNamespaces(): Observable<NamespaceInfo[]> {
-    if (localStorage.getItem('console.showSystemNamespaces')) {
-      const showSystemNamespaces = localStorage.getItem('console.showSystemNamespaces') === 'true';
-      if (showSystemNamespaces) {
-        return this.getNamespaces();
-      }
-    }
-
-    let systemNamespaces = [];
-    LuigiClient.addInitListener((eventData) => {
-      systemNamespaces = eventData.systemNamespaces;
-    });
-    return this.http
-      .get<any>(AppConfig.k8sApiServerUrl + 'namespaces')
-      .pipe(
-        map(
-          response => {
-            const namespaces: NamespaceInfo[] = [];
-
-            if (response.items) {
-              response.items.forEach(namespace => {
-                const isSystemNamespace = systemNamespaces.some((systemNamespace) => {
-                  return systemNamespace === namespace.metadata.name;
-                });
-                if (namespace.status.phase === 'Active' && !isSystemNamespace) {
-                  namespaces.push(
-                    new NamespaceInfo(
-                      namespace.metadata
-                    )
-                  );
-                }
-              });
-            }
-            return namespaces;
-          },
-          err => console.log(err)
-        )
-      );
+    const showSystemNamespaces = localStorage.getItem('console.showSystemNamespaces') === 'true';
+    return this.graphQLClientService.gqlQuery(this.namespacesQuery, { withSystemNamespaces: showSystemNamespaces }).pipe(map(response => {
+      return response.namespaces.map(namespace => new NamespaceInfo({
+        name: namespace.name,
+        uid: namespace.id,
+        labels: namespace.labels,
+      }))
+    }, err => console.log(err)));
   }
 
   public getNamespace(id: string): Observable<NamespaceInfo> {
-    return this.http
-      .get<any>(AppConfig.k8sApiServerUrl + 'namespaces/' + id)
-      .pipe(
-        map(response => {
-          if (!_.isEmpty(response.metadata)) {
-            return new NamespaceInfo(
-              response.metadata
-            );
+    const query = `query Namespace($name: String!) {
+      namespace(name: $name) {
+        name
+        labels
+        applications
+        pods {
+          name
+          status
+        }
+        deployments {
+          name
+          status {
+            replicas
+            readyReplicas
           }
-          return response;
-        })
-      );
+        }
+      }
+    }`;
+
+    return this.graphQLClientService.gqlQuery(query, { name: id }).pipe(map(response => {
+      const { namespace } = response;
+      if (namespace) {
+        const metadata = {
+          name: namespace.name,
+          uid: namespace.id,
+          labels: namespace.labels,
+        };
+        return new NamespaceInfo(metadata);
+      }
+      return null;
+    }));
   }
 
   public createNamespace(name: string, labels: object) {

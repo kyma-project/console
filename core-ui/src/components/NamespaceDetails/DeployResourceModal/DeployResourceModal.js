@@ -1,21 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import {
-  FileInput,
-  Modal,
-  useMicrofrontendContext,
-  useConfig,
-} from 'react-shared';
+import { FileInput, Modal } from 'react-shared';
 import { Button } from 'fundamental-react';
 import { useNotification } from 'react-shared';
 import { parseFile, getResourceUrl } from './deployResourceHelpers';
+import { useMutation } from 'react-apollo';
+import { CREATE_RESOURCE } from 'gql/mutations';
 
-DeployResourceModal.propTypes = { name: PropTypes.string.isRequired };
+DeployResourceModal.propTypes = { namespace: PropTypes.string.isRequired };
 
-export default function DeployResourceModal({ name }) {
-  const { idToken } = useMicrofrontendContext();
-  const { fromConfig } = useConfig();
+export default function DeployResourceModal({ namespace }) {
+  const [createResource] = useMutation(CREATE_RESOURCE);
+
   const notification = useNotification();
   const [error, setError] = React.useState(null);
   const [contents, setContents] = React.useState(null);
@@ -27,25 +24,18 @@ export default function DeployResourceModal({ name }) {
   };
 
   const deployResource = async () => {
-    const promises = contents.map(async content => {
-      const url = getResourceUrl(
-        fromConfig('domain'),
-        content.kind,
-        content.apiVersion,
-        name,
-      );
-      const res = await fetch(url, {
-        method: 'POST',
-        body: JSON.stringify(content),
-        headers: {
-          Authorization: `Bearer ${idToken}`,
-          'Content-Type': 'application/json',
+    const promises = contents.map(content => {
+      // add "metadata.namespace", as it's required for RBAC
+      if (!content.metadata.namespace) {
+        content.metadata.namespace = namespace;
+      }
+
+      return createResource({
+        variables: {
+          namespace: namespace,
+          resource: content,
         },
       });
-      if (!res.ok) {
-        const { message } = await res.json();
-        throw Error(message);
-      }
     });
 
     const results = await Promise.allSettled(promises);

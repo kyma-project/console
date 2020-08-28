@@ -3,7 +3,7 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { forkJoin, Observable, Subscription } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { CurrentNamespaceService } from '../../../../content/namespaces/services/current-namespace.service';
-import { AppConfig } from '../../../../app.config';
+import { GraphQLClientService } from 'shared/services/graphql-client-service';
 
 import * as _ from 'lodash';
 import * as YAML from 'js-yaml';
@@ -13,8 +13,13 @@ export class ResourceUploadService implements OnDestroy {
   private currentNamespaceId: string;
   private currentNamespaceSubscription: Subscription;
 
+  private readonly mutation = `mutation  createResource($namespace: String!, $resource: JSON!) {
+    createResource(namespace: $namespace, resource: $resource)
+  }`;
+  
   constructor(
     private httpClient: HttpClient,
+    private graphQLClientService: GraphQLClientService,
     private currentNamespaceService: CurrentNamespaceService
   ) {
     this.currentNamespaceSubscription = this.currentNamespaceService
@@ -67,21 +72,6 @@ export class ResourceUploadService implements OnDestroy {
     }
   }
 
-  private getResourceUrl(fileContent) {
-    const resource = fileContent.kind.toLowerCase() + 's';
-
-    switch (fileContent.apiVersion) {
-      case 'v1':
-        return `${AppConfig.k8sApiServerUrl}namespaces/${
-          this.currentNamespaceId
-          }/${resource}`;
-      default:
-        return `${AppConfig.k8sServerUrl}/apis/${
-          fileContent.apiVersion
-          }/namespaces/${this.currentNamespaceId}/${resource}`;
-    }
-  }
-
   private read(file: File) {
     return new Observable(observer => {
       const reader = new FileReader();
@@ -119,38 +109,18 @@ export class ResourceUploadService implements OnDestroy {
     });
   }
 
-  public upload(url: string, fileContents: string[]) {
-    const token = LuigiClient.getEventData().idToken;
-    const observables = [];
-
-    _.each(fileContents, c => {
-      observables.push(
-        this.httpClient.post(url, c, {
-          headers: new HttpHeaders()
-            .set('Authorization', `Bearer ${token}`)
-            .set('Content-Type', 'application/json')
-        })
-      );
-    });
-
-    return forkJoin(observables);
-  }
-
-  public uploadWorkaround(fileContents: string[]) {
-    const token = LuigiClient.getEventData().idToken;
-    const observables = [];
-
-    _.each(fileContents, c => {
-      const url = this.getResourceUrl(c);
-      observables.push(
-        this.httpClient.post(url, c, {
-          headers: new HttpHeaders()
-            .set('Authorization', `Bearer ${token}`)
-            .set('Content-Type', 'application/json')
-        })
-      );
-    });
-
+  public upload(fileContents: any[]) {
+    const observables = fileContents.map(content => {
+      // add "metadata.namespace", as it's required for RBAC
+      if (!content.metadata.namespace) {
+        content.metadata.namespace = this.currentNamespaceId;
+      }
+      const variables = {
+        namespace: this.currentNamespaceId,
+        resource: content,
+      };
+      return this.graphQLClientService.gqlMutation(this.mutation, variables)
+    })
     return forkJoin(observables);
   }
 }

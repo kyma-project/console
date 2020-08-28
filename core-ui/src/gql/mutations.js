@@ -269,3 +269,9 @@ export const CREATE_OAUTH_CLIENT = gql`
     }
   }
 `;
+
+export const CREATE_RESOURCE = gql`
+  mutation createResource($namespace: String!, $resource: JSON!) {
+    createResource(namespace: $namespace, resource: $resource)
+  }
+`;

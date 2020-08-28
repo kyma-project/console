@@ -6,8 +6,9 @@ import {
   wait,
 } from '@testing-library/react';
 import DeployResourceModal from '../DeployResourceModal';
-import { ConfigContext } from 'react-shared';
 import * as helpers from '../deployResourceHelpers';
+import { namespace, successRequestMock, failureRequestMock } from './mocks';
+import { MockedProvider } from '@apollo/react-testing';
 
 const mockNotifySuccess = jest.fn();
 const mockNotifyError = jest.fn();
@@ -29,7 +30,7 @@ describe('DeployResourceModal', () => {
     helpers.parseFile = () => [null, 'some error here'];
 
     const { getByText, getByLabelText, queryByRole } = render(
-      <DeployResourceModal name="ns" />,
+      <DeployResourceModal namespace={namespace} />,
     );
 
     // open modal
@@ -48,15 +49,12 @@ describe('DeployResourceModal', () => {
   });
 
   it('accepts valid file and sends out requests on "Confirm" - all valid responses', async () => {
-    helpers.parseFile = () => [[{ kind: 'test' }], ''];
-    helpers.getResourceUrl = () => 'sample-url';
-    const fetchMock = jest.fn().mockImplementation(() => ({ ok: true }));
-    global.fetch = fetchMock;
+    helpers.parseFile = () => [[{ kind: 'test', metadata: {} }], ''];
 
     const { getByText, getByLabelText, queryByRole } = render(
-      <ConfigContext.Provider value={{ fromConfig: () => '' }}>
-        <DeployResourceModal name="ns" />
-      </ConfigContext.Provider>,
+      <MockedProvider addTypename={false} mocks={[successRequestMock]}>
+        <DeployResourceModal namespace={namespace} />
+      </MockedProvider>,
     );
 
     // open modal
@@ -76,28 +74,27 @@ describe('DeployResourceModal', () => {
     fireEvent.click(submitButton);
 
     await wait(() => {
-      expect(fetchMock).toHaveBeenCalled();
-      expect(fetchMock).toHaveBeenLastCalledWith(
-        'sample-url',
-        expect.anything(),
-      );
+      expect(successRequestMock.result).toHaveBeenCalled();
       expect(mockNotifySuccess).toHaveBeenCalled();
     });
   }, 20000);
 
   it('accepts valid file and sends out requests on "Confirm" - invalid response', async () => {
-    helpers.parseFile = () => [[{ kind: 'test' }, { kind: 'test2' }], ''];
-    helpers.getResourceUrl = () => 'sample-url';
-    const fetchMock = jest
-      .fn()
-      .mockImplementationOnce(() => ({ ok: true }))
-      .mockImplementationOnce(() => ({ ok: false }));
-    global.fetch = fetchMock;
+    helpers.parseFile = () => [
+      [
+        { kind: 'test', metadata: {} },
+        { kind: 'test2', metadata: {} },
+      ],
+      '',
+    ];
 
     const { getByText, getByLabelText } = render(
-      <ConfigContext.Provider value={{ fromConfig: () => '' }}>
-        <DeployResourceModal name="ns" />
-      </ConfigContext.Provider>,
+      <MockedProvider
+        addTypename={false}
+        mocks={[successRequestMock, failureRequestMock]}
+      >
+        <DeployResourceModal namespace={namespace} />
+      </MockedProvider>,
     );
 
     // open modal
@@ -110,6 +107,9 @@ describe('DeployResourceModal', () => {
 
     fireEvent.click(getByText('Deploy'));
 
-    await wait(() => expect(mockNotifyError).toHaveBeenCalled());
+    await wait(() => {
+      expect(successRequestMock.result).toHaveBeenCalled();
+      expect(mockNotifyError).toHaveBeenCalled();
+    });
   }, 20000);
 });

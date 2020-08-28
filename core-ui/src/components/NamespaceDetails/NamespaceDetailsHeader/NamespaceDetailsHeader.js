@@ -26,7 +26,7 @@ export default function NamespaceDetailsHeader({ namespace }) {
 
   const actions = (
     <>
-      <DeployResourceModal name={namespace.name} />
+      <DeployResourceModal namespace={namespace.name} />
       <Button
         option="light"
         type="negative"

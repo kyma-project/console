@@ -1,4 +1,4 @@
-import { getResourceUrl, parseFile } from './../deployResourceHelpers';
+import { parseFile } from './../deployResourceHelpers';
 
 const mockFileReader = returnValue => () => ({
   onload: res => res,
@@ -9,26 +9,6 @@ const mockFileReader = returnValue => () => ({
 });
 
 describe('DeploResource helpers', () => {
-  describe('getResourceUrl', () => {
-    const domain = 'test-domain';
-    const kind = 'test';
-    const namespace = 'test-namespace';
-
-    it('creates url for v1 version', () => {
-      const url = getResourceUrl(domain, kind, 'v1', namespace);
-      expect(url).toBe(
-        'https://apiserver.test-domain/api/v1/namespaces/test-namespace/tests',
-      );
-    });
-
-    it('creates url for non-v1 version', () => {
-      const url = getResourceUrl(domain, kind, 'v0', namespace);
-      expect(url).toBe(
-        'https://apiserver.test-domain/apis/v0/namespaces/test-namespace/tests',
-      );
-    });
-  });
-
   describe('parseFile', () => {
     it('returns error when file is null', async () => {
       const [content, error] = await parseFile(null);

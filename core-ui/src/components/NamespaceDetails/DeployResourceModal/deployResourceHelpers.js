@@ -60,16 +60,3 @@ export async function parseFile(file) {
 
   return [contents, contentError];
 }
-
-export function getResourceUrl(domain, kind, apiVersion, namespace) {
-  const resource = kind.toLowerCase() + 's';
-
-  switch (apiVersion) {
-    case 'v1':
-      const k8sApiServerUrl = `https://apiserver.${domain}/api/v1`;
-      return `${k8sApiServerUrl}/namespaces/${namespace}/${resource}`;
-    default:
-      const k8sServerUrl = `https://apiserver.${domain}`;
-      return `${k8sServerUrl}/apis/${apiVersion}/namespaces/${namespace}/${resource}`;
-  }
-}

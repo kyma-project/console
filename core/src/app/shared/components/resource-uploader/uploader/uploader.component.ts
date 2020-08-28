@@ -19,7 +19,7 @@ export class UploaderComponent {
 
   public upload() {
     return this.ready
-      ? this.resourceUploadService.uploadWorkaround(this.fileContents)
+      ? this.resourceUploadService.upload(this.fileContents)
       : null;
   }
 
