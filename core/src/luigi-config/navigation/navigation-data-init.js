@@ -60,15 +60,10 @@ export let navigation = {
         icon: 'settings',
         label: 'Preferences',
         link: '/home/preferences'
-      },
-      {
-        icon: 'download',
-        label: 'Get Kubeconfig',
-        link: '/home/download-kubeconfig'
-      },
+      }
     ]
   },
-  nodes: new Promise((res) => {
+  nodes: new Promise(res => {
     resolveNavigationNodes = res;
   })
 };
@@ -85,7 +80,10 @@ export function getNavigationData() {
             const modules = res.backendModules;
             const subjectRules = res.selfSubjectRules;
             const cmfs = res.clusterMicroFrontends;
-            kymaVersion = (res.versionInfo && res.versionInfo.kymaVersion) ? `Kyma version: ${res.versionInfo.kymaVersion}` : undefined;
+            kymaVersion =
+              res.versionInfo && res.versionInfo.kymaVersion
+                ? `Kyma version: ${res.versionInfo.kymaVersion}`
+                : undefined;
             setInitValues(
               (modules && modules.map(m => m.name)) || [],
               subjectRules || []
@@ -216,11 +214,13 @@ function getNamespaces() {
       localStorage.getItem('console.showSystemNamespaces') === 'true',
     withInactiveStatus: false
   };
-  return fetchFromGraphQL(GET_NAMESPACES, options, false).then(res => {
-    return createNamespacesList(res.namespaces);
-  }).catch(err => {
-    console.error('Error while fetching namespaces', err);
-  });
+  return fetchFromGraphQL(GET_NAMESPACES, options, false)
+    .then(res => {
+      return createNamespacesList(res.namespaces);
+    })
+    .catch(err => {
+      console.error('Error while fetching namespaces', err);
+    });
 }
 
 function fetchFromGraphQL(query, variables, gracefully) {
@@ -304,7 +304,7 @@ const getMicrofrontends = async namespace => {
   const cache = window[cacheName];
   const cacheKey = segmentPrefix + namespace;
   const fromCache = cache[cacheKey];
-  const groups = getGroups(getToken())
+  const groups = getGroups(getToken());
 
   return (
     fromCache ||
