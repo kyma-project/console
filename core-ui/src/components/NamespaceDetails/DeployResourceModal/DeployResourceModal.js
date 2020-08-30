@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { FileInput, Modal } from 'react-shared';
 import { Button } from 'fundamental-react';
 import { useNotification } from 'react-shared';
-import { parseFile, getResourceUrl } from './deployResourceHelpers';
+import { parseFile } from './deployResourceHelpers';
 import { useMutation } from 'react-apollo';
 import { CREATE_RESOURCE } from 'gql/mutations';
 
