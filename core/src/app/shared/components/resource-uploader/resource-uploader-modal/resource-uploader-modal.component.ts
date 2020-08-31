@@ -62,17 +62,10 @@ export class ResourceUploaderModalComponent {
           this.infoModal.hide();
         }, 3000);
       },
-      error => {
-        let er = error;
-        if (error.error) {
-          er = error.error;
-        }
-        if (error.error.message) {
-          er = error.error.message;
-        }
+      (error: string) => {
         this.handleModalClose();
 
-        this.infoModal.show('Error', `Cannot create a k8s resource due: ${er}`);
+        this.infoModal.show('Error', `Cannot create a k8s resource due: ${error}`);
         this.okPromise(true);
         console.error(error);
       }
