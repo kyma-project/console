@@ -20,6 +20,7 @@ export const useLambdasQuery = ({ namespace }) => {
   const notificationManager = useNotification();
   const [loadedData, setLoadedData] = useState(false);
   const [lambdas, setLambdas] = useStateWithCallback([]);
+  const [repositories, setRepositories] = useStateWithCallback([]);
   const apolloClient = useApolloClient();
 
   function processQueue(event, done) {
@@ -48,6 +49,7 @@ export const useLambdasQuery = ({ namespace }) => {
   useEffect(() => {
     if (data && data.functions) {
       setLambdas(data.functions);
+      setRepositories(data.gitRepositories);
       setLoadedData(true);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -88,6 +90,7 @@ export const useLambdasQuery = ({ namespace }) => {
 
   return {
     lambdas,
+    repositories,
     error,
     loading,
     loadedData,

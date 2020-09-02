@@ -1,4 +1,3 @@
-import { randomNamesGenerator } from '@kyma-project/common';
 import { LAMBDAS_LIST } from 'components/Lambdas/constants';
 
 export function validateFunctionName(name = '', functionNames = []) {
@@ -20,12 +19,4 @@ export function validateFunctionName(name = '', functionNames = []) {
   }
 
   return '';
-}
-
-export function randomNameGenerator(functionNames = []) {
-  let name = '';
-  do {
-    name = randomNamesGenerator();
-  } while (functionNames.includes(name));
-  return name;
 }

@@ -4,9 +4,13 @@ import LuigiClient from '@luigi-project/client';
 import { GenericList, Labels, StatusBadge } from 'react-shared';
 import { Link } from 'fundamental-react';
 
+import CreateLambdaModal from './CreateLambdaModal';
 import { useDeleteLambda } from 'components/Lambdas/gql/hooks/mutations';
 
-import { statusType } from 'components/Lambdas/helpers/lambdas';
+import {
+  statusType,
+  prettySourceType,
+} from 'components/Lambdas/helpers/lambdas';
 import { formatMessage } from 'components/Lambdas/helpers/misc';
 import { prettyRuntime } from 'components/Lambdas/helpers/runtime';
 import {
@@ -42,15 +46,38 @@ function LambdaStatusBadge({ status }) {
   );
 }
 
-const headerRenderer = () => ['Name', 'Runtime', 'Labels', 'Status'];
-const textSearchProperties = ['name', 'prettyRuntime', 'status.phase'];
+const headerRenderer = () => [
+  'Name',
+  'Source Type',
+  'Runtime',
+  'Labels',
+  'Status',
+];
+const textSearchProperties = [
+  'name',
+  'prettySourceType',
+  'prettyRuntime',
+  'labels',
+  'status.phase',
+];
 
 export default function LambdasList({
-  lambdas,
-  serverDataError,
-  serverDataLoading,
+  lambdas = [],
+  repositories,
+  serverDataError = false,
+  serverDataLoading = false,
   refetchLambdas,
 }) {
+  const functionNames = lambdas.map(l => l.name);
+  const headerActions = (
+    <CreateLambdaModal
+      functionNames={functionNames}
+      repositories={repositories}
+      serverDataError={serverDataError || false}
+      serverDataLoading={serverDataLoading || false}
+    />
+  );
+
   const deleteLambda = useDeleteLambda({
     redirect: false,
     onSuccessCallback: () => {
@@ -78,6 +105,7 @@ export default function LambdasList({
     >
       {lambda.name}
     </Link>,
+    <span>{prettySourceType(lambda.sourceType)}</span>,
     <span>{prettyRuntime(lambda.runtime)}</span>,
     <Labels labels={lambda.labels} />,
     <LambdaStatusBadge status={lambda.status} />,
@@ -89,10 +117,12 @@ export default function LambdasList({
       entries={lambdas.map(lambda => ({
         ...lambda,
         prettyRuntime: prettyRuntime(lambda.runtime),
+        prettySourceType: prettySourceType(lambda.sourceType),
       }))}
       showSearchField={true}
       showSearchSuggestion={false}
       textSearchProperties={textSearchProperties}
+      extraHeaderContent={headerActions}
       headerRenderer={headerRenderer}
       rowRenderer={rowRenderer}
       serverDataError={serverDataError}

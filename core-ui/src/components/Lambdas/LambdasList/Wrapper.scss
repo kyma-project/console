@@ -1,0 +1,31 @@
+.serverless-resources-wrapper {
+  .page-header .fd-panel__header {
+    padding-bottom: 0px;
+  }
+
+  .fd-panel__header {
+    padding-right: 32px;
+    padding-left: 32px;
+    border-bottom-width: 0;
+  }
+
+  &__create-lambda-modal {
+    .fd-modal__body {
+      min-height: 230px;
+    }
+  }
+
+  .serverless-resources {
+    .fd-tabs__item:first-of-type {
+      padding-left: 32px;
+    }
+  }
+
+  .fd-badge--filled > span::before {
+    padding-right: 6px;
+  }
+
+  .list-actions > div > div {
+    display: flex;
+  }
+}

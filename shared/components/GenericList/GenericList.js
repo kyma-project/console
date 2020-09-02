@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
 import { Panel, Pagination } from 'fundamental-react';
 
 import SearchInput from './SearchInput';
@@ -10,6 +9,9 @@ import { HeaderRenderer, RowRenderer, BodyFallback } from './components';
 import { filterEntries } from './helpers';
 import { MESSAGES } from './constants';
 import classnames from 'classnames';
+
+import PropTypes from 'prop-types';
+import CustomPropTypes from '../../typechecking/CustomPropTypes';
 
 import './GenericList.scss';
 
@@ -183,14 +185,7 @@ GenericList.propTypes = {
   ).isRequired,
   headerRenderer: PropTypes.func.isRequired,
   rowRenderer: PropTypes.func.isRequired,
-  actions: PropTypes.arrayOf(
-    PropTypes.shape({
-      name: PropTypes.string,
-      handler: PropTypes.func.isRequired,
-      skipAction: PropTypes.func,
-      icon: PropTypes.string,
-    }),
-  ).isRequired,
+  actions: CustomPropTypes.listActions,
   extraHeaderContent: PropTypes.node,
   showSearchField: PropTypes.bool,
   notFoundMessage: PropTypes.string,

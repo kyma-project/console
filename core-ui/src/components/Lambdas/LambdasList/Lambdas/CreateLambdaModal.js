@@ -9,6 +9,7 @@ import { LAMBDAS_LIST } from 'components/Lambdas/constants';
 
 export default function CreateLambdaModal({
   functionNames = [],
+  repositories = [],
   serverDataError,
   serverDataLoading,
 }) {
@@ -17,6 +18,7 @@ export default function CreateLambdaModal({
   const modalOpeningComponent = (
     <Button
       glyph="add"
+      option="light"
       disabled={Boolean(serverDataError || serverDataLoading)}
     >
       {LAMBDAS_LIST.CREATE_MODAL.OPEN_BUTTON.TEXT}
@@ -35,6 +37,7 @@ export default function CreateLambdaModal({
         <CreateLambdaForm
           {...props}
           functionNames={functionNames}
+          repositories={repositories}
           setInvalidModalPopupMessage={setInvalidModalPopupMessage}
         />
       )}
