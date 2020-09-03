@@ -10,7 +10,7 @@ import NamespacesGrid from './NamespacesGrid/NamespacesGrid';
 import NamespacesListHeader from './NamespacesListHeader/NamespacesListHeader';
 import * as storage from './storage';
 import { handleNamespaceWsEvent } from './wsHandler';
-import { useMicrofrontendContext } from 'react-shared';
+import LuigiClient from '@luigi-project/client';
 
 function sortByName(array) {
   array.sort((a, b) => {
@@ -23,7 +23,18 @@ function sortByName(array) {
 export default function NamespaceList() {
   const [searchPhrase, setSearchPhrase] = useState('');
   const [labelFilters, setLabelFilters] = useState([]);
-  const { showSystemNamespaces } = useMicrofrontendContext();
+  const [showSystemNamespaces, setShowSystemNamespaces] = useState(
+    LuigiClient.getActiveFeatureToggles().includes('showSystemNamespaces'),
+  );
+
+  useEffect(() => {
+    const systemNSenabled = LuigiClient.getActiveFeatureToggles().includes(
+      'showSystemNamespaces',
+    );
+    if (systemNSenabled !== showSystemNamespaces) {
+      setShowSystemNamespaces(!!systemNSenabled);
+    }
+  }, [showSystemNamespaces, setShowSystemNamespaces]);
 
   const createFilters = namespaces => {
     const storedFilterLabels = storage.readStoredFilterLabels();

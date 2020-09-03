@@ -30,6 +30,15 @@ export const NODE_PARAM_PREFIX = `~`;
     settings,
     lifecycleHooks: {
       luigiAfterInit: () => {
+        const showSystemNamespaces = localStorage.getItem(
+          'console.showSystemNamespaces'
+        );
+
+        if (showSystemNamespaces === 'true') {
+          Luigi.featureToggles().setFeatureToggle('showSystemNamespaces');
+        } else {
+          Luigi.featureToggles().unsetFeatureToggle('showSystemNamespaces');
+        }
         const token = getToken();
         if (token) {
           getNavigationData().then(response => {
