@@ -19,7 +19,9 @@ import { GraphQLClientService } from 'shared/services/graphql-client-service';
 export class ResourceQuotasComponent
   extends AbstractKubernetesElementListComponent
   implements OnInit, OnDestroy {
-  public emptyListData: IEmptyListData = this.getBasicEmptyListData('Resource Quotas')
+  public emptyListData: IEmptyListData = this.getBasicEmptyListData(
+    'Resource Quotas'
+  );
   public createNewElementText = 'Add Resource Quota';
   public resourceKind = 'Resource Quota';
   private currentNamespaceId: string;
@@ -79,11 +81,5 @@ export class ResourceQuotasComponent
       this.currentNamespaceSubscription.unsubscribe();
     }
     super.ngOnDestroy();
- }
-
-  public getResourceUrl(kind: string, entry: any): string {
-    return `${AppConfig.k8sApiServerUrl}namespaces/${
-      this.currentNamespaceId
-    }/resourcequotas/${entry.name}`;
   }
 }
