@@ -11,6 +11,7 @@ import './RoleDetails.scss';
 RoleDetails.propTypes = { roleName: PropTypes.string.isRequired };
 
 export default function RoleDetails({ roleName }) {
+  roleName = decodeURIComponent(roleName);
   const { data, error, loading } = useQuery(GET_CLUSTER_ROLE, {
     variables: { name: roleName },
   });

@@ -8,7 +8,7 @@ import { GET_CLUSTER_ROLES } from 'gql/queries';
 export default function ClusterRoleList() {
   const navigateToRoleDetails = role =>
     LuigiClient.linkManager().navigate(
-      `/home/global-permissions/roles/${role.name}`,
+      `/home/global-permissions/roles/${encodeURIComponent(role.name)}`,
     );
 
   const { data, error, loading } = useQuery(GET_CLUSTER_ROLES);

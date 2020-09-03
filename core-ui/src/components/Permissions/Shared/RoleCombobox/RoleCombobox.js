@@ -1,10 +1,16 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import { Menu, Token, ComboboxInput } from 'fundamental-react';
 import './RoleCombobox.scss';
 
 import { GET_CLUSTER_ROLES, GET_ROLES } from 'gql/queries';
 import { useQuery } from '@apollo/react-hooks';
+
+RoleCombobox.propTypes = {
+  setRole: PropTypes.func.isRequired,
+  namespaceId: PropTypes.string,
+};
 
 export default function RoleCombobox({ setRole, namespaceId }) {
   const [searchPhrase, setSearchPhrase] = React.useState('');
@@ -18,6 +24,10 @@ export default function RoleCombobox({ setRole, namespaceId }) {
     variables: { namespace: namespaceId },
     skip: !namespaceId,
   });
+
+  if (clusterRolesQuery.loading || rolesQuery.loading) return 'Loading...';
+  if (clusterRolesQuery.error) return clusterRolesQuery.error.message;
+  if (rolesQuery.error) return rolesQuery.error.message;
 
   const search = name => name.toLowerCase().includes(searchPhrase);
   const roleNames = (rolesQuery.data?.roles || [])

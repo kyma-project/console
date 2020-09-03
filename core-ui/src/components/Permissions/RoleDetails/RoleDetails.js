@@ -14,6 +14,8 @@ RoleDetails.propTypes = {
 };
 
 export default function RoleDetails({ roleName, namespaceId }) {
+  roleName = decodeURIComponent(roleName);
+
   const { data, error, loading } = useQuery(GET_ROLE, {
     variables: { namespace: namespaceId, name: roleName },
   });

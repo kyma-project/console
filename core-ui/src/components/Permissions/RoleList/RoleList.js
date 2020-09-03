@@ -10,7 +10,9 @@ RoleList.propTypes = { namespaceId: PropTypes.string.isRequired };
 
 export default function RoleList({ namespaceId }) {
   const navigateToRoleDetails = role =>
-    LuigiClient.linkManager().navigate(`roles/${role.name}`);
+    LuigiClient.linkManager().navigate(
+      `roles/${encodeURIComponent(role.name)}`,
+    );
 
   const { data, error, loading } = useQuery(GET_ROLES, {
     variables: { namespace: namespaceId },
