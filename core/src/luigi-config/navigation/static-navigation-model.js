@@ -75,17 +75,15 @@ export function getStaticChildrenNodesForNamespace(){
       pathSegment: 'permissions',
       navigationContext: 'permissions',
       label: 'Permissions',
-      viewUrl:
-        '/consoleapp.html#/home/namespaces/:namespaceId/permissions',
+      viewUrl: config.coreModuleUrl + '/home/namespaces/:namespaceId/permissions',
       keepSelectedForChildren: true,
       children: [
         {
           pathSegment: 'roles',
           children: [
             {
-              pathSegment: ':name',
-              viewUrl:
-                '/consoleapp.html#/home/namespaces/:namespaceId/permissions/roles/:name'
+              pathSegment: ':roleName',
+              viewUrl: config.coreModuleUrl + '/home/namespaces/:namespaceId/permissions/roles/:roleName'
             }
           ]
         }
@@ -213,7 +211,7 @@ export function getStaticRootNodes(namespaceChildrenNodesResolver){
       pathSegment: 'namespaces',
       viewUrl: '/consoleapp.html#/home/namespaces/workspace',
       hideFromNav: true,
-      viewGroup: consoleViewGroupName,
+      viewGroup: coreUIViewGroupName,
       children: [
         {
           pathSegment: ':namespaceId',
@@ -250,17 +248,17 @@ export function getStaticRootNodes(namespaceChildrenNodesResolver){
       navigationContext: 'global-permissions',
       label: 'Global Permissions',
         category: { label: 'Administration', icon: 'settings', collapsible: true },
-      viewUrl: '/consoleapp.html#/home/settings/globalPermissions',
+      viewUrl: config.coreModuleUrl + '/home/global-permissions',
       keepSelectedForChildren: true,
-      viewGroup: consoleViewGroupName,
+      viewGroup: coreUIViewGroupName,
       children: [
         {
           pathSegment: 'roles',
           children: [
             {
-              pathSegment: ':name',
+              pathSegment: ':roleName',
               viewUrl:
-                '/consoleapp.html#/home/settings/globalPermissions/roles/:name'
+              config.coreModuleUrl + '/home/global-permission/roles/:roleName'
             }
           ]
         }

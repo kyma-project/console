@@ -38,10 +38,14 @@ export const GenericList = ({
   pagination,
   compact,
 }) => {
+  const [currentPage, setCurrentPage] = React.useState(
+    (pagination && pagination.initialPage) || 1,
+  );
   const [filteredEntries, setFilteredEntries] = useState(entries);
   const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
+    setCurrentPage(1);
     setFilteredEntries(
       filterEntries([...entries], searchQuery, textSearchProperties),
     );
@@ -97,7 +101,15 @@ export const GenericList = ({
       );
     }
 
-    return filteredEntries.map((e, index) => (
+    let pagedItems = filteredEntries;
+    if (pagination) {
+      pagedItems = filteredEntries.slice(
+        (currentPage - 1) * pagination.itemsPerPage,
+        currentPage * pagination.itemsPerPage,
+      );
+    }
+
+    return pagedItems.map((e, index) => (
       <RowRenderer
         key={e.id || e.name || index}
         entry={e}
@@ -139,16 +151,18 @@ export const GenericList = ({
           <tbody>{renderTableBody()}</tbody>
         </table>
       </Panel.Body>
-      {!!pagination && (
-        <Panel.Footer>
-          <Pagination
-            itemsTotal={pagination.totalCount}
-            initialPage={pagination.currentPage}
-            itemsPerPage={pagination.itemsPerPage}
-            onClick={pagination.onPageChange}
-          />
-        </Panel.Footer>
-      )}
+      {!!pagination &&
+        (!pagination.autoHide ||
+          filteredEntries.length > pagination.itemsPerPage) && (
+          <Panel.Footer>
+            <Pagination
+              itemsTotal={filteredEntries.length}
+              initialPage={currentPage}
+              itemsPerPage={pagination.itemsPerPage}
+              onClick={setCurrentPage}
+            />
+          </Panel.Footer>
+        )}
     </Panel>
   );
 };
@@ -156,10 +170,9 @@ export const GenericList = ({
 GenericList.Actions = ListActions;
 
 const PaginationProps = PropTypes.shape({
-  totalCount: PropTypes.number.isRequired,
   itemsPerPage: PropTypes.number.isRequired,
-  currentPage: PropTypes.number.isRequired,
-  onPageChange: PropTypes.func.isRequired,
+  initialPage: PropTypes.number,
+  autoHide: PropTypes.bool,
 });
 
 GenericList.propTypes = {

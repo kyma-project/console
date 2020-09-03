@@ -1,4 +1,3 @@
-import { AppConfig } from './../app.config';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
@@ -13,8 +12,6 @@ import { PreferencesComponent } from '../content/settings/preferences/preference
 import { ApplicationDetailsComponent } from '../content/settings/applications/application-details/application-details.component';
 import { ApplicationsComponent } from '../content/settings/applications/applications.component';
 import { ServiceBrokersComponent } from '../content/settings/service-brokers/service-brokers.component';
-import { PermissionsComponent } from '../shared/components/permissions/permissions.component';
-import { RoleDetailsComponent } from '../shared/components/permissions/role-details/role-details.component';
 import { IdpPresetsComponent } from '../content/settings/idp-presets/idp-presets.component';
 import { ResourcesComponent } from '../content/namespaces/configuration/resources/resources.component';
 
@@ -48,21 +45,6 @@ const appRoutes: Routes = [
           { path: 'secrets/:name', component: SecretDetailComponent },
           { path: 'configmaps', component: ConfigMapsComponent },
           { path: 'resources', component: ResourcesComponent },
-          {
-            path: 'permissions',
-            component: PermissionsComponent,
-            data: { global: false }
-          },
-          {
-            path: 'permissions/roles/:name',
-            component: RoleDetailsComponent,
-            data: { global: false }
-          },
-          {
-            path: 'permissions/clusterRoles/:name',
-            component: RoleDetailsComponent,
-            data: { global: true }
-          },
           { path: '', redirectTo: 'details', pathMatch: 'full' },
           { path: '**', redirectTo: 'details', pathMatch: 'full' }
         ]
@@ -81,16 +63,6 @@ const appRoutes: Routes = [
           },
           { path: 'idpPresets', component: IdpPresetsComponent },
           { path: 'serviceBrokers', component: ServiceBrokersComponent },
-          {
-            path: 'globalPermissions',
-            component: PermissionsComponent,
-            data: { global: true }
-          },
-          {
-            path: 'globalPermissions/roles/:name',
-            component: RoleDetailsComponent,
-            data: { global: true }
-          },
           { path: '', redirectTo: 'preferences', pathMatch: 'full' },
           { path: '**', redirectTo: 'preferences', pathMatch: 'full' }
         ]

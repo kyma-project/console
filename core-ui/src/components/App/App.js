@@ -19,6 +19,11 @@ import OAuthClientsList from 'components/OAuthClients/List/OAuthClientsList';
 import CreateOAuthClient from 'components/OAuthClients/Create/CreateOAuthClient';
 import OAuthClientsDetails from 'components/OAuthClients/Details/OAuthClientDetails';
 
+import GlobalPermissions from 'components/Permissions/PermissionList/GlobalPermissions';
+import ClusterRoleDetails from 'components/Permissions/RoleDetails/ClusterRoleDetails';
+import NamespacePermissions from 'components/Permissions/PermissionList/NamespacePermissions';
+import RoleDetails from 'components/Permissions/RoleDetails/RoleDetails';
+
 import { FUNCTIONS_WINDOW_TITLE } from 'components/Lambdas/constants';
 import {
   API_RULES_TITLE,
@@ -44,6 +49,26 @@ export default function App() {
       <Route
         path="/home/namespaces/:namespaceId/services/details/:serviceName"
         render={withTitle(SERVICES_TITLE, RoutedServiceDetails)}
+      />
+
+      <Route
+        path="/home/global-permissions"
+        exact
+        render={withTitle('Global Permissions', GlobalPermissions)}
+      />
+      <Route
+        path="/home/global-permission/roles/:roleName"
+        render={withTitle('Global Permissions', RoutedClusterRoleDetails)}
+      />
+      <Route
+        path="/home/namespaces/:namespaceId/permissions"
+        exact
+        render={withTitle('Permissions', RoutedNamespacePermissions)}
+      />
+      <Route
+        path="/home/namespaces/:namespaceId/permissions/roles/:roleName"
+        exact
+        render={withTitle('Permissions', RoutedRoleDetails)}
       />
 
       <Route
@@ -130,4 +155,21 @@ function RoutedApiRuleDetails({ match }) {
 
 function RoutedEditApiRule({ match }) {
   return <EditApiRule apiName={match.params.apiName} />;
+}
+
+function RoutedNamespacePermissions({ match }) {
+  return <NamespacePermissions namespaceId={match.params.namespaceId} />;
+}
+
+function RoutedRoleDetails({ match }) {
+  return (
+    <RoleDetails
+      roleName={match.params.roleName}
+      namespaceId={match.params.namespaceId}
+    />
+  );
+}
+
+function RoutedClusterRoleDetails({ match }) {
+  return <ClusterRoleDetails roleName={match.params.roleName} />;
 }
