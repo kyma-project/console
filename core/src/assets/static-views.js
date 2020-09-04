@@ -1,3 +1,6 @@
+document.getElementById('btn-login').onclick = login;
+document.getElementById('btn-try-again').onclick = tryAgain;
+
 function login() {
   window.location.href = window.location.origin;
 }
