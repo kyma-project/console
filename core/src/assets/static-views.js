@@ -1,5 +1,11 @@
-document.getElementById('btn-login').onclick = login;
-document.getElementById('btn-try-again').onclick = tryAgain;
+window.addEventListener('load', _ => {
+  try {
+    document.getElementById('btn-login').onclick = login;
+  } catch {}
+  try {
+    document.getElementById('btn-try-again').onclick = tryAgain;
+  } catch {}
+});
 
 function login() {
   window.location.href = window.location.origin;
