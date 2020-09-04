@@ -1,72 +1,67 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Not enough permissions</title>
+    <title>Not enough permissions</title>
 
-  <link rel="stylesheet" href="/luigi-core/luigi.css">
+    <link rel="stylesheet" href="/luigi-core/luigi.css">
 
-  <style type="text/css">
-  .fd-page {
-    height: 100vh;
-  }
-  .fd-page__content {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-  }
-  .fd-has-text-align-center {
-    text-align: center;
-  }
-  .info, .hint {
-    text-align: center;
-    margin: 0;
-  }
-  .info {
-    padding-top: 30px;
-    font-size: 36px;
-  }
-  .hint {
-    font-size: 18px;
-    color: #6f7275;
-    padding-bottom: 30px;
-  }
-  .sap-icon--locked:before{
-    color: #B00;
-    font-size: 50px;
-  }
-  </style>
+    <style type="text/css">
+    .fd-page {
+      height: 100vh;
+    }
+    .fd-page__content {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+    .fd-has-text-align-center {
+      text-align: center;
+    }
+    .info, .hint {
+      text-align: center;
+      margin: 0;
+    }
+    .info {
+      padding-top: 30px;
+      font-size: 36px;
+    }
+    .hint {
+      font-size: 18px;
+      color: #6f7275;
+      padding-bottom: 30px;
+    }
+    .sap-icon--locked:before{
+      color: #B00;
+      font-size: 50px;
+    }
+    </style>
 
-</head>
-<body>
-  <div class="fd-ui fd-ui--fundamental">
-    <div class="fd-page">
-      <div class="fd-page__content">
-        <section class="fd-section">
-            <p class="fd-has-text-align-center">
-              <span class="sap-icon--locked sap-icon--xl"></span>
-              <div class="info">Not enough permissions</div>
-              <div class="hint">
-                <p class="fd-has-margin-tiny">You don't have enougth permissions to view this content.</p>
-                <p class="fd-has-margin-tiny">Contact your administrator to grant you an access.</p>
-              </div>
-            </p>
-            <p class="fd-has-text-align-center">
-              <button class="fd-button--emphasized " onclick="tryAgain()">Try again</button>
-            </p>
-        </section>
+  </head>
+  <body>
+    <div class="fd-ui fd-ui--fundamental">
+      <div class="fd-page">
+        <div class="fd-page__content">
+          <section class="fd-section">
+              <p class="fd-has-text-align-center">
+                <span class="sap-icon--locked sap-icon--xl"></span>
+                <div class="info">Not enough permissions</div>
+                <div class="hint">
+                  <p class="fd-has-margin-tiny">You don't have enougth permissions to view this content.</p>
+                  <p class="fd-has-margin-tiny">Contact your administrator to grant you an access.</p>
+                </div>
+              </p>
+              <p class="fd-has-text-align-center">
+                <button class="fd-button--emphasized " onclick="tryAgain()">Try again</button>
+              </p>
+          </section>
+        </div>
       </div>
     </div>
-  </div>
-</body>
-
-<script type="text/javascript">
-  function tryAgain() {
-    window.location.href = window.location.origin;
-  }
-</script>
+    <script type="text/javascript" charset="utf-8" src="assets/static-views.js"></script>
+  </body>
 </html>
