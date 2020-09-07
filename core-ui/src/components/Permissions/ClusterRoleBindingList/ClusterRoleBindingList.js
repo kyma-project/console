@@ -32,12 +32,17 @@ export default function ClusterRoleBindingList() {
     },
   ];
 
+  // performance shouln't be an issue, as list is (almost) sorted
+  const entries = [...(data?.clusterRoleBindings || [])].sort((b1, b2) =>
+    b1.name > b2.name ? 1 : -1,
+  );
+
   return (
     <GenericList
       extraHeaderContent={<CreateClusterRoleBindingModal />}
       title="Cluster Role Bindings"
       actions={actions}
-      entries={data?.clusterRoleBindings || []}
+      entries={entries}
       headerRenderer={() => ['Group/User Name', 'Role Name']}
       rowRenderer={entry => [entry.name, entry.roleRef.name]}
       server={error}

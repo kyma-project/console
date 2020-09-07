@@ -61,11 +61,16 @@ export default function RoleBindingList({ namespaceId }) {
     },
   ];
 
+  // performance shouln't be an issue, as list is (almost) sorted
+  const entries = [...(data?.roleBindings || [])].sort((b1, b2) =>
+    b1.name > b2.name ? 1 : -1,
+  );
   return (
     <GenericList
       extraHeaderContent={<CreateRoleBindingModal namespaceId={namespaceId} />}
       title="Role Bindings"
       actions={actions}
+      entries={entries}
       entries={data?.roleBindings || []}
       headerRenderer={() => ['Group/User Name', 'Role Name']}
       rowRenderer={rowRenderer}
