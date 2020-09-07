@@ -83,6 +83,9 @@ export const GET_EVENT_TRIGGERS = gql`
       spec {
         broker
         filter
+        subscriber {
+          uri
+        }
       }
       status {
         reason

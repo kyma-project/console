@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { GenericList } from 'react-shared';
+import { GenericList, Input } from 'react-shared';
 
 import Checkbox from 'components/Lambdas/Checkbox/Checkbox';
 
@@ -14,6 +14,8 @@ const headerRenderer = () => [
   'Version',
   'Source / Application',
   'Description',
+  'Port',
+  'Path',
 ];
 const textSearchProperties = ['eventType', 'version', 'source', 'description'];
 
@@ -25,6 +27,7 @@ export default function CreateEventTriggerForm({
   onChange,
 }) {
   const [checkedEvents, setCheckedEvents] = useState([]);
+  const [ev, setEv] = useState(availableEvents);
 
   useEffect(() => {
     setCustomValid(false);
@@ -48,6 +51,33 @@ export default function CreateEventTriggerForm({
     }
   }
 
+  function onSetPort(event, value) {
+    const index = ev.findIndex(entry => entry.uniqueID === event.uniqueID);
+    const index2 = checkedEvents.findIndex(
+      entry => entry.uniqueID === event.uniqueID,
+    );
+    ev[index].port = value;
+    setEv(ev);
+    console.log(index2, checkedEvents);
+    if (index2 >= 0) {
+      checkedEvents[index2].port = value;
+      setCheckedEvents(checkedEvents);
+    }
+  }
+
+  function onSetPath(event, value) {
+    const index = ev.findIndex(entry => entry.uniqueID === event.uniqueID);
+    const index2 = checkedEvents.findIndex(
+      entry => entry.uniqueID === event.uniqueID,
+    );
+    ev[index].path = value;
+    setEv(ev);
+    if (index2 >= 0) {
+      checkedEvents[index2].path = value;
+      setCheckedEvents(checkedEvents);
+    }
+  }
+
   function showCollapseControl(schema) {
     return !!(schema && schema.properties && !schema.anyOf);
   }
@@ -63,6 +93,14 @@ export default function CreateEventTriggerForm({
       <span>{event.version || '*'}</span>,
       <span>{event.source || '*'}</span>,
       <span>{event.description || '-'}</span>,
+      <Input
+        placeholder={80}
+        onChange={e => onSetPort(event, e.target.value)}
+      />,
+      <Input
+        placeholder="/"
+        onChange={e => onSetPath(event, e.target.value)}
+      />,
     ],
     collapseContent: (
       <>
@@ -90,7 +128,7 @@ export default function CreateEventTriggerForm({
       <GenericList
         showSearchField={true}
         textSearchProperties={textSearchProperties}
-        entries={availableEvents}
+        entries={ev}
         headerRenderer={headerRenderer}
         rowRenderer={rowRenderer}
         hasExternalMargin={false}

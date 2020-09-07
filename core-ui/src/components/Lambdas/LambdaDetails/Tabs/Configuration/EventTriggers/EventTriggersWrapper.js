@@ -20,8 +20,8 @@ import {
   createSubscriberRef,
 } from 'components/Lambdas/helpers/eventTriggers';
 
-export default function EventTriggersWrapper({ lambda }) {
-  const subscriberRef = createSubscriberRef(lambda);
+export default function EventTriggersWrapper({ lambda, uri }) {
+  const subscriberRef = createSubscriberRef(lambda, uri);
 
   const ownerRef = {
     apiVersion: SERVERLESS_API_VERSION,

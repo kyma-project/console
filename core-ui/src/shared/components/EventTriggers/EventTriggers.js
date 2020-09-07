@@ -16,6 +16,8 @@ const headerRenderer = () => [
   'Version',
   'Application',
   'Description',
+  'Port',
+  'Path',
 ];
 const textSearchProperties = ['eventType', 'version', 'source', 'description'];
 
@@ -61,6 +63,8 @@ export default function EventTriggers({
       <span>{eventTrigger.version || '*'}</span>,
       <EventTriggerSource source={eventTrigger.source} />,
       <span>{eventTrigger.description || '-'}</span>,
+      <p>port</p>,
+      <p>path</p>,
     ],
     collapseContent: (
       <>

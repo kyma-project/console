@@ -1,6 +1,6 @@
 import { CONFIG } from '../../config';
 
-export function createSubscriberRef(lambda = {}) {
+export function createSubscriberRef(lambda = {}, uri) {
   return {
     ref: {
       apiVersion: CONFIG.triggerSubscriber.apiVersion,
@@ -8,5 +8,6 @@ export function createSubscriberRef(lambda = {}) {
       name: lambda.name || '',
       namespace: lambda.namespace || '',
     },
+    uri,
   };
 }
