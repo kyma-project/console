@@ -71,7 +71,6 @@ export default function RoleBindingList({ namespaceId }) {
       title="Role Bindings"
       actions={actions}
       entries={entries}
-      entries={data?.roleBindings || []}
       headerRenderer={() => ['Group/User Name', 'Role Name']}
       rowRenderer={rowRenderer}
       server={error}
