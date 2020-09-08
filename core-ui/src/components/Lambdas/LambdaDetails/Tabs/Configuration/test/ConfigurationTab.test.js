@@ -13,7 +13,6 @@ import {
 import { API_RULE_EVENT_SUBSCRIPTION_MOCK } from 'components/ApiRules/gql/mocks/useApiRulesQuery';
 
 import { BACKEND_MODULES } from 'components/Lambdas/helpers/misc';
-import { createSubscriberRef } from 'components/Lambdas/helpers/eventTriggers';
 import { SERVICE_BINDINGS_PANEL } from 'components/Lambdas/constants';
 import { EVENT_TRIGGERS_PANEL } from 'shared/constants';
 import { PANEL } from 'components/ApiRules/constants';
@@ -52,7 +51,7 @@ describe('ConfigurationTab', () => {
 
   it('should render panel for Event Triggers - eventing and application backendModule exists', async () => {
     const eventTriggersVariables = {
-      subscriber: createSubscriberRef(lambdaMock),
+      serviceName: lambdaMock.name,
       namespace: lambdaMock.namespace,
     };
     const subscriptionMock = EVENT_TRIGGER_EVENT_SUBSCRIPTION_MOCK(

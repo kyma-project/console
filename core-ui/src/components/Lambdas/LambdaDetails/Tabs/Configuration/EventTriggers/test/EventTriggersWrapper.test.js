@@ -6,11 +6,8 @@ import {
   lambdaMock,
   eventTriggerMock,
 } from 'components/Lambdas/helpers/testing';
-import { createSubscriberRef } from 'components/Lambdas/helpers/eventTriggers';
 import {
-  GET_EVENT_ACTIVATIONS_ERROR_MOCK,
   GET_EVENT_ACTIVATIONS_DATA_MOCK,
-  GET_EVENT_TRIGGERS_ERROR_MOCK,
   GET_EVENT_TRIGGERS_DATA_MOCK,
   EVENT_TRIGGER_EVENT_SUBSCRIPTION_MOCK,
 } from 'components/Lambdas/gql/hooks/queries/testMocks';
@@ -32,7 +29,7 @@ jest.mock('@luigi-project/client', () => {
 
 describe('EventTriggersWrapper + EventTriggers', () => {
   const eventTriggersVariables = {
-    subscriber: createSubscriberRef(lambdaMock),
+    serviceName: lambdaMock.name,
     namespace: lambdaMock.namespace,
   };
   const eventActivationsVariables = {

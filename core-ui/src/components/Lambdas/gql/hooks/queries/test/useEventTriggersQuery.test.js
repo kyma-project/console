@@ -1,7 +1,6 @@
 import React from 'react';
 import { render, wait } from '@testing-library/react';
 
-import { createSubscriberRef } from 'components/Lambdas/helpers/eventTriggers';
 import {
   QueryComponent,
   withApolloMockProvider,
@@ -21,14 +20,14 @@ import {
 
 describe('useEventTriggersQuery', () => {
   const hookInput = {
-    subscriber: createSubscriberRef(lambdaMock),
-    name: lambdaMock.name,
+    serviceName: lambdaMock.name,
     namespace: lambdaMock.namespace,
   };
   const variables = {
-    subscriber: hookInput.subscriber,
+    serviceName: lambdaMock.name,
     namespace: lambdaMock.namespace,
   };
+
   const subscriptionMock = EVENT_TRIGGER_EVENT_SUBSCRIPTION_MOCK(variables);
 
   it('should see loading state', async () => {

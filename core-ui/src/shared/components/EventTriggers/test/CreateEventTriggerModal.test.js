@@ -23,7 +23,7 @@ describe('CreateEventTriggerModal + CreateEventTriggerForm', () => {
 
   it('should disable open button if there are not available events', async () => {
     const { getByText } = render(
-      <CreateEventTriggerModal availableEvents={[]} />,
+      <CreateEventTriggerModal availableEvents={[]} servicePorts={[80]} />,
     );
 
     const button = getByText(EVENT_TRIGGERS_PANEL.ADD_MODAL.OPEN_BUTTON.TEXT);
@@ -31,9 +31,19 @@ describe('CreateEventTriggerModal + CreateEventTriggerForm', () => {
     expect(button).toBeDisabled();
   });
 
-  it('should not disable button if there are available events', async () => {
+  it('should disable open button if there are not available ports', async () => {
     const { getByText } = render(
-      <CreateEventTriggerModal availableEvents={events} />,
+      <CreateEventTriggerModal availableEvents={events} servicePorts={[]} />,
+    );
+
+    const button = getByText(EVENT_TRIGGERS_PANEL.ADD_MODAL.OPEN_BUTTON.TEXT);
+    expect(button).toBeInTheDocument();
+    expect(button).toBeDisabled();
+  });
+
+  it('should not disable button if there are available events and ports', async () => {
+    const { getByText } = render(
+      <CreateEventTriggerModal availableEvents={events} servicePorts={[80]} />,
     );
 
     const button = getByText(EVENT_TRIGGERS_PANEL.ADD_MODAL.OPEN_BUTTON.TEXT);
@@ -43,7 +53,7 @@ describe('CreateEventTriggerModal + CreateEventTriggerForm', () => {
 
   it('should show modal after click action button', async () => {
     const { getByText, getByRole } = render(
-      <CreateEventTriggerModal availableEvents={events} />,
+      <CreateEventTriggerModal availableEvents={events} servicePorts={[80]} />,
     );
 
     const button = getByText(EVENT_TRIGGERS_PANEL.ADD_MODAL.OPEN_BUTTON.TEXT);
@@ -53,7 +63,7 @@ describe('CreateEventTriggerModal + CreateEventTriggerForm', () => {
 
   it("should show tooltip on modal's create button if any events are checked", async () => {
     const { getByText } = render(
-      <CreateEventTriggerModal availableEvents={events} />,
+      <CreateEventTriggerModal availableEvents={events} servicePorts={[80]} />,
     );
 
     const button = getByText(EVENT_TRIGGERS_PANEL.ADD_MODAL.OPEN_BUTTON.TEXT);
@@ -68,7 +78,7 @@ describe('CreateEventTriggerModal + CreateEventTriggerForm', () => {
 
   it("should not show tooltip on modal's create button if at least one of events is checked", async () => {
     const { getByText } = render(
-      <CreateEventTriggerModal availableEvents={events} />,
+      <CreateEventTriggerModal availableEvents={events} servicePorts={[80]} />,
     );
 
     const button = getByText(EVENT_TRIGGERS_PANEL.ADD_MODAL.OPEN_BUTTON.TEXT);
