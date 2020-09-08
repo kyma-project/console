@@ -10,16 +10,27 @@ import { EVENT_TRIGGERS_PANEL, ERRORS } from '../../constants';
 
 import CreateEventTriggerModal from './CreateEventTriggerModal';
 
-const headerRenderer = () => [
-  '',
-  'Event',
-  'Version',
-  'Application',
-  'Description',
-  'Port',
-  'Path',
-];
+function headerRenderer(isLambda) {
+  const baseHeaders = ['', 'Event', 'Version', 'Application', 'Description'];
+  if (isLambda) {
+    return () => baseHeaders;
+  } else {
+    return () => [...baseHeaders, 'Port', 'Path'];
+  }
+}
+
 const textSearchProperties = ['eventType', 'version', 'source', 'description'];
+
+function createRowCells(eventTrigger, isLambda) {
+  const baseCells = [
+    <span>{eventTrigger.eventType || '*'}</span>,
+    <span>{eventTrigger.version || '*'}</span>,
+    <EventTriggerSource source={eventTrigger.source} />,
+    <span>{eventTrigger.description || '-'}</span>,
+  ];
+  const { port, path } = eventTrigger.spec;
+  return isLambda ? baseCells : [...baseCells, port, path];
+}
 
 function EventTriggerSource({ source }) {
   if (!source) {
@@ -41,6 +52,8 @@ function EventTriggerSource({ source }) {
 export default function EventTriggers({
   eventTriggers = [],
   availableEvents = [],
+  isLambda = false,
+  servicePorts = [],
   serverDataError,
   serverDataLoading,
   onTriggersAdd,
@@ -58,14 +71,7 @@ export default function EventTriggers({
     },
   ];
   const rowRenderer = eventTrigger => ({
-    cells: [
-      <span>{eventTrigger.eventType || '*'}</span>,
-      <span>{eventTrigger.version || '*'}</span>,
-      <EventTriggerSource source={eventTrigger.source} />,
-      <span>{eventTrigger.description || '-'}</span>,
-      <p>port</p>,
-      <p>path</p>,
-    ],
+    cells: createRowCells(eventTrigger, isLambda),
     collapseContent: (
       <>
         <td></td>
@@ -81,6 +87,8 @@ export default function EventTriggers({
 
   const createEventTrigger = (
     <CreateEventTriggerModal
+      isLambda={isLambda}
+      servicePorts={servicePorts}
       onSubmit={onTriggersAdd}
       queryError={serverDataError}
       availableEvents={availableEvents}
@@ -97,7 +105,7 @@ export default function EventTriggers({
         extraHeaderContent={createEventTrigger}
         actions={actions}
         entries={eventTriggers}
-        headerRenderer={headerRenderer}
+        headerRenderer={headerRenderer(isLambda)}
         rowRenderer={rowRenderer}
         serverDataError={serverDataError}
         serverDataLoading={serverDataLoading}

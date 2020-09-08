@@ -16,11 +16,7 @@ import {
 import { GQL_QUERIES } from 'components/Lambdas/constants';
 import extractGraphQlErrors from 'shared/graphqlErrorExtractor';
 
-export const useEventTriggersQuery = ({
-  subscriber = null,
-  name = '',
-  namespace = '',
-}) => {
+export const useEventTriggersQuery = ({ serviceName = '', namespace = '' }) => {
   const notificationManager = useNotification();
   const [loadedData, setLoadedData] = useState(false);
   const [triggers, setTriggers] = useStateWithCallback([]);
@@ -42,7 +38,7 @@ export const useEventTriggersQuery = ({
 
   const variables = {
     namespace: namespace,
-    subscriber,
+    serviceName,
   };
 
   const { data, error, loading } = useQuery(GET_EVENT_TRIGGERS, {
@@ -72,14 +68,14 @@ export const useEventTriggersQuery = ({
 
     return () => subscription.unsubscribe();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [namespace, name]);
+  }, [namespace, serviceName]);
 
   useEffect(() => {
     if (error) {
       const errorToDisplay = extractGraphQlErrors(error);
 
       const message = formatMessage(GQL_QUERIES.EVENT_TRIGGERS.ERROR_MESSAGE, {
-        lambdaName: name,
+        lambdaName: serviceName,
         error: errorToDisplay,
       });
 

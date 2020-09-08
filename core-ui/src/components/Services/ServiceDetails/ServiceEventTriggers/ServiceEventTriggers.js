@@ -40,7 +40,7 @@ export default function ServiceEventTriggersWrapper({ service }) {
         query: GET_EVENT_TRIGGERS,
         variables: {
           namespace,
-          subscriber: subscriberRef,
+          serviceName: service.name,
         },
       },
     ],
@@ -73,9 +73,8 @@ export default function ServiceEventTriggersWrapper({ service }) {
     triggersError,
     triggersLoading,
   ] = useEventTriggersQuery({
-    subscriber: subscriberRef,
     namespace,
-    name: service.name,
+    serviceName: service.name,
   });
 
   const { availableEvents, usedEvents } = serializeEvents({
@@ -83,8 +82,12 @@ export default function ServiceEventTriggersWrapper({ service }) {
     eventTriggers,
   });
 
+  const servicePorts =
+    service.json.spec.ports && service.json.spec.ports.map(port => port.port);
+
   return (
     <EventTriggers
+      servicePorts={servicePorts}
       onTriggerDelete={deleteEventTrigger}
       onTriggersAdd={createManyEventTriggers}
       eventTriggers={usedEvents || []}

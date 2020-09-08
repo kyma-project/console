@@ -2,90 +2,81 @@ import React, { useState, useEffect } from 'react';
 import { GenericList, Input } from 'react-shared';
 
 import Checkbox from 'components/Lambdas/Checkbox/Checkbox';
+import { ComboboxInput, Menu } from 'fundamental-react';
 
 import { SchemaComponent } from './Schema/Schema';
 
 import './CreateEventTriggerForm.scss';
 
-const headerRenderer = () => [
-  '',
-  '',
-  'Event',
-  'Version',
-  'Source / Application',
-  'Description',
-  'Port',
-  'Path',
-];
+const headerRenderer = isLambda => {
+  const baseHeaders = [
+    '',
+    '',
+    'Event',
+    'Version',
+    'Source / Application',
+    'Description',
+  ];
+  if (isLambda) {
+    return () => baseHeaders;
+  } else {
+    return () => [...baseHeaders, 'Port', 'Path'];
+  }
+};
+
 const textSearchProperties = ['eventType', 'version', 'source', 'description'];
 
 export default function CreateEventTriggerForm({
   availableEvents = [],
   formElementRef,
+  servicePorts,
+  isLambda = false,
   setCustomValid = () => void 0,
   onSubmit,
   onChange,
 }) {
-  const [checkedEvents, setCheckedEvents] = useState([]);
-  const [ev, setEv] = useState(availableEvents);
+  const [events, setEvents] = useState(
+    availableEvents.map(event => ({
+      ...event,
+      port: servicePorts[0],
+      path: '/',
+      isChecked: false,
+    })),
+  );
 
   useEffect(() => {
     setCustomValid(false);
   }, [setCustomValid]);
 
   useEffect(() => {
-    setCustomValid(!!checkedEvents.length);
-  }, [checkedEvents, setCustomValid]);
+    setCustomValid(!!events.filter(e => e.isChecked).length);
+  }, [events, setCustomValid]);
 
-  function isChecked(event) {
-    return checkedEvents.some(e => event.uniqueID === e.uniqueID);
-  }
+  const portInput = event => (
+    <ComboboxInput
+      buttonProps={{ typeAttr: 'button' }}
+      inputProps={{
+        value: event.port,
+        onChange: () => {},
+        readOnly: true,
+      }}
+      placeholder="Choose port"
+      menu={
+        <Menu.List>
+          {servicePorts.map(p => (
+            <Menu.Item key={p} onClick={() => onSetPort(event, p)}>
+              {p}
+            </Menu.Item>
+          ))}
+        </Menu.List>
+      }
+    />
+  );
 
-  function onSetCheckedEvents(event) {
-    if (isChecked(event)) {
-      setCheckedEvents(collection =>
-        collection.filter(entry => entry.uniqueID !== event.uniqueID),
-      );
-    } else {
-      setCheckedEvents(collection => [...collection, event]);
-    }
-  }
-
-  function onSetPort(event, value) {
-    const index = ev.findIndex(entry => entry.uniqueID === event.uniqueID);
-    const index2 = checkedEvents.findIndex(
-      entry => entry.uniqueID === event.uniqueID,
-    );
-    ev[index].port = value;
-    setEv(ev);
-    console.log(index2, checkedEvents);
-    if (index2 >= 0) {
-      checkedEvents[index2].port = value;
-      setCheckedEvents(checkedEvents);
-    }
-  }
-
-  function onSetPath(event, value) {
-    const index = ev.findIndex(entry => entry.uniqueID === event.uniqueID);
-    const index2 = checkedEvents.findIndex(
-      entry => entry.uniqueID === event.uniqueID,
-    );
-    ev[index].path = value;
-    setEv(ev);
-    if (index2 >= 0) {
-      checkedEvents[index2].path = value;
-      setCheckedEvents(checkedEvents);
-    }
-  }
-
-  function showCollapseControl(schema) {
-    return !!(schema && schema.properties && !schema.anyOf);
-  }
-
-  const rowRenderer = event => ({
-    cells: [
+  const createRowCells = (event, isLambda) => {
+    const baseCells = [
       <Checkbox
-        initialChecked={isChecked(event)}
+        initialChecked={event.isChecked}
         name={event.uniqueID}
         onChange={_ => onSetCheckedEvents(event)}
       />,
@@ -93,15 +84,45 @@ export default function CreateEventTriggerForm({
       <span>{event.version || '*'}</span>,
       <span>{event.source || '*'}</span>,
       <span>{event.description || '-'}</span>,
-      <Input
-        placeholder={80}
-        onChange={e => onSetPort(event, e.target.value)}
-      />,
-      <Input
-        placeholder="/"
-        onChange={e => onSetPath(event, e.target.value)}
-      />,
-    ],
+    ];
+    return isLambda
+      ? baseCells
+      : [
+          ...baseCells,
+          portInput(event),
+          <Input
+            suffix=""
+            placeholder="/"
+            onChange={e => onSetPath(event, e.target.value)}
+          />,
+        ];
+  };
+
+  function onSetCheckedEvents(event) {
+    event.isChecked = !event.isChecked;
+    setEvents([...events]);
+  }
+
+  function onSetPort(event, port) {
+    const e = events.find(entry => entry.uniqueID === event.uniqueID);
+    e.port = port;
+    e.isChecked = true;
+    setEvents([...events]);
+  }
+
+  function onSetPath(event, path) {
+    const e = events.find(entry => entry.uniqueID === event.uniqueID);
+    e.path = path;
+    e.isChecked = true;
+    setEvents([...events]);
+  }
+
+  function showCollapseControl(schema) {
+    return !!(schema && schema.properties && !schema.anyOf);
+  }
+
+  const rowRenderer = event => ({
+    cells: createRowCells(event, isLambda),
     collapseContent: (
       <>
         <td></td>
@@ -115,7 +136,7 @@ export default function CreateEventTriggerForm({
   });
 
   async function handleSubmit() {
-    await onSubmit(checkedEvents);
+    await onSubmit(events.filter(e => e.isChecked));
   }
 
   return (
@@ -128,8 +149,8 @@ export default function CreateEventTriggerForm({
       <GenericList
         showSearchField={true}
         textSearchProperties={textSearchProperties}
-        entries={ev}
-        headerRenderer={headerRenderer}
+        entries={events}
+        headerRenderer={headerRenderer(isLambda)}
         rowRenderer={rowRenderer}
         hasExternalMargin={false}
         showSearchControl={false}

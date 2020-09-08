@@ -20,8 +20,8 @@ import {
   createSubscriberRef,
 } from 'components/Lambdas/helpers/eventTriggers';
 
-export default function EventTriggersWrapper({ lambda, uri }) {
-  const subscriberRef = createSubscriberRef(lambda, uri);
+export default function EventTriggersWrapper({ lambda }) {
+  const subscriberRef = createSubscriberRef(lambda);
 
   const ownerRef = {
     apiVersion: SERVERLESS_API_VERSION,
@@ -49,9 +49,8 @@ export default function EventTriggersWrapper({ lambda, uri }) {
     triggersError,
     triggersLoading,
   ] = useEventTriggersQuery({
-    subscriber: subscriberRef,
     namespace: lambda.namespace,
-    name: lambda.name,
+    serviceName: lambda.name,
   });
 
   const { availableEvents, usedEvents } = serializeEvents({
@@ -61,6 +60,7 @@ export default function EventTriggersWrapper({ lambda, uri }) {
 
   return (
     <EventTriggers
+      isLambda={true}
       onTriggerDelete={deleteEventTrigger}
       onTriggersAdd={createManyEventTriggers}
       eventTriggers={usedEvents || []}

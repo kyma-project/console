@@ -76,16 +76,15 @@ export const GET_EVENT_ACTIVATIONS = gql`
 `;
 
 export const GET_EVENT_TRIGGERS = gql`
-  query eventTriggers($namespace: String!, $subscriber: SubscriberInput) {
-    triggers(namespace: $namespace, subscriber: $subscriber) {
+  query eventTriggers($namespace: String!, $serviceName: String!) {
+    triggers(namespace: $namespace, serviceName: $serviceName) {
       name
       namespace
       spec {
         broker
         filter
-        subscriber {
-          uri
-        }
+        port
+        path
       }
       status {
         reason

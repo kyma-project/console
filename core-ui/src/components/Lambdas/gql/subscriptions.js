@@ -47,8 +47,8 @@ export const LAMBDA_EVENT_SUBSCRIPTION = gql`
 `;
 
 export const EVENT_TRIGGER_EVENT_SUBSCRIPTION = gql`
-  subscription triggerEvent($namespace: String!, $subscriber: SubscriberInput) {
-    triggerEvent(namespace: $namespace, subscriber: $subscriber) {
+  subscription triggerEvent($namespace: String!, $serviceName: String!) {
+    triggerEvent(namespace: $namespace, serviceName: $serviceName) {
       type
       trigger {
         name
@@ -56,9 +56,8 @@ export const EVENT_TRIGGER_EVENT_SUBSCRIPTION = gql`
         spec {
           broker
           filter
-          subscriber {
-            uri
-          }
+          port
+          path
         }
         status {
           reason

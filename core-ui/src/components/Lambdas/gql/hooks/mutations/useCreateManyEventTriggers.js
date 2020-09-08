@@ -38,18 +38,13 @@ export const useCreateManyEventTriggers = (
 
   function prepareEventTriggersInput(events) {
     return events.map(event => {
-      if (event.port && event.path) {
-        const uri = `http://${name}.${namespace}.svc.cluster.local:${event.port}${event.path}`;
-        subscriberRef.uri = uri;
-        subscriberRef.ref = null;
-      }
       const trigger = {
         broker: CONFIG.triggerSubscriber.broker,
         filterAttributes: {
           type: event.eventType,
           source: event.source,
         },
-        subscriber: subscriberRef,
+        subscriber: { ...subscriberRef, port: event.port, path: event.path },
       };
 
       // version doesn't have to be
