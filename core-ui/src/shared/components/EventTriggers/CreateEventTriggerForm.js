@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { GenericList, Input } from 'react-shared';
+import { GenericList } from 'react-shared';
 
 import Checkbox from 'components/Lambdas/Checkbox/Checkbox';
-import { ComboboxInput, Menu } from 'fundamental-react';
+import { ComboboxInput, Menu, FormInput } from 'fundamental-react';
 
 import { SchemaComponent } from './Schema/Schema';
 
@@ -90,8 +90,7 @@ export default function CreateEventTriggerForm({
       : [
           ...baseCells,
           portInput(event),
-          <Input
-            suffix=""
+          <FormInput
             placeholder="/"
             onChange={e => onSetPath(event, e.target.value)}
           />,
