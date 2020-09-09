@@ -52,7 +52,7 @@ export default function AccessStrategyForm({
                 required
                 aria-label="Access strategy path"
                 pattern="^[a-z0-9\/\(\)\?.!*\-]+"
-                title="Path must consist of alphanumeric and the following characters: /.*?!-"
+                title="Path must consist of alphanumeric and the following characters: /.*?!-()"
                 onChange={e =>
                   setStrategy({ ...strategy, path: e.target.value })
                 }
