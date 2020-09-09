@@ -26,6 +26,7 @@ export { Tabs } from './components/Tabs/Tabs';
 export { Tab } from './components/Tabs/Tab.js';
 export { HeaderLabelsEditor } from './components/HeaderLabelsEditor/HeaderLabelsEditor';
 export { LabelSelectorInput } from './components/LabelSelectorInput/LabelSelectorInput';
+export * from './components/SideDrawer/SideDrawer';
 
 export * from './forms';
 export * from './hooks';

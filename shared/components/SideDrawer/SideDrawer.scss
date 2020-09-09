@@ -1,0 +1,44 @@
+.side-drawer {
+  $btnWidth: 4.2em;
+
+  position: fixed;
+  transition: transform ease-in 0.5s;
+  top: 50%;
+  z-index: 1000; // very important, do not lower it (you can raise it)
+  filter: drop-shadow(0 0 0.4em rgba(0, 0, 0, 0.42));
+  display: grid;
+  grid-template-columns: auto auto;
+  align-items: center;
+  right: 0;
+  transform: translateX(calc(100% - #{$btnWidth}));
+
+  &--open {
+    transform: unset;
+  }
+
+  .open-btn {
+    color: var(--fd-color-action-1);
+    border-color: var(--fd-color-action-1);
+    border-width: 1px 0 1px 1px;
+    outline: none;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 0.6em;
+    align-content: center;
+    overflow-wrap: anywhere;
+    cursor: pointer;
+    background-color: var(--fd-color-background-2);
+    border-radius: 4px 0 0 4px;
+
+    padding: 0.6em;
+    width: $btnWidth;
+    box-sizing: border-box;
+  }
+
+  .content {
+    background-color: var(--fd-color-background-2);
+    border-radius: 4px 0 0 4px;
+    padding: 16px;
+    min-height: 15em;
+  }
+}

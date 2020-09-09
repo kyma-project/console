@@ -10,7 +10,7 @@ import NamespacesGrid from './NamespacesGrid/NamespacesGrid';
 import NamespacesListHeader from './NamespacesListHeader/NamespacesListHeader';
 import * as storage from './storage';
 import { handleNamespaceWsEvent } from './wsHandler';
-import { useMicrofrontendContext } from 'react-shared';
+import { useMicrofrontendContext, SideDrawer } from 'react-shared';
 
 function sortByName(array) {
   array.sort((a, b) => {
@@ -150,6 +150,7 @@ export default function NamespaceList() {
 
   return (
     <>
+      <SideDrawer btnText="Open me" />
       <NamespacesListHeader
         updateSearchPhrase={searchPhrase => setSearchPhrase(searchPhrase)}
         setLabelFilters={updateLabelFilters}
