@@ -10,6 +10,7 @@
   grid-template-columns: auto auto;
   align-items: center;
   right: 0;
+  top: 4em;
   transform: translateX(calc(100% - #{$btnWidth}));
 
   &--open {
@@ -39,6 +40,17 @@
     background-color: var(--fd-color-background-2);
     border-radius: 4px 0 0 4px;
     padding: 16px;
-    min-height: 15em;
+    min-height: 8em;
+    max-height: 78vh;
+    overflow: auto;
+
+    .bottom {
+      position: sticky;
+      bottom: 0;
+      margin-top: 1em;
+      display: flex;
+
+      justify-content: flex-end;
+    }
   }
 }

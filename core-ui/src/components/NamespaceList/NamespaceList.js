@@ -11,6 +11,8 @@ import NamespacesListHeader from './NamespacesListHeader/NamespacesListHeader';
 import * as storage from './storage';
 import { handleNamespaceWsEvent } from './wsHandler';
 import { useMicrofrontendContext, SideDrawer } from 'react-shared';
+import { ControlledEditor, DiffEditor } from '@monaco-editor/react';
+import { Button } from 'fundamental-react';
 
 function sortByName(array) {
   array.sort((a, b) => {
@@ -150,7 +152,40 @@ export default function NamespaceList() {
 
   return (
     <>
-      <SideDrawer btnText="Open me" />
+      <SideDrawer
+        btnText="See code"
+        bottomContent={
+          <Button option="emphasized">Save it (please don't)</Button>
+        }
+      >
+        <h1>Here's your shitty code</h1>
+        <ControlledEditor
+          height="50em"
+          width="50em"
+          language={'javascript'}
+          theme="vs-light"
+          value={`      
+request.get_something = (something_id) => {
+  return new Promise((resolve, reject) => {
+    database.find_all('something', { where: {something_id: something_id, is_deleted:0} }).then(function(res){
+      let result = {};
+      res = JSON.stringify(res);
+      res = JSON.parse(res);
+      res.forEach(function(element){
+        if(typeof element.is_deleted != "undefined"){
+          delete element.is_deleted;
+        }
+        let key = 'something_' + element.id;
+        result[key] = element;
+      });
+      resolve(result);
+    }, reject);
+  });
+}
+          
+          `}
+        />
+      </SideDrawer>
       <NamespacesListHeader
         updateSearchPhrase={searchPhrase => setSearchPhrase(searchPhrase)}
         setLabelFilters={updateLabelFilters}
