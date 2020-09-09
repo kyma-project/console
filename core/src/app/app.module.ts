@@ -31,10 +31,6 @@ import { PodsComponent } from './content/namespaces/operation/pods/pods.componen
 import { ReplicaSetsEntryRendererComponent } from './content/namespaces/operation/replica-sets/replica-sets-entry-renderer/replica-sets-entry-renderer.component';
 import { ReplicaSetsHeaderRendererComponent } from './content/namespaces/operation/replica-sets/replica-sets-header-renderer/replica-sets-header-renderer.component';
 import { ReplicaSetsComponent } from './content/namespaces/operation/replica-sets/replica-sets.component';
-import { SecretDetailComponent } from './content/namespaces/operation/secrets/secret-detail/secret-detail.component';
-import { SecretsEntryRendererComponent } from './content/namespaces/operation/secrets/secrets-entry-renderer/secrets-entry-renderer.component';
-import { SecretsHeaderRendererComponent } from './content/namespaces/operation/secrets/secrets-header-renderer/secrets-header-renderer.component';
-import { SecretsComponent } from './content/namespaces/operation/secrets/secrets.component';
 import { ServicesEntryRendererComponent } from './content/namespaces/operation/services/services-entry-renderer/services-entry-renderer.component';
 import { ServicesHeaderRendererComponent } from './content/namespaces/operation/services/services-header-renderer/services-header-renderer.component';
 import { ServicesComponent } from './content/namespaces/operation/services/services.component';
@@ -117,8 +113,6 @@ import { WindowTitleService } from 'shared/services/window-title.service';
     ServiceBrokersComponent,
     ReplicaSetsComponent,
     ServicesComponent,
-    SecretsComponent,
-    SecretDetailComponent,
     ConfigMapsComponent,
     InformationModalComponent,
     ConfirmationModalComponent,
@@ -128,8 +122,6 @@ import { WindowTitleService } from 'shared/services/window-title.service';
     DeploymentEntryRendererComponent,
     PodsHeaderRendererComponent,
     PodsEntryRendererComponent,
-    SecretsEntryRendererComponent,
-    SecretsHeaderRendererComponent,
     ConfigMapsEntryRendererComponent,
     ConfigMapsHeaderRendererComponent,
     ServicesHeaderRendererComponent,
@@ -209,8 +201,6 @@ import { WindowTitleService } from 'shared/services/window-title.service';
     DeploymentHeaderRendererComponent,
     PodsHeaderRendererComponent,
     PodsEntryRendererComponent,
-    SecretsHeaderRendererComponent,
-    SecretsEntryRendererComponent,
     ConfigMapsEntryRendererComponent,
     ConfigMapsHeaderRendererComponent,
     ServicesHeaderRendererComponent,
