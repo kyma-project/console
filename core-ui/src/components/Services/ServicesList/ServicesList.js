@@ -46,6 +46,7 @@ export default function ServicesList({ namespace }) {
     'Age',
     'Labels',
   ];
+
   const rowRenderer = entry => [
     <Link onClick={() => navigateToServiceDetails(entry)}>{entry.name}</Link>,
     <span>{entry.clusterIP || EMPTY_TEXT_PLACEHOLDER}</span>,

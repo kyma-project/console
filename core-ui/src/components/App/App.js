@@ -13,7 +13,7 @@ import ApiRules from 'components/ApiRules/ApiRules';
 import ApiRuleDetails from 'components/ApiRules/ApiRuleDetails/ApiRuleDetails';
 import EditApiRule from 'components/ApiRules/EditApiRule/EditApiRule';
 
-import ServicesList from 'components/Services/ServicesList/ServicesList';
+import Services from 'components/Services/Services';
 import ServiceDetails from 'components/Services/ServiceDetails/ServiceDetails';
 
 import OAuthClientsList from 'components/OAuthClients/List/OAuthClientsList';
@@ -147,7 +147,7 @@ function RoutedOAuthClientDetails({ match }) {
 }
 
 function RoutedServicesList({ match }) {
-  return <ServicesList namespace={match.params.namespaceId} />;
+  return <Services namespace={match.params.namespaceId} />;
 }
 
 function RoutedServiceDetails({ match }) {
