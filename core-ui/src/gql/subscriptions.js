@@ -107,3 +107,17 @@ export const SECRET_EVENT_SUBSCRIPTION = gql`
     }
   }
 `;
+
+export const SECRET_EVENT_SUBSCRIPTION_LIST = gql`
+  subscription secretEvent($namespace: String!) {
+    secretEvent(namespace: $namespace) {
+      type
+      secret {
+        name
+        type
+        labels
+        creationTime
+      }
+    }
+  }
+`;

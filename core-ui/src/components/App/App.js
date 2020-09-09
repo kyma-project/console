@@ -23,6 +23,8 @@ import GlobalPermissions from 'components/Permissions/PermissionList/GlobalPermi
 import ClusterRoleDetails from 'components/Permissions/RoleDetails/ClusterRoleDetails';
 import NamespacePermissions from 'components/Permissions/PermissionList/NamespacePermissions';
 import RoleDetails from 'components/Permissions/RoleDetails/RoleDetails';
+import SecretList from 'components/Secrets/List/SecretList';
+import SecretDetails from 'components/Secrets/Details/SecretDetails';
 
 import { FUNCTIONS_WINDOW_TITLE } from 'components/Lambdas/constants';
 import {
@@ -31,6 +33,7 @@ import {
   NAMESPACE_DETAILS_TITLE,
   NAMESPACES_TITLE,
   SERVICES_TITLE,
+  SECRETS_TITLE,
 } from 'shared/constants';
 
 export default function App() {
@@ -115,6 +118,17 @@ export default function App() {
         path="/apirules/edit/:apiName"
         render={withTitle(API_RULES_TITLE, RoutedEditApiRule)}
       />
+
+      <Route
+        exact
+        path="/home/namespaces/:namespaceId/secrets"
+        render={withTitle(SECRETS_TITLE, RoutedSecretList)}
+      />
+      <Route
+        exact
+        path="/home/namespaces/:namespaceId/secrets/details/:name"
+        render={withTitle(SECRETS_TITLE, RoutedSecretDetails)}
+      />
     </Switch>
   );
 }
@@ -172,4 +186,17 @@ function RoutedRoleDetails({ match }) {
 
 function RoutedClusterRoleDetails({ match }) {
   return <ClusterRoleDetails roleName={match.params.roleName} />;
+}
+
+function RoutedSecretList({ match }) {
+  return <SecretList namespace={match.params.namespaceId} />;
+}
+
+function RoutedSecretDetails({ match }) {
+  return (
+    <SecretDetails
+      namespace={match.params.namespaceId}
+      name={match.params.name}
+    />
+  );
 }

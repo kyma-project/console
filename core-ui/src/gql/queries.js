@@ -320,3 +320,25 @@ export const GET_CLUSTER_ROLE = gql`
     }
   }
 `;
+export const GET_SECRETS_LIST = gql`
+  query secrets($namespace: String!) {
+    secrets(namespace: $namespace) {
+      name
+      type
+      labels
+      creationTime
+    }
+  }
+`;
+export const GET_SECRET_DETAILS = gql`
+  query secret($namespace: String!, $name: String!) {
+    secret(namespace: $namespace, name: $name) {
+      name
+      namespace
+      creationTime
+      data
+      annotations
+      json
+    }
+  }
+`;

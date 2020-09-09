@@ -176,7 +176,8 @@ export function getStaticChildrenNodesForNamespace(){
       pathSegment: 'secrets',
       navigationContext: 'secrets',
       label: 'Secrets',
-      viewUrl: '/consoleapp.html#/home/namespaces/:namespaceId/secrets',
+      viewUrl: config.coreModuleUrl + '/home/namespaces/:namespaceId/secrets',
+      viewGroup: '_core_ui_',
       keepSelectedForChildren: true,
       children: [
         {
@@ -184,8 +185,8 @@ export function getStaticChildrenNodesForNamespace(){
           children: [
             {
               pathSegment: ':name',
-              viewUrl:
-                '/consoleapp.html#/home/namespaces/:namespaceId/secrets/:name'
+              viewUrl: config.coreModuleUrl + '/home/namespaces/:namespaceId/secrets/details/:name',
+              viewGroup: '_core_ui_',
             }
           ]
         }

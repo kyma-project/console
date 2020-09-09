@@ -6,6 +6,7 @@ export const OAUTH_CLIENTS_TITLE = 'OAuth Clients';
 export const NAMESPACE_DETAILS_TITLE = 'Namespace Details';
 export const NAMESPACES_TITLE = 'Namespaces';
 export const SERVICES_TITLE = 'Services';
+export const SECRETS_TITLE = 'Secrets';
 
 export const ERRORS = {
   SERVER: 'Server error. Contact your cluster admin.',

@@ -258,6 +258,7 @@ export const DELETE_OAUTH_CLIENT = gql`
     }
   }
 `;
+
 export const CREATE_OAUTH_CLIENT = gql`
   mutation createOAuth2Client(
     $namespace: String!
@@ -295,6 +296,14 @@ export const DELETE_CLUSTER_ROLE_BINDING = gql`
   }
 `;
 
+export const DELETE_SECRET = gql`
+  mutation deleteSecret($namespace: String!, $name: String!) {
+    deleteSecret(name: $name, namespace: $namespace) {
+      name
+    }
+  }
+`;
+
 export const CREATE_ROLE_BINDING = gql`
   mutation createRoleBinding(
     $name: String!
@@ -302,6 +311,14 @@ export const CREATE_ROLE_BINDING = gql`
     $params: RoleBindingInput!
   ) {
     createRoleBinding(name: $name, namespace: $namespace, params: $params) {
+      name
+    }
+  }
+`;
+
+export const UPDATE_SECRET = gql`
+  mutation updateSecret($namespace: String!, $name: String!, $secret: JSON!) {
+    updateSecret(name: $name, namespace: $namespace, secret: $secret) {
       name
     }
   }
