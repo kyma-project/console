@@ -13,7 +13,7 @@ ServicesList.propTypes = { namespace: PropTypes.string.isRequired };
 export default function ServicesList({ namespace }) {
   const navigateToServiceDetails = service =>
     LuigiClient.linkManager().navigate(
-      `details/${encodeURIComponent(service.name)}`,
+      `details/${service.name}`,
     );
 
   const { data, error, loading } = useQuery(GET_SERVICES, {
