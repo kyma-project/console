@@ -7,6 +7,11 @@ import { GET_SERVICES } from 'gql/queries';
 
 const namespace = 'test-namespace';
 
+const currentDate = Date.now();
+const msInMinute = 60000;
+const creationDate = currentDate - msInMinute;
+const creationDateFormat = creationDate / 1000;
+
 const servicessQueryMock = {
   request: {
     query: GET_SERVICES,
@@ -18,7 +23,7 @@ const servicessQueryMock = {
         {
           name: 'service-1',
           clusterIP: '10.10.100.100',
-          creationTimestamp: '2000-10-10T10:10:10Z',
+          creationTimestamp: creationDateFormat,
           labels: {
             label: 'test-1',
           },
@@ -32,7 +37,7 @@ const servicessQueryMock = {
         {
           name: 'service-2',
           clusterIP: '11.11.111.111',
-          creationTimestamp: '2000-11-11T11:11:11Z',
+          creationTimestamp: creationDateFormat,
           labels: {
             label: 'test-2',
           },
@@ -65,15 +70,24 @@ describe('ServicesList', () => {
     expect(await findByText('service-2')).toBeInTheDocument();
   });
 
-  it('Callbacks on service click', async () => {
-    const { findByText } = render(
+  it('Renders service age properly', async () => {
+    const { findAllByText } = render(
       <MockedProvider addTypename={false} mocks={[servicessQueryMock]}>
         <ServicesList namespace={namespace} />
       </MockedProvider>,
     );
-
-    fireEvent.click(await findByText('service-1'));
-
-    expect(mockNavigate).toHaveBeenCalledWith('details/service-1');
+    expect(await findAllByText('a minute ago'));
   });
+});
+
+it('Luigi navigate on service click', async () => {
+  const { findByText } = render(
+    <MockedProvider addTypename={false} mocks={[servicessQueryMock]}>
+      <ServicesList namespace={namespace} />
+    </MockedProvider>,
+  );
+
+  fireEvent.click(await findByText('service-1'));
+
+  expect(mockNavigate).toHaveBeenCalledWith('details/service-1');
 });
