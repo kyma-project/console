@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Button } from 'fundamental-react';
-import { PageHeader, StatusBadge } from 'react-shared';
+import { PageHeader } from 'react-shared';
 
 import { useDeleteLambda } from 'components/Lambdas/gql/hooks/mutations';
 

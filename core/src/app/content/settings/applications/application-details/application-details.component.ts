@@ -26,7 +26,6 @@ export class ApplicationDetailsComponent implements OnInit, OnDestroy {
   public transformedLabels: string[];
   public emptyText = EMPTY_TEXT;
   private sub: any;
-  private prettyStatus = '';
   application: any;
 
   private actions = [
@@ -118,10 +117,6 @@ export class ApplicationDetailsComponent implements OnInit, OnDestroy {
             this.application.labels
           );
           this.boundNamespaces = data.application.enabledMappingServices;
-
-          this.prettyStatus = this.applicationsService.printPrettyConnectionStatus(
-            data.application.status
-          );
         } else {
           this.navigateToList();
         }
@@ -222,8 +217,8 @@ export class ApplicationDetailsComponent implements OnInit, OnDestroy {
       .length;
   }
 
-  public determineClass(entry) {
-    return this.applicationsService.determineClass(entry);
+  public determineStatusType(entry) {
+    return this.applicationsService.determineStatusType(entry);
   }
 
   public getTransformedLabels(labels): string[] {

@@ -118,18 +118,13 @@ export class ApplicationsService {
     );
   }
 
-  public printPrettyConnectionStatus(status) {
-    return _.startCase(_.toLower(status));
-  }
-
-  public determineClass(entry) {
+  public determineStatusType(entry) {
     switch (entry.status) {
-      case 'NOT_SERVING':
-        return 'fd-status-label--busy';
-      case 'SERVING':
-        return 'fd-status-label--available';
       case 'GATEWAY_NOT_CONFIGURED':
-        return '';
+      case 'NOT_SERVING':
+        return 'warning';
+      case 'SERVING':
+        return 'success';
       default:
         return '';
     }

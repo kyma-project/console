@@ -75,7 +75,7 @@ export class ApplicationsEntryRendererComponent
   }
 
   public determineClass(entry) {
-    return this.applicationsService.determineClass(entry);
+    return this.applicationsService.determineStatusType(entry);
   }
 
   public navigateToDetails(appName) {

@@ -64,13 +64,11 @@
       <fd-panel>
         <fd-panel-body>
           <p class="fd-has-color-text-4 fd-has-margin-bottom-none">Status</p>
-          <p>
-            <span
-              class="fd-status-label"
-              [ngClass]="determineClass(application)"
-              >{{ prettyStatus }}</span
-            >
-          </p>
+          <app-status-label
+            [statusType]="determineStatusType(application)"
+          >
+            {{ application.status }}
+          </app-status-label>
         </fd-panel-body>
       </fd-panel>
       <fd-panel>
