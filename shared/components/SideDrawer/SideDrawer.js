@@ -28,7 +28,6 @@ export const SideDrawer = ({
 
       <section className="content">
         {children}
-
         <div className="bottom">{bottomContent}</div>
       </section>
     </div>

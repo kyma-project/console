@@ -10,7 +10,8 @@
   grid-template-columns: auto auto;
   align-items: center;
   right: 0;
-  top: 4em;
+  top: 0;
+  height: 100%;
   transform: translateX(calc(100% - #{$btnWidth}));
 
   &--open {
@@ -30,7 +31,6 @@
     cursor: pointer;
     background-color: var(--fd-color-background-2);
     border-radius: 4px 0 0 4px;
-
     padding: 0.6em;
     width: $btnWidth;
     box-sizing: border-box;
@@ -40,14 +40,14 @@
     background-color: var(--fd-color-background-2);
     border-radius: 4px 0 0 4px;
     padding: 16px;
-    min-height: 8em;
-    max-height: 78vh;
+    align-self: stretch;
     overflow: auto;
 
     .bottom {
-      position: sticky;
+      position: absolute;
       bottom: 0;
-      margin-top: 1em;
+      right: 0;
+      padding: 1em;
       display: flex;
 
       justify-content: flex-end;

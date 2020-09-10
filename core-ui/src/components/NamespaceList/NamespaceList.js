@@ -11,7 +11,7 @@ import NamespacesListHeader from './NamespacesListHeader/NamespacesListHeader';
 import * as storage from './storage';
 import { handleNamespaceWsEvent } from './wsHandler';
 import { useMicrofrontendContext, SideDrawer } from 'react-shared';
-import { ControlledEditor, DiffEditor } from '@monaco-editor/react';
+import { ControlledEditor } from '@monaco-editor/react';
 import { Button } from 'fundamental-react';
 
 function sortByName(array) {
