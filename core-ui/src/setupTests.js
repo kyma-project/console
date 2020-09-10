@@ -5,6 +5,16 @@ import { act } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import 'babel-polyfill';
 
+const originalConsoleError = console.error;
+export const ignoreConsoleErrors = patterns => {
+  console.error = (...data) => {
+    for (const d of data) {
+      if (patterns.some(pattern => d.toString().includes(pattern))) return;
+    }
+    originalConsoleError(...data);
+  };
+};
+
 var nodeCrypto = require('crypto');
 global.crypto = {
   getRandomValues: function(buffer) {

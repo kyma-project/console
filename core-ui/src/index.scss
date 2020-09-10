@@ -195,3 +195,9 @@ li {
 .fd-checkbox:checked::before, input[type=checkbox]:checked::before {
   border-color: transparent;
 }
+
+.no-dismiss-tokens {
+  .fd-token::after, &.fd-token::after {
+    content: none !important;
+  }
+}

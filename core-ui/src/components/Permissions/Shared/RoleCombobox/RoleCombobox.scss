@@ -1,0 +1,11 @@
+.role-combobox {
+    .fd-popover {
+        width: 100%;
+    }
+}
+
+.role-combobox__list {
+    max-height: 35vh;
+    overflow: scroll;
+    width: 366px;
+}

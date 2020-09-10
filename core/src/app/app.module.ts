@@ -1,4 +1,3 @@
-import { RbacService } from './shared/services/rbac.service';
 import { ApplicationBindingService } from './content/settings/applications/application-details/application-binding-service';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -59,18 +58,9 @@ import { ResourceUploaderModalComponent } from './shared/components/resource-upl
 import { ResourceUploadService } from './shared/components/resource-uploader/services/resource-upload.service';
 import { UploaderComponent } from './shared/components/resource-uploader/uploader/uploader.component';
 import { ComponentCommunicationService } from './shared/services/component-communication.service';
-import { RoleBindingModalComponent } from './shared/components/role-binding-modal/role-binding-modal.component';
 import { GraphQLClientService } from './shared/services/graphql-client-service';
 import { LuigiClientService } from './shared/services/luigi-client.service';
 import { ClickOutsideModule } from 'ng-click-outside';
-import { PermissionsComponent } from './shared/components/permissions/permissions.component';
-import { RolesComponent } from './shared/components/permissions/roles/roles.component';
-import { RoleDetailsComponent } from './shared/components/permissions/role-details/role-details.component';
-import { RolesEntryRendererComponent } from './shared/components/permissions/roles/roles-entry-renderer/roles-entry-renderer.component';
-import { RolesHeaderRendererComponent } from './shared/components/permissions/roles/roles-header-renderer/roles-header-renderer.component';
-import { BindingsComponent } from './shared/components/permissions/bindings/bindings.component';
-import { BindingEntryRendererComponent } from './shared/components/permissions/bindings/binding-entry-renderer/binding-entry-renderer.component';
-import { BindingHeaderRendererComponent } from './shared/components/permissions/bindings/binding-header-renderer/binding-header-renderer.component';
 import { AbstractKubernetesElementListComponent } from './content/namespaces/operation/abstract-kubernetes-element-list.component';
 import { ServiceBrokerHeaderRendererComponent } from './content/settings/service-brokers/services-header-renderer/service-broker-header-renderer.component';
 import { ServiceBrokerEntryRendererComponent } from './content/settings/service-brokers/services-entry-renderer/service-broker-entry-renderer.component';
@@ -157,15 +147,6 @@ import { WindowTitleService } from 'shared/services/window-title.service';
     ResourceUploaderModalComponent,
     ResourceUploaderComponent,
     Copy2ClipboardModalComponent,
-    PermissionsComponent,
-    RoleDetailsComponent,
-    RoleBindingModalComponent,
-    RolesComponent,
-    BindingsComponent,
-    RolesEntryRendererComponent,
-    RolesHeaderRendererComponent,
-    BindingHeaderRendererComponent,
-    BindingEntryRendererComponent,
     AbstractKubernetesElementListComponent,
     AbstractGraphqlElementListComponent,
     ServiceBrokerEntryRendererComponent,
@@ -215,7 +196,6 @@ import { WindowTitleService } from 'shared/services/window-title.service';
     ComponentCommunicationService,
     ResourceUploadService,
     ApplicationBindingService,
-    RbacService,
     GraphQLClientService,
     IdpPresetsService,
     LuigiClientService,
@@ -237,10 +217,6 @@ import { WindowTitleService } from 'shared/services/window-title.service';
     ServicesEntryRendererComponent,
     ApplicationsHeaderRendererComponent,
     ApplicationsEntryRendererComponent,
-    BindingHeaderRendererComponent,
-    BindingEntryRendererComponent,
-    RolesHeaderRendererComponent,
-    RolesEntryRendererComponent,
     ServiceBrokerHeaderRendererComponent,
     ServiceBrokerEntryRendererComponent,
     IdpPresetsHeaderRendererComponent,
