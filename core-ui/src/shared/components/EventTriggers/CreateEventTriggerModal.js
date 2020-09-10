@@ -37,11 +37,19 @@ export default function CreateEventTriggerModal({
         content={
           EVENT_TRIGGERS_PANEL.ADD_MODAL.OPEN_BUTTON.NOT_ENTRIES_POPUP_MESSAGE
         }
-        position="top"
-        trigger="mouseenter"
         tippyProps={{
           distance: 16,
         }}
+      >
+        {button}
+      </Tooltip>
+    );
+  } else if (!isLambda && !servicePorts.length) {
+    modalOpeningComponent = (
+      <Tooltip
+        content={
+          EVENT_TRIGGERS_PANEL.ADD_MODAL.OPEN_BUTTON.NO_EXPOSED_PORTS_MESSAGE
+        }
       >
         {button}
       </Tooltip>

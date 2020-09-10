@@ -20,7 +20,7 @@ const headerRenderer = isLambda => {
   if (isLambda) {
     return () => baseHeaders;
   } else {
-    return () => [...baseHeaders, 'Port', 'Path'];
+    return () => [...baseHeaders, 'Target port', 'Target path'];
   }
 };
 
@@ -52,26 +52,32 @@ export default function CreateEventTriggerForm({
     setCustomValid(!!events.filter(e => e.isChecked).length);
   }, [events, setCustomValid]);
 
-  const portInput = event => (
-    <ComboboxInput
-      buttonProps={{ typeAttr: 'button' }}
-      inputProps={{
-        value: event.port,
-        onChange: () => {},
-        readOnly: true,
-      }}
-      placeholder="Choose port"
-      menu={
-        <Menu.List>
-          {servicePorts.map(p => (
-            <Menu.Item key={p} onClick={() => onSetPort(event, p)}>
-              {p}
-            </Menu.Item>
-          ))}
-        </Menu.List>
-      }
-    />
-  );
+  const portInput = event => {
+    if (servicePorts.length > 1) {
+      return (
+        <ComboboxInput
+          buttonProps={{ typeAttr: 'button' }}
+          inputProps={{
+            value: event.port,
+            onChange: () => {},
+            readOnly: true,
+          }}
+          placeholder="Choose port"
+          menu={
+            <Menu.List>
+              {servicePorts.map(p => (
+                <Menu.Item key={p} onClick={() => onSetPort(event, p)}>
+                  {p}
+                </Menu.Item>
+              ))}
+            </Menu.List>
+          }
+        />
+      );
+    } else {
+      return <FormInput readOnly defaultValue={servicePorts[0]} />;
+    }
+  };
 
   const createRowCells = (event, isLambda) => {
     const baseCells = [
@@ -93,6 +99,7 @@ export default function CreateEventTriggerForm({
           <FormInput
             placeholder="/"
             onChange={e => onSetPath(event, e.target.value)}
+            pattern="^\/.*"
           />,
         ];
   };

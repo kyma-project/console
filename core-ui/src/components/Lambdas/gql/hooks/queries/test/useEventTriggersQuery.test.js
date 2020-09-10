@@ -27,7 +27,6 @@ describe('useEventTriggersQuery', () => {
     serviceName: lambdaMock.name,
     namespace: lambdaMock.namespace,
   };
-
   const subscriptionMock = EVENT_TRIGGER_EVENT_SUBSCRIPTION_MOCK(variables);
 
   it('should see loading state', async () => {

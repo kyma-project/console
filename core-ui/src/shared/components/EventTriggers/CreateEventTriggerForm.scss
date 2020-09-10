@@ -21,9 +21,7 @@
     margin-right: 0;
   } 
 
-  .fd-popover {
-    .fd-input-group__input {
-      border: 1px solid var(--fd-color-neutral-4);
-    }
+  .fd-input {
+    border-width: 1px !important;
   }
 }

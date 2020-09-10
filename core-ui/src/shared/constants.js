@@ -29,6 +29,7 @@ export const EVENT_TRIGGERS_PANEL = {
       TEXT: 'Add Event Trigger',
       NOT_ENTRIES_POPUP_MESSAGE:
         'No Events available to connect in this Namespace.',
+      NO_EXPOSED_PORTS_MESSAGE: 'This service has no exposed ports.',
     },
     CONFIRM_BUTTON: {
       TEXT: 'Add',

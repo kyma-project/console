@@ -15,7 +15,7 @@ function headerRenderer(isLambda) {
   if (isLambda) {
     return () => baseHeaders;
   } else {
-    return () => [...baseHeaders, 'Port', 'Path'];
+    return () => [...baseHeaders, 'Target port', 'Target path'];
   }
 }
 
