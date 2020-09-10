@@ -12,9 +12,7 @@ ServicesList.propTypes = { namespace: PropTypes.string.isRequired };
 
 export default function ServicesList({ namespace }) {
   const navigateToServiceDetails = service =>
-    LuigiClient.linkManager().navigate(
-      `details/${service.name}`,
-    );
+    LuigiClient.linkManager().navigate(`details/${service.name}`);
 
   const { data, error, loading } = useQuery(GET_SERVICES, {
     variables: { namespace },
@@ -32,7 +30,7 @@ export default function ServicesList({ namespace }) {
     if (entry.ports && entry.ports.length) {
       return entry.ports.map(port => {
         const portValue = `${entry.name}.${namespace}: ${port.port} ${port.serviceProtocol}`;
-        return <div key={portValue}>{portValue}</div>;
+        return <li key={portValue}>{portValue}</li>;
       });
     } else {
       return <span> {EMPTY_TEXT_PLACEHOLDER} </span>;
@@ -50,7 +48,7 @@ export default function ServicesList({ namespace }) {
   const rowRenderer = entry => [
     <Link onClick={() => navigateToServiceDetails(entry)}>{entry.name}</Link>,
     <span>{entry.clusterIP || EMPTY_TEXT_PLACEHOLDER}</span>,
-    listOfEndpoints(entry),
+    <ul>{listOfEndpoints(entry)}</ul>,
     <Moment unix fromNow>
       {entry.creationTimestamp}
     </Moment>,
@@ -59,7 +57,6 @@ export default function ServicesList({ namespace }) {
 
   return (
     <GenericList
-      title="Services"
       actions={actions}
       entries={data?.services || []}
       headerRenderer={headerRenderer}
