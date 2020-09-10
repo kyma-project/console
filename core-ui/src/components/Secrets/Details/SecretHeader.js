@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import LuigiClient from '@luigi-project/client';
-import Moment from 'react-moment';
 
 import {
   PageHeader,
@@ -49,17 +48,8 @@ export default function SecretHeader({ secret }) {
 
   return (
     <PageHeader title={name} breadcrumbItems={breadcrumbs} actions={actions}>
-      <PageHeader.Column title="Creation Time" columnSpan="1 / 2">
-        <Moment
-          unix
-          format="YYYY-MM-DD h:mm:ss a"
-          data-e2e-id="service-last-update"
-        >
-          {secret.creationTime}
-        </Moment>
-      </PageHeader.Column>
       {Object.keys(secret.annotations).length !== 0 && (
-        <PageHeader.Column title="Annotations" columnSpan="2 / 2">
+        <PageHeader.Column title="Annotations">
           {Object.keys(secret.annotations).map(key => (
             <Modal
               key={key}

@@ -335,7 +335,6 @@ export const GET_SECRET_DETAILS = gql`
     secret(namespace: $namespace, name: $name) {
       name
       namespace
-      creationTime
       data
       annotations
       json
