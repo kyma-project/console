@@ -1,12 +1,12 @@
 import React from 'react';
 
 import { Button } from 'fundamental-react';
-import { PageHeader } from 'react-shared';
+import { PageHeader, StatusBadge } from 'react-shared';
 
 import { useDeleteLambda } from 'components/Lambdas/gql/hooks/mutations';
 
 import LambdaLabels from './LambdaLabels';
-import LambdaStatusCard from './LambdaStatusCard';
+import { LambdaStatusBadge } from 'components/Lambdas/LambdaStatusBadge/LambdaStatusBadge';
 
 import {
   BUTTONS,
@@ -46,17 +46,18 @@ export default function LambdaDetailsHeader({ lambda }) {
         actions={actions}
       />
       <div className="fd-panel-grid fd-panel-grid--3col lambda-details-header__content">
-        <div className="fd-has-grid-column-span-2">
-          <LambdaLabels lambda={lambda} />
-          <div className="fd-has-margin-bottom-l">
+        <div>
+          <p className="fd-has-color-text-4 status-header">Status</p>
+          <LambdaStatusBadge status={lambda.status} />
+          <div className="fd-has-margin-bottom-l fd-has-margin-top-m">
             <span className="fd-has-color-text-4 ">
               {LAMBDA_DETAILS.RUNTIME.TEXT}
             </span>
             <span>{prettyRuntime(lambda.runtime)}</span>
           </div>
         </div>
-        <div className="fd-has-grid-column-span-1">
-          <LambdaStatusCard lambdaName={lambda.name} status={lambda.status} />
+        <div className="fd-has-grid-column-span-2">
+          <LambdaLabels lambda={lambda} />
         </div>
       </div>
     </div>
