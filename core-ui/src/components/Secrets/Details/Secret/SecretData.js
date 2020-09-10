@@ -3,11 +3,14 @@ import PropTypes from 'prop-types';
 
 import { Button, Panel, FormItem, FormLabel } from 'fundamental-react';
 import './SecretData.scss';
+import { defaultsDeep } from 'lodash';
 
-const SecretComponent = ({ name, value, showEncoded }) => (
+const SecretComponent = ({ name, value, showEncoded, isCollapsed }) => (
   <FormItem className="item-wrapper">
     <FormLabel>{name}</FormLabel>
-    {showEncoded ? btoa(value) : value}
+    <div className={isCollapsed ? 'show-more-expand' : 'show-more-collapse'}>
+      {showEncoded ? btoa(value) : value}
+    </div>
   </FormItem>
 );
 
@@ -17,6 +20,28 @@ SecretData.propTypes = {
 
 export default function SecretData({ secret }) {
   const [isEncoded, setEncoded] = React.useState(true);
+  const [isCollapsed, setCollapsed] = React.useState(true);
+  const [showExpandButton, setShowExpandButton] = React.useState(false);
+
+  const decode = () => {
+    setEncoded(true);
+  };
+  const encode = () => {
+    setEncoded(false);
+    setCollapsed(false);
+  };
+
+  const setShowExpand = async () => {
+    const e = await document.getElementsByClassName('show-more-expand');
+
+    [...e].forEach(el => {
+      if (el.scrollWidth > el.clientWidth) {
+        setShowExpandButton(true);
+      }
+    });
+  };
+
+  setShowExpand();
 
   const body = () => {
     const SecretWrapper = ({ children }) => (
@@ -38,6 +63,7 @@ export default function SecretData({ secret }) {
             key={key}
             value={secret.data[key]}
             showEncoded={isEncoded}
+            isCollapsed={isCollapsed}
           />
         ))}
       </>
@@ -49,11 +75,23 @@ export default function SecretData({ secret }) {
       <Panel.Header>
         <Panel.Head title={'Data'} />
         <Panel.Actions>
+          {showExpandButton && (
+            <Button
+              option="light"
+              glyph={isCollapsed ? 'show' : 'hide'}
+              disabled={!secret?.data}
+              onClick={() => setCollapsed(!isCollapsed)}
+            >
+              {isCollapsed ? 'Expand all' : 'Collapse all'}
+            </Button>
+          )}
           <Button
             option="light"
             glyph={isEncoded ? 'show' : 'hide'}
             disabled={!secret?.data}
-            onClick={() => setEncoded(!isEncoded)}
+            onClick={() => {
+              return isEncoded ? encode() : decode();
+            }}
           >
             {isEncoded ? 'Decode' : 'Hide decoded'}
           </Button>
