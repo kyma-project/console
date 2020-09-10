@@ -26,6 +26,16 @@ export const LAMBDA_EVENT_SUBSCRIPTION = gql`
             cpu
           }
         }
+        buildResources {
+          requests {
+            memory
+            cpu
+          }
+          limits {
+            memory
+            cpu
+          }
+        }
         env {
           name
           value

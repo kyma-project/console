@@ -20,11 +20,20 @@ export const inputNames = {
     min: 'minReplicas',
     max: 'maxReplicas',
   },
-  requests: {
-    cpu: 'requestsCpu',
-    memory: 'requestsMemory',
+  functionResources: {
+    requests: {
+      cpu: 'functionRequestsCpu',
+      memory: 'functionRequestsMemory',
+    },
+    limits: { cpu: 'functionLimitsCpu', memory: 'functionLimitsMemory' },
   },
-  limits: { cpu: 'limitsCpu', memory: 'limitsMemory' },
+  buildResources: {
+    requests: {
+      cpu: 'buildRequestsCpu',
+      memory: 'buildRequestsMemory',
+    },
+    limits: { cpu: 'buildLimitsCpu', memory: 'buildLimitsMemory' },
+  },
 };
 
 function prepareSchema() {
@@ -61,7 +70,7 @@ function prepareSchema() {
       ) {
         return arg >= this.parent.minReplicas;
       }),
-    [inputNames.requests.cpu]: yup
+    [inputNames.functionResources.requests.cpu]: yup
       .string()
       .matches(CPU_REGEXP, {
         excludeEmptyString: true,
@@ -73,7 +82,7 @@ function prepareSchema() {
       .test('matchRequestCPU', errorMessages.CPU.REQUEST_TOO_HIGH, function(
         arg,
       ) {
-        const normalizedLimit = normalizeCPU(this.parent.limitsCpu);
+        const normalizedLimit = normalizeCPU(this.parent.functionLimitsCpu);
         if (!normalizedLimit) {
           return true;
         }
@@ -81,7 +90,7 @@ function prepareSchema() {
         const normalizedRequest = normalizeCPU(arg);
         return normalizedRequest <= normalizedLimit;
       }),
-    [inputNames.limits.cpu]: yup
+    [inputNames.functionResources.limits.cpu]: yup
       .string()
       .matches(CPU_REGEXP, {
         excludeEmptyString: true,
@@ -94,12 +103,11 @@ function prepareSchema() {
         if (!arg) {
           return true;
         }
-
-        const normalizedRequest = normalizeCPU(this.parent.requestsCpu);
+        const normalizedRequest = normalizeCPU(this.parent.functionRequestsCpu);
         const normalizedLimit = normalizeCPU(arg);
         return normalizedRequest <= normalizedLimit;
       }),
-    [inputNames.requests.memory]: yup
+    [inputNames.functionResources.requests.memory]: yup
       .string()
       .matches(MEMORY_REGEXP, {
         excludeEmptyString: true,
@@ -112,7 +120,9 @@ function prepareSchema() {
         'matchRequestMemory',
         errorMessages.MEMORY.REQUEST_TOO_HIGH,
         function(arg) {
-          const normalizedLimit = normalizeMemory(this.parent.limitsMemory);
+          const normalizedLimit = normalizeMemory(
+            this.parent.functionLimitsMemory,
+          );
           if (!normalizedLimit) {
             return true;
           }
@@ -121,7 +131,7 @@ function prepareSchema() {
           return normalizedRequest <= normalizedLimit;
         },
       ),
-    [inputNames.limits.memory]: yup
+    [inputNames.functionResources.limits.memory]: yup
       .string()
       .matches(MEMORY_REGEXP, {
         excludeEmptyString: true,
@@ -137,7 +147,9 @@ function prepareSchema() {
           return true;
         }
 
-        const normalizedRequest = normalizeMemory(this.parent.requestsMemory);
+        const normalizedRequest = normalizeMemory(
+          this.parent.functionRequestsMemory,
+        );
         const normalizedLimit = normalizeMemory(arg);
         return normalizedRequest <= normalizedLimit;
       }),

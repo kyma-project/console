@@ -5,7 +5,10 @@ import { Panel, Button } from 'fundamental-react';
 import { Tooltip } from 'react-shared';
 
 import LambdaReplicas from './LambdaReplicas';
-import LambdaResources from './LambdaResources';
+import {
+  LambdaFunctionResources,
+  LambdaBuildResources,
+} from './LambdaResources';
 
 import {
   useUpdateLambda,
@@ -29,10 +32,16 @@ function getDefaultFormValues(lambda) {
   return {
     [inputNames.replicas.min]: lambda.replicas.min || '1',
     [inputNames.replicas.max]: lambda.replicas.max || '1',
-    [inputNames.requests.cpu]: parseCpu(lambda.resources.requests.cpu || ''),
-    [inputNames.limits.cpu]: parseCpu(lambda.resources.limits.cpu || ''),
-    [inputNames.requests.memory]: lambda.resources.requests.memory || '',
-    [inputNames.limits.memory]: lambda.resources.limits.memory || '',
+    [inputNames.functionResources.requests.cpu]: parseCpu(
+      lambda.resources.requests.cpu || '',
+    ),
+    [inputNames.functionResources.limits.cpu]: parseCpu(
+      lambda.resources.limits.cpu || '',
+    ),
+    [inputNames.functionResources.requests.memory]:
+      lambda.resources.requests.memory || '',
+    [inputNames.functionResources.limits.memory]:
+      lambda.resources.limits.memory || '',
   };
 }
 
@@ -175,7 +184,15 @@ export default function ResourcesManagement({ lambda }) {
           />
         </Panel.Body>
         <Panel.Body className="fd-has-padding-xs">
-          <LambdaResources
+          <LambdaFunctionResources
+            register={register}
+            disabledForm={!isEditMode}
+            errors={errors}
+            triggerValidation={triggerValidation}
+          />
+        </Panel.Body>
+        <Panel.Body className="fd-has-padding-xs">
+          <LambdaFunctionResources
             register={register}
             disabledForm={!isEditMode}
             errors={errors}
