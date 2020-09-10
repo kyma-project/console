@@ -42,6 +42,17 @@ function getDefaultFormValues(lambda) {
       lambda.resources.requests.memory || '',
     [inputNames.functionResources.limits.memory]:
       lambda.resources.limits.memory || '',
+
+    [inputNames.buildResources.requests.cpu]: parseCpu(
+      lambda.buildResources.requests.cpu || '',
+    ),
+    [inputNames.buildResources.limits.cpu]: parseCpu(
+      lambda.buildResources.limits.cpu || '',
+    ),
+    [inputNames.buildResources.requests.memory]:
+      lambda.buildResources.requests.memory || '',
+    [inputNames.buildResources.limits.memory]:
+      lambda.buildResources.limits.memory || '',
   };
 }
 
@@ -100,12 +111,22 @@ export default function ResourcesManagement({ lambda }) {
           replicas: { min: data.minReplicas, max: data.maxReplicas },
           resources: {
             requests: {
-              cpu: data.requestsCpu,
-              memory: data.requestsMemory,
+              cpu: data.functionRequestsCpu,
+              memory: data.functionRequestsMemory,
             },
             limits: {
-              cpu: data.limitsCpu,
-              memory: data.limitsMemory,
+              cpu: data.functionLimitsCpu,
+              memory: data.functionLimitsMemory,
+            },
+          },
+          buildResources: {
+            requests: {
+              cpu: data.buildRequestsCpu,
+              memory: data.buildRequestsMemory,
+            },
+            limits: {
+              cpu: data.buildLimitsCpu,
+              memory: data.buildLimitsMemory,
             },
           },
         },
@@ -192,7 +213,7 @@ export default function ResourcesManagement({ lambda }) {
           />
         </Panel.Body>
         <Panel.Body className="fd-has-padding-xs">
-          <LambdaFunctionResources
+          <LambdaBuildResources
             register={register}
             disabledForm={!isEditMode}
             errors={errors}

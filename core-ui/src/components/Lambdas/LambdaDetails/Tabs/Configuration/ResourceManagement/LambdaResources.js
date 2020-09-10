@@ -9,6 +9,10 @@ import { errorClassName, inputClassName, inputNames } from './shared';
 
 const resourcesMode = RESOURCES_MANAGEMENT_PANEL.RESOURCES;
 
+const ErrorMsg = ({ err }) => (
+  <>{err ? <div className={errorClassName}>{err}</div> : null}</>
+);
+
 export function LambdaFunctionResources({
   disabledForm,
   register,
@@ -42,11 +46,7 @@ export function LambdaFunctionResources({
                     );
                   }}
                 />
-                {errors?.functionRequestsMemory?.message && (
-                  <div className={errorClassName}>
-                    {errors.functionRequestsMemory.message}
-                  </div>
-                )}
+                <ErrorMsg err={errors?.functionRequestsMemory?.message} />
               </>
             }
           ></Row>
@@ -65,11 +65,7 @@ export function LambdaFunctionResources({
                     await triggerValidation(inputNames.limits.cpu);
                   }}
                 />
-                {errors?.functionRequestsCpu?.message && (
-                  <div className={errorClassName}>
-                    {errors.functionRequestsCpu.message}
-                  </div>
-                )}
+                <ErrorMsg err={errors?.functionRequestsCpu?.message} />
               </>
             }
           ></Row>
@@ -100,11 +96,7 @@ export function LambdaFunctionResources({
                     );
                   }}
                 />
-                {errors?.functionLimitsMemory?.message && (
-                  <div className={errorClassName}>
-                    {errors.functionLimitsMemory.message}
-                  </div>
-                )}
+                <ErrorMsg err={errors?.functionLimitsMemory?.message} />
               </>
             }
           ></Row>
@@ -125,11 +117,7 @@ export function LambdaFunctionResources({
                     );
                   }}
                 />
-                {errors?.functionLimitsCpu?.message && (
-                  <div className={errorClassName}>
-                    {errors.functionLimitsCpu.message}
-                  </div>
-                )}
+                <ErrorMsg err={errors?.functionLimitsCpu?.message} />
               </>
             }
           ></Row>
@@ -163,18 +151,16 @@ export function LambdaBuildResources({
                   className={inputClassName}
                   disabled={disabledForm}
                   _ref={register}
-                  id={inputNames.requests.memory}
-                  name={inputNames.requests.memory}
+                  id={inputNames.buildResources.requests.memory}
+                  name={inputNames.buildResources.requests.memory}
                   placeholder={resourcesMode.MEMORY.TITLE}
                   onChange={async () => {
-                    await triggerValidation(inputNames.limits.memory);
+                    await triggerValidation(
+                      inputNames.buildResources.limits.memory,
+                    );
                   }}
                 />
-                {errors?.requestsMemory?.message && (
-                  <div className={errorClassName}>
-                    {errors.requestsMemory.message}
-                  </div>
-                )}
+                <ErrorMsg err={errors?.buildRequestsMemory?.message} />
               </>
             }
           ></Row>
@@ -185,19 +171,17 @@ export function LambdaBuildResources({
                 <Input
                   disabled={disabledForm}
                   className={inputClassName}
-                  id={inputNames.requests.cpu}
-                  name={inputNames.requests.cpu}
+                  id={inputNames.buildResources.requests.cpu}
+                  name={inputNames.buildResources.requests.cpu}
                   _ref={register}
                   placeholder={resourcesMode.CPU.TITLE}
                   onChange={async () => {
-                    await triggerValidation(inputNames.limits.cpu);
+                    await triggerValidation(
+                      inputNames.buildResources.limits.cpu,
+                    );
                   }}
                 />
-                {errors?.requestsCpu?.message && (
-                  <div className={errorClassName}>
-                    {errors.requestsCpu.message}
-                  </div>
-                )}
+                <ErrorMsg err={errors?.buildRequestsCpu?.message} />
               </>
             }
           ></Row>
@@ -218,19 +202,17 @@ export function LambdaBuildResources({
                 <Input
                   disabled={disabledForm}
                   className={inputClassName}
-                  id={inputNames.limits.memory}
-                  name={inputNames.limits.memory}
+                  id={inputNames.buildResources.limits.memory}
+                  name={inputNames.buildResources.limits.memory}
                   _ref={register}
                   placeholder={resourcesMode.MEMORY.TITLE}
                   onChange={async () => {
-                    await triggerValidation(inputNames.requests.memory);
+                    await triggerValidation(
+                      inputNames.buildResources.requests.memory,
+                    );
                   }}
                 />
-                {errors?.limitsMemory?.message && (
-                  <div className={errorClassName}>
-                    {errors.limitsMemory.message}
-                  </div>
-                )}
+                <ErrorMsg err={errors?.buildLimitsMemory?.message} />
               </>
             }
           ></Row>
@@ -239,21 +221,19 @@ export function LambdaBuildResources({
             action={
               <>
                 <Input
-                  id={inputNames.limits.cpu}
-                  name={inputNames.limits.cpu}
+                  id={inputNames.buildResources.limits.cpu}
+                  name={inputNames.buildResources.limits.cpu}
                   disabled={disabledForm}
                   className={inputClassName}
                   _ref={register}
                   placeholder={resourcesMode.CPU.TITLE}
                   onChange={async () => {
-                    await triggerValidation(inputNames.requests.cpu);
+                    await triggerValidation(
+                      inputNames.buildResources.requests.cpu,
+                    );
                   }}
                 />
-                {errors?.limitsCpu?.message && (
-                  <div className={errorClassName}>
-                    {errors.limitsCpu.message}
-                  </div>
-                )}
+                <ErrorMsg err={errors?.buildLimitsCpu?.message} />
               </>
             }
           ></Row>

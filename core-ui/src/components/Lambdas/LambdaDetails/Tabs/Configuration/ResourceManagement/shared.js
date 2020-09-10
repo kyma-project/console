@@ -76,30 +76,34 @@ function prepareSchema() {
         excludeEmptyString: true,
         message: errorMessages.CPU.DEFAULT,
       })
-      .test('matchMinRequestCPU', MIN_CPU_VALUE_ERROR, function(arg) {
+      .test('matchFunctionMinRequestCPU', MIN_CPU_VALUE_ERROR, function(arg) {
         return testMinCPU(arg);
       })
-      .test('matchRequestCPU', errorMessages.CPU.REQUEST_TOO_HIGH, function(
-        arg,
-      ) {
-        const normalizedLimit = normalizeCPU(this.parent.functionLimitsCpu);
-        if (!normalizedLimit) {
-          return true;
-        }
+      .test(
+        'matchFunctionRequestCPU',
+        errorMessages.CPU.REQUEST_TOO_HIGH,
+        function(arg) {
+          const normalizedLimit = normalizeCPU(this.parent.functionLimitsCpu);
+          if (!normalizedLimit) {
+            return true;
+          }
 
-        const normalizedRequest = normalizeCPU(arg);
-        return normalizedRequest <= normalizedLimit;
-      }),
+          const normalizedRequest = normalizeCPU(arg);
+          return normalizedRequest <= normalizedLimit;
+        },
+      ),
     [inputNames.functionResources.limits.cpu]: yup
       .string()
       .matches(CPU_REGEXP, {
         excludeEmptyString: true,
         message: errorMessages.CPU.DEFAULT,
       })
-      .test('matchMinLimitCPU', MIN_CPU_VALUE_ERROR, function(arg) {
+      .test('matchFunctionMinLimitCPU', MIN_CPU_VALUE_ERROR, function(arg) {
         return testMinCPU(arg);
       })
-      .test('matchLimitCPU', errorMessages.CPU.LIMITS_TOO_LOW, function(arg) {
+      .test('matchFunctionLimitCPU', errorMessages.CPU.LIMITS_TOO_LOW, function(
+        arg,
+      ) {
         if (!arg) {
           return true;
         }
@@ -113,11 +117,13 @@ function prepareSchema() {
         excludeEmptyString: true,
         message: errorMessages.MEMORY.DEFAULT,
       })
-      .test('matchMinRequestMemory', MIN_MEMORY_VALUE_ERROR, function(arg) {
+      .test('matchFunctionMinRequestMemory', MIN_MEMORY_VALUE_ERROR, function(
+        arg,
+      ) {
         return testMinMemory(arg);
       })
       .test(
-        'matchRequestMemory',
+        'matchFunctionRequestMemory',
         errorMessages.MEMORY.REQUEST_TOO_HIGH,
         function(arg) {
           const normalizedLimit = normalizeMemory(
@@ -137,22 +143,118 @@ function prepareSchema() {
         excludeEmptyString: true,
         message: errorMessages.MEMORY.DEFAULT,
       })
-      .test('matchMinLimitMemory', MIN_MEMORY_VALUE_ERROR, function(arg) {
+      .test('matchFunctionMinLimitMemory', MIN_MEMORY_VALUE_ERROR, function(
+        arg,
+      ) {
         return testMinMemory(arg);
       })
-      .test('matchLimitMemory', errorMessages.MEMORY.LIMITS_TOO_LOW, function(
+      .test(
+        'matchFunctionLimitMemory',
+        errorMessages.MEMORY.LIMITS_TOO_LOW,
+        function(arg) {
+          if (!arg) {
+            return true;
+          }
+
+          const normalizedRequest = normalizeMemory(
+            this.parent.functionRequestsMemory,
+          );
+          const normalizedLimit = normalizeMemory(arg);
+          return normalizedRequest <= normalizedLimit;
+        },
+      ),
+    // BUILD
+    [inputNames.buildResources.requests.cpu]: yup
+      .string()
+      .matches(CPU_REGEXP, {
+        excludeEmptyString: true,
+        message: errorMessages.CPU.DEFAULT,
+      })
+      .test('matchBuildMinRequestCPU', MIN_CPU_VALUE_ERROR, function(arg) {
+        return testMinCPU(arg);
+      })
+      .test(
+        'matchBuildRequestCPU',
+        errorMessages.CPU.REQUEST_TOO_HIGH,
+        function(arg) {
+          const normalizedLimit = normalizeCPU(this.parent.buildLimitsCpu);
+          if (!normalizedLimit) {
+            return true;
+          }
+
+          const normalizedRequest = normalizeCPU(arg);
+          return normalizedRequest <= normalizedLimit;
+        },
+      ),
+    [inputNames.buildResources.limits.cpu]: yup
+      .string()
+      .matches(CPU_REGEXP, {
+        excludeEmptyString: true,
+        message: errorMessages.CPU.DEFAULT,
+      })
+      .test('matchBuildMinLimitCPU', MIN_CPU_VALUE_ERROR, function(arg) {
+        return testMinCPU(arg);
+      })
+      .test('matchBuildLimitCPU', errorMessages.CPU.LIMITS_TOO_LOW, function(
         arg,
       ) {
         if (!arg) {
           return true;
         }
-
-        const normalizedRequest = normalizeMemory(
-          this.parent.functionRequestsMemory,
-        );
-        const normalizedLimit = normalizeMemory(arg);
+        const normalizedRequest = normalizeCPU(this.parent.buildRequestsCpu);
+        const normalizedLimit = normalizeCPU(arg);
         return normalizedRequest <= normalizedLimit;
       }),
+    [inputNames.buildResources.requests.memory]: yup
+      .string()
+      .matches(MEMORY_REGEXP, {
+        excludeEmptyString: true,
+        message: errorMessages.MEMORY.DEFAULT,
+      })
+      .test('matchBuildMinRequestMemory', MIN_MEMORY_VALUE_ERROR, function(
+        arg,
+      ) {
+        return testMinMemory(arg);
+      })
+      .test(
+        'matchBuildRequestMemory',
+        errorMessages.MEMORY.REQUEST_TOO_HIGH,
+        function(arg) {
+          const normalizedLimit = normalizeMemory(
+            this.parent.buildLimitsMemory,
+          );
+          if (!normalizedLimit) {
+            return true;
+          }
+
+          const normalizedRequest = normalizeMemory(arg);
+          return normalizedRequest <= normalizedLimit;
+        },
+      ),
+    [inputNames.buildResources.limits.memory]: yup
+      .string()
+      .matches(MEMORY_REGEXP, {
+        excludeEmptyString: true,
+        message: errorMessages.MEMORY.DEFAULT,
+      })
+      .test('matchBuildMinLimitMemory', MIN_MEMORY_VALUE_ERROR, function(arg) {
+        return testMinMemory(arg);
+      })
+      .test(
+        'matchBuildLimitMemory',
+        errorMessages.MEMORY.LIMITS_TOO_LOW,
+        function(arg) {
+          if (!arg) {
+            return true;
+          }
+
+          const normalizedRequest = normalizeMemory(
+            this.parent.buildRequestsMemory,
+          );
+          const normalizedLimit = normalizeMemory(arg);
+          return normalizedRequest <= normalizedLimit;
+        },
+      ),
   });
 }
 
