@@ -146,14 +146,14 @@ export default function RepositoryForm({
 
   async function handleSubmit() {
     const spec = {
-      url: urlRef.current.value,
+      url: urlRef.current.value.trim(),
       auth: null,
     };
 
     if (authTypeRef.current.value) {
       spec.auth = {
         type: authTypeRef.current.value,
-        secretName: secretNameRef.current.value,
+        secretName: secretNameRef.current.value.trim(),
       };
     }
 
