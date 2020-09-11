@@ -6,6 +6,7 @@ import { MockedProvider } from '@apollo/react-testing';
 import * as mocks from './mocks';
 
 describe('CreateClusterRoleBindingModal', () => {
+  it.todo('Creates binding');
   // it('Creates binding', async () => {
   //   const { getByText, getByPlaceholderText } = render(
   //     <MockedProvider addTypename={false} mocks={Object.values(mocks)}>
