@@ -31,9 +31,6 @@ import { PodsComponent } from './content/namespaces/operation/pods/pods.componen
 import { ReplicaSetsEntryRendererComponent } from './content/namespaces/operation/replica-sets/replica-sets-entry-renderer/replica-sets-entry-renderer.component';
 import { ReplicaSetsHeaderRendererComponent } from './content/namespaces/operation/replica-sets/replica-sets-header-renderer/replica-sets-header-renderer.component';
 import { ReplicaSetsComponent } from './content/namespaces/operation/replica-sets/replica-sets.component';
-import { ServicesEntryRendererComponent } from './content/namespaces/operation/services/services-entry-renderer/services-entry-renderer.component';
-import { ServicesHeaderRendererComponent } from './content/namespaces/operation/services/services-header-renderer/services-header-renderer.component';
-import { ServicesComponent } from './content/namespaces/operation/services/services.component';
 import { PreferencesComponent } from './content/settings/preferences/preferences.component';
 import { EditBindingsModalComponent } from './content/settings/applications/application-details/edit-bindings-modal/edit-binding-modal.component';
 import { BindingsDetailsModalComponent } from './content/settings/applications/application-details/bindings-details-modal/bindings-details-modal.component';
@@ -112,7 +109,6 @@ import { WindowTitleService } from 'shared/services/window-title.service';
     PreferencesComponent,
     ServiceBrokersComponent,
     ReplicaSetsComponent,
-    ServicesComponent,
     ConfigMapsComponent,
     InformationModalComponent,
     ConfirmationModalComponent,
@@ -124,8 +120,6 @@ import { WindowTitleService } from 'shared/services/window-title.service';
     PodsEntryRendererComponent,
     ConfigMapsEntryRendererComponent,
     ConfigMapsHeaderRendererComponent,
-    ServicesHeaderRendererComponent,
-    ServicesEntryRendererComponent,
     EditBindingsModalComponent,
     BindingsDetailsModalComponent,
     CreateBindingsModalComponent,
@@ -203,8 +197,6 @@ import { WindowTitleService } from 'shared/services/window-title.service';
     PodsEntryRendererComponent,
     ConfigMapsEntryRendererComponent,
     ConfigMapsHeaderRendererComponent,
-    ServicesHeaderRendererComponent,
-    ServicesEntryRendererComponent,
     ApplicationsHeaderRendererComponent,
     ApplicationsEntryRendererComponent,
     ServiceBrokerHeaderRendererComponent,

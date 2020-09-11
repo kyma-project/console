@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 const AUTO_ICONS_BY_NAME = new Map([
   ['Edit', 'edit'],
   ['Delete', 'delete'],
+  ['Details', 'detail-view'],
 ]);
 
 const StandaloneAction = ({ action, entry, compact }) => {

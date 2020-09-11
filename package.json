@@ -30,7 +30,7 @@
     "@kyma-project/components": "./components/shared",
     "@kyma-project/generic-documentation": "./components/generic-documentation",
     "@kyma-project/react-components": "./components/react",
-    "@luigi-project/client": "^1.2.3",
+    "@luigi-project/client": "^1.4.0",
     "@reach/router": "^1.2.1",
     "@types/classnames": "^2.2.9",
     "ajv": "^6.10.2",

@@ -188,6 +188,7 @@ GenericList.propTypes = {
       name: PropTypes.string,
       handler: PropTypes.func.isRequired,
       skipAction: PropTypes.func,
+      icon: PropTypes.string,
     }),
   ).isRequired,
   extraHeaderContent: PropTypes.node,

@@ -59,7 +59,7 @@ export default function ServiceDetailsHeader({ namespaceId, service }) {
   };
 
   const breadcrumbItems = [
-    { name: 'Services', path: '/services', fromContext: 'services' },
+    { name: 'Services', path: '/', fromContext: 'services' },
     { name: '' },
   ];
 

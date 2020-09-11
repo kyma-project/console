@@ -30,7 +30,9 @@ export class PreferencesComponent implements OnInit {
   }
 
   public isVisibleForCurrentGroup(groups) {
-    if (!Array.isArray(groups)) { return true };
+    if (!Array.isArray(groups)) {
+      return true;
+    }
     return groups.includes(AppConfig.runtimeAdminGroupName);
   }
 
@@ -40,13 +42,10 @@ export class PreferencesComponent implements OnInit {
       this.showSystemNamespaces.toString()
     );
 
-    window.parent.postMessage(
-      {
-        msg: SHOW_SYSTEM_NAMESPACES_CHANGED_EVENT,
-        showSystemNamespaces: this.showSystemNamespaces
-      },
-      '*'
-    );
+    LuigiClient.sendCustomMessage({
+      id: SHOW_SYSTEM_NAMESPACES_CHANGED_EVENT,
+      showSystemNamespaces: this.showSystemNamespaces
+    });
   }
 
   public toggleExperimentalViews() {

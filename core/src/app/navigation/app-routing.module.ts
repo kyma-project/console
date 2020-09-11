@@ -5,8 +5,6 @@ import { NamespacesContainerComponent } from '../content/namespaces/namespaces-c
 import { DeploymentsComponent } from '../content/namespaces/operation/deployments/deployments.component';
 import { PodsComponent } from '../content/namespaces/operation/pods/pods.component';
 import { ReplicaSetsComponent } from '../content/namespaces/operation/replica-sets/replica-sets.component';
-
-import { ServicesComponent } from '../content/namespaces/operation/services/services.component';
 import { PreferencesComponent } from '../content/settings/preferences/preferences.component';
 import { ApplicationDetailsComponent } from '../content/settings/applications/application-details/application-details.component';
 import { ApplicationsComponent } from '../content/settings/applications/applications.component';
@@ -39,7 +37,6 @@ const appRoutes: Routes = [
           { path: 'deployments', component: DeploymentsComponent },
           { path: 'replicaSets', component: ReplicaSetsComponent },
           { path: 'pods', component: PodsComponent },
-          { path: 'services', component: ServicesComponent },
           { path: 'configmaps', component: ConfigMapsComponent },
           { path: 'resources', component: ResourcesComponent },
           { path: '', redirectTo: 'details', pathMatch: 'full' },

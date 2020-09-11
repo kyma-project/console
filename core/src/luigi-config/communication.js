@@ -4,6 +4,17 @@ import { config } from './config';
 
 export const communication = {
   customMessagesListeners: {
+    'console.showSystemNamespaces': ({ showSystemNamespaces }) => {
+      localStorage.setItem(
+        'console.showSystemNamespaces',
+        showSystemNamespaces
+      );
+      if (showSystemNamespaces) {
+        Luigi.featureToggles().setFeatureToggle('showSystemNamespaces');
+      } else {
+        Luigi.featureToggles().unsetFeatureToggle('showSystemNamespaces');
+      }
+    },
     'console.refreshNavigation': () => {
       const token = getToken();
       if (token) {

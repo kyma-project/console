@@ -5,12 +5,11 @@ import { useQuery } from '@apollo/react-hooks';
 import { GET_NAMESPACES } from '../../gql/queries';
 import { NAMESPACES_EVENT_SUBSCRIPTION } from '../../gql/subscriptions';
 
-import { Spinner } from 'react-shared';
+import { Spinner, useShowSystemNamespaces } from 'react-shared';
 import NamespacesGrid from './NamespacesGrid/NamespacesGrid';
 import NamespacesListHeader from './NamespacesListHeader/NamespacesListHeader';
 import * as storage from './storage';
 import { handleNamespaceWsEvent } from './wsHandler';
-import { useMicrofrontendContext } from 'react-shared';
 
 function sortByName(array) {
   array.sort((a, b) => {
@@ -23,7 +22,7 @@ function sortByName(array) {
 export default function NamespaceList() {
   const [searchPhrase, setSearchPhrase] = useState('');
   const [labelFilters, setLabelFilters] = useState([]);
-  const { showSystemNamespaces } = useMicrofrontendContext();
+  const showSystemNamespaces = useShowSystemNamespaces();
 
   const createFilters = namespaces => {
     const storedFilterLabels = storage.readStoredFilterLabels();

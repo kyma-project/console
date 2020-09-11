@@ -51,8 +51,8 @@ export default function AccessStrategyForm({
                 value={strategy.path}
                 required
                 aria-label="Access strategy path"
-                pattern="^\/.+"
-                title="Path must start with '/' and consist of at least one additional character."
+                pattern="^[a-z0-9\/\(\)\?.!*\-]+"
+                title="Path must consist of alphanumeric and the following characters: /.*?!-()"
                 onChange={e =>
                   setStrategy({ ...strategy, path: e.target.value })
                 }
