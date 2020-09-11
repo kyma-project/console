@@ -152,12 +152,22 @@ export default function CreateLambdaForm({
     };
 
     if (sourceTypeRef?.current?.value) {
+      let reference = referenceRef?.current?.value || null;
+      if (typeof reference === 'string') {
+        reference = reference.trim();
+      }
+
+      let baseDir = baseDirRef?.current?.value || null;
+      if (typeof baseDir === 'string') {
+        baseDir = baseDir.trim();
+      }
+
       inputData = {
         ...inputData,
         sourceType: sourceTypeRef?.current?.value || null,
         source: repositoryRef?.current?.value || null,
-        reference: referenceRef?.current?.value || null,
-        baseDir: baseDirRef?.current?.value || null,
+        reference,
+        baseDir,
         dependencies: '',
       };
     }
