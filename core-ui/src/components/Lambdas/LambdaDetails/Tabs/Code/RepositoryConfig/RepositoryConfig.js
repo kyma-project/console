@@ -91,9 +91,19 @@ export default function RepositoryConfig({ lambda }) {
   }
 
   function handleSave() {
+    let reference = referenceRef?.current?.value || null;
+    if (typeof reference === 'string') {
+      reference = reference.trim();
+    }
+
+    let baseDir = baseDirRef?.current?.value || null;
+    if (typeof baseDir === 'string') {
+      baseDir = baseDir.trim();
+    }
+
     updateLambda({
-      reference: referenceRef.current.value,
-      baseDir: baseDirRef.current.value,
+      reference,
+      baseDir,
     });
     setEditStatus(REPOSITORY_CONFIG_PANEL.ERRORS.NO_CHANGES);
   }
