@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 
 import { Button, Panel, FormItem, FormLabel } from 'fundamental-react';
 import './SecretData.scss';
-import { defaultsDeep } from 'lodash';
 
 const SecretComponent = ({ name, value, showEncoded, isCollapsed }) => (
   <FormItem className="item-wrapper">
