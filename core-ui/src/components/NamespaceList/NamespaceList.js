@@ -24,7 +24,7 @@ function sortByName(array) {
 
 const Content1 = _ => (
   <>
-    <h1>Here's your shitty code</h1>
+    <h1 className="fd-has-type-4">Here's your shitty code</h1>
     <ControlledEditor
       height="50em"
       width="50em"
@@ -56,7 +56,7 @@ request.get_something = (something_id) => {
 
 const Content2 = _ => (
   <>
-    <h1>Here's your sexy code</h1>
+    <h1 className="fd-has-type-4">Here's your sexy code</h1>
     <ControlledEditor
       height="50em"
       width="50em"
@@ -76,7 +76,7 @@ export default function NamespaceList() {
   const [labelFilters, setLabelFilters] = useState([]);
   const { showSystemNamespaces } = useMicrofrontendContext();
   const [drawer, setDrawerContent] = useSideDrawer(
-    null,
+    Content2,
     <Button option="emphasized">Save it (please don't)</Button>,
   );
 
