@@ -12,7 +12,7 @@ export const SideDrawer = ({
 }) => {
   return (
     <div className={classNames('side-drawer', { 'side-drawer--open': isOpen })}>
-      {!(!isOpen && !children) && (
+      {(isOpen || children) && (
         <button className="open-btn" onClick={() => setOpen(!isOpen)}>
           <Icon
             glyph={isOpen ? 'open-command-field' : 'close-command-field'}

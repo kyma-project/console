@@ -2,54 +2,63 @@
   $btnWidth: 4.2em;
 
   position: fixed;
-  transition: transform ease-in 0.5s;
   z-index: 1000; // very important, do not lower it (you can raise it)
-  filter: drop-shadow(0 0 0.4em rgba(0, 0, 0, 0.42));
   display: grid;
   grid-template-columns: auto auto;
   align-items: center;
   right: 0;
   top: 0;
   height: 100%;
+
+  filter: drop-shadow(0 0 0.4em rgba(0, 0, 0, 0.42));
+  transition: transform ease-in 0.5s;
   transform: translateX(calc(100% - #{$btnWidth}));
 
   &--open {
     transform: unset;
   }
 
+  @mixin white-bg {
+    background-color: var(--fd-color-background-2);
+  }
+
   .open-btn {
+    @include white-bg();
     color: var(--fd-color-action-1);
+
+    display: grid;
+    align-content: center;
+    grid-template-columns: 1fr;
+    width: $btnWidth;
+
     border-color: var(--fd-color-action-1);
     border-width: 1px 0 1px 1px;
+    border-radius: 4px 0 0 4px;
     outline: none;
-    display: grid;
-    grid-template-columns: 1fr;
+
     grid-gap: 0.6em;
-    align-content: center;
+    padding: 0.6em;
+
     overflow-wrap: anywhere;
     cursor: pointer;
-    background-color: var(--fd-color-background-2);
-    border-radius: 4px 0 0 4px;
-    padding: 0.6em;
-    width: $btnWidth;
     box-sizing: border-box;
   }
 
   .content {
-    background-color: var(--fd-color-background-2);
+    @include white-bg();
     padding: 16px;
     align-self: stretch;
     overflow: auto;
     position: relative;
 
     .bottom {
+      @include white-bg();
       position: absolute;
       bottom: 0;
       right: 0;
       left: 0;
       padding: 1em;
       display: flex;
-      background-color: var(--fd-color-background-2);
       justify-content: flex-end;
     }
   }

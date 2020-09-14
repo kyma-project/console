@@ -76,7 +76,7 @@ export default function NamespaceList() {
   const [labelFilters, setLabelFilters] = useState([]);
   const { showSystemNamespaces } = useMicrofrontendContext();
   const [drawer, setDrawerContent] = useSideDrawer(
-    Content2,
+    null,
     <Button option="emphasized">Save it (please don't)</Button>,
   );
 
