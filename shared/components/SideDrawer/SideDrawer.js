@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import classNames from 'classnames';
 import './SideDrawer.scss';
 import { Icon } from 'fundamental-react';
 
-const SideDrawer = ({
+export const SideDrawer = ({
   buttonText,
   isOpen,
   setOpen,
@@ -28,32 +28,4 @@ const SideDrawer = ({
       </section>
     </div>
   );
-};
-
-export const useSideDrawer = (
-  initialContent,
-  bottomContent,
-  buttonText = 'See code',
-  isOpenInitially = false,
-) => {
-  const [content, setContent] = useState(initialContent);
-  const [isOpen, setOpen] = useState(isOpenInitially);
-
-  useEffect(() => {
-    // return a function to skip changing the open state on initial render
-    return _ => setOpen(true);
-  }, [content]);
-
-  const drawerComponent = content ? (
-    <SideDrawer
-      isOpen={isOpen}
-      setOpen={setOpen}
-      buttonText={buttonText}
-      bottomContent={bottomContent}
-    >
-      {content}
-    </SideDrawer>
-  ) : null;
-
-  return [drawerComponent, setContent];
 };
