@@ -10,7 +10,7 @@ import NamespacesGrid from './NamespacesGrid/NamespacesGrid';
 import NamespacesListHeader from './NamespacesListHeader/NamespacesListHeader';
 import * as storage from './storage';
 import { handleNamespaceWsEvent } from './wsHandler';
-import { useMicrofrontendContext, SideDrawer } from 'react-shared';
+import { useMicrofrontendContext, useSideDrawer } from 'react-shared';
 import { ControlledEditor } from '@monaco-editor/react';
 import { Button } from 'fundamental-react';
 
@@ -22,10 +22,63 @@ function sortByName(array) {
   });
 }
 
+const Content1 = _ => (
+  <>
+    <h1>Here's your shitty code</h1>
+    <ControlledEditor
+      height="50em"
+      width="50em"
+      language={'javascript'}
+      theme="vs-light"
+      value={`      
+request.get_something = (something_id) => {
+  return new Promise((resolve, reject) => {
+    database.find_all('something', { where: {something_id: something_id, is_deleted:0} }).then(function(res){
+      let result = {};
+      res = JSON.stringify(res);
+      res = JSON.parse(res);
+      res.forEach(function(element){
+        if(typeof element.is_deleted != "undefined"){
+          delete element.is_deleted;
+        }
+        let key = 'something_' + element.id;
+        result[key] = element;
+      });
+      resolve(result);
+    }, reject);
+  });
+}
+          
+          `}
+    />
+  </>
+);
+
+const Content2 = _ => (
+  <>
+    <h1>Here's your sexy code</h1>
+    <ControlledEditor
+      height="50em"
+      width="50em"
+      language={'javascript'}
+      theme="vs-light"
+      value={`
+function hasselhoff(sunnyWeather=true){
+  return "He's so handsome";
+} 
+          `}
+    />
+  </>
+);
+
 export default function NamespaceList() {
   const [searchPhrase, setSearchPhrase] = useState('');
   const [labelFilters, setLabelFilters] = useState([]);
   const { showSystemNamespaces } = useMicrofrontendContext();
+  const [drawer, setDrawerContent] = useSideDrawer(
+    null,
+    <Button option="emphasized">Save it (please don't)</Button>,
+  );
 
   const createFilters = namespaces => {
     const storedFilterLabels = storage.readStoredFilterLabels();
@@ -139,59 +192,31 @@ export default function NamespaceList() {
     }
   }, [data]);
 
-  if (error) {
-    return `Error! ${error.message}`;
-  }
+  if (error) return `Error! ${error.message}`;
 
-  if (loading) {
-    return <Spinner />;
-  }
+  if (loading) return <Spinner />;
 
   const namespaces = data.namespaces;
   sortByName(namespaces);
 
   return (
     <>
-      <SideDrawer
-        btnText="See code"
-        bottomContent={
-          <Button option="emphasized">Save it (please don't)</Button>
-        }
-      >
-        <h1>Here's your shitty code</h1>
-        <ControlledEditor
-          height="50em"
-          width="50em"
-          language={'javascript'}
-          theme="vs-light"
-          value={`      
-request.get_something = (something_id) => {
-  return new Promise((resolve, reject) => {
-    database.find_all('something', { where: {something_id: something_id, is_deleted:0} }).then(function(res){
-      let result = {};
-      res = JSON.stringify(res);
-      res = JSON.parse(res);
-      res.forEach(function(element){
-        if(typeof element.is_deleted != "undefined"){
-          delete element.is_deleted;
-        }
-        let key = 'something_' + element.id;
-        result[key] = element;
-      });
-      resolve(result);
-    }, reject);
-  });
-}
-          
-          `}
-        />
-      </SideDrawer>
+      {drawer}
       <NamespacesListHeader
         updateSearchPhrase={searchPhrase => setSearchPhrase(searchPhrase)}
         setLabelFilters={updateLabelFilters}
         labelFilters={labelFilters}
       />
+      <Button onClick={_ => setDrawerContent(Content1)}>
+        expand content 1
+      </Button>
       <NamespacesGrid namespaces={namespaces.filter(filterNamespace)} />
+      <Button onClick={_ => setDrawerContent(Content2)}>
+        expand content 2
+      </Button>
+      <Button onClick={_ => setDrawerContent(Content1)}>
+        expand content 1 (yes it does the same)
+      </Button>
     </>
   );
 }

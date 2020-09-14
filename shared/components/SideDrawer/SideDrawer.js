@@ -3,28 +3,24 @@ import classNames from 'classnames';
 import './SideDrawer.scss';
 import { Icon } from 'fundamental-react';
 
-export const SideDrawer = ({
-  btnText,
-  isOpenInitially = false,
-  onOpen,
+const SideDrawer = ({
+  buttonText,
+  isOpen,
+  setOpen,
   children,
   bottomContent,
 }) => {
-  const [isOpen, setOpen] = useState(isOpenInitially);
-
-  useEffect(() => {
-    if (typeof onOpen === 'function') onOpen();
-  }, [isOpen]);
-
   return (
     <div className={classNames('side-drawer', { 'side-drawer--open': isOpen })}>
-      <button className="open-btn" onClick={() => setOpen(!isOpen)}>
-        <Icon
-          glyph={isOpen ? 'open-command-field' : 'close-command-field'}
-          size="l"
-        />
-        {btnText}
-      </button>
+      {!(!isOpen && !children) && (
+        <button className="open-btn" onClick={() => setOpen(!isOpen)}>
+          <Icon
+            glyph={isOpen ? 'open-command-field' : 'close-command-field'}
+            size="l"
+          />
+          {buttonText}
+        </button>
+      )}
 
       <section className="content">
         {children}
@@ -32,4 +28,32 @@ export const SideDrawer = ({
       </section>
     </div>
   );
+};
+
+export const useSideDrawer = (
+  initialContent,
+  bottomContent,
+  buttonText = 'See code',
+  isOpenInitially = false,
+) => {
+  const [content, setContent] = useState(initialContent);
+  const [isOpen, setOpen] = useState(isOpenInitially);
+
+  useEffect(() => {
+    // return a function to skip changing the open state on initial render
+    return _ => setOpen(true);
+  }, [content]);
+
+  const drawerComponent = content ? (
+    <SideDrawer
+      isOpen={isOpen}
+      setOpen={setOpen}
+      buttonText={buttonText}
+      bottomContent={bottomContent}
+    >
+      {content}
+    </SideDrawer>
+  ) : null;
+
+  return [drawerComponent, setContent];
 };
