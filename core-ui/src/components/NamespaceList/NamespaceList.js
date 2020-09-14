@@ -5,12 +5,12 @@ import { useQuery } from '@apollo/react-hooks';
 import { GET_NAMESPACES } from '../../gql/queries';
 import { NAMESPACES_EVENT_SUBSCRIPTION } from '../../gql/subscriptions';
 
-import { Spinner } from 'react-shared';
+import { Spinner, useShowSystemNamespaces } from 'react-shared';
 import NamespacesGrid from './NamespacesGrid/NamespacesGrid';
 import NamespacesListHeader from './NamespacesListHeader/NamespacesListHeader';
 import * as storage from './storage';
 import { handleNamespaceWsEvent } from './wsHandler';
-import { useMicrofrontendContext, useSideDrawer } from 'react-shared';
+import { useSideDrawer } from 'react-shared';
 import { ControlledEditor } from '@monaco-editor/react';
 import { Button } from 'fundamental-react';
 
@@ -74,11 +74,11 @@ function hasselhoff(sunnyWeather=true){
 export default function NamespaceList() {
   const [searchPhrase, setSearchPhrase] = useState('');
   const [labelFilters, setLabelFilters] = useState([]);
-  const { showSystemNamespaces } = useMicrofrontendContext();
   const [drawer, setDrawerContent] = useSideDrawer(
     null,
     <Button option="emphasized">Save it (please don't)</Button>,
   );
+  const showSystemNamespaces = useShowSystemNamespaces();
 
   const createFilters = namespaces => {
     const storedFilterLabels = storage.readStoredFilterLabels();

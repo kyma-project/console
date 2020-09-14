@@ -42,7 +42,24 @@ export const button = function(props, propName, componentName) {
   return null;
 };
 
+export const listActions = PropTypes.arrayOf(function(
+  props,
+  index,
+  componentName,
+) {
+  const element = props[index];
+  if (!element.name) {
+    return new Error(`name is a required prop in '${componentName}'!`);
+  }
+  if (!element.handler && !element.component) {
+    return new Error(
+      `One of props 'handler' or 'component' was not specified in '${componentName}'.`,
+    );
+  }
+});
+
 export default {
   button,
   ref,
+  listActions,
 };

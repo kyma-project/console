@@ -9,4 +9,5 @@ export const DEFAULT_MODAL_CONFIG: ModalConfig = {
   minHeight: '5em'
 };
 
-export const SHOW_SYSTEM_NAMESPACES_CHANGED_EVENT = 'showSystemNamespacesChangedEvent';
+export const SHOW_SYSTEM_NAMESPACES_CHANGED_EVENT =
+  'console.showSystemNamespaces';

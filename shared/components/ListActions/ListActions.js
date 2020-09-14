@@ -1,15 +1,22 @@
 import React from 'react';
 import { Popover, Menu, Button } from 'fundamental-react';
 import './ListActions.scss';
+
 import PropTypes from 'prop-types';
+import CustomPropTypes from '../../typechecking/CustomPropTypes';
 
 const AUTO_ICONS_BY_NAME = new Map([
   ['Edit', 'edit'],
   ['Delete', 'delete'],
+  ['Details', 'detail-view'],
 ]);
 
 const StandaloneAction = ({ action, entry, compact }) => {
   const icon = action.icon || AUTO_ICONS_BY_NAME.get(action.name);
+
+  if (action.component) {
+    return action.component(entry);
+  }
 
   return (
     <Button
@@ -71,12 +78,7 @@ const ListActions = ({ actions, entry, standaloneItems = 2, compact }) => {
 };
 
 ListActions.propTypes = {
-  actions: PropTypes.arrayOf(
-    PropTypes.shape({
-      name: PropTypes.string,
-      handler: PropTypes.func.isRequired,
-    }),
-  ).isRequired,
+  actions: CustomPropTypes.listActions,
   entry: PropTypes.any.isRequired,
   standaloneItems: PropTypes.number,
   compact: PropTypes.bool,

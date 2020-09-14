@@ -1,0 +1,15 @@
+.resource-name-input {
+  .fd-form-item > .fd-form-label:nth-child(2) {
+    display: none;
+  }
+
+  &__label {
+    position: relative;
+
+    .fd-inline-help {
+      top: 3px;
+      left: 3px;
+      margin-right: 6px;
+    }
+  }
+}
