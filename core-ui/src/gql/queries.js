@@ -340,6 +340,7 @@ export const GET_SECRET_DETAILS = gql`
       name
       namespace
       data
+      labels
       annotations
       json
     }

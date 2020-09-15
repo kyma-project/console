@@ -47,6 +47,12 @@ export default function SecretJson({ secret }) {
       setDisabled(true);
     }
 
+    try {
+      JSON.parse(json);
+    } catch (_) {
+      setDisabled(true);
+      return;
+    }
     const originalJson = JSON.stringify(secret.json, null, 1);
     const isDiff = originalJson !== json;
 

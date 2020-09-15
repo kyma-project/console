@@ -6,6 +6,7 @@ import {
   PageHeader,
   useNotification,
   easyHandleDelete,
+  Labels,
   Modal,
 } from 'react-shared';
 import { Button, Link } from 'fundamental-react';
@@ -48,20 +49,12 @@ export default function SecretHeader({ secret }) {
 
   return (
     <PageHeader title={name} breadcrumbItems={breadcrumbs} actions={actions}>
-      {Object.keys(secret.annotations).length !== 0 && (
-        <PageHeader.Column title="Annotations">
-          {Object.keys(secret.annotations).map(key => (
-            <Modal
-              key={key}
-              modalOpeningComponent={<Link>{key}</Link>}
-              title={key}
-              confirmText="Close"
-            >
-              {secret.annotations[key]}
-            </Modal>
-          ))}
-        </PageHeader.Column>
-      )}
+      <PageHeader.Column title="Annotations" columnSpan="1 / 2">
+        <Labels labels={secret.annotations} />
+      </PageHeader.Column>
+      <PageHeader.Column title="Labels" columnSpan="2 / 4">
+        <Labels labels={secret.labels} />
+      </PageHeader.Column>
     </PageHeader>
   );
 }
