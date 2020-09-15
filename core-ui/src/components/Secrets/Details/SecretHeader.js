@@ -7,9 +7,8 @@ import {
   useNotification,
   easyHandleDelete,
   Labels,
-  Modal,
 } from 'react-shared';
-import { Button, Link } from 'fundamental-react';
+import { Button } from 'fundamental-react';
 
 import { useMutation } from '@apollo/react-hooks';
 import { DELETE_SECRET } from 'gql/mutations';

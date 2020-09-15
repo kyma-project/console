@@ -22,6 +22,10 @@ export const secretQueryMock = {
           annotation1: 'avalue1',
           annotation2: 'avalue2',
         },
+        labels: {
+          label1: 'avalue1',
+          label2: 'avalue2',
+        },
       },
     },
   },
