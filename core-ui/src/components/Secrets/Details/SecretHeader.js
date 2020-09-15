@@ -47,11 +47,16 @@ export default function SecretHeader({ secret }) {
   );
 
   return (
-    <PageHeader title={name} breadcrumbItems={breadcrumbs} actions={actions}>
-      <PageHeader.Column title="Annotations" columnSpan="1 / 2">
+    <PageHeader
+      title={name}
+      breadcrumbItems={breadcrumbs}
+      actions={actions}
+      columnWrapperClassName="column-wrapper-even-split"
+    >
+      <PageHeader.Column title="Annotations" columnSpan="1">
         <Labels labels={secret.annotations} />
       </PageHeader.Column>
-      <PageHeader.Column title="Labels" columnSpan="2 / 4">
+      <PageHeader.Column title="Labels" columnSpan="2">
         <Labels labels={secret.labels} />
       </PageHeader.Column>
     </PageHeader>

@@ -23,6 +23,10 @@
   margin-top: 8px;
 
   grid-template-columns: repeat(auto-fill, minmax(20em, 1fr));
+  &-even-split {
+    grid-template-columns: 50% 50%;
+  
+  }
 }
 .page-header__column {
   display: inline-block;

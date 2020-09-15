@@ -92,7 +92,7 @@ export default function SecretData({ secret }) {
               return isEncoded ? encode() : decode();
             }}
           >
-            {isEncoded ? 'Decode' : 'Hide decoded'}
+            {isEncoded ? 'Decode' : 'Encode'}
           </Button>
         </Panel.Actions>
       </Panel.Header>

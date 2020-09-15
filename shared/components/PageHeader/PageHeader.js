@@ -38,6 +38,7 @@ export const PageHeader = ({
   breadcrumbItems,
   actions,
   children,
+  columnWrapperClassName,
 }) => (
   <Panel className="page-header">
     <Panel.Header>
@@ -63,7 +64,10 @@ export const PageHeader = ({
         <Panel.Head title={title} aria-label="title" />
         {/* don't use Panel.Head's description, as it accepts only strings */}
         {description && <p className="description">{description}</p>}
-        <section className="column-wrapper"> {children}</section>
+        <section className={`column-wrapper ${columnWrapperClassName}`}>
+          {' '}
+          {children}
+        </section>
       </section>
 
       {actions && (
