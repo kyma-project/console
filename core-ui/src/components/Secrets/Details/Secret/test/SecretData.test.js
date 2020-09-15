@@ -44,7 +44,7 @@ describe('SecretData', () => {
     fireEvent.click(await findByText('Decode'));
     await expectDecodedState({ findByText, queryByText });
 
-    fireEvent.click(await findByText('Hide decoded'));
+    fireEvent.click(await findByText('Encode'));
     await expectEncodedState({ findByText, queryByText });
   });
 
