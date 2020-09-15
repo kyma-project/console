@@ -1,4 +1,22 @@
 export const FUNCTIONS_WINDOW_TITLE = 'Functions';
+export const FIRST_BREADCRUMB_NODE = 'Functions';
+
+export const SERVERLESS_API_VERSION = 'serverless.kyma-project.io/v1alpha1';
+export const SERVERLESS_RESOURCE_KIND = 'Function';
+
+export const SERVERLESS_FUNCTION_REPLICAS_PRESET_LABEL =
+  'serverless.kyma-project.io/function-replicas-preset';
+export const SERVERLESS_FUNCTION_RESOURCES_PRESET_LABEL =
+  'serverless.kyma-project.io/function-resources-preset';
+export const SERVERLESS_BUILD_RESOURCES_PRESET_LABEL =
+  'serverless.kyma-project.io/build-resources-preset';
+export const SERVERLESS_PRESETS_LABELS = [
+  SERVERLESS_FUNCTION_REPLICAS_PRESET_LABEL,
+  SERVERLESS_FUNCTION_RESOURCES_PRESET_LABEL,
+  SERVERLESS_BUILD_RESOURCES_PRESET_LABEL,
+];
+
+export const REFETCH_LAMBDAS_TIMEOUT = 2000;
 
 export const BUTTONS = {
   CANCEL: 'Cancel',
@@ -249,6 +267,9 @@ export const LAMBDA_DETAILS = {
     CONFIGURATION: {
       TITLE: 'Configuration',
     },
+    RESOURCE_MANAGEMENT: {
+      TITLE: 'Resources',
+    },
   },
 };
 
@@ -376,7 +397,7 @@ export const MODALS = {
 };
 
 export const RESOURCES_MANAGEMENT_PANEL = {
-  TITLE: 'Edit resources and replicas',
+  TITLE: 'Resources and replicas',
   EDIT_MODAL: {
     OPEN_BUTTON: {
       TEXT: {
@@ -416,6 +437,12 @@ export const RESOURCES_MANAGEMENT_PANEL = {
     MAX_REPLICAS_POSITIVE: 'Maximum replicas must be a positive integer.',
   },
   REPLICAS: {
+    TITLE: 'Scaling Options',
+    PRESET: {
+      TITLE: 'Preset',
+      DESCRIPTION:
+        'Preset is a predefined set of values that you can customize.',
+    },
     MIN_NUMBER: {
       TITLE: 'Minimum replicas',
       DESCRIPTION: 'Minimum number of running replicas.',
@@ -427,6 +454,16 @@ export const RESOURCES_MANAGEMENT_PANEL = {
     },
   },
   RESOURCES: {
+    TYPES: {
+      FUNCTION: {
+        TITLE: 'Runtime Profile',
+        DESCRIPTION: `Choose one of predefined Function's resources values or compose your own values ​​by selecting the "Custom" option`,
+      },
+      BUILD_JOB: {
+        TITLE: 'Build Job Profile',
+        DESCRIPTION: `Choose one of predefined build Job's resources values or compose your own values ​​by selecting the "Custom" option`,
+      },
+    },
     REQUESTS: {
       TITLE: 'Requests',
       DESCRIPTION: 'Minimum amount of compute resources required.',
@@ -601,11 +638,3 @@ export const FORMS = {
     INLINE_HELP: `The key/value pair should be separated by '=', consist of alphanumeric characters, '-', '_' or '.', and must start and end with an alphanumeric character. The key cannot be empty.`,
   },
 };
-
-export const FIRST_BREADCRUMB_NODE = 'Functions';
-
-export const REFETCH_LAMBDAS_TIMEOUT = 2000;
-
-export const SERVERLESS_API_VERSION = 'serverless.kyma-project.io/v1alpha1';
-
-export const SERVERLESS_RESOURCE_KIND = 'Function';

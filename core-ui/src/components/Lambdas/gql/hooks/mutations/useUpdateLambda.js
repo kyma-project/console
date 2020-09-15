@@ -86,6 +86,7 @@ export function prepareUpdateLambdaInput(lambda = {}) {
     sourceType: lambda.sourceType || '',
     dependencies: lambda.dependencies || '',
     resources: lambda.resources || {},
+    buildResources: lambda.buildResources || {},
     replicas: lambda.replicas || {},
     env: lambda.env || [],
     runtime: lambda.runtime || '',

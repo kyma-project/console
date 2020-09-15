@@ -55,6 +55,16 @@ export const GET_LAMBDA = gql`
           cpu
         }
       }
+      buildResources {
+        requests {
+          memory
+          cpu
+        }
+        limits {
+          memory
+          cpu
+        }
+      }
       env {
         name
         value

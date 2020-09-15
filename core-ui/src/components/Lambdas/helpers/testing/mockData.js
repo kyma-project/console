@@ -22,6 +22,16 @@ export const lambdaMock = {
       cpu: '100m',
     },
   },
+  buildResources: {
+    requests: {
+      memory: '700Mi',
+      cpu: '700m',
+    },
+    limits: {
+      memory: '1100Mi',
+      cpu: '1100m',
+    },
+  },
   runtime: 'nodejs12',
   env: [
     {

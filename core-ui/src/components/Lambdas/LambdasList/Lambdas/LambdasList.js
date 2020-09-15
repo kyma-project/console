@@ -11,6 +11,7 @@ import { useDeleteLambda } from 'components/Lambdas/gql/hooks/mutations';
 import { prettySourceType } from 'components/Lambdas/helpers/lambdas';
 import { prettyRuntime } from 'components/Lambdas/helpers/runtime';
 import {
+  SERVERLESS_PRESETS_LABELS,
   LAMBDAS_LIST,
   ERRORS,
   REFETCH_LAMBDAS_TIMEOUT,
@@ -77,7 +78,7 @@ export default function LambdasList({
     </Link>,
     <span>{prettySourceType(lambda.sourceType)}</span>,
     <span>{prettyRuntime(lambda.runtime)}</span>,
-    <Labels labels={lambda.labels} />,
+    <Labels labels={lambda.labels} ignoreLabels={SERVERLESS_PRESETS_LABELS} />,
     <LambdaStatusBadge status={lambda.status} />,
   ];
 

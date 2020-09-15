@@ -27,8 +27,8 @@ describe('ResourceManagement', () => {
   const editText = RESOURCES_MANAGEMENT_PANEL.EDIT_MODAL.OPEN_BUTTON.TEXT.EDIT;
   const saveText = RESOURCES_MANAGEMENT_PANEL.EDIT_MODAL.OPEN_BUTTON.TEXT.SAVE;
 
-  it('Render with minimal props', async () => {
-    const { getByText } = render(<ResourceManagement lambda={lambdaMock} />);
+  it('Render with minimal props', () => {
+    const { getAllByText } = render(<ResourceManagement lambda={lambdaMock} />);
 
     const panel = RESOURCES_MANAGEMENT_PANEL;
     const array = [
@@ -43,7 +43,7 @@ describe('ResourceManagement', () => {
       panel.RESOURCES.LIMITS.DESCRIPTION,
     ];
     for (const item of array) {
-      expect(getByText(item)).toBeInTheDocument();
+      expect(getAllByText(item).length).toBeGreaterThan(0);
     }
   });
 
@@ -284,22 +284,22 @@ describe('ResourceManagement', () => {
   test.each([
     [
       'should can save when user type good memory format for requests',
-      '#requestsMemory',
+      '#functionRequestsMemory',
       '20M',
     ],
     [
       'should can save when user type good cpu format for requests',
-      '#requestsCpu',
+      '#functionRequestsCpu',
       '50m',
     ],
     [
       'should can save when user type good memory format for limits',
-      '#limitsMemory',
+      '#functionLimitsMemory',
       '550Mi',
     ],
     [
       'should can save when user type good cpu format for limits',
-      '#limitsCpu',
+      '#functionLimitsCpu',
       '120m',
     ],
   ])('%s', async (_, inputId, value) => {
@@ -322,22 +322,22 @@ describe('ResourceManagement', () => {
   test.each([
     [
       'should cannot save when user type wrong memory format for requests',
-      '#requestsMemory',
+      '#functionRequestsMemory',
       RESOURCES_MANAGEMENT_PANEL.ERROR_MESSAGES.MEMORY.DEFAULT,
     ],
     [
       'should cannot save when user type wrong cpu format for requests',
-      '#requestsCpu',
+      '#functionRequestsCpu',
       RESOURCES_MANAGEMENT_PANEL.ERROR_MESSAGES.CPU.DEFAULT,
     ],
     [
       'should cannot save when user type wrong memory format for limits',
-      '#limitsMemory',
+      '#functionLimitsMemory',
       RESOURCES_MANAGEMENT_PANEL.ERROR_MESSAGES.MEMORY.DEFAULT,
     ],
     [
       'should cannot save when user type wrong cpu format for limits',
-      '#limitsCpu',
+      '#functionLimitsCpu',
       RESOURCES_MANAGEMENT_PANEL.ERROR_MESSAGES.CPU.DEFAULT,
     ],
   ])(
@@ -371,7 +371,7 @@ describe('ResourceManagement', () => {
     fireEvent.click(editButton);
 
     const inputs = document.querySelectorAll('.resource_input');
-    expect(inputs).toHaveLength(6); // 2 for replicas + 4 for resources
+    expect(inputs).toHaveLength(10); // 2 for replicas + 8 for resources
 
     fireEvent.input(inputs[2], { target: { value: '' } });
     fireEvent.input(inputs[3], { target: { value: '' } });
@@ -393,7 +393,7 @@ describe('ResourceManagement', () => {
     fireEvent.click(editButton);
 
     const inputs = document.querySelectorAll('.resource_input');
-    expect(inputs).toHaveLength(6); // 2 for replicas + 4 for resources
+    expect(inputs).toHaveLength(10); // 2 for replicas + 8 for resources
     const defaultResourceValues = [
       inputs[2].value,
       inputs[3].value,
@@ -480,7 +480,7 @@ describe('ResourceManagement', () => {
     let editButton = getByText(editText);
     fireEvent.click(editButton);
 
-    const requestsMemory = document.querySelector('#requestsMemory');
+    const requestsMemory = document.querySelector('#functionRequestsMemory');
     fireEvent.input(requestsMemory, { target: { value: '30Gi' } });
 
     await wait(() => {
@@ -518,14 +518,14 @@ describe('ResourceManagement', () => {
     let editButton = getByText(editText);
     fireEvent.click(editButton);
 
-    const requestsMemory = document.querySelector('#requestsMemory');
+    const requestsMemory = document.querySelector('#functionRequestsMemory');
     fireEvent.input(requestsMemory, { target: { value: '6Mi' } });
-    const limitsMemory = document.querySelector('#limitsMemory');
+    const limitsMemory = document.querySelector('#functionLimitsMemory');
     fireEvent.input(limitsMemory, { target: { value: '7Mi' } });
 
     const message = formatMessage(
       RESOURCES_MANAGEMENT_PANEL.ERROR_MESSAGES.MEMORY.TOO_LOW,
-      { minValue: CONFIG.resources.min.memory },
+      { minValue: CONFIG.functionMinResources.memory },
     );
     await wait(() => {
       expect(getAllByText(message)).toHaveLength(2);
@@ -553,7 +553,7 @@ describe('ResourceManagement', () => {
     let editButton = getByText(editText);
     fireEvent.click(editButton);
 
-    const requestsCpu = document.querySelector('#requestsCpu');
+    const requestsCpu = document.querySelector('#functionRequestsCpu');
     fireEvent.input(requestsCpu, { target: { value: '0.5' } });
 
     await wait(() => {
@@ -589,14 +589,14 @@ describe('ResourceManagement', () => {
     let editButton = getByText(editText);
     fireEvent.click(editButton);
 
-    const requestsCpu = document.querySelector('#requestsCpu');
+    const requestsCpu = document.querySelector('#functionRequestsCpu');
     fireEvent.input(requestsCpu, { target: { value: '0.005' } });
-    const limitsCpu = document.querySelector('#limitsCpu');
+    const limitsCpu = document.querySelector('#functionLimitsCpu');
     fireEvent.input(limitsCpu, { target: { value: '0.007' } });
 
     const message = formatMessage(
       RESOURCES_MANAGEMENT_PANEL.ERROR_MESSAGES.MEMORY.TOO_LOW,
-      { minValue: CONFIG.resources.min.cpu },
+      { minValue: CONFIG.functionMinResources.cpu },
     );
     await wait(() => {
       expect(getAllByText(message)).toHaveLength(2);
@@ -621,9 +621,9 @@ describe('ResourceManagement', () => {
       <ResourceManagement lambda={resourcesLambda} />,
     );
 
-    const requestsCpu = document.querySelector('#requestsCpu');
+    const requestsCpu = document.querySelector('#functionRequestsCpu');
     expect(requestsCpu.value).toEqual('20m');
-    const limitsCpu = document.querySelector('#requestsMemory');
+    const limitsCpu = document.querySelector('#functionRequestsMemory');
     expect(limitsCpu.value).toEqual('20Mi');
 
     const resourcesLambdaAfterUpdate = {
@@ -641,7 +641,9 @@ describe('ResourceManagement', () => {
     };
     rerender(<ResourceManagement lambda={resourcesLambdaAfterUpdate} />);
 
-    expect(requestsCpu.value).toEqual('16m');
-    expect(limitsCpu.value).toEqual('18Mi');
+    await wait(() => {
+      expect(requestsCpu.value).toEqual('16m');
+      expect(limitsCpu.value).toEqual('18Mi');
+    });
   });
 });

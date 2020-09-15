@@ -2,14 +2,5 @@
   "lerna": "3.15.0",
   "version": "0.0.0",
   "npmClient": "npm",
-  "packages": [
-    "core",
-    "compass",
-    "service-catalog-ui",
-    "content",
-    "add-ons",
-    "logging",
-    "core-ui",
-    "shared"
-  ]
+  "packages": ["core", "core-ui", "shared"]
 }

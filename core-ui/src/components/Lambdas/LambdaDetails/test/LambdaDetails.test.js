@@ -1,8 +1,14 @@
 import React from 'react';
 import { render, wait } from '@testing-library/react';
 
-import { lambdaMock } from 'components/Lambdas/helpers/testing';
+import { EVENT_TRIGGER_EVENT_SUBSCRIPTION_MOCK } from 'components/Lambdas/gql/hooks/queries/testMocks';
+import {
+  withApolloMockProvider,
+  lambdaMock,
+} from 'components/Lambdas/helpers/testing';
 
+import { BACKEND_MODULES } from 'components/Lambdas/helpers/misc';
+import { createSubscriberRef } from 'components/Lambdas/helpers/eventTriggers';
 import { LAMBDA_DETAILS } from 'components/Lambdas/constants';
 
 import LambdaDetails from '../LambdaDetails';
@@ -36,7 +42,7 @@ jest.mock('@luigi-project/client', () => {
       removeBackdrop: () => {},
     }),
     getEventData: () => ({
-      backendModules: [],
+      backendModules: ['apigateway'],
     }),
   };
 });
@@ -50,8 +56,46 @@ describe('LambdaDetails', () => {
     expect(getByText(lambdaMock.name)).toBeInTheDocument(); // lambda name in breadcrumbs
     expect(getByText(LAMBDA_DETAILS.TABS.CODE.TITLE)).toBeInTheDocument(); // Code tab under header
     expect(
-      getByText(LAMBDA_DETAILS.TABS.CONFIGURATION.TITLE),
+      getByText(LAMBDA_DETAILS.TABS.RESOURCE_MANAGEMENT.TITLE),
     ).toBeInTheDocument(); // Configuration tab under header
-    await wait();
+    await wait(() => {});
+  });
+
+  it('should not render Configuration tab', async () => {
+    const { queryByText } = render(<LambdaDetails lambda={lambdaMock} />);
+
+    expect(
+      queryByText(LAMBDA_DETAILS.TABS.CONFIGURATION.TITLE),
+    ).not.toBeInTheDocument();
+    await wait(() => {});
+  });
+
+  it('should render Configuration tab', async () => {
+    const eventTriggersVariables = {
+      subscriber: createSubscriberRef(lambdaMock),
+      namespace: lambdaMock.namespace,
+    };
+    const subscriptionMock = EVENT_TRIGGER_EVENT_SUBSCRIPTION_MOCK(
+      eventTriggersVariables,
+    );
+    const { queryByText } = render(
+      withApolloMockProvider({
+        component: (
+          <LambdaDetails
+            lambda={lambdaMock}
+            backendModules={[
+              BACKEND_MODULES.APPLICATION,
+              BACKEND_MODULES.EVENTING,
+            ]}
+          />
+        ),
+        mocks: [subscriptionMock],
+      }),
+    );
+
+    expect(
+      queryByText(LAMBDA_DETAILS.TABS.CONFIGURATION.TITLE),
+    ).toBeInTheDocument();
+    await wait(() => {});
   });
 });

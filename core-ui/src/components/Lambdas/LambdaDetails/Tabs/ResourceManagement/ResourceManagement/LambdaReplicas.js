@@ -5,7 +5,7 @@ import { Input } from './TableElements/Input';
 import { Row } from './TableElements/Row';
 
 import { RESOURCES_MANAGEMENT_PANEL } from 'components/Lambdas/constants';
-import { errorClassName, inputClassName, inputNames } from './shared';
+import { ErrorMessage, inputClassName, inputNames } from './shared';
 
 const replicasMode = RESOURCES_MANAGEMENT_PANEL.REPLICAS;
 
@@ -14,6 +14,7 @@ export default function LambdaReplicas({
   register,
   errors,
   triggerValidation = () => void 0,
+  retriggerValidation = () => void 0,
 }) {
   const panels = [
     {
@@ -33,9 +34,7 @@ export default function LambdaReplicas({
             }}
             min="0"
           />
-          {errors?.minReplicas?.message && (
-            <div className={errorClassName}>{errors.minReplicas.message}</div>
-          )}
+          <ErrorMessage errors={errors} field={inputNames.replicas.min} />
         </>
       ),
     },
@@ -56,24 +55,24 @@ export default function LambdaReplicas({
             }}
             _ref={register}
           />
-          {errors?.maxReplicas?.message && (
-            <div className={errorClassName}>{errors.maxReplicas.message}</div>
-          )}
+          <ErrorMessage errors={errors} field={inputNames.replicas.max} />
         </>
       ),
     },
   ];
 
   return (
-    <LayoutGrid cols={panels.length} className="has-bottom-margin">
-      {panels.map(panel => (
-        <Row
-          key={panel.title}
-          title={panel.title}
-          description={panel.description}
-          action={panel.action}
-        ></Row>
-      ))}
-    </LayoutGrid>
+    <>
+      <LayoutGrid cols={panels.length}>
+        {panels.map(panel => (
+          <Row
+            key={panel.title}
+            title={panel.title}
+            description={panel.description}
+            action={panel.action}
+          ></Row>
+        ))}
+      </LayoutGrid>
+    </>
   );
 }
