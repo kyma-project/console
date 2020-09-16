@@ -24,7 +24,6 @@ export default function InstanceParametersModal({
 
   return (
     <Modal
-      class
       modalOpeningComponent={modalOpeningComponent}
       title={serviceInstanceConstants.instanceParameters}
       confirmText="Close"

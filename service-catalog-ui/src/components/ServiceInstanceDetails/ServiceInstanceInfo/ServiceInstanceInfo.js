@@ -44,7 +44,6 @@ const ServiceInstanceInfo = ({ serviceInstance }) => {
 
   const classContent = instanceClass.name ? (
     <button
-      style={{ borderBottom: 'none' }}
       className="link has-padding-0"
       data-e2e-id="instance-service-class"
       onClick={() => goToServiceClassDetails(instanceClass.name)}
