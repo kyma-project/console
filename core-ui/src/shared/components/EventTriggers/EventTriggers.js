@@ -75,7 +75,7 @@ export default function EventTriggers({
     collapseContent: (
       <>
         <td></td>
-        <td colSpan="4">
+        <td colSpan="6">
           <SchemaComponent schema={eventTrigger.schema} />
         </td>
         <td></td>

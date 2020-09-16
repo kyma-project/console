@@ -133,7 +133,7 @@ export default function CreateEventTriggerForm({
       <>
         <td></td>
         <td></td>
-        <td colSpan="4">
+        <td colSpan="6">
           <SchemaComponent schema={event.schema} />
         </td>
       </>
