@@ -35,6 +35,9 @@ import { SecretDetailComponent } from './content/namespaces/operation/secrets/se
 import { SecretsEntryRendererComponent } from './content/namespaces/operation/secrets/secrets-entry-renderer/secrets-entry-renderer.component';
 import { SecretsHeaderRendererComponent } from './content/namespaces/operation/secrets/secrets-header-renderer/secrets-header-renderer.component';
 import { SecretsComponent } from './content/namespaces/operation/secrets/secrets.component';
+import { ServicesEntryRendererComponent } from './content/namespaces/operation/services/services-entry-renderer/services-entry-renderer.component';
+import { ServicesHeaderRendererComponent } from './content/namespaces/operation/services/services-header-renderer/services-header-renderer.component';
+import { ServicesComponent } from './content/namespaces/operation/services/services.component';
 import { PreferencesComponent } from './content/settings/preferences/preferences.component';
 import { EditBindingsModalComponent } from './content/settings/applications/application-details/edit-bindings-modal/edit-binding-modal.component';
 import { BindingsDetailsModalComponent } from './content/settings/applications/application-details/bindings-details-modal/bindings-details-modal.component';
@@ -113,6 +116,7 @@ import { WindowTitleService } from 'shared/services/window-title.service';
     PreferencesComponent,
     ServiceBrokersComponent,
     ReplicaSetsComponent,
+    ServicesComponent,
     SecretsComponent,
     SecretDetailComponent,
     ConfigMapsComponent,
@@ -128,6 +132,8 @@ import { WindowTitleService } from 'shared/services/window-title.service';
     SecretsHeaderRendererComponent,
     ConfigMapsEntryRendererComponent,
     ConfigMapsHeaderRendererComponent,
+    ServicesHeaderRendererComponent,
+    ServicesEntryRendererComponent,
     EditBindingsModalComponent,
     BindingsDetailsModalComponent,
     CreateBindingsModalComponent,
@@ -207,6 +213,8 @@ import { WindowTitleService } from 'shared/services/window-title.service';
     SecretsEntryRendererComponent,
     ConfigMapsEntryRendererComponent,
     ConfigMapsHeaderRendererComponent,
+    ServicesHeaderRendererComponent,
+    ServicesEntryRendererComponent,
     ApplicationsHeaderRendererComponent,
     ApplicationsEntryRendererComponent,
     ServiceBrokerHeaderRendererComponent,

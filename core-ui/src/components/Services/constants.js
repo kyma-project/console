@@ -5,5 +5,3 @@ export const EVENT_TRIGGERS = {
 };
 
 export const SERVICE_API_VERSION = 'v1';
-
-export const TOOLBAR_TITLE = 'Services';

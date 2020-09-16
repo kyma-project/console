@@ -8,35 +8,33 @@ import * as mockData from './mocks';
 describe('CreateRoleBindingModal', () => {
   const { namespace, ...mocks } = mockData;
 
-  it.todo('Creates binding');
+  it('Creates binding', async () => {
+    const { getByText, getByPlaceholderText } = render(
+      <MockedProvider addTypename={false} mocks={Object.values(mocks)}>
+        <CreateRoleBindingModal namespaceId={namespace} />
+      </MockedProvider>,
+    );
 
-  // it('Creates binding', async () => {
-  //   const { getByText, getByPlaceholderText } = render(
-  //     <MockedProvider addTypename={false} mocks={Object.values(mocks)}>
-  //       <CreateRoleBindingModal namespaceId={namespace} />
-  //     </MockedProvider>,
-  //   );
+    // open modal
+    fireEvent.click(getByText('Create Binding'));
+    await waitForDomChange();
 
-  //   // open modal
-  //   fireEvent.click(getByText('Create Binding'));
-  //   await waitForDomChange();
+    const submitButton = getByText('Save');
+    expect(submitButton).toBeDisabled();
 
-  //   const submitButton = getByText('Save');
-  //   expect(submitButton).toBeDisabled();
+    // fill form
+    fireEvent.change(getByPlaceholderText('User name'), {
+      target: { value: 'user' },
+    });
+    expect(submitButton).toBeDisabled();
 
-  //   // fill form
-  //   fireEvent.change(getByPlaceholderText('User name'), {
-  //     target: { value: 'user' },
-  //   });
-  //   expect(submitButton).toBeDisabled();
+    fireEvent.click(getByPlaceholderText('Choose role...'));
+    fireEvent.click(getByText('role-1'));
 
-  //   fireEvent.click(getByPlaceholderText('Choose role...'));
-  //   fireEvent.click(getByText('role-1'));
+    // submit form
+    expect(submitButton).not.toBeDisabled();
+    fireEvent.click(submitButton);
 
-  //   // submit form
-  //   expect(submitButton).not.toBeDisabled();
-  //   fireEvent.click(submitButton);
-
-  //   await wait(() => expect(mutationMock.result).toHaveBeenCalled());
-  // });
+    await wait(() => expect(mutationMock.result).toHaveBeenCalled());
+  });
 });

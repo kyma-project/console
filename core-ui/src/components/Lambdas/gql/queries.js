@@ -5,24 +5,12 @@ export const GET_LAMBDAS = gql`
     functions(namespace: $namespace) {
       name
       namespace
-      labels
       runtime
-      sourceType
+      labels
       status {
         phase
         reason
         message
-      }
-    }
-    gitRepositories(namespace: $namespace) {
-      name
-      namespace
-      spec {
-        url
-        auth {
-          type
-          secretName
-        }
       }
     }
   }
@@ -38,9 +26,6 @@ export const GET_LAMBDA = gql`
       source
       dependencies
       runtime
-      sourceType
-      baseDir
-      reference
       replicas {
         min
         max

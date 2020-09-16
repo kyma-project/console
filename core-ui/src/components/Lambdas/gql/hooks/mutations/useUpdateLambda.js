@@ -10,7 +10,6 @@ import { GQL_MUTATIONS } from 'components/Lambdas/constants';
 export const UPDATE_TYPE = {
   GENERAL_CONFIGURATION: 'GENERAL_CONFIGURATION',
   CODE_AND_DEPENDENCIES: 'CODE_AND_DEPENDENCIES',
-  REPOSITORY_CONFIG: 'REPOSITORY_CONFIG',
   RESOURCES_AND_REPLICAS: 'RESOURCES_AND_REPLICAS',
   VARIABLES: 'VARIABLES',
 };
@@ -83,14 +82,11 @@ export function prepareUpdateLambdaInput(lambda = {}) {
   const preparedLambda = {
     labels: lambda.labels || {},
     source: lambda.source || '',
-    sourceType: lambda.sourceType || '',
     dependencies: lambda.dependencies || '',
     resources: lambda.resources || {},
     replicas: lambda.replicas || {},
     env: lambda.env || [],
     runtime: lambda.runtime || '',
-    reference: lambda.reference || null,
-    baseDir: lambda.baseDir || null,
   };
 
   return omitTypenames(preparedLambda);

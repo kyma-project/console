@@ -3,16 +3,19 @@ import React from 'react';
 import { FormLabel, InlineHelp } from 'fundamental-react';
 import { LabelSelectorInput } from 'react-shared';
 
-import { FORMS } from 'components/Lambdas/constants';
+import { LAMBDAS_LIST } from 'components/Lambdas/constants';
 
 import './LabelsInput.scss';
 
 export function LabelsInput({ ...otherProps }) {
   return (
-    <div className="resource-labels-input">
-      <FormLabel className="resource-labels-input__label">
-        {FORMS.LABELS.LABEL}
-        <InlineHelp placement="bottom-right" text={FORMS.LABELS.INLINE_HELP} />
+    <div className="lambda-labels-input">
+      <FormLabel className="lambda-labels-input__label">
+        {LAMBDAS_LIST.CREATE_MODAL.INPUTS.LABEL.LABEL}
+        <InlineHelp
+          placement="bottom-right"
+          text={LAMBDAS_LIST.CREATE_MODAL.INPUTS.LABEL.INLINE_HELP}
+        />
       </FormLabel>
       <LabelSelectorInput {...otherProps} />
     </div>

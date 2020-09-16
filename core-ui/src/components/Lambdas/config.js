@@ -57,7 +57,6 @@ const defaultConfig = {
   logging: {
     deploymentContainerName: 'lambda',
     jobContainerName: 'executor',
-    repoFetcherContainerName: 'repo-fetcher',
   },
   defaultLambdaCodeAndDeps: defaultCodeAndDeps,
 };

@@ -13,7 +13,6 @@ import ApiRules from 'components/ApiRules/ApiRules';
 import ApiRuleDetails from 'components/ApiRules/ApiRuleDetails/ApiRuleDetails';
 import EditApiRule from 'components/ApiRules/EditApiRule/EditApiRule';
 
-import Services from 'components/Services/Services';
 import ServiceDetails from 'components/Services/ServiceDetails/ServiceDetails';
 
 import OAuthClientsList from 'components/OAuthClients/List/OAuthClientsList';
@@ -47,11 +46,6 @@ export default function App() {
         render={withTitle(NAMESPACES_TITLE, NamespaceList)}
       />
 
-      <Route
-        exact
-        path="/home/namespaces/:namespaceId/services"
-        render={withTitle(SERVICES_TITLE, RoutedServicesList)}
-      />
       <Route
         path="/home/namespaces/:namespaceId/services/details/:serviceName"
         render={withTitle(SERVICES_TITLE, RoutedServiceDetails)}
@@ -144,10 +138,6 @@ function RoutedOAuthClientDetails({ match }) {
       name={match.params.clientName}
     />
   );
-}
-
-function RoutedServicesList({ match }) {
-  return <Services namespace={match.params.namespaceId} />;
 }
 
 function RoutedServiceDetails({ match }) {
