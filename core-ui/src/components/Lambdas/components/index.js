@@ -1,3 +1,5 @@
+export * from './DropdownInput/DropdownInput';
+export * from './FormInput/FormInput';
 export * from './LabelsInput/LabelsInput';
-export * from './LambdaNameInput/LambdaNameInput';
+export * from './ResourceNameInput/ResourceNameInput';
 export * from './TabsWithActions/TabsWithActions';

@@ -1,9 +1,9 @@
 import React from 'react';
 
-import LambdasListWrapper from 'components/Lambdas/LambdasList/LambdasListWrapper';
+import Wrapper from 'components/Lambdas/LambdasList/Wrapper';
 import { useConfigData } from 'components/Lambdas/helpers/misc/useConfigData';
 
 export default function Lambdas() {
   useConfigData();
-  return <LambdasListWrapper />;
+  return <Wrapper />;
 }

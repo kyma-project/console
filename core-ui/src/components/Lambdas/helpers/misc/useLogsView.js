@@ -17,13 +17,17 @@ export const useLogsView = (uid, namespace, initialCollapse = true) => {
   const [logsViewExists, setLogViewExists] = useState(false);
 
   useEffect(() => {
-    const { jobContainerName, deploymentContainerName } = CONFIG.logging;
+    const {
+      jobContainerName,
+      deploymentContainerName,
+      repoFetcherContainerName,
+    } = CONFIG.logging;
 
     const linkManager = LuigiClient.linkManager().withParams({
       namespace: namespace,
       functionUID: uid,
       compact: 'true',
-      container: `~(${jobContainerName}|${deploymentContainerName})`,
+      container: `~(${jobContainerName}|${deploymentContainerName}|${repoFetcherContainerName})`,
     });
 
     checkLogsViewExists(linkManager, setLogViewExists);

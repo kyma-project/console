@@ -32,7 +32,7 @@ export function getStaticChildrenNodesForNamespace(){
       label: 'Overview',
       viewUrl: config.coreModuleUrl + '/home/namespaces/:namespaceId/details',
       icon: 'product',
-      viewGroup: '_core_ui_'
+      viewGroup: coreUIViewGroupName
     },
     {
       category: { label: 'Service Management', icon: 'add-coursebook', collapsible: true },
@@ -50,13 +50,13 @@ export function getStaticChildrenNodesForNamespace(){
       navigationContext: 'oauth-clients',
       label: 'OAuth Clients',
       viewUrl: config.coreModuleUrl + '/home/namespaces/:namespaceId/oauth-clients',
-      viewGroup: '_core_ui_',
+      viewGroup: coreUIViewGroupName,
       keepSelectedForChildren: true,
       children: [
         {
           pathSegment: 'create',
           viewUrl: config.coreModuleUrl + '/home/namespaces/:namespaceId/oauth-clients/create',
-          viewGroup: '_core_ui_',
+          viewGroup: coreUIViewGroupName,
         },
         {
           pathSegment: 'details',
@@ -64,7 +64,7 @@ export function getStaticChildrenNodesForNamespace(){
             {
               pathSegment: ':clientName',
               viewUrl: config.coreModuleUrl + '/home/namespaces/:namespaceId/oauth-clients/details/:clientName',
-              viewGroup: '_core_ui_',
+              viewGroup: coreUIViewGroupName,
             }
           ]
         }
@@ -134,8 +134,9 @@ export function getStaticChildrenNodesForNamespace(){
       pathSegment: 'services',
       navigationContext: 'services',
       label: 'Services',
-      viewUrl: '/consoleapp.html#/home/namespaces/:namespaceId/services',
+      viewUrl: config.coreModuleUrl + '/home/namespaces/:namespaceId/services',
       keepSelectedForChildren: true,
+      viewGroup: coreUIViewGroupName,
       children: [
         {
           pathSegment: 'details',
@@ -143,7 +144,6 @@ export function getStaticChildrenNodesForNamespace(){
             {
               pathSegment: ':serviceName',
               viewUrl: config.coreModuleUrl + '/home/namespaces/:namespaceId/services/details/:serviceName',
-              viewGroup: '_core_ui_',
               children: [
                 {
                   pathSegment: 'apis',

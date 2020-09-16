@@ -15,6 +15,10 @@ import {
 } from 'components/Lambdas/constants';
 
 import './LambdaDetailsHeader.scss';
+import {
+  prettySourceType,
+  isGitSourceType,
+} from 'components/Lambdas/helpers/lambdas';
 import { prettyRuntime } from 'components/Lambdas/helpers/runtime';
 
 const breadcrumbItems = [
@@ -46,18 +50,31 @@ export default function LambdaDetailsHeader({ lambda }) {
         actions={actions}
       />
       <div className="fd-panel-grid fd-panel-grid--3col lambda-details-header__content">
-        <div>
-          <p className="fd-has-color-text-4 status-header">Status</p>
-          <LambdaStatusBadge status={lambda.status} />
-          <div className="fd-has-margin-bottom-l fd-has-margin-top-m">
-            <span className="fd-has-color-text-4 ">
-              {LAMBDA_DETAILS.RUNTIME.TEXT}
-            </span>
-            <span>{prettyRuntime(lambda.runtime)}</span>
-          </div>
-        </div>
         <div className="fd-has-grid-column-span-2">
           <LambdaLabels lambda={lambda} />
+          <div className="fd-panel-grid fd-panel-grid--3col">
+            <PageHeader.Column title={LAMBDA_DETAILS.SOURCE_TYPE.TEXT}>
+              <span>{prettySourceType(lambda.sourceType)}</span>
+            </PageHeader.Column>
+            <PageHeader.Column
+              title={LAMBDA_DETAILS.RUNTIME.TEXT}
+              columnSpan="2 / 3"
+            >
+              <span>{prettyRuntime(lambda.runtime)}</span>
+            </PageHeader.Column>
+            {isGitSourceType(lambda.sourceType) && (
+              <PageHeader.Column
+                title={LAMBDA_DETAILS.REPOSITORY.TEXT}
+                columnSpan="3 / 3"
+              >
+                <span>{lambda.source}</span>
+              </PageHeader.Column>
+            )}
+          </div>
+        </div>
+        <div className="fd-has-grid-column-span-1">
+          <p className="fd-has-color-text-4 status-header">Status</p>
+          <LambdaStatusBadge status={lambda.status} />
         </div>
       </div>
     </div>
