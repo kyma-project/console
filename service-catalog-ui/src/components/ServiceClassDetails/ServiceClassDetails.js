@@ -5,7 +5,7 @@ import { getServiceClass } from './queries';
 import PropTypes from 'prop-types';
 import {
   serviceClassConstants,
-  createInstanceButtonText,
+  createInstanceConstants,
   filterExtensions,
 } from 'helpers/constants';
 
@@ -105,9 +105,9 @@ export default function ServiceClassDetails({ name, plan }) {
 
   const buttonText = isProvisionedOnlyOnce
     ? serviceClass.activated
-      ? createInstanceButtonText.provisionOnlyOnceActive
-      : createInstanceButtonText.provisionOnlyOnce
-    : createInstanceButtonText.standard;
+      ? createInstanceConstants.buttonText.provisionOnlyOnceActive
+      : createInstanceConstants.buttonText.provisionOnlyOnce
+    : createInstanceConstants.buttonText.standard;
 
   const {
     providerDisplayName,
@@ -154,6 +154,17 @@ export default function ServiceClassDetails({ name, plan }) {
     }
   }
 
+  const modalOpeningComponent = (
+    <Tooltip content={createInstanceConstants.provisionOnlyOnceInfo}>
+      <Button
+        disabled={isProvisionedOnlyOnce && serviceClass.activated}
+        glyph="add"
+      >
+        {buttonText}
+      </Button>
+    </Tooltip>
+  );
+
   return (
     <>
       <ServiceClassDetailsHeader
@@ -198,11 +209,7 @@ export default function ServiceClassDetails({ name, plan }) {
                         : 'Service Class'
                     }${' '}
                     in the ${namespace} Namespace`}
-          button={{
-            text: buttonText,
-            glyph: 'add',
-            disabled: Boolean(isProvisionedOnlyOnce && serviceClass.activated),
-          }}
+          modalOpeningComponent={modalOpeningComponent}
           id="add-instance-modal"
           item={serviceClass}
           renderForm={props => (

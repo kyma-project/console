@@ -1,83 +1,68 @@
 import React from 'react';
 import LuigiClient from '@luigi-project/client';
-import ServiceInstanceInfo from '../ServiceInstanceInfo/ServiceInstanceInfo';
 import { serviceInstanceConstants } from 'helpers/constants';
-import { Toolbar } from '@kyma-project/react-components';
-import { Button, Breadcrumb } from 'fundamental-react';
-import { Modal } from 'react-shared';
-import { BreadcrumbWrapper, ToolbarWrapper } from './styled';
+import { Button } from 'fundamental-react';
+import { PageHeader, handleDelete } from 'react-shared';
 import { isService } from 'helpers';
+import ServiceInstanceClassInfo from '../ServiceInstanceInfo/ServiceInstanceInfo';
 
 const ServiceInstanceHeader = ({
   serviceInstance,
   instanceClass,
   deleteServiceInstance,
 }) => {
-  const goToServiceInstances = () => {
-    LuigiClient.linkManager()
-      .fromContext('namespaces')
-      .withParams({
-        selectedTab: isService(serviceInstance) ? 'services' : 'addons',
-      })
-      .navigate('cmf-instances');
-  };
+  const deleteHandler = () =>
+    handleDelete(
+      'Service Instance',
+      serviceInstance.name,
+      serviceInstance.name,
+      () =>
+        deleteServiceInstance({
+          variables: {
+            name: serviceInstance.name,
+            namespace: serviceInstance.namespace,
+          },
+        }),
+      () =>
+        LuigiClient.linkManager()
+          .fromContext('namespaces')
+          .navigate('cmf-instances'),
+    );
 
-  const handleDelete = async () => {
-    await deleteServiceInstance({
-      variables: {
-        namespace: LuigiClient.getContext().namespaceId,
-        name: serviceInstance.name,
+  const breadcrumbItems = [
+    {
+      name: `${serviceInstanceConstants.instances} - ${
+        isService(serviceInstance) ? 'Services' : 'Addons'
+      }`,
+      params: {
+        selectedTab: isService(serviceInstance) ? 'services' : 'addons',
       },
-    });
-    setTimeout(() => {
-      LuigiClient.linkManager()
-        .fromContext('namespaces')
-        .navigate('cmf-instances');
-    }, 100);
-  };
+      path: '/',
+    },
+    {
+      name: '',
+    },
+  ];
+
+  const description = instanceClass
+    ? instanceClass.description
+    : serviceInstanceConstants.noDescription;
+
+  const actions = (
+    <Button type="negative" option="light" onClick={deleteHandler}>
+      {serviceInstanceConstants.delete}
+    </Button>
+  );
 
   return (
-    <ToolbarWrapper>
-      <BreadcrumbWrapper>
-        <Breadcrumb>
-          <Breadcrumb.Item
-            name={`${serviceInstanceConstants.instances} - ${
-              isService(serviceInstance) ? 'Services' : 'Addons'
-            }`}
-            url="#"
-            onClick={goToServiceInstances}
-          />
-          <Breadcrumb.Item />
-        </Breadcrumb>
-      </BreadcrumbWrapper>
-
-      <Toolbar
-        title={serviceInstance.name}
-        description={
-          instanceClass
-            ? instanceClass.description
-            : serviceInstanceConstants.noDescription
-        }
-        nowrap="true"
-      >
-        <Modal
-          title={serviceInstanceConstants.delete}
-          confirmText={serviceInstanceConstants.delete}
-          cancelText={serviceInstanceConstants.cancel}
-          onConfirm={handleDelete}
-          modalOpeningComponent={
-            <Button type="negative" option="light">
-              {serviceInstanceConstants.delete}
-            </Button>
-          }
-          type="negative"
-        >
-          {`${serviceInstanceConstants.instanceDeleteConfirm} "${serviceInstance.name}"?`}
-        </Modal>
-      </Toolbar>
-
-      <ServiceInstanceInfo serviceInstance={serviceInstance} />
-    </ToolbarWrapper>
+    <PageHeader
+      breadcrumbItems={breadcrumbItems}
+      title={serviceInstance.name}
+      actions={actions}
+      description={description}
+    >
+      <ServiceInstanceClassInfo serviceInstance={serviceInstance} />
+    </PageHeader>
   );
 };
 

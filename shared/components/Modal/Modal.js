@@ -1,6 +1,7 @@
 import React from 'react';
 import LuigiClient from '@luigi-project/client';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import './Modal.scss';
 import { Modal as FdModal, Button } from 'fundamental-react';
 import { Tooltip } from '../Tooltip/Tooltip';
@@ -19,7 +20,7 @@ Modal.propTypes = {
   disabledConfirm: PropTypes.bool,
   waiting: PropTypes.bool,
   tooltipData: PropTypes.object,
-  modalClassName: PropTypes.string,
+  className: PropTypes.string,
 };
 
 Modal.defaultProps = {
@@ -45,6 +46,7 @@ export function Modal({
   waiting,
   tooltipData,
   children,
+  className,
 }) {
   const [show, setShow] = React.useState(false);
   function onOpen() {
@@ -126,7 +128,7 @@ export function Modal({
         {modalOpeningComponent}
       </div>
       <FdModal
-        className="custom-modal"
+        className={classNames('custom-modal', className)}
         type={type}
         title={title}
         show={show}

@@ -2,7 +2,7 @@ import React from 'react';
 import LuigiClient from '@luigi-project/client';
 
 import { Icon } from 'fundamental-react';
-import { Modal, StatusBadge } from 'react-shared';
+import { Modal } from 'react-shared';
 import {
   LinkButton,
   Link,
@@ -14,7 +14,7 @@ import {
 
 import { getResourceDisplayName } from 'helpers';
 import { DOCUMENTATION_PER_PLAN_LABEL } from 'helpers/constants';
-import { getBadgeTypeForStatus } from 'helpers/getBadgeTypeForStatus';
+import { ServiceInstanceStatus } from './../../../shared/ServiceInstanceStatus.js';
 
 const goToServiceInstanceDetails = name => {
   LuigiClient.linkManager()
@@ -156,18 +156,6 @@ const BindingUsagesCount = ({ instance }) => {
   );
 };
 
-const Status = ({ instance }) => {
-  const type = instance.status ? instance.status.type : 'UNKNOWN';
-  return (
-    <StatusBadge
-      tooltipContent={instance.status?.message}
-      type={getBadgeTypeForStatus(type)}
-    >
-      {type}
-    </StatusBadge>
-  );
-};
-
 export default function renderRow(
   instance,
   serviceCatalogAddonsBackendModuleExists,
@@ -179,6 +167,6 @@ export default function renderRow(
     ...(serviceCatalogAddonsBackendModuleExists
       ? [<BindingUsagesCount instance={instance} />]
       : []),
-    <Status instance={instance} />,
+    <ServiceInstanceStatus instance={instance} />,
   ];
 }

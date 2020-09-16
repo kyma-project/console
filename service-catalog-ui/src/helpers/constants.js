@@ -2,10 +2,14 @@ export const DOCUMENTATION_PER_PLAN_DESCRIPTION = `Every plan comes with a separ
 export const DOCUMENTATION_PER_PLAN_LABEL = 'documentation-per-plan';
 
 export const filterExtensions = ['md', 'xml', 'json', 'yml', 'yaml'];
-export const createInstanceButtonText = {
-  provisionOnlyOnce: 'Add once',
-  provisionOnlyOnceActive: 'Added once',
-  standard: 'Add',
+export const createInstanceConstants = {
+  buttonText: {
+    provisionOnlyOnce: 'Add once',
+    provisionOnlyOnceActive: 'Added once',
+    standard: 'Add',
+  },
+  provisionOnlyOnceInfo:
+    'You can provision this Service Class only once in a given Namespace.',
 };
 export const serviceClassConstants = {
   addons: 'Add-Ons',

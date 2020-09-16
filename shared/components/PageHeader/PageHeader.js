@@ -4,15 +4,17 @@ import { Panel, Breadcrumb } from 'fundamental-react';
 import './PageHeader.scss';
 import LuigiClient from '@luigi-project/client';
 
-const Column = ({ title, children, columnSpan = 1 }) => (
-  <div className="page-header__column" style={{ gridColumn: columnSpan }}>
-    <div className="title fd-has-color-text-4 fd-has-margin-bottom-none">
-      {title}
+const Column = ({ title, children, columnSpan }) => {
+  const style = columnSpan !== undefined ? { gridColumn: columnSpan } : {};
+  return (
+    <div className="page-header__column" style={style}>
+      <div className="title fd-has-color-text-4 fd-has-margin-bottom-none">
+        {title}
+      </div>
+      <span className="content fd-has-color-text-1">{children}</span>
     </div>
-    <span className="content fd-has-color-text-1">{children}</span>
-  </div>
-);
-
+  );
+};
 const performOnClick = item => {
   if (!item.path) {
     return null;

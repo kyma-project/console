@@ -17,6 +17,8 @@
 
 .link {
   color: var(--fd-color-action-1);
+  border: none;
+  background: none;
   cursor: pointer;
   &--bold {
     font-weight: 700;
@@ -28,4 +30,22 @@
   .fd-counter--notification {
     transform: translate(10%, -50%);
   }
+}
+
+.clear-underline {
+  text-decoration: none !important;
+}
+
+.no-dismiss-tokens {
+  .fd-token {
+    cursor: default
+  }
+
+  .fd-token::after, &.fd-token::after {
+    content: none !important;
+  }
+}
+
+.has-padding-0 {
+  padding: 0;
 }

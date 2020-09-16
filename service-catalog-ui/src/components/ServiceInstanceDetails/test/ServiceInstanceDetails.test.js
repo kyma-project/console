@@ -7,8 +7,8 @@ import {
   createBindingMutation,
 } from 'testing/instances/queriesMocks';
 import ServiceInstanceDetails from '../ServiceInstanceDetails';
-import { Toolbar } from '@kyma-project/react-components';
-import { Spinner, Modal } from 'react-shared';
+import { Panel } from 'fundamental-react';
+import { Spinner } from 'react-shared';
 import { createMockLink, NotificationContext } from 'react-shared';
 import { componentUpdate, mockTestNamespace } from 'testing';
 import { serviceInstanceConstants } from 'helpers/constants';
@@ -19,6 +19,7 @@ import ServiceInstanceBindings from '../ServiceInstanceBindings/ServiceInstanceB
 const mockNavigate = jest.fn();
 const mockAddBackdrop = jest.fn();
 const mockRemoveBackdrop = jest.fn();
+const mockDelete = jest.fn();
 
 jest.mock('@kyma-project/generic-documentation', () => {
   return <div>GENERIC DOCUMENTATION COMPONENT</div>;
@@ -40,6 +41,11 @@ jest.mock('@luigi-project/client', () => ({
     addBackdrop: mockAddBackdrop,
     removeBackdrop: mockRemoveBackdrop,
   }),
+}));
+
+jest.mock('react-shared', () => ({
+  ...jest.requireActual('react-shared'),
+  handleDelete: () => mockDelete(),
 }));
 
 const consoleWarn = jest.spyOn(global.console, 'warn').mockImplementation();
@@ -90,8 +96,8 @@ describe('Instance Details UI', () => {
     expect(component.find(ServiceInstanceHeader).exists()).toBe(true);
     expect(component.find(ServiceInstanceBindings).exists()).toBe(true);
 
-    const toolbar = component.find(Toolbar);
-    expect(toolbar.text()).toMatch(/sth-motherly-deposit/);
+    const title = component.find('[aria-label="title"]').first();
+    expect(title.text()).toMatch(/sth-motherly-deposit/);
   });
 
   it('Deletes instance using delete button', async () => {
@@ -115,30 +121,14 @@ describe('Instance Details UI', () => {
     await componentUpdate(component);
 
     const header = component.find(ServiceInstanceHeader);
-    const deleteButton = header.find('button');
-
+    const deleteButton = header.find(Panel.Actions).find('button');
     expect(deleteButton.exists()).toBe(true);
     expect(deleteButton.text()).toBe(serviceInstanceConstants.delete);
 
     deleteButton.simulate('click');
     await componentUpdate(component);
 
-    const deleteModal = component.find(Toolbar).find(Modal);
-    expect(deleteModal.exists()).toBe(true);
-
-    expect(deleteModal.text()).toMatch(
-      new RegExp(serviceInstanceConstants.delete),
-    );
-
-    const confirmDeleteButton = deleteModal
-      .find('button')
-      .find('[data-e2e-id="modal-confirmation-button"]');
-    expect(confirmDeleteButton.exists()).toBe(true);
-
-    const deleteMutation = serviceInstanceDeleteMutation.result;
-    confirmDeleteButton.simulate('click');
-    await componentUpdate(component);
-    expect(deleteMutation).toHaveBeenCalledTimes(1);
+    expect(mockDelete).toHaveBeenCalledTimes(1);
   });
 
   it('Creates credentials', async () => {

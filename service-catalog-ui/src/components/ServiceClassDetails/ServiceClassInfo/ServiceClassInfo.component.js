@@ -17,7 +17,6 @@ import {
 
 import { serviceClassTileTitles } from 'helpers/constants';
 import { isStringValueEqualToTrue } from 'helpers';
-import ProvisionOnlyOnceInfo from '../ProvisionOnlyOnceInfo/ProvisionOnlyOnceInfo.component';
 
 const ServiceClassInfo = ({
   creationTimestamp,
@@ -27,7 +26,6 @@ const ServiceClassInfo = ({
   tags,
   labels,
   description,
-  isProvisionedOnlyOnce,
   providerDisplayName,
   planSelector,
 }) => {
@@ -64,14 +62,7 @@ const ServiceClassInfo = ({
     tag: 'Tag',
   };
 
-  const computeNumberOfColumns = isProvisionedOnlyOnce => {
-    const defaultNumberOfColumns = 4;
-    return isProvisionedOnlyOnce
-      ? defaultNumberOfColumns + 1
-      : defaultNumberOfColumns;
-  };
-
-  const columnCount = computeNumberOfColumns(isProvisionedOnlyOnce);
+  const columnCount = 4;
 
   return (
     <ServiceClassInfoContentWrapper className="fd-has-padding-top-none">
@@ -119,14 +110,6 @@ const ServiceClassInfo = ({
                 Link
               </ExternalLink>
             </Tile.Content>
-          </Tile>
-        )}
-        {isProvisionedOnlyOnce && (
-          <Tile
-            className="fd-has-grid-row-span-2 fd-has-padding-left-none"
-            style={{ gridColumn: columnCount }}
-          >
-            <ProvisionOnlyOnceInfo />
           </Tile>
         )}
         <Tile className="fd-has-grid-column-span-4">

@@ -2,14 +2,9 @@ import { mount } from 'enzyme';
 import ServiceInstanceInfo from '../ServiceInstanceInfo';
 import React from 'react';
 import { instanceAllAttributes } from './mocks';
-import {
-  ServiceClassButton,
-  ExternalLink,
-  PlanModalButton,
-  JSONCode,
-} from '../styled';
 import { Label } from '@kyma-project/react-components';
 import { Modal } from 'react-shared';
+import { serviceInstanceConstants } from 'helpers/constants';
 
 const mockNavigate = jest.fn();
 const mockAddBackdrop = jest.fn();
@@ -39,13 +34,13 @@ describe('ServiceInstanceInfo', () => {
     );
 
     it('Has service class field with link', () => {
-      const field = component.find('div[data-e2e-id="instance-service-class"]');
+      const field = component.find('[data-e2e-id="instance-service-class"]');
       expect(field.exists()).toBe(true);
       expect(field.text()).toEqual(
         instanceAllAttributes.clusterServiceClass.displayName,
       );
 
-      const link = field.find(ServiceClassButton);
+      const link = field.find('button');
       link.simulate('click');
 
       expect(mockNavigate).toHaveBeenCalledWith(
@@ -55,53 +50,37 @@ describe('ServiceInstanceInfo', () => {
 
     it('Has documentation field with link', () => {
       const field = component.find(
-        'div[data-e2e-id="instance-service-documentation-link"]',
+        '[data-e2e-id="instance-service-documentation-link"]',
       );
       expect(field.exists()).toBe(true);
-
-      const link = field.find(ExternalLink);
-      expect(link.prop('href')).toEqual(
-        instanceAllAttributes.clusterServiceClass.documentationUrl,
-      );
+      expect(field.text()).toBe(serviceInstanceConstants.link);
     });
 
     it('Has support field with link', () => {
       const field = component.find(
-        'div[data-e2e-id="instance-service-support-link"]',
+        '[data-e2e-id="instance-service-support-link"]',
       );
       expect(field.exists()).toBe(true);
-
-      const link = field.find(ExternalLink);
-      expect(link.prop('href')).toEqual(
-        instanceAllAttributes.clusterServiceClass.supportUrl,
-      );
+      expect(field.text()).toBe(serviceInstanceConstants.link);
     });
 
     it('Has labels field with link', () => {
-      const field = component.find('div[data-e2e-id="instance-label"]');
+      const field = component.find('[data-e2e-id="instance-labels"]');
       expect(field.exists()).toBe(true);
 
-      const labels = field.find(Label);
-      expect(labels.map(l => l.text()).sort()).toEqual(
-        instanceAllAttributes.labels.sort(),
-      );
+      expect(
+        field
+          .children()
+          .map(c => c.text())
+          .sort(),
+      ).toEqual(instanceAllAttributes.labels.sort());
     });
 
     it('Has plan field with parameters', async () => {
-      let field = component.find('div[data-e2e-id="instance-service-plan"]');
+      const field = component.find('[data-e2e-id="instance-service-plan"]');
       expect(field.exists()).toBe(true);
       expect(field.text()).toEqual(
         instanceAllAttributes.clusterServicePlan.displayName,
-      );
-
-      const button = field.find(PlanModalButton);
-      button.simulate('click');
-
-      field = component.find('div[data-e2e-id="instance-service-plan"]');
-
-      const jsonCode = field.find(JSONCode);
-      expect(JSON.parse(jsonCode.text())).toEqual(
-        instanceAllAttributes.planSpec,
       );
     });
   });
@@ -118,9 +97,7 @@ describe('ServiceInstanceInfo', () => {
     instance.clusterServiceClass.supportUrl = null;
     const component = mount(<ServiceInstanceInfo serviceInstance={instance} />);
     expect(
-      component
-        .find('div[data-e2e-id="instance-service-support-link"]')
-        .exists(),
+      component.find('[data-e2e-id="instance-service-support-link"]').exists(),
     ).toBe(false);
   });
 
@@ -130,7 +107,7 @@ describe('ServiceInstanceInfo', () => {
     const component = mount(<ServiceInstanceInfo serviceInstance={instance} />);
     expect(
       component
-        .find('div[data-e2e-id="instance-service-documentation-link"]')
+        .find('[data-e2e-id="instance-service-documentation-link"]')
         .exists(),
     ).toBe(false);
   });
@@ -139,7 +116,7 @@ describe('ServiceInstanceInfo', () => {
     const instance = instanceAllAttributes;
     instance.planSpec = {};
     const component = mount(<ServiceInstanceInfo serviceInstance={instance} />);
-    const field = component.find('div[data-e2e-id="instance-service-plan"]');
+    const field = component.find('[data-e2e-id="instance-service-plan"]');
     expect(field.find(Modal).exists()).toBe(false);
     expect(field.text()).toEqual(instance.clusterServicePlan.displayName);
   });
