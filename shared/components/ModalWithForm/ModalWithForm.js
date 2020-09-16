@@ -151,9 +151,12 @@ export const ModalWithForm = ({
   return (
     <>
       {modalOpeningComponent ? (
-        React.cloneElement(modalOpeningComponent, {
-          onClick: () => setOpenStatus(true),
-        })
+        <div
+          style={{ display: 'contents' }}
+          onClick={() => setOpenStatus(true)}
+        >
+          {modalOpeningComponent}
+        </div>
       ) : (
         <Button
           glyph={button.glyph || null}
