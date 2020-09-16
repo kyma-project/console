@@ -44,7 +44,7 @@ export default function CreateEventTriggerModal({
         {button}
       </Tooltip>
     );
-  } else if (!isLambda && !servicePorts.length) {
+  } else if (isServiceWithNoPorts) {
     modalOpeningComponent = (
       <Tooltip
         content={
