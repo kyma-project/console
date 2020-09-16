@@ -138,8 +138,12 @@ export const GET_SERVICES = gql`
   query Services($namespace: String!, $excludedLabels: [String!]) {
     services(namespace: $namespace, excludedLabels: $excludedLabels) {
       name
+      clusterIP
+      creationTimestamp
+      labels
       ports {
         port
+        serviceProtocol
       }
     }
   }

@@ -1,0 +1,21 @@
+.form-input {
+  .fd-form-item > .fd-form-label {
+    display: none;
+  }
+
+  &__label {
+    position: relative;
+
+    .fd-inline-help {
+      top: 3px;
+      left: 3px;
+      margin-right: 6px;
+    }
+  }
+
+  input:disabled {
+    color: black;
+    opacity: 0.5;
+    border-color: #a3a3a3;
+  }
+}

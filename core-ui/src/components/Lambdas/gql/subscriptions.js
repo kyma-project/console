@@ -11,6 +11,9 @@ export const LAMBDA_EVENT_SUBSCRIPTION = gql`
         labels
         source
         runtime
+        sourceType
+        baseDir
+        reference
         dependencies
         replicas {
           min

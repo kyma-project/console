@@ -58,6 +58,7 @@ export const TOOLBAR = {
 };
 
 export const LAMBDAS_LIST = {
+  TAB_TITLE: 'Functions',
   ERRORS: {
     RESOURCES_NOT_FOUND: 'There are no Functions in this Namespace yet.',
     NOT_MATCHING_SEARCH_QUERY: "Couldn't find Functions matching this query.",
@@ -70,10 +71,13 @@ export const LAMBDAS_LIST = {
     CONFIRM_BUTTON: {
       TEXT: 'Create',
     },
+    ERRORS: {
+      INVALID: 'At least one field is empty or incorrectly formatted.',
+      NO_REPOSITORY_FOUND:
+        'There are no Repositories available. Create a new Repository first.',
+    },
     INPUTS: {
       NAME: {
-        LABEL: 'Name',
-        INLINE_HELP: `Function name must consist of lower case alphanumeric characters or dashes, and must start and end with an alphanumeric character (e.g. 'my-name1').`,
         ERRORS: {
           EMPTY: 'Function name is required.',
           INVALID: `Invalid Function name. The name must consist of lower case alphanumeric characters or dashes, and must start and end with an alphanumeric character (e.g. 'my-name1').`,
@@ -82,15 +86,130 @@ export const LAMBDAS_LIST = {
           TOO_LONG: 'Function name cannot be longer than 63 characters.',
         },
       },
-      LABEL: {
-        LABEL: 'Labels',
-        INLINE_HELP: `The key/value pair should be separated by '=', consist of alphanumeric characters, '-', '_' or '.', and must start and end with an alphanumeric character. The key cannot be empty.`,
-      },
       RUNTIME: {
-        NAME: 'Runtime',
+        LABEL: 'Runtime',
+        INLINE_HELP: `Runtime on which your Function will run`,
+      },
+      SOURCE_TYPE: {
+        LABEL: 'Source Type',
+        INLINE_HELP: `Type of your Function's code source: Inline editor (code and dependencies are provided as plain text) or Git repository (code and dependencies are fetched from a Git repository)`,
+        OPTIONS: [
+          {
+            KEY: 'Inline editor',
+            VALUE: '',
+          },
+          {
+            KEY: 'Git repository',
+            VALUE: 'git',
+          },
+        ],
+      },
+      REPOSITORY: {
+        LABEL: 'Repository',
+        INLINE_HELP: `Repository which you want to use`,
+      },
+      REFERENCE: {
+        LABEL: 'Reference',
+        INLINE_HELP: `Reference to the Function's source. Select a branch name or commit revision.`,
+        PLACEHOLDER: 'Enter a branch name or commit revision (Required)',
+        ERRORS: {
+          EMPTY: 'Reference is required.',
+        },
+      },
+      BASE_DIR: {
+        LABEL: 'Base Directory',
+        INLINE_HELP: `Directory with Function's code and dependencies`,
+        PLACEHOLDER: 'Enter a base directory (Required)',
+        ERRORS: {
+          EMPTY: 'Base Directory is required.',
+        },
       },
     },
   },
+};
+
+export const FUNCTION_SOURCE_TYPE = {
+  INLINE: 'Inline editor',
+  GIT: 'Git repository',
+};
+
+export const REPOSITORIES_LIST = {
+  TAB_TITLE: 'Repositories',
+  ERRORS: {
+    RESOURCES_NOT_FOUND: 'There are no Repositories in this Namespace yet.',
+    NOT_MATCHING_SEARCH_QUERY:
+      "Couldn't find Repositories matching this query.",
+  },
+  CREATE_MODAL: {
+    TITLE: 'Connect Repository',
+    OPEN_BUTTON: {
+      TEXT: 'Connect Repository',
+    },
+    CONFIRM_BUTTON: {
+      TEXT: 'Connect',
+    },
+  },
+  UPDATE_MODAL: {
+    TITLE: 'Update Repository {repositoryName}',
+    CONFIRM_BUTTON: {
+      TEXT: 'Update',
+    },
+  },
+  MODAL_ERROR: 'At least one field is empty or incorrectly formatted.',
+  MODAL_INPUTS: {
+    NAME: {
+      ERRORS: {
+        EMPTY: 'Repository name is required.',
+        INVALID: `Invalid Repository URL. The URL must start with the "http(s)", "git", or "ssh" prefix and end with the ".git" suffix.`,
+        DUPLICATED:
+          'There is already a Repository with the same name in this Namespace.',
+        TOO_LONG: 'Repository name cannot be longer than 63 characters.',
+      },
+    },
+    URL: {
+      LABEL: 'URL',
+      INLINE_HELP: `URL must be a valid Git repository address that starts with the "http(s)", "git", or "ssh" prefix and ends with the ".git" suffix.`,
+      PLACEHOLDER: 'Enter the URL address of your Git repository (Required)',
+      ERRORS: {
+        INVALID: `Invalid Repository URL. The URL must start with the "http(s)", "git", or "ssh" prefix and end with the ".git" suffix.`,
+        EMPTY: 'Repository URL is required.',
+      },
+    },
+    AUTH_TYPE: {
+      LABEL: 'Authorization',
+      INLINE_HELP: `Authenticate with your Git repository using a token or password (Basic), an authentication key (SSH key), or don't use any authorization method (Public)`,
+      OPTIONS: [
+        {
+          KEY: 'Public',
+          VALUE: '',
+        },
+        {
+          KEY: 'Basic',
+          VALUE: 'basic',
+        },
+        {
+          KEY: 'SSH key',
+          VALUE: 'key',
+        },
+      ],
+    },
+    SECRET_NAME: {
+      LABEL: 'Secret name',
+      INLINE_HELP: `Secret name must consist of lower case alphanumeric characters or dashes, and must start and end with an alphanumeric character (e.g. 'my-name1').`,
+      PLACEHOLDER: 'Enter a Secret name with credentials (Required)',
+      ERRORS: {
+        INVALID: `Invalid Secret name. The name must consist of lower case alphanumeric characters or dashes, and must start and end with an alphanumeric character (e.g. 'my-name1').`,
+        EMPTY: 'Secret name is required.',
+        TOO_LONG: 'Repository name cannot be longer than 63 characters.',
+      },
+    },
+  },
+};
+
+export const REPOSITORY_AUTH = {
+  PUBLIC: 'Public',
+  BASIC: 'Basic',
+  KEY: 'SSH key',
 };
 
 export const LAMBDA_DETAILS = {
@@ -114,8 +233,14 @@ export const LAMBDA_DETAILS = {
       },
     },
   },
+  SOURCE_TYPE: {
+    TEXT: 'Source Type',
+  },
   RUNTIME: {
-    TEXT: 'Runtime: ',
+    TEXT: 'Runtime',
+  },
+  REPOSITORY: {
+    TEXT: 'Repository',
   },
   TABS: {
     CODE: {
@@ -167,56 +292,76 @@ export const GQL_QUERIES = {
 
 export const GQL_MUTATIONS = {
   CREATE_LAMBDA: {
-    SUCCESS_MESSAGE: `Function "{lambdaName}" was successfully created`,
-    ERROR_MESSAGE: `Couldn't create Function "{lambdaName}" due to this error: {error}`,
+    SUCCESS_MESSAGE: `Function "{lambdaName}" was created.`,
+    ERROR_MESSAGE: `Couldn't create Function "{lambdaName}" due to this error: {error}.`,
   },
   UPDATE_LAMBDA: {
     GENERAL_CONFIGURATION: {
-      SUCCESS_MESSAGE: `General configuration for Function "{lambdaName}" was successfully updated`,
-      ERROR_MESSAGE: `Couldn't update general configuration for Function "{lambdaName}" due to this error: {error}`,
+      SUCCESS_MESSAGE: `General configuration for Function "{lambdaName}" was updated.`,
+      ERROR_MESSAGE: `Couldn't update general configuration for Function "{lambdaName}" due to this error: {error}.`,
     },
     CODE_AND_DEPENDENCIES: {
-      SUCCESS_MESSAGE: `Code and dependencies for Function "{lambdaName}" were successfully updated`,
-      ERROR_MESSAGE: `Couldn't update code and dependencies for Function "{lambdaName}" due to this error: {error}`,
+      SUCCESS_MESSAGE: `Code and dependencies for Function "{lambdaName}" were updated.`,
+      ERROR_MESSAGE: `Couldn't update code and dependencies for Function "{lambdaName}" due to this error: {error}.`,
+    },
+    REPOSITORY_CONFIG: {
+      SUCCESS_MESSAGE: `Repository configuration for Function "{lambdaName}" was updated.`,
+      ERROR_MESSAGE: `Couldn't update Repository configuration for Function "{lambdaName}" due to this error: {error}`,
     },
     RESOURCES_AND_REPLICAS: {
-      SUCCESS_MESSAGE: `Resources and replicas for Function "{lambdaName}" were successfully updated`,
-      ERROR_MESSAGE: `Couldn't update resources and replicas for Function "{lambdaName}" due to this error: {error}`,
+      SUCCESS_MESSAGE: `Resources and replicas for Function "{lambdaName}" were updated.`,
+      ERROR_MESSAGE: `Couldn't update resources and replicas for Function "{lambdaName}" due to this error: {error}.`,
     },
     VARIABLES: {
-      SUCCESS_MESSAGE: `Environment variables for Function "{lambdaName}" were successfully updated`,
-      ERROR_MESSAGE: `Couldn't update environment variables for Function "{lambdaName}" due to this error: {error}`,
+      SUCCESS_MESSAGE: `Environment variables for Function "{lambdaName}" were updated.`,
+      ERROR_MESSAGE: `Couldn't update environment variables for Function "{lambdaName}" due to this error: {error}.`,
     },
   },
   DELETE_LAMBDA: {
-    SUCCESS_MESSAGE: `Function "{lambdaName}" was successfully deleted`,
-    ERROR_MESSAGE: `Couldn't delete Function "{lambdaName}" due to this error: {error}`,
+    SUCCESS_MESSAGE: `Function "{lambdaName}" was deleted.`,
+    ERROR_MESSAGE: `Couldn't delete Function "{lambdaName}" due to this error: {error}.`,
     CONFIRM_MODAL: {
       TITLE: `Delete Function {lambdaName}`,
       MESSAGE: `Are you sure you want to delete Function "{lambdaName}" and all related resources?`,
     },
   },
+  CREATE_REPOSITORY: {
+    SUCCESS_MESSAGE: `Repository "{repositoryName}" was created.`,
+    ERROR_MESSAGE: `Couldn't create Repository "{repositoryName}" due to this error: {error}.`,
+  },
+  UPDATE_REPOSITORY: {
+    SUCCESS_MESSAGE: `Repository "{repositoryName}" was updated.`,
+    ERROR_MESSAGE: `Couldn't update Repository "{repositoryName}" due to this error: {error}.`,
+  },
+  DELETE_REPOSITORY: {
+    SUCCESS_MESSAGE: `Repository "{repositoryName}" was deleted.`,
+    ERROR_MESSAGE: `Couldn't delete Repository "{repositoryName}" due to this error: {error}.`,
+    CONFIRM_MODAL: {
+      TITLE: `Delete Repository {repositoryName}`,
+      MESSAGE: `Are you sure you want to delete Repository "{repositoryName}" and all related resources?`,
+    },
+  },
   CREATE_TRIGGERS: {
-    SUCCESS_MESSAGE_SINGLE: `Event Trigger created successfully`,
-    SUCCESS_MESSAGE_MANY: `Event Triggers created successfully`,
-    ERROR_MESSAGE_SINGLE: `Event Trigger for Function "{lambdaName}" couldn't be created due to this error: {error}`,
-    ERROR_MESSAGE_MANY: `Couldn't create Event Triggers for Function "{lambdaName}" due to this error: {error}`,
+    SUCCESS_MESSAGE_SINGLE: `Event Trigger created.`,
+    SUCCESS_MESSAGE_MANY: `Event Triggers created.`,
+    ERROR_MESSAGE_SINGLE: `Event Trigger for Function "{lambdaName}" couldn't be created due to this error: {error}.`,
+    ERROR_MESSAGE_MANY: `Couldn't create Event Triggers for Function "{lambdaName}" due to this error: {error}.`,
   },
   DELETE_TRIGGER: {
-    SUCCESS_MESSAGE: `Event Trigger was successfully deleted`,
-    ERROR_MESSAGE: `Couldn't delete Event Trigger "{triggerName}" for Function "{lambdaName}" due to this error: {error}`,
+    SUCCESS_MESSAGE: `Event Trigger was deleted.`,
+    ERROR_MESSAGE: `Couldn't delete Event Trigger "{triggerName}" for Function "{lambdaName}" due to this error: {error}.`,
     CONFIRM_MODAL: {
       TITLE: `Delete Event Trigger`,
       MESSAGE: `Are you sure you want to delete Event Trigger "{triggerName}" for Function "{lambdaName}"?`,
     },
   },
   CREATE_BINDING_USAGE: {
-    SUCCESS_MESSAGE: `Service Binding referencing Service Instance "{serviceInstanceName}" was successfully created`,
-    ERROR_MESSAGE: `Couldn't create the Service Binding referencing Service Instance "{serviceInstanceName}" due to this error: {error}`,
+    SUCCESS_MESSAGE: `Service Binding referencing Service Instance "{serviceInstanceName}" was created.`,
+    ERROR_MESSAGE: `Couldn't create the Service Binding referencing Service Instance "{serviceInstanceName}" due to this error: {error}.`,
   },
   DELETE_BINDING_USAGE: {
-    SUCCESS_MESSAGE: `Service Binding referencing Service Instance "{serviceInstanceName}" was successfully deleted`,
-    ERROR_MESSAGE: `Couldn't delete the Service Binding referencing Service Instance "{serviceInstanceName}" due to this error: {error}`,
+    SUCCESS_MESSAGE: `Service Binding referencing Service Instance "{serviceInstanceName}" was deleted.`,
+    ERROR_MESSAGE: `Couldn't delete the Service Binding referencing Service Instance "{serviceInstanceName}" due to this error: {error}.`,
     CONFIRM_MODAL: {
       TITLE: `Delete Service Binding`,
       MESSAGE: `Are you sure you want to delete the Service Binding referencing Service Instance "{serviceInstanceName}"?`,
@@ -346,6 +491,39 @@ export const CODE_AND_DEPENDENCIES_PANEL = {
   DIFF_TOGGLE: 'Diff',
 };
 
+export const REPOSITORY_CONFIG_PANEL = {
+  TITLE: 'Repository configuration',
+  EDIT_BUTTON: {
+    TEXT: 'Edit Configuration',
+  },
+  SAVE_BUTTON: {
+    TEXT: 'Save',
+  },
+  ERRORS: {
+    INVALID: 'At least one field is empty.',
+    NO_CHANGES: 'No changes made.',
+  },
+
+  INPUTS: {
+    REFERENCE: {
+      LABEL: 'Reference',
+      INLINE_HELP: `Reference to the Function's source. Select a branch name or commit revision.`,
+      PLACEHOLDER: 'Enter a branch name or commit revision (Required)',
+      ERRORS: {
+        EMPTY: 'Reference is required.',
+      },
+    },
+    BASE_DIR: {
+      LABEL: 'Base Directory',
+      INLINE_HELP: `Directory with Function's code and dependencies`,
+      PLACEHOLDER: 'Enter a base directory (Required)',
+      ERRORS: {
+        EMPTY: 'Base Directory is required.',
+      },
+    },
+  },
+};
+
 export const ENVIRONMENT_VARIABLES_PANEL = {
   LIST: {
     TITLE: 'Environment Variables',
@@ -408,6 +586,17 @@ export const ENVIRONMENT_VARIABLES_PANEL = {
       TOOLTIP_MESSAGE:
         'This variable was injected by the Service Binding referencing Service Instance "{serviceInstanceName}".',
     },
+  },
+};
+
+export const FORMS = {
+  RESOURCE_NAME: {
+    LABEL: 'Name',
+    INLINE_HELP: `Name must consist of lower case alphanumeric characters or dashes, and must start and end with an alphanumeric character (e.g. 'my-name1').`,
+  },
+  LABELS: {
+    LABEL: 'Labels',
+    INLINE_HELP: `The key/value pair should be separated by '=', consist of alphanumeric characters, '-', '_' or '.', and must start and end with an alphanumeric character. The key cannot be empty.`,
   },
 };
 

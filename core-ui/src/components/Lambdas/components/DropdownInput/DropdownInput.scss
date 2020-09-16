@@ -1,0 +1,14 @@
+.dropdown-input {
+  .fd-form-item > .fd-form-label {
+    display: none;
+  }
+
+  &__label {
+    position: relative;
+
+    .fd-inline-help {
+      top: 3px;
+      left: 3px;
+    }
+  }
+}

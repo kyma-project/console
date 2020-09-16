@@ -46,6 +46,33 @@ export const lambdaMock = {
   },
 };
 
+export const gitLambdaMock = {
+  ...lambdaMock,
+  name: 'lambda-pico-bello',
+  namespace: 'namespace',
+  UID: 'pico-bello-123',
+  labels: {
+    foo: 'bar',
+    pico: 'bello',
+  },
+  source: 'repository-name',
+  sourceType: 'git',
+  reference: 'reference',
+  baseDir: 'baseDir',
+};
+
+export const repositoryMock = {
+  name: 'repository-pico-bello',
+  namespace: 'namespace',
+  spec: {
+    url: 'https://example.git',
+    auth: {
+      type: 'basic',
+      secretName: 'secret-name',
+    },
+  },
+};
+
 export const eventActivationMock = {
   name: 'eventActivation',
   displayName: 'Sample Event Activation',

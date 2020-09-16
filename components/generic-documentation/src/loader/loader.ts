@@ -235,7 +235,9 @@ export class DocsLoader {
       assets
         .map(asset => {
           const newFile = asset.files && asset.files[0];
-          newFile.displayName = asset.displayName || '';
+          if (newFile) {
+            newFile.displayName = asset.displayName || '';
+          }
           return newFile;
         })
         .filter(a => a)

@@ -35,6 +35,38 @@ export const DELETE_LAMBDA = gql`
   }
 `;
 
+export const CREATE_REPOSITORY = gql`
+  mutation createGitRepository(
+    $namespace: String!
+    $name: String!
+    $spec: GitRepositorySpecInput!
+  ) {
+    createGitRepository(namespace: $namespace, name: $name, spec: $spec) {
+      name
+    }
+  }
+`;
+
+export const UPDATE_REPOSITORY = gql`
+  mutation updateGitRepository(
+    $namespace: String!
+    $name: String!
+    $spec: GitRepositorySpecInput!
+  ) {
+    updateGitRepository(namespace: $namespace, name: $name, spec: $spec) {
+      name
+    }
+  }
+`;
+
+export const DELETE_REPOSITORY = gql`
+  mutation deleteGitRepository($namespace: String!, $name: String!) {
+    deleteGitRepository(namespace: $namespace, name: $name) {
+      name
+    }
+  }
+`;
+
 export const CREATE_MANY_EVENT_TRIGGERS = gql`
   mutation createManyTriggers(
     $namespace: String!
