@@ -14,7 +14,7 @@ EditApiRule.propTypes = {
 };
 
 export default function EditApiRule({ apiName }) {
-  const { redirectPath, redirectCtx = 'namespaces' } =
+  const { redirectPath, redirectCtx = 'namespaces', openedInModal } =
     LuigiClient.getNodeParams() || {};
   const [updateApiRuleMutation] = useMutation(UPDATE_API_RULE, {
     onError: handleError,
@@ -50,6 +50,11 @@ export default function EditApiRule({ apiName }) {
   });
 
   function handleError(error) {
+    if (openedInModal) {
+      LuigiClient.uxManager().closeCurrentModal();
+      // close current modal instead of doing the redirect
+      return;
+    }
     if (redirectPath) {
       LuigiClient.linkManager()
         .fromContext(redirectCtx)
@@ -63,6 +68,11 @@ export default function EditApiRule({ apiName }) {
   }
 
   function handleSuccess(data) {
+    if (openedInModal) {
+      LuigiClient.uxManager().closeCurrentModal();
+      // close current modal instead of doing the redirect
+      return;
+    }
     if (redirectPath) {
       LuigiClient.linkManager()
         .fromContext(redirectCtx)

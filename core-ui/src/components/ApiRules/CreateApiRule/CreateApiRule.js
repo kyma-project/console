@@ -31,7 +31,7 @@ const emptyApiRule = {
 };
 
 export default function CreateApiRule() {
-  const { redirectPath, redirectCtx = 'namespaces' } =
+  const { redirectPath, redirectCtx = 'namespaces', openedInModal } =
     LuigiClient.getNodeParams() || {};
   const [createApiRuleMutation] = useMutation(CREATE_API_RULE, {
     onError: handleCreateError,
@@ -40,6 +40,12 @@ export default function CreateApiRule() {
   const notificationManager = useNotification();
 
   function handleCreateError(error) {
+    if (openedInModal) {
+      LuigiClient.uxManager().closeCurrentModal();
+      // close current modal instead of doing the redirect
+      return;
+    }
+
     if (redirectPath) {
       LuigiClient.linkManager()
         .fromContext(redirectCtx)
@@ -53,6 +59,12 @@ export default function CreateApiRule() {
   }
 
   function handleCreateSuccess(data) {
+    if (openedInModal) {
+      LuigiClient.uxManager().closeCurrentModal();
+      // close current modal instead of doing the redirect
+      return;
+    }
+
     if (redirectPath) {
       LuigiClient.linkManager()
         .fromContext(redirectCtx)
