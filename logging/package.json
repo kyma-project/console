@@ -16,7 +16,7 @@
     "jsdom-worker-fix": "^0.1.8",
     "live-server": "^1.2.1",
     "ncp": "^2.0.0",
-    "node-fetch": "^2.6.0",
+    "node-fetch": "^2.6.1",
     "react-test-renderer": "^16.8.6",
     "waait": "^1.0.5",
     "wait-on": "^3.2.0"
