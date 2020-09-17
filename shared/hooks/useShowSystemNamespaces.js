@@ -1,12 +1,7 @@
 import LuigiClient from '@luigi-project/client';
-import { useMemo } from 'react';
 
 export function useShowSystemNamespaces() {
-  return useMemo(
-    () =>
-      (LuigiClient.getActiveFeatureToggles() || []).includes(
-        'showSystemNamespaces',
-      ),
-    [LuigiClient.getActiveFeatureToggles()],
+  return (LuigiClient.getActiveFeatureToggles() || []).includes(
+    'showSystemNamespaces',
   );
 }
