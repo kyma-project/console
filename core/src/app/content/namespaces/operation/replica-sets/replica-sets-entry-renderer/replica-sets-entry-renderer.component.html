@@ -15,7 +15,7 @@
   </td>
   <td>{{ entry.creationTimestamp * 1000 | timeAgo }}</td>
   <td>
-    <span *ngFor="let image of entry.images">
+    <span *ngFor="let image of entry.images" class="fd-has-display-block">
       {{ image }}
     </span>
   </td>

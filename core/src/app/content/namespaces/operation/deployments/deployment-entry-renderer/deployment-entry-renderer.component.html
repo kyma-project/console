@@ -13,7 +13,7 @@
   </td>
   <td>{{ entry.creationTimestamp * 1000 | timeAgo }}</td>
   <td>
-    <span *ngFor="let image of entry.containers">
+    <span *ngFor="let image of entry.containers" class="fd-has-display-block">
       {{ image.image }}
     </span>
   </td>
@@ -21,13 +21,12 @@
     <td>
       <ng-container
         *ngIf="
-          entry.boundServiceInstanceNames &&
-          entry.boundServiceInstanceNames.length > 0
+          true
         "
       >
-        <a
+        <a class="fd-has--block"
           href="javascript:void(null)"
-          *ngFor="let instance of entry.boundServiceInstanceNames"
+          *ngFor="let instance of ['svc-a', 'svc-b', 's-c', 's-d']"
           (click)="goToServiceInstanceDetails(instance)"
         >
           {{ instance }}
@@ -35,8 +34,7 @@
       </ng-container>
       <ng-container
         *ngIf="
-          !entry.boundServiceInstanceNames ||
-          entry.boundServiceInstanceNames.length === 0
+          false
         "
       >
         {{ emptyText }}
