@@ -7,6 +7,6 @@ export function useShowSystemNamespaces() {
       (LuigiClient.getActiveFeatureToggles() || []).includes(
         'showSystemNamespaces',
       ),
-    [],
+    [LuigiClient.getActiveFeatureToggles()],
   );
 }
