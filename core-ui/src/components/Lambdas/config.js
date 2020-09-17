@@ -55,7 +55,7 @@ const defaultConfig = {
   },
   triggerSubscriber: defaultTriggerSubscriber,
   logging: {
-    deploymentContainerName: 'lambda',
+    deploymentContainerName: 'function',
     jobContainerName: 'executor',
     repoFetcherContainerName: 'repo-fetcher',
   },
