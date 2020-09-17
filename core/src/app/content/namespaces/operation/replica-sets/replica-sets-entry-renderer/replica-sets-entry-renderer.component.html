@@ -16,7 +16,7 @@
   <td>{{ entry.creationTimestamp * 1000 | timeAgo }}</td>
   <td>
     <ul class="table-list">
-      <li *ngFor="let image of entry.images" class="fd-has-display-block">
+      <li *ngFor="let image of entry.images">
         {{ image }}
       </li>
     </ul>
