@@ -9,7 +9,7 @@ describe('SideDrawer', () => {
   const testText2 = 'oh, hello';
   const testContent2 = <h3>{testText2}</h3>;
 
-  it('Renders content when opened initially', () => {
+  it('Renders content', () => {
     const { queryByText } = render(
       <SideDrawer isOpenInitially={true}>{testContent1}</SideDrawer>,
     );
