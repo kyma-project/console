@@ -21,24 +21,21 @@
     <td>
       <ng-container
         *ngIf="
-          true
-        "
+        entry.boundServiceInstanceNames &&
+        entry.boundServiceInstanceNames.length > 0
+        ; else noBoundServiceInstances"
       >
-        <a class="fd-has--block"
+        <a class="fd-has-display-block"
           href="javascript:void(null)"
-          *ngFor="let instance of ['svc-a', 'svc-b', 's-c', 's-d']"
+          *ngFor="let instance of entry.boundServiceInstanceNames"
           (click)="goToServiceInstanceDetails(instance)"
         >
           {{ instance }}
         </a>
       </ng-container>
-      <ng-container
-        *ngIf="
-          false
-        "
-      >
+      <ng-template #noBoundServiceInstances>
         {{ emptyText }}
-      </ng-container>
+      </ng-template>
     </td>
   </ng-container>
   <td>
