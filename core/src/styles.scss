@@ -45,3 +45,11 @@ fd-icon.clickable {
     max-height: calc(100% - 7em);
   }
 }
+
+.table-list {
+  list-style: none;
+
+  & > :not(:last-child) {
+    margin-bottom: 4px;
+  }
+}
