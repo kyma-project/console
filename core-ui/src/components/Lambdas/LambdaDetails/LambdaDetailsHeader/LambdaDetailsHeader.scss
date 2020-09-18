@@ -1,59 +1,10 @@
 .lambda-details-header {
   .fd-panel__header {
-    padding-right: 32px;
-    padding-left: 32px;
-    padding-bottom: 8px;
     border-bottom-width: 0;
-
-    .fd-has-margin-bottom-s {
-      margin-bottom: 0px !important;
-    }
   }
 
   &__content {
     background: #fff;
     padding: 0 32px;
-
-    .status-header {
-      margin-bottom: 4px;
-    }
-  }
-
-  &__labels {
-    display: inline-block;
-
-    &-title,
-    &-content {
-      display: block;
-    }
-
-    &-title {
-      color: var(--fd-color-text-4);
-      margin-bottom: 6px;
-      font-size: 14px;
-
-      > div {
-        display: inline-block;
-      }
-
-      .sap-icon--edit {
-        padding-left: 8px;
-        cursor: pointer;
-
-        &:hover {
-          color: rgb(10, 110, 209);
-        }
-      }
-    }
-
-    .fd-token {
-      margin: 0 8px 8px 0;
-    }
-  }
-
-  &__edit-labels-modal {
-    .fd-modal__body {
-      min-height: 140px;
-    }
   }
 }
