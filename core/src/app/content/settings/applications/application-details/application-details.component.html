@@ -57,12 +57,6 @@
     <fd-panel-grid [col]="4" [nogap]="true">
       <fd-panel>
         <fd-panel-body>
-          <p class="fd-has-color-text-4 fd-has-margin-bottom-none">Name</p>
-          <p>{{ application.name }}</p>
-        </fd-panel-body>
-      </fd-panel>
-      <fd-panel>
-        <fd-panel-body>
           <p class="fd-has-color-text-4 fd-has-margin-bottom-none">Status</p>
           <app-status-label
             [statusType]="determineStatusType(application)"
