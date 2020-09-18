@@ -126,8 +126,11 @@ export default function ServiceInstanceDetails({ match }) {
   }
 
   const { serviceInstance } = data;
+  const serviceClass =
+    serviceInstance &&
+    (serviceInstance.serviceClass || serviceInstance.clusterServiceClass);
 
-  if (!serviceInstance) {
+  if (!serviceInstance || !serviceClass) {
     return (
       <ResourceNotFound
         resource="Service Instance"
@@ -137,10 +140,6 @@ export default function ServiceInstanceDetails({ match }) {
       />
     );
   }
-
-  const serviceClass =
-    serviceInstance &&
-    (serviceInstance.serviceClass || serviceInstance.clusterServiceClass);
 
   return (
     <ThemeWrapper>
