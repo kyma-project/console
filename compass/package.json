@@ -18,7 +18,7 @@
     "start:kyma": "echo 'This component is not ready yet to be served together with Console.'",
     "start:kyma:api": "echo 'This component is not ready yet to be served together with Console.'",
     "build": "npm run buildConfig && ../node_modules/.bin/react-scripts build && ncp 'node_modules/@luigi-project/core' 'public-luigi/luigi-core'",
-    "test": "../node_modules/.bin/react-scripts test",
+    "test": "echo 'Compass unit tests are disabled'",
     "eject": "../node_modules/.bin/react-scripts eject",
     "buildConfig": "../node_modules/.bin/webpack --mode production --config webpack-generateConfig.config",
     "buildConfig:watch": "../node_modules/.bin/webpack -d --config webpack-generateConfig.config --watch"
