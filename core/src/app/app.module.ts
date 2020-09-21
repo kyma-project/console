@@ -57,11 +57,6 @@ import { ClickOutsideModule } from 'ng-click-outside';
 import { AbstractKubernetesElementListComponent } from './content/namespaces/operation/abstract-kubernetes-element-list.component';
 import { ServiceBrokerHeaderRendererComponent } from './content/settings/service-brokers/services-header-renderer/service-broker-header-renderer.component';
 import { ServiceBrokerEntryRendererComponent } from './content/settings/service-brokers/services-entry-renderer/service-broker-entry-renderer.component';
-import { IdpPresetsComponent } from './content/settings/idp-presets/idp-presets.component';
-import { IdpPresetsEntryRendererComponent } from './content/settings/idp-presets/idp-presets-entry-renderer/idp-presets-entry-renderer.component';
-import { IdpPresetsHeaderRendererComponent } from './content/settings/idp-presets/idp-presets-header-renderer/idp-presets-header-renderer.component';
-import { CreatePresetModalComponent } from './content/settings/idp-presets/create-preset-modal/create-preset-modal.component';
-import { IdpPresetsService } from './content/settings/idp-presets/idp-presets.service';
 import { ResourcesComponent } from './content/namespaces/configuration/resources/resources.component';
 import { ResourceQuotasComponent } from './content/namespaces/configuration/resources/resource-quotas/resource-quotas.component';
 import { ResourceQuotaEntryRendererComponent } from './content/namespaces/configuration/resources/resource-quotas/resource-quota-entry-renderer/resource-quota-entry-renderer.component';
@@ -137,10 +132,6 @@ import { WindowTitleService } from 'shared/services/window-title.service';
     AbstractGraphqlElementListComponent,
     ServiceBrokerEntryRendererComponent,
     ServiceBrokerHeaderRendererComponent,
-    IdpPresetsComponent,
-    IdpPresetsEntryRendererComponent,
-    IdpPresetsHeaderRendererComponent,
-    CreatePresetModalComponent,
     ResourcesComponent,
     ResourceQuotasComponent,
     ResourceQuotaEntryRendererComponent,
@@ -183,7 +174,6 @@ import { WindowTitleService } from 'shared/services/window-title.service';
     ResourceUploadService,
     ApplicationBindingService,
     GraphQLClientService,
-    IdpPresetsService,
     LuigiClientService,
     GenericHelpersService,
     WindowTitleService,
@@ -201,8 +191,6 @@ import { WindowTitleService } from 'shared/services/window-title.service';
     ApplicationsEntryRendererComponent,
     ServiceBrokerHeaderRendererComponent,
     ServiceBrokerEntryRendererComponent,
-    IdpPresetsHeaderRendererComponent,
-    IdpPresetsEntryRendererComponent,
     ResourceQuotaEntryRendererComponent,
     ResourceQuotaHeaderRendererComponent,
     LimitRangeEntryRendererComponent,

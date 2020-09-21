@@ -9,7 +9,6 @@ import { PreferencesComponent } from '../content/settings/preferences/preference
 import { ApplicationDetailsComponent } from '../content/settings/applications/application-details/application-details.component';
 import { ApplicationsComponent } from '../content/settings/applications/applications.component';
 import { ServiceBrokersComponent } from '../content/settings/service-brokers/service-brokers.component';
-import { IdpPresetsComponent } from '../content/settings/idp-presets/idp-presets.component';
 import { ResourcesComponent } from '../content/namespaces/configuration/resources/resources.component';
 
 import { ConfigMapsComponent } from '../content/namespaces/operation/configmaps/configmaps.component';
@@ -55,7 +54,6 @@ const appRoutes: Routes = [
             path: 'apps/:id',
             component: ApplicationDetailsComponent
           },
-          { path: 'idpPresets', component: IdpPresetsComponent },
           { path: 'serviceBrokers', component: ServiceBrokersComponent },
           { path: '', redirectTo: 'preferences', pathMatch: 'full' },
           { path: '**', redirectTo: 'preferences', pathMatch: 'full' }
