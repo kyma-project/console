@@ -261,6 +261,7 @@ export default function CreateLambdaForm({
                 LAMBDAS_LIST.CREATE_MODAL.INPUTS.REFERENCE.INLINE_HELP
               }
               id="reference"
+              firstValue={'master'}
               placeholder={
                 LAMBDAS_LIST.CREATE_MODAL.INPUTS.REFERENCE.PLACEHOLDER
               }
@@ -273,6 +274,7 @@ export default function CreateLambdaForm({
               label={LAMBDAS_LIST.CREATE_MODAL.INPUTS.BASE_DIR.LABEL}
               inlineHelp={LAMBDAS_LIST.CREATE_MODAL.INPUTS.BASE_DIR.INLINE_HELP}
               id="baseDir"
+              firstValue={'/'}
               placeholder={
                 LAMBDAS_LIST.CREATE_MODAL.INPUTS.BASE_DIR.PLACEHOLDER
               }
