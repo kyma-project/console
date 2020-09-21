@@ -182,14 +182,17 @@ describe('CreateLambdaModal + CreateLambdaForm', () => {
     const sourceType = document.querySelector('#sourceType');
     fireEvent.change(sourceType, { target: { value: 'git' } });
 
-    await wait(() => {
-      button = getByText(createButton);
-      expect(button).toBeInTheDocument();
-      expect(button).toBeDisabled();
-    });
-
     const reference = document.querySelector('#reference');
     const baseDir = document.querySelector('#baseDir');
+
+    await wait(() => {
+      expect(reference).toHaveValue('master');
+      expect(baseDir).toHaveValue('/');
+
+      button = getByText(createButton);
+      expect(button).toBeInTheDocument();
+      expect(button).not.toBeDisabled();
+    });
 
     // valid
     fireEvent.input(reference, { target: { value: 'reference' } });
