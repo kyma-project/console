@@ -34,7 +34,7 @@ export default function SelectDropdown({
   compact,
 }) {
   const popoverContent = (
-    <Menu>
+    <Menu className="select-dropdown--list">
       <Menu.List>
         {availableValues.map(value => {
           const v = value.value ? value.value : value;

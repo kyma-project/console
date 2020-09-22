@@ -1,7 +1,15 @@
-.select-dropdown  {
-    [class*=fd-button--], [class*=fd-button--]::before {
-        // override fd-button-- classes
-        font-size: .85714rem !important;
-        font-weight: 400 !important;
+
+
+.fd-popover__popper {
+    .select-dropdown {
+        [class*=fd-button--], [class*=fd-button--]::before {
+            // override fd-button-- classes
+            font-size: .85714rem !important;
+            font-weight: 400 !important;
+        }
+        &--list {
+            width: auto;
+            max-width: 100%;
+        }
     }
 }
