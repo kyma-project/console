@@ -8,7 +8,7 @@ export function serializeVariables({
   const bindingUsageVariableNames = [];
   let bindingUsageVariables = bindingUsages.flatMap(bindingUsage => {
     const variables = retrieveVariablesFromBindingUsage(bindingUsage);
-    bindingUsageVariableNames.push(...variables);
+    bindingUsageVariableNames.push(...variables.map(v => v.key));
     return {
       bindingUsage,
       variables,
@@ -46,7 +46,7 @@ export function serializeVariables({
     ({ variables, bindingUsage }) => {
       const serializedInjectedVariables = [];
 
-      variables.forEach(variableName => {
+      variables.forEach(({ key: variableName, value }) => {
         let validation = VARIABLE_VALIDATION.NONE;
 
         const canOverrideByCustomVar = customVariablesNames.includes(
@@ -67,6 +67,7 @@ export function serializeVariables({
           type: VARIABLE_TYPE.BINDING_USAGE,
           variable: {
             name: variableName,
+            value,
           },
           validation,
           additionalProps: {
@@ -99,10 +100,8 @@ export function retrieveVariablesFromBindingUsage(bindingUsage) {
     bindingUsage.serviceBinding.secret &&
     bindingUsage.serviceBinding.secret.data;
 
-  const envs = Object.keys(secretData || {});
-  if (!envs.length) {
-    return [];
-  }
-
-  return envs.map(env => `${envPrefix}${env}`);
+  return Object.entries(secretData).map(([env, value]) => ({
+    key: `${envPrefix}${env}`,
+    value: value,
+  }));
 }

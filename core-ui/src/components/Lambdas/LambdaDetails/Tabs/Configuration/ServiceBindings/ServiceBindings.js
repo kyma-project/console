@@ -33,7 +33,7 @@ export default function ServiceBindings({
     return (
       <>
         {bindingUsage.envs.map(env => (
-          <div key={env}>{env}</div>
+          <div key={env.key}>{env.key}</div>
         ))}
       </>
     );

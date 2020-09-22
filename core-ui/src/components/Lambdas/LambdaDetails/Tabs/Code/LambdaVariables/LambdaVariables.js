@@ -86,6 +86,18 @@ function VariableType({ variable }) {
   );
 }
 
+function VariableValue({ variable }) {
+  const isBindingUsageVar = variable.type === VARIABLE_TYPE.BINDING_USAGE;
+  if (isBindingUsageVar) {
+    return (
+      <div className="blur-variable">
+        <span>{variable.value || '-'}</span>
+      </div>
+    );
+  }
+  return <span>{variable.value || '-'}</span>;
+}
+
 export default function LambdaEnvs({
   lambda,
   customVariables,
@@ -95,7 +107,7 @@ export default function LambdaEnvs({
   const rowRenderer = variable => [
     <span>{variable.name}</span>,
     <span className="sap-icon--arrow-right" />,
-    <span>{variable.value || '-'}</span>,
+    <VariableValue variable={variable} />,
     <VariableType variable={variable} />,
     <VariableStatus validation={variable.validation} />,
   ];
