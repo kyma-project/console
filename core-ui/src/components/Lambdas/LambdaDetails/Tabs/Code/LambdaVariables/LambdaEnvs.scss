@@ -23,15 +23,8 @@
     }
   }
 
-  .blur-variable {
-    color: transparent;
-    text-shadow: 0 0 10px #000;
-    transition: color .1s;
-
-    &:hover {
-      color: rgb(50, 54, 58);
-      text-shadow: none;
-    }
+  .hide-variable {
+    font-size: 0;
   }
 }
 

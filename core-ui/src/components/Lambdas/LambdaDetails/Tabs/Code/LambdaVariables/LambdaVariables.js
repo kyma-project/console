@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { Icon, Badge } from 'fundamental-react';
 import { GenericList, Tooltip } from 'react-shared';
@@ -88,10 +88,15 @@ function VariableType({ variable }) {
 
 function VariableValue({ variable }) {
   const isBindingUsageVar = variable.type === VARIABLE_TYPE.BINDING_USAGE;
+  const [show, setShow] = useState(false);
+
   if (isBindingUsageVar) {
     return (
-      <div className="blur-variable">
+      <div className={!show ? 'hide-variable' : ''}>
         <span>{variable.value || '-'}</span>
+        <button type="button" onClick={() => setShow(!show)}>
+          Reveal
+        </button>
       </div>
     );
   }
