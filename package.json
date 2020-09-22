@@ -71,8 +71,7 @@
     "react-sticky": "^6.0.3",
     "recompose": "^0.30.0",
     "styled-components": "4.3.2",
-    "subscriptions-transport-ws": "^0.9.16",
-    "yup": "^0.29.3"
+    "subscriptions-transport-ws": "^0.9.16"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^4.2.4",
