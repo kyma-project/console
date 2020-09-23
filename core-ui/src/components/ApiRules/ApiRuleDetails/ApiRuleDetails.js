@@ -82,7 +82,7 @@ function EditButton({ apiRuleName }) {
   return (
     <Button
       onClick={() => navigateToEditView(apiRuleName)}
-      option="light"
+      option="emphasized"
       aria-label="edit-api-rule"
     >
       Edit
@@ -109,6 +109,7 @@ const YamlContent = yaml => {
         language={'json'}
         theme="vs-light"
         value={yaml}
+        options={{ readOnly: true }}
       />
     </>
   );
@@ -128,13 +129,14 @@ function ApiRuleDetailsHeader({ apiRule, setDrawerContent }) {
           <>
             {apiRule.json && (
               <Button
+                option="light"
                 onClick={_ => setDrawerContent(YamlContent(apiRule.json))}
               >
                 YAML
               </Button>
             )}
-            <DeleteButton apiRuleName={name} />
             <EditButton apiRuleName={name} />
+            <DeleteButton apiRuleName={name} />
           </>
         )
       }
