@@ -585,6 +585,8 @@ export const ENVIRONMENT_VARIABLES_PANEL = {
       TEXT: 'Service Binding',
       TOOLTIP_MESSAGE:
         'This variable was injected by the Service Binding referencing Service Instance "{serviceInstanceName}".',
+      SHOW_VALUE_MESSAGE: 'Click to show',
+      HIDE_VALUE_MESSAGE: 'Click to hide',
     },
   },
 };

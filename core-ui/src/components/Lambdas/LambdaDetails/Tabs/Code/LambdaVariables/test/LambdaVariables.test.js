@@ -46,6 +46,7 @@ describe('LambdaVariables + EditVariablesModal + EditVariablesForm', () => {
       type: VARIABLE_TYPE.BINDING_USAGE,
       variable: {
         name: 'BAR',
+        value: 'SECRET',
       },
       validation: VARIABLE_VALIDATION.CAN_OVERRIDE_BY_CUSTOM_ENV,
       additionalProps: {
