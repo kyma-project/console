@@ -4,6 +4,7 @@ import { SideDrawer } from '../components/SideDrawer/SideDrawer';
 export const useSideDrawer = (
   initialContent,
   bottomContent,
+  hideDefaultButton = false,
   buttonText = 'YAML code',
   isOpenInitially = false,
 ) => {
@@ -21,6 +22,7 @@ export const useSideDrawer = (
       setOpen={setOpen}
       buttonText={buttonText}
       bottomContent={bottomContent}
+      hideDefaultButton={hideDefaultButton}
     >
       {content}
     </SideDrawer>

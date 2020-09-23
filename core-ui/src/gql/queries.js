@@ -184,6 +184,7 @@ export const GET_API_RULE = gql`
     APIRule(name: $name, namespace: $namespace) {
       name
       generation
+      json
       spec {
         rules {
           path
