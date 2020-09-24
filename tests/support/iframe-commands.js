@@ -4,6 +4,7 @@ Cypress.Commands.add(
     return cy
       .get(`${containerSelector} iframe`, getIframeOpts)
       .eq(index)
+      .wait(1000)
       .iframe();
   },
 );
