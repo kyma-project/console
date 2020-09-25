@@ -104,7 +104,7 @@ const YamlContent = yaml => {
     <>
       <h1 className="fd-has-type-4">YAML</h1>
       <ControlledEditor
-        height="50em"
+        height="90vh"
         width="50em"
         language={'json'}
         theme="vs-light"
@@ -130,6 +130,7 @@ function ApiRuleDetailsHeader({ apiRule, setDrawerContent }) {
             {apiRule.json && (
               <Button
                 option="light"
+                glyph="syntax"
                 onClick={_ => setDrawerContent(YamlContent(apiRule.json))}
               >
                 YAML
