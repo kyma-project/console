@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { useQuery } from '@apollo/react-hooks';
 import LuigiClient from '@luigi-project/client';
 import { ControlledEditor } from '@monaco-editor/react';
+import jsyaml from 'js-yaml';
 import { Button } from 'fundamental-react';
 
 import { GET_API_RULE } from '../../../gql/queries';
@@ -98,15 +99,16 @@ function navigateToEditView(apiRuleName) {
 
 const breadcrumbItems = [{ name: 'API Rules', path: '/' }, { name: '' }];
 
-const YamlContent = yaml => {
-  yaml = JSON.stringify(yaml, null, 1);
+const YamlContent = json => {
+  const yaml = jsyaml.safeDump(json);
+
   return (
     <>
       <h1 className="fd-has-type-4">YAML</h1>
       <ControlledEditor
         height="90vh"
         width="50em"
-        language={'json'}
+        language={'yaml'}
         theme="vs-light"
         value={yaml}
         options={{ readOnly: true }}
