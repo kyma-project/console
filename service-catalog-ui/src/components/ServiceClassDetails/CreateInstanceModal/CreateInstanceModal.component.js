@@ -271,11 +271,11 @@ export default function CreateInstanceModal({
         </FormItem>
         <FormItem>
           <FormLabel htmlFor="labels">
-            Labels
+            Filter labels
             <InlineHelp
               placement="bottom-right"
               text="
-              The label must consist of lower case alphanumeric characters. Separate labels with comma.
+              The filter label must consist of lower case alphanumeric characters. Separate labels with comma.
               "
               className="fd-has-margin-left-tiny"
             />

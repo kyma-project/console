@@ -69,7 +69,7 @@ export const serviceInstanceConstants = {
   planHeader: 'Plan',
   documentationHeader: 'Documentation',
   supportHeader: 'Support',
-  labelsHeader: 'Labels',
+  labelsHeader: 'Filter Labels',
   statusHeader: 'Status',
   instanceDeleteConfirm: 'Are you sure you want to delete instance',
   instanceNotExists: "Service Instance doesn't exist",
