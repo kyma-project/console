@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { FormItem, FormLabel, Icon, Link } from 'fundamental-react';
+import { FormItem, FormLabel, Icon, InlineHelp, Link } from 'fundamental-react';
 import { useMutation } from '@apollo/react-hooks';
 import * as LuigiClient from '@luigi-project/client';
 
@@ -270,7 +270,16 @@ export default function CreateInstanceModal({
           </div>
         </FormItem>
         <FormItem>
-          <FormLabel htmlFor="labels">Labels</FormLabel>
+          <FormLabel htmlFor="labels">
+            Labels
+            <InlineHelp
+              placement="bottom-right"
+              text="
+              The label must consist of lower case alphanumeric characters. Separate labels with comma.
+              "
+              className="fd-has-margin-left-tiny"
+            />
+          </FormLabel>
           <input
             className="fd-form__control"
             ref={formValues.labels}
