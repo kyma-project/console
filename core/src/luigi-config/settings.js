@@ -5,7 +5,7 @@ const createHeader = () => {
     config && config.headerLogoUrl
       ? config.headerLogoUrl
       : '/assets/logo.svg';
-  const title = null //config?.headerTitle || null;
+  const title = config?.headerTitle || null;
   
   const favicon = config ? config.faviconUrl : undefined;
   return {

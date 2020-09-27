@@ -24,7 +24,7 @@ export const communication = {
       }
     },
     'console.setWindowTitle': ({ title }) => {
-      const prefix = null //config?.headerTitle || 'Kyma';
+      const prefix = config?.headerTitle || 'Kyma';
 
       const luigiConfig = Luigi.getConfig();
       luigiConfig.settings.header.title = `${prefix} - ${title}`;

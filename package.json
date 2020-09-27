@@ -2,7 +2,7 @@
   "private": true,
   "license": "Apache-2.0",
   "scripts": {
-    "bootstrap": "npm install && npm run install:libraries && npm run install:apps && npm run append-hosts && npm run generate-cluster-config",
+    "bootstrap": "npm install && npm run install:libraries && npm run build:libraries && npm run install:apps && npm run append-hosts && npm run generate-cluster-config",
     "bootstrap:ci": "npm ci && npm run ci:libraries && npm run build:libraries",
     "bootstrap:prod": "npm ci && npm run ci:libraries && npm run build:libraries",
     "install:libraries": "gulp install:libraries",

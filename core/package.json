@@ -5,7 +5,7 @@
   "scripts": {
     "ng": "ng",
     "start": "../node_modules/concurrently/bin/concurrently.js \"npm run buildConfig:watch\" \"ng serve --disable-host-check --host console-dev.kyma.local\"",
-    "start:kyma": ". ../scripts/load-cluster-config.sh  && ../node_modules/concurrently/bin/concurrently.js \"npm run buildConfig:watch\" \"ng serve --disable-host-check --host console-dev.35.204.176.184.xip.io\"",
+    "start:kyma": ". ../scripts/load-cluster-config.sh  && ../node_modules/concurrently/bin/concurrently.js \"npm run buildConfig:watch\" \"ng serve --disable-host-check --host console-dev.kyma.local\"",
     "start:kyma:api": ". ../scripts/load-cluster-config.sh  && ../node_modules/concurrently/bin/concurrently.js \"npm run buildConfig:watch\" \"ng serve --disable-host-check --host console-dev.kyma.local --configuration api-local\"",
     "build": "npm run buildConfig && ng build --prod",
     "test": "../node_modules/.bin/jest && npm run test-ng",
