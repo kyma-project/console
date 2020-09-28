@@ -8,7 +8,6 @@ import {
 } from 'components/Lambdas/helpers/testing';
 
 import { BACKEND_MODULES } from 'components/Lambdas/helpers/misc';
-import { createSubscriberRef } from 'components/Lambdas/helpers/eventTriggers';
 import { LAMBDA_DETAILS } from 'components/Lambdas/constants';
 
 import LambdaDetails from '../LambdaDetails';
@@ -72,7 +71,7 @@ describe('LambdaDetails', () => {
 
   it('should render Configuration tab', async () => {
     const eventTriggersVariables = {
-      subscriber: createSubscriberRef(lambdaMock),
+      serviceName: lambdaMock.name,
       namespace: lambdaMock.namespace,
     };
     const subscriptionMock = EVENT_TRIGGER_EVENT_SUBSCRIPTION_MOCK(
