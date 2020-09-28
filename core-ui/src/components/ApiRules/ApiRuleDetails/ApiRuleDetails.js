@@ -4,18 +4,17 @@ import { useQuery } from '@apollo/react-hooks';
 import LuigiClient from '@luigi-project/client';
 import { Button } from 'fundamental-react';
 
-import { GET_API_RULE } from '../../../gql/queries';
 import { Spinner, PageHeader, useSideDrawerEditor } from 'react-shared';
-import EntryNotFound from 'components/EntryNotFound/EntryNotFound';
-
-import AccessStrategies from '../AccessStrategies/AccessStrategies';
-import ApiRuleStatus from '../ApiRuleStatus/ApiRuleStatus';
 import {
   CopiableApiRuleHost,
   ApiRuleServiceInfo,
 } from 'components/ApiRules/ApiRulesList/components';
-
+import EntryNotFound from 'components/EntryNotFound/EntryNotFound';
+import { GET_API_RULE } from '../../../gql/queries';
 import { useDeleteApiRule } from '../gql/useDeleteApiRule';
+
+import AccessStrategies from '../AccessStrategies/AccessStrategies';
+import ApiRuleStatus from '../ApiRuleStatus/ApiRuleStatus';
 
 const ApiRuleDetails = ({ apiName }) => {
   const [drawerEditor, setDrawerEditorContent] = useSideDrawerEditor(
@@ -118,8 +117,9 @@ function ApiRuleDetailsHeader({ apiRule, setDrawerEditorContent }) {
               <Button
                 option="light"
                 onClick={_ => setDrawerEditorContent(apiRule.json)}
+                glyph="attachment-html"
               >
-                Code
+                YAML
               </Button>
             )}
             <EditButton apiRuleName={name} />

@@ -1,6 +1,7 @@
 import React from 'react';
 import { SideDrawer } from './SideDrawer';
 import { ControlledEditor } from '@monaco-editor/react';
+import jsyaml from 'js-yaml';
 
 export const SideDrawerEditor = ({
   content,
@@ -10,16 +11,16 @@ export const SideDrawerEditor = ({
   bottomContent,
   hideDefaultButton,
 }) => {
-  const json = JSON.stringify(content, null, 1);
+  const yaml = jsyaml.safeDump(content);
   const children = (
     <>
-      <h1 className="fd-has-type-4">Code</h1>
+      <h1 className="fd-has-type-4">YAML</h1>
       <ControlledEditor
-        height="50em"
+        height="90vh"
         width="50em"
-        language={'json'}
+        language={'yaml'}
         theme="vs-light"
-        value={json}
+        value={yaml}
         options={{ readOnly: true }}
       />
     </>
@@ -27,7 +28,7 @@ export const SideDrawerEditor = ({
 
   return (
     <SideDrawer
-      textToCopy={json}
+      textToCopy={yaml}
       isOpen={isOpen}
       setOpen={setOpen}
       buttonText={buttonText}
