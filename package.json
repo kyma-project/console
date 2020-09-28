@@ -33,6 +33,7 @@
     "@luigi-project/client": "^1.4.0",
     "@reach/router": "^1.2.1",
     "@types/classnames": "^2.2.9",
+    "@monaco-editor/react": "^3.6.3",
     "ajv": "^6.10.2",
     "apollo-cache-inmemory": "^1.6.3",
     "apollo-client": "^2.6.4",

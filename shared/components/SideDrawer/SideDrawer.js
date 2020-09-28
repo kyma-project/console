@@ -2,9 +2,11 @@ import React from 'react';
 import classNames from 'classnames';
 import './SideDrawer.scss';
 import { Button, Icon } from 'fundamental-react';
+import { CopiableText } from '../CopiableText/CopiableText';
 
 export const SideDrawer = ({
   buttonText,
+  textToCopy,
   isOpen,
   setOpen,
   children,
@@ -30,6 +32,9 @@ export const SideDrawer = ({
         {children}
         <div className="bottom">
           {bottomContent}
+          {textToCopy && (
+            <CopiableText textToCopy={textToCopy} iconOnly={true} />
+          )}
           {hideDefaultButton && (
             <Button option="emphasized" onClick={() => setOpen(!isOpen)}>
               Close

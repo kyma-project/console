@@ -2,11 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useQuery } from '@apollo/react-hooks';
 import LuigiClient from '@luigi-project/client';
-import { ControlledEditor } from '@monaco-editor/react';
 import { Button } from 'fundamental-react';
 
 import { GET_API_RULE } from '../../../gql/queries';
-import { Spinner, PageHeader, useSideDrawer } from 'react-shared';
+import { Spinner, PageHeader, useSideDrawerEditor } from 'react-shared';
 import EntryNotFound from 'components/EntryNotFound/EntryNotFound';
 
 import AccessStrategies from '../AccessStrategies/AccessStrategies';
@@ -19,7 +18,12 @@ import {
 import { useDeleteApiRule } from '../gql/useDeleteApiRule';
 
 const ApiRuleDetails = ({ apiName }) => {
-  const [drawer, setDrawerContent] = useSideDrawer(null, null, true, null);
+  const [drawerEditor, setDrawerEditorContent] = useSideDrawerEditor(
+    null,
+    null,
+    true,
+    null,
+  );
   const { error, loading, data } = useQuery(GET_API_RULE, {
     variables: {
       namespace: LuigiClient.getContext().namespaceId,
@@ -42,10 +46,10 @@ const ApiRuleDetails = ({ apiName }) => {
 
   return (
     <>
-      {drawer}
+      {drawerEditor}
       <ApiRuleDetailsHeader
         apiRule={data.APIRule}
-        setDrawerContent={setDrawerContent}
+        setDrawerEditorContent={setDrawerEditorContent}
       />
       <AccessStrategies strategies={data.APIRule?.spec?.rules || []} />
     </>
@@ -98,24 +102,7 @@ function navigateToEditView(apiRuleName) {
 
 const breadcrumbItems = [{ name: 'API Rules', path: '/' }, { name: '' }];
 
-const YamlContent = yaml => {
-  yaml = JSON.stringify(yaml, null, 1);
-  return (
-    <>
-      <h1 className="fd-has-type-4">YAML</h1>
-      <ControlledEditor
-        height="50em"
-        width="50em"
-        language={'json'}
-        theme="vs-light"
-        value={yaml}
-        options={{ readOnly: true }}
-      />
-    </>
-  );
-};
-
-function ApiRuleDetailsHeader({ apiRule, setDrawerContent }) {
+function ApiRuleDetailsHeader({ apiRule, setDrawerEditorContent }) {
   const name = apiRule.name;
   const { openedInModal = false } = LuigiClient.getNodeParams() || {};
   const openedInModalBool = openedInModal.toString().toLowerCase() === 'true';
@@ -130,9 +117,9 @@ function ApiRuleDetailsHeader({ apiRule, setDrawerContent }) {
             {apiRule.json && (
               <Button
                 option="light"
-                onClick={_ => setDrawerContent(YamlContent(apiRule.json))}
+                onClick={_ => setDrawerEditorContent(apiRule.json)}
               >
-                YAML
+                Code
               </Button>
             )}
             <EditButton apiRuleName={name} />
