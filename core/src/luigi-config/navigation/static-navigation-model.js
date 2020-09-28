@@ -94,14 +94,14 @@ export function getStaticChildrenNodesForNamespace(){
       pathSegment: 'resources',
       navigationContext: 'resources',
       label: 'Resources',
-      viewUrl: config.coreAppUrl +'/home/namespaces/:namespaceId/resources'
+      viewUrl: '/consoleapp.html#/home/namespaces/:namespaceId/resources'
     },
     {
       category: 'Configuration',
       pathSegment: 'config-maps',
       navigationContext: 'config-maps',
       label: 'Config Maps',
-      viewUrl: config.coreAppUrl +'/home/namespaces/:namespaceId/configmaps'
+      viewUrl: '/consoleapp.html#/home/namespaces/:namespaceId/configmaps'
     },
     {
       category: { label: 'Development', icon: 'source-code', collapsible: true },
@@ -113,21 +113,21 @@ export function getStaticChildrenNodesForNamespace(){
       pathSegment: 'deployments',
       navigationContext: 'deployments',
       label: 'Deployments',
-      viewUrl: config.coreAppUrl +'/home/namespaces/:namespaceId/deployments'
+      viewUrl: '/consoleapp.html#/home/namespaces/:namespaceId/deployments'
     },
     {
       category: 'Operation',
       pathSegment: 'replica-sets',
       navigationContext: 'replica-sets',
       label: 'Replica Sets',
-      viewUrl: config.coreAppUrl +'/home/namespaces/:namespaceId/replicaSets'
+      viewUrl: '/consoleapp.html#/home/namespaces/:namespaceId/replicaSets'
     },
     {
       category: 'Operation',
       pathSegment: 'pods',
       navigationContext: 'pods',
       label: 'Pods',
-      viewUrl: config.coreAppUrl +'/home/namespaces/:namespaceId/pods'
+      viewUrl: '/consoleapp.html#/home/namespaces/:namespaceId/pods'
     },
     {
       category: 'Operation',
@@ -151,7 +151,7 @@ export function getStaticChildrenNodesForNamespace(){
                     {
                       pathSegment: 'create',
                       viewUrl:
-                        config.coreAppUrl +'/home/namespaces/:namespaceId/services/:name/apis/create'
+                        '/consoleapp.html#/home/namespaces/:namespaceId/services/:name/apis/create'
                     },
                     {
                       pathSegment: 'details',
@@ -159,7 +159,7 @@ export function getStaticChildrenNodesForNamespace(){
                         {
                           pathSegment: ':apiName',
                           viewUrl:
-                            config.coreAppUrl +'/home/namespaces/:namespaceId/services/:name/apis/details/:apiName'
+                            '/consoleapp.html#/home/namespaces/:namespaceId/services/:name/apis/details/:apiName'
                         }
                       ]
                     }
@@ -210,7 +210,7 @@ export function getStaticRootNodes(namespaceChildrenNodesResolver){
     },
     {
       pathSegment: 'namespaces',
-      viewUrl: config.coreAppUrl +'/home/namespaces/workspace',
+      viewUrl: '/consoleapp.html#/home/namespaces/workspace',
       hideFromNav: true,
       viewGroup: consoleViewGroupName,
       children: [
@@ -234,7 +234,7 @@ export function getStaticRootNodes(namespaceChildrenNodesResolver){
     {
       pathSegment: 'preferences',
       navigationContext: 'settings',
-      viewUrl: config.coreAppUrl +'/home/settings/preferences',
+      viewUrl: '/consoleapp.html#/home/settings/preferences',
       viewGroup: consoleViewGroupName,
       hideFromNav: true,
     },
