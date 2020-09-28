@@ -4,7 +4,6 @@ import { TabGroup, Tab } from 'fundamental-react';
 import LambdaDetailsHeader from './LambdaDetailsHeader/LambdaDetailsHeader';
 
 import CodeTab from './Tabs/Code/CodeTab';
-import ConfigurationTab from './Tabs/Configuration/ConfigurationTab';
 import ResourceManagementTab from './Tabs/ResourceManagement/ResourceManagementTab';
 
 import EventTriggersWrapper from './Tabs/Configuration/EventTriggers/EventTriggersWrapper';
