@@ -36,10 +36,10 @@ const errorLink = onError(
 //     headers: modifiers.reduce((acc, m) => m(acc), oldHeaders),
 //   }));
 
-const setHeader = (header, value) => headers => ({
-  ...headers,
-  [header]: value,
-});
+// const setHeader = (header, value) => headers => ({
+//   ...headers,
+//   [header]: value,
+// });
 
 // const setAuthorization = token => setHeader('authorization', `Bearer ${token}`);
 
