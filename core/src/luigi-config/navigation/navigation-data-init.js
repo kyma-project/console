@@ -85,7 +85,7 @@ export function getNavigationData() {
             const modules = res.backendModules;
             const subjectRules = res.selfSubjectRules;
             const cmfs = res.clusterMicroFrontends;
-            kymaVersion = (res.versionInfo && res.versionInfo.kymaVersion) ? `Kyma version: ${res.versionInfo.kymaVersion}` : undefined;
+            kymaVersion = 'EᐯᗩᒪᑌᗩTIOᑎ ᗰOᗪE';
             setInitValues(
               (modules && modules.map(m => m.name)) || [],
               subjectRules || []
