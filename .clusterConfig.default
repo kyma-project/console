@@ -22,7 +22,6 @@ REACT_APP_serviceCatalogModuleUrl="http://$REACT_APP_localDomain:8000"
 REACT_APP_docsModuleUrl="http://$REACT_APP_localDomain:8003"
 REACT_APP_addOnsModuleUrl="http://$REACT_APP_localDomain:8004"
 REACT_APP_coreModuleUrl="http://$REACT_APP_localDomain:8889"
-REACT_APP_coreAppUrl="/consoleapp.html#"
 REACT_APP_logsModuleUrl="http://$REACT_APP_localDomain:8005"
 REACT_APP_compassModuleUrl="http://$REACT_APP_localDomain:8888"
 
