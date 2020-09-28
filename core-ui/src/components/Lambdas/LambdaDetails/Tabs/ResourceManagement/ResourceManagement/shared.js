@@ -333,7 +333,8 @@ export function isCustomPreset(preset) {
   return preset === customPreset;
 }
 
+export let schema = prepareSchema();
+
 export function updateResourcesValidationSchema() {
-  Object.assign(schema, prepareSchema());
+  schema = Object.assign(schema, prepareSchema());
 }
-export const schema = prepareSchema();
