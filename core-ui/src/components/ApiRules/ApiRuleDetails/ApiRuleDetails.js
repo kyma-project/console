@@ -132,7 +132,7 @@ function ApiRuleDetailsHeader({ apiRule, setDrawerContent }) {
             {apiRule.json && (
               <Button
                 option="light"
-                glyph="syntax"
+                glyph="attachment-html"
                 onClick={_ => setDrawerContent(YamlContent(apiRule.json))}
               >
                 YAML
