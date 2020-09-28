@@ -6,7 +6,7 @@ import { split } from 'apollo-link';
 
 import { SubscriptionClient } from 'subscriptions-transport-ws';
 import { createHttpLink } from 'apollo-link-http';
-import { setContext } from 'apollo-link-context';
+// import { setContext } from 'apollo-link-context';
 import React, { useEffect, useState } from 'react';
 import { ApolloProvider } from 'react-apollo';
 import {
@@ -41,7 +41,7 @@ const setHeader = (header, value) => headers => ({
   [header]: value,
 });
 
-const setAuthorization = token => setHeader('authorization', `Bearer ${token}`);
+// const setAuthorization = token => setHeader('authorization', `Bearer ${token}`);
 
 export function createKymaApolloClient(fromConfig, token) {
   const graphqlApiUrl = fromConfig(
