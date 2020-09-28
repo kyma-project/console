@@ -47,6 +47,7 @@ function isVisibleForCurrentGroup(node) {
 }
 
 export default function navigationPermissionChecker(nodeToCheckPermissionsFor) {
+  return true;
   const noRulesApplied =
     !Array.isArray(nodeToCheckPermissionsFor.requiredPermissions) ||
     !nodeToCheckPermissionsFor.requiredPermissions.length;
@@ -64,6 +65,7 @@ export default function navigationPermissionChecker(nodeToCheckPermissionsFor) {
 
 
 export function getGroups(token){
+  return [];
   try{
     return parseJWT(token).groups;
   } catch (e) {

@@ -12,15 +12,15 @@ import { onQuotaExceed } from './luigi-event-handlers';
 
 export const NODE_PARAM_PREFIX = `~`;
 
-(function getFreshKeys() {
-  // manually re-fetching keys, since this is a major pain point
-  // until dex has possibility of no-cache
-  return fetch('https://dex.' + config.domain + '/keys', { cache: 'no-cache' });
-})();
+// (function getFreshKeys() {
+//   // manually re-fetching keys, since this is a major pain point
+//   // until dex has possibility of no-cache
+//   return fetch('https://dex.' + config.domain + '/keys', { cache: 'no-cache' });
+// })();
 
 (async () => {
   const luigiConfig = {
-    auth: await createAuth(),
+    // auth: await createAuth(),
     communication,
     navigation,
     routing: {
@@ -39,17 +39,12 @@ export const NODE_PARAM_PREFIX = `~`;
         } else {
           Luigi.featureToggles().unsetFeatureToggle('showSystemNamespaces');
         }
-        const token = getToken();
-        if (token) {
-          getNavigationData().then(response => {
-            resolveNavigationNodes(response[0]);
-            luigiConfig.settings.sideNavFooterText = response[1];
-            Luigi.configChanged('settings');
-            Luigi.ux().hideAppLoadingIndicator();
-          });
-        } else {
-          saveCurrentLocation();
-        }
+        getNavigationData().then(response => {
+          resolveNavigationNodes(response[0]);
+          luigiConfig.settings.sideNavFooterText = response[1];
+          Luigi.configChanged('settings');
+          Luigi.ux().hideAppLoadingIndicator();
+        });
       }
     }
   };

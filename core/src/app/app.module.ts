@@ -203,7 +203,7 @@ export class AppModule {
     let apolloClientInitialized = false;
 
     LuigiClient.addContextUpdateListener(e => {
-      if (e.idToken && !apolloClientInitialized) {
+      if (!apolloClientInitialized) {
         // Create an http link:
         const http = httpLink.create({
           uri: AppConfig.graphqlApiUrl

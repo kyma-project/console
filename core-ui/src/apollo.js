@@ -31,10 +31,10 @@ const errorLink = onError(
   },
 );
 
-const modifyHeaders = modifiers =>
-  setContext((_, { oldHeaders }) => ({
-    headers: modifiers.reduce((acc, m) => m(acc), oldHeaders),
-  }));
+// const modifyHeaders = modifiers =>
+//   setContext((_, { oldHeaders }) => ({
+//     headers: modifiers.reduce((acc, m) => m(acc), oldHeaders),
+//   }));
 
 const setHeader = (header, value) => headers => ({
   ...headers,
@@ -52,18 +52,18 @@ export function createKymaApolloClient(fromConfig, token) {
     uri: graphqlApiUrl,
   });
 
-  const authLink = modifyHeaders([setAuthorization(token)]);
-  const authHttpLink = authLink.concat(httpLink);
+  // const authLink = modifyHeaders([setAuthorization(token)]);
+  // const authHttpLink = authLink.concat(httpLink);
 
   const wsLink = new WebSocketLink({
-    token,
+    // token,
     uri: fromConfig('subscriptionsApiUrl'),
     options: {
       reconnect: true,
     },
   });
 
-  const link = split(isSubscriptionOperation, wsLink, authHttpLink);
+  const link = split(isSubscriptionOperation, wsLink, httpLink);
 
   return new ApolloClient({
     uri: graphqlApiUrl,
@@ -80,10 +80,7 @@ export const ApolloClientProvider = ({ children, createClient, provider }) => {
   const [client, setClient] = useState(null);
 
   useEffect(() => {
-    if (!context.idToken) {
-      return;
-    }
-    const client = createClient(fromConfig, context.idToken);
+    const client = createClient(fromConfig, null);
     setClient(client);
     return () => client.stop();
   }, [context.idToken, createClient, setClient, fromConfig]);

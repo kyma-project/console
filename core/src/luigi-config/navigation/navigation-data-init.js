@@ -134,6 +134,7 @@ export function getNavigationData() {
           }
         },
         err => {
+          alert("?")
           if (err === 'access denied') {
             clearToken();
             window.location.pathname = '/nopermissions.html';
