@@ -1,16 +1,22 @@
 import { config } from '../config';
 import { getToken } from './navigation-helpers';
 import { saveAs } from 'file-saver';
-
 export const coreUIViewGroupName = '_core_ui_';
 export const consoleViewGroupName = '_console_';
-
 function downloadKubeconfig() {
-  alert('Downloading Kubeconfig is disabled in EᐯᗩᒪᑌᗩTIOᑎ ᗰOᗪE');
-  return false;
+  const kubeconfigGeneratorUrl = `https://configurations-generator.${config.domain}/kube-config`;
+  const authHeader = { "Authorization": `Bearer ${getToken()}` };
+  fetch(kubeconfigGeneratorUrl, { headers: authHeader })
+    .then(res => res.blob())
+    .then(config => saveAs(config, 'kubeconfig.yml'))
+    .catch(err => {
+      alert('Cannot download kubeconfig.');
+      console.warn(err);
+    });
+  return false; // cancel Luigi navigation
 }
-
 export function getStaticChildrenNodesForNamespace(){
+  // config.coreAppUrl = 'http://console-dev.testowy.hasselhoff.shoot.canary.k8s-hana.ondemand.com:4200' + '/consoleapp.html#';
   return [
     {
       link: '/home/workspace',
@@ -41,13 +47,15 @@ export function getStaticChildrenNodesForNamespace(){
       label: 'Permissions',
       viewUrl: config.coreModuleUrl + '/home/namespaces/:namespaceId/permissions',
       keepSelectedForChildren: true,
+      viewGroup: coreUIViewGroupName,
       children: [
         {
           pathSegment: 'roles',
           children: [
             {
               pathSegment: ':roleName',
-              viewUrl: config.coreModuleUrl + '/home/namespaces/:namespaceId/permissions/roles/:roleName'
+              viewUrl: config.coreModuleUrl + '/home/namespaces/:namespaceId/permissions/roles/:roleName',
+              viewGroup: coreUIViewGroupName
             }
           ]
         }
@@ -58,14 +66,16 @@ export function getStaticChildrenNodesForNamespace(){
       pathSegment: 'resources',
       navigationContext: 'resources',
       label: 'Resources',
-      viewUrl: '/consoleapp.html#/home/namespaces/:namespaceId/resources'
+      viewUrl: config.coreAppUrl +'/home/namespaces/:namespaceId/resources',
+      viewGroup: consoleViewGroupName
     },
     {
       category: 'Configuration',
       pathSegment: 'config-maps',
       navigationContext: 'config-maps',
       label: 'Config Maps',
-      viewUrl: '/consoleapp.html#/home/namespaces/:namespaceId/configmaps'
+      viewUrl: config.coreAppUrl +'/home/namespaces/:namespaceId/configmaps',
+      viewGroup: consoleViewGroupName
     },
     {
       category: { label: 'Development', icon: 'source-code', collapsible: true },
@@ -77,21 +87,24 @@ export function getStaticChildrenNodesForNamespace(){
       pathSegment: 'deployments',
       navigationContext: 'deployments',
       label: 'Deployments',
-      viewUrl: '/consoleapp.html#/home/namespaces/:namespaceId/deployments'
+      viewUrl: config.coreAppUrl +'/home/namespaces/:namespaceId/deployments',
+      viewGroup: consoleViewGroupName
     },
     {
       category: 'Operation',
       pathSegment: 'replica-sets',
       navigationContext: 'replica-sets',
       label: 'Replica Sets',
-      viewUrl: '/consoleapp.html#/home/namespaces/:namespaceId/replicaSets'
+      viewUrl: config.coreAppUrl +'/home/namespaces/:namespaceId/replicaSets',
+      viewGroup: consoleViewGroupName
     },
     {
       category: 'Operation',
       pathSegment: 'pods',
       navigationContext: 'pods',
       label: 'Pods',
-      viewUrl: '/consoleapp.html#/home/namespaces/:namespaceId/pods'
+      viewUrl: config.coreAppUrl +'/home/namespaces/:namespaceId/pods',
+      viewGroup: consoleViewGroupName
     },
     {
       category: 'Operation',
@@ -115,7 +128,7 @@ export function getStaticChildrenNodesForNamespace(){
                     {
                       pathSegment: 'create',
                       viewUrl:
-                        '/consoleapp.html#/home/namespaces/:namespaceId/services/:name/apis/create'
+                        config.coreAppUrl +'/home/namespaces/:namespaceId/services/:name/apis/create'
                     },
                     {
                       pathSegment: 'details',
@@ -123,7 +136,7 @@ export function getStaticChildrenNodesForNamespace(){
                         {
                           pathSegment: ':apiName',
                           viewUrl:
-                            '/consoleapp.html#/home/namespaces/:namespaceId/services/:name/apis/details/:apiName'
+                            config.coreAppUrl +'/home/namespaces/:namespaceId/services/:name/apis/details/:apiName'
                         }
                       ]
                     }
@@ -162,7 +175,6 @@ export function getStaticChildrenNodesForNamespace(){
     }
   ];
 }
-
 export function getStaticRootNodes(namespaceChildrenNodesResolver){
   return [
     {
@@ -174,7 +186,7 @@ export function getStaticRootNodes(namespaceChildrenNodesResolver){
     },
     {
       pathSegment: 'namespaces',
-      viewUrl: '/consoleapp.html#/home/namespaces/workspace',
+      viewUrl: config.coreAppUrl +'/home/namespaces/workspace',
       hideFromNav: true,
       viewGroup: consoleViewGroupName,
       children: [
@@ -198,7 +210,7 @@ export function getStaticRootNodes(namespaceChildrenNodesResolver){
     {
       pathSegment: 'preferences',
       navigationContext: 'settings',
-      viewUrl: '/consoleapp.html#/home/settings/preferences',
+      viewUrl: config.coreAppUrl +'/home/settings/preferences',
       viewGroup: consoleViewGroupName,
       hideFromNav: true,
     },
