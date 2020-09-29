@@ -6,18 +6,8 @@ export const coreUIViewGroupName = '_core_ui_';
 export const consoleViewGroupName = '_console_';
 
 function downloadKubeconfig() {
-  const kubeconfigGeneratorUrl = `https://configurations-generator.${config.domain}/kube-config`;
-  const authHeader = { "Authorization": `Bearer ${getToken()}` };
-
-  fetch(kubeconfigGeneratorUrl, { headers: authHeader })
-    .then(res => res.blob())
-    .then(config => saveAs(config, 'kubeconfig.yml'))
-    .catch(err => {
-      alert('Cannot download kubeconfig.');
-      console.warn(err);
-    });
-
-  return false; // cancel Luigi navigation
+  alert('Downloading Kubeconfig is disabled in EᐯᗩᒪᑌᗩTIOᑎ ᗰOᗪE');
+  return false;
 }
 
 export function getStaticChildrenNodesForNamespace(){

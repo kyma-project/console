@@ -53,7 +53,7 @@ export let navigation = {
   },
   profile: {
     logout: {
-      label: 'Logout'
+      label: 'Logout (unavailable)'
     },
     items: [
       {
