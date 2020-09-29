@@ -28,7 +28,6 @@ const config = {
   faviconUrl: 'favicon.ico',
   kubeconfigGeneratorUrl: `https://configurations-generator.${domain}/kube-config`,
   idpLogoutUrl: null,
-  dexFQDNUri: 'http://dex-service.kyma-system.svc.cluster.local:5556/keys',
   ...configToRead,
   graphqlApiUrl: environment.localApi ? configToRead.graphqlApiUrlLocal : configToRead.graphqlApiUrl
 };
