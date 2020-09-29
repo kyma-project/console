@@ -20,8 +20,7 @@ export class PreferencesComponent implements OnInit {
   }
 
   ngOnInit() {
-    const groups = LuigiClient.getContext().groups;
-    this.shouldShowNamespacesToggle = this.isVisibleForCurrentGroup(groups);
+    this.shouldShowNamespacesToggle = true;
 
     if (localStorage.getItem('console.showSystemNamespaces')) {
       this.showSystemNamespaces =
