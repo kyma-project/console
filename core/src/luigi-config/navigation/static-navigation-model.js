@@ -46,32 +46,6 @@ export function getStaticChildrenNodesForNamespace(){
     },
     {
       category: 'Configuration',
-      pathSegment: 'oauth-clients',
-      navigationContext: 'oauth-clients',
-      label: 'OAuth Clients',
-      viewUrl: config.coreModuleUrl + '/home/namespaces/:namespaceId/oauth-clients',
-      viewGroup: coreUIViewGroupName,
-      keepSelectedForChildren: true,
-      children: [
-        {
-          pathSegment: 'create',
-          viewUrl: config.coreModuleUrl + '/home/namespaces/:namespaceId/oauth-clients/create',
-          viewGroup: coreUIViewGroupName,
-        },
-        {
-          pathSegment: 'details',
-          children: [
-            {
-              pathSegment: ':clientName',
-              viewUrl: config.coreModuleUrl + '/home/namespaces/:namespaceId/oauth-clients/details/:clientName',
-              viewGroup: coreUIViewGroupName,
-            }
-          ]
-        }
-      ]
-    },
-    {
-      category: 'Configuration',
       pathSegment: 'permissions',
       navigationContext: 'permissions',
       label: 'Permissions',
