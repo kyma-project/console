@@ -113,6 +113,7 @@ function ApiRuleDetailsHeader({ apiRule }) {
                 option="light"
                 onClick={_ => setOpen(true)}
                 glyph="attachment-html"
+                data-testid="yaml-button"
               >
                 YAML
               </Button>
