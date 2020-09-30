@@ -6,18 +6,35 @@ import { CopiableText } from '../CopiableText/CopiableText';
 
 export const SideDrawer = ({
   buttonText,
-  textToCopy,
   isOpen,
   setOpen,
   children,
   bottomContent,
-  hideDefaultButton,
 }) => {
+  let textToCopy;
+
+  if (withYamlEditor) {
+    textToCopy = jsyaml.safeDump(content);
+    children = (
+      <>
+        <h1 className="fd-has-type-4">YAML</h1>
+        <ControlledEditor
+          height="90vh"
+          width="50em"
+          language={'yaml'}
+          theme="vs-light"
+          value={textToCopy}
+          options={{ readOnly: true }}
+        />
+      </>
+    );
+  }
+
   return (
     <div className={classNames('side-drawer', { 'side-drawer--open': isOpen })}>
       {(isOpen || children) && (
         <button
-          className={`open-btn ${hideDefaultButton ? 'open-btn-hidden' : ''}`}
+          className={`open-btn ${!buttonText ? 'open-btn-hidden' : ''}`}
           onClick={() => setOpen(!isOpen)}
         >
           <Icon
@@ -39,7 +56,7 @@ export const SideDrawer = ({
               buttonText="Copy"
             />
           )}
-          {hideDefaultButton && (
+          {!buttonText && (
             <Button option="emphasized" onClick={() => setOpen(!isOpen)}>
               Close
             </Button>
