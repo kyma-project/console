@@ -92,7 +92,7 @@ function navigateToEditView(apiRuleName) {
 const breadcrumbItems = [{ name: 'API Rules', path: '/' }, { name: '' }];
 
 function ApiRuleDetailsHeader({ apiRule }) {
-  const [drawerEditor, _, setOpen] = useSideDrawer(
+  const [drawerEditor, , setOpen] = useSideDrawer(
     true,
     apiRule.json,
     null,
