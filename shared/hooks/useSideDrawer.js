@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { SideDrawer } from '../components/SideDrawer/SideDrawer';
 
-import { ControlledEditor } from '@monaco-editor/react';
-import jsyaml from 'js-yaml';
-
 export const useSideDrawer = (
   withYamlEditor,
   initialContent,

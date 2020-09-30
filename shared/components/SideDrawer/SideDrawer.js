@@ -4,17 +4,21 @@ import './SideDrawer.scss';
 import { Button, Icon } from 'fundamental-react';
 import { CopiableText } from '../CopiableText/CopiableText';
 
+import { ControlledEditor } from '@monaco-editor/react';
+import jsyaml from 'js-yaml';
+
 export const SideDrawer = ({
   buttonText,
   isOpen,
   setOpen,
   children,
   bottomContent,
+  withYamlEditor,
 }) => {
   let textToCopy;
 
   if (withYamlEditor) {
-    textToCopy = jsyaml.safeDump(content);
+    textToCopy = jsyaml.safeDump(children);
     children = (
       <>
         <h1 className="fd-has-type-4">YAML</h1>
