@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
+
 import { SideDrawer } from '../components/SideDrawer/SideDrawer';
 
 export const useSideDrawer = (
@@ -29,4 +31,12 @@ export const useSideDrawer = (
   ) : null;
 
   return [drawerComponent, setContent, setOpen];
+};
+
+useSideDrawer.propTypes = {
+  initialContent: PropTypes.any.isRequired,
+  bottomContent: PropTypes.any,
+  withYamlEditor: PropTypes.bool,
+  buttonText: PropTypes.string,
+  isOpenInitially: PropTypes.bool,
 };

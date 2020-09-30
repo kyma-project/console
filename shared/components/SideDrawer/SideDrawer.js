@@ -1,11 +1,12 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import './SideDrawer.scss';
-import { Button, Icon } from 'fundamental-react';
-import { CopiableText } from '../CopiableText/CopiableText';
-
 import { ControlledEditor } from '@monaco-editor/react';
 import jsyaml from 'js-yaml';
+import { Button, Icon } from 'fundamental-react';
+
+import './SideDrawer.scss';
+import { CopiableText } from '../CopiableText/CopiableText';
 
 export const SideDrawer = ({
   buttonText,
@@ -69,4 +70,13 @@ export const SideDrawer = ({
       </section>
     </div>
   );
+};
+
+SideDrawer.propTypes = {
+  children: PropTypes.any.isRequired,
+  bottomContent: PropTypes.any,
+  withYamlEditor: PropTypes.bool,
+  buttonText: PropTypes.string,
+  isOpen: PropTypes.bool,
+  setOpen: PropTypes.func,
 };

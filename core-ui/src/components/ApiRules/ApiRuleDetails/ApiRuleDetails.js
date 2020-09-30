@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { useQuery } from '@apollo/react-hooks';
 import LuigiClient from '@luigi-project/client';
 import { Button } from 'fundamental-react';
-
 import { Spinner, PageHeader, useSideDrawer } from 'react-shared';
+
 import {
   CopiableApiRuleHost,
   ApiRuleServiceInfo,
@@ -12,7 +12,6 @@ import {
 import EntryNotFound from 'components/EntryNotFound/EntryNotFound';
 import { GET_API_RULE } from '../../../gql/queries';
 import { useDeleteApiRule } from '../gql/useDeleteApiRule';
-
 import AccessStrategies from '../AccessStrategies/AccessStrategies';
 import ApiRuleStatus from '../ApiRuleStatus/ApiRuleStatus';
 
