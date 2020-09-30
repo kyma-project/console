@@ -11,21 +11,6 @@ export const SideDrawerEditor = ({
   bottomContent,
   hideDefaultButton,
 }) => {
-  const yaml = jsyaml.safeDump(content);
-  const children = (
-    <>
-      <h1 className="fd-has-type-4">YAML</h1>
-      <ControlledEditor
-        height="90vh"
-        width="50em"
-        language={'yaml'}
-        theme="vs-light"
-        value={yaml}
-        options={{ readOnly: true }}
-      />
-    </>
-  );
-
   return (
     <SideDrawer
       textToCopy={yaml}

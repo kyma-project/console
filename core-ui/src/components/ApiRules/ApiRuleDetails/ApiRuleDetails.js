@@ -4,7 +4,7 @@ import { useQuery } from '@apollo/react-hooks';
 import LuigiClient from '@luigi-project/client';
 import { Button } from 'fundamental-react';
 
-import { Spinner, PageHeader, useSideDrawerEditor } from 'react-shared';
+import { Spinner, PageHeader, useSideDrawer } from 'react-shared';
 import {
   CopiableApiRuleHost,
   ApiRuleServiceInfo,
@@ -17,12 +17,6 @@ import AccessStrategies from '../AccessStrategies/AccessStrategies';
 import ApiRuleStatus from '../ApiRuleStatus/ApiRuleStatus';
 
 const ApiRuleDetails = ({ apiName }) => {
-  const [drawerEditor, setDrawerEditorContent] = useSideDrawerEditor(
-    null,
-    null,
-    true,
-    null,
-  );
   const { error, loading, data } = useQuery(GET_API_RULE, {
     variables: {
       namespace: LuigiClient.getContext().namespaceId,
@@ -45,11 +39,7 @@ const ApiRuleDetails = ({ apiName }) => {
 
   return (
     <>
-      {drawerEditor}
-      <ApiRuleDetailsHeader
-        apiRule={data.APIRule}
-        setDrawerEditorContent={setDrawerEditorContent}
-      />
+      <ApiRuleDetailsHeader apiRule={data.APIRule} />
       <AccessStrategies strategies={data.APIRule?.spec?.rules || []} />
     </>
   );
@@ -101,7 +91,14 @@ function navigateToEditView(apiRuleName) {
 
 const breadcrumbItems = [{ name: 'API Rules', path: '/' }, { name: '' }];
 
-function ApiRuleDetailsHeader({ apiRule, setDrawerEditorContent }) {
+function ApiRuleDetailsHeader({ apiRule }) {
+  const [drawerEditor, setDrawerEditorContent, setOpen] = useSideDrawer(
+    true,
+    apiRule.json,
+    null,
+    true,
+    null,
+  );
   const name = apiRule.name;
   const { openedInModal = false } = LuigiClient.getNodeParams() || {};
   const openedInModalBool = openedInModal.toString().toLowerCase() === 'true';
@@ -116,7 +113,7 @@ function ApiRuleDetailsHeader({ apiRule, setDrawerEditorContent }) {
             {apiRule.json && (
               <Button
                 option="light"
-                onClick={_ => setDrawerEditorContent(apiRule.json)}
+                onClick={_ => setOpen(true)}
                 glyph="attachment-html"
               >
                 YAML
@@ -128,6 +125,7 @@ function ApiRuleDetailsHeader({ apiRule, setDrawerEditorContent }) {
         )
       }
     >
+      {drawerEditor}
       <PageHeader.Column title="Service">
         <ApiRuleServiceInfo apiRule={apiRule} />
       </PageHeader.Column>
