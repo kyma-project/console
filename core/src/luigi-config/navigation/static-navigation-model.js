@@ -188,7 +188,7 @@ export function getStaticRootNodes(namespaceChildrenNodesResolver){
       pathSegment: 'namespaces',
       viewUrl: config.coreAppUrl +'/home/namespaces/workspace',
       hideFromNav: true,
-      viewGroup: consoleViewGroupName,
+      viewGroup: coreUIViewGroupName,
       children: [
         {
           pathSegment: ':namespaceId',

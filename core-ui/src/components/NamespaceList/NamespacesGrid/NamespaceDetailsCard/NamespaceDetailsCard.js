@@ -39,7 +39,6 @@ function navigateToNamespaceDetails(namespaceName) {
   LuigiClient.linkManager().navigate(
     `/home/namespaces/${namespaceName}/details`,
   );
-  LuigiClient.sendCustomMessage({ id: 'console.refreshNavigation' });
 }
 
 const Spinner = () => (
