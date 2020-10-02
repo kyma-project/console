@@ -161,17 +161,19 @@ context('Console Smoke Tests', () => {
     });
   }
 
-  it('Renders docs', () => {
-    cy.get('[data-testid="mobile-menu"]')
-      .click()
-      .get('body')
-      .get('a[data-testid="docs_docs"]')
-      .click({ force: true }) // force, as contaier may still be `visibility: hidden`
-      .getIframeBody()
-      .contains('Kyma')
-      .should('exist') // check title
-      .getIframeBody()
-      .contains('In a nutshell')
-      .should('exist'); // check docs rendering
-  });
+  if (config.docsEnabled) {
+    it('Renders docs', () => {
+      cy.get('[data-testid="mobile-menu"]')
+        .click()
+        .get('body')
+        .get('a[data-testid="docs_docs"]')
+        .click({ force: true }) // force, as contaier may still be `visibility: hidden`
+        .getIframeBody()
+        .contains('Kyma')
+        .should('exist') // check title
+        .getIframeBody()
+        .contains('In a nutshell')
+        .should('exist'); // check docs rendering
+    });
+  }
 });

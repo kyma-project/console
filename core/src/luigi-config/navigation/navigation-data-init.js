@@ -168,7 +168,10 @@ export function getNavigationData() {
               return nodeTree;
             }
           },
-          {
+        ];
+
+        if (backendModules.includes('rafter')) {
+          nodes.push({
             pathSegment: 'docs',
             viewUrl: config.docsModuleUrl,
             label: 'Docs',
@@ -199,8 +202,8 @@ export function getNavigationData() {
                 ]
               }
             ]
-          }
-        ];
+          });
+        }
         resolve([nodes, kymaVersion]);
       })
       .catch(err => {
