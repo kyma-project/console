@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import _ from 'lodash';
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery, useSubscription } from '@apollo/react-hooks';
 
 import { GET_NAMESPACES } from '../../gql/queries';
 import { NAMESPACES_EVENT_SUBSCRIPTION } from '../../gql/subscriptions';
 
-import { Spinner, useShowSystemNamespaces } from 'react-shared';
+import {
+  Spinner,
+  useShowSystemNamespaces,
+  handleSubscriptionArrayEvent,
+} from 'react-shared';
 import NamespacesGrid from './NamespacesGrid/NamespacesGrid';
 import NamespacesListHeader from './NamespacesListHeader/NamespacesListHeader';
 import * as storage from './storage';
-import { handleNamespaceWsEvent } from './wsHandler';
 
 function sortByName(array) {
   array.sort((a, b) => {
@@ -23,6 +26,7 @@ export default function NamespaceList() {
   const [searchPhrase, setSearchPhrase] = useState('');
   const [labelFilters, setLabelFilters] = useState([]);
   const showSystemNamespaces = useShowSystemNamespaces();
+  const [namespaces, setNamespaces] = React.useState([]);
 
   const createFilters = namespaces => {
     const storedFilterLabels = storage.readStoredFilterLabels();
@@ -102,49 +106,28 @@ export default function NamespaceList() {
     setLabelFilters(createFilters(namespaces));
   };
 
-  const { data, error, loading, subscribeToMore } = useQuery(GET_NAMESPACES, {
+  const { error, loading } = useQuery(GET_NAMESPACES, {
     variables: {
       showSystemNamespaces,
       withInactiveStatus: true,
     },
     fetchPolicy: 'network-only',
+    onCompleted: data => setNamespaces(data.namespaces),
   });
 
-  useEffect(() => {
-    return subscribeToMore({
-      variables: {
-        showSystemNamespaces,
-        withInactiveStatus: true,
-      },
-      document: NAMESPACES_EVENT_SUBSCRIPTION,
-      updateQuery: (prev, { subscriptionData }) => {
-        if (!subscriptionData.data || !subscriptionData.data.namespaceEvent) {
-          //needed?
-          return prev;
-        }
+  useSubscription(NAMESPACES_EVENT_SUBSCRIPTION, {
+    variables: { showSystemNamespaces: true },
+    onSubscriptionData: ({ subscriptionData: { data } }) => {
+      const { type, namespace } = data.namespaceEvent;
+      handleSubscriptionArrayEvent(namespaces, setNamespaces, type, namespace);
+    },
+  });
 
-        const namespaceEvent = subscriptionData.data.namespaceEvent;
+  useEffect(() => setLabelFilters(createFilters(namespaces)), [namespaces]);
 
-        return handleNamespaceWsEvent(namespaceEvent, prev);
-      },
-    });
-  }, [subscribeToMore, showSystemNamespaces]);
+  if (error) return `Error! ${error.message}`;
+  if (loading) return <Spinner />;
 
-  useEffect(() => {
-    if (data && data.namespaces) {
-      setLabelFilters(createFilters(data.namespaces));
-    }
-  }, [data]);
-
-  if (error) {
-    return `Error! ${error.message}`;
-  }
-
-  if (loading) {
-    return <Spinner />;
-  }
-
-  const namespaces = data.namespaces;
   sortByName(namespaces);
 
   return (
