@@ -88,19 +88,6 @@ context('Console Smoke Tests', () => {
     });
   }
 
-  if (config.loggingEnabled) {
-    it('Renders logging', () => {
-      cy.contains('Diagnostics')
-        .click()
-        .get('body')
-        .contains('Logs')
-        .click()
-        .getIframeBody()
-        .contains('Logs')
-        .should('exist');
-    });
-  }
-
   if (config.serviceCatalogEnabled) {
     it('Renders service catalog', () => {
       cy.getIframeBody()
@@ -144,19 +131,6 @@ context('Console Smoke Tests', () => {
         .click()
         .getIframeBody()
         .contains('Functions')
-        .should('exist');
-    });
-  }
-
-  if (config.loggingEnabled) {
-    it('Renders logs', () => {
-      cy.contains('Diagnostics')
-        .click()
-        .get('body')
-        .contains('Logs')
-        .click()
-        .getIframeBody()
-        .contains('Logs')
         .should('exist');
     });
   }
