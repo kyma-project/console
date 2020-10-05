@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Link } from '../Link/Link';
 
 export const LogsLink = ({
@@ -9,9 +10,6 @@ export const LogsLink = ({
   dataSource = 'Loki',
   mode = 'Logs',
 }) => {
-  if (!domain) {
-    return null;
-  }
   const queryParameters = query ? { expr: query } : {};
   const parameters = [
     from,
@@ -30,4 +28,13 @@ export const LogsLink = ({
   )}`;
 
   return <Link className="fd-button" url={grafanaLink} text="Logs" />;
+};
+
+LogsLink.propTypes = {
+  domain: PropTypes.string.isRequired,
+  query: PropTypes.string.isRequired,
+  from: PropTypes.string,
+  to: PropTypes.string,
+  dataSource: PropTypes.string,
+  mode: PropTypes.string,
 };

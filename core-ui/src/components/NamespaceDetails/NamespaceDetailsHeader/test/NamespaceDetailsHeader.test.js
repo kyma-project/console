@@ -10,8 +10,12 @@ jest.mock('@luigi-project/client', () => ({
   linkManager: () => ({ navigate: mockNavigate }),
 }));
 
-jest.mock('@kyma-project/common', () => ({
-  getApiUrl: () => 'kyma.cluster.com',
+const mockFromConfig = jest.fn();
+jest.mock('react-shared', () => ({
+  ...jest.requireActual('react-shared'),
+  useConfig: () => ({
+    fromConfig: mockFromConfig,
+  }),
 }));
 
 describe('NamespaceDetailsHeader', () => {
