@@ -74,7 +74,7 @@ export const SideDrawer = ({
 
 SideDrawer.propTypes = {
   children: PropTypes.any.isRequired,
-  bottomContent: PropTypes.any,
+  bottomContent: PropTypes.element,
   withYamlEditor: PropTypes.bool,
   buttonText: PropTypes.string,
   isOpen: PropTypes.bool,

@@ -34,7 +34,7 @@ export const useSideDrawer = (
 };
 
 useSideDrawer.propTypes = {
-  initialContent: PropTypes.any.isRequired,
+  initialContent: PropTypes.any,
   bottomContent: PropTypes.any,
   withYamlEditor: PropTypes.bool,
   buttonText: PropTypes.string,
