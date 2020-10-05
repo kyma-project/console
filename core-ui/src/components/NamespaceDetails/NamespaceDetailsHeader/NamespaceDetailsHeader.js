@@ -4,16 +4,21 @@ import PropTypes from 'prop-types';
 
 import { useMutation } from '@apollo/react-hooks';
 import { DELETE_NAMESPACE } from 'gql/mutations';
+import { getApiUrl } from '@kyma-project/common';
 
-import { PageHeader, handleDelete } from 'react-shared';
+import { PageHeader, handleDelete, LogsLink } from 'react-shared';
 import { Button } from 'fundamental-react';
 import NamespaceLabels from './NamespaceLabels/NamespaceLabels';
 import DeployResourceModal from '../DeployResourceModal/DeployResourceModal';
 
 NamespaceDetailsHeader.propTypes = { namespace: PropTypes.object.isRequired };
 
+const DOMAIN = getApiUrl('domain');
+
 export default function NamespaceDetailsHeader({ namespace }) {
   const [deleteNamespace] = useMutation(DELETE_NAMESPACE);
+
+  const query = `{namespace=\"${namespace.name}\"}`;
 
   const handleNamespaceDelete = () =>
     handleDelete(
@@ -26,6 +31,7 @@ export default function NamespaceDetailsHeader({ namespace }) {
 
   const actions = (
     <>
+      <LogsLink domain={DOMAIN} query={query} />
       <DeployResourceModal namespace={namespace.name} />
       <Button
         option="light"

@@ -59,7 +59,9 @@ export default function DeployResourceModal({ namespace }) {
   };
 
   const modalOpeningComponent = (
-    <Button glyph="add">Deploy new resource</Button>
+    <Button className="fd-has-margin-left-tiny" glyph="add">
+      Deploy new resource
+    </Button>
   );
 
   return (
