@@ -18,7 +18,9 @@ const DOMAIN = getApiUrl('domain');
 export default function NamespaceDetailsHeader({ namespace }) {
   const [deleteNamespace] = useMutation(DELETE_NAMESPACE);
 
+  /* eslint-disable no-useless-escape */
   const query = `{namespace=\"${namespace.name}\"}`;
+  /* eslint-enable no-useless-escape */
 
   const handleNamespaceDelete = () =>
     handleDelete(
