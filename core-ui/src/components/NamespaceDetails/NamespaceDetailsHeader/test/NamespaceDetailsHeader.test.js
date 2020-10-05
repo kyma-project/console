@@ -10,6 +10,10 @@ jest.mock('@luigi-project/client', () => ({
   linkManager: () => ({ navigate: mockNavigate }),
 }));
 
+jest.mock('@kyma-project/common', () => ({
+  getApiUrl: () => 'kyma.cluster.com',
+}));
+
 describe('NamespaceDetailsHeader', () => {
   it('Renders with minimal props', async () => {
     const { queryByText, getByText } = render(
