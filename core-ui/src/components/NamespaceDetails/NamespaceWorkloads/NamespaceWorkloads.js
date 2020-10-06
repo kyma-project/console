@@ -53,7 +53,7 @@ export default function NamespaceWorkloads({ namespace }) {
   );
 
   return (
-    <Panel className="fd-has-margin-m">
+    <Panel className="fd-has-margin-m" className="namespace-workloads">
       <Panel.Header>
         <Panel.Head title="Healthy Resources" />
       </Panel.Header>

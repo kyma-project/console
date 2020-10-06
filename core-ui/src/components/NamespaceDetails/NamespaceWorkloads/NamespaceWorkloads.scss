@@ -1,8 +1,12 @@
-.namespace-workloads__body {
-    display: flex;
-    justify-content: flex-start;
+.namespace-workloads {
+  grid-area: ns-workloads;
+}
 
-    & > :first-child {
-        margin-right: 48px;
-    }
+.namespace-workloads__body {
+  display: flex;
+  justify-content: flex-start;
+
+  & > :first-child {
+    margin-right: 48px;
+  }
 }

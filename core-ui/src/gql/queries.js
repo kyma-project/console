@@ -1,5 +1,9 @@
 import gql from 'graphql-tag';
 
+// const LIMITS_FRAGMENT = `
+// resources
+// `
+
 export const GET_NAMESPACE = gql`
   query Namespace($name: String!) {
     namespace(name: $name) {
@@ -15,6 +19,38 @@ export const GET_NAMESPACE = gql`
         status {
           replicas
           readyReplicas
+        }
+      }
+    }
+
+    resourceQuotas(namespace: $name) {
+      name
+      pods
+      limits {
+        memory
+        cpu
+      }
+      requests {
+        memory
+        cpu
+      }
+    }
+
+    limitRanges(namespace: $name) {
+      name
+      limits {
+        limitType
+        max {
+          memory
+          cpu
+        }
+        default {
+          memory
+          cpu
+        }
+        defaultRequest {
+          memory
+          cpu
         }
       }
     }

@@ -58,12 +58,14 @@ export default function NamespaceApplications({ namespace }) {
 
   return (
     <GenericList
+      hasExternalMargin={false}
       title="Connected Applications"
       notFoundMessage="No connected applications"
       entries={namespace.applications.map(name => ({ name }))}
       headerRenderer={() => ['Name']}
       rowRenderer={app => [app.name]}
       actions={actions}
+      className="namespace-applications"
     />
   );
 }

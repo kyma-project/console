@@ -1,0 +1,8 @@
+#ns-details-grid {
+  display: grid;
+  grid-template-areas:
+    'ns-workloads ns-workloads ns-apps'
+    'ns-quotas ns-limits ns-limits';
+  padding: 2em;
+  grid-gap: 2em;
+}
