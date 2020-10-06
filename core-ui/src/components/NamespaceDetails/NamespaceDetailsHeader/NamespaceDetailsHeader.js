@@ -16,10 +16,7 @@ export default function NamespaceDetailsHeader({ namespace }) {
   const [deleteNamespace] = useMutation(DELETE_NAMESPACE);
 
   const DOMAIN = useConfig().fromConfig('domain');
-
-  /* eslint-disable no-useless-escape */
-  const query = `{namespace=\"${namespace.name}\"}`;
-  /* eslint-enable no-useless-escape */
+  const query = `{namespace="${namespace.name}"}`;
 
   const handleNamespaceDelete = () =>
     handleDelete(
