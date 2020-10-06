@@ -32,7 +32,7 @@ export const LogsLink = ({
 
 LogsLink.propTypes = {
   domain: PropTypes.string.isRequired,
-  query: PropTypes.string.isRequired,
+  query: PropTypes.string,
   from: PropTypes.string,
   to: PropTypes.string,
   dataSource: PropTypes.string,
