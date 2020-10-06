@@ -77,13 +77,15 @@ export function getStaticChildrenNodesForNamespace(){
       label: 'Permissions',
       viewUrl: config.coreModuleUrl + '/home/namespaces/:namespaceId/permissions',
       keepSelectedForChildren: true,
+      viewGroup: coreUIViewGroupName,
       children: [
         {
           pathSegment: 'roles',
           children: [
             {
               pathSegment: ':roleName',
-              viewUrl: config.coreModuleUrl + '/home/namespaces/:namespaceId/permissions/roles/:roleName'
+              viewUrl: config.coreModuleUrl + '/home/namespaces/:namespaceId/permissions/roles/:roleName',
+              viewGroup: coreUIViewGroupName,
             }
           ]
         }
@@ -94,14 +96,16 @@ export function getStaticChildrenNodesForNamespace(){
       pathSegment: 'resources',
       navigationContext: 'resources',
       label: 'Resources',
-      viewUrl: '/consoleapp.html#/home/namespaces/:namespaceId/resources'
+      viewUrl: '/consoleapp.html#/home/namespaces/:namespaceId/resources',
+      viewGroup: consoleViewGroupName,
     },
     {
       category: 'Configuration',
       pathSegment: 'config-maps',
       navigationContext: 'config-maps',
       label: 'Config Maps',
-      viewUrl: '/consoleapp.html#/home/namespaces/:namespaceId/configmaps'
+      viewUrl: '/consoleapp.html#/home/namespaces/:namespaceId/configmaps',
+      viewGroup: consoleViewGroupName,
     },
     {
       category: { label: 'Development', icon: 'source-code', collapsible: true },
@@ -113,21 +117,24 @@ export function getStaticChildrenNodesForNamespace(){
       pathSegment: 'deployments',
       navigationContext: 'deployments',
       label: 'Deployments',
-      viewUrl: '/consoleapp.html#/home/namespaces/:namespaceId/deployments'
+      viewUrl: '/consoleapp.html#/home/namespaces/:namespaceId/deployments',
+      viewGroup: consoleViewGroupName,
     },
     {
       category: 'Operation',
       pathSegment: 'replica-sets',
       navigationContext: 'replica-sets',
       label: 'Replica Sets',
-      viewUrl: '/consoleapp.html#/home/namespaces/:namespaceId/replicaSets'
+      viewUrl: '/consoleapp.html#/home/namespaces/:namespaceId/replicaSets',
+      viewGroup: consoleViewGroupName,
     },
     {
       category: 'Operation',
       pathSegment: 'pods',
       navigationContext: 'pods',
       label: 'Pods',
-      viewUrl: '/consoleapp.html#/home/namespaces/:namespaceId/pods'
+      viewUrl: '/consoleapp.html#/home/namespaces/:namespaceId/pods',
+      viewGroup: consoleViewGroupName,
     },
     {
       category: 'Operation',
@@ -144,28 +151,7 @@ export function getStaticChildrenNodesForNamespace(){
             {
               pathSegment: ':serviceName',
               viewUrl: config.coreModuleUrl + '/home/namespaces/:namespaceId/services/details/:serviceName',
-              children: [
-                {
-                  pathSegment: 'apis',
-                  children: [
-                    {
-                      pathSegment: 'create',
-                      viewUrl:
-                        '/consoleapp.html#/home/namespaces/:namespaceId/services/:name/apis/create'
-                    },
-                    {
-                      pathSegment: 'details',
-                      children: [
-                        {
-                          pathSegment: ':apiName',
-                          viewUrl:
-                            '/consoleapp.html#/home/namespaces/:namespaceId/services/:name/apis/details/:apiName'
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
+              viewGroup: coreUIViewGroupName,
             }
           ]
         }
@@ -179,6 +165,7 @@ export function getStaticChildrenNodesForNamespace(){
       viewUrl: config.coreModuleUrl + '/home/namespaces/:namespaceId/secrets',
       viewGroup: '_core_ui_',
       keepSelectedForChildren: true,
+      viewGroup: coreUIViewGroupName,
       children: [
         {
           pathSegment: 'details',
@@ -186,7 +173,7 @@ export function getStaticChildrenNodesForNamespace(){
             {
               pathSegment: ':name',
               viewUrl: config.coreModuleUrl + '/home/namespaces/:namespaceId/secrets/details/:name',
-              viewGroup: '_core_ui_',
+              viewGroup: coreUIViewGroupName,
             }
           ]
         }
@@ -212,7 +199,7 @@ export function getStaticRootNodes(namespaceChildrenNodesResolver){
       pathSegment: 'namespaces',
       viewUrl: '/consoleapp.html#/home/namespaces/workspace',
       hideFromNav: true,
-      viewGroup: consoleViewGroupName,
+      viewGroup: coreUIViewGroupName,
       children: [
         {
           pathSegment: ':namespaceId',
@@ -259,7 +246,8 @@ export function getStaticRootNodes(namespaceChildrenNodesResolver){
             {
               pathSegment: ':roleName',
               viewUrl:
-              config.coreModuleUrl + '/home/global-permission/roles/:roleName'
+              config.coreModuleUrl + '/home/global-permission/roles/:roleName',
+              viewGroup: coreUIViewGroupName,
             }
           ]
         }
