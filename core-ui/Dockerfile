@@ -7,8 +7,7 @@ WORKDIR /app
 # Install global dependencies
 RUN apk update && \
   apk upgrade && \
-  apk add --no-cache curl make && \
-  apk add chromium
+  apk add --no-cache curl make
 
 # Install root and app dependencies
 COPY . /app

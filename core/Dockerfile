@@ -9,8 +9,9 @@ ENV CI true
 # Install global dependencies
 RUN apk update && \
   apk upgrade && \
-  apk add --no-cache curl make
-  
+  apk add --no-cache curl make && \
+  apk add chromium
+
 COPY . /app
 
 RUN cd /app/${app_name} && \
