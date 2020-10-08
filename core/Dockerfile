@@ -5,6 +5,8 @@ WORKDIR /app
 # Set env variables
 ENV PRODUCTION true
 ENV CI true
+ENV PUPPETEER_EXECUTABLE_PATH /usr/bin/chromium
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
 
 # Install global dependencies
 RUN apk update && \
