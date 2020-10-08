@@ -12,7 +12,7 @@ ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
 RUN apk update && \
   apk upgrade && \
   apk add --no-cache curl make && \
-  apk add chromium
+  apk add chromium-browser
 
 COPY . /app
 
