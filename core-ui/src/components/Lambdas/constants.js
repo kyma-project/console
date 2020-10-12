@@ -457,11 +457,11 @@ export const RESOURCES_MANAGEMENT_PANEL = {
     TYPES: {
       FUNCTION: {
         TITLE: 'Runtime Profile',
-        DESCRIPTION: `Choose one of predefined Function's resources values or compose your own values ​​by selecting the "Custom" option`,
+        DESCRIPTION: `Choose one of the predefined values for Function's resources or set your own values ​​by selecting the "Custom" option.`,
       },
       BUILD_JOB: {
         TITLE: 'Build Job Profile',
-        DESCRIPTION: `Choose one of predefined build Job's resources values or compose your own values ​​by selecting the "Custom" option`,
+        DESCRIPTION: `Choose one of the predefined values for build Job's resources or set your own values ​​by selecting the "Custom" option.`,
       },
     },
     REQUESTS: {
