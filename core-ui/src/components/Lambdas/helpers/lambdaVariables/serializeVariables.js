@@ -100,7 +100,7 @@ export function retrieveVariablesFromBindingUsage(bindingUsage) {
     bindingUsage.serviceBinding.secret &&
     bindingUsage.serviceBinding.secret.data;
 
-  return Object.entries(secretData).map(([env, value]) => ({
+  return Object.entries(secretData || {}).map(([env, value]) => ({
     key: `${envPrefix}${env}`,
     value: value,
   }));
