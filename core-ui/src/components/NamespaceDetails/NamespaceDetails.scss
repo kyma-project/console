@@ -1,8 +1,20 @@
 #ns-details-grid {
   display: grid;
   grid-template-areas:
-    'ns-workloads ns-workloads ns-apps'
-    'ns-quotas ns-limits ns-limits';
+    'workloads workloads workloads workloads apps apps'
+    'quotas quotas quotas limits limits limits';
   padding: 2em;
   grid-gap: 2em;
+}
+
+.namespace-applications {
+  grid-area: apps;
+}
+
+.namespace-quotas {
+  grid-area: quotas;
+}
+
+.namespace-limits {
+  grid-area: limits;
 }

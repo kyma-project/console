@@ -20,6 +20,7 @@ export const GenericList = ({
   entriesKind,
   actions,
   title,
+
   headerRenderer,
   rowRenderer,
   notFoundMessage,
@@ -39,6 +40,7 @@ export const GenericList = ({
   hasExternalMargin,
   pagination,
   compact,
+  className,
 }) => {
   const [currentPage, setCurrentPage] = React.useState(
     (pagination && pagination.initialPage) || 1,
@@ -124,9 +126,13 @@ export const GenericList = ({
   };
 
   const tableClassNames = classnames('fd-table', { compact });
-  const panelClassNames = classnames('generic-list', {
-    'fd-has-margin-m': hasExternalMargin,
-  });
+  const panelClassNames = classnames(
+    'generic-list',
+    {
+      'fd-has-margin-m': hasExternalMargin,
+    },
+    className,
+  );
 
   return (
     <Panel className={panelClassNames} data-testid={testid}>
@@ -203,6 +209,7 @@ GenericList.propTypes = {
   hasExternalMargin: PropTypes.bool,
   pagination: PaginationProps,
   compact: PropTypes.bool,
+  className: PropTypes.string,
 };
 
 GenericList.defaultProps = {

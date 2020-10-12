@@ -25,32 +25,34 @@ export const GET_NAMESPACE = gql`
 
     resourceQuotas(namespace: $name) {
       name
-      pods
-      limits {
-        memory
-        cpu
-      }
-      requests {
-        memory
-        cpu
+      json
+      spec {
+        hard {
+          memory
+          cpu
+          pods
+        }
       }
     }
 
     limitRanges(namespace: $name) {
       name
-      limits {
-        limitType
-        max {
-          memory
-          cpu
-        }
-        default {
-          memory
-          cpu
-        }
-        defaultRequest {
-          memory
-          cpu
+      json
+      spec {
+        limits {
+          type
+          max {
+            memory
+            cpu
+          }
+          default {
+            memory
+            cpu
+          }
+          defaultRequest {
+            memory
+            cpu
+          }
         }
       }
     }

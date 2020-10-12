@@ -10,6 +10,7 @@ import NamespaceDetailsHeader from './NamespaceDetailsHeader/NamespaceDetailsHea
 import NamespaceWorkloads from './NamespaceWorkloads/NamespaceWorkloads';
 import NamespaceApplications from './NamespaceApplications/NamespaceApplications';
 import LimitRanges from './LimitRanges/LimitRanges';
+import ResourceQuotas from './ResourceQuotas/ResourceQuotas';
 
 NamespaceDetails.propTypes = { name: PropTypes.string.isRequired };
 
@@ -41,6 +42,7 @@ export default function NamespaceDetails({ name }) {
       <section id="ns-details-grid">
         <NamespaceWorkloads namespace={namespace} />
         <NamespaceApplications namespace={namespace} />
+        <ResourceQuotas resourceQuotas={resourceQuotas} />
         <LimitRanges limitRanges={limitRanges} />
       </section>
     </>

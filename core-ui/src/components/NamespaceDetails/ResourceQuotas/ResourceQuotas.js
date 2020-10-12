@@ -52,7 +52,7 @@ const rowRenderer = limitRange => {
   ];
 };
 
-const LimitRanges = ({ limitRanges }) => {
+const ResourceQuotas = ({ resourceQuotas }) => {
   const actions = [{ name: <Icon glyph="edit" />, handler: name => {} }];
 
   return (
@@ -60,12 +60,12 @@ const LimitRanges = ({ limitRanges }) => {
       hasExternalMargin={false}
       title="Limit ranges"
       notFoundMessage="No limit ranges"
-      entries={limitRanges}
+      entries={[]}
       headerRenderer={headerRenderer}
       rowRenderer={rowRenderer}
       actions={actions}
-      className="namespace-limits"
+      className="namespace-quotas"
     />
   );
 };
-export default LimitRanges;
+export default ResourceQuotas;
