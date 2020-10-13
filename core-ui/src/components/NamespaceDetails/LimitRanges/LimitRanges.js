@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { GenericList, useSideDrawer } from 'react-shared';
-import { Icon } from 'fundamental-react';
+import { Icon, Button } from 'fundamental-react';
 import jsyaml from 'js-yaml';
 import { ControlledEditor } from '@monaco-editor/react';
 
@@ -54,21 +54,26 @@ const rowRenderer = limitRange => {
   ];
 };
 
-const YamlContent = json => (
-  <>
-    <h1 className="fd-has-type-4">YAML</h1>
-    <ControlledEditor
-      height="90vh"
-      width="50em"
-      language={'yaml'}
-      theme="vs-light"
-      value={jsyaml.safeDump(json)}
-    />
-  </>
-);
-
 const LimitRanges = ({ limitRanges }) => {
-  const bottomContent = <h1>elo</h1>;
+  const editedLimitRange = useRef(null);
+  const changedYAML = useRef(null);
+
+  function handleSaveClick(newYAML) {
+    const json = jsyaml.safeLoad(newYAML);
+  }
+
+  const bottomContent = (
+    <Button
+      className="fd-has-margin-right-small"
+      glyph="accept"
+      type="positive"
+      option="emphasized"
+      onClick={() => handleSaveClick(changedYAML.current)}
+    >
+      Save
+    </Button>
+  );
+
   const [drawer, setDrawerContent] = useSideDrawer(
     null,
     bottomContent,
@@ -76,10 +81,26 @@ const LimitRanges = ({ limitRanges }) => {
     null,
   );
 
+  const YamlContent = json => (
+    <>
+      <h1 className="fd-has-type-4">YAML</h1>
+      <ControlledEditor
+        height="90vh"
+        width="50em"
+        language={'yaml'}
+        theme="vs-light"
+        value={jsyaml.safeDump(json)}
+        onChange={(_, text) => (changedYAML.current = text)}
+      />
+    </>
+  );
+
   const actions = [
     {
       name: <Icon glyph="edit" />,
       handler: limitRange => {
+        changedYAML.current = null;
+        editedLimitRange.current = limitRange;
         setDrawerContent(YamlContent(limitRange.json));
       },
     },
