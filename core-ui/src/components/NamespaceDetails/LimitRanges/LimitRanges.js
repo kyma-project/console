@@ -1,6 +1,8 @@
 import React from 'react';
-import { GenericList } from 'react-shared';
+import { GenericList, useSideDrawer } from 'react-shared';
 import { Icon } from 'fundamental-react';
+import jsyaml from 'js-yaml';
+import { ControlledEditor } from '@monaco-editor/react';
 
 const isNotEmpty = variable => variable && variable !== '0';
 
@@ -52,20 +54,51 @@ const rowRenderer = limitRange => {
   ];
 };
 
+const YamlContent = json => (
+  <>
+    <h1 className="fd-has-type-4">YAML</h1>
+    <ControlledEditor
+      height="90vh"
+      width="50em"
+      language={'yaml'}
+      theme="vs-light"
+      value={jsyaml.safeDump(json)}
+    />
+  </>
+);
+
 const LimitRanges = ({ limitRanges }) => {
-  const actions = [{ name: <Icon glyph="edit" />, handler: name => {} }];
+  const bottomContent = <h1>elo</h1>;
+  const [drawer, setDrawerContent] = useSideDrawer(
+    null,
+    bottomContent,
+    true,
+    null,
+  );
+
+  const actions = [
+    {
+      name: <Icon glyph="edit" />,
+      handler: limitRange => {
+        setDrawerContent(YamlContent(limitRange.json));
+      },
+    },
+  ];
 
   return (
-    <GenericList
-      hasExternalMargin={false}
-      title="Limit ranges"
-      notFoundMessage="No limit ranges"
-      entries={limitRanges}
-      headerRenderer={headerRenderer}
-      rowRenderer={rowRenderer}
-      actions={actions}
-      className="namespace-limits"
-    />
+    <>
+      {drawer}
+      <GenericList
+        hasExternalMargin={false}
+        title="Limit ranges"
+        notFoundMessage="No limit ranges"
+        entries={limitRanges}
+        headerRenderer={headerRenderer}
+        rowRenderer={rowRenderer}
+        actions={actions}
+        className="namespace-limits"
+      />
+    </>
   );
 };
 export default LimitRanges;
