@@ -8,7 +8,8 @@ function validateFile(file) {
   if (!file.size) {
     return 'File cannot be empty';
   }
-
+  console.log(file);
+  console.log(file.type);
   const allowedTypes = ['application/json', 'application/x-yaml'];
   if (!allowedTypes.includes(file.type)) {
     return 'Invalid file extension';
