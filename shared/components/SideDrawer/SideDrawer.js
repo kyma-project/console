@@ -10,17 +10,13 @@ export const SideDrawer = ({
   children,
   bottomContent,
   hideDefaultButton,
-  onManualClose = _ => {},
 }) => {
   return (
     <div className={classNames('side-drawer', { 'side-drawer--open': isOpen })}>
       {(isOpen || children) && (
         <button
           className={`open-btn ${hideDefaultButton ? 'open-btn-hidden' : ''}`}
-          onClick={() => {
-            setOpen(!isOpen);
-            onManualClose();
-          }}
+          onClick={() => setOpen(!isOpen)}
         >
           <Icon
             glyph={isOpen ? 'open-command-field' : 'close-command-field'}
@@ -35,12 +31,7 @@ export const SideDrawer = ({
         <div className="bottom">
           {bottomContent}
           {hideDefaultButton && (
-            <Button
-              option="emphasized"
-              onClick={() => {
-                setOpen(!isOpen), onManualClose();
-              }}
-            >
+            <Button option="emphasized" onClick={() => setOpen(!isOpen)}>
               Close
             </Button>
           )}

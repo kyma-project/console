@@ -43,7 +43,7 @@ export default function NamespaceDetails({ name }) {
         <NamespaceWorkloads namespace={namespace} />
         <NamespaceApplications namespace={namespace} />
         <ResourceQuotas resourceQuotas={resourceQuotas} />
-        <LimitRanges limitRanges={limitRanges} />
+        <LimitRanges limitRanges={limitRanges} namespace={namespace.name} />
       </section>
     </>
   );

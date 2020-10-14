@@ -1,9 +1,15 @@
-import React, { useRef, useEffect, useState } from 'react';
-import { GenericList, useYamlEditorDrawer } from 'react-shared';
-import { Icon, Button } from 'fundamental-react';
+import React, { useRef } from 'react';
+import {
+  GenericList,
+  useYamlEditorDrawer,
+  useNotification,
+} from 'react-shared';
+import { Icon } from 'fundamental-react';
 import jsyaml from 'js-yaml';
-import { ControlledEditor } from '@monaco-editor/react';
-import LuigiClient from '@luigi-project/client';
+import { useMutation } from '@apollo/react-hooks';
+import { UPDATE_LIMIT_RANGE } from '../../../gql/mutations';
+import { GET_NAMESPACE } from '../../../gql/queries';
+import { formatMessage } from 'components/Lambdas/helpers/misc';
 
 const isNotEmpty = variable => variable && variable !== '0';
 
@@ -55,17 +61,40 @@ const rowRenderer = limitRange => {
   ];
 };
 
-const LimitRanges = ({ limitRanges }) => {
-  // const [editedLimitRange, setEditedLimitRange] = useState(null);
+const LimitRanges = ({ limitRanges, namespace }) => {
+  const notificationManager = useNotification();
+  const editedLimitRange = useRef(null);
 
-  const changedYAML = useRef(null);
+  function onUpdateError({ message }) {
+    console.error('error');
+    notificationManager.notifyError({
+      content: formatMessage('failed', {
+        error: message,
+      }),
+    });
+  }
 
-  // useEffect(() => {
-  //   setDrawerContent(editedLimitRange.json)
-  // },[editedLimitRange])
+  const [updateLimitRange] = useMutation(UPDATE_LIMIT_RANGE, {
+    onError: onUpdateError,
+    onCompleted: _ =>
+      notificationManager.notifySuccess({
+        content: formatMessage('success', 'abc'),
+      }),
+    refetchQueries: [{ query: GET_NAMESPACE, variables: { name: namespace } }],
+  });
 
   function handleSaveClick(newYAML) {
-    const json = jsyaml.safeLoad(newYAML);
+    let json;
+
+    try {
+      json = jsyaml.load(newYAML);
+    } catch (e) {
+      onUpdateError({ message: 'failed to parse' });
+    }
+
+    updateLimitRange({
+      variables: { name: editedLimitRange.current?.name, json, namespace },
+    });
   }
 
   const [drawer, setDrawerContent] = useYamlEditorDrawer(handleSaveClick);
@@ -73,7 +102,10 @@ const LimitRanges = ({ limitRanges }) => {
   const actions = [
     {
       name: <Icon glyph="edit" />,
-      handler: limitRange => setDrawerContent(limitRange.json),
+      handler: limitRange => {
+        editedLimitRange.current = limitRange;
+        setDrawerContent(limitRange.json);
+      },
     },
   ];
 
