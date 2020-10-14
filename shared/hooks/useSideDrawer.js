@@ -7,6 +7,7 @@ export const useSideDrawer = (
   hideDefaultButton = false,
   buttonText = 'YAML code',
   isOpenInitially = false,
+  onClose,
 ) => {
   const [content, setContent] = useState(initialContent);
   const [isOpen, setOpen] = useState(isOpenInitially);
@@ -18,6 +19,7 @@ export const useSideDrawer = (
 
   const drawerComponent = content ? (
     <SideDrawer
+      onClose={typeof onClose === 'function' ? onClose : _ => {}}
       isOpen={isOpen}
       setOpen={setOpen}
       buttonText={buttonText}
