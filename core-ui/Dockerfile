@@ -12,7 +12,8 @@ RUN apk update && \
 # Install root and app dependencies
 COPY . /app
 RUN cd /app/${app_name} && \
-  make resolve
+  make resolve && \
+  make verify
 
 
 # Set env variables
