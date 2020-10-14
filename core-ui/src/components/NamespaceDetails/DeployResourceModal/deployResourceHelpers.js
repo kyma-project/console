@@ -8,8 +8,7 @@ function validateFile(file) {
   if (!file.size) {
     return 'File cannot be empty';
   }
-
-  const allowedExtensionRegex = /\.(ya?ml|json)$/;
+  const allowedExtensionRegex = /\.(ya?ml|json)$/i;
   if (!allowedExtensionRegex.test(file.name)) {
     return 'Invalid file extension';
   }
