@@ -65,20 +65,17 @@ const LimitRanges = ({ limitRanges, namespace }) => {
   const notificationManager = useNotification();
   const editedLimitRange = useRef(null);
 
-  function onUpdateError({ message }) {
-    console.error('error');
+  function onUpdateError() {
     notificationManager.notifyError({
-      content: formatMessage('failed', {
-        error: message,
-      }),
+      content: 'Failed to update the LimitRange',
     });
   }
 
   const [updateLimitRange] = useMutation(UPDATE_LIMIT_RANGE, {
     onError: onUpdateError,
-    onCompleted: _ =>
+    onCompleted: ({ updateLimitRange }) =>
       notificationManager.notifySuccess({
-        content: formatMessage('success', 'abc'),
+        content: formatMessage('Succesfully updated', updateLimitRange.name),
       }),
     refetchQueries: [{ query: GET_NAMESPACE, variables: { name: namespace } }],
   });
@@ -87,9 +84,12 @@ const LimitRanges = ({ limitRanges, namespace }) => {
     let json;
 
     try {
-      json = jsyaml.load(newYAML);
+      json = jsyaml.safeLoad(newYAML);
+      if (json.metadata?.resourceVersion) delete json.metadata.resourceVersion; // TODO: do this on the backend side
     } catch (e) {
-      onUpdateError({ message: 'failed to parse' });
+      console.error(e);
+      onUpdateError();
+      return;
     }
 
     updateLimitRange({

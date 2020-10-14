@@ -6,7 +6,7 @@
   background: #fff;
   position: fixed;
   transition: all ease-in-out 0.4s;
-  z-index: 1000;
+  z-index: 1100;
   cursor: pointer;
   border-radius: 3px;
   border-left: none;
@@ -96,7 +96,7 @@
 .message-toast--wrapper {
   position: fixed;
   transition: all ease-in-out 0.4s;
-  z-index: 1000;
+  z-index: 1100;
   cursor: pointer;
   left: -1000px;
   bottom: 50px;
@@ -106,7 +106,7 @@
     transform: translateX(-50%);
   }
 
-  .fd-message-toast{
+  .fd-message-toast {
     line-height: 1.42857;
     font-weight: 400;
     -webkit-font-smoothing: antialiased;
@@ -120,25 +120,43 @@
     display: inline-flex;
     width: auto;
     max-width: 20rem;
-    -webkit-box-shadow: 0 0 0 .0625rem rgba(0,0,0,.42),0 .625rem 1.875rem 0 rgba(0,0,0,.3);
-    -webkit-box-shadow: var(--sapContent_Shadow2,0 0 0 .0625rem rgba(0,0,0,.42),0 .625rem 1.875rem 0 rgba(0,0,0,.3));
-    box-shadow: 0 0 0 .0625rem rgba(0,0,0,.42),0 .625rem 1.875rem 0 rgba(0,0,0,.3);
-    box-shadow: var(--sapContent_Shadow2,0 0 0 .0625rem rgba(0,0,0,.42),0 .625rem 1.875rem 0 rgba(0,0,0,.3));
-    border-radius: .25rem;
-    border-radius: var(--sapElement_BorderCornerRadius,.25rem);
+    -webkit-box-shadow: 0 0 0 0.0625rem rgba(0, 0, 0, 0.42),
+      0 0.625rem 1.875rem 0 rgba(0, 0, 0, 0.3);
+    -webkit-box-shadow: var(
+      --sapContent_Shadow2,
+      0 0 0 0.0625rem rgba(0, 0, 0, 0.42),
+      0 0.625rem 1.875rem 0 rgba(0, 0, 0, 0.3)
+    );
+    box-shadow: 0 0 0 0.0625rem rgba(0, 0, 0, 0.42),
+      0 0.625rem 1.875rem 0 rgba(0, 0, 0, 0.3);
+    box-shadow: var(
+      --sapContent_Shadow2,
+      0 0 0 0.0625rem rgba(0, 0, 0, 0.42),
+      0 0.625rem 1.875rem 0 rgba(0, 0, 0, 0.3)
+    );
+    border-radius: 0.25rem;
+    border-radius: var(--sapElement_BorderCornerRadius, 0.25rem);
     padding: 1rem;
-    font-family: "72","72full",Arial,Helvetica,sans-serif;
-    font-family: var(--sapFontFamily,"72","72full",Arial,Helvetica,sans-serif);
+    font-family: '72', '72full', Arial, Helvetica, sans-serif;
+    font-family: var(
+      --sapFontFamily,
+      '72',
+      '72full',
+      Arial,
+      Helvetica,
+      sans-serif
+    );
     font-size: 12px;
     background-color: var(--fd-color-shell-1);
     color: var(--fd-color-text-5);
     word-break: break-word;
     text-align: center;
-    
-    &:after,&:before{
-      -webkit-box-sizing:inherit;
-      box-sizing:inherit;
-      font-size:inherit;
+
+    &:after,
+    &:before {
+      -webkit-box-sizing: inherit;
+      box-sizing: inherit;
+      font-size: inherit;
     }
   }
 }

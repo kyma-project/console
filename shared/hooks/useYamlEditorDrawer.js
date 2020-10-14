@@ -47,15 +47,20 @@ export const useYamlEditorDrawer = onSave => {
   }, [isOpen]);
 
   const bottomContent = (
-    <Button
-      className="fd-has-margin-right-small"
-      glyph="accept"
-      type="positive"
-      option="emphasized"
-      onClick={() => onSave(changedYaml.current)}
-    >
-      Save
-    </Button>
+    <>
+      <Button
+        className="fd-has-margin-right-small"
+        glyph="accept"
+        type="positive"
+        option="emphasized"
+        onClick={() => onSave(changedYaml.current)}
+      >
+        Save
+      </Button>
+      <Button glyph="cancel" type="negative" onClick={() => setOpen(!isOpen)}>
+        Cancel
+      </Button>
+    </>
   );
 
   const drawerComponent = (

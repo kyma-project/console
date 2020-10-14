@@ -28,14 +28,7 @@ export const SideDrawer = ({
 
       <section className="content">
         {children}
-        <div className="bottom">
-          {bottomContent}
-          {hideDefaultButton && (
-            <Button option="emphasized" onClick={() => setOpen(!isOpen)}>
-              Close
-            </Button>
-          )}
-        </div>
+        <div className="bottom">{bottomContent}</div>
       </section>
     </div>
   );
