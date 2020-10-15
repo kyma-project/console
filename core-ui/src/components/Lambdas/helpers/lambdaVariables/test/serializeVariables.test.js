@@ -1,4 +1,4 @@
-import { lambdaMock, serviceBindingUsageMock } from '../../testing/mockData';
+import { lambdaMock, serviceBindingUsageMock } from '../../testing';
 import {
   serializeVariables,
   retrieveVariablesFromBindingUsage,
@@ -8,7 +8,10 @@ import { VARIABLE_TYPE, VARIABLE_VALIDATION } from '../constants';
 describe('retrieveVariablesFromBindingUsage', () => {
   test('should correct retrieve variables from bindingUsage', () => {
     const envs = retrieveVariablesFromBindingUsage(serviceBindingUsageMock);
-    const expectedEnvs = ['PREFIX_FOO', 'PREFIX_BAR'];
+    const expectedEnvs = [
+      { key: 'PREFIX_FOO', value: 'foo' },
+      { key: 'PREFIX_BAR', value: 'bar' },
+    ];
 
     expect(envs).toEqual(expectedEnvs);
   });
@@ -56,14 +59,14 @@ describe('serializeVariables', () => {
       {
         type: VARIABLE_TYPE.BINDING_USAGE,
         name: 'PREFIX_FOO',
-        value: '',
+        value: 'foo',
         validation: VARIABLE_VALIDATION.NONE,
         serviceInstanceName: 'serviceInstanceName',
       },
       {
         type: VARIABLE_TYPE.BINDING_USAGE,
         name: 'PREFIX_BAR',
-        value: '',
+        value: 'bar',
         validation: VARIABLE_VALIDATION.NONE,
         serviceInstanceName: 'serviceInstanceName',
       },
@@ -92,14 +95,14 @@ describe('serializeVariables', () => {
       {
         type: VARIABLE_TYPE.BINDING_USAGE,
         name: 'PREFIX_FOO',
-        value: '',
+        value: 'foo',
         validation: VARIABLE_VALIDATION.CAN_OVERRIDE_BY_CUSTOM_ENV,
         serviceInstanceName: 'serviceInstanceName',
       },
       {
         type: VARIABLE_TYPE.BINDING_USAGE,
         name: 'PREFIX_BAR',
-        value: '',
+        value: 'bar',
         validation: VARIABLE_VALIDATION.NONE,
         serviceInstanceName: 'serviceInstanceName',
       },
@@ -122,28 +125,28 @@ describe('serializeVariables', () => {
       {
         type: VARIABLE_TYPE.BINDING_USAGE,
         name: 'PREFIX_FOO',
-        value: '',
+        value: 'foo',
         validation: VARIABLE_VALIDATION.CAN_OVERRIDE_BY_SBU,
         serviceInstanceName: 'serviceInstanceName',
       },
       {
         type: VARIABLE_TYPE.BINDING_USAGE,
         name: 'PREFIX_BAR',
-        value: '',
+        value: 'bar',
         validation: VARIABLE_VALIDATION.CAN_OVERRIDE_BY_SBU,
         serviceInstanceName: 'serviceInstanceName',
       },
       {
         type: VARIABLE_TYPE.BINDING_USAGE,
         name: 'PREFIX_FOO',
-        value: '',
+        value: 'foo',
         validation: VARIABLE_VALIDATION.CAN_OVERRIDE_BY_SBU,
         serviceInstanceName: 'serviceInstanceName',
       },
       {
         type: VARIABLE_TYPE.BINDING_USAGE,
         name: 'PREFIX_BAR',
-        value: '',
+        value: 'bar',
         validation: VARIABLE_VALIDATION.CAN_OVERRIDE_BY_SBU,
         serviceInstanceName: 'serviceInstanceName',
       },
@@ -174,28 +177,28 @@ describe('serializeVariables', () => {
       {
         type: VARIABLE_TYPE.BINDING_USAGE,
         name: 'PREFIX_FOO',
-        value: '',
+        value: 'foo',
         validation: VARIABLE_VALIDATION.CAN_OVERRIDE_BY_CUSTOM_ENV_AND_SBU,
         serviceInstanceName: 'serviceInstanceName',
       },
       {
         type: VARIABLE_TYPE.BINDING_USAGE,
         name: 'PREFIX_BAR',
-        value: '',
+        value: 'bar',
         validation: VARIABLE_VALIDATION.CAN_OVERRIDE_BY_SBU,
         serviceInstanceName: 'serviceInstanceName',
       },
       {
         type: VARIABLE_TYPE.BINDING_USAGE,
         name: 'PREFIX_FOO',
-        value: '',
+        value: 'foo',
         validation: VARIABLE_VALIDATION.CAN_OVERRIDE_BY_CUSTOM_ENV_AND_SBU,
         serviceInstanceName: 'serviceInstanceName',
       },
       {
         type: VARIABLE_TYPE.BINDING_USAGE,
         name: 'PREFIX_BAR',
-        value: '',
+        value: 'bar',
         validation: VARIABLE_VALIDATION.CAN_OVERRIDE_BY_SBU,
         serviceInstanceName: 'serviceInstanceName',
       },

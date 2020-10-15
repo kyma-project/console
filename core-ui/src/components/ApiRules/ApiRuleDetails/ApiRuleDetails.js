@@ -2,25 +2,20 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useQuery } from '@apollo/react-hooks';
 import LuigiClient from '@luigi-project/client';
-import { ControlledEditor } from '@monaco-editor/react';
-import jsyaml from 'js-yaml';
 import { Button } from 'fundamental-react';
-
-import { GET_API_RULE } from '../../../gql/queries';
 import { Spinner, PageHeader, useSideDrawer } from 'react-shared';
-import EntryNotFound from 'components/EntryNotFound/EntryNotFound';
 
-import AccessStrategies from '../AccessStrategies/AccessStrategies';
-import ApiRuleStatus from '../ApiRuleStatus/ApiRuleStatus';
 import {
   CopiableApiRuleHost,
   ApiRuleServiceInfo,
 } from 'components/ApiRules/ApiRulesList/components';
-
+import EntryNotFound from 'components/EntryNotFound/EntryNotFound';
+import { GET_API_RULE } from '../../../gql/queries';
 import { useDeleteApiRule } from '../gql/useDeleteApiRule';
+import AccessStrategies from '../AccessStrategies/AccessStrategies';
+import ApiRuleStatus from '../ApiRuleStatus/ApiRuleStatus';
 
 const ApiRuleDetails = ({ apiName }) => {
-  const [drawer, setDrawerContent] = useSideDrawer(null, null, true, null);
   const { error, loading, data } = useQuery(GET_API_RULE, {
     variables: {
       namespace: LuigiClient.getContext().namespaceId,
@@ -43,11 +38,7 @@ const ApiRuleDetails = ({ apiName }) => {
 
   return (
     <>
-      {drawer}
-      <ApiRuleDetailsHeader
-        apiRule={data.APIRule}
-        setDrawerContent={setDrawerContent}
-      />
+      <ApiRuleDetailsHeader apiRule={data.APIRule} />
       <AccessStrategies strategies={data.APIRule?.spec?.rules || []} />
     </>
   );
@@ -99,25 +90,13 @@ function navigateToEditView(apiRuleName) {
 
 const breadcrumbItems = [{ name: 'API Rules', path: '/' }, { name: '' }];
 
-const YamlContent = json => {
-  const yaml = jsyaml.safeDump(json);
-
-  return (
-    <>
-      <h1 className="fd-has-type-4">YAML</h1>
-      <ControlledEditor
-        height="90vh"
-        width="50em"
-        language={'yaml'}
-        theme="vs-light"
-        value={yaml}
-        options={{ readOnly: true }}
-      />
-    </>
+function ApiRuleDetailsHeader({ apiRule }) {
+  const [drawerEditor, , setOpen] = useSideDrawer(
+    true,
+    apiRule.json,
+    null,
+    null,
   );
-};
-
-function ApiRuleDetailsHeader({ apiRule, setDrawerContent }) {
   const name = apiRule.name;
   const { openedInModal = false } = LuigiClient.getNodeParams() || {};
   const openedInModalBool = openedInModal.toString().toLowerCase() === 'true';
@@ -132,8 +111,9 @@ function ApiRuleDetailsHeader({ apiRule, setDrawerContent }) {
             {apiRule.json && (
               <Button
                 option="light"
+                onClick={_ => setOpen(true)}
                 glyph="attachment-html"
-                onClick={_ => setDrawerContent(YamlContent(apiRule.json))}
+                data-testid="yaml-button"
               >
                 YAML
               </Button>
@@ -144,6 +124,7 @@ function ApiRuleDetailsHeader({ apiRule, setDrawerContent }) {
         )
       }
     >
+      {drawerEditor}
       <PageHeader.Column title="Service">
         <ApiRuleServiceInfo apiRule={apiRule} />
       </PageHeader.Column>

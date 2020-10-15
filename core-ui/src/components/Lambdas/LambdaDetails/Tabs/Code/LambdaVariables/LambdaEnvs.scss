@@ -22,6 +22,17 @@
       max-width: 20%;
     }
   }
+
+  .blur-variable {
+    display: inline-block;
+    color: transparent;
+    text-shadow: 0 0 10px #000;
+    transition: color .1s;
+  }
+
+  .lambda-variable {
+  display: inline-block;
+  }
 }
 
 .edit-lambda-variables-form {

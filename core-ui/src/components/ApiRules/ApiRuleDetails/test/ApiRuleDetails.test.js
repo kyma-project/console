@@ -48,6 +48,7 @@ const apiRule = {
       desc: '',
     },
   },
+  json: {},
 };
 const apiRuleWithShortHost = {
   name: 'tets2',
@@ -248,8 +249,8 @@ describe('ApiRuleDetails', () => {
     expect(queryAllByLabelText('breadcrumb-item')).toMatchSnapshot();
   });
 
-  it('renders delete and edit buttons', async () => {
-    const { container, queryByText } = render(
+  it('renders delete, edit and YAML buttons', async () => {
+    const { container, queryByText, queryByTestId } = render(
       <MockedProvider
         addTypename={false}
         mocks={[validResponseMock, gqlDeleteRequest]}
@@ -261,5 +262,6 @@ describe('ApiRuleDetails', () => {
     await waitForDomChange(container);
     expect(queryByText('Delete')).toBeInTheDocument();
     expect(queryByText('Edit')).toBeInTheDocument();
+    expect(queryByTestId('yaml-button')).toBeInTheDocument();
   });
 });

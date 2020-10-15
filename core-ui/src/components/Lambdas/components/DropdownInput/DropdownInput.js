@@ -9,6 +9,7 @@ export const DropdownInput = ({
   id,
   disabled = false,
   label = '',
+  name = '',
   inlineHelp = undefined,
   defaultValue = '',
   onChange = () => void 0,
@@ -21,16 +22,19 @@ export const DropdownInput = ({
 
   return (
     <FormItem className="dropdown-input" key={id}>
-      <FormLabel htmlFor={id} className="dropdown-input__label">
-        {label}
-        {inlineHelp && (
-          <InlineHelp placement="bottom-right" text={inlineHelp} />
-        )}
-      </FormLabel>
+      {label && (
+        <FormLabel htmlFor={id} className="dropdown-input__label">
+          {label}
+          {inlineHelp && (
+            <InlineHelp placement="bottom-right" text={inlineHelp} />
+          )}
+        </FormLabel>
+      )}
       <FormSelect
         ref={_ref}
         disabled={disabled}
         id={id}
+        name={name}
         role="select"
         defaultValue={df}
         onChange={onChange}

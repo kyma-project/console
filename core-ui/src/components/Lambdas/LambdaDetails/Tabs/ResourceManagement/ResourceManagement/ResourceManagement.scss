@@ -1,4 +1,16 @@
 .lambda-resources-management {
+  box-shadow: none;
+  -webkit-box-shadow: none;
+
+  > form {
+    background: #f3f4f5;
+  }
+
+  > form > .fd-panel__header {
+    background: #fff;
+    border-radius: 4px;
+  }
+
   .has-padding-none {
     padding: 0;
   }
@@ -13,6 +25,22 @@
 
   .has-none-border-bottom {
     border-bottom: none;
+  }
+
+  .fd-tabs {
+    border-bottom: 1px solid #eeeeef;
+  }
+
+  .presets {
+    margin-bottom: 16px;
+  }
+
+  .has-no-margin-bottom {
+    margin-bottom: 0;
+  }
+
+  .hidden-panel {
+    display: none;
   }
 
   .is-block {
@@ -64,5 +92,12 @@
         color: #ee0000;
       }
     }
+  }
+
+  &__panel {
+    margin-top: 16px;
+    background: #ffffff;
+    border-radius: 4px;
+    box-shadow: 0 5px 20px 0 var(--fd-panel-box-shadow-color,var(--fd-color-neutral-2,#eeeeef))
   }
 }

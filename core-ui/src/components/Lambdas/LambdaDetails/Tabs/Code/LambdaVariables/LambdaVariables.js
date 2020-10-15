@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { Icon, Badge } from 'fundamental-react';
 import { GenericList, Tooltip } from 'react-shared';
@@ -86,6 +86,39 @@ function VariableType({ variable }) {
   );
 }
 
+function VariableValue({ variable }) {
+  const isBindingUsageVar = variable.type === VARIABLE_TYPE.BINDING_USAGE;
+  const [show, setShow] = useState(false);
+  const value = <span>{variable.value || '-'}</span>;
+
+  if (isBindingUsageVar) {
+    const blurVariable = (
+      <div
+        className={!show ? 'blur-variable' : ''}
+        onClick={_ => setShow(!show)}
+      >
+        {value}
+      </div>
+    );
+    return (
+      <div className="lambda-variable">
+        <Tooltip
+          content={
+            show
+              ? ENVIRONMENT_VARIABLES_PANEL.VARIABLE_TYPE.BINDING_USAGE
+                  .HIDE_VALUE_MESSAGE
+              : ENVIRONMENT_VARIABLES_PANEL.VARIABLE_TYPE.BINDING_USAGE
+                  .SHOW_VALUE_MESSAGE
+          }
+        >
+          {blurVariable}
+        </Tooltip>
+      </div>
+    );
+  }
+  return value;
+}
+
 export default function LambdaEnvs({
   lambda,
   customVariables,
@@ -95,7 +128,7 @@ export default function LambdaEnvs({
   const rowRenderer = variable => [
     <span>{variable.name}</span>,
     <span className="sap-icon--arrow-right" />,
-    <span>{variable.value || '-'}</span>,
+    <VariableValue variable={variable} />,
     <VariableType variable={variable} />,
     <VariableStatus validation={variable.validation} />,
   ];

@@ -11,4 +11,10 @@
       left: 3px;
     }
   }
+
+  select:disabled {
+    color: black;
+    opacity: 0.5;
+    border-color: #a3a3a3;
+  }
 }

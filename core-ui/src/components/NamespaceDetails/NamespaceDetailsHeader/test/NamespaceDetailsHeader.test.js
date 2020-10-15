@@ -10,6 +10,14 @@ jest.mock('@luigi-project/client', () => ({
   linkManager: () => ({ navigate: mockNavigate }),
 }));
 
+const mockFromConfig = jest.fn();
+jest.mock('react-shared', () => ({
+  ...jest.requireActual('react-shared'),
+  useConfig: () => ({
+    fromConfig: mockFromConfig,
+  }),
+}));
+
 describe('NamespaceDetailsHeader', () => {
   it('Renders with minimal props', async () => {
     const { queryByText, getByText } = render(

@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
+
 import { SideDrawer } from '../components/SideDrawer/SideDrawer';
 
 export const useSideDrawer = (
+  withYamlEditor,
   initialContent,
   bottomContent,
-  hideDefaultButton = false,
   buttonText = 'YAML code',
   isOpenInitially = false,
-  onClose,
 ) => {
   const [content, setContent] = useState(initialContent);
   const [isOpen, setOpen] = useState(isOpenInitially);
@@ -19,16 +20,23 @@ export const useSideDrawer = (
 
   const drawerComponent = content ? (
     <SideDrawer
-      onClose={typeof onClose === 'function' ? onClose : _ => {}}
+      withYamlEditor={withYamlEditor}
       isOpen={isOpen}
       setOpen={setOpen}
       buttonText={buttonText}
       bottomContent={bottomContent}
-      hideDefaultButton={hideDefaultButton}
     >
       {content}
     </SideDrawer>
   ) : null;
 
-  return [drawerComponent, setContent];
+  return [drawerComponent, setContent, setOpen];
+};
+
+useSideDrawer.propTypes = {
+  initialContent: PropTypes.any,
+  bottomContent: PropTypes.any,
+  withYamlEditor: PropTypes.bool,
+  buttonText: PropTypes.string,
+  isOpenInitially: PropTypes.bool,
 };

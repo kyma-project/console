@@ -80,6 +80,10 @@ export function prepareCreateLambdaInput(name, runtime = 'nodejs12') {
       requests: {},
       limits: {},
     },
+    buildResources: {
+      requests: {},
+      limits: {},
+    },
     replicas: {},
     env: [],
   };

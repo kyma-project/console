@@ -88,19 +88,6 @@ context('Console Smoke Tests', () => {
     });
   }
 
-  if (config.loggingEnabled) {
-    it('Renders logging', () => {
-      cy.contains('Diagnostics')
-        .click()
-        .get('body')
-        .contains('Logs')
-        .click()
-        .getIframeBody()
-        .contains('Logs')
-        .should('exist');
-    });
-  }
-
   if (config.serviceCatalogEnabled) {
     it('Renders service catalog', () => {
       cy.getIframeBody()
@@ -148,30 +135,19 @@ context('Console Smoke Tests', () => {
     });
   }
 
-  if (config.loggingEnabled) {
-    it('Renders logs', () => {
-      cy.contains('Diagnostics')
+  if (config.docsEnabled) {
+    it('Renders docs', () => {
+      cy.get('[data-testid="mobile-menu"]')
         .click()
         .get('body')
-        .contains('Logs')
-        .click()
+        .get('a[data-testid="docs_docs"]')
+        .click({ force: true }) // force, as contaier may still be `visibility: hidden`
         .getIframeBody()
-        .contains('Logs')
-        .should('exist');
+        .contains('Kyma')
+        .should('exist') // check title
+        .getIframeBody()
+        .contains('In a nutshell')
+        .should('exist'); // check docs rendering
     });
   }
-
-  it('Renders docs', () => {
-    cy.get('[data-testid="mobile-menu"]')
-      .click()
-      .get('body')
-      .get('a[data-testid="docs_docs"]')
-      .click({ force: true }) // force, as contaier may still be `visibility: hidden`
-      .getIframeBody()
-      .contains('Kyma')
-      .should('exist') // check title
-      .getIframeBody()
-      .contains('In a nutshell')
-      .should('exist'); // check docs rendering
-  });
 });

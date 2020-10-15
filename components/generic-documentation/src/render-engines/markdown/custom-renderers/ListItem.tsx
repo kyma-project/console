@@ -32,7 +32,7 @@ export const ListItem: React.FunctionComponent<ListItemProps> = ({
         }
       }
       return child;
-    }).filter(child => child);
+    }).filter((child: any) => child);
   }
 
   return (
