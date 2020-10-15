@@ -1,15 +1,10 @@
-FROM node:12.16.0-alpine3.9 as builder
+FROM eu.gcr.io/kyma-project/prow/test-infra/buildpack-node-chromium:v20181207-d46c013 as builder
 ARG app_name=core
 WORKDIR /app
 
 # Set env variables
 ENV PRODUCTION true
 ENV CI true
-
-# Install global dependencies
-RUN apk update && \
-  apk upgrade && \
-  apk add --no-cache make chromium
 
 COPY . /app
 
