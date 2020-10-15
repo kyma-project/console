@@ -6,6 +6,11 @@ WORKDIR /app
 ENV PRODUCTION true
 ENV CI true
 
+# Install global dependencies
+RUN apk update && \
+  apk upgrade && \
+  apk add --no-cache make
+
 COPY . /app
 
 RUN cd /app/${app_name} && \
