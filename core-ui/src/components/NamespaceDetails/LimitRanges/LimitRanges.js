@@ -1,9 +1,5 @@
 import React, { useRef } from 'react';
-import {
-  GenericList,
-  useYamlEditorDrawer,
-  useNotification,
-} from 'react-shared';
+import { GenericList, useYamlEditor, useNotification } from 'react-shared';
 import { Icon } from 'fundamental-react';
 import jsyaml from 'js-yaml';
 import { useMutation } from '@apollo/react-hooks';
@@ -65,6 +61,7 @@ const rowRenderer = limitRange => {
 const LimitRanges = ({ limitRanges, namespace }) => {
   const notificationManager = useNotification();
   const editedLimitRange = useRef(null);
+  const setEditedJson = useYamlEditor();
 
   function onUpdateError() {
     notificationManager.notifyError({
@@ -98,32 +95,27 @@ const LimitRanges = ({ limitRanges, namespace }) => {
     });
   }
 
-  const [drawer, setDrawerContent] = useYamlEditorDrawer(handleSaveClick);
-
   const actions = [
     {
       name: <Icon glyph="edit" />,
       handler: limitRange => {
         editedLimitRange.current = limitRange;
-        setDrawerContent(limitRange.json);
+        setEditedJson(limitRange.json, handleSaveClick);
       },
     },
   ];
 
   return (
-    <>
-      {drawer}
-      <GenericList
-        hasExternalMargin={false}
-        title="Limit ranges"
-        notFoundMessage="No limit ranges"
-        entries={limitRanges}
-        headerRenderer={headerRenderer}
-        rowRenderer={rowRenderer}
-        actions={actions}
-        className="namespace-limits"
-      />
-    </>
+    <GenericList
+      hasExternalMargin={false}
+      title="Limit ranges"
+      notFoundMessage="No limit ranges"
+      entries={limitRanges}
+      headerRenderer={headerRenderer}
+      rowRenderer={rowRenderer}
+      actions={actions}
+      className="namespace-limits"
+    />
   );
 };
 export default LimitRanges;

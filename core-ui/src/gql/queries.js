@@ -28,8 +28,12 @@ export const GET_NAMESPACE = gql`
       json
       spec {
         hard {
-          memory
-          cpu
+          limits {
+            memory
+          }
+          requests {
+            memory
+          }
           pods
         }
       }

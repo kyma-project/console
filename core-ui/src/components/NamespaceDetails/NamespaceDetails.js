@@ -5,7 +5,7 @@ import './NamespaceDetails.scss';
 import { useQuery } from '@apollo/react-hooks';
 import { GET_NAMESPACE } from 'gql/queries';
 
-import { ResourceNotFound } from 'react-shared';
+import { ResourceNotFound, YamlEditorProvider } from 'react-shared';
 import NamespaceDetailsHeader from './NamespaceDetailsHeader/NamespaceDetailsHeader';
 import NamespaceWorkloads from './NamespaceWorkloads/NamespaceWorkloads';
 import NamespaceApplications from './NamespaceApplications/NamespaceApplications';
@@ -37,7 +37,7 @@ export default function NamespaceDetails({ name }) {
   }
 
   return (
-    <>
+    <YamlEditorProvider>
       <NamespaceDetailsHeader namespace={namespace} />
       <section id="ns-details-grid">
         <NamespaceWorkloads namespace={namespace} />
@@ -45,6 +45,6 @@ export default function NamespaceDetails({ name }) {
         <ResourceQuotas resourceQuotas={resourceQuotas} />
         <LimitRanges limitRanges={limitRanges} namespace={namespace.name} />
       </section>
-    </>
+    </YamlEditorProvider>
   );
 }

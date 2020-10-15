@@ -2,53 +2,21 @@ import React from 'react';
 import { GenericList } from 'react-shared';
 import { Icon } from 'fundamental-react';
 
-const isNotEmpty = variable => variable && variable !== '0';
-
 const headerRenderer = _ => [
   'Name',
-  'Type',
-  'Max',
-  'Default',
-  'Default request ',
+  'Pods',
+  'Limits memory',
+  'Requests memory',
 ];
 
-const getCPUandMemoryInfo = (cpuInfo, memoryInfo, keyPrefix) => {
-  let output = [
-    isNotEmpty(cpuInfo) && (
-      <React.Fragment key={keyPrefix + 'cpu'}>
-        {cpuInfo} {<Icon glyph="simulate" />}
-      </React.Fragment>
-    ),
-    isNotEmpty(cpuInfo) && isNotEmpty(memoryInfo) && (
-      <React.Fragment key={keyPrefix + 'delim'}> | </React.Fragment>
-    ),
-    isNotEmpty(memoryInfo) && (
-      <React.Fragment key={keyPrefix + 'mem'}>
-        {memoryInfo} {<Icon glyph="course-book" />}
-      </React.Fragment>
-    ),
-  ];
-
-  return output.filter(o => o);
-};
-
-const rowRenderer = limitRange => {
-  const limit = limitRange.spec.limits[0];
+const rowRenderer = resourceQuota => {
+  const quota = resourceQuota.spec.hard;
 
   return [
-    limitRange.name,
-    limit.limitType,
-    getCPUandMemoryInfo(limit.max.cpu, limit.max.memory, limitRange.name),
-    getCPUandMemoryInfo(
-      limit.default.cpu,
-      limit.default.memory,
-      limitRange.name,
-    ),
-    getCPUandMemoryInfo(
-      limit.defaultRequest.cpu,
-      limit.defaultRequest.memory,
-      limitRange.name,
-    ),
+    resourceQuota.name,
+    quota.pods,
+    quota.limits.memory,
+    quota.requests.memory,
   ];
 };
 
@@ -58,9 +26,9 @@ const ResourceQuotas = ({ resourceQuotas }) => {
   return (
     <GenericList
       hasExternalMargin={false}
-      title="Limit ranges"
-      notFoundMessage="No limit ranges"
-      entries={[]}
+      title="Resource quotas"
+      notFoundMessage="No resource quotas"
+      entries={resourceQuotas}
       headerRenderer={headerRenderer}
       rowRenderer={rowRenderer}
       actions={actions}

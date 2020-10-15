@@ -1,9 +1,19 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useRef,
+  useEffect,
+} from 'react';
 import { SideDrawer } from '../components/SideDrawer/SideDrawer';
 import { Button } from 'fundamental-react';
 import jsyaml from 'js-yaml';
 import { ControlledEditor } from '@monaco-editor/react';
 import LuigiClient from '@luigi-project/client';
+
+export const YamlEditorContext = createContext({
+  setEditedJson: _ => {},
+});
 
 const YamlContent = ({ json, changedYamlRef }) => {
   const [val, setVal] = useState(jsyaml.safeDump(json));
@@ -32,19 +42,25 @@ const YamlContent = ({ json, changedYamlRef }) => {
   );
 };
 
-export const useYamlEditorDrawer = onSave => {
-  const [editedJson, setEditedJson] = useState(null);
+export const YamlEditorProvider = ({ children }) => {
+  const [json, setJson] = useState(null);
   const [isOpen, setOpen] = useState(false);
   const changedYaml = useRef(null);
+  const onSave = useRef(_ => {});
 
   useEffect(() => {
     LuigiClient.uxManager().setDirtyStatus(false);
-    editedJson && setOpen(true);
-  }, [editedJson]);
+    json && setOpen(true);
+  }, [json]);
 
   useEffect(() => {
-    if (!isOpen) setEditedJson(null);
+    if (!isOpen) setJson(null);
   }, [isOpen]);
+
+  function setEditedJson(newJson, onSaveHandler) {
+    onSave.current = onSaveHandler;
+    setJson(newJson);
+  }
 
   const bottomContent = (
     <>
@@ -53,7 +69,7 @@ export const useYamlEditorDrawer = onSave => {
         glyph="accept"
         type="positive"
         option="emphasized"
-        onClick={() => onSave(changedYaml.current)}
+        onClick={() => onSave.current(changedYaml.current)}
       >
         Save
       </Button>
@@ -71,9 +87,18 @@ export const useYamlEditorDrawer = onSave => {
       bottomContent={bottomContent}
       hideDefaultButton={true}
     >
-      <YamlContent json={editedJson} changedYamlRef={changedYaml} />
+      <YamlContent json={json} changedYamlRef={changedYaml} />
     </SideDrawer>
   );
 
-  return [drawerComponent, setEditedJson];
+  return (
+    <YamlEditorContext.Provider value={setEditedJson}>
+      {drawerComponent}
+      {children}
+    </YamlEditorContext.Provider>
+  );
 };
+
+export function useYamlEditor() {
+  return useContext(YamlEditorContext);
+}
