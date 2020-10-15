@@ -12,7 +12,7 @@ RUN cd /app/${app_name} && \
   make resolve && \
   make verify && \
   make pull-licenses && \
-  make build
+  make build 
 
 ### Main image ###
 FROM alpine:3.12

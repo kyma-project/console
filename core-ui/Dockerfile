@@ -13,7 +13,7 @@ RUN apk update && \
 COPY . /app
 RUN cd /app/${app_name} && \
   make resolve && \
-  make verify
+  make verify 
 
 
 # Set env variables
