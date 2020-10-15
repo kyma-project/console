@@ -57,13 +57,6 @@ import { ClickOutsideModule } from 'ng-click-outside';
 import { AbstractKubernetesElementListComponent } from './content/namespaces/operation/abstract-kubernetes-element-list.component';
 import { ServiceBrokerHeaderRendererComponent } from './content/settings/service-brokers/services-header-renderer/service-broker-header-renderer.component';
 import { ServiceBrokerEntryRendererComponent } from './content/settings/service-brokers/services-entry-renderer/service-broker-entry-renderer.component';
-import { ResourcesComponent } from './content/namespaces/configuration/resources/resources.component';
-import { ResourceQuotasComponent } from './content/namespaces/configuration/resources/resource-quotas/resource-quotas.component';
-import { ResourceQuotaEntryRendererComponent } from './content/namespaces/configuration/resources/resource-quotas/resource-quota-entry-renderer/resource-quota-entry-renderer.component';
-import { ResourceQuotaHeaderRendererComponent } from './content/namespaces/configuration/resources/resource-quotas/resource-quota-header-renderer/resource-quota-header-renderer.component';
-import { LimitRangesComponent } from './content/namespaces/configuration/resources/limit-ranges/limit-ranges.component';
-import { LimitRangeEntryRendererComponent } from './content/namespaces/configuration/resources/limit-ranges/limit-range-entry-renderer/limit-range-entry-renderer.component';
-import { LimitRangeHeaderRendererComponent } from './content/namespaces/configuration/resources/limit-ranges/limit-range-header-renderer/limit-range-header-renderer.component';
 import { Copy2ClipboardModalComponent } from './shared/components/copy2clipboard-modal/copy2clipboard-modal.component';
 import { CreateApplicationModalComponent } from './content/settings/applications/create-application-modal/create-application-modal.component';
 import { EditApplicationModalComponent } from './content/settings/applications/edit-application-modal/edit-application-modal.component';
@@ -132,13 +125,7 @@ import { WindowTitleService } from 'shared/services/window-title.service';
     AbstractGraphqlElementListComponent,
     ServiceBrokerEntryRendererComponent,
     ServiceBrokerHeaderRendererComponent,
-    ResourcesComponent,
-    ResourceQuotasComponent,
-    ResourceQuotaEntryRendererComponent,
-    ResourceQuotaHeaderRendererComponent,
-    LimitRangesComponent,
-    LimitRangeEntryRendererComponent,
-    LimitRangeHeaderRendererComponent,
+
     CreateApplicationModalComponent,
     EditApplicationModalComponent,
     LabelsInputComponent,
@@ -146,7 +133,7 @@ import { WindowTitleService } from 'shared/services/window-title.service';
     TooltipComponent,
     LuigiClientCommunicationDirective,
     FilterAllOnSelectedDirective,
-    UrlLinkComponent,
+    UrlLinkComponent
   ],
   imports: [
     BrowserModule,
@@ -176,7 +163,7 @@ import { WindowTitleService } from 'shared/services/window-title.service';
     GraphQLClientService,
     LuigiClientService,
     GenericHelpersService,
-    WindowTitleService,
+    WindowTitleService
   ],
   entryComponents: [
     ReplicaSetsEntryRendererComponent,
@@ -190,11 +177,7 @@ import { WindowTitleService } from 'shared/services/window-title.service';
     ApplicationsHeaderRendererComponent,
     ApplicationsEntryRendererComponent,
     ServiceBrokerHeaderRendererComponent,
-    ServiceBrokerEntryRendererComponent,
-    ResourceQuotaEntryRendererComponent,
-    ResourceQuotaHeaderRendererComponent,
-    LimitRangeEntryRendererComponent,
-    LimitRangeHeaderRendererComponent
+    ServiceBrokerEntryRendererComponent
   ],
   bootstrap: [AppComponent]
 })

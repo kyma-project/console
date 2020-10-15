@@ -91,13 +91,6 @@ export function getStaticChildrenNodesForNamespace(){
     },
     {
       category: 'Configuration',
-      pathSegment: 'resources',
-      navigationContext: 'resources',
-      label: 'Resources',
-      viewUrl: '/consoleapp.html#/home/namespaces/:namespaceId/resources'
-    },
-    {
-      category: 'Configuration',
       pathSegment: 'config-maps',
       navigationContext: 'config-maps',
       label: 'Config Maps',
