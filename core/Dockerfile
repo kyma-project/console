@@ -9,7 +9,7 @@ ENV CI true
 # Install global dependencies
 RUN apk update && \
   apk upgrade && \
-  apk add --no-cache make
+  apk add --no-cache make chromium
 
 COPY . /app
 
