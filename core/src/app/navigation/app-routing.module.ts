@@ -9,7 +9,6 @@ import { PreferencesComponent } from '../content/settings/preferences/preference
 import { ApplicationDetailsComponent } from '../content/settings/applications/application-details/application-details.component';
 import { ApplicationsComponent } from '../content/settings/applications/applications.component';
 import { ServiceBrokersComponent } from '../content/settings/service-brokers/service-brokers.component';
-import { ResourcesComponent } from '../content/namespaces/configuration/resources/resources.component';
 
 import { ConfigMapsComponent } from '../content/namespaces/operation/configmaps/configmaps.component';
 import { StatusLabelComponent } from 'shared/components/status-label/status-label.component';
@@ -37,7 +36,6 @@ const appRoutes: Routes = [
           { path: 'replicaSets', component: ReplicaSetsComponent },
           { path: 'pods', component: PodsComponent },
           { path: 'configmaps', component: ConfigMapsComponent },
-          { path: 'resources', component: ResourcesComponent },
           { path: '', redirectTo: 'details', pathMatch: 'full' },
           { path: '**', redirectTo: 'details', pathMatch: 'full' }
         ]
