@@ -43,10 +43,11 @@ const getCPUandMemoryInfo = (cpuInfo, memoryInfo, keyPrefix) => {
 
 const rowRenderer = limitRange => {
   const limit = limitRange.spec.limits[0];
+  if (!limit) return [limitRange.name, ...Array(4).fill('-')];
 
   return [
     limitRange.name,
-    limit.limitType,
+    limit.type,
     getCPUandMemoryInfo(limit.max.cpu, limit.max.memory, limitRange.name),
     getCPUandMemoryInfo(
       limit.default.cpu,

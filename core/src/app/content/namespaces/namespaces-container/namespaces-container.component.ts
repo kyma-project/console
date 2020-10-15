@@ -64,7 +64,7 @@ export class NamespacesContainerComponent implements OnInit, OnDestroy {
           if (!this.isSmoothNavigationUrlChange(val.url, this.previousUrl)) {
             this.toggleFade();
           }
-          this.checkIfResourceLimitExceeded(val.url);
+          // this.checkIfResourceLimitExceeded(val.url);
         }
         this.previousUrl = val.url;
       }
