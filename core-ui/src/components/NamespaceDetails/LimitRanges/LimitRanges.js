@@ -58,7 +58,7 @@ const rowRenderer = limitRange => {
   ];
 };
 
-const LimitRanges = ({ limitRanges, namespace }) => {
+const LimitRanges = ({ limitRanges, namespaceName: namespace }) => {
   const notificationManager = useNotification();
   const editedLimitRange = useRef(null);
   const setEditedJson = useYamlEditor();
@@ -71,7 +71,7 @@ const LimitRanges = ({ limitRanges, namespace }) => {
 
   const [updateLimitRange] = useMutation(UPDATE_LIMIT_RANGE, {
     onError: onUpdateError,
-    onCompleted: ({ updateLimitRange }) =>
+    onCompleted: ({ updatedLimitRange }) =>
       notificationManager.notifySuccess({
         content: formatMessage('Succesfully updated', updateLimitRange.name),
       }),
@@ -91,7 +91,11 @@ const LimitRanges = ({ limitRanges, namespace }) => {
     }
 
     updateLimitRange({
-      variables: { name: editedLimitRange.current?.name, json, namespace },
+      variables: {
+        name: editedLimitRange.current?.name,
+        json,
+        namespace,
+      },
     });
   }
 

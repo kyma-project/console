@@ -42,8 +42,11 @@ export default function NamespaceDetails({ name }) {
       <section id="ns-details-grid">
         <NamespaceWorkloads namespace={namespace} />
         <NamespaceApplications namespace={namespace} />
-        <ResourceQuotas resourceQuotas={resourceQuotas} />
-        <LimitRanges limitRanges={limitRanges} namespace={namespace.name} />
+        <ResourceQuotas
+          resourceQuotas={resourceQuotas}
+          namespaceName={namespace.name}
+        />
+        <LimitRanges limitRanges={limitRanges} namespaceName={namespace.name} />
       </section>
     </YamlEditorProvider>
   );

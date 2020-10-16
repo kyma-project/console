@@ -1,6 +1,11 @@
-import React from 'react';
-import { GenericList } from 'react-shared';
+import React, { useRef } from 'react';
+import { GenericList, useYamlEditor, useNotification } from 'react-shared';
 import { Icon } from 'fundamental-react';
+import jsyaml from 'js-yaml';
+import { useMutation } from '@apollo/react-hooks';
+import { UPDATE_RESOURCE_QUOTA } from '../../../gql/mutations';
+import { GET_NAMESPACE } from '../../../gql/queries';
+import { formatMessage } from 'components/Lambdas/helpers/misc';
 
 const headerRenderer = _ => [
   'Name',
@@ -20,8 +25,61 @@ const rowRenderer = resourceQuota => {
   ];
 };
 
-const ResourceQuotas = ({ resourceQuotas }) => {
-  const actions = [{ name: <Icon glyph="edit" />, handler: name => {} }];
+const ResourceQuotas = ({ resourceQuotas, namespaceName: namespace }) => {
+  const setEditedJson = useYamlEditor();
+  const notificationManager = useNotification();
+  const editedResourceQuota = useRef(null);
+
+  function onUpdateError() {
+    notificationManager.notifyError({
+      content: 'Failed to update the ResourceQuota',
+    });
+  }
+
+  const [updateResourceQuota] = useMutation(UPDATE_RESOURCE_QUOTA, {
+    onError: onUpdateError,
+    onCompleted: ({ updatedResourceQuota }) =>
+      notificationManager.notifySuccess({
+        content: formatMessage(
+          'Succesfully updated',
+          updatedResourceQuota.name,
+        ),
+      }),
+    refetchQueries: [{ query: GET_NAMESPACE, variables: { name: namespace } }],
+  });
+
+  function handleSaveClick(newYAML) {
+    let json;
+
+    try {
+      json = jsyaml.safeLoad(newYAML);
+      if (json.metadata?.resourceVersion) delete json.metadata.resourceVersion; // TODO: do this on the backend side
+    } catch (e) {
+      console.error(e);
+      onUpdateError();
+      return;
+    }
+
+    updateResourceQuota({
+      variables: {
+        name: editedResourceQuota.current?.name,
+        json,
+        namespace,
+      },
+    });
+  }
+
+  const actions = [
+    {
+      name: <Icon glyph="edit" />,
+      handler: resourceQuota => {
+        editedResourceQuota.current = resourceQuota;
+        setEditedJson(resourceQuota.json, handleSaveClick);
+      },
+    },
+  ];
+
+  // console.log(resourceQuotas);
 
   return (
     <GenericList
