@@ -30,7 +30,8 @@ const ResourceQuotas = ({ resourceQuotas, namespaceName: namespace }) => {
   const notificationManager = useNotification();
   const editedResourceQuota = useRef(null);
 
-  function onUpdateError() {
+  function onUpdateError(e) {
+    console.error(e);
     notificationManager.notifyError({
       content: 'Failed to update the ResourceQuota',
     });
@@ -38,12 +39,9 @@ const ResourceQuotas = ({ resourceQuotas, namespaceName: namespace }) => {
 
   const [updateResourceQuota] = useMutation(UPDATE_RESOURCE_QUOTA, {
     onError: onUpdateError,
-    onCompleted: ({ updatedResourceQuota }) =>
+    onCompleted: ({ updateResourceQuota }) =>
       notificationManager.notifySuccess({
-        content: formatMessage(
-          'Succesfully updated',
-          updatedResourceQuota.name,
-        ),
+        content: formatMessage('Succesfully updated', updateResourceQuota.name),
       }),
     refetchQueries: [{ query: GET_NAMESPACE, variables: { name: namespace } }],
   });
@@ -55,8 +53,7 @@ const ResourceQuotas = ({ resourceQuotas, namespaceName: namespace }) => {
       json = jsyaml.safeLoad(newYAML);
       if (json.metadata?.resourceVersion) delete json.metadata.resourceVersion; // TODO: do this on the backend side
     } catch (e) {
-      console.error(e);
-      onUpdateError();
+      onUpdateError(e);
       return;
     }
 
@@ -78,8 +75,6 @@ const ResourceQuotas = ({ resourceQuotas, namespaceName: namespace }) => {
       },
     },
   ];
-
-  // console.log(resourceQuotas);
 
   return (
     <GenericList

@@ -63,7 +63,8 @@ const LimitRanges = ({ limitRanges, namespaceName: namespace }) => {
   const editedLimitRange = useRef(null);
   const setEditedJson = useYamlEditor();
 
-  function onUpdateError() {
+  function onUpdateError(e) {
+    console.error(e);
     notificationManager.notifyError({
       content: 'Failed to update the LimitRange',
     });
@@ -71,7 +72,7 @@ const LimitRanges = ({ limitRanges, namespaceName: namespace }) => {
 
   const [updateLimitRange] = useMutation(UPDATE_LIMIT_RANGE, {
     onError: onUpdateError,
-    onCompleted: ({ updatedLimitRange }) =>
+    onCompleted: ({ updateLimitRange }) =>
       notificationManager.notifySuccess({
         content: formatMessage('Succesfully updated', updateLimitRange.name),
       }),
@@ -85,8 +86,7 @@ const LimitRanges = ({ limitRanges, namespaceName: namespace }) => {
       json = jsyaml.safeLoad(newYAML);
       if (json.metadata?.resourceVersion) delete json.metadata.resourceVersion; // TODO: do this on the backend side
     } catch (e) {
-      console.error(e);
-      onUpdateError();
+      onUpdateError(e);
       return;
     }
 
