@@ -21,7 +21,7 @@ const createLimitRangeSuccessfulMock = () => ({
         type: 'Container',
       },
       namespace: '',
-      name: '',
+      name: '-initial-limit',
     },
   },
   result: jest.fn().mockReturnValue({
@@ -45,7 +45,7 @@ const createResourceQuotaSuccessfulMock = () => ({
           memory: '2.8Gi',
         },
       },
-      name: '',
+      name: '-initial-quota',
       namespace: '',
     },
   },
