@@ -18,6 +18,8 @@ const headerRenderer = _ => [
 ];
 
 const getCPUandMemoryInfo = (cpuInfo, memoryInfo, keyPrefix) => {
+  if (!isNotEmpty(cpuInfo) && !isNotEmpty(memoryInfo)) return '-';
+
   let output = [
     isNotEmpty(cpuInfo) && (
       <React.Fragment key={keyPrefix + 'cpu'}>{cpuInfo}</React.Fragment>
