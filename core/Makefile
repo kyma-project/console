@@ -7,7 +7,7 @@ release: build-image push-image
 resolve:
 	cd .. && npm install --no-optional --production # Install common dependencies 
 	npm install --production
-	npm install @angular/cli
+	npm install @angular/cli@v10.0.4
 	npm list ajv
 
 pull-licenses:
