@@ -20,17 +20,13 @@ const headerRenderer = _ => [
 const getCPUandMemoryInfo = (cpuInfo, memoryInfo, keyPrefix) => {
   let output = [
     isNotEmpty(cpuInfo) && (
-      <React.Fragment key={keyPrefix + 'cpu'}>
-        {cpuInfo} {<Icon glyph="simulate" />}
-      </React.Fragment>
+      <React.Fragment key={keyPrefix + 'cpu'}>{cpuInfo}</React.Fragment>
     ),
     isNotEmpty(cpuInfo) && isNotEmpty(memoryInfo) && (
       <React.Fragment key={keyPrefix + 'delim'}> | </React.Fragment>
     ),
     isNotEmpty(memoryInfo) && (
-      <React.Fragment key={keyPrefix + 'mem'}>
-        {memoryInfo} {<Icon glyph="course-book" />}
-      </React.Fragment>
+      <React.Fragment key={keyPrefix + 'mem'}>{memoryInfo}</React.Fragment>
     ),
   ];
 
