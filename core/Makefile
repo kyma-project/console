@@ -5,8 +5,8 @@ TAG = $(DOCKER_TAG)
 release: build-image push-image
 
 resolve:
-	cd .. && npm install --no-optional # Install common dependencies 
-	npm ci
+	cd .. && npm install --no-optional --production # Install common dependencies 
+	npm install --production
 
 pull-licenses:
 ifdef LICENSE_PULLER_PATH
