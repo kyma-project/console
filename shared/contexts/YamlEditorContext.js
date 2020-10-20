@@ -15,12 +15,22 @@ export const YamlEditorContext = createContext({
   setEditedJson: _ => {},
 });
 
-const YamlContent = ({ json, changedYamlRef }) => {
+const isValidYaml = yaml => {
+  if (!yaml) return false;
+  try {
+    jsyaml.safeLoad(yaml);
+    return true;
+  } catch (e) {
+    return false;
+  }
+};
+
+const YamlContent = ({ json, setChangedYamlFn }) => {
   const [val, setVal] = useState(jsyaml.safeDump(json));
 
   useEffect(() => {
     const converted = jsyaml.safeDump(json);
-    changedYamlRef.current = converted;
+    setChangedYamlFn(null);
     setVal(converted);
   }, [json]);
 
@@ -33,10 +43,7 @@ const YamlContent = ({ json, changedYamlRef }) => {
         language={'yaml'}
         theme="vs-light"
         value={val}
-        onChange={(_, text) => {
-          changedYamlRef.current = text;
-          LuigiClient.uxManager().setDirtyStatus(true);
-        }}
+        onChange={(_, text) => setChangedYamlFn(text)}
       />
     </>
   );
@@ -45,8 +52,8 @@ const YamlContent = ({ json, changedYamlRef }) => {
 export const YamlEditorProvider = ({ children }) => {
   const [json, setJson] = useState(null);
   const [isOpen, setOpen] = useState(false);
-  const changedYaml = useRef(null);
-  const onSave = useRef(_ => {});
+  const [changedYaml, setChangedYaml] = useState(null);
+  const onSaveFn = useRef(_ => {});
 
   useEffect(() => {
     LuigiClient.uxManager().setDirtyStatus(false);
@@ -57,13 +64,17 @@ export const YamlEditorProvider = ({ children }) => {
     if (!isOpen) setJson(null);
   }, [isOpen]);
 
+  useEffect(() => {
+    LuigiClient.uxManager().setDirtyStatus(!!changedYaml);
+  }, [changedYaml]);
+
   function setEditedJson(newJson, onSaveHandler) {
-    onSave.current = onSaveHandler;
+    onSaveFn.current = onSaveHandler;
     setJson(newJson);
   }
 
   function handleSaveClick() {
-    onSave.current(changedYaml.current).then(_ => setOpen(false));
+    onSaveFn.current(changedYaml).then(_ => setOpen(false));
   }
 
   const bottomContent = (
@@ -74,6 +85,7 @@ export const YamlEditorProvider = ({ children }) => {
         type="positive"
         option="emphasized"
         onClick={handleSaveClick}
+        disabled={!isValidYaml(changedYaml)}
       >
         Save
       </Button>
@@ -91,7 +103,7 @@ export const YamlEditorProvider = ({ children }) => {
       bottomContent={bottomContent}
       hideDefaultButton={true}
     >
-      <YamlContent json={json} changedYamlRef={changedYaml} />
+      <YamlContent json={json} setChangedYamlFn={setChangedYaml} />
     </SideDrawer>
   );
 
