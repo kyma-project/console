@@ -69,7 +69,7 @@ export const YamlEditorProvider = ({ children }) => {
   }, [changedYaml]);
 
   function setEditedJson(newJson, onSaveHandler) {
-    onSaveFn.current = onSaveHandler;
+    onSaveFn.current = onSaveHandler; // MUST BE AN ANSYNC FUNCTION!
     setJson(newJson);
   }
 

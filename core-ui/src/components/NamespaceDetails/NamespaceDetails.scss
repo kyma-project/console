@@ -1,5 +1,6 @@
 #ns-details-grid {
   display: grid;
+  grid-template-columns: repeat(6, 1fr);
   grid-template-areas:
     'workloads workloads workloads workloads apps apps'
     'quotas quotas quotas limits limits limits';
