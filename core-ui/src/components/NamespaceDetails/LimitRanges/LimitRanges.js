@@ -79,7 +79,7 @@ const LimitRanges = ({ limitRanges, namespaceName: namespace }) => {
     refetchQueries: [{ query: GET_NAMESPACE, variables: { name: namespace } }],
   });
 
-  function handleSaveClick(newYAML) {
+  async function handleSaveClick(newYAML) {
     let json;
 
     try {
@@ -87,10 +87,10 @@ const LimitRanges = ({ limitRanges, namespaceName: namespace }) => {
       if (json.metadata?.resourceVersion) delete json.metadata.resourceVersion; // TODO: do this on the backend side
     } catch (e) {
       onUpdateError(e);
-      return;
+      return e;
     }
 
-    updateLimitRange({
+    await updateLimitRange({
       variables: {
         name: editedLimitRange.current?.name,
         json,

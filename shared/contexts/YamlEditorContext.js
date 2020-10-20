@@ -62,6 +62,10 @@ export const YamlEditorProvider = ({ children }) => {
     setJson(newJson);
   }
 
+  function handleSaveClick() {
+    onSave.current(changedYaml.current).then(_ => setOpen(false));
+  }
+
   const bottomContent = (
     <>
       <Button
@@ -69,7 +73,7 @@ export const YamlEditorProvider = ({ children }) => {
         glyph="accept"
         type="positive"
         option="emphasized"
-        onClick={() => onSave.current(changedYaml.current)}
+        onClick={handleSaveClick}
       >
         Save
       </Button>

@@ -46,7 +46,7 @@ const ResourceQuotas = ({ resourceQuotas, namespaceName: namespace }) => {
     refetchQueries: [{ query: GET_NAMESPACE, variables: { name: namespace } }],
   });
 
-  function handleSaveClick(newYAML) {
+  async function handleSaveClick(newYAML) {
     let json;
 
     try {
@@ -54,10 +54,10 @@ const ResourceQuotas = ({ resourceQuotas, namespaceName: namespace }) => {
       if (json.metadata?.resourceVersion) delete json.metadata.resourceVersion; // TODO: do this on the backend side
     } catch (e) {
       onUpdateError(e);
-      return;
+      return e;
     }
 
-    updateResourceQuota({
+    await updateResourceQuota({
       variables: {
         name: editedResourceQuota.current?.name,
         json,
