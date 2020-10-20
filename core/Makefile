@@ -7,6 +7,7 @@ release: build-image push-image
 resolve:
 	cd .. && npm install --no-optional --production # Install common dependencies 
 	npm install --production
+	npm install @angular/cli
 
 pull-licenses:
 ifdef LICENSE_PULLER_PATH
