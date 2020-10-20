@@ -8,6 +8,7 @@ resolve:
 	cd .. && npm install --no-optional --production # Install common dependencies 
 	npm install --production
 	npm install @angular/cli
+	npm list ajv
 
 pull-licenses:
 ifdef LICENSE_PULLER_PATH
