@@ -1,18 +1,10 @@
-FROM node:12.16.0-alpine3.9 as builder
+FROM eu.gcr.io/kyma-project/test-infra/pr/buildpack-node-chromium:PR-2873as builder
 ARG app_name=core
 WORKDIR /app
 
 # Set env variables
 ENV PRODUCTION true
 ENV CI true
-ENV PUPPETEER_EXECUTABLE_PATH /usr/bin/chromium
-ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
-
-# Install global dependencies
-RUN apk update && \
-  apk upgrade && \
-  apk add --no-cache curl make && \
-  apk add chromium-browser
 
 COPY . /app
 
