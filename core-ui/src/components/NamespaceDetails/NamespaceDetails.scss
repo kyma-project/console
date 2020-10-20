@@ -6,6 +6,14 @@
     'quotas quotas quotas limits limits limits';
   padding: 2em;
   grid-gap: 2em;
+
+  @media screen and (max-width: 968px) {
+    grid-template-areas:
+      'workloads workloads workloads workloads workloads workloads'
+      'apps apps apps apps apps apps'
+      'quotas quotas quotas quotas quotas quotas'
+      'limits limits limits limits limits limits';
+  }
 }
 
 .namespace-applications {
