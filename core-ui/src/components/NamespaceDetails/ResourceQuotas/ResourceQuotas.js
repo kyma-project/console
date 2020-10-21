@@ -19,8 +19,8 @@ const rowRenderer = resourceQuota => {
   return [
     resourceQuota.name,
     quota.pods || '-',
-    quota.limits.memory || '-',
-    quota.requests.memory || '-',
+    quota.limits?.memory || '-',
+    quota.requests?.memory || '-',
   ];
 };
 
