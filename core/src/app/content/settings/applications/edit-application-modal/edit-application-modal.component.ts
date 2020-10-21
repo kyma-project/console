@@ -21,8 +21,8 @@ export class EditApplicationModalComponent {
   @Input() public initialLabels: string[];
   @Input() public name: string;
 
-  @ViewChild('editApplicationsForm') editApplicationsForm: NgForm;
-  @ViewChild('editApplicationModal')
+  @ViewChild('editApplicationsForm', { static: false }) editApplicationsForm: NgForm;
+  @ViewChild('editApplicationModal', { static: false })
   editApplicationModal: TemplateRef<ModalRef>;
 
   public isActive = false;

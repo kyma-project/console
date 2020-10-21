@@ -8,7 +8,7 @@ import { ModalService, ModalRef } from 'fundamental-ngx';
   templateUrl: './copy2clipboard-modal.component.html'
 })
 export class Copy2ClipboardModalComponent {
-  @ViewChild('copyToClipboardModal')
+  @ViewChild('copyToClipboardModal', { static: false })
   copyToClipboardModal: TemplateRef<ModalRef>;
 
   public title: string;

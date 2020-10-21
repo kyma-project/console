@@ -9,7 +9,7 @@ import { ModalRef, ModalService } from 'fundamental-ngx';
   styleUrls: ['./create-application-modal.component.scss']
 })
 export class CreateApplicationModalComponent {
-  @ViewChild('createApplicationModal')
+  @ViewChild('createApplicationModal', { static: false })
   createApplicationModal: TemplateRef<ModalRef>;
   public isActive = false;
   public name: string;

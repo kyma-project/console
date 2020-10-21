@@ -49,7 +49,7 @@ export class NamespacesContainerComponent implements OnInit, OnDestroy {
   public limitExceededErrors = [];
   public overview = false;
 
-  @ViewChild('infoModal') private infoModal: InformationModalComponent;
+  @ViewChild('infoModal', { static: false }) private infoModal: InformationModalComponent;
 
   constructor(
     private router: Router,

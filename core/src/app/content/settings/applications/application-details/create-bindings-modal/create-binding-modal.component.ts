@@ -17,7 +17,7 @@ import { DEFAULT_MODAL_CONFIG } from '../../../../../shared/constants/constants'
   styleUrls: ['./create-binding-modal.component.scss']
 })
 export class CreateBindingsModalComponent {
-  @ViewChild('createBindingModal') createBindingModal: TemplateRef<ModalRef>;
+  @ViewChild('createBindingModal', { static: false }) createBindingModal: TemplateRef<ModalRef>;
 
   private selectedApplicationsState = [];
   private namespacesService: NamespacesService;

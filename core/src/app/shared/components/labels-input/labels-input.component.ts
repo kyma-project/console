@@ -18,7 +18,7 @@ const commonLabelSchemaMessage = "It should consist of alphanumeric characters, 
   viewProviders: [{ provide: ControlContainer, useExisting: NgForm }]
 })
 export class LabelsInputComponent implements OnInit {
-  @ViewChild('labelsInput') labelsInput: ElementRef;
+  @ViewChild('labelsInput', { static: false }) labelsInput: ElementRef;
   @Input() labels?: string[];
   @Output()
   public labelsChangeEmitter$: EventEmitter<{

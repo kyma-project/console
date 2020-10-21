@@ -14,8 +14,8 @@ import { DEFAULT_MODAL_CONFIG } from 'shared/constants/constants';
 })
 export class JsonEditorModalComponent {
   @Input() resourceData: any;
-  @ViewChild('jsoneditor') jsonEditor: JsonEditorComponent;
-  @ViewChild('jsonEditorModal') jsonEditorModal: TemplateRef<ModalRef>;
+  @ViewChild('jsoneditor', { static: false }) jsonEditor: JsonEditorComponent;
+  @ViewChild('jsonEditorModal', { static: false }) jsonEditorModal: TemplateRef<ModalRef>;
 
   public isActive = false;
   public error: any;

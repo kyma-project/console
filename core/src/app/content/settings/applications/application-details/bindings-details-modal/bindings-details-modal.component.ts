@@ -13,7 +13,7 @@ import { forkJoin } from 'rxjs';
   styleUrls: ['./bindings-details-modal.component.scss']
 })
 export class BindingsDetailsModalComponent {
-  @ViewChild('bindingsDetailsModal')
+  @ViewChild('bindingsDetailsModal', { static: false })
   bindingsDetailsModal: TemplateRef<ModalRef>;
 
   public namespaces = [];

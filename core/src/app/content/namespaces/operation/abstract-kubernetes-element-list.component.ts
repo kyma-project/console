@@ -23,9 +23,9 @@ import { IEmptyListData, IEmptyListDataBody, IEmptyListDataHeader } from 'shared
 export class AbstractKubernetesElementListComponent
   extends GenericTableComponent
   implements OnDestroy {
-  @ViewChild('confirmationModal') confirmationModal: ConfirmationModalComponent;
-  @ViewChild('infoModal') infoModal: InformationModalComponent;
-  @ViewChild('editResourceModal') editResourceModal: JsonEditorModalComponent;
+  @ViewChild('confirmationModal', { static: false }) confirmationModal: ConfirmationModalComponent;
+  @ViewChild('infoModal', { static: false }) infoModal: InformationModalComponent;
+  @ViewChild('editResourceModal', { static: false }) editResourceModal: JsonEditorModalComponent;
 
   hideFilter = false;
   showSelectFileButton = false;

@@ -16,7 +16,7 @@ export class ConfirmationModalComponent implements OnInit {
   @Input() message: string;
   @Input() title: string;
 
-  @ViewChild('confirmationModal') confirmationModal: TemplateRef<ModalRef>;
+  @ViewChild('confirmationModal', { static: false }) confirmationModal: TemplateRef<ModalRef>;
 
   isActive = false;
   private okPromise: any;

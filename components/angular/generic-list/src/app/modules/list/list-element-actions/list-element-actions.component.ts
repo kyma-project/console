@@ -15,7 +15,7 @@ export class ListElementActionsComponent {
   @Input() entry: any;
   @Input() entryEventHandler: any;
   @Input() actions: any[];
-  @ViewChild('popover') private popover: any;
+  @ViewChild('popover', { static: false }) private popover: any;
 
   constructor(private changeDetector: ChangeDetectorRef) {}
 

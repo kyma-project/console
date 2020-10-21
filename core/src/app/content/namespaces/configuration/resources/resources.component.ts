@@ -11,7 +11,7 @@ import * as luigiClient from '@luigi-project/client';
   styleUrls: ['./resources.component.scss']
 })
 export class ResourcesComponent implements OnInit {
-  @ViewChild('uploaderModal')
+  @ViewChild('uploaderModal', { static: false })
   private uploaderModal: ResourceUploaderModalComponent;
   public limitRangesTabExpanded: boolean;
   public resourceQuotasTabExpanded: boolean;

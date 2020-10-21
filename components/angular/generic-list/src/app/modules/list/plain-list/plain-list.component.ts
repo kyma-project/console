@@ -25,7 +25,7 @@ export class PlainListComponent implements OnChanges {
   @Input() entryEventHandler;
   @Input() entryTagName = 'fd-panel';
 
-  @ViewChild('entries', { read: ViewContainerRef })
+  @ViewChild('entries', { read: ViewContainerRef, static: true })
   entriesViewContainer: ViewContainerRef;
 
   data: any[];

@@ -30,9 +30,9 @@ export class PlainTableComponent extends PlainListComponent {
   };
   @Output() emptyListAction = new EventEmitter();
 
-  @ViewChild('header', { read: ViewContainerRef })
+  @ViewChild('header', { read: ViewContainerRef, static: true })
   headerViewContainer: ViewContainerRef;
-  @ViewChild('footer', { read: ViewContainerRef })
+  @ViewChild('footer', { read: ViewContainerRef, static: true })
   footerViewContainer: ViewContainerRef;
 
   constructor(public componentFactoryResolver: ComponentFactoryResolver) {
