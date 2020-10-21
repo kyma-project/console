@@ -1,6 +1,5 @@
 import React, { useRef } from 'react';
 import { GenericList, useYamlEditor, useNotification } from 'react-shared';
-import { Icon } from 'fundamental-react';
 import jsyaml from 'js-yaml';
 import { useMutation } from '@apollo/react-hooks';
 import { UPDATE_RESOURCE_QUOTA } from '../../../gql/mutations';
@@ -68,7 +67,7 @@ const ResourceQuotas = ({ resourceQuotas, namespaceName: namespace }) => {
 
   const actions = [
     {
-      name: <Icon glyph="edit" />,
+      name: 'Edit',
       handler: resourceQuota => {
         editedResourceQuota.current = resourceQuota;
         setEditedJson(resourceQuota.json, handleSaveClick);

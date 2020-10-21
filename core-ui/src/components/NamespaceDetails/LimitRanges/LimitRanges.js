@@ -1,6 +1,5 @@
 import React, { useRef } from 'react';
 import { GenericList, useYamlEditor, useNotification } from 'react-shared';
-import { Icon } from 'fundamental-react';
 import jsyaml from 'js-yaml';
 import { useMutation } from '@apollo/react-hooks';
 import { UPDATE_LIMIT_RANGE } from '../../../gql/mutations';
@@ -42,15 +41,15 @@ const rowRenderer = limitRange => {
   return [
     limitRange.name,
     limit.type,
-    getCPUandMemoryInfo(limit.max.cpu, limit.max.memory, limitRange.name),
+    getCPUandMemoryInfo(limit.max?.cpu, limit.max?.memory, limitRange.name),
     getCPUandMemoryInfo(
-      limit.default.cpu,
-      limit.default.memory,
+      limit.default?.cpu,
+      limit.default?.memory,
       limitRange.name,
     ),
     getCPUandMemoryInfo(
-      limit.defaultRequest.cpu,
-      limit.defaultRequest.memory,
+      limit.defaultRequest?.cpu,
+      limit.defaultRequest?.memory,
       limitRange.name,
     ),
   ];
@@ -99,7 +98,7 @@ const LimitRanges = ({ limitRanges, namespaceName: namespace }) => {
 
   const actions = [
     {
-      name: <Icon glyph="edit" />,
+      name: 'Edit',
       handler: limitRange => {
         editedLimitRange.current = limitRange;
         setEditedJson(limitRange.json, handleSaveClick);
