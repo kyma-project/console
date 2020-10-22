@@ -23,9 +23,12 @@
 // import 'classlist.js';  // Run `npm install --save classlist.js`.
 
 /** Evergreen browsers require these. */
+// tslint:disable-next-line:no-submodule-imports
 import 'core-js/es6/reflect';
+// tslint:disable-next-line:no-submodule-imports
 import 'core-js/es7/reflect';
 
+// tslint:disable-next-line:no-submodule-imports
 import 'core-js/fn/object/entries';
 
 /**
@@ -37,6 +40,7 @@ import 'core-js/fn/object/entries';
 /***************************************************************************************************
  * Zone JS is required by Angular itself.
  */
+// tslint:disable-next-line:no-submodule-imports
 import 'zone.js/dist/zone'; // Included with Angular CLI.
 
 /***************************************************************************************************
@@ -52,3 +56,5 @@ import 'zone.js/dist/zone'; // Included with Angular CLI.
  * Need to import at least one locale-data with intl.
  */
 // import 'intl/locale-data/jsonp/en';
+
+(window as any).global = window;
