@@ -74,7 +74,10 @@ export const YamlEditorProvider = ({ children }) => {
   }
 
   function handleSaveClick() {
-    onSaveFn.current(changedYaml).then(_ => setOpen(false));
+    onSaveFn
+      .current(changedYaml)
+      .then(_ => setOpen(false))
+      .catch(_ => {});
   }
 
   const bottomContent = (

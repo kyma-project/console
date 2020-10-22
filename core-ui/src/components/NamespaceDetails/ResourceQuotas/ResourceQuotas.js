@@ -29,15 +29,7 @@ const ResourceQuotas = ({ resourceQuotas, namespaceName: namespace }) => {
   const notificationManager = useNotification();
   const editedResourceQuota = useRef(null);
 
-  function onUpdateError(e) {
-    console.error(e);
-    notificationManager.notifyError({
-      content: 'Failed to update the ResourceQuota',
-    });
-  }
-
   const [updateResourceQuota] = useMutation(UPDATE_RESOURCE_QUOTA, {
-    onError: onUpdateError,
     onCompleted: ({ updateResourceQuota }) =>
       notificationManager.notifySuccess({
         content: formatMessage('Succesfully updated', updateResourceQuota.name),
@@ -51,18 +43,19 @@ const ResourceQuotas = ({ resourceQuotas, namespaceName: namespace }) => {
     try {
       json = jsyaml.safeLoad(newYAML);
       if (json.metadata?.resourceVersion) delete json.metadata.resourceVersion; // TODO: do this on the backend side
+      await updateResourceQuota({
+        variables: {
+          name: editedResourceQuota.current?.name,
+          json,
+          namespace,
+        },
+      });
     } catch (e) {
-      onUpdateError(e);
-      return e;
+      notificationManager.notifyError({
+        content: 'Failed to update the ResourceQuota',
+      });
+      throw e;
     }
-
-    await updateResourceQuota({
-      variables: {
-        name: editedResourceQuota.current?.name,
-        json,
-        namespace,
-      },
-    });
   }
 
   const actions = [
