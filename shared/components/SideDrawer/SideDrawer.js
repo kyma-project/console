@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { ControlledEditor } from '@monaco-editor/react';
@@ -34,6 +34,13 @@ export const SideDrawer = ({
       </>
     );
   }
+
+  useEffect(() => {
+    const listenerId = document.addEventListener('keydown', ({ key }) => {
+      if (key === 'Escape') setOpen(false);
+    });
+    return document.removeEventListener('keydown', listenerId);
+  }, []);
 
   return (
     <div className={classNames('side-drawer', { 'side-drawer--open': isOpen })}>

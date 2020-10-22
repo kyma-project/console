@@ -42,8 +42,11 @@
     overflow-wrap: anywhere;
     cursor: pointer;
     box-sizing: border-box;
-    &-hidden{
-      visibility: hidden;
+    &-hidden {
+      display: none;
+      @at-root .side-drawer:not(.side-drawer--open) {
+        transform: translateX(100%);
+      }
     }
   }
 
