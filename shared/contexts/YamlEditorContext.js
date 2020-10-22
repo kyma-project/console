@@ -39,7 +39,7 @@ const YamlContent = ({ json, setChangedYamlFn }) => {
       <h1 className="fd-has-type-4">YAML</h1>
       <ControlledEditor
         height="90vh"
-        width="50em"
+        width="min(48vw, 150em)"
         language={'yaml'}
         theme="vs-light"
         value={val}
