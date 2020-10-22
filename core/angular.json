@@ -99,7 +99,7 @@
           "builder": "@angular-builders/custom-webpack:karma",
           "options": {
             "customWebpackConfig": {
-              "path": "./extra-webpack.config.js"
+              "path": "./webpack-extra.config.js"
             },
             "preserveSymlinks": true,
             "main": "src/test.ts",
