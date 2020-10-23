@@ -1,4 +1,4 @@
-FROM eu.gcr.io/kyma-project/test-infra/buildpack-node-chromium:6c4eabe1 as builder
+FROM eu.gcr.io/kyma-project/test-infra/buildpack-node-chromium:v20201023-6c4eabe1 as builder
 ARG app_name=core
 WORKDIR /app
 
