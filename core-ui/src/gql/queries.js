@@ -1,9 +1,5 @@
 import gql from 'graphql-tag';
 
-// const LIMITS_FRAGMENT = `
-// resources
-// `
-
 export const GET_NAMESPACE = gql`
   query Namespace($name: String!) {
     namespace(name: $name) {

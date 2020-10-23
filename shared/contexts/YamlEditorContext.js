@@ -69,15 +69,15 @@ export const YamlEditorProvider = ({ children }) => {
   }, [changedYaml]);
 
   function setEditedJson(newJson, onSaveHandler) {
-    onSaveFn.current = onSaveHandler; // MUST BE AN ANSYNC FUNCTION!
+    onSaveFn.current = onSaveHandler;
     setJson(newJson);
   }
 
-  function handleSaveClick() {
-    onSaveFn
-      .current(changedYaml)
-      .then(_ => setOpen(false))
-      .catch(_ => {});
+  async function handleSaveClick() {
+    try {
+      await onSaveFn.current(changedYaml);
+      setOpen(false);
+    } catch (_) {}
   }
 
   const bottomContent = (

@@ -4,7 +4,6 @@ import jsyaml from 'js-yaml';
 import { useMutation } from '@apollo/react-hooks';
 import { UPDATE_RESOURCE_QUOTA } from '../../../gql/mutations';
 import { GET_NAMESPACE } from '../../../gql/queries';
-import { formatMessage } from 'components/Lambdas/helpers/misc';
 
 const headerRenderer = _ => [
   'Name',
@@ -32,7 +31,7 @@ const ResourceQuotas = ({ resourceQuotas, namespaceName: namespace }) => {
   const [updateResourceQuota] = useMutation(UPDATE_RESOURCE_QUOTA, {
     onCompleted: ({ updateResourceQuota }) =>
       notificationManager.notifySuccess({
-        content: formatMessage('Succesfully updated', updateResourceQuota.name),
+        content: 'Succesfully updated ' + updateResourceQuota.name,
       }),
     refetchQueries: [{ query: GET_NAMESPACE, variables: { name: namespace } }],
   });

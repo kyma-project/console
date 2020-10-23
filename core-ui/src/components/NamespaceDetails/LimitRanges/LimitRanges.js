@@ -4,7 +4,6 @@ import jsyaml from 'js-yaml';
 import { useMutation } from '@apollo/react-hooks';
 import { UPDATE_LIMIT_RANGE } from '../../../gql/mutations';
 import { GET_NAMESPACE } from '../../../gql/queries';
-import { formatMessage } from 'components/Lambdas/helpers/misc';
 
 const isNotEmpty = variable => variable && variable !== '0';
 
@@ -63,7 +62,7 @@ const LimitRanges = ({ limitRanges, namespaceName: namespace }) => {
   const [updateLimitRange] = useMutation(UPDATE_LIMIT_RANGE, {
     onCompleted: ({ updateLimitRange }) =>
       notificationManager.notifySuccess({
-        content: formatMessage('Succesfully updated', updateLimitRange.name),
+        content: 'Succesfully updated ' + updateLimitRange.name,
       }),
     refetchQueries: [{ query: GET_NAMESPACE, variables: { name: namespace } }],
   });
