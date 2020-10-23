@@ -44,16 +44,16 @@ export class ApplicationDetailsComponent implements OnInit, OnDestroy {
   public isReadOnly = false;
 
   entryEventHandler = this.getEntryEventHandler();
-  @ViewChild('editbindingsmodal') editbindingsmodal: EditBindingsModalComponent;
-  @ViewChild('bindingsdetailsmodal')
+  @ViewChild('editbindingsmodal', { static: false }) editbindingsmodal: EditBindingsModalComponent;
+  @ViewChild('bindingsdetailsmodal', { static: false })
   bindingsdetailsmodal: BindingsDetailsModalComponent;
-  @ViewChild('createbindingsmodal')
+  @ViewChild('createbindingsmodal', { static: false })
   createbindingsmodal: CreateBindingsModalComponent;
-  @ViewChild('fetchModal') fetchModal: Copy2ClipboardModalComponent;
-  @ViewChild('infoModal') infoModal: InformationModalComponent;
-  @ViewChild('editApplicationModal')
+  @ViewChild('fetchModal', { static: false }) fetchModal: Copy2ClipboardModalComponent;
+  @ViewChild('infoModal', { static: false }) infoModal: InformationModalComponent;
+  @ViewChild('editApplicationModal', { static: false })
   editApplicationModal: EditApplicationModalComponent;
-  @ViewChild('confirmationModal') confirmationModal: ConfirmationModalComponent;
+  @ViewChild('confirmationModal', { static: false }) confirmationModal: ConfirmationModalComponent;
 
   constructor(
     private route: ActivatedRoute,

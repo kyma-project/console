@@ -13,7 +13,7 @@ export class UploaderComponent {
   public fileContents: string[] = [];
   public ready = false;
 
-  @ViewChild('fileInput') fileInput: any;
+  @ViewChild('fileInput', { static: false }) fileInput: any;
 
   constructor(private resourceUploadService: ResourceUploadService) {}
 

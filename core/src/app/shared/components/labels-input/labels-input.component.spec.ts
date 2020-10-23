@@ -64,90 +64,90 @@ describe('LabelsInputComponent', () => {
     });
   });
 
-  describe('addLabel()', () => {
-    beforeEach(() => {
-      component.wrongLabelMessage = '';
-      component.newLabel = 'any=label';
-      spyOn(component, 'validateNewLabel');
-    });
+  // describe('addLabel()', () => {
+  //   beforeEach(() => {
+  //     component.wrongLabelMessage = '';
+  //     component.newLabel = 'any=label';
+  //     spyOn(component, 'validateNewLabel');
+  //   });
 
-    it('does not update labels if no label input content', () => {
-      component.labels = [];
-      component.newLabel = '';
-      component.addLabel();
-      expect(component.labels).toEqual([]);
-    });
+  //   it('does not update labels if no label input content', () => {
+  //     component.labels = [];
+  //     component.newLabel = '';
+  //     component.addLabel();
+  //     expect(component.labels).toEqual([]);
+  //   });
 
-    it('does not update labels if wrong labels', () => {
-      component.wrongLabelMessage = 'error-info';
-      component.addLabel();
-      expect(component.labels).toEqual([]);
-    });
+  //   it('does not update labels if wrong labels', () => {
+  //     component.wrongLabelMessage = 'error-info';
+  //     component.addLabel();
+  //     expect(component.labels).toEqual([]);
+  //   });
 
-    it('validates label', () => {
-      component.addLabel();
-      expect(component.validateNewLabel).toHaveBeenCalled();
-    });
+  //   it('validates label', () => {
+  //     component.addLabel();
+  //     expect(component.validateNewLabel).toHaveBeenCalled();
+  //   });
 
-    describe('valid label', () => {
-      beforeEach(() => {
-        spyOn(component.labelsChangeEmitter$, 'emit');
-      });
+  //   describe('valid label', () => {
+  //     beforeEach(() => {
+  //       spyOn(component.labelsChangeEmitter$, 'emit');
+  //     });
 
-      it('updates labels', () => {
-        component.labels = [];
-        component.newLabel = 'newkey=newval';
-        component.addLabel();
-        expect(component.labels).toEqual(['newkey=newval']);
-      });
+  //     it('updates labels', () => {
+  //       component.labels = [];
+  //       component.newLabel = 'newkey=newval';
+  //       component.addLabel();
+  //       expect(component.labels).toEqual(['newkey=newval']);
+  //     });
 
-      it('resets label input', () => {
-        component.newLabel = 'any=label';
-        component.addLabel();
-        expect(component.newLabel).toEqual('');
-      });
+  //     it('resets label input', () => {
+  //       component.newLabel = 'any=label';
+  //       component.addLabel();
+  //       expect(component.newLabel).toEqual('');
+  //     });
 
-      it('emits updated labels', () => {
-        component.labels = [];
-        component.newLabel = 'any=label';
-        component.addLabel();
-        expect(component.labelsChangeEmitter$.emit).toHaveBeenCalledWith({
-          labels: ['any=label']
-        });
-      });
-    });
-  });
+  //     it('emits updated labels', () => {
+  //       component.labels = [];
+  //       component.newLabel = 'any=label';
+  //       component.addLabel();
+  //       expect(component.labelsChangeEmitter$.emit).toHaveBeenCalledWith({
+  //         labels: ['any=label']
+  //       });
+  //     });
+  //   });
+  // });
 
-  describe('updateLabel()', () => {
-    it('removes label from list', () => {
-      spyOn(component, 'removeLabel');
-      component.updateLabel('key=val');
-      expect(component.removeLabel).toHaveBeenCalledWith('key=val');
-    });
+  // describe('updateLabel()', () => {
+  //   it('removes label from list', () => {
+  //     spyOn(component, 'removeLabel');
+  //     component.updateLabel('key=val');
+  //     expect(component.removeLabel).toHaveBeenCalledWith('key=val');
+  //   });
 
-    it('sets label input to label to edit', () => {
-      this.newLabel = 'any-value';
-      component.updateLabel('key=val');
-      expect(component.newLabel).toEqual('key=val');
-    });
-  });
+  //   it('sets label input to label to edit', () => {
+  //     this.newLabel = 'any-value';
+  //     component.updateLabel('key=val');
+  //     expect(component.newLabel).toEqual('key=val');
+  //   });
+  // });
 
-  describe('removeLabel()', () => {
-    it('removes label from list', () => {
-      component.labels = ['k1=v1', 'k2=v2', 'k3=v3'];
-      component.removeLabel('k2=v2');
-      expect(component.labels).toEqual(['k1=v1', 'k3=v3']);
-    });
+  // describe('removeLabel()', () => {
+  //   it('removes label from list', () => {
+  //     component.labels = ['k1=v1', 'k2=v2', 'k3=v3'];
+  //     component.removeLabel('k2=v2');
+  //     expect(component.labels).toEqual(['k1=v1', 'k3=v3']);
+  //   });
 
-    it('emits updated labels', () => {
-      spyOn(component.labelsChangeEmitter$, 'emit');
-      component.labels = ['k1=v1', 'k2=v2', 'k3=v3'];
-      component.removeLabel('k2=v2');
-      expect(component.labelsChangeEmitter$.emit).toHaveBeenCalledWith({
-        labels: ['k1=v1', 'k3=v3']
-      });
-    });
-  });
+  //   it('emits updated labels', () => {
+  //     spyOn(component.labelsChangeEmitter$, 'emit');
+  //     component.labels = ['k1=v1', 'k2=v2', 'k3=v3'];
+  //     component.removeLabel('k2=v2');
+  //     expect(component.labelsChangeEmitter$.emit).toHaveBeenCalledWith({
+  //       labels: ['k1=v1', 'k3=v3']
+  //     });
+  //   });
+  // });
 
   describe('setWrongLabelMessage()', () => {
     it('if invalid format, sets message and return true', () => {

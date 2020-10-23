@@ -9,7 +9,7 @@ import { UploaderComponent } from '../uploader/uploader.component';
 export class ResourceUploaderComponent {
   constructor() {}
 
-  @ViewChild('uploader') uploader: UploaderComponent;
+  @ViewChild('uploader', { static: false }) uploader: UploaderComponent;
   @Output() cancelChanges = new EventEmitter<boolean>();
   @Output() createResource = new EventEmitter<boolean>();
 

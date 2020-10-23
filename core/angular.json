@@ -76,7 +76,7 @@
           }
         },
         "serve": {
-          "builder": "@angular-builders/dev-server:generic",
+          "builder": "@angular-builders/custom-webpack:dev-server",
           "options": {
             "browserTarget": "console:build"
           },
@@ -99,7 +99,7 @@
           "builder": "@angular-builders/custom-webpack:karma",
           "options": {
             "customWebpackConfig": {
-              "path": "./extra-webpack.config.js"
+              "path": "./webpack-extra.config.js"
             },
             "preserveSymlinks": true,
             "main": "src/test.ts",

@@ -27,7 +27,7 @@ describe('DeploResource helpers', () => {
     it('return error on invalid content type', async () => {
       const [content, error] = await parseFile({
         size: 1,
-        type: 'application/test',
+        name: 'test.jason',
       });
 
       expect(content).toBeNull();
@@ -39,7 +39,7 @@ describe('DeploResource helpers', () => {
 
       const [content, error] = await parseFile({
         size: 1,
-        type: 'application/json',
+        name: 'valid.json',
       });
 
       expect(content).toBe(null);
@@ -53,7 +53,7 @@ describe('DeploResource helpers', () => {
 
       const [content, error] = await parseFile({
         size: 1,
-        type: 'application/json',
+        name: 'valid.json',
       });
 
       expect(content).toEqual([true]);
@@ -65,7 +65,7 @@ describe('DeploResource helpers', () => {
 
       const [content, error] = await parseFile({
         size: 1,
-        type: 'application/json',
+        name: 'valid.json',
       });
 
       expect(content).toMatchObject({});
@@ -81,7 +81,7 @@ describe('DeploResource helpers', () => {
 
       const [content, error] = await parseFile({
         size: 1,
-        type: 'application/json',
+        name: 'valid.json',
       });
 
       expect(content).toMatchObject([{ a: 0 }]);
@@ -106,7 +106,7 @@ metadata: 6`;
 
       const [content, error] = await parseFile({
         size: 1,
-        type: 'application/json',
+        name: 'valid.json',
       });
 
       expect(content).toHaveLength(2);

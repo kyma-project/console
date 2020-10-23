@@ -15,7 +15,7 @@ import { forkJoin } from 'rxjs';
   styleUrls: ['./edit-binding-modal.component.scss']
 })
 export class EditBindingsModalComponent {
-  @ViewChild('editBindingModal') editBindingModal: TemplateRef<ModalRef>;
+  @ViewChild('editBindingModal', { static: false }) editBindingModal: TemplateRef<ModalRef>;
 
   public namespaces = [];
   private selectedApplicationsState = [];

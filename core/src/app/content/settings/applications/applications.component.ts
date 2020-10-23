@@ -38,7 +38,7 @@ export class ApplicationsComponent extends AbstractGraphqlElementListComponent
   public entryRenderer = ApplicationsEntryRendererComponent;
   public headerRenderer = ApplicationsHeaderRendererComponent;
 
-  @ViewChild('createModal') createModal: CreateApplicationModalComponent;
+  @ViewChild('createModal', { static: false }) createModal: CreateApplicationModalComponent;
 
   constructor(
     currentNamespaceService: CurrentNamespaceService,

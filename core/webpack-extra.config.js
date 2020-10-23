@@ -12,9 +12,7 @@ function processConfigEnvVariables(sourceObject, prefix) {
 
 module.exports = {
   devServer: {
-    historyApiFallback: {
-      rewrites: [{ from: /./, to: './src/index.html' }]
-    }
+    historyApiFallback: true
   },
   plugins: [
     new webpack.DefinePlugin({ INJECTED_CLUSTER_CONFIG: JSON.stringify(processConfigEnvVariables(process.env, 'REACT_APP_')) })

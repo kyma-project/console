@@ -28,7 +28,7 @@ export class AbstractGraphqlElementListComponent
   protected deleteMutationName?: string = null; // "special" resource kind for delete mutations - needs to be capitalized in most of the cases. If not provided, resourceKind will be used instead
   protected gqlVariables$?: Observable<{ [key: string]: any }> = null;
 
-  @ViewChild('mutateResourceModal')
+  @ViewChild('mutateResourceModal', { static: false })
   mutateResourceModal: GraphqlMutatorModalComponent;
 
   filterState = {

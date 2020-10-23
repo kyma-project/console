@@ -12,9 +12,9 @@ export class ResourceUploaderModalComponent {
   public isActive = false;
   private okPromise: any;
 
-  @ViewChild('uploader') uploader: UploaderComponent;
-  @ViewChild('infoModal') infoModal: InformationModalComponent;
-  @ViewChild('resourceUploader') resourceUploader: TemplateRef<ModalRef>;
+  @ViewChild('uploader', { static: false }) uploader: UploaderComponent;
+  @ViewChild('infoModal', { static: false }) infoModal: InformationModalComponent;
+  @ViewChild('resourceUploader', { static: false }) resourceUploader: TemplateRef<ModalRef>;
 
   constructor(
     private communicationService: ComponentCommunicationService,

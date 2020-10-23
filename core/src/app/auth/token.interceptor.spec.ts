@@ -7,6 +7,7 @@ import {
 import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
 import { TokenInterceptor } from './token.interceptor';
 import { Router } from '@angular/router';
+import { AppConfig } from './../app.config';
 
 const RouterMock = {
   navigateByUrl() {
@@ -91,7 +92,7 @@ describe('TokenInterceptor', () => {
 
   it('shouldnt add Authorization header to request', () => {
     // given
-    const dexurl = 'https://dex.kyma.local/something-else';
+    const dexurl = `${AppConfig.authIssuer}/something-else`;
     http.get(dexurl).subscribe(response => expect(response).toBeTruthy());
     const request = httpClientMock.expectOne(dexurl);
 

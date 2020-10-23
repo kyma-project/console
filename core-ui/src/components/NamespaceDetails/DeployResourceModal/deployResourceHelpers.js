@@ -8,9 +8,8 @@ function validateFile(file) {
   if (!file.size) {
     return 'File cannot be empty';
   }
-
-  const allowedTypes = ['application/json', 'application/x-yaml'];
-  if (!allowedTypes.includes(file.type)) {
+  const allowedExtensionRegex = /\.(ya?ml|json)$/i;
+  if (!allowedExtensionRegex.test(file.name)) {
     return 'Invalid file extension';
   }
   return '';

@@ -12,7 +12,7 @@ export class InformationModalComponent {
   @Input() public message: string;
   @Input() public title: string;
 
-  @ViewChild('informationModal') informationModal: TemplateRef<ModalRef>;
+  @ViewChild('informationModal', { static: false }) informationModal: TemplateRef<ModalRef>;
 
   public isActive = false;
   public redirectUrl: string;
