@@ -65,7 +65,8 @@ const RoutedCatalogDetails = ({ match }) => (
   <ServiceClassDetails name={match.params.name} plan={match.params.plan} />
 );
 
-const RoutedServicePlanList = ({ match }) =>
-  withTitle(CATALOG_TITLE, <ServiceClassPlansList name={match.params.name} />);
+const RoutedServicePlanList = ({ match }) => (
+  <ServiceClassPlansList name={match.params.name} />
+);
 
 export default App;
