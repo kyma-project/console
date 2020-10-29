@@ -3,7 +3,11 @@ import PropTypes from 'prop-types';
 
 import { useQuery } from '@apollo/react-hooks';
 import { GET_SERVICE } from 'gql/queries';
-import { ResourceNotFound, useModuleEnabled } from 'react-shared';
+import {
+  ResourceNotFound,
+  useModuleEnabled,
+  YamlEditorProvider,
+} from 'react-shared';
 import ServiceDetailsHeader from './ServiceDetailsHeader/ServiceDetailsHeader';
 import ServiceApiRules from './ServiceApiRules/ServiceApiRules';
 import ServiceEventTriggers from './ServiceEventTriggers/ServiceEventTriggers';
@@ -49,10 +53,10 @@ export default function ServiceDetails({ namespaceId, serviceName }) {
   ) : null;
 
   return (
-    <>
+    <YamlEditorProvider>
       <ServiceDetailsHeader service={service} namespaceId={namespaceId} />
       {eventTriggers}
       {apiRules}
-    </>
+    </YamlEditorProvider>
   );
 }

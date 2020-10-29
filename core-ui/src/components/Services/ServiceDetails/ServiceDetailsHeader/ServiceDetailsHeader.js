@@ -1,12 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import jsyaml from 'js-yaml';
 
 import { useMutation } from '@apollo/react-hooks';
 import { UPDATE_SERVICE } from 'gql/mutations';
 import { GET_SERVICE } from 'gql/queries';
 
-import { PageHeader, HeaderLabelsEditor, useNotification } from 'react-shared';
-import ResourceSpecModal from 'shared/components/ResourceSpecModal/ResourceSpecModal';
+import {
+  PageHeader,
+  HeaderLabelsEditor,
+  useNotification,
+  useYamlEditor,
+} from 'react-shared';
+import { Button } from 'fundamental-react';
 
 ServiceDetailsHeader.propTypes = {
   namespaceId: PropTypes.string.isRequired,
@@ -16,6 +22,7 @@ ServiceDetailsHeader.propTypes = {
 export default function ServiceDetailsHeader({ namespaceId, service }) {
   const [updateServiceMutation] = useMutation(UPDATE_SERVICE);
   const notification = useNotification();
+  const setEditedJson = useYamlEditor();
 
   const updateServiceLabels = labels => {
     const updatedSpec = {
@@ -54,9 +61,23 @@ export default function ServiceDetailsHeader({ namespaceId, service }) {
       notification.notifyError({
         content: `Cannot update service: ${e.message}.`,
       });
-      return false; // so that HeaderLabelsEditor modal doesn't close
+      throw e;
     }
   };
+
+  const actions = (
+    <Button
+      option="emphasized"
+      onClick={() =>
+        setEditedJson(
+          service.json,
+          async spec => await updateService(jsyaml.safeLoad(spec)),
+        )
+      }
+    >
+      Edit
+    </Button>
+  );
 
   const breadcrumbItems = [
     { name: 'Services', path: '/', fromContext: 'services' },
@@ -67,13 +88,7 @@ export default function ServiceDetailsHeader({ namespaceId, service }) {
     <PageHeader
       title={service.name}
       breadcrumbItems={breadcrumbItems}
-      actions={
-        <ResourceSpecModal
-          name={service.name}
-          spec={JSON.stringify(service.json)}
-          updateResource={spec => updateService(JSON.parse(spec))}
-        />
-      }
+      actions={actions}
     >
       <HeaderLabelsEditor
         labels={service.labels || {}}
