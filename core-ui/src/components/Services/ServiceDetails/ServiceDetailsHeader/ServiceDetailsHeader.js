@@ -22,7 +22,7 @@ ServiceDetailsHeader.propTypes = {
 export default function ServiceDetailsHeader({ namespaceId, service }) {
   const [updateServiceMutation] = useMutation(UPDATE_SERVICE);
   const notification = useNotification();
-  const setEditedJson = useYamlEditor();
+  const setEditedSpec = useYamlEditor();
 
   const updateServiceLabels = labels => {
     const updatedSpec = {
@@ -69,7 +69,7 @@ export default function ServiceDetailsHeader({ namespaceId, service }) {
     <Button
       option="emphasized"
       onClick={() =>
-        setEditedJson(
+        setEditedSpec(
           service.json,
           async spec => await updateService(jsyaml.safeLoad(spec)),
         )

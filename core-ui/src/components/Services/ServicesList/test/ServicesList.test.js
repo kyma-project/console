@@ -27,6 +27,7 @@ const servicessQueryMock = {
           labels: {
             label: 'test-1',
           },
+          json: {},
           ports: [
             {
               port: '1000',
@@ -41,6 +42,7 @@ const servicessQueryMock = {
           labels: {
             label: 'test-2',
           },
+          json: {},
           ports: [
             {
               port: '1111',

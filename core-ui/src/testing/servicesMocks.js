@@ -5,6 +5,7 @@ const service1 = {
   labels: {
     label: 'test-1',
   },
+  json: {},
   ports: [
     {
       port: 80,
@@ -22,6 +23,7 @@ const service2 = {
   labels: {
     label: 'test-2',
   },
+  json: {},
   ports: [
     {
       port: 80,

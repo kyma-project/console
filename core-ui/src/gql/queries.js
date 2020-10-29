@@ -183,6 +183,7 @@ export const GET_SERVICES = gql`
         port
         serviceProtocol
       }
+      json
     }
   }
 `;

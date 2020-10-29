@@ -2,27 +2,73 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import LuigiClient from '@luigi-project/client';
 import Moment from 'react-moment';
+import jsyaml from 'js-yaml';
 import { Link } from 'fundamental-react';
-import { useQuery } from '@apollo/react-hooks';
-import { GenericList, Labels, EMPTY_TEXT_PLACEHOLDER } from 'react-shared';
+import { useQuery, useMutation } from '@apollo/react-hooks';
+import {
+  GenericList,
+  Labels,
+  useYamlEditor,
+  useNotification,
+  EMPTY_TEXT_PLACEHOLDER,
+} from 'react-shared';
 
 import { GET_SERVICES } from 'gql/queries';
+import { UPDATE_SERVICE } from 'gql/mutations';
 
 ServicesList.propTypes = { namespace: PropTypes.string.isRequired };
 
 export default function ServicesList({ namespace }) {
+  const setEditedSpec = useYamlEditor();
+  const notification = useNotification();
+  const [updateServiceMutation] = useMutation(UPDATE_SERVICE);
+
   const navigateToServiceDetails = service =>
     LuigiClient.linkManager().navigate(`details/${service.name}`);
 
   const { data, error, loading } = useQuery(GET_SERVICES, {
     variables: { namespace },
-    fetchPolicy: 'no-cache',
   });
+
+  const updateService = async (service, updatedSpec) => {
+    try {
+      await updateServiceMutation({
+        variables: {
+          namespace,
+          name: service.name,
+          service: updatedSpec,
+        },
+        refetchQueries: () => [
+          {
+            query: GET_SERVICES,
+            variables: { namespace },
+          },
+        ],
+      });
+      notification.notifySuccess({
+        content: 'Service updated successfully',
+      });
+    } catch (e) {
+      console.warn(e);
+      notification.notifyError({
+        content: `Cannot update service: ${e.message}.`,
+      });
+      throw e;
+    }
+  };
 
   const actions = [
     {
       name: 'Details',
       handler: navigateToServiceDetails,
+    },
+    {
+      name: 'Edit',
+      handler: service =>
+        setEditedSpec(
+          service.json,
+          async spec => await updateService(service, jsyaml.safeLoad(spec)),
+        ),
     },
   ];
 
