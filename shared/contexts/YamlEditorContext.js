@@ -6,10 +6,12 @@ import React, {
   useEffect,
 } from 'react';
 import { SideDrawer } from '../components/SideDrawer/SideDrawer';
+import { Tooltip } from '../components/Tooltip/Tooltip';
 import { Button } from 'fundamental-react';
 import jsyaml from 'js-yaml';
 import { ControlledEditor } from '@monaco-editor/react';
 import LuigiClient from '@luigi-project/client';
+import copyToCliboard from 'copy-to-clipboard';
 
 export const YamlEditorContext = createContext({
   setEditedJson: _ => {},
@@ -36,7 +38,16 @@ const YamlContent = ({ json, setChangedYamlFn }) => {
 
   return (
     <>
-      <h1 className="fd-has-type-4">YAML</h1>
+      <h1 className="fd-has-type-4">
+        YAML
+        <Tooltip content="Copy to clipboard" position="top">
+          <Button
+            option="light"
+            glyph="copy"
+            onClick={() => copyToCliboard(val)}
+          />
+        </Tooltip>
+      </h1>
       <ControlledEditor
         height="90vh"
         width="min(48vw, 150em)"
