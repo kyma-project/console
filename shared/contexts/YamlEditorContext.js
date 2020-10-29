@@ -12,6 +12,7 @@ import jsyaml from 'js-yaml';
 import { ControlledEditor } from '@monaco-editor/react';
 import LuigiClient from '@luigi-project/client';
 import copyToCliboard from 'copy-to-clipboard';
+import { saveAs } from 'file-saver';
 
 export const YamlEditorContext = createContext({
   setEditedJson: _ => {},
@@ -45,6 +46,18 @@ const YamlContent = ({ json, setChangedYamlFn }) => {
             option="light"
             glyph="copy"
             onClick={() => copyToCliboard(val)}
+          />
+        </Tooltip>
+        <Tooltip content="Download" position="top">
+          <Button
+            option="light"
+            glyph="download"
+            onClick={() => {
+              const blob = new Blob([val], {
+                type: 'application/yaml;charset=utf-8',
+              });
+              saveAs(blob, 'spec.yaml');
+            }}
           />
         </Tooltip>
       </h1>

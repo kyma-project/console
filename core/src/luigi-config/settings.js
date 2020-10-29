@@ -17,10 +17,11 @@ const createHeader = () => {
 
 export const settings = 
 {
-    responsiveNavigation: 'simpleMobileOnly',
-    sideNavFooterText: '',
-    header: createHeader(), 
-    appLoadingIndicator: {
-      hideAutomatically: false
-    }
-  };
+  responsiveNavigation: 'simpleMobileOnly',
+  sideNavFooterText: '',
+  header: createHeader(), 
+  appLoadingIndicator: {
+    hideAutomatically: false
+  },
+  customSandboxRules: ['allow-downloads'],
+};
