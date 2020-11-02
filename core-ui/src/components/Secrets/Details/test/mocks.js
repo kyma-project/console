@@ -26,6 +26,7 @@ export const secretQueryMock = {
           label1: 'avalue1',
           label2: 'avalue2',
         },
+        type: 'Opaque',
       },
     },
   },
