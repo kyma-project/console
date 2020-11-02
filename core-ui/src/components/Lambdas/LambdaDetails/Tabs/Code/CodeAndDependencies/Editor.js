@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { ControlledEditor, DiffEditor } from '@monaco-editor/react';
 
 export default function Editor({
@@ -13,6 +13,15 @@ export default function Editor({
   debouncedCallback = () => void 0,
 }) {
   const subscription = useRef();
+  const editorRef = useRef();
+  const editorInstance = useRef();
+
+  var observer = new IntersectionObserver(
+    _ => {
+      if (editorInstance.current) editorInstance.current.layout();
+    },
+    { root: document.documentElement },
+  );
 
   // unsubscribe
   useEffect(() => {
@@ -25,6 +34,11 @@ export default function Editor({
         subscription.current.dispose();
       }
     };
+  }, []);
+
+  useEffect(() => {
+    observer.observe(editorRef.current);
+    // console.log(editorRef.current);
   }, []);
 
   function handleDiffEditorDidMount(_, __, editor) {
@@ -57,17 +71,28 @@ export default function Editor({
       </div>
     );
   }
+  function handleMount(_, editor) {
+    editorInstance.current = editor;
+  }
 
   return (
-    <div className="controlled-editor">
-      <ControlledEditor
-        id={id}
-        height="30em"
-        language={language}
-        theme="vs-light"
-        value={controlledValue}
-        onChange={handleControlledChange}
-      />
+    <div id="a">
+      {/* {isV ? ( */}
+      <div className="controlled-editor" ref={editorRef}>
+        {/* <button onClick={_ => setV(!isV)}>reload</button> */}
+
+        <ControlledEditor
+          editorDidMount={handleMount}
+          id={id}
+          height="30em"
+          language={language}
+          theme="vs-light"
+          value={controlledValue}
+          onChange={handleControlledChange}
+        />
+      </div>
+
+      {/* ) : null} */}
     </div>
   );
 }
