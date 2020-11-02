@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { ControlledEditor, DiffEditor } from '@monaco-editor/react';
 
 export default function Editor({
@@ -18,14 +18,13 @@ export default function Editor({
 
   const observer = new IntersectionObserver(
     _ => {
-      if (monacoEditorInstance.current) monacoEditorInstance.current.layout();
+      if (monacoEditorInstance.current) monacoEditorInstance.current.layout(); // force Monaco redraw once an intersection occured
     },
     { root: document.documentElement },
   );
 
   // unsubscribe
   useEffect(() => {
-    observer.observe(editorContainer.current);
     return () => {
       if (
         subscription &&
@@ -36,6 +35,10 @@ export default function Editor({
       }
     };
   }, []);
+
+  useEffect(() => {
+    observer.observe(editorContainer.current); // add intersection observer to both versions of the editor
+  }, [showDiff]);
 
   function handleDiffEditorDidMount(_, __, editor) {
     monacoEditorInstance.current = editor;
