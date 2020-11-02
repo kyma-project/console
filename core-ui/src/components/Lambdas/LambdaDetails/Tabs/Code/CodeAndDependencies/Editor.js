@@ -16,12 +16,16 @@ export default function Editor({
   const editorContainer = useRef();
   const monacoEditorInstance = useRef();
 
-  const observer = new IntersectionObserver(
-    _ => {
-      if (monacoEditorInstance.current) monacoEditorInstance.current.layout(); // force Monaco redraw once an intersection occured
-    },
-    { root: document.documentElement },
-  );
+  const observer =
+    typeof IntersectionObserver !== 'undefined'
+      ? new IntersectionObserver(
+          _ => {
+            if (monacoEditorInstance.current)
+              monacoEditorInstance.current.layout(); // force Monaco redraw once an intersection occured
+          },
+          { root: document.documentElement },
+        )
+      : undefined;
 
   // unsubscribe
   useEffect(() => {
@@ -37,7 +41,12 @@ export default function Editor({
   }, []);
 
   useEffect(() => {
-    observer.observe(editorContainer.current); // add intersection observer to both versions of the editor
+    if (observer) observer.observe(editorContainer.current);
+    // add intersection observer to both versions of the editor
+    else
+      console.warn(
+        'Could not apply IntersectionObserver to code editor. Visibility problems may occur.',
+      );
   }, [showDiff]);
 
   function handleDiffEditorDidMount(_, __, editor) {
