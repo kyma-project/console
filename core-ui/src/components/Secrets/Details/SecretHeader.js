@@ -71,7 +71,7 @@ export default function SecretHeader({ secret }) {
     } catch (e) {
       console.warn(e);
       notificationManager.notifyError({
-        content: `Cannot update service: ${e.message}.`,
+        content: `Cannot update secret: ${e.message}.`,
       });
       throw e;
     }
