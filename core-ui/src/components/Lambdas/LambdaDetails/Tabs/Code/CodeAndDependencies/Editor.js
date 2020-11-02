@@ -13,18 +13,19 @@ export default function Editor({
   debouncedCallback = () => void 0,
 }) {
   const subscription = useRef();
-  const editorRef = useRef();
-  const editorInstance = useRef();
+  const editorContainer = useRef();
+  const monacoEditorInstance = useRef();
 
-  var observer = new IntersectionObserver(
+  const observer = new IntersectionObserver(
     _ => {
-      if (editorInstance.current) editorInstance.current.layout();
+      if (monacoEditorInstance.current) monacoEditorInstance.current.layout();
     },
     { root: document.documentElement },
   );
 
   // unsubscribe
   useEffect(() => {
+    observer.observe(editorContainer.current);
     return () => {
       if (
         subscription &&
@@ -36,12 +37,8 @@ export default function Editor({
     };
   }, []);
 
-  useEffect(() => {
-    observer.observe(editorRef.current);
-    // console.log(editorRef.current);
-  }, []);
-
   function handleDiffEditorDidMount(_, __, editor) {
+    monacoEditorInstance.current = editor;
     const { modified } = editor.getModel();
 
     subscription.current = modified.onDidChangeContent(_ => {
@@ -58,7 +55,7 @@ export default function Editor({
 
   if (showDiff) {
     return (
-      <div className="diff-editor">
+      <div className="diff-editor" ref={editorContainer}>
         <DiffEditor
           id={id}
           height="30em"
@@ -71,28 +68,20 @@ export default function Editor({
       </div>
     );
   }
-  function handleMount(_, editor) {
-    editorInstance.current = editor;
-  }
 
   return (
-    <div id="a">
-      {/* {isV ? ( */}
-      <div className="controlled-editor" ref={editorRef}>
-        {/* <button onClick={_ => setV(!isV)}>reload</button> */}
-
-        <ControlledEditor
-          editorDidMount={handleMount}
-          id={id}
-          height="30em"
-          language={language}
-          theme="vs-light"
-          value={controlledValue}
-          onChange={handleControlledChange}
-        />
-      </div>
-
-      {/* ) : null} */}
+    <div className="controlled-editor" ref={editorContainer}>
+      <ControlledEditor
+        editorDidMount={(_, editor) => {
+          monacoEditorInstance.current = editor;
+        }}
+        id={id}
+        height="30em"
+        language={language}
+        theme="vs-light"
+        value={controlledValue}
+        onChange={handleControlledChange}
+      />
     </div>
   );
 }
