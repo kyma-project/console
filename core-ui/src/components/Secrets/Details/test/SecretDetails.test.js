@@ -7,13 +7,13 @@ import { MockedProvider } from '@apollo/react-testing';
 
 describe('SecretDetails', () => {
   it('renders with default props', async () => {
-    const { findByText, findByLabelText, debug } = render(
-      <MockedProvider addTypename={false} mocks={[secretQueryMock]}>
-        <SecretDetails name={name} namespace={namespace} />
-      </MockedProvider>,
-    );
-
     await wait(() => {
+      const { findByText, findByLabelText } = render(
+        <MockedProvider addTypename={false} mocks={[secretQueryMock]}>
+          <SecretDetails name={name} namespace={namespace} />
+        </MockedProvider>,
+      );
+
       // Secret Header
       expect(findByLabelText('title')).toHaveTextContent(name);
       // Secret Data
