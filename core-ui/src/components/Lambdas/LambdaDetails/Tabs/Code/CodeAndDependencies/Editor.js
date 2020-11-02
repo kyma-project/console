@@ -46,7 +46,7 @@ export default function Editor({
     else
       console.warn(
         'Could not apply IntersectionObserver to code editor. Visibility problems may occur.',
-      );
+      ); // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [showDiff]);
 
   function handleDiffEditorDidMount(_, __, editor) {
