@@ -24,7 +24,7 @@ import GlobalPermissions from 'components/Permissions/PermissionList/GlobalPermi
 import ClusterRoleDetails from 'components/Permissions/RoleDetails/ClusterRoleDetails';
 import NamespacePermissions from 'components/Permissions/PermissionList/NamespacePermissions';
 import RoleDetails from 'components/Permissions/RoleDetails/RoleDetails';
-import SecretList from 'components/Secrets/List/SecretList';
+import SecretList from 'components/Secrets/Secrets';
 import SecretDetails from 'components/Secrets/Details/SecretDetails';
 
 import { FUNCTIONS_WINDOW_TITLE } from 'components/Lambdas/constants';

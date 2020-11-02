@@ -371,6 +371,7 @@ export const GET_SECRETS_LIST = gql`
       type
       labels
       creationTime
+      json
     }
   }
 `;

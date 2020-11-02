@@ -4,8 +4,9 @@ import PropTypes from 'prop-types';
 import { useQuery } from '@apollo/react-hooks';
 import { GET_SECRET_DETAILS } from 'gql/queries';
 
+import { ResourceNotFound, YamlEditorProvider } from 'react-shared';
+
 import SecretData from './Secret/SecretData';
-import SecretJson from './Json/SecretJson';
 import Header from './SecretHeader';
 
 SecretDetails.propTypes = {
@@ -29,13 +30,20 @@ export default function SecretDetails({ namespace, name }) {
 
   if (loading) return 'Loading...';
   if (error) return `Error: ${error.message}`;
-  if (!data.secret) return `Secret not found`;
+  if (!data.secret)
+    return (
+      <ResourceNotFound
+        resource="Secret"
+        breadcrumb="Secrets"
+        path="/"
+        fromContext="Secret"
+      />
+    );
 
   return (
-    <>
+    <YamlEditorProvider>
       <Header secret={data.secret} />
       {secret && <SecretData secret={secret} />}
-      {secret?.json && <SecretJson secret={secret} />}
-    </>
+    </YamlEditorProvider>
   );
 }

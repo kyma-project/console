@@ -2,22 +2,21 @@ import React from 'react';
 import LuigiClient from '@luigi-project/client';
 import PropTypes from 'prop-types';
 import Moment from 'react-moment';
+import jsyaml from 'js-yaml';
 import {
   GenericList,
-  PageHeader,
   handleDelete,
   useNotification,
   handleSubscriptionArrayEvent,
   Labels,
+  useYamlEditor,
 } from 'react-shared';
 import { Link } from 'fundamental-react';
 
 import { useQuery, useMutation, useSubscription } from '@apollo/react-hooks';
 import { GET_SECRETS_LIST } from 'gql/queries';
-import { DELETE_SECRET } from 'gql/mutations';
+import { DELETE_SECRET, UPDATE_SECRET } from 'gql/mutations';
 import { SECRET_EVENT_SUBSCRIPTION_LIST } from 'gql/subscriptions';
-
-import { SECRETS_TITLE } from 'shared/constants';
 
 SecretList.propTypes = { namespace: PropTypes.string.isRequired };
 
@@ -27,6 +26,8 @@ function goToSecretDetails(name) {
 
 export default function SecretList({ namespace }) {
   const notificationManager = useNotification();
+
+  const setEditedSpec = useYamlEditor();
 
   const [secrets, setSecrets] = React.useState([]);
 
@@ -45,6 +46,34 @@ export default function SecretList({ namespace }) {
   });
 
   const [deleteSecret] = useMutation(DELETE_SECRET);
+  const [updateSecretMutation] = useMutation(UPDATE_SECRET);
+
+  const updateService = async (secret, updatedSpec) => {
+    try {
+      await updateSecretMutation({
+        variables: {
+          namespace,
+          name: secret.name,
+          secret: updatedSpec,
+        },
+        refetchQueries: () => [
+          {
+            query: GET_SECRETS_LIST,
+            variables: { namespace },
+          },
+        ],
+      });
+      notificationManager.notifySuccess({
+        content: 'Service updated successfully',
+      });
+    } catch (e) {
+      console.warn(e);
+      notificationManager.notifyError({
+        content: `Cannot update secret: ${e.message}.`,
+      });
+      throw e;
+    }
+  };
 
   const headerRenderer = () => ['Name', 'Type', 'Age', 'Labels'];
 
@@ -74,21 +103,26 @@ export default function SecretList({ namespace }) {
             }),
         ),
     },
+    {
+      name: 'Edit',
+      handler: secret =>
+        setEditedSpec(
+          secret.json,
+          async spec => await updateService(secret, jsyaml.safeLoad(spec)),
+        ),
+    },
   ];
 
   return (
-    <>
-      <PageHeader title={SECRETS_TITLE} />
-      <GenericList
-        notFoundMessage="There are no secrets in this Namespace"
-        actions={actions}
-        entries={secrets || data.secrets}
-        headerRenderer={headerRenderer}
-        rowRenderer={rowRenderer}
-        serverDataLoading={loading}
-        serverDataError={error}
-        textSearchProperties={['name', 'spec.secretName']}
-      />
-    </>
+    <GenericList
+      notFoundMessage="There are no secrets in this Namespace"
+      actions={actions}
+      entries={secrets || data.secrets}
+      headerRenderer={headerRenderer}
+      rowRenderer={rowRenderer}
+      serverDataLoading={loading}
+      serverDataError={error}
+      textSearchProperties={['name', 'spec.secretName']}
+    />
   );
 }
