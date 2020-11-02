@@ -64,7 +64,7 @@ export default function SecretList({ namespace }) {
         ],
       });
       notificationManager.notifySuccess({
-        content: 'Service updated successfully',
+        content: 'Secret updated successfully',
       });
     } catch (e) {
       console.warn(e);
