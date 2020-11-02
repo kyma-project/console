@@ -48,7 +48,7 @@ export default function SecretList({ namespace }) {
   const [deleteSecret] = useMutation(DELETE_SECRET);
   const [updateSecretMutation] = useMutation(UPDATE_SECRET);
 
-  const updateService = async (secret, updatedSpec) => {
+  const updateSecret = async (secret, updatedSpec) => {
     try {
       await updateSecretMutation({
         variables: {
@@ -108,7 +108,7 @@ export default function SecretList({ namespace }) {
       handler: secret =>
         setEditedSpec(
           secret.json,
-          async spec => await updateService(secret, jsyaml.safeLoad(spec)),
+          async spec => await updateSecret(secret, jsyaml.safeLoad(spec)),
         ),
     },
   ];
