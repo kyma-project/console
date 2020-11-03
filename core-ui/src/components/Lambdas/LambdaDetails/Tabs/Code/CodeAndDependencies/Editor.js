@@ -41,12 +41,14 @@ export default function Editor({
   }, []);
 
   useEffect(() => {
-    if (observer) observer.observe(editorContainer.current);
-    // add intersection observer to both versions of the editor
-    else
+    if (observer) {
+      observer.observe(editorContainer.current);
+      // add intersection observer to both versions of the editor
+    } else {
       console.warn(
         'Could not apply IntersectionObserver to code editor. Visibility problems may occur.',
-      ); // eslint-disable-next-line react-hooks/exhaustive-deps
+      );
+    } // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [showDiff]);
 
   function handleDiffEditorDidMount(_, __, editor) {
