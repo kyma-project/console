@@ -24,14 +24,14 @@ export default function PodList({ namespace }) {
   const notification = useNotification();
 
   const [pods, setPods] = React.useState([]);
-  const { loading, error } = useGet('pods', setPods, namespace);
+  const { loading = true, error } = useGet('pods', setPods, namespace);
 
   const actions = [
     {
       name: 'Edit',
-      handler: service =>
+      handler: pod =>
         setEditedSpec(
-          service.json,
+          pod.json,
           _ => {},
           // async spec => await updateService(service, jsyaml.safeLoad(spec)),
         ),
@@ -47,15 +47,15 @@ export default function PodList({ namespace }) {
   ];
 
   const rowRenderer = entry => [<Link>{entry.metadata.name}</Link>];
-
+  console.log(pods.items);
   return (
     <GenericList
       actions={actions}
       entries={pods.items || []}
       headerRenderer={headerRenderer}
       rowRenderer={rowRenderer}
-      server={error}
-      loading={loading}
+      serverDataError={error}
+      serverDataLoading={loading}
       pagination={{ itemsPerPage: 20, autoHide: true }}
     />
   );
