@@ -3,7 +3,6 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { NamespacesContainerComponent } from '../content/namespaces/namespaces-container/namespaces-container.component';
 import { DeploymentsComponent } from '../content/namespaces/operation/deployments/deployments.component';
-import { PodsComponent } from '../content/namespaces/operation/pods/pods.component';
 import { ReplicaSetsComponent } from '../content/namespaces/operation/replica-sets/replica-sets.component';
 import { PreferencesComponent } from '../content/settings/preferences/preferences.component';
 import { ApplicationDetailsComponent } from '../content/settings/applications/application-details/application-details.component';
@@ -34,7 +33,6 @@ const appRoutes: Routes = [
         children: [
           { path: 'deployments', component: DeploymentsComponent },
           { path: 'replicaSets', component: ReplicaSetsComponent },
-          { path: 'pods', component: PodsComponent },
           { path: 'configmaps', component: ConfigMapsComponent },
           { path: '', redirectTo: 'details', pathMatch: 'full' },
           { path: '**', redirectTo: 'details', pathMatch: 'full' }

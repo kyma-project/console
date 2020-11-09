@@ -5,9 +5,9 @@ import { PageHeader, YamlEditorProvider } from 'react-shared';
 import PodList from './PodList/PodList';
 import { TOOLBAR_TITLE } from './constants';
 
-Services.propTypes = { namespace: PropTypes.string.isRequired };
+Pods.propTypes = { namespace: PropTypes.string.isRequired };
 
-export default function Services({ namespace }) {
+export default function Pods({ namespace }) {
   return (
     <YamlEditorProvider>
       <PageHeader title={TOOLBAR_TITLE} />

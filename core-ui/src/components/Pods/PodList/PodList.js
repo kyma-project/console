@@ -55,7 +55,8 @@ export default function PodList({ namespace }) {
       handler: service =>
         setEditedSpec(
           service.json,
-          async spec => await updateService(service, jsyaml.safeLoad(spec)),
+          _ => {},
+          // async spec => await updateService(service, jsyaml.safeLoad(spec)),
         ),
     },
   ];
