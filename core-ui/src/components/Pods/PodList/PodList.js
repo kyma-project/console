@@ -11,6 +11,7 @@ import {
   useYamlEditor,
   useNotification,
   EMPTY_TEXT_PLACEHOLDER,
+  useGet,
 } from 'react-shared';
 
 import { GET_SERVICES } from 'gql/queries';
@@ -22,32 +23,8 @@ export default function PodList({ namespace }) {
   const setEditedSpec = useYamlEditor();
   const notification = useNotification();
 
-  // const updateService = async (service, updatedSpec) => {
-  //   try {
-  //     await updateServiceMutation({
-  //       variables: {
-  //         namespace,
-  //         name: service.name,
-  //         service: updatedSpec,
-  //       },
-  //       refetchQueries: () => [
-  //         {
-  //           query: GET_SERVICES,
-  //           variables: { namespace },
-  //         },
-  //       ],
-  //     });
-  //     notification.notifySuccess({
-  //       content: 'Service updated successfully',
-  //     });
-  //   } catch (e) {
-  //     console.warn(e);
-  //     notification.notifyError({
-  //       content: `Cannot update service: ${e.message}.`,
-  //     });
-  //     throw e;
-  //   }
-  // };
+  const [pods, setPods] = React.useState([]);
+  const { loading, error } = useGet('pods', setPods, namespace);
 
   const actions = [
     {
@@ -69,16 +46,16 @@ export default function PodList({ namespace }) {
     'Labels',
   ];
 
-  const rowRenderer = entry => [<Link>{entry.name}</Link>];
+  const rowRenderer = entry => [<Link>{entry.metadata.name}</Link>];
 
   return (
     <GenericList
       actions={actions}
-      entries={[]}
+      entries={pods.items || []}
       headerRenderer={headerRenderer}
       rowRenderer={rowRenderer}
-      // server={error}
-      // loading={loading}
+      server={error}
+      loading={loading}
       pagination={{ itemsPerPage: 20, autoHide: true }}
     />
   );
