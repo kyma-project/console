@@ -57,7 +57,7 @@ $scale-compensation: 1.01; // enlarge masks a little bit to remove an unwanted "
         // it becomes the right half of the circle
         &.fill--#{$i} {
           background-color: $circle-color;
-          transform: rotate(calc((100 - #{$i} / 50) * 0.5turn + 0.5turn));
+          transform: rotate(calc((-#{$i} / 50 + 1) * 0.5turn));
         }
       }
     }
