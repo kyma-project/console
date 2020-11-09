@@ -13,7 +13,7 @@ export function useGet(resourceType, onDataReceived, namespace) {
   const refetch = React.useCallback(async () => {
     setLoading(true);
     try {
-      let urlToFetchFrom =
+      const urlToFetchFrom =
         baseUrl(fromConfig) +
         (namespace ? `/namespaces/${namespace}/` : '/') +
         resourceType;

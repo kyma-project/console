@@ -12,6 +12,7 @@ import {
   useNotification,
   EMPTY_TEXT_PLACEHOLDER,
   useGet,
+  useUpdate,
 } from 'react-shared';
 
 import { GET_SERVICES } from 'gql/queries';
@@ -22,19 +23,34 @@ PodList.propTypes = { namespace: PropTypes.string.isRequired };
 export default function PodList({ namespace }) {
   const setEditedSpec = useYamlEditor();
   const notification = useNotification();
-
+  const updatePodMutation = useUpdate('pods');
   const [pods, setPods] = React.useState([]);
   const { loading = true, error } = useGet('pods', setPods, namespace);
+
+  const handleSaveClick = podData => async newYAML => {
+    let json;
+
+    try {
+      json = jsyaml.safeLoad(newYAML);
+      if (json.metadata?.resourceVersion) delete json.metadata.resourceVersion; // TODO: do this on the backend side
+      await updatePodMutation({
+        name: podData.metadata.name,
+        namespace,
+        json: newYAML,
+      });
+    } catch (e) {
+      console.error(e);
+      notification.notifyError({
+        content: 'Failed to update the LimitRange',
+      });
+      throw e;
+    }
+  };
 
   const actions = [
     {
       name: 'Edit',
-      handler: pod =>
-        setEditedSpec(
-          pod.json,
-          _ => {},
-          // async spec => await updateService(service, jsyaml.safeLoad(spec)),
-        ),
+      handler: pod => setEditedSpec(pod.json, handleSaveClick(pod)),
     },
   ];
 
@@ -47,7 +63,7 @@ export default function PodList({ namespace }) {
   ];
 
   const rowRenderer = entry => [<Link>{entry.metadata.name}</Link>];
-  console.log(pods.items);
+
   return (
     <GenericList
       actions={actions}
