@@ -12,10 +12,7 @@ function login() {
 }
 
 function getUrlParameter(name) {
-  name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
-  var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
-  var results = regex.exec(location.search);
-  return (results && decodeURIComponent(results[1].replace(/\+/g, ' '))) || '';
+  return new URL(location.href).searchParams.get(name);
 }
 
 var reason = getUrlParameter('reason');
@@ -27,6 +24,7 @@ if (error) {
 
 switch (reason) {
   case 'tokenExpired':
+    sessionStorage.removeItem('luigi.auth');
     document.getElementById('headline').innerText = 'Your session has expired.';
     break;
   case 'loginError':
