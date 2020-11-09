@@ -25,9 +25,6 @@ import { TimeAgoPipe } from 'time-ago-pipe';
 import { DeploymentEntryRendererComponent } from './content/namespaces/operation/deployments/deployment-entry-renderer/deployment-entry-renderer.component';
 import { DeploymentHeaderRendererComponent } from './content/namespaces/operation/deployments/deployment-header-renderer/deployment-header-renderer.component';
 import { DeploymentsComponent } from './content/namespaces/operation/deployments/deployments.component';
-import { PodsEntryRendererComponent } from './content/namespaces/operation/pods/pods-entry-renderer/pods-entry-renderer.component';
-import { PodsHeaderRendererComponent } from './content/namespaces/operation/pods/pods-header-renderer/pods-header-renderer.component';
-import { PodsComponent } from './content/namespaces/operation/pods/pods.component';
 import { ReplicaSetsEntryRendererComponent } from './content/namespaces/operation/replica-sets/replica-sets-entry-renderer/replica-sets-entry-renderer.component';
 import { ReplicaSetsHeaderRendererComponent } from './content/namespaces/operation/replica-sets/replica-sets-header-renderer/replica-sets-header-renderer.component';
 import { ReplicaSetsComponent } from './content/namespaces/operation/replica-sets/replica-sets.component';
@@ -90,7 +87,7 @@ import { WindowTitleService } from 'shared/services/window-title.service';
     AppComponent,
     NamespacesContainerComponent,
     DeploymentsComponent,
-    PodsComponent,
+
     TimeAgoPipe,
     ApplicationsComponent,
     ApplicationDetailsComponent,
@@ -104,8 +101,7 @@ import { WindowTitleService } from 'shared/services/window-title.service';
     ReplicaSetsHeaderRendererComponent,
     DeploymentHeaderRendererComponent,
     DeploymentEntryRendererComponent,
-    PodsHeaderRendererComponent,
-    PodsEntryRendererComponent,
+
     ConfigMapsEntryRendererComponent,
     ConfigMapsHeaderRendererComponent,
     EditBindingsModalComponent,
@@ -170,8 +166,7 @@ import { WindowTitleService } from 'shared/services/window-title.service';
     ReplicaSetsHeaderRendererComponent,
     DeploymentEntryRendererComponent,
     DeploymentHeaderRendererComponent,
-    PodsHeaderRendererComponent,
-    PodsEntryRendererComponent,
+
     ConfigMapsEntryRendererComponent,
     ConfigMapsHeaderRendererComponent,
     ApplicationsHeaderRendererComponent,
