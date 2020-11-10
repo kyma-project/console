@@ -8,7 +8,7 @@ const CircleProgress = ({ value, max, color = 'blue', onClick, children }) => {
     'cursor-pointer': onClick,
   });
 
-  const percent = max ? Math.round((value * 100) / max) : 100;
+  const percent = max ? Math.round((value * 100) / max) : 0;
   return (
     <div className="circle-progress" onClick={onClick}>
       <div className={circleClasses}>
