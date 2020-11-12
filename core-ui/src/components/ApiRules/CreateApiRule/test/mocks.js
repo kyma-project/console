@@ -28,7 +28,7 @@ export const sampleAPIRule = {
         methods: supportedMethodsList,
         accessStrategies: [
           {
-            name: 'noop',
+            name: 'allow',
             config: {},
           },
         ],

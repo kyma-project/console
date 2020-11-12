@@ -98,7 +98,7 @@ describe('ApiRuleForm', () => {
             {
               methods: [],
               path: '/path',
-              accessStrategies: [{ name: 'noop', config: {} }],
+              accessStrategies: [{ name: 'allow', config: {} }],
             },
           ],
         },
