@@ -1,5 +1,8 @@
 import { ApolloClient } from 'apollo-client';
-import { InMemoryCache } from 'apollo-cache-inmemory';
+import {
+  InMemoryCache,
+  IntrospectionFragmentMatcher,
+} from 'apollo-cache-inmemory';
 import { onError } from 'apollo-link-error';
 import { ApolloLink } from 'apollo-link';
 import { split } from 'apollo-link';
@@ -66,12 +69,18 @@ export function createKymaApolloClient() {
     authHttpLink,
   );
 
+  const fragmentMatcher = new IntrospectionFragmentMatcher({
+    introspectionQueryResultData: {
+      __schema: {
+        types: [],
+      },
+    },
+  });
+
   return new ApolloClient({
     uri: graphqlApiUrl,
     link: ApolloLink.from([errorLink, link]),
-    cache: new InMemoryCache({
-      dataIdFromObject: object => object.name || null,
-    }),
+    cache: new InMemoryCache({ fragmentMatcher }),
     defaultOptions: {
       query: { fetchPolicy: 'cache-and-network' },
       watchQuery: { fetchPolicy: 'cache-and-network' },
