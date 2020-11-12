@@ -1,10 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import LuigiClient from '@luigi-project/client';
-import Moment from 'react-moment';
+
 import jsyaml from 'js-yaml';
 import { Link } from 'fundamental-react';
-import { useQuery, useMutation } from '@apollo/react-hooks';
+
 import {
   GenericList,
   Labels,
@@ -15,15 +14,12 @@ import {
   useUpdate,
 } from 'react-shared';
 
-import { GET_SERVICES } from 'gql/queries';
-import { UPDATE_SERVICE } from 'gql/mutations';
-
 PodList.propTypes = { namespace: PropTypes.string.isRequired };
 
 export default function PodList({ namespace }) {
   const setEditedSpec = useYamlEditor();
   const notification = useNotification();
-  const updatePodMutation = useUpdate('pods');
+  const updatePodMutation = useUpdate('pods', { namespace });
   const [pods, setPods] = React.useState([]);
   const { loading = true, error } = useGet('pods', setPods, namespace);
 
@@ -33,10 +29,13 @@ export default function PodList({ namespace }) {
     try {
       json = jsyaml.safeLoad(newYAML);
       if (json.metadata?.resourceVersion) delete json.metadata.resourceVersion; // TODO: do this on the backend side
+      if (json.metadata?.creationTimestamp)
+        delete json.metadata.creationTimestamp; // TODO: do this on the backend side
+
       await updatePodMutation({
         name: podData.metadata.name,
         namespace,
-        json: newYAML,
+        json: json,
       });
     } catch (e) {
       console.error(e);
