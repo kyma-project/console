@@ -12,7 +12,6 @@ const useMutation = method => {
         (data?.namespace ? `/namespaces/${data.namespace}/` : '/') +
         resourceType +
         `/${data.name}`;
-      console.log(url);
       const response = await fetch(url, {
         method,
         headers: {
@@ -31,5 +30,5 @@ const useMutation = method => {
   };
 };
 
-export const useUpdate = useMutation('PATCH');
-// export const useDelete = useMutation('DELETE');
+export const useUpdate = useMutation('PUT');
+export const useDelete = useMutation('DELETE');

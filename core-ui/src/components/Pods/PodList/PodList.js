@@ -12,6 +12,7 @@ import {
   EMPTY_TEXT_PLACEHOLDER,
   useGet,
   useUpdate,
+  useDelete,
 } from 'react-shared';
 
 PodList.propTypes = { namespace: PropTypes.string.isRequired };
@@ -20,6 +21,7 @@ export default function PodList({ namespace }) {
   const setEditedSpec = useYamlEditor();
   const notification = useNotification();
   const updatePodMutation = useUpdate('pods');
+  const deletePodMutation = useDelete('pods');
   const [pods, setPods] = React.useState([]);
   const { loading = true, error } = useGet('pods', setPods, namespace);
 
@@ -30,19 +32,40 @@ export default function PodList({ namespace }) {
         namespace,
         json: jsyaml.safeLoad(newYAML),
       });
+      notification.notifySuccess({ content: 'Succesfully updated Pod' });
     } catch (e) {
       console.error(e);
       notification.notifyError({
-        content: 'Failed to update the LimitRange',
+        content: 'Failed to update the Pod',
       });
       throw e;
     }
   };
 
+  async function handlePodDelete(pod) {
+    try {
+      await deletePodMutation({
+        name: pod.metadata.name,
+        namespace,
+      });
+      notification.notifySuccess({ content: 'Succesfully deleted Pod' });
+    } catch (e) {
+      console.error(e);
+      notification.notifyError({
+        content: 'Failed to delete the Pod',
+      });
+      throw e;
+    }
+  }
+
   const actions = [
     {
       name: 'Edit',
       handler: pod => setEditedSpec(pod.json, handleSaveClick(pod)),
+    },
+    {
+      name: 'Delete',
+      handler: handlePodDelete,
     },
   ];
 
