@@ -13,17 +13,55 @@ import {
   useGet,
   useUpdate,
   useDelete,
+  useSubscription,
 } from 'react-shared';
 
 PodList.propTypes = { namespace: PropTypes.string.isRequired };
 
+export function handleSubscriptionEvent(setResource) {
+  const filterByName = obj => entry =>
+    entry.metadata.name !== obj.metadata.name;
+
+  return data => {
+    const { type, object } = data;
+    console.log('GOT EVENT', type, object);
+    switch (type) {
+      case 'ADDED':
+        setResource(resource => {
+          if (!resource.find(r => r.metadata.name === object.metadata.name)) {
+            return [...resource, object];
+          }
+          return resource;
+        });
+        break;
+      case 'DELETED':
+        setResource(resource => resource.filter(filterByName(object)));
+        break;
+      case 'MODIFIED':
+        setResource(
+          resource => resource.map(r => (filterByName(object)(r) ? r : object)), // fancy
+        );
+        break;
+      default:
+        console.log(data);
+        break;
+    }
+  };
+}
+
 export default function PodList({ namespace }) {
+  const [pods, setPods] = React.useState([]);
   const setEditedSpec = useYamlEditor();
   const notification = useNotification();
   const updatePodMutation = useUpdate('pods');
   const deletePodMutation = useDelete('pods');
-  const [pods, setPods] = React.useState([]);
   const { loading = true, error } = useGet('pods', setPods, namespace);
+
+  useSubscription(
+    'pods',
+    React.useCallback(handleSubscriptionEvent(setPods), []),
+    { namespace },
+  );
 
   const handleSaveClick = podData => async newYAML => {
     try {
@@ -77,7 +115,14 @@ export default function PodList({ namespace }) {
     'Labels',
   ];
 
-  const rowRenderer = entry => [<Link>{entry.metadata.name}</Link>];
+  const rowRenderer = entry => [
+    <Link>{entry.metadata.name}</Link>,
+    <>
+      {Object.keys(entry.metadata.labels).map(k => (
+        <div>{k}</div>
+      ))}
+    </>,
+  ];
 
   return (
     <GenericList
