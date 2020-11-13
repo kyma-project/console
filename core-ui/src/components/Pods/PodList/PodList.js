@@ -19,23 +19,16 @@ PodList.propTypes = { namespace: PropTypes.string.isRequired };
 export default function PodList({ namespace }) {
   const setEditedSpec = useYamlEditor();
   const notification = useNotification();
-  const updatePodMutation = useUpdate('pods', { namespace });
+  const updatePodMutation = useUpdate('pods');
   const [pods, setPods] = React.useState([]);
   const { loading = true, error } = useGet('pods', setPods, namespace);
 
   const handleSaveClick = podData => async newYAML => {
-    let json;
-
     try {
-      json = jsyaml.safeLoad(newYAML);
-      if (json.metadata?.resourceVersion) delete json.metadata.resourceVersion; // TODO: do this on the backend side
-      if (json.metadata?.creationTimestamp)
-        delete json.metadata.creationTimestamp; // TODO: do this on the backend side
-
       await updatePodMutation({
         name: podData.metadata.name,
         namespace,
-        json: json,
+        json: jsyaml.safeLoad(newYAML),
       });
     } catch (e) {
       console.error(e);

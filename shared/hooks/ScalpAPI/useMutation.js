@@ -1,4 +1,3 @@
-import React from 'react';
 import { baseUrl } from './config';
 import { useMicrofrontendContext } from '../../contexts/MicrofrontendContext';
 import { useConfig } from '../../contexts/ConfigContext';
@@ -10,8 +9,9 @@ const useMutation = method => {
     return async data => {
       let url =
         baseUrl(fromConfig) +
-        (options?.namespace ? `/namespaces/${options.namespace}/` : '/') +
-        resourceType;
+        (data?.namespace ? `/namespaces/${data.namespace}/` : '/') +
+        resourceType +
+        `/${data.name}`;
       console.log(url);
       const response = await fetch(url, {
         method,
