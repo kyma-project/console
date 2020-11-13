@@ -26,7 +26,7 @@ export const useSubscription = (
     // socket.on('error', err => console.log('DISCONNECT', err));
     // socket.on('reconnect', err => console.log('RECONNECT', err));
 
-    socket.on('message', console.log);
+    socket.on('message', dispatch);
     return () => socket.disconnect();
   }, [resource, dispatch]);
 };

@@ -23,8 +23,8 @@ export function useGet(resourceType, onDataReceived, namespace) {
       });
       if (!response.ok) throw Error(response.statusText);
       const payload = await response.json();
-      if (typeof onDataReceived === 'function') onDataReceived(payload);
-      setData(payload);
+      if (typeof onDataReceived === 'function') onDataReceived(payload.items);
+      setData(payload.items);
     } catch (e) {
       console.error(e);
       setError(e);

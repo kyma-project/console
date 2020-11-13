@@ -127,7 +127,7 @@ export default function PodList({ namespace }) {
   return (
     <GenericList
       actions={actions}
-      entries={pods.items || []}
+      entries={pods || []}
       headerRenderer={headerRenderer}
       rowRenderer={rowRenderer}
       serverDataError={error}
