@@ -10,11 +10,13 @@ import {
   useYamlEditor,
   useNotification,
   EMPTY_TEXT_PLACEHOLDER,
+  StatusBadge,
   useGet,
   useUpdate,
   useDelete,
   useSubscription,
 } from 'react-shared';
+import Moment from 'react-moment';
 
 PodList.propTypes = { namespace: PropTypes.string.isRequired };
 
@@ -49,6 +51,11 @@ export function handleSubscriptionEvent(setResource) {
   };
 }
 
+const PodStatus = ({ pod }) => {
+  const phase = pod.status?.phase; //TODO consider statusConditions to calculate status
+  return <StatusBadge autoResolveType>{phase}</StatusBadge>;
+};
+
 export default function PodList({ namespace }) {
   const [pods, setPods] = React.useState([]);
   const setEditedSpec = useYamlEditor();
@@ -57,11 +64,7 @@ export default function PodList({ namespace }) {
   const deletePodMutation = useDelete('pods');
   const { loading = true, error } = useGet('pods', setPods, namespace);
 
-  useSubscription(
-    'pods',
-    React.useCallback(handleSubscriptionEvent(setPods), []),
-    { namespace },
-  );
+  useSubscription('pods', handleSubscriptionEvent(setPods), { namespace });
 
   const handleSaveClick = podData => async newYAML => {
     try {
@@ -107,25 +110,23 @@ export default function PodList({ namespace }) {
     },
   ];
 
-  const headerRenderer = () => [
-    'Name',
-    'Cluster IP',
-    'Internal endpoints',
-    'Age',
-    'Labels',
-  ];
+  const headerRenderer = () => ['Name', 'Age', 'Labels', 'Status'];
 
   const rowRenderer = entry => [
     <Link>{entry.metadata.name}</Link>,
-    <>
-      {Object.keys(entry.metadata.labels).map(k => (
-        <div>{k}</div>
-      ))}
-    </>,
+
+    <Moment utc fromNow>
+      {entry.metadata.creationTimestamp}
+    </Moment>,
+    <div style={{ maxWidth: '55em' /*TODO*/ }}>
+      <Labels labels={entry.metadata.labels} />
+    </div>,
+    <PodStatus pod={entry} />,
   ];
 
   return (
     <GenericList
+      textSearchProperties={['metadata.name']}
       actions={actions}
       entries={pods || []}
       headerRenderer={headerRenderer}
