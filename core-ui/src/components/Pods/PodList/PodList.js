@@ -9,7 +9,6 @@ import {
   Labels,
   useYamlEditor,
   useNotification,
-  EMPTY_TEXT_PLACEHOLDER,
   StatusBadge,
   useGet,
   useUpdate,
@@ -64,7 +63,11 @@ export default function PodList({ namespace }) {
   const deletePodMutation = useDelete('pods');
   const { loading = true, error } = useGet('pods', setPods, namespace);
 
-  useSubscription('pods', handleSubscriptionEvent(setPods), { namespace });
+  useSubscription(
+    'pods',
+    React.useCallback(handleSubscriptionEvent(setPods), [namespace]),
+    { namespace },
+  );
 
   const handleSaveClick = podData => async newYAML => {
     try {
