@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo testing disabled",
+    "test": "jest",
     "test:watch": "jest --watch",
     "build": "webpack --env.production",
     "start:kyma": "webpack --env.development --watch"
