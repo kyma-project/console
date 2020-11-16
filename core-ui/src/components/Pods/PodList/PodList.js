@@ -25,7 +25,6 @@ export function handleSubscriptionEvent(setResource) {
 
   return data => {
     const { type, object } = data;
-    console.log('GOT EVENT', type, object);
     switch (type) {
       case 'ADDED':
         setResource(resource => {
