@@ -1,1 +1,1 @@
-export const baseUrl = getConfigFn => getConfigFn('ScalpApiUrl');
+export const baseUrl = getConfigFn => getConfigFn('pamelaApiUrl');
