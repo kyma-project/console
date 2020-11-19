@@ -138,6 +138,7 @@ export default function ServiceInstancesList() {
   return (
     <ThemeWrapper>
       <ServiceInstanceToolbar
+        searchQuery={searchQuery}
         searchFn={setSearchQuery}
         onLabelChange={handleLabelChange}
         activeLabelFilters={activeLabelFilters}

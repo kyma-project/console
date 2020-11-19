@@ -3,10 +3,11 @@ import React from 'react';
 import { serviceInstanceConstants } from 'helpers/constants';
 import { Toolbar } from '@kyma-project/react-components';
 
-import SearchDropdown from './SearchDropdown.component';
+import SearchDropdown from 'shared/SearchDropdown.component';
 import FilterDropdown from './FilterDropdown.component';
 
 const ServiceInstanceToolbar = ({
+  searchQuery,
   searchFn,
   availableLabels,
   onLabelChange,
@@ -21,7 +22,10 @@ const ServiceInstanceToolbar = ({
     >
       {serviceInstancesExists ? (
         <>
-          <SearchDropdown onChange={e => searchFn(e.target.value)} />
+          <SearchDropdown
+            searchQuery={searchQuery}
+            onChange={e => searchFn(e.target.value)}
+          />
           <FilterDropdown
             onLabelChange={onLabelChange}
             availableLabels={availableLabels}

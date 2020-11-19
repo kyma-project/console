@@ -1,12 +1,13 @@
 import React from 'react';
 
 import { FormInput } from 'fundamental-react';
-import { SearchWrapper } from './styled';
+import { SearchWrapper } from '../components/ServiceClassList/ServiceClassToolbar/styled';
 
-const SearchDropdown = ({ onChange }) => {
+const SearchDropdown = ({ searchQuery, onChange }) => {
   return (
     <SearchWrapper>
       <FormInput
+        value={searchQuery}
         type="text"
         placeholder="Search"
         onChange={onChange}

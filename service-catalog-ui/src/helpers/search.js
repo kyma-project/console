@@ -1,7 +1,4 @@
-import {
-  serviceInstanceConstants,
-  serviceClassConstants,
-} from 'helpers/constants';
+import { serviceInstanceConstants } from 'helpers/constants';
 import {
   isServiceInstance,
   isAddonInstance,
@@ -67,12 +64,7 @@ export function determineAvailableLabels(
   return labelsWithOccurrences;
 }
 
-export const determineDisplayedServiceClasses = (
-  serviceClasses,
-  tabIndex,
-  searchQuery,
-  activeLabels,
-) => {
+export const determineDisplayedItems = (serviceClasses, searchQuery) => {
   const searched = serviceClasses.filter(item => {
     const searchRegexp = new RegExp(searchQuery, 'i');
 
@@ -83,14 +75,5 @@ export const determineDisplayedServiceClasses = (
     );
   });
 
-  const filteredByLabels = searched.filter(item =>
-    activeLabels.every(activeLabel => item.labels.includes(activeLabel)),
-  );
-
-  const filterFunction =
-    tabIndex === serviceClassConstants.addonsIndex ? isAddon : isService;
-
-  const filteredByTab = filteredByLabels.filter(filterFunction);
-
-  return filteredByTab;
+  return [searched.filter(isService), searched.filter(isAddon)];
 };

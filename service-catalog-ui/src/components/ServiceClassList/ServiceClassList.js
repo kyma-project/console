@@ -8,7 +8,7 @@ import { Identifier } from 'fundamental-react';
 
 import { getAllServiceClasses } from './queries';
 import { serviceClassConstants } from 'helpers/constants';
-import { determineDisplayedServiceClasses } from 'helpers/search';
+import { determineDisplayedItems } from 'helpers/search';
 
 import Cards from './Cards/Cards.component';
 import ServiceClassToolbar from './ServiceClassToolbar/ServiceClassToolbar.component';
@@ -81,9 +81,15 @@ export default function ServiceClassList() {
     .concat(queryData.clusterServiceClasses)
     .filter(e => e.displayName || e.externalName || e.name);
 
+  const [filteredServices, filteredAddons] = determineDisplayedItems(
+    serviceClasses,
+    searchQuery,
+  );
+
   return (
     <>
       <ServiceClassToolbar
+        searchQuery={searchQuery}
         searchFn={setSearchQuery}
         serviceClassesExists={serviceClasses.length > 0}
       />
@@ -94,15 +100,7 @@ export default function ServiceClassList() {
         className="header-styles"
       >
         <Tab
-          status={status(
-            determineDisplayedServiceClasses(
-              serviceClasses,
-              serviceClassConstants.servicesIndex,
-              searchQuery,
-              [],
-            ).length,
-            'services-status',
-          )}
+          status={status(filteredServices.length, 'services-status')}
           title={
             <Tooltip content={serviceClassConstants.servicesTooltipDescription}>
               {serviceClassConstants.services}
@@ -115,29 +113,13 @@ export default function ServiceClassList() {
             </ServiceClassDescription>
             <ServiceClassListWrapper>
               <CardsWrapper data-e2e-id="cards">
-                <Cards
-                  data-e2e-id="cards"
-                  items={determineDisplayedServiceClasses(
-                    serviceClasses,
-                    serviceClassConstants.servicesIndex,
-                    searchQuery,
-                    [],
-                  )}
-                />
+                <Cards data-e2e-id="cards" items={filteredServices} />
               </CardsWrapper>
             </ServiceClassListWrapper>
           </>
         </Tab>
         <Tab
-          status={status(
-            determineDisplayedServiceClasses(
-              serviceClasses,
-              serviceClassConstants.addonsIndex,
-              searchQuery,
-              [],
-            ).length,
-            'addons-status',
-          )}
+          status={status(filteredAddons.length, 'addons-status')}
           title={
             <Tooltip content={serviceClassConstants.addonsTooltipDescription}>
               {serviceClassConstants.addons}
@@ -150,15 +132,7 @@ export default function ServiceClassList() {
             </ServiceClassDescription>
             <ServiceClassListWrapper>
               <CardsWrapper data-e2e-id="cards">
-                <Cards
-                  data-e2e-id="cards"
-                  items={determineDisplayedServiceClasses(
-                    serviceClasses,
-                    serviceClassConstants.addonsIndex,
-                    searchQuery,
-                    [],
-                  )}
-                />
+                <Cards data-e2e-id="cards" items={filteredAddons} />
               </CardsWrapper>
             </ServiceClassListWrapper>
           </>

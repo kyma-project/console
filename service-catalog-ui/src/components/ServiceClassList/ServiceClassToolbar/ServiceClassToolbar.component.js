@@ -3,9 +3,13 @@ import React from 'react';
 import { serviceClassConstants } from 'helpers/constants';
 import { Toolbar } from '@kyma-project/react-components';
 
-import SearchDropdown from './SearchDropdown.component';
+import SearchDropdown from '../../../shared/SearchDropdown.component';
 
-const ServiceClassToolbar = ({ searchFn, serviceClassesExists }) => {
+const ServiceClassToolbar = ({
+  searchFn,
+  serviceClassesExists,
+  searchQuery,
+}) => {
   return (
     <Toolbar
       background="#fff"
@@ -13,7 +17,10 @@ const ServiceClassToolbar = ({ searchFn, serviceClassesExists }) => {
       aria-label="title"
     >
       {serviceClassesExists && (
-        <SearchDropdown onChange={e => searchFn(e.target.value)} />
+        <SearchDropdown
+          searchQuery={searchQuery}
+          onChange={e => searchFn(e.target.value)}
+        />
       )}
     </Toolbar>
   );
