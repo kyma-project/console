@@ -44,7 +44,7 @@ const ServiceInstanceInfo = ({ serviceInstance }) => {
 
   const classContent = instanceClass.name ? (
     <button
-      className="link has-padding-0"
+      className="link has-padding-0 fd-has-type-0"
       data-e2e-id="instance-service-class"
       onClick={() => goToServiceClassDetails(instanceClass.name)}
     >
@@ -94,7 +94,7 @@ const ServiceInstanceInfo = ({ serviceInstance }) => {
     } else if (serviceClassDocsPerPlan) {
       return (
         <button
-          className="link has-padding-0"
+          className="link has-padding-0 fd-has-type-0"
           onClick={() =>
             goToServiceClassDetailsWithPlan(
               instanceClass.name,
