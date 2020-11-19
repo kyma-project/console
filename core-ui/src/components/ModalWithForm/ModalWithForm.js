@@ -93,7 +93,7 @@ const ModalWithForm = ({
         ? form.reportValidity()
         : form.checkValidity()) // IE workaround; HTML validation tooltips won't be visible
     ) {
-      form.dispatchEvent(new Event('submit'));
+      form.dispatchEvent(new Event('submit', { cancelable: true }));
       setTimeout(() => setOpenStatus(false));
     }
   }
@@ -135,6 +135,7 @@ const ModalWithForm = ({
           modalOpeningComponent
         ) : (
           <Button
+            type="button"
             glyph={button.glyph || null}
             option={button.option}
             compact={button.compact || false}

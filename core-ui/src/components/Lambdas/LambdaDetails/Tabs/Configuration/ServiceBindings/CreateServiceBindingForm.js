@@ -90,7 +90,8 @@ export default function CreateServiceBindingForm({
     setExistingCredentials('');
   }, [serviceInstanceName, createCredentials]);
 
-  async function handleFormSubmit() {
+  async function handleFormSubmit(e) {
+    e.preventDefault();
     const parameters = {
       serviceInstanceName: serviceInstanceName,
       serviceBindingUsageParameters: envPrefix
