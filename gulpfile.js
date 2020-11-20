@@ -106,7 +106,6 @@ gulp.task('watch:libraries', () => {
 const apps = [
   'add-ons',
   'compass',
-  'content',
   'core',
   'core-ui',
   'logging',

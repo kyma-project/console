@@ -10,10 +10,8 @@ aliases:
     - dariadomagala
     - akucharska
     content-ui-reviewers:
-    - magicmatatjahu
     - aerfio
     content-ui-approvers:
-    - magicmatatjahu
     - aerfio
     documentation-reviewers:
     - kazydek
