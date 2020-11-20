@@ -1,12 +1,6 @@
 import styled from 'styled-components';
 import { tabsStyling } from '../renderers/styled';
 
-export const ContentUIWrapper = styled.div`
-  &&& {
-    width: 100%;
-  }
-`;
-
 export const CatalogUIWrapper = styled.div`
   &&& {
     width: 100%;
