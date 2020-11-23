@@ -20,15 +20,10 @@ type AG = ClusterAssetGroup | AssetGroup;
 export class DocsLoader {
   private sources: SourceWithOptions[] = [];
   private assetGroup: AG = {} as AG;
-  private sortServiceClassDocumentation: boolean = false;
 
   setAssetGroup(assetGroup: AG): void {
     this.assetGroup = assetGroup;
     this.clear();
-  }
-
-  setSortServiceClassDocumentation(sort: boolean = false): void {
-    this.sortServiceClassDocumentation = sort;
   }
 
   async fetchAssets(): Promise<void> {
@@ -40,11 +35,7 @@ export class DocsLoader {
     ]).then(r => (this.sources = r.flat()));
   }
 
-  getSources(considerAsGroup: boolean = false): Sources {
-    if (!considerAsGroup) {
-      return this.sources;
-    }
-
+  getSources(): Sources {
     const sources: Sources = [
       {
         sources: this.sources,
@@ -199,7 +190,7 @@ export class DocsLoader {
       });
     }
 
-    if (data && this.sortServiceClassDocumentation) {
+    if (data) {
       data = data.sort((first, sec) => {
         const nameA =
           first.metadata &&

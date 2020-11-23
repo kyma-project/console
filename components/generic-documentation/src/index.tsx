@@ -85,14 +85,14 @@ export enum LayoutType {
 export interface GenericDocumentationProps {
   assetGroup?: ClusterAssetGroup | AssetGroup;
   sources?: Sources;
-  layout?: LayoutType;
+  layout: LayoutType;
   additionalTabs?: TabProps[];
 }
 
 export const GenericDocumentation: React.FunctionComponent<GenericDocumentationProps> = ({
   assetGroup,
   sources: srcs = [],
-  layout = LayoutType.CONTENT_UI,
+  layout,
   ...others
 }) => {
   useEffect(() => {
@@ -108,11 +108,10 @@ export const GenericDocumentation: React.FunctionComponent<GenericDocumentationP
       }
 
       loader.setAssetGroup(assetGroup);
-      loader.setSortServiceClassDocumentation(layout !== LayoutType.CONTENT_UI);
 
       await loader.fetchAssets();
 
-      setSources(loader.getSources(layout !== LayoutType.CONTENT_UI));
+      setSources(loader.getSources());
     };
     fetchAssets();
   }, [assetGroup, setSources]);
