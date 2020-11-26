@@ -1,3 +1,4 @@
+import { AppConfig } from './../../../../app.config';
 import { WindowTitleService } from 'shared/services/window-title.service';
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { CurrentNamespaceService } from 'namespaces/services/current-namespace.service';
@@ -89,12 +90,31 @@ export class PodsComponent extends AbstractGraphqlElementListComponent
   getEntryEventHandler(): any {
     const handler = super.getEntryEventHandler();
     handler.showLogs = (entry: any) => {
-      const nodeParams = { namespace: this.currentNamespaceId, compact: 'true', pod: entry.name };
-      luigiClient
-        .linkManager()
-        .withParams(nodeParams)
-        .openAsModal('/home/cmf-logs', { title: `Logs from ${entry.name}` });
+      const query = `{namespace="${this.currentNamespaceId}", pod="${entry.name}"}`;
+      window.open(this.createGrafanaLink(query), '_blank');
     };
     return handler;
+  }
+
+  createGrafanaLink(query: any, options = {
+    from: 'now-1h',
+    to: 'now',
+    dataSource: 'Loki',
+    mode: 'Logs',
+  }): string {
+    const queryParameters = { expr: query };
+    const { from, to, dataSource, mode } = options;
+    const parameters = [
+      from,
+      to,
+      dataSource,
+      queryParameters,
+      { mode },
+      { ui: [true, true, true, 'none'] },
+    ];
+    return `https://grafana.${AppConfig.domain}/explore?left=${JSON.stringify(
+      parameters,
+    )}`;
+
   }
 }
