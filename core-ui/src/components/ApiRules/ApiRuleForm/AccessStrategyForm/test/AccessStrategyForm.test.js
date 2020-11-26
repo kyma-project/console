@@ -16,6 +16,17 @@ jest.mock('@kyma-project/common', () => ({
 }));
 
 const allowStrategy = {
+  path: '/allow',
+  methods: [],
+  accessStrategies: [
+    {
+      name: 'allow',
+      config: {},
+    },
+  ],
+};
+
+const noopStrategy = {
   path: '/path',
   methods: ['GET', 'PUT'],
   accessStrategies: [
@@ -63,9 +74,9 @@ describe('AccessStrategyForm', () => {
   });
 
   it('renders basic rule info', () => {
-    const { getByLabelText } = render(
+    const { getByLabelText, queryByRole } = render(
       <AccessStrategyForm
-        strategy={allowStrategy}
+        strategy={noopStrategy}
         setStrategy={setStrategy}
         removeStrategy={removeStrategy}
         canDelete={false}
@@ -74,7 +85,7 @@ describe('AccessStrategyForm', () => {
     );
 
     expect(getByLabelText('Access strategy path')).toHaveValue(
-      allowStrategy.path,
+      noopStrategy.path,
     );
     expect(getByLabelText('GET')).toBeChecked();
     expect(getByLabelText('PUT')).toBeChecked();
@@ -82,6 +93,7 @@ describe('AccessStrategyForm', () => {
     expect(getByLabelText('DELETE')).not.toBeChecked();
     expect(getByLabelText('HEAD')).not.toBeChecked();
     expect(getByLabelText('PATCH')).not.toBeChecked();
+    expect(queryByRole('alert')).not.toBeInTheDocument();
   });
 
   it('renders OAuth2 strategy', () => {
@@ -96,7 +108,7 @@ describe('AccessStrategyForm', () => {
     );
 
     expect(getByLabelText('Access strategy type')).toHaveValue(
-      allowStrategy.accessStrategies[0].type,
+      noopStrategy.accessStrategies[0].type,
     );
     const requiredScope = queryByLabelText('Required scope');
     expect(requiredScope).toBeInTheDocument();
@@ -214,5 +226,33 @@ describe('AccessStrategyForm', () => {
     deleteButton.click();
 
     expect(removeStrategy).toHaveBeenCalled();
+  });
+
+  it('displays alert when methods are empty for NOT allow', () => {
+    const { queryByRole } = render(
+      <AccessStrategyForm
+        strategy={{ ...oauthStrategy, methods: [] }}
+        setStrategy={() => {}}
+        removeStrategy={() => {}}
+        canDelete={true}
+        handleFormChanged={() => {}}
+      />,
+    );
+    expect(queryByRole('alert')).toHaveTextContent(
+      'This access strategy requires at least one method.',
+    );
+  });
+
+  it('does not display alert when methods are empty for allow', () => {
+    const { queryByRole } = render(
+      <AccessStrategyForm
+        strategy={allowStrategy}
+        setStrategy={() => {}}
+        removeStrategy={() => {}}
+        canDelete={true}
+        handleFormChanged={() => {}}
+      />,
+    );
+    expect(queryByRole('alert')).not.toBeInTheDocument();
   });
 });
