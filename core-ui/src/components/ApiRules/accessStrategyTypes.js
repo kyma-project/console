@@ -30,3 +30,8 @@ export const supportedMethodsList = [
   'DELETE',
   'HEAD',
 ];
+
+export const hasValidMethods = rule => {
+  // methods other than 'allow' require at least one method
+  return rule.accessStrategies[0].name === allow.value || !!rule.methods.length;
+};
