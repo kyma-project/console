@@ -15,7 +15,11 @@ export const useSubscription = (
 
   React.useEffect(() => {
     const socket = io(url, {
-      query: { ...urlTemplateVariables, resource, idToken },
+      query: {
+        ...urlTemplateVariables,
+        resource,
+        authorization: 'Bearer ' + idToken,
+      },
       transports: ['websocket', 'polling'],
     });
 
