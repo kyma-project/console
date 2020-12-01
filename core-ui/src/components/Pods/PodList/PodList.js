@@ -43,7 +43,7 @@ export function handleSubscriptionEvent(setResource) {
         );
         break;
       default:
-        console.log(data);
+        console.warn(data);
         break;
     }
   };
@@ -134,6 +134,7 @@ export default function PodList({ namespace }) {
       headerRenderer={headerRenderer}
       rowRenderer={rowRenderer}
       serverDataError={error}
+      serverErrorMessage={error?.message}
       serverDataLoading={loading}
       pagination={{ itemsPerPage: 20, autoHide: true }}
     />
