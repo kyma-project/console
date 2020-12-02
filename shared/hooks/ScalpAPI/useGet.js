@@ -11,6 +11,7 @@ export function useGet(resourceType, onDataReceived, namespace) {
   const { fromConfig } = useConfig();
 
   const refetch = React.useCallback(async () => {
+    if (!idToken) return;
     setLoading(true);
     try {
       const urlToFetchFrom =
@@ -32,7 +33,7 @@ export function useGet(resourceType, onDataReceived, namespace) {
       setError(e);
     }
     setLoading(false);
-  }, [resourceType, onDataReceived]);
+  }, [resourceType, onDataReceived, idToken]);
 
   React.useEffect(() => {
     refetch();

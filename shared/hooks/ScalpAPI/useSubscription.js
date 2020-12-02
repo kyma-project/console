@@ -14,6 +14,7 @@ export const useSubscription = (
   let url = baseUrl(fromConfig);
 
   React.useEffect(() => {
+    if (!idToken) return;
     const socket = io(url, {
       query: {
         ...urlTemplateVariables,
@@ -32,7 +33,7 @@ export const useSubscription = (
 
     socket.on('message', dispatch);
     return () => socket.disconnect();
-  }, [resource, dispatch]);
+  }, [resource, dispatch, idToken]);
 };
 
 /* 
