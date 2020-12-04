@@ -22,7 +22,7 @@ export const Content: React.FunctionComponent<RouteComponentProps> = () => {
       </h1>
       <GenericDocumentation
         assetGroup={activeClusterAssetGroup}
-        layout={LayoutType.CONTENT_UI}
+        layout={LayoutType.CATALOG_UI}
       />
     </ContentWrapper>
   );

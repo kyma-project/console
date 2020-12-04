@@ -1,0 +1,8 @@
+apiVersion: servicecatalog.k8s.io/v1beta1
+kind: ServiceInstance
+metadata:
+  name: commerce-mock-events
+  namespace: test
+spec:
+  serviceClassExternalName: sap-commerce-cloud-events-2c59c
+  servicePlanExternalName: default

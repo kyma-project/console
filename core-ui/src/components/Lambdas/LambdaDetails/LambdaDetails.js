@@ -6,7 +6,7 @@ import LambdaDetailsHeader from './LambdaDetailsHeader/LambdaDetailsHeader';
 import CodeTab from './Tabs/Code/CodeTab';
 import ResourceManagementTab from './Tabs/ResourceManagement/ResourceManagementTab';
 
-import EventTriggersWrapper from './Tabs/Configuration/EventTriggers/EventTriggersWrapper';
+import EventTriggersWrapper from './Tabs/Configuration/EventTriggers/LambdaEventsWrapper';
 import ServiceBindingsWrapper from './Tabs/Configuration/ServiceBindings/ServiceBindingsWrapper';
 import ApiRules from './Tabs/Configuration/ApiRules/ApiRules';
 

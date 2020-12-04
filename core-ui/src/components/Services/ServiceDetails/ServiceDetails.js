@@ -10,7 +10,7 @@ import {
 } from 'react-shared';
 import ServiceDetailsHeader from './ServiceDetailsHeader/ServiceDetailsHeader';
 import ServiceApiRules from './ServiceApiRules/ServiceApiRules';
-import ServiceEventTriggers from './ServiceEventTriggers/ServiceEventTriggers';
+import ServiceEventTriggers from './ServiceEventTriggers/ServiceEventsWrapper';
 
 ServiceDetails.propTypes = {
   namespaceId: PropTypes.string.isRequired,

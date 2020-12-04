@@ -375,6 +375,7 @@ export const GET_SECRETS_LIST = gql`
     }
   }
 `;
+
 export const GET_SECRET_DETAILS = gql`
   query secret($namespace: String!, $name: String!) {
     secret(namespace: $namespace, name: $name) {
@@ -387,3 +388,40 @@ export const GET_SECRET_DETAILS = gql`
     }
   }
 `;
+
+export const GET_EVENT_SUBSCRIPTIONS = gql`
+  query eventSubscriptions($ownerName: String!, $namespace: String!) {
+    eventSubscriptions(ownerName: $ownerName, namespace: $namespace) {
+      name
+      namespace
+      spec {
+        filter {
+          filters {
+            eventType {
+              property
+              type
+              value
+            }
+          }
+        }
+      }
+      status {
+        conditions {
+          status
+          message
+          reason
+          type
+        }
+      }
+    }
+  }
+`;
+
+// extend type Mutation {
+//   createSubscription(name: String!, namespace: String!, params: EventSubscriptionSpecInput!): EventSubscription @HasAccess(attributes: {resource: "subscriptions", verb: "create", apiGroup: "eventing.kyma-project.io", apiVersion: "v1alpha1", namespaceArg: "namespace", nameArg: "name"})
+//   deleteSubscription(name: String!, namespace: String!): EventSubscription @HasAccess(attributes: {resource: "subscriptions", verb: "delete", apiGroup: "eventing.kyma-project.io", apiVersion: "v1alpha1", namespaceArg: "namespace", nameArg: "name"})
+// }
+
+// extend type Subscription {
+//   subscriptionSubscription(namespace: String!): SubscriptionEvent! @HasAccess(attributes: {resource: "subscriptions", verb: "watch", apiGroup: "eventing.kyma-project.io", apiVersion: "v1alpha1", namespaceArg: "namespace"})
+// }
