@@ -11,10 +11,11 @@ import {
   useYamlEditor,
   useNotification,
   EMPTY_TEXT_PLACEHOLDER,
+  easyHandleDelete,
 } from 'react-shared';
 
 import { GET_SERVICES } from 'gql/queries';
-import { UPDATE_SERVICE } from 'gql/mutations';
+import { UPDATE_SERVICE, DELETE_SERVICE } from 'gql/mutations';
 
 ServicesList.propTypes = { namespace: PropTypes.string.isRequired };
 
@@ -22,6 +23,14 @@ export default function ServicesList({ namespace }) {
   const setEditedSpec = useYamlEditor();
   const notification = useNotification();
   const [updateServiceMutation] = useMutation(UPDATE_SERVICE);
+  const [deleteServiceMutation] = useMutation(DELETE_SERVICE, {
+    refetchQueries: () => [
+      {
+        query: GET_SERVICES,
+        variables: { namespace },
+      },
+    ],
+  });
 
   const navigateToServiceDetails = service =>
     LuigiClient.linkManager().navigate(`details/${service.name}`);
@@ -29,6 +38,17 @@ export default function ServicesList({ namespace }) {
   const { data, error, loading } = useQuery(GET_SERVICES, {
     variables: { namespace },
   });
+
+  const deleteService = service => {
+    easyHandleDelete(
+      'Service',
+      service.name,
+      deleteServiceMutation,
+      { variables: { name: service.name, namespace } },
+      'deleteService',
+      notification,
+    );
+  };
 
   const updateService = async (service, updatedSpec) => {
     try {
@@ -46,7 +66,7 @@ export default function ServicesList({ namespace }) {
         ],
       });
       notification.notifySuccess({
-        content: 'Service updated successfully',
+        content: 'Service updated',
       });
     } catch (e) {
       console.warn(e);
@@ -58,6 +78,10 @@ export default function ServicesList({ namespace }) {
   };
 
   const actions = [
+    {
+      name: 'Delete',
+      handler: deleteService,
+    },
     {
       name: 'Details',
       handler: navigateToServiceDetails,
@@ -110,6 +134,7 @@ export default function ServicesList({ namespace }) {
       server={error}
       loading={loading}
       pagination={{ itemsPerPage: 20, autoHide: true }}
+      actionsStandaloneItems={3}
     />
   );
 }

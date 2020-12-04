@@ -1,9 +1,10 @@
 import React from 'react';
+import LuigiClient from '@luigi-project/client';
 import PropTypes from 'prop-types';
 import jsyaml from 'js-yaml';
 
 import { useMutation } from '@apollo/react-hooks';
-import { UPDATE_SERVICE } from 'gql/mutations';
+import { UPDATE_SERVICE, DELETE_SERVICE } from 'gql/mutations';
 import { GET_SERVICE } from 'gql/queries';
 
 import {
@@ -11,6 +12,7 @@ import {
   HeaderLabelsEditor,
   useNotification,
   useYamlEditor,
+  easyHandleDelete,
 } from 'react-shared';
 import { Button } from 'fundamental-react';
 
@@ -21,6 +23,7 @@ ServiceDetailsHeader.propTypes = {
 
 export default function ServiceDetailsHeader({ namespaceId, service }) {
   const [updateServiceMutation] = useMutation(UPDATE_SERVICE);
+  const [deleteServiceMutation] = useMutation(DELETE_SERVICE);
   const notification = useNotification();
   const setEditedSpec = useYamlEditor();
 
@@ -65,18 +68,38 @@ export default function ServiceDetailsHeader({ namespaceId, service }) {
     }
   };
 
+  const deleteService = () => {
+    easyHandleDelete(
+      'Service',
+      service.name,
+      deleteServiceMutation,
+      { variables: { name: service.name, namespace: namespaceId } },
+      'deleteService',
+      notification,
+      () =>
+        LuigiClient.linkManager()
+          .fromClosestContext()
+          .navigate('/'),
+    );
+  };
+
   const actions = (
-    <Button
-      option="emphasized"
-      onClick={() =>
-        setEditedSpec(
-          service.json,
-          async spec => await updateService(jsyaml.safeLoad(spec)),
-        )
-      }
-    >
-      Edit
-    </Button>
+    <>
+      <Button
+        option="emphasized"
+        onClick={() =>
+          setEditedSpec(
+            service.json,
+            async spec => await updateService(jsyaml.safeLoad(spec)),
+          )
+        }
+      >
+        Edit
+      </Button>
+      <Button option="light" type="negative" onClick={deleteService}>
+        Delete
+      </Button>
+    </>
   );
 
   const breadcrumbItems = [

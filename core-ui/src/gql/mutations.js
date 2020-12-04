@@ -193,6 +193,14 @@ export const UPDATE_SERVICE = gql`
   }
 `;
 
+export const DELETE_SERVICE = gql`
+  mutation deleteService($name: String!, $namespace: String!) {
+    deleteService(name: $name, namespace: $namespace) {
+      name
+    }
+  }
+`;
+
 export const CREATE_API_RULE = gql`
   mutation createAPIRule(
     $name: String!
