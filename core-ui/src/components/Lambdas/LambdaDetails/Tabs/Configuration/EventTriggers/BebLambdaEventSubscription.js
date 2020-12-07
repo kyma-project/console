@@ -1,21 +1,21 @@
 import React from 'react';
+import LuigiClient from '@luigi-project/client';
 import {
   useMicrofrontendContext,
   GenericList,
   useNotification,
+  easyHandleDelete,
 } from 'react-shared';
 
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import { GET_EVENT_SUBSCRIPTIONS } from 'gql/queries';
-import { UPDATE_EVENT_SUBCRIPTION } from 'gql/mutations';
+import { UPDATE_EVENT_SUBSCRIPTION } from 'gql/mutations';
 import { useEventActivationsQuery } from 'components/Lambdas/gql';
 
-import {
-  ERRORS,
-  SERVERLESS_API_VERSION,
-  SERVERLESS_RESOURCE_KIND,
-} from './../../../../constants';
+import { ERRORS } from './../../../../constants';
+import { createLambdaRef } from './helpers';
 import { SchemaComponent } from 'shared/components/EventTriggers/Schema/Schema';
+import CreateSubscriptionModal from './CreateSubscriptionModal';
 
 function findFilterInEvents(filter, events) {
   return events.find(event =>
@@ -23,28 +23,21 @@ function findFilterInEvents(filter, events) {
   );
 }
 
-function createOwnerRef(apiVersion, kind, entry) {
-  return {
-    apiVersion,
-    kind,
-    name: entry.name,
-    UID: entry.UID,
-  };
-}
-
-function createLambdaRef(lambda) {
-  return createOwnerRef(
-    SERVERLESS_API_VERSION,
-    SERVERLESS_RESOURCE_KIND,
-    lambda,
-  );
-}
-
 export default function BebLambdaEventSubscription({ lambda }) {
   const { namespaceId } = useMicrofrontendContext();
   const notification = useNotification();
 
-  const [updateEventSubscription] = useMutation(UPDATE_EVENT_SUBCRIPTION);
+  const [updateEventSubscription] = useMutation(UPDATE_EVENT_SUBSCRIPTION, {
+    refetchQueries: () => [
+      {
+        query: GET_EVENT_SUBSCRIPTIONS,
+        variables: {
+          ownerName: lambda.name,
+          namespace: namespaceId,
+        },
+      },
+    ],
+  });
   const { data, error, loading } = useQuery(GET_EVENT_SUBSCRIPTIONS, {
     variables: {
       ownerName: lambda.name,
@@ -68,11 +61,11 @@ export default function BebLambdaEventSubscription({ lambda }) {
         type: filter.eventType.property,
       })),
     );
-
     entries = subscriptions.map(filter => ({
       ...findFilterInEvents(filter, events),
       subscriptionName: filter.name,
     }));
+    entries.sort((a, b) => a.eventType.localeCompare(b.eventType));
   }
 
   const textSearchProperties = [
@@ -95,7 +88,21 @@ export default function BebLambdaEventSubscription({ lambda }) {
   }
 
   const rowRenderer = entry => ({
-    cells: [entry.eventType, entry.version, entry.source, entry.description],
+    cells: [
+      entry.eventType,
+      entry.version,
+      <span
+        className="link"
+        onClick={() =>
+          LuigiClient.linkManager().navigate(
+            `/home/cmf-apps/details/${entry.source}`,
+          )
+        }
+      >
+        {entry.source}
+      </span>,
+      entry.description,
+    ],
     collapseContent: (
       <>
         <td></td>
@@ -126,7 +133,13 @@ export default function BebLambdaEventSubscription({ lambda }) {
           params: {
             ownerRef: createLambdaRef(lambda),
             filters: newFilters
-              .map(f => findFilterInEvents(f, events))
+              .map(f =>
+                events.find(event =>
+                  f.eventType.property.includes(
+                    event.uniqueID.replace('/', '.'),
+                  ),
+                ),
+              )
               .map(e => ({
                 applicationName: e.source,
                 version: e.version,
@@ -135,38 +148,41 @@ export default function BebLambdaEventSubscription({ lambda }) {
           },
         };
 
-        try {
-          await updateEventSubscription({
-            variables,
-            refetchQueries: () => [
-              {
-                query: GET_EVENT_SUBSCRIPTIONS,
-                variables: {
-                  ownerName: lambda.name,
-                  namespace: namespaceId,
-                },
-              },
-            ],
-          });
-          notification.notifySuccess({
-            content: `Event subscription updated`,
-          });
-        } catch (e) {
-          console.warn(e);
-          notification.notifyError({
-            content: `Cannot update event subscription: ${e.message}`,
-          });
-        }
+        easyHandleDelete(
+          'Event',
+          entry.eventType,
+          updateEventSubscription,
+          { variables },
+          'updateSubscription',
+          notification,
+        );
       },
     },
   ];
+
+  const allFilters = (data.subscriptions || []).flatMap(sub =>
+    sub.spec.filter.filters.map(filter => filter.eventType.property),
+  );
+
+  const modalEvents = (events || []).filter(
+    event =>
+      !allFilters.find(f => f.includes(event.uniqueID.replace('/', '.'))),
+  );
+
+  const createSubscription = (
+    <CreateSubscriptionModal
+      events={modalEvents}
+      namespaceId={namespaceId}
+      owner={lambda}
+    />
+  );
 
   return (
     <GenericList
       title="Event subscriptions"
       textSearchProperties={textSearchProperties}
       showSearchSuggestion={false}
-      //   extraHeaderContent={createEventTrigger}
+      extraHeaderContent={createSubscription}
       actions={actions}
       entries={entries}
       headerRenderer={headerRenderer}

@@ -352,13 +352,25 @@ export const DELETE_ROLE_BINDING = gql`
   }
 `;
 
-export const UPDATE_EVENT_SUBCRIPTION = gql`
+export const UPDATE_EVENT_SUBSCRIPTION = gql`
   mutation updateSubscription(
     $namespace: String!
     $name: String!
     $params: EventSubscriptionSpecInput!
   ) {
     updateSubscription(name: $name, namespace: $namespace, params: $params) {
+      name
+    }
+  }
+`;
+
+export const CREATE_EVENT_SUBSCRIPTION = gql`
+  mutation createSubscription(
+    $namespace: String!
+    $name: String!
+    $params: EventSubscriptionSpecInput!
+  ) {
+    createSubscription(name: $name, namespace: $namespace, params: $params) {
       name
     }
   }
