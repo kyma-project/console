@@ -41,7 +41,7 @@ todo
 const {resource, loading, error } = useSubscribedResource(resourceType, resourceFilter?);
 */
 
-export function handleSubscriptionEvent(setResource) {
+export function handlePamelaSubscriptionEvent(setResource) {
   const filterByName = obj => entry =>
     entry.metadata.name !== obj.metadata.name;
 
