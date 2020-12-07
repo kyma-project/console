@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import jsyaml from 'js-yaml';
 import { Link } from 'fundamental-react';
 
+import { createPatch } from 'rfc6902';
+
 import {
   GenericList,
   Labels,
@@ -14,7 +16,7 @@ import {
   useUpdate,
   useDelete,
   useSubscription,
-  handleSubscriptionEvent,
+  handlePamelaSubscriptionEvent,
 } from 'react-shared';
 import Moment from 'react-moment';
 
@@ -35,16 +37,17 @@ export default function PodList({ namespace }) {
 
   useSubscription(
     'pods',
-    React.useCallback(handleSubscriptionEvent(setPods), [namespace]),
+    React.useCallback(handlePamelaSubscriptionEvent(setPods), [namespace]),
     { namespace },
   );
 
   const handleSaveClick = podData => async newYAML => {
     try {
+      const diff = createPatch(podData, jsyaml.safeLoad(newYAML));
       await updatePodMutation({
         name: podData.metadata.name,
         namespace,
-        json: jsyaml.safeLoad(newYAML),
+        mergeJson: diff,
       });
       notification.notifySuccess({ content: 'Succesfully updated Pod' });
     } catch (e) {
@@ -75,7 +78,7 @@ export default function PodList({ namespace }) {
   const actions = [
     {
       name: 'Edit',
-      handler: pod => setEditedSpec(pod.json, handleSaveClick(pod)),
+      handler: pod => setEditedSpec(pod.json, handleSaveClick(pod.json)),
     },
     {
       name: 'Delete',
