@@ -1,4 +1,4 @@
-import { baseUrl, HttpError } from './config';
+import { baseUrl, throwHttpError } from './config';
 import { useMicrofrontendContext } from '../../contexts/MicrofrontendContext';
 import { useConfig } from '../../contexts/ConfigContext';
 
@@ -21,8 +21,8 @@ const useMutation = method => {
         body: JSON.stringify(data),
       });
 
-      if (!response.ok)
-        throw new HttpError(await response.text(), response.status);
+      if (!response.ok) throw await throwHttpError(response);
+
       if (typeof options?.refetch === 'function') options.refetch();
       return await response.json();
     };

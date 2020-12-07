@@ -49,11 +49,12 @@ export default function PodList({ namespace }) {
         namespace,
         mergeJson: diff,
       });
-      notification.notifySuccess({ content: 'Succesfully updated Pod' });
+      notification.notifySuccess({ title: 'Succesfully updated Pod' });
     } catch (e) {
       console.error(e);
       notification.notifyError({
-        content: 'Failed to update the Pod',
+        title: 'Failed to update the Pod',
+        content: e.message,
       });
       throw e;
     }
@@ -65,11 +66,12 @@ export default function PodList({ namespace }) {
         name: pod.metadata.name,
         namespace,
       });
-      notification.notifySuccess({ content: 'Succesfully deleted Pod' });
+      notification.notifySuccess({ title: 'Succesfully deleted Pod' });
     } catch (e) {
       console.error(e);
       notification.notifyError({
-        content: 'Failed to delete the Pod',
+        title: 'Failed to delete the Pod',
+        content: e.message,
       });
       throw e;
     }

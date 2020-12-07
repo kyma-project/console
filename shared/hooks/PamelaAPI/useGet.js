@@ -1,5 +1,5 @@
 import React from 'react';
-import { baseUrl, HttpError } from './config';
+import { baseUrl, throwHttpError } from './config';
 import { useMicrofrontendContext } from '../../contexts/MicrofrontendContext';
 import { useConfig } from '../../contexts/ConfigContext';
 
@@ -23,8 +23,8 @@ export function useGet(resourceType, onDataReceived, namespace) {
         headers: { Authorization: 'Bearer ' + idToken },
       });
 
-      if (!response.ok)
-        throw new HttpError(await response.text(), response.status);
+      if (!response.ok) throw await throwHttpError(response);
+
       const payload = await response.json();
       if (typeof onDataReceived === 'function') onDataReceived(payload.items);
       setData(payload.items);
