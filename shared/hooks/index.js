@@ -4,4 +4,4 @@ export { useMutationObserver };
 export * from './useWindowTitle';
 export * from './useSideDrawer.js';
 export * from './useShowSystemNamespaces';
-export * from './ScalpAPI/index';
+export * from './PamelaAPI/index';
