@@ -43,10 +43,6 @@ import { InformationModalComponent } from './shared/components/information-modal
 import { JsonEditorModalComponent } from './shared/components/json-editor-modal/json-editor-modal.component';
 import { JsonEditorComponent } from './shared/components/json-editor-modal/json-editor/json-editor.component';
 import { K8sResourceEditorService } from './shared/components/json-editor-modal/services/k8s-resource-editor.service';
-import { ResourceUploaderComponent } from './shared/components/resource-uploader/resource-uploader-component/resource-uploader.component';
-import { ResourceUploaderModalComponent } from './shared/components/resource-uploader/resource-uploader-modal/resource-uploader-modal.component';
-import { ResourceUploadService } from './shared/components/resource-uploader/services/resource-upload.service';
-import { UploaderComponent } from './shared/components/resource-uploader/uploader/uploader.component';
 import { ComponentCommunicationService } from './shared/services/component-communication.service';
 import { GraphQLClientService } from './shared/services/graphql-client-service';
 import { LuigiClientService } from './shared/services/luigi-client.service';
@@ -113,9 +109,6 @@ import { WindowTitleService } from 'shared/services/window-title.service';
     GraphqlMutatorModalComponent,
     JsonEditorComponent,
     EditResourceComponent,
-    UploaderComponent,
-    ResourceUploaderModalComponent,
-    ResourceUploaderComponent,
     Copy2ClipboardModalComponent,
     AbstractKubernetesElementListComponent,
     AbstractGraphqlElementListComponent,
@@ -154,7 +147,6 @@ import { WindowTitleService } from 'shared/services/window-title.service';
     EventService,
     K8sResourceEditorService,
     ComponentCommunicationService,
-    ResourceUploadService,
     ApplicationBindingService,
     GraphQLClientService,
     LuigiClientService,
