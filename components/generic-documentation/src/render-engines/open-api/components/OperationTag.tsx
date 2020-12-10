@@ -110,6 +110,7 @@ export const OperationTagExtended = (Orig: typeof React.Component, _: any) =>
                       href={sanitizeUrl(tagExternalDocsUrl)}
                       onClick={(e: any) => e.stopPropagation()}
                       target="_blank"
+                      rel="noopener noreferrer"
                     >
                       {tagExternalDocsUrl}
                     </Link>
