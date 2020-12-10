@@ -28,6 +28,10 @@ export class ListSearchComponent extends ListFilterComponent
   }
 
   searchTextChange(text) {
+    const regex = /^[a-zA-Z0-9-=.\/]*$/;
+    if (!Boolean(regex.test(text || ''))) {
+      return;
+    };
     this.searchText = text;
     if (this.hasSearch()) {
       this.filterState.filters.forEach(filter => {
