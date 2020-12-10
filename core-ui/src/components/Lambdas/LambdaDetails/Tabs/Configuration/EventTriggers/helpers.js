@@ -3,14 +3,7 @@ import {
   SERVERLESS_RESOURCE_KIND,
 } from './../../../../constants';
 
-function createOwnerRef(apiVersion, kind, entry) {
-  return {
-    apiVersion,
-    kind,
-    name: entry.name,
-    UID: entry.UID,
-  };
-}
+import { createOwnerRef } from 'shared/components/EventSubscriptions/helpers';
 
 export function createLambdaRef(lambda) {
   return createOwnerRef(

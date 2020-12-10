@@ -12,8 +12,7 @@ import { GET_EVENT_SUBSCRIPTIONS } from 'gql/queries';
 import { UPDATE_EVENT_SUBSCRIPTION } from 'gql/mutations';
 import { useEventActivationsQuery } from 'components/Lambdas/gql';
 
-import { ERRORS } from './../../../../constants';
-import { createLambdaRef } from './helpers';
+import { ERRORS } from './../../../components/Lambdas/constants';
 import { SchemaComponent } from 'shared/components/EventTriggers/Schema/Schema';
 import CreateSubscriptionModal from './CreateSubscriptionModal';
 
@@ -23,7 +22,7 @@ function findFilterInEvents(filter, events) {
   );
 }
 
-export default function BebLambdaEventSubscription({ lambda }) {
+export default function BebEventSubscription({ resource, createResourceRef }) {
   const { namespaceId } = useMicrofrontendContext();
   const notification = useNotification();
 
@@ -32,7 +31,7 @@ export default function BebLambdaEventSubscription({ lambda }) {
       {
         query: GET_EVENT_SUBSCRIPTIONS,
         variables: {
-          ownerName: lambda.name,
+          ownerName: resource.name,
           namespace: namespaceId,
         },
       },
@@ -40,7 +39,7 @@ export default function BebLambdaEventSubscription({ lambda }) {
   });
   const { data, error, loading } = useQuery(GET_EVENT_SUBSCRIPTIONS, {
     variables: {
-      ownerName: lambda.name,
+      ownerName: resource.name,
       namespace: namespaceId,
     },
   });
@@ -131,7 +130,7 @@ export default function BebLambdaEventSubscription({ lambda }) {
           name: subscription.name,
           namespace: namespaceId,
           params: {
-            ownerRef: createLambdaRef(lambda),
+            ownerRef: createResourceRef(resource),
             filters: newFilters
               .map(f =>
                 events.find(event =>
@@ -173,7 +172,8 @@ export default function BebLambdaEventSubscription({ lambda }) {
     <CreateSubscriptionModal
       events={modalEvents}
       namespaceId={namespaceId}
-      owner={lambda}
+      owner={resource}
+      createResourceRef={createResourceRef}
     />
   );
 

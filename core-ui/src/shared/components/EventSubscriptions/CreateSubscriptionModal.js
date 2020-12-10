@@ -11,7 +11,6 @@ import { Button } from 'fundamental-react';
 import { SchemaComponent } from 'shared/components/EventTriggers/Schema/Schema';
 import Checkbox from 'components/Lambdas/Checkbox/Checkbox';
 import './CreateSubscriptionModal.scss';
-import { createLambdaRef } from './helpers';
 
 function showCollapseControl(schema) {
   return !!(schema && schema.properties && !schema.anyOf);
@@ -21,12 +20,14 @@ CreateSubscriptionModal.propTypes = {
   events: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
   owner: PropTypes.object.isRequired,
   namespaceId: PropTypes.string.isRequired,
+  createResourceRef: PropTypes.func.isRequired,
 };
 
 export default function CreateSubscriptionModal({
   events: originalEvents,
   owner,
   namespaceId,
+  createResourceRef,
 }) {
   const notification = useNotification();
   const [createEventSubscription] = useMutation(CREATE_EVENT_SUBSCRIPTION, {
@@ -66,7 +67,7 @@ export default function CreateSubscriptionModal({
       name: `${owner.name}-${randomNamesGenerator()}`,
       namespace: namespaceId,
       params: {
-        ownerRef: createLambdaRef(owner),
+        ownerRef: createResourceRef(owner),
         filters,
       },
     };
@@ -112,7 +113,7 @@ export default function CreateSubscriptionModal({
         name={entry.uniqueID}
         onChange={_ => onSetCheckedEvents(entry)}
       />,
-      ,
+      null,
       entry.eventType,
       entry.version,
       entry.source,

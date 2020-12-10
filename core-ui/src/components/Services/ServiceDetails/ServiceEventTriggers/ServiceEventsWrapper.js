@@ -1,14 +1,21 @@
 import React from 'react';
 import { useConfig } from 'react-shared';
 
-import BebServiceEventSubscription from './BebServiceEventSubscription';
+import { createServiceRef } from './helpers';
+
+import BebEventSubscription from 'shared/components/EventSubscriptions/BebEventSubscription';
 import ServiceEventTriggers from './ServiceEventTriggers';
 
 export default function ServiceEventsWrapper({ service }) {
   const { fromConfig } = useConfig();
 
   if (fromConfig('bebEnabled')) {
-    return <BebServiceEventSubscription service={service} />;
+    return (
+      <BebEventSubscription
+        resource={service}
+        createResourceRef={createServiceRef}
+      />
+    );
   } else {
     return <ServiceEventTriggers service={service} />;
   }

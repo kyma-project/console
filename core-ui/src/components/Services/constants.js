@@ -5,5 +5,6 @@ export const EVENT_TRIGGERS = {
 };
 
 export const SERVICE_API_VERSION = 'v1';
+export const SERVICE_RESOURCE_KIND = 'Service';
 
 export const TOOLBAR_TITLE = 'Services';
