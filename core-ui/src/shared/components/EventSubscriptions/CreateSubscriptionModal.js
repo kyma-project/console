@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { randomNamesGenerator } from '@kyma-project/common';
 
 import { useMutation } from '@apollo/react-hooks';
-import { GET_EVENT_SUBSCRIPTIONS } from 'gql/queries';
 import { CREATE_EVENT_SUBSCRIPTION } from 'gql/mutations';
 
 import { Modal, GenericList, useNotification } from 'react-shared';

@@ -143,14 +143,6 @@ export const EVENT_SUBSCRIPTION_SUBSCRIPTION = gql`
             }
           }
         }
-        status {
-          conditions {
-            status
-            message
-            reason
-            type
-          }
-        }
       }
     }
   }

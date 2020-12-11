@@ -405,23 +405,6 @@ export const GET_EVENT_SUBSCRIPTIONS = gql`
           }
         }
       }
-      status {
-        conditions {
-          status
-          message
-          reason
-          type
-        }
-      }
     }
   }
 `;
-
-// extend type Mutation {
-//   createSubscription(name: String!, namespace: String!, params: EventSubscriptionSpecInput!): EventSubscription @HasAccess(attributes: {resource: "subscriptions", verb: "create", apiGroup: "eventing.kyma-project.io", apiVersion: "v1alpha1", namespaceArg: "namespace", nameArg: "name"})
-//   deleteSubscription(name: String!, namespace: String!): EventSubscription @HasAccess(attributes: {resource: "subscriptions", verb: "delete", apiGroup: "eventing.kyma-project.io", apiVersion: "v1alpha1", namespaceArg: "namespace", nameArg: "name"})
-// }
-
-// extend type Subscription {
-//   subscriptionSubscription(namespace: String!): SubscriptionEvent! @HasAccess(attributes: {resource: "subscriptions", verb: "watch", apiGroup: "eventing.kyma-project.io", apiVersion: "v1alpha1", namespaceArg: "namespace"})
-// }

@@ -1,7 +1,6 @@
 import React from 'react';
 import LuigiClient from '@luigi-project/client';
 import {
-  useMicrofrontendContext,
   GenericList,
   useNotification,
   easyHandleDelete,
@@ -24,8 +23,18 @@ function findFilterInEvents(filter, events) {
   );
 }
 
+const textSearchProperties = ['eventType', 'version', 'source', 'description'];
+
+function headerRenderer() {
+  return ['', 'Event', 'Version', 'Application', 'Description'];
+}
+
+function showCollapseControl(schema) {
+  return !!(schema && schema.properties && !schema.anyOf);
+}
+
 export default function BebEventSubscription({ resource, createResourceRef }) {
-  const { namespaceId } = useMicrofrontendContext();
+  const namespaceId = resource.namespace;
   const notification = useNotification();
   const [eventSubscriptions, setEventSubscriptions] = React.useState([]);
   const [entries, setEntries] = React.useState([]);
@@ -66,38 +75,19 @@ export default function BebEventSubscription({ resource, createResourceRef }) {
   React.useEffect(() => {
     if (!events.length) return;
 
-    const subscriptions = eventSubscriptions.flatMap(subscription =>
+    const filters = eventSubscriptions.flatMap(subscription =>
       subscription.spec.filter.filters.map(filter => ({
-        name: subscription.name,
+        subscriptionName: subscription.name,
         type: filter.eventType.property,
       })),
     );
-    const entries = subscriptions.map(filter => ({
+    const entries = filters.map(filter => ({
       ...findFilterInEvents(filter, events),
-      subscriptionName: filter.name,
+      subscriptionName: filter.subscriptionName,
     }));
     entries.sort((a, b) => a.eventType.localeCompare(b.eventType));
     setEntries(entries);
   }, [eventSubscriptions, events]);
-
-  const textSearchProperties = [
-    'eventType',
-    'version',
-    'source',
-    'description',
-  ];
-
-  const headerRenderer = () => [
-    '',
-    'Event',
-    'Version',
-    'Application',
-    'Description',
-  ];
-
-  function showCollapseControl(schema) {
-    return !!(schema && schema.properties && !schema.anyOf);
-  }
 
   const rowRenderer = entry => ({
     cells: [
