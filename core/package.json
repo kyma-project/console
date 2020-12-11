@@ -37,7 +37,6 @@
     "core-js": "^2.5.7",
     "file-saver": "2.0.2",
     "fundamental-ngx": "^0.8.0",
-    "js-yaml": "^3.13.1",
     "jsoneditor": "9.0.5",
     "lodash": "^4.17.19",
     "ng-click-outside": "^4.0.0",

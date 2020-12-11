@@ -7,6 +7,5 @@ module.exports = {
   disableLegacyConnectivity: env.DISABLE_LEGACY_CONNECTIVITY,
   serviceCatalogEnabled: env.CATALOG_ENABLED,
   functionsEnabled: env.FUNCTIONS_ENABLED,
-  docsEnabled: env.RAFTER_ENABLED,
   DEFAULT_NAMESPACE_NAME: 'default',
 };

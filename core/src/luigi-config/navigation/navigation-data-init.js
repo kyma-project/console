@@ -170,40 +170,6 @@ export function getNavigationData() {
           },
         ];
 
-        if (backendModules.includes('rafter')) {
-          nodes.push({
-            pathSegment: 'docs',
-            viewUrl: config.docsModuleUrl,
-            label: 'Docs',
-            hideSideNav: true,
-            context: {
-              idToken: token,
-              backendModules
-            },
-            icon: 'sys-help',
-            children: [
-              {
-                pathSegment: ':group',
-                viewUrl: config.docsModuleUrl,
-                hideSideNav: true,
-                context: {
-                  group: ':group'
-                },
-                children: [
-                  {
-                    pathSegment: ':topic',
-                    viewUrl: config.docsModuleUrl,
-                    hideSideNav: true,
-                    context: {
-                      group: ':group',
-                      topic: ':topic'
-                    }
-                  }
-                ]
-              }
-            ]
-          });
-        }
         resolve([nodes, kymaVersion]);
       })
       .catch(err => {

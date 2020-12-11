@@ -2,7 +2,7 @@
   "name": "ui-tests",
   "description": "Smoke tests for Console",
   "scripts": {
-    "test:cluster": "$(npm bin)/cypress run --quiet --browser chrome --headless --reporter junit --reporter-options mochaFile=artifacts/cypress-run.xml,toConsole=true",
+    "test:cluster": "$(npm bin)/cypress run --browser chrome --headless",
     "start": "$(npm bin)/cypress open"
   },
   "devDependencies": {

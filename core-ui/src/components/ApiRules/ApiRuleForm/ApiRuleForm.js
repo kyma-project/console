@@ -22,6 +22,7 @@ import { getApiUrl } from '@kyma-project/common';
 import ServicesDropdown from './ServicesDropdown/ServicesDropdown';
 import AccessStrategyForm from './AccessStrategyForm/AccessStrategyForm';
 import { EXCLUDED_SERVICES_LABELS } from 'components/ApiRules/constants';
+import { hasValidMethods } from 'components/ApiRules/accessStrategyTypes';
 
 export const DEFAULT_GATEWAY = 'kyma-gateway.kyma-system.svc.cluster.local';
 const DOMAIN = getApiUrl('domain');
@@ -66,6 +67,7 @@ export default function ApiRuleForm({
     apiRule.spec.rules.map(r => ({ ...r, renderKey: uuid() })),
   );
   const [isValid, setValid] = useState(false);
+  const [methodsValid, setMethodsValid] = useState(true);
 
   if (serviceName && port) {
     apiRule.spec.service.name = serviceName;
@@ -78,6 +80,8 @@ export default function ApiRuleForm({
       excludedLabels: EXCLUDED_SERVICES_LABELS,
     },
   });
+
+  React.useEffect(() => setMethodsValid(rules.every(hasValidMethods)), [rules]);
 
   const formRef = useRef(null);
   const formValues = {
@@ -152,7 +156,7 @@ export default function ApiRuleForm({
       })}
     >
       <ApiRuleFormHeader
-        isValid={isValid}
+        isValid={isValid && methodsValid}
         handleSave={save}
         saveButtonText={saveButtonText}
         title={headerTitle}

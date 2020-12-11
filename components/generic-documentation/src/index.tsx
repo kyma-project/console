@@ -11,12 +11,7 @@ import { TabProps } from '@kyma-project/components';
 import { ClusterAssetGroup, AssetGroup } from '@kyma-project/common';
 
 import { markdownRE, openApiRE, asyncApiRE, odataRE } from './render-engines';
-import {
-  ContentUILayout,
-  CatalogUILayout,
-  InstancesUILayout,
-  CompassUILayout,
-} from './layouts';
+import { CatalogUILayout, InstancesUILayout, CompassUILayout } from './layouts';
 import { MarkdownRenderer } from './renderers';
 import {
   disableInternalLinksMutationPlugin,
@@ -67,9 +62,6 @@ const RENDERERS: Renderers = {
 
 function renderContent(type: LayoutType, props?: any): React.ReactNode {
   switch (type) {
-    case LayoutType.CONTENT_UI: {
-      return <ContentUILayout renderers={RENDERERS} />;
-    }
     case LayoutType.CATALOG_UI: {
       return <CatalogUILayout {...props} renderers={RENDERERS} />;
     }
@@ -85,7 +77,6 @@ function renderContent(type: LayoutType, props?: any): React.ReactNode {
 }
 
 export enum LayoutType {
-  CONTENT_UI = 'content-ui',
   CATALOG_UI = 'catalog-ui',
   INSTANCES_UI = 'instances-ui',
   COMPASS_UI = 'compass-ui',
@@ -94,14 +85,14 @@ export enum LayoutType {
 export interface GenericDocumentationProps {
   assetGroup?: ClusterAssetGroup | AssetGroup;
   sources?: Sources;
-  layout?: LayoutType;
+  layout: LayoutType;
   additionalTabs?: TabProps[];
 }
 
 export const GenericDocumentation: React.FunctionComponent<GenericDocumentationProps> = ({
   assetGroup,
   sources: srcs = [],
-  layout = LayoutType.CONTENT_UI,
+  layout,
   ...others
 }) => {
   useEffect(() => {
@@ -117,11 +108,10 @@ export const GenericDocumentation: React.FunctionComponent<GenericDocumentationP
       }
 
       loader.setAssetGroup(assetGroup);
-      loader.setSortServiceClassDocumentation(layout !== LayoutType.CONTENT_UI);
 
       await loader.fetchAssets();
 
-      setSources(loader.getSources(layout !== LayoutType.CONTENT_UI));
+      setSources(loader.getSources());
     };
     fetchAssets();
   }, [assetGroup, setSources]);

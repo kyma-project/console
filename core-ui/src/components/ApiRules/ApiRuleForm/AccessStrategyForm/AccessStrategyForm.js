@@ -10,6 +10,7 @@ import {
   FormFieldset,
   FormSelect,
   FormRadioGroup,
+  Alert,
 } from 'fundamental-react';
 import StringListInput from './StringListInput';
 import { Tooltip } from 'react-shared';
@@ -18,6 +19,7 @@ import classNames from 'classnames';
 import accessStrategyTypes, {
   usesMethods,
   supportedMethodsList,
+  hasValidMethods,
 } from 'components/ApiRules/accessStrategyTypes';
 
 export default function AccessStrategyForm({
@@ -40,83 +42,90 @@ export default function AccessStrategyForm({
       );
 
   return (
-    <div className="access-strategy access-strategy--form" role="row">
-      <div className="content">
-        <FormGroup>
-          <LayoutGrid cols={3}>
-            <FormItem>
-              <FormInput
-                placeholder="Enter the path"
-                type="text"
-                value={strategy.path}
-                required
-                aria-label="Access strategy path"
-                pattern="^[a-z0-9\/\(\)\?.!*\-]+"
-                title="Path must consist of alphanumeric and the following characters: /.*?!-()"
-                onChange={e =>
-                  setStrategy({ ...strategy, path: e.target.value })
-                }
-              />
-            </FormItem>
-            <FormItem>
-              <FormSelect
-                defaultValue={selectedType}
-                aria-label="Access strategy type"
-                id="select-1"
-                onChange={e => {
-                  const newStrategy = {
-                    ...strategy,
-                    accessStrategies: [
-                      {
-                        ...strategy.accessStrategies[0],
-                        name: e.target.value,
-                      },
-                    ],
-                  };
-                  // strategy type changed, reset current values
-                  if (e.target.value !== strategy.accessStrategies[0].name) {
-                    newStrategy.accessStrategies[0].config = {};
+    <div role="row">
+      <div className="access-strategy access-strategy--form">
+        <div className="content">
+          <FormGroup>
+            <LayoutGrid cols={3}>
+              <FormItem>
+                <FormInput
+                  placeholder="Enter the path"
+                  type="text"
+                  value={strategy.path}
+                  required
+                  aria-label="Access strategy path"
+                  pattern="^[a-z0-9\/\(\)\?.!*\-]+"
+                  title="Path must consist of alphanumeric and the following characters: /.*?!-()"
+                  onChange={e =>
+                    setStrategy({ ...strategy, path: e.target.value })
                   }
-                  setStrategy(newStrategy);
-                  handleFormChanged();
-                }}
-              >
-                {Object.values(accessStrategyTypes).map(ac => (
-                  <option key={ac.value} value={ac.value}>
-                    {ac.displayName}
-                  </option>
-                ))}
-              </FormSelect>
-            </FormItem>
-            <MethodsForm
-              methods={strategy.methods}
-              setMethods={methods => setStrategy({ ...strategy, methods })}
-              isRelevant={usesMethods(selectedType)}
-            ></MethodsForm>
-          </LayoutGrid>
-        </FormGroup>
+                />
+              </FormItem>
+              <FormItem>
+                <FormSelect
+                  defaultValue={selectedType}
+                  aria-label="Access strategy type"
+                  id="select-1"
+                  onChange={e => {
+                    const newStrategy = {
+                      ...strategy,
+                      accessStrategies: [
+                        {
+                          ...strategy.accessStrategies[0],
+                          name: e.target.value,
+                        },
+                      ],
+                    };
+                    // strategy type changed, reset current values
+                    if (e.target.value !== strategy.accessStrategies[0].name) {
+                      newStrategy.accessStrategies[0].config = {};
+                    }
+                    setStrategy(newStrategy);
+                    handleFormChanged();
+                  }}
+                >
+                  {Object.values(accessStrategyTypes).map(ac => (
+                    <option key={ac.value} value={ac.value}>
+                      {ac.displayName}
+                    </option>
+                  ))}
+                </FormSelect>
+              </FormItem>
+              <MethodsForm
+                methods={strategy.methods}
+                setMethods={methods => setStrategy({ ...strategy, methods })}
+                isRelevant={usesMethods(selectedType)}
+              ></MethodsForm>
+            </LayoutGrid>
+          </FormGroup>
 
-        <Details
-          {...strategy.accessStrategies[0]}
-          setConfig={config =>
-            setStrategy({
-              ...strategy,
-              accessStrategies: [{ ...strategy.accessStrategies[0], config }],
-            })
-          }
-          handleFormChanged={handleFormChanged}
-        />
+          <Details
+            {...strategy.accessStrategies[0]}
+            setConfig={config =>
+              setStrategy({
+                ...strategy,
+                accessStrategies: [{ ...strategy.accessStrategies[0], config }],
+              })
+            }
+            handleFormChanged={handleFormChanged}
+          />
+        </div>
+        {deleteButtonWrapper(
+          <Button
+            glyph="delete"
+            type="negative"
+            typeAttr="button"
+            className="remove-access-strategy fd-has-margin-left-m"
+            aria-label="remove-access-strategy"
+            onClick={removeStrategy}
+            disabled={!canDelete}
+          />,
+        )}
       </div>
-      {deleteButtonWrapper(
-        <Button
-          glyph="delete"
-          type="negative"
-          typeAttr="button"
-          className="remove-access-strategy fd-has-margin-left-m"
-          aria-label="remove-access-strategy"
-          onClick={removeStrategy}
-          disabled={!canDelete}
-        />,
+      {!hasValidMethods(strategy) && (
+        <Alert type="warning" className="fd-has-margin-bottom-m">
+          This access strategy requires at least one method.
+        </Alert>
       )}
     </div>
   );

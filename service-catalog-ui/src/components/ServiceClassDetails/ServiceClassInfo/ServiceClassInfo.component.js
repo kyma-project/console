@@ -97,7 +97,11 @@ const ServiceClassInfo = ({
         {documentationUrl && (
           <Tile>
             <Tile.Content title={serviceClassTileTitles.documentation}>
-              <ExternalLink href={documentationUrl} target="_blank">
+              <ExternalLink
+                href={documentationUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 Link
               </ExternalLink>
             </Tile.Content>
@@ -106,7 +110,11 @@ const ServiceClassInfo = ({
         {supportUrl && (
           <Tile>
             <Tile.Content title={serviceClassTileTitles.support}>
-              <ExternalLink href={supportUrl} target="_blank">
+              <ExternalLink
+                href={supportUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 Link
               </ExternalLink>
             </Tile.Content>

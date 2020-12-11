@@ -145,8 +145,8 @@ export function getStaticChildrenNodesForNamespace() {
       pathSegment: 'pods',
       navigationContext: 'pods',
       label: 'Pods',
-      viewUrl: '/consoleapp.html#/home/namespaces/:namespaceId/pods',
-      viewGroup: consoleViewGroupName
+      viewUrl: config.coreModuleUrl + '/home/namespaces/:namespaceId/pods',
+      viewGroup: coreUIViewGroupName
     },
     {
       category: 'Operation',

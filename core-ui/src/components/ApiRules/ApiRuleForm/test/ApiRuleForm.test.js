@@ -204,6 +204,29 @@ describe('ApiRuleForm', () => {
       },
     });
   });
+
+  it('disables form for non-allow rule without methods', async () => {
+    const { getByText, getAllByLabelText, container } = render(
+      <MockedProvider mocks={[servicesQuery]}>
+        <ApiRuleForm
+          apiRule={apiRule()}
+          mutation={mutation}
+          saveButtonText="Save"
+          headerTitle="Form"
+          breadcrumbItems={[]}
+        />
+      </MockedProvider>,
+    );
+
+    await waitForDomChange({ container });
+
+    // uncheck methods
+    apiRule().spec.rules[0].methods.forEach(method =>
+      fireEvent.click(getAllByLabelText(method)[0]),
+    );
+
+    expect(getByText('Save')).toBeDisabled();
+  });
 });
 
 function verifyMethodCheckboxes(queryAllByLabelText, method) {

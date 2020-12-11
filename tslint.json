@@ -36,7 +36,6 @@
       "*/compass/**/*",
       "*/add-ons/**",
       "*/components/react/**/*",
-      "*/content/**/*",
       "*/core/**/*",
       "*/core-ui/**/*",
       "*/lambda/**/*",

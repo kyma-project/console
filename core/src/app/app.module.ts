@@ -25,9 +25,6 @@ import { TimeAgoPipe } from 'time-ago-pipe';
 import { DeploymentEntryRendererComponent } from './content/namespaces/operation/deployments/deployment-entry-renderer/deployment-entry-renderer.component';
 import { DeploymentHeaderRendererComponent } from './content/namespaces/operation/deployments/deployment-header-renderer/deployment-header-renderer.component';
 import { DeploymentsComponent } from './content/namespaces/operation/deployments/deployments.component';
-import { PodsEntryRendererComponent } from './content/namespaces/operation/pods/pods-entry-renderer/pods-entry-renderer.component';
-import { PodsHeaderRendererComponent } from './content/namespaces/operation/pods/pods-header-renderer/pods-header-renderer.component';
-import { PodsComponent } from './content/namespaces/operation/pods/pods.component';
 import { ReplicaSetsEntryRendererComponent } from './content/namespaces/operation/replica-sets/replica-sets-entry-renderer/replica-sets-entry-renderer.component';
 import { ReplicaSetsHeaderRendererComponent } from './content/namespaces/operation/replica-sets/replica-sets-header-renderer/replica-sets-header-renderer.component';
 import { ReplicaSetsComponent } from './content/namespaces/operation/replica-sets/replica-sets.component';
@@ -46,10 +43,6 @@ import { InformationModalComponent } from './shared/components/information-modal
 import { JsonEditorModalComponent } from './shared/components/json-editor-modal/json-editor-modal.component';
 import { JsonEditorComponent } from './shared/components/json-editor-modal/json-editor/json-editor.component';
 import { K8sResourceEditorService } from './shared/components/json-editor-modal/services/k8s-resource-editor.service';
-import { ResourceUploaderComponent } from './shared/components/resource-uploader/resource-uploader-component/resource-uploader.component';
-import { ResourceUploaderModalComponent } from './shared/components/resource-uploader/resource-uploader-modal/resource-uploader-modal.component';
-import { ResourceUploadService } from './shared/components/resource-uploader/services/resource-upload.service';
-import { UploaderComponent } from './shared/components/resource-uploader/uploader/uploader.component';
 import { ComponentCommunicationService } from './shared/services/component-communication.service';
 import { GraphQLClientService } from './shared/services/graphql-client-service';
 import { LuigiClientService } from './shared/services/luigi-client.service';
@@ -90,7 +83,7 @@ import { WindowTitleService } from 'shared/services/window-title.service';
     AppComponent,
     NamespacesContainerComponent,
     DeploymentsComponent,
-    PodsComponent,
+
     TimeAgoPipe,
     ApplicationsComponent,
     ApplicationDetailsComponent,
@@ -104,8 +97,7 @@ import { WindowTitleService } from 'shared/services/window-title.service';
     ReplicaSetsHeaderRendererComponent,
     DeploymentHeaderRendererComponent,
     DeploymentEntryRendererComponent,
-    PodsHeaderRendererComponent,
-    PodsEntryRendererComponent,
+
     ConfigMapsEntryRendererComponent,
     ConfigMapsHeaderRendererComponent,
     EditBindingsModalComponent,
@@ -117,9 +109,6 @@ import { WindowTitleService } from 'shared/services/window-title.service';
     GraphqlMutatorModalComponent,
     JsonEditorComponent,
     EditResourceComponent,
-    UploaderComponent,
-    ResourceUploaderModalComponent,
-    ResourceUploaderComponent,
     Copy2ClipboardModalComponent,
     AbstractKubernetesElementListComponent,
     AbstractGraphqlElementListComponent,
@@ -158,7 +147,6 @@ import { WindowTitleService } from 'shared/services/window-title.service';
     EventService,
     K8sResourceEditorService,
     ComponentCommunicationService,
-    ResourceUploadService,
     ApplicationBindingService,
     GraphQLClientService,
     LuigiClientService,
@@ -170,8 +158,7 @@ import { WindowTitleService } from 'shared/services/window-title.service';
     ReplicaSetsHeaderRendererComponent,
     DeploymentEntryRendererComponent,
     DeploymentHeaderRendererComponent,
-    PodsHeaderRendererComponent,
-    PodsEntryRendererComponent,
+
     ConfigMapsEntryRendererComponent,
     ConfigMapsHeaderRendererComponent,
     ApplicationsHeaderRendererComponent,
