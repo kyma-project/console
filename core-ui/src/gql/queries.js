@@ -375,7 +375,6 @@ export const GET_SECRETS_LIST = gql`
     }
   }
 `;
-
 export const GET_SECRET_DETAILS = gql`
   query secret($namespace: String!, $name: String!) {
     secret(namespace: $namespace, name: $name) {
