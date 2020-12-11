@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { TabGroup, Tab } from 'fundamental-react';
 
-import { ConfigContext } from 'react-shared';
 import LambdaDetailsHeader from './LambdaDetailsHeader/LambdaDetailsHeader';
 
 import CodeTab from './Tabs/Code/CodeTab';
@@ -49,7 +48,7 @@ export default function LambdaDetails({ lambda, backendModules = [] }) {
   const configTabShouldRender = apiRules || eventTriggers || serviceBindings;
 
   return (
-    <ConfigContext.Provider value={{ fromConfig: () => false }}>
+    <>
       <LambdaDetailsHeader lambda={lambda} />
       <TabGroup className="lambda-details-tabs">
         <Tab
@@ -78,6 +77,6 @@ export default function LambdaDetails({ lambda, backendModules = [] }) {
           <ResourceManagementTab lambda={lambda} />
         </Tab>
       </TabGroup>
-    </ConfigContext.Provider>
+    </>
   );
 }
