@@ -121,3 +121,37 @@ export const SECRET_EVENT_SUBSCRIPTION_LIST = gql`
     }
   }
 `;
+
+export const EVENT_SUBSCRIPTION_SUBSCRIPTION = gql`
+  subscription subscriptionSubscription(
+    $ownerName: String!
+    $namespace: String!
+  ) {
+    subscriptionSubscription(ownerName: $ownerName, namespace: $namespace) {
+      type
+      subscription {
+        name
+        namespace
+        spec {
+          filter {
+            filters {
+              eventType {
+                property
+                type
+                value
+              }
+            }
+          }
+        }
+        status {
+          conditions {
+            status
+            message
+            reason
+            type
+          }
+        }
+      }
+    }
+  }
+`;

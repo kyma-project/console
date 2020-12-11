@@ -30,17 +30,7 @@ export default function CreateSubscriptionModal({
   createResourceRef,
 }) {
   const notification = useNotification();
-  const [createEventSubscription] = useMutation(CREATE_EVENT_SUBSCRIPTION, {
-    refetchQueries: () => [
-      {
-        query: GET_EVENT_SUBSCRIPTIONS,
-        variables: {
-          ownerName: owner.name,
-          namespace: namespaceId,
-        },
-      },
-    ],
-  });
+  const [createEventSubscription] = useMutation(CREATE_EVENT_SUBSCRIPTION);
   const [events, setEvents] = React.useState([]);
 
   React.useEffect(() => {
@@ -73,20 +63,9 @@ export default function CreateSubscriptionModal({
     };
 
     try {
-      await createEventSubscription({
-        variables,
-        refetchQueries: () => [
-          {
-            query: GET_EVENT_SUBSCRIPTIONS,
-            variables: {
-              ownerName: owner.name,
-              namespace: namespaceId,
-            },
-          },
-        ],
-      });
+      await createEventSubscription({ variables });
       notification.notifySuccess({
-        content: `Event subscription create`,
+        content: `Event subscription created`,
       });
     } catch (e) {
       console.warn(e);

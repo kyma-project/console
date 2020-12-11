@@ -5,11 +5,13 @@ import {
   GenericList,
   useNotification,
   easyHandleDelete,
+  handleSubscriptionArrayEvent,
 } from 'react-shared';
 
-import { useQuery, useMutation } from '@apollo/react-hooks';
+import { useQuery, useMutation, useSubscription } from '@apollo/react-hooks';
 import { GET_EVENT_SUBSCRIPTIONS } from 'gql/queries';
 import { UPDATE_EVENT_SUBSCRIPTION } from 'gql/mutations';
+import { EVENT_SUBSCRIPTION_SUBSCRIPTION } from 'gql/subscriptions';
 import { useEventActivationsQuery } from 'components/Lambdas/gql';
 
 import { ERRORS } from './../../../components/Lambdas/constants';
@@ -25,23 +27,32 @@ function findFilterInEvents(filter, events) {
 export default function BebEventSubscription({ resource, createResourceRef }) {
   const { namespaceId } = useMicrofrontendContext();
   const notification = useNotification();
+  const [eventSubscriptions, setEventSubscriptions] = React.useState([]);
+  const [entries, setEntries] = React.useState([]);
 
-  const [updateEventSubscription] = useMutation(UPDATE_EVENT_SUBSCRIPTION, {
-    refetchQueries: () => [
-      {
-        query: GET_EVENT_SUBSCRIPTIONS,
-        variables: {
-          ownerName: resource.name,
-          namespace: namespaceId,
-        },
-      },
-    ],
+  useSubscription(EVENT_SUBSCRIPTION_SUBSCRIPTION, {
+    variables: { namespace: namespaceId, ownerName: resource.name },
+    onSubscriptionData: ({ subscriptionData }) => {
+      const {
+        type,
+        subscription,
+      } = subscriptionData.data.subscriptionSubscription; // hmm
+      handleSubscriptionArrayEvent(
+        eventSubscriptions,
+        setEventSubscriptions,
+        type,
+        subscription,
+      );
+    },
   });
-  const { data, error, loading } = useQuery(GET_EVENT_SUBSCRIPTIONS, {
+
+  const [updateEventSubscription] = useMutation(UPDATE_EVENT_SUBSCRIPTION);
+  const { error, loading } = useQuery(GET_EVENT_SUBSCRIPTIONS, {
     variables: {
       ownerName: resource.name,
       namespace: namespaceId,
     },
+    onCompleted: data => setEventSubscriptions(data.eventSubscriptions),
   });
 
   const [
@@ -52,20 +63,22 @@ export default function BebEventSubscription({ resource, createResourceRef }) {
     namespace: namespaceId,
   });
 
-  let entries = [];
-  if (data.eventSubscriptions && events.length) {
-    const subscriptions = data.eventSubscriptions.flatMap(subscription =>
+  React.useEffect(() => {
+    if (!events.length) return;
+
+    const subscriptions = eventSubscriptions.flatMap(subscription =>
       subscription.spec.filter.filters.map(filter => ({
         name: subscription.name,
         type: filter.eventType.property,
       })),
     );
-    entries = subscriptions.map(filter => ({
+    const entries = subscriptions.map(filter => ({
       ...findFilterInEvents(filter, events),
       subscriptionName: filter.name,
     }));
     entries.sort((a, b) => a.eventType.localeCompare(b.eventType));
-  }
+    setEntries(entries);
+  }, [eventSubscriptions, events]);
 
   const textSearchProperties = [
     'eventType',
@@ -119,7 +132,7 @@ export default function BebEventSubscription({ resource, createResourceRef }) {
     {
       name: 'Delete',
       handler: async entry => {
-        const subscription = data.eventSubscriptions.find(
+        const subscription = eventSubscriptions.find(
           s => s.name === entry.subscriptionName,
         );
         const newFilters = subscription.spec.filter.filters.filter(
@@ -159,11 +172,11 @@ export default function BebEventSubscription({ resource, createResourceRef }) {
     },
   ];
 
-  const allFilters = (data.subscriptions || []).flatMap(sub =>
+  const allFilters = eventSubscriptions.flatMap(sub =>
     sub.spec.filter.filters.map(filter => filter.eventType.property),
   );
 
-  const modalEvents = (events || []).filter(
+  const modalEvents = events.filter(
     event =>
       !allFilters.find(f => f.includes(event.uniqueID.replace('/', '.'))),
   );

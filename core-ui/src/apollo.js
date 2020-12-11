@@ -44,7 +44,9 @@ const setHeader = (header, value) => headers => ({
 const setAuthorization = token => setHeader('authorization', `Bearer ${token}`);
 
 export function createKymaApolloClient(fromConfig, token) {
-  const graphqlApiUrl = 'http://localhost:3000/graphql';
+  const graphqlApiUrl = fromConfig(
+    process.env.REACT_APP_LOCAL_API ? 'graphqlApiUrlLocal' : 'graphqlApiUrl',
+  );
 
   const httpLink = createHttpLink({
     uri: graphqlApiUrl,
@@ -55,7 +57,7 @@ export function createKymaApolloClient(fromConfig, token) {
 
   const wsLink = new WebSocketLink({
     token,
-    uri: 'ws://localhost:3000/graphql',
+    uri: fromConfig('subscriptionsApiUrl'),
     options: {
       reconnect: true,
     },
