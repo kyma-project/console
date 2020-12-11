@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 import { randomNamesGenerator } from '@kyma-project/common';
 
 import { useMutation } from '@apollo/react-hooks';
-import { GET_EVENT_SUBSCRIPTIONS } from 'gql/queries';
 import { CREATE_EVENT_SUBSCRIPTION } from 'gql/mutations';
 
 import { Modal, GenericList, useNotification } from 'react-shared';
 import { Button } from 'fundamental-react';
 import { SchemaComponent } from 'shared/components/EventTriggers/Schema/Schema';
+import { EVENT_SUBSCRIPTION_PANEL } from 'shared/constants';
 import Checkbox from 'components/Lambdas/Checkbox/Checkbox';
 import './CreateSubscriptionModal.scss';
 
@@ -32,7 +32,6 @@ export default function CreateSubscriptionModal({
   const notification = useNotification();
   const [createEventSubscription] = useMutation(CREATE_EVENT_SUBSCRIPTION);
   const [events, setEvents] = React.useState([]);
-
   React.useEffect(() => {
     if (!originalEvents.length) return;
     originalEvents.sort((a, b) => a.eventType.localeCompare(b.eventType));
@@ -65,12 +64,12 @@ export default function CreateSubscriptionModal({
     try {
       await createEventSubscription({ variables });
       notification.notifySuccess({
-        content: `Event subscription created`,
+        content: EVENT_SUBSCRIPTION_PANEL.ADD_MODAL.NOTIFICATION.SUCCESS,
       });
     } catch (e) {
       console.warn(e);
       notification.notifyError({
-        content: `Cannot create event subscription: ${e.message}`,
+        content: `${EVENT_SUBSCRIPTION_PANEL.ADD_MODAL.NOTIFICATION.ERROR} ${e.message}`,
       });
     }
   };
@@ -113,14 +112,14 @@ export default function CreateSubscriptionModal({
 
   return (
     <Modal
-      title="Create event subscription"
+      title={EVENT_SUBSCRIPTION_PANEL.ADD_MODAL.OPEN_BUTTON.TITLE}
       modalOpeningComponent={
         <Button glyph="add" option="light">
-          Create event subscription
+          {EVENT_SUBSCRIPTION_PANEL.ADD_MODAL.OPEN_BUTTON.TEXT}
         </Button>
       }
-      confirmText="Save"
-      cancelText="Cancel"
+      confirmText={EVENT_SUBSCRIPTION_PANEL.ADD_MODAL.CONFIRM_BUTTON.TEXT}
+      cancelText={EVENT_SUBSCRIPTION_PANEL.ADD_MODAL.CANCEL_BUTTON.TEXT}
       disabledConfirm={events.every(e => !e.isSelected)}
       onConfirm={createSubscription}
     >
