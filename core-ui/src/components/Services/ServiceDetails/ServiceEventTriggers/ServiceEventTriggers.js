@@ -18,7 +18,6 @@ import {
 
 export default function ServiceEventTriggersWrapper({ service }) {
   const { namespaceId: namespace } = useMicrofrontendContext();
-
   const subscriberRef = {
     ref: {
       name: service.name,
