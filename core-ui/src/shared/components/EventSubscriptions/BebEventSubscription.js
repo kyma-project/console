@@ -5,6 +5,7 @@ import {
   useNotification,
   easyHandleDelete,
   handleSubscriptionArrayEvent,
+  useMicrofrontendContext,
 } from 'react-shared';
 
 import { useQuery, useMutation, useSubscription } from '@apollo/react-hooks';
@@ -34,7 +35,7 @@ function showCollapseControl(schema) {
 }
 
 export default function BebEventSubscription({ resource, createResourceRef }) {
-  const namespaceId = resource.namespace;
+  const { namespaceId } = useMicrofrontendContext();
   const notification = useNotification();
   const [eventSubscriptions, setEventSubscriptions] = React.useState([]);
   const [entries, setEntries] = React.useState([]);

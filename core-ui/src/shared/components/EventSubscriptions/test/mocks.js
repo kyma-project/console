@@ -3,15 +3,15 @@ import { EVENT_SUBSCRIPTION_SUBSCRIPTION } from 'gql/subscriptions';
 import { UPDATE_EVENT_SUBSCRIPTION } from 'gql/mutations';
 import { GET_EVENT_ACTIVATIONS } from 'components/Lambdas/gql/queries';
 
-const testNamespace = 'test-namespace';
-export const resource = { name: 'lambda', namespace: testNamespace };
+export const mockNamespace = 'test-namespace';
+export const resource = { name: 'lambda', namespace: mockNamespace };
 
 const subscriptionMock = {
   request: {
     query: EVENT_SUBSCRIPTION_SUBSCRIPTION,
     variables: {
       ownerName: resource.name,
-      namespace: testNamespace,
+      namespace: mockNamespace,
     },
   },
   result: {
@@ -24,7 +24,7 @@ const queryMock = {
     query: GET_EVENT_SUBSCRIPTIONS,
     variables: {
       ownerName: resource.name,
-      namespace: testNamespace,
+      namespace: mockNamespace,
     },
   },
   result: {
@@ -32,7 +32,7 @@ const queryMock = {
       eventSubscriptions: [
         {
           name: 'test-event-sub',
-          namespace: testNamespace,
+          namespace: mockNamespace,
           spec: {
             filter: {
               filters: [
@@ -57,7 +57,7 @@ const updateMock = {
     query: UPDATE_EVENT_SUBSCRIPTION,
     variables: {
       ownerName: resource.name,
-      namespace: testNamespace,
+      namespace: mockNamespace,
       params: {},
     },
   },
@@ -71,7 +71,7 @@ const updateMock = {
 const eventActivationsMock = {
   request: {
     query: GET_EVENT_ACTIVATIONS,
-    variables: { namespace: testNamespace },
+    variables: { namespace: mockNamespace },
   },
   result: {
     data: {
