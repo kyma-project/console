@@ -1,16 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { FileInput, Modal } from 'react-shared';
-import { Button } from 'fundamental-react';
-import { useNotification } from 'react-shared';
+import { FileInput, Modal, useNotification } from 'react-shared';
+
 import { parseFile } from './deployResourceHelpers';
 import { useMutation } from 'react-apollo';
 import { CREATE_RESOURCE } from 'gql/mutations';
 
-DeployResourceModal.propTypes = { namespace: PropTypes.string.isRequired };
+DeployResourceModal.propTypes = {
+  namespace: PropTypes.string.isRequired,
+  modalOpeningComponent: PropTypes.node.isRequired,
+};
 
-export default function DeployResourceModal({ namespace }) {
+export default function DeployResourceModal({
+  namespace,
+  modalOpeningComponent,
+}) {
   const [createResource] = useMutation(CREATE_RESOURCE);
 
   const notification = useNotification();
@@ -57,12 +62,6 @@ export default function DeployResourceModal({ namespace }) {
       );
     }
   };
-
-  const modalOpeningComponent = (
-    <Button className="fd-has-margin-left-tiny" glyph="add">
-      Deploy new resource
-    </Button>
-  );
 
   return (
     <Modal

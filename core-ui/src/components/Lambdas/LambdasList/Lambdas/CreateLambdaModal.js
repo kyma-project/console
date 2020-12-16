@@ -12,10 +12,11 @@ export default function CreateLambdaModal({
   repositories = [],
   serverDataError,
   serverDataLoading,
+  modalOpeningComponent,
 }) {
   const [invalidModalPopupMessage, setInvalidModalPopupMessage] = useState('');
 
-  const modalOpeningComponent = (
+  const defaultModalOpeningComponent = (
     <Button
       glyph="add"
       option="light"
@@ -28,7 +29,9 @@ export default function CreateLambdaModal({
   return (
     <ModalWithForm
       title={LAMBDAS_LIST.CREATE_MODAL.TITLE}
-      modalOpeningComponent={modalOpeningComponent}
+      modalOpeningComponent={
+        modalOpeningComponent || defaultModalOpeningComponent
+      }
       confirmText={LAMBDAS_LIST.CREATE_MODAL.CONFIRM_BUTTON.TEXT}
       invalidPopupMessage={invalidModalPopupMessage}
       id="create-lambda-modal"

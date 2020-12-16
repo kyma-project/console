@@ -9,7 +9,7 @@ import DeployResourceModal from '../DeployResourceModal';
 import * as helpers from '../deployResourceHelpers';
 import { namespace, successRequestMock, failureRequestMock } from './mocks';
 import { MockedProvider } from '@apollo/react-testing';
-
+import { Menu } from 'fundamental-react';
 const mockNotifySuccess = jest.fn();
 const mockNotifyError = jest.fn();
 jest.mock('react-shared', () => ({
@@ -30,7 +30,10 @@ describe('DeployResourceModal', () => {
     helpers.parseFile = () => [null, 'some error here'];
 
     const { getByText, getByLabelText, queryByRole } = render(
-      <DeployResourceModal namespace={namespace} />,
+      <DeployResourceModal
+        namespace={namespace}
+        modalOpeningComponent={<Menu.Item>Deploy new resource</Menu.Item>}
+      />,
     );
 
     // open modal
@@ -53,7 +56,10 @@ describe('DeployResourceModal', () => {
 
     const { getByText, getByLabelText, queryByRole } = render(
       <MockedProvider addTypename={false} mocks={[successRequestMock]}>
-        <DeployResourceModal namespace={namespace} />
+        <DeployResourceModal
+          namespace={namespace}
+          modalOpeningComponent={<Menu.Item>Deploy new resource</Menu.Item>}
+        />
       </MockedProvider>,
     );
 
@@ -93,7 +99,10 @@ describe('DeployResourceModal', () => {
         addTypename={false}
         mocks={[successRequestMock, failureRequestMock]}
       >
-        <DeployResourceModal namespace={namespace} />
+        <DeployResourceModal
+          namespace={namespace}
+          modalOpeningComponent={<Menu.Item>Deploy new resource</Menu.Item>}
+        />
       </MockedProvider>,
     );
 

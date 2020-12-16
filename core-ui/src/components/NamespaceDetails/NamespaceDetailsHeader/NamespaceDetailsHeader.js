@@ -5,10 +5,16 @@ import PropTypes from 'prop-types';
 import { useMutation } from '@apollo/react-hooks';
 import { DELETE_NAMESPACE } from 'gql/mutations';
 
+import { useLambdasQuery } from 'components/Lambdas/gql/hooks/queries';
+import CreateLambdaModal from 'components/Lambdas/LambdasList/Lambdas/CreateLambdaModal';
+import { LAMBDAS_LIST } from 'components/Lambdas/constants';
+
 import { PageHeader, handleDelete, LogsLink, useConfig } from 'react-shared';
-import { Button } from 'fundamental-react';
+import { Button, Menu, Popover } from 'fundamental-react';
 import NamespaceLabels from './NamespaceLabels/NamespaceLabels';
 import DeployResourceModal from '../DeployResourceModal/DeployResourceModal';
+
+import './NamespaceDetailsHeader.scss';
 
 NamespaceDetailsHeader.propTypes = { namespace: PropTypes.object.isRequired };
 
@@ -27,10 +33,56 @@ export default function NamespaceDetailsHeader({ namespace }) {
       () => LuigiClient.linkManager().navigate('/'),
     );
 
+  const { lambdas, repositories, error, loading, loadedData } = useLambdasQuery(
+    {
+      namespace: namespace.name,
+    },
+  );
+
+  const functionNames = lambdas.map(l => l.name) || [];
+  const serverDataError = error || false;
+  const serverDataLoading = loading || !loadedData || false;
   const actions = (
     <>
       <LogsLink domain={DOMAIN} query={query} />
-      <DeployResourceModal namespace={namespace.name} />
+
+      <Popover
+        body={
+          <Menu>
+            <Menu.List>
+              <DeployResourceModal
+                namespace={namespace.name}
+                modalOpeningComponent={<Menu.Item>Upload Yaml</Menu.Item>}
+              />
+              {!Boolean(serverDataError || serverDataLoading) && (
+                <CreateLambdaModal
+                  functionNames={functionNames}
+                  repositories={repositories}
+                  serverDataError={serverDataError}
+                  serverDataLoading={serverDataLoading}
+                  modalOpeningComponent={
+                    <Menu.Item>
+                      {' '}
+                      {LAMBDAS_LIST.CREATE_MODAL.OPEN_BUTTON.TEXT}
+                    </Menu.Item>
+                  }
+                />
+              )}
+            </Menu.List>
+          </Menu>
+        }
+        control={
+          <Button
+            option="light"
+            className="fd-has-margin-left-tiny"
+            glyph="add"
+          >
+            Deploy new workload
+          </Button>
+        }
+        widthSizingType="matchTarget"
+        placement="bottom-end"
+      />
       <Button
         option="light"
         type="negative"

@@ -1,7 +1,7 @@
 import { DELETE_NAMESPACE } from 'gql/mutations';
 
 export const namespace = {
-  name: 'ns',
+  name: 'namespace',
   labels: {
     a: 'b',
     c: 'd',

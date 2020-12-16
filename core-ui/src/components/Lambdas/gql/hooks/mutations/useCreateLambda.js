@@ -61,7 +61,9 @@ export const useCreateLambda = ({ redirect = true }) => {
       });
 
       if (redirect) {
-        LuigiClient.linkManager().navigate(`details/${name}`);
+        LuigiClient.linkManager()
+          .fromContext('namespaces')
+          .navigate(`cmf-functions/details/${name}`);
       }
     } catch (err) {
       handleError(name, err);
