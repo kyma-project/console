@@ -63,7 +63,7 @@ export const EVENT_SUBSCRIPTION_PANEL = {
     },
     NOTIFICATION: {
       SUCCESS: 'Event subscription created',
-      ERROR: 'Cannot create event subscription:',
+      ERROR: 'Cannot create event subscription',
     },
   },
 };

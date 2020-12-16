@@ -69,7 +69,8 @@ export default function CreateSubscriptionModal({
     } catch (e) {
       console.warn(e);
       notification.notifyError({
-        content: `${EVENT_SUBSCRIPTION_PANEL.ADD_MODAL.NOTIFICATION.ERROR} ${e.message}`,
+        title: EVENT_SUBSCRIPTION_PANEL.ADD_MODAL.NOTIFICATION.ERROR,
+        content: e.message,
       });
     }
   };
