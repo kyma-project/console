@@ -34,5 +34,5 @@ REACT_APP_defaultIdpIssuer="https://dex.$REACT_APP_domain"
 
 REACT_APP_namespaceAdminGroupName="runtimeNamespaceAdmin"
 REACT_APP_runtimeAdminGroupName="runtimeAdmin"
-REACT_APP_bebEnabled=true
+REACT_APP_bebEnabled=false
 
