@@ -27,6 +27,7 @@ const StandaloneAction = ({ action, entry, compact }) => {
       aria-label={action.name}
       typeAttr="button"
       compact={compact}
+      disabled={action.disabledHandler && action.disabledHandler(entry)}
     >
       {icon ? '' : action.name}
     </Button>

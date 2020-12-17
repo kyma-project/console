@@ -79,7 +79,7 @@ export default function BebEventSubscription({ resource, createResourceRef }) {
     const filters = eventSubscriptions.flatMap(subscription =>
       subscription.spec.filter.filters.map(filter => ({
         subscriptionName: subscription.name,
-        type: filter.eventType.property,
+        type: filter.eventType.value,
       })),
     );
     const entries = filters.map(filter => ({
@@ -127,7 +127,7 @@ export default function BebEventSubscription({ resource, createResourceRef }) {
           s => s.name === entry.subscriptionName,
         );
         const newFilters = subscription.spec.filter.filters.filter(
-          f => !f.eventType.property.includes(entry.uniqueID.replace('/', '.')),
+          f => !f.eventType.value.includes(entry.uniqueID.replace('/', '.')),
         );
 
         const variables = {
@@ -138,9 +138,7 @@ export default function BebEventSubscription({ resource, createResourceRef }) {
             filters: newFilters
               .map(f =>
                 events.find(event =>
-                  f.eventType.property.includes(
-                    event.uniqueID.replace('/', '.'),
-                  ),
+                  f.eventType.value.includes(event.uniqueID.replace('/', '.')),
                 ),
               )
               .map(e => ({
@@ -164,7 +162,7 @@ export default function BebEventSubscription({ resource, createResourceRef }) {
   ];
 
   const allFilters = eventSubscriptions.flatMap(sub =>
-    sub.spec.filter.filters.map(filter => filter.eventType.property),
+    sub.spec.filter.filters.map(filter => filter.eventType.value),
   );
 
   const modalEvents = events.filter(

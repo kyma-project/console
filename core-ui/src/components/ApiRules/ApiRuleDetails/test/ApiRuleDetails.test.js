@@ -1,11 +1,6 @@
 import React from 'react';
 import { GET_API_RULE } from 'gql/queries';
-import {
-  render,
-  waitForDomChange,
-  queryByText,
-  wait,
-} from '@testing-library/react';
+import { render, waitForDomChange, queryByText } from '@testing-library/react';
 import ApiRuleDetails from '../ApiRuleDetails';
 import { MockedProvider } from '@apollo/react-testing';
 import { DELETE_API_RULE } from 'gql/mutations';
@@ -66,6 +61,7 @@ const apiRuleWithShortHost = {
       desc: '',
     },
   },
+  ownerSubscription: null,
 };
 const mockNamespace = 'nsp';
 const validResponseMock = {
@@ -76,6 +72,18 @@ const validResponseMock = {
   result: {
     data: {
       APIRule: apiRule,
+    },
+  },
+};
+
+const readonlyResponseMock = {
+  request: {
+    query: GET_API_RULE,
+    variables: { name: apiRule.name, namespace: mockNamespace },
+  },
+  result: {
+    data: {
+      APIRule: { ...apiRule, ownerSubscription: { name: 'sub' } },
     },
   },
 };
@@ -260,8 +268,25 @@ describe('ApiRuleDetails', () => {
     );
 
     await waitForDomChange(container);
-    expect(queryByText('Delete')).toBeInTheDocument();
-    expect(queryByText('Edit')).toBeInTheDocument();
+
+    const deleteButton = queryByText('Delete');
+    expect(deleteButton).toBeInTheDocument();
+    expect(deleteButton).not.toBeDisabled();
+    const editButton = queryByText('Edit');
+    expect(editButton).toBeInTheDocument();
+    expect(editButton).not.toBeDisabled();
+
     expect(queryByTestId('yaml-button')).toBeInTheDocument();
+  });
+
+  it('disables delete and edit buttons if rules is owned by Subscription', async () => {
+    const { findByText } = render(
+      <MockedProvider addTypename={false} mocks={[readonlyResponseMock]}>
+        <ApiRuleDetails apiName={apiRule.name} />
+      </MockedProvider>,
+    );
+
+    expect(await findByText('Delete')).toBeDisabled();
+    expect(await findByText('Edit')).toBeDisabled();
   });
 });

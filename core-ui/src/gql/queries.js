@@ -214,6 +214,9 @@ export const GET_API_RULES = gql`
           description
         }
       }
+      ownerSubscription {
+        name
+      }
     }
   }
 `;
@@ -244,6 +247,9 @@ export const GET_API_RULE = gql`
           code
           description
         }
+      }
+      ownerSubscription {
+        name
       }
     }
   }

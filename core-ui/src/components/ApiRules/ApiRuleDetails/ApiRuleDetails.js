@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { useQuery } from '@apollo/react-hooks';
 import LuigiClient from '@luigi-project/client';
 import { Button } from 'fundamental-react';
-import { Spinner, PageHeader, useSideDrawer } from 'react-shared';
+import { Spinner, PageHeader, Tooltip, useSideDrawer } from 'react-shared';
 
 import {
   CopiableApiRuleHost,
@@ -56,30 +56,45 @@ function onDeleteSuccess() {
     .navigate('');
 }
 
-function DeleteButton({ apiRuleName }) {
-  const [handleAPIRuleDelete] = useDeleteApiRule(onDeleteSuccess);
+function readonlyWrapper(children, subscriptionName) {
+  const content = `This API Rule is managed by Subscription ${subscriptionName}.`;
   return (
+    <Tooltip content={content} position="top">
+      {children}
+    </Tooltip>
+  );
+}
+
+function DeleteButton({ apiRuleName, ownerSubscription }) {
+  const [handleAPIRuleDelete] = useDeleteApiRule(onDeleteSuccess);
+  const isReadonly = !!ownerSubscription;
+  const button = (
     <Button
       onClick={() => handleAPIRuleDelete(apiRuleName)}
       option="light"
       type="negative"
+      disabled={isReadonly}
       aria-label="delete-api-rule"
     >
       Delete
     </Button>
   );
+  return isReadonly ? readonlyWrapper(button, ownerSubscription.name) : button;
 }
 
-function EditButton({ apiRuleName }) {
-  return (
+function EditButton({ apiRuleName, ownerSubscription }) {
+  const isReadonly = !!ownerSubscription;
+  const button = (
     <Button
       onClick={() => navigateToEditView(apiRuleName)}
       option="emphasized"
+      disabled={isReadonly}
       aria-label="edit-api-rule"
     >
       Edit
     </Button>
   );
+  return isReadonly ? readonlyWrapper(button, ownerSubscription.name) : button;
 }
 
 function navigateToEditView(apiRuleName) {
@@ -98,6 +113,7 @@ function ApiRuleDetailsHeader({ apiRule }) {
     null,
   );
   const name = apiRule.name;
+  const ownerSubscription = apiRule.ownerSubscription;
   const { openedInModal = false } = LuigiClient.getNodeParams() || {};
   const openedInModalBool = openedInModal.toString().toLowerCase() === 'true';
 
@@ -118,8 +134,14 @@ function ApiRuleDetailsHeader({ apiRule }) {
                 YAML
               </Button>
             )}
-            <EditButton apiRuleName={name} />
-            <DeleteButton apiRuleName={name} />
+            <EditButton
+              apiRuleName={name}
+              ownerSubscription={ownerSubscription}
+            />
+            <DeleteButton
+              apiRuleName={name}
+              ownerSubscription={ownerSubscription}
+            />
           </>
         )
       }

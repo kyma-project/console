@@ -38,9 +38,9 @@ const queryMock = {
               filters: [
                 {
                   eventType: {
-                    property: 'sap.kyma.custom.test-id.test-event.v1',
+                    value: 'sap.kyma.custom.test-id.test-event.v1',
                     type: 'test',
-                    value: 'test',
+                    property: 'test',
                   },
                 },
               ],
