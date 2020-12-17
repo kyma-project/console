@@ -52,7 +52,7 @@ export default function NamespaceDetailsHeader({ namespace }) {
             <Menu.List>
               <DeployResourceModal
                 namespace={namespace.name}
-                modalOpeningComponent={<Menu.Item>Upload Yaml</Menu.Item>}
+                modalOpeningComponent={<Menu.Item>Upload YAML</Menu.Item>}
               />
               {!Boolean(serverDataError || serverDataLoading) && (
                 <CreateLambdaModal
