@@ -28,11 +28,78 @@ export function getStaticChildrenNodesForNamespace() {
       icon: 'nav-back'
     },
     {
+      category: {
+        label: 'Workloads',
+        icon: 'source-code',
+        collapsible: true
+      },
+      pathSegment: '_workloads_category_placeholder_',
+      hideFromNav: true
+    }, 
+    {
+      category: 'Workloads',
       pathSegment: 'details',
       label: 'Overview',
+      order: -1,
       viewUrl: config.coreModuleUrl + '/home/namespaces/:namespaceId/details',
       icon: 'product',
       viewGroup: coreUIViewGroupName
+    },
+    {
+      category: 'Workloads',
+      pathSegment: 'pods',
+      navigationContext: 'pods',
+      label: 'Pods',
+      viewUrl: config.coreModuleUrl + '/home/namespaces/:namespaceId/pods',
+      viewGroup: coreUIViewGroupName
+    },
+    {
+      category: 'Workloads',
+      pathSegment: 'replica-sets',
+      navigationContext: 'replica-sets',
+      label: 'Replica Sets',
+      viewUrl: '/consoleapp.html#/home/namespaces/:namespaceId/replicaSets',
+      viewGroup: consoleViewGroupName
+    },
+    {
+      category: 'Workloads',
+      pathSegment: 'deployments',
+      navigationContext: 'deployments',
+      label: 'Deployments',
+      viewUrl: '/consoleapp.html#/home/namespaces/:namespaceId/deployments',
+      viewGroup: consoleViewGroupName
+    },
+    {
+      category: {
+        label: 'Discovery and Network',
+        icon: 'instance',
+        collapsible: true
+      },
+      pathSegment: '_discovery_and_network_category_placeholder_',
+      hideFromNav: true
+    },
+    {
+      category: 'Discovery and Network',
+      pathSegment: 'services',
+      navigationContext: 'services',
+      label: 'Services',
+      viewUrl: config.coreModuleUrl + '/home/namespaces/:namespaceId/services',
+      keepSelectedForChildren: true,
+      viewGroup: coreUIViewGroupName,
+      children: [
+        {
+          pathSegment: 'details',
+          children: [
+            {
+              pathSegment: ':serviceName',
+              viewUrl:
+                config.coreModuleUrl +
+                '/home/namespaces/:namespaceId/services/details/:serviceName',
+              viewGroup: coreUIViewGroupName
+            }
+          ]
+        }
+      ]
     },
     {
       category: {
@@ -109,70 +176,6 @@ export function getStaticChildrenNodesForNamespace() {
     },
     {
       category: 'Configuration',
-      pathSegment: 'config-maps',
-      navigationContext: 'config-maps',
-      label: 'Config Maps',
-      viewUrl: '/consoleapp.html#/home/namespaces/:namespaceId/configmaps',
-      viewGroup: consoleViewGroupName
-    },
-    {
-      category: {
-        label: 'Development',
-        icon: 'source-code',
-        collapsible: true
-      },
-      pathSegment: '_development_category_placeholder_',
-      hideFromNav: true
-    },
-    {
-      category: { label: 'Operation', icon: 'instance', collapsible: true },
-      pathSegment: 'deployments',
-      navigationContext: 'deployments',
-      label: 'Deployments',
-      viewUrl: '/consoleapp.html#/home/namespaces/:namespaceId/deployments',
-      viewGroup: consoleViewGroupName
-    },
-    {
-      category: 'Operation',
-      pathSegment: 'replica-sets',
-      navigationContext: 'replica-sets',
-      label: 'Replica Sets',
-      viewUrl: '/consoleapp.html#/home/namespaces/:namespaceId/replicaSets',
-      viewGroup: consoleViewGroupName
-    },
-    {
-      category: 'Operation',
-      pathSegment: 'pods',
-      navigationContext: 'pods',
-      label: 'Pods',
-      viewUrl: config.coreModuleUrl + '/home/namespaces/:namespaceId/pods',
-      viewGroup: coreUIViewGroupName
-    },
-    {
-      category: 'Operation',
-      pathSegment: 'services',
-      navigationContext: 'services',
-      label: 'Services',
-      viewUrl: config.coreModuleUrl + '/home/namespaces/:namespaceId/services',
-      keepSelectedForChildren: true,
-      viewGroup: coreUIViewGroupName,
-      children: [
-        {
-          pathSegment: 'details',
-          children: [
-            {
-              pathSegment: ':serviceName',
-              viewUrl:
-                config.coreModuleUrl +
-                '/home/namespaces/:namespaceId/services/details/:serviceName',
-              viewGroup: coreUIViewGroupName
-            }
-          ]
-        }
-      ]
-    },
-    {
-      category: 'Operation',
       pathSegment: 'secrets',
       navigationContext: 'secrets',
       label: 'Secrets',
@@ -194,6 +197,14 @@ export function getStaticChildrenNodesForNamespace() {
           ]
         }
       ]
+    },
+    {
+      category: 'Configuration',
+      pathSegment: 'config-maps',
+      navigationContext: 'config-maps',
+      label: 'Config Maps',
+      viewUrl: '/consoleapp.html#/home/namespaces/:namespaceId/configmaps',
+      viewGroup: consoleViewGroupName
     },
     {
       category: { label: 'Experimental', icon: 'lab', collapsible: true },
