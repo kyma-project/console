@@ -1,7 +1,13 @@
 import React from 'react';
 
 import { LabelsInput } from 'components/Lambdas/components';
-import { FormSet, FormLabel, FormInput, InlineHelp } from 'fundamental-react';
+import {
+  Checkbox,
+  FormSet,
+  FormLabel,
+  FormInput,
+  InlineHelp,
+} from 'fundamental-react';
 import { K8sNameInput } from 'react-shared';
 
 export default function BasicData({ deployment, setDeployment }) {
@@ -28,6 +34,14 @@ export default function BasicData({ deployment, setDeployment }) {
         placeholder="Enter Docker image"
         onChange={e =>
           setDeployment({ ...deployment, dockerImage: e.target.value })
+        }
+        className="fd-has-margin-bottom-s"
+      />
+      <Checkbox
+        defaultChecked={deployment.createService}
+        value="Create Service"
+        onChange={e =>
+          setDeployment({ ...deployment, createService: e.target.checked })
         }
       />
     </FormSet>

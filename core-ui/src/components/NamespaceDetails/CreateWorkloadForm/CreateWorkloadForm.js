@@ -1,10 +1,46 @@
 import React from 'react';
 
-import { useMicrofrontendContext } from 'react-shared';
+import { useGenericCreate } from 'react-shared';
 
 import './CreateWorkloadForm.scss';
 import BasicData from './BasicData';
 import ScalingData from './ScalingData';
+
+function formatDeployment(deployment) {
+  if (!deployment.labels.app) {
+    deployment.labels.app = deployment.name;
+  }
+
+  const runtimeDeployment = {
+    apiVersion: 'apps/v1',
+    kind: 'Deployment',
+    metadata: {
+      name: deployment.name,
+      namespace: deployment.namespace,
+      labels: deployment.labels,
+    },
+    spec: {
+      replicas: deployment.replicasMin,
+      selector: { matchLabels: deployment.labels },
+      template: {
+        metadata: { labels: deployment.labels },
+        spec: {
+          containers: [
+            {
+              name: deployment.name,
+              image: deployment.dockerImage,
+              resources: {
+                requests: deployment.requests,
+                limits: deployment.limits,
+              },
+            },
+          ],
+        },
+      },
+    },
+  };
+  return runtimeDeployment;
+}
 
 export default function CreateWorkloadForm({
   namespaceId,
@@ -13,10 +49,11 @@ export default function CreateWorkloadForm({
   onCompleted,
   onError,
 }) {
-  const { idToken: token } = useMicrofrontendContext();
+  const createResource = useGenericCreate();
   const [deployment, setDeployment] = React.useState({
     name: '',
     namespace: namespaceId,
+    createService: true,
     dockerImage: '',
     labels: {},
     replicasMin: 1,
@@ -32,21 +69,12 @@ export default function CreateWorkloadForm({
   });
 
   const handleFormSubmit = async () => {
-    console.log(deployment);
-    // try {
-    //   const url = 'http://localhost:3001/deployments/create';
-    //   await fetch(url, {
-    //     headers: {
-    //       Authorization: `Bearer ${token}`,
-    //       'Content-Type': 'application/json',
-    //     },
-    //     body: JSON.stringify(deployment),
-    //     method: 'POST',
-    //   });
-    //   onCompleted(deployment.name, 'Deployment created');
-    // } catch (e) {
-    //   onError('Cannot create deployment');
-    // }
+    try {
+      await createResource(formatDeployment(deployment));
+      onCompleted(deployment.name, 'Deployment created');
+    } catch (e) {
+      onError('Cannot create deployment');
+    }
   };
 
   return (
