@@ -8,7 +8,7 @@
 
     .add-deployment-modal {
         .modal-demo-bg, .fd-modal__content {
-            width: 70em;
+            width: 65em;
         }
     }
 
@@ -16,6 +16,11 @@
         display: grid;
         grid-template-columns: 1fr 1fr;
         grid-gap: 16px;
+        margin-bottom: 0 !important;
+
+        .fd-input {
+            margin-top: 8px;
+        }
     }
 }
 
@@ -27,6 +32,12 @@
 
     .configuration-data__title {
         margin-top: 32px;
+    }
+
+    .add-deployment-modal {
+        .modal-demo-bg, .fd-modal__content {
+            min-width: 500px;
+        }
     }
 }
 

@@ -1,0 +1,35 @@
+import React from 'react';
+
+import { LabelsInput } from 'components/Lambdas/components';
+import { FormSet, FormLabel, FormInput, InlineHelp } from 'fundamental-react';
+import { K8sNameInput } from 'react-shared';
+
+export default function BasicData({ deployment, setDeployment }) {
+  return (
+    <FormSet>
+      <K8sNameInput
+        kind="Deployment"
+        onChange={e => setDeployment({ ...deployment, name: e.target.value })}
+        className="fd-has-margin-bottom-s"
+      />
+      <LabelsInput
+        labels={deployment.labels}
+        onChange={labels => setDeployment({ ...deployment, labels })}
+      />
+      <FormLabel required>
+        Docker image
+        <InlineHelp
+          placement="bottom-right"
+          text="Image should be a valid docker image registry path."
+        />
+      </FormLabel>
+      <FormInput
+        required
+        placeholder="Enter Docker image"
+        onChange={e =>
+          setDeployment({ ...deployment, dockerImage: e.target.value })
+        }
+      />
+    </FormSet>
+  );
+}
