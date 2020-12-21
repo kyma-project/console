@@ -1,4 +1,4 @@
-### Kyma React Components
+# Kyma React Components
 
 ## Overview
 
@@ -10,7 +10,7 @@ You can see the components and their properties on the [Console](https://kyma-pr
 
 To import the library into an application, run the following command:
 
-```
+```bash
 npm install --save @kyma-project/react-components
 ```
 
@@ -22,30 +22,14 @@ After the build, the webpack creates the `lib` folder.
 
 Run once:
 
-```
+```bash
 npm run build
 ```
 
 Then run the `watch` script:
 
-```
+```bash
 npm run build:watch
-```
-
-### Live preview
-
-Use [react-styleguidist](https://github.com/styleguidist/react-styleguidist) as a development environment. It lists component propTypes and shows live, editable usage examples based on Markdown files.
-
-To run the live preview:
-
-```
-npm run styleguide
-```
-
-To build sources for later publication:
-
-```
-npm run styleguide:build
 ```
 
 ### Test
@@ -54,18 +38,18 @@ npm run styleguide:build
 
 To run the tests once:
 
-```
+```bash
 npm test
 ```
 
 To run the watch script:
 
-```
+```bash
 npm run test:watch
 ```
 
-To view the coverage report: 
+To view the coverage report:
 
-```
+```bash
 npm run test:coverage:report
 ```
