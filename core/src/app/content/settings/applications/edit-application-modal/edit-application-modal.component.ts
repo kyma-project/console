@@ -5,6 +5,7 @@ import {
   ElementRef,
   TemplateRef
 } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import { ApplicationsService } from '../services/applications.service';
 import { ComponentCommunicationService } from '../../../../shared/services/component-communication.service';
 import { NgForm } from '@angular/forms';
@@ -34,7 +35,8 @@ export class EditApplicationModalComponent {
   public constructor(
     private applicationsService: ApplicationsService,
     private communicationService: ComponentCommunicationService,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private sanitizer: DomSanitizer
   ) {}
 
   public show(): void {
@@ -88,9 +90,10 @@ export class EditApplicationModalComponent {
   }
 
   public save(): void {
+    const descriptionSanitized = this.sanitizer.sanitize(1, this.updatedDescription);
     const data = {
       name: this.name,
-      description: this.updatedDescription,
+      description: descriptionSanitized,
       labels: (this.updatedLabels || []).reduce((acc, label) => {
         return { ...acc, [label.split('=')[0]]: label.split('=')[1] };
       }, {})

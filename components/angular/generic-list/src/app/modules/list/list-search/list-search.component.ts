@@ -1,6 +1,6 @@
 import { Component, OnChanges, SimpleChange } from '@angular/core';
-import { ListFilterComponent } from '../list-filter/list-filter.component';
 import { DomSanitizer } from '@angular/platform-browser';
+import { ListFilterComponent } from '../list-filter/list-filter.component';
 
 @Component({
   selector: 'y-list-search',
@@ -16,7 +16,6 @@ export class ListSearchComponent extends ListFilterComponent
   searchText = '';
 
   ngOnChanges(changes: { [propKey: string]: SimpleChange }) {
-
     super.ngOnChanges(changes);
     for (const propName in changes) {
       if (propName === 'filterState') {
