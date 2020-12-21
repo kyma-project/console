@@ -1,5 +1,6 @@
 import { Component, OnChanges, SimpleChange } from '@angular/core';
 import { ListFilterComponent } from '../list-filter/list-filter.component';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'y-list-search',
@@ -8,10 +9,14 @@ import { ListFilterComponent } from '../list-filter/list-filter.component';
 })
 export class ListSearchComponent extends ListFilterComponent
   implements OnChanges {
+  constructor(private sanitizer: DomSanitizer) {
+    super();
+  }
   searching = false;
   searchText = '';
 
   ngOnChanges(changes: { [propKey: string]: SimpleChange }) {
+
     super.ngOnChanges(changes);
     for (const propName in changes) {
       if (propName === 'filterState') {
@@ -28,11 +33,7 @@ export class ListSearchComponent extends ListFilterComponent
   }
 
   searchTextChange(text) {
-    const regex = /^[a-zA-Z0-9-=.\/]*$/;
-    if (!Boolean(regex.test(text || ''))) {
-      return;
-    };
-    this.searchText = text;
+    this.searchText = this.sanitizer.sanitize(1, text);
     if (this.hasSearch()) {
       this.filterState.filters.forEach(filter => {
         filter.value = this.searchText;
