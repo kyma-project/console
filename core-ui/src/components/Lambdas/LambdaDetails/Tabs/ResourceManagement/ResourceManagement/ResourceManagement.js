@@ -33,7 +33,7 @@ const editText = RESOURCES_MANAGEMENT_PANEL.EDIT_MODAL.OPEN_BUTTON.TEXT.EDIT;
 const popupMessage =
   RESOURCES_MANAGEMENT_PANEL.EDIT_MODAL.CONFIRM_BUTTON.POPUP_MESSAGE;
 
-function getDefaultFormValues(lambda) {
+export function getDefaultFormValues(lambda) {
   return {
     [inputNames.replicas.preset]: checkReplicasPreset(
       lambda.replicas,
