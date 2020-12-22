@@ -59,40 +59,6 @@ export default function ScalingData({ deployment, setDeployment }) {
 
   return (
     <div>
-      <h3 className="configuration-data__title">Scaling Options</h3>
-      <FormSet className="configuration-data__form">
-        <FormLabel>
-          Minimum replicas
-          <FormInput
-            type="number"
-            min="1"
-            max={deployment.replicasMax}
-            defaultValue={deployment.replicasMin}
-            onChange={e =>
-              setDeployment({
-                ...deployment,
-                replicasMin: e.target.valueAsNumber,
-              })
-            }
-            className="fd-has-margin-bottom-s"
-          />
-        </FormLabel>
-
-        <FormLabel>
-          Maximum replicas
-          <FormInput
-            type="number"
-            min={deployment.replicasMin}
-            defaultValue={deployment.replicasMax}
-            onChange={e =>
-              setDeployment({
-                ...deployment,
-                replicasMax: e.target.valueAsNumber,
-              })
-            }
-          />
-        </FormLabel>
-      </FormSet>
       <h3 className="configuration-data__title">
         Runtime Profile
         <p className="fd-has-type-2 fd-has-color-text-3">

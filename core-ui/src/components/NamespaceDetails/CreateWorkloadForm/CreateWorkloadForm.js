@@ -20,7 +20,7 @@ function formatDeployment(deployment) {
       labels: deployment.labels,
     },
     spec: {
-      replicas: deployment.replicasMin,
+      replicas: 1,
       selector: { matchLabels: deployment.labels },
       template: {
         metadata: { labels: deployment.labels },
@@ -42,6 +42,42 @@ function formatDeployment(deployment) {
   return runtimeDeployment;
 }
 
+function formatService(deployment, deploymentUID) {
+  if (!deployment.labels.app) {
+    deployment.labels.app = deployment.name;
+  }
+
+  const service = {
+    apiVersion: 'v1',
+    kind: 'Service',
+    metadata: {
+      name: deployment.name,
+      namespace: deployment.namespace,
+      ownerReferences: [
+        {
+          kind: 'Deployment',
+          apiVersion: 'apps/v1',
+          name: deployment.name,
+          uid: deploymentUID,
+        },
+      ],
+      //labels: //TODO
+    },
+    spec: {
+      type: 'ClusterIP',
+      ports: [
+        {
+          name: 'http',
+          port: deployment.port.port,
+          protocol: 'TCP',
+          targetPort: deployment.port.targetPort,
+        },
+      ],
+    },
+  };
+  return service;
+}
+
 export default function CreateWorkloadForm({
   namespaceId,
   formElementRef,
@@ -56,8 +92,6 @@ export default function CreateWorkloadForm({
     createService: true,
     dockerImage: '',
     labels: {},
-    replicasMin: 1,
-    replicasMax: 1,
     requests: {
       memory: '64Mi',
       cpu: '50m',
@@ -66,12 +100,26 @@ export default function CreateWorkloadForm({
       memory: '128Mi',
       cpu: '100m',
     },
+    port: {
+      name: 'http',
+      port: 80,
+      protocol: 'TCP',
+      targetPort: 8080,
+    },
   });
 
   const handleFormSubmit = async () => {
     try {
-      await createResource(formatDeployment(deployment));
+      const createdResource = await createResource(
+        formatDeployment(deployment),
+      );
       onCompleted(deployment.name, 'Deployment created');
+
+      const createdResourceUID = createdResource?.metadata?.uid;
+
+      if (deployment.createService && createdResourceUID) {
+        await createResource(formatService(deployment, createdResourceUID));
+      }
     } catch (e) {
       onError('Cannot create deployment');
     }
