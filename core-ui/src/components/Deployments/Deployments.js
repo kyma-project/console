@@ -1,11 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-  PageHeader,
-  YamlEditorProvider,
-  DEPLOYMENTS_TITLE,
-} from 'react-shared';
+import { PageHeader, YamlEditorProvider } from 'react-shared';
 
+import { DEPLOYMENTS_TITLE } from 'shared/constants';
 import DeploymentList from './DeploymentList/DeploymentList';
 
 Deployments.propTypes = { namespace: PropTypes.string.isRequired };
