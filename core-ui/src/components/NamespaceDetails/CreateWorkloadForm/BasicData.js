@@ -14,6 +14,7 @@ export default function BasicData({ deployment, setDeployment }) {
   return (
     <FormSet>
       <K8sNameInput
+        id="name"
         kind="Deployment"
         onChange={e => setDeployment({ ...deployment, name: e.target.value })}
         className="fd-has-margin-bottom-s"
@@ -22,7 +23,7 @@ export default function BasicData({ deployment, setDeployment }) {
         labels={deployment.labels}
         onChange={labels => setDeployment({ ...deployment, labels })}
       />
-      <FormLabel required>
+      <FormLabel htmlFor="docker-image" required>
         Docker image
         <InlineHelp
           placement="bottom-right"
@@ -30,6 +31,7 @@ export default function BasicData({ deployment, setDeployment }) {
         />
       </FormLabel>
       <FormInput
+        id="docker-image"
         required
         placeholder="Enter Docker image"
         onChange={e =>
