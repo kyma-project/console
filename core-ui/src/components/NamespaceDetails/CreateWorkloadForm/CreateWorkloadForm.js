@@ -40,22 +40,26 @@ export default function CreateWorkloadForm({
   });
 
   const handleFormSubmit = async () => {
+    let createdResource = null;
     try {
-      const createdResource = await createResource(
-        formatDeployment(deployment),
-      );
-      onCompleted(deployment.name, 'Deployment created');
+      createdResource = await createResource(formatDeployment(deployment));
+    } catch (e) {
+      console.log(e);
+      onError('Cannot create deployment', e.message);
+      return;
+    }
+    const createdResourceUID = createdResource?.metadata?.uid;
 
-      const createdResourceUID = createdResource?.metadata?.uid;
-
+    try {
       if (deployment.createService && createdResourceUID) {
         await createResource(formatService(deployment, createdResourceUID));
       }
+      onCompleted(deployment.name, 'Deployment created');
       LuigiClient.linkManager()
         .fromContext('namespaces')
         .navigate('/deployments');
     } catch (e) {
-      onError('Cannot create deployment');
+      onError('Deployment created, could not create service', e.message, true);
     }
   };
 

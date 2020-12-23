@@ -1,8 +1,7 @@
 import React from 'react';
 
 import { TextFormItem } from 'react-shared';
-
-import { FormSet, FormLabel, FormInput } from 'fundamental-react';
+import { FormSet } from 'fundamental-react';
 
 export default function ServiceData({ deployment, setDeployment }) {
   if (!deployment.createService) {
