@@ -111,7 +111,6 @@ export default function CreateWorkloadForm({
 
   const handleFormSubmit = async () => {
     try {
-      console.log(deployment);
       const createdResource = await createResource(
         formatDeployment(deployment),
       );

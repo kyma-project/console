@@ -5,8 +5,7 @@ import { useConfig } from '../../contexts/ConfigContext';
 export const useGenericCreate = () => {
   const { idToken } = useMicrofrontendContext();
   const { fromConfig } = useConfig();
-  // const url = baseUrl(fromConfig) + '/resource';
-  const url = 'http://localhost:3001/resource';
+  const url = baseUrl(fromConfig) + '/resource';
 
   return async resource => {
     const response = await fetch(url, {
