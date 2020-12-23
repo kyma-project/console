@@ -46,38 +46,6 @@ export default function BasicData({ deployment, setDeployment }) {
           setDeployment({ ...deployment, createService: e.target.checked })
         }
       />
-
-      {deployment.createService && (
-        <>
-          <FormInput
-            required
-            placeholder="Enter port"
-            defaultValue={deployment.port.port}
-            onChange={e =>
-              setDeployment({
-                ...deployment,
-                port: { ...deployment.port, port: e.target.checked },
-              })
-            }
-            className="fd-has-margin-bottom-s"
-          />
-          <FormInput
-            required
-            placeholder="Enter target port"
-            defaultValue={deployment.port.targetPort}
-            onChange={e =>
-              setDeployment({
-                ...deployment,
-                port: {
-                  ...deployment.targetPort,
-                  targetPort: e.target.checked,
-                },
-              })
-            }
-            className="fd-has-margin-bottom-s"
-          />
-        </>
-      )}
     </FormSet>
   );
 }

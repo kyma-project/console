@@ -1,9 +1,11 @@
 import React from 'react';
+import LuigiClient from '@luigi-project/client';
 
 import { useGenericCreate } from 'react-shared';
 
 import './CreateWorkloadForm.scss';
 import BasicData from './BasicData';
+import ServiceData from './ServiceData';
 import ScalingData from './ScalingData';
 
 function formatDeployment(deployment) {
@@ -61,7 +63,6 @@ function formatService(deployment, deploymentUID) {
           uid: deploymentUID,
         },
       ],
-      //labels: //TODO
     },
     spec: {
       type: 'ClusterIP',
@@ -110,6 +111,7 @@ export default function CreateWorkloadForm({
 
   const handleFormSubmit = async () => {
     try {
+      console.log(deployment);
       const createdResource = await createResource(
         formatDeployment(deployment),
       );
@@ -120,20 +122,31 @@ export default function CreateWorkloadForm({
       if (deployment.createService && createdResourceUID) {
         await createResource(formatService(deployment, createdResourceUID));
       }
+      LuigiClient.linkManager()
+        .fromContext('namespaces')
+        .navigate('/deployments');
     } catch (e) {
       onError('Cannot create deployment');
     }
   };
 
   return (
-    <form
-      onChange={onChange}
-      ref={formElementRef}
-      onSubmit={handleFormSubmit}
-      className="create-workload-form"
-    >
-      <BasicData deployment={deployment} setDeployment={setDeployment} />
-      <ScalingData deployment={deployment} setDeployment={setDeployment} />
-    </form>
+    <>
+      <form
+        onChange={onChange}
+        ref={formElementRef}
+        onSubmit={handleFormSubmit}
+        className="create-workload-form"
+      >
+        <div>
+          <BasicData deployment={deployment} setDeployment={setDeployment} />
+          <ServiceData deployment={deployment} setDeployment={setDeployment} />
+        </div>
+        <ScalingData deployment={deployment} setDeployment={setDeployment} />
+      </form>
+      <p className="create-workload-info fd-has-type-2 fd-has-color-text-3">
+        For more advanced configuration options, use "Upload YAML" option.
+      </p>
+    </>
   );
 }
