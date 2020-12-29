@@ -1,6 +1,6 @@
 FROM alpine:3.12 AS builder
 # install node
-RUN apk add --update nodejs npm --repository=http://dl-cdn.alpinelinux.org/alpine/edge/main
+RUN apk add --update nodejs npm make --repository=http://dl-cdn.alpinelinux.org/alpine/edge/main
 
 ARG app_name=core
 WORKDIR /app
