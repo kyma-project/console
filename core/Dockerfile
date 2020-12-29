@@ -1,4 +1,7 @@
-FROM eu.gcr.io/kyma-project/test-infra/buildpack-node-chromium:v20201023-6c4eabe1 as builder
+FROM alpine:3.12 AS builder
+# install node
+RUN apk add --update nodejs npm --repository=http://dl-cdn.alpinelinux.org/alpine/edge/main
+
 ARG app_name=core
 WORKDIR /app
 
