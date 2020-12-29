@@ -7,7 +7,11 @@ import './CreateWorkloadForm.scss';
 import BasicData from './BasicData';
 import ServiceData from './ServiceData';
 import ScalingData from './ScalingData';
-import { formatDeployment, formatService } from './helpers';
+import {
+  formatDeployment,
+  formatService,
+  createDeploymentTemplate,
+} from './helpers';
 
 export default function CreateWorkloadForm({
   namespaceId,
@@ -17,27 +21,9 @@ export default function CreateWorkloadForm({
   onError,
 }) {
   const createResource = useGenericCreate();
-  const [deployment, setDeployment] = React.useState({
-    name: '',
-    namespace: namespaceId,
-    createService: true,
-    dockerImage: '',
-    labels: {},
-    requests: {
-      memory: '64Mi',
-      cpu: '50m',
-    },
-    limits: {
-      memory: '128Mi',
-      cpu: '100m',
-    },
-    port: {
-      name: 'http',
-      port: 80,
-      protocol: 'TCP',
-      targetPort: 8080,
-    },
-  });
+  const [deployment, setDeployment] = React.useState(
+    createDeploymentTemplate(namespaceId),
+  );
 
   const handleFormSubmit = async () => {
     let createdResource = null;

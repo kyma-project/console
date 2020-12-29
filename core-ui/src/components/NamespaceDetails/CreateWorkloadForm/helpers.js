@@ -68,3 +68,25 @@ export function formatService(deployment, deploymentUID) {
   };
   return service;
 }
+
+export const createDeploymentTemplate = namespaceId => ({
+  name: '',
+  namespace: namespaceId,
+  createService: true,
+  dockerImage: '',
+  labels: {},
+  requests: {
+    memory: '64Mi',
+    cpu: '50m',
+  },
+  limits: {
+    memory: '128Mi',
+    cpu: '100m',
+  },
+  port: {
+    name: 'http',
+    port: 80,
+    protocol: 'TCP',
+    targetPort: 8080,
+  },
+});
