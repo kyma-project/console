@@ -22,13 +22,15 @@ import Moment from 'react-moment';
 DeploymentList.propTypes = { namespace: PropTypes.string.isRequired };
 
 export default function DeploymentList({ namespace }) {
+  const deploymentUrl = `/apis/apps/v1/namespaces/${namespace}/deployments`;
+
   const [deployments, setDeployments] = React.useState([]);
   const setEditedSpec = useYamlEditor();
   const notification = useNotification();
-  const updateDeploymentMutation = useUpdate('deployments');
-  const deleteDeploymentMutation = useDelete('deployments');
+  const updateDeploymentMutation = useUpdate(deploymentUrl);
+  const deleteDeploymentMutation = useDelete(deploymentUrl);
   const { loading = true, error } = useGet(
-    'deployments',
+    deploymentUrl,
     setDeployments,
     namespace,
   );
@@ -44,7 +46,8 @@ export default function DeploymentList({ namespace }) {
   const handleSaveClick = deploymentData => async newYAML => {
     try {
       const diff = createPatch(deploymentData, jsyaml.safeLoad(newYAML));
-      await updateDeploymentMutation({
+      const url = deploymentUrl + '/' + deploymentData.metadata.name;
+      await updateDeploymentMutation(url, {
         name: deploymentData.metadata.name,
         namespace,
         mergeJson: diff,
@@ -61,8 +64,9 @@ export default function DeploymentList({ namespace }) {
   };
 
   async function handleDeploymentDelete(deployment) {
+    const url = deploymentUrl + '/' + deployment.metadata.name;
     try {
-      await deleteDeploymentMutation({
+      await deleteDeploymentMutation(url, {
         name: deployment.metadata.name,
         namespace,
       });

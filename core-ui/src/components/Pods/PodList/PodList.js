@@ -28,12 +28,14 @@ const PodStatus = ({ pod }) => {
 };
 
 export default function PodList({ namespace }) {
+  const podUrl = `/api/v1/namespaces/${namespace}/pods`;
+
   const [pods, setPods] = React.useState([]);
   const setEditedSpec = useYamlEditor();
   const notification = useNotification();
-  const updatePodMutation = useUpdate('pods');
-  const deletePodMutation = useDelete('pods');
-  const { loading = true, error } = useGet('pods', setPods, namespace);
+  const updatePodMutation = useUpdate(podUrl);
+  const deletePodMutation = useDelete(podUrl);
+  const { loading = true, error } = useGet(podUrl, setPods, namespace);
 
   useSubscription(
     'pods',
@@ -44,7 +46,8 @@ export default function PodList({ namespace }) {
   const handleSaveClick = podData => async newYAML => {
     try {
       const diff = createPatch(podData, jsyaml.safeLoad(newYAML));
-      await updatePodMutation({
+      const url = podUrl + '/' + podData.metadata.name;
+      await updatePodMutation(url, {
         name: podData.metadata.name,
         namespace,
         mergeJson: diff,
@@ -61,8 +64,9 @@ export default function PodList({ namespace }) {
   };
 
   async function handlePodDelete(pod) {
+    const url = podUrl + '/' + pod.metadata.name;
     try {
-      await deletePodMutation({
+      await deletePodMutation(url, {
         name: pod.metadata.name,
         namespace,
       });
