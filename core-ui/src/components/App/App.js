@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import { withTitle } from 'react-shared';
+import { withTitle, useMicrofrontendContext } from 'react-shared';
 
 import NamespaceDetails from '../NamespaceDetails/NamespaceDetails';
 import NamespaceList from '../NamespaceList/NamespaceList';
@@ -57,12 +57,12 @@ export default function App() {
       <Route
         exact
         path="/home/namespaces/:namespaceId/pods"
-        render={withTitle(PODS_TITLE, RoutedPodList)}
+        render={withTitle(PODS_TITLE, RoutedResourcesList)}
       />
       <Route
         exact
         path="/home/namespaces/:namespaceId/deployments"
-        render={withTitle(DEPLOYMENTS_TITLE, RoutedDeploymentList)}
+        render={withTitle(DEPLOYMENTS_TITLE, RoutedResourcesList)}
       />
 
       <Route
@@ -154,6 +154,17 @@ export default function App() {
   );
 }
 
+function RoutedResourcesList({ match }) {
+  const context = useMicrofrontendContext();
+  const resourceObject = context?.resourceObject;
+  return (
+    <ResourcesList
+      resourceObject={resourceObject}
+      namespace={match.params.namespaceId}
+    />
+  );
+}
+
 function RoutedNamespaceDetails({ match }) {
   return <NamespaceDetails name={match.params.namespace} />;
 }
@@ -171,26 +182,6 @@ function RoutedOAuthClientDetails({ match }) {
     <OAuthClientsDetails
       namespace={match.params.namespaceId}
       name={match.params.clientName}
-    />
-  );
-}
-
-const podsObject = { kind: 'Pod', apiVersion: 'v1' };
-function RoutedPodList({ match }) {
-  return (
-    <ResourcesList
-      resourceObject={podsObject}
-      namespace={match.params.namespaceId}
-    />
-  );
-}
-
-const deploymentsObject = { kind: 'Deployment', apiVersion: 'apps/v1' };
-function RoutedDeploymentList({ match }) {
-  return (
-    <ResourcesList
-      resourceObject={deploymentsObject}
-      namespace={match.params.namespaceId}
     />
   );
 }
