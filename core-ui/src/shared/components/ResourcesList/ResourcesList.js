@@ -28,12 +28,12 @@ export default function ResourcesList({ resourceObject, namespace }) {
   return (
     <YamlEditorProvider>
       <PageHeader title={resourceObject.kind} />
-      <ResourceList resourceObject={resourceObject} namespace={namespace} />
+      <Resources resourceObject={resourceObject} namespace={namespace} />
     </YamlEditorProvider>
   );
 }
 
-function ResourceList({ resourceObject, namespace }) {
+function Resources({ resourceObject, namespace }) {
   const { apiVersion, kind } = resourceObject;
   const api = apiVersion === 'v1' ? 'api' : 'apis'; //check it
   const resourceUrl = `/${api}/${apiVersion}${
