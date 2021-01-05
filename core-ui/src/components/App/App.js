@@ -13,9 +13,6 @@ import ApiRules from 'components/ApiRules/ApiRules';
 import ApiRuleDetails from 'components/ApiRules/ApiRuleDetails/ApiRuleDetails';
 import EditApiRule from 'components/ApiRules/EditApiRule/EditApiRule';
 
-import Pods from 'components/Pods/Pods';
-import Deployments from 'components/Deployments/Deployments';
-
 import Services from 'components/Services/Services';
 import ServiceDetails from 'components/Services/ServiceDetails/ServiceDetails';
 
@@ -29,6 +26,8 @@ import NamespacePermissions from 'components/Permissions/PermissionList/Namespac
 import RoleDetails from 'components/Permissions/RoleDetails/RoleDetails';
 import SecretList from 'components/Secrets/Secrets';
 import SecretDetails from 'components/Secrets/Details/SecretDetails';
+
+import ResourcesList from 'shared/components/ResourcesList/ResourcesList';
 
 import { FUNCTIONS_WINDOW_TITLE } from 'components/Lambdas/constants';
 import {
@@ -175,12 +174,25 @@ function RoutedOAuthClientDetails({ match }) {
     />
   );
 }
+
+const podsObject = { kind: 'Pod', apiVersion: 'v1' };
 function RoutedPodList({ match }) {
-  return <Pods namespace={match.params.namespaceId} />;
+  return (
+    <ResourcesList
+      resourceObject={podsObject}
+      namespace={match.params.namespaceId}
+    />
+  );
 }
 
+const deploymentsObject = { kind: 'Deployment', apiVersion: 'apps/v1' };
 function RoutedDeploymentList({ match }) {
-  return <Deployments namespace={match.params.namespaceId} />;
+  return (
+    <ResourcesList
+      resourceObject={deploymentsObject}
+      namespace={match.params.namespaceId}
+    />
+  );
 }
 
 function RoutedServicesList({ match }) {
