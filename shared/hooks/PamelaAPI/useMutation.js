@@ -3,16 +3,11 @@ import { useMicrofrontendContext } from '../../contexts/MicrofrontendContext';
 import { useConfig } from '../../contexts/ConfigContext';
 
 const useMutation = method => {
-  return (resourceType, options) => {
+  return options => {
     const { idToken } = useMicrofrontendContext();
     const { fromConfig } = useConfig();
-    return async data => {
-      let url =
-        baseUrl(fromConfig) +
-        (data?.namespace ? `/namespaces/${data.namespace}/` : '/') +
-        resourceType +
-        `/${data.name}`;
-      const response = await fetch(url, {
+    return async (url, data) => {
+      const response = await fetch(baseUrl(fromConfig) + url, {
         method,
         headers: {
           'Content-Type': 'application/json',

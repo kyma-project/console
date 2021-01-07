@@ -1,5 +1,8 @@
 # This Dockerfile must be execute with higher context, because firstly we have to create react components lib with local changes.
-FROM node:12.16.0-alpine3.9 as builder
+FROM alpine:3.12 AS builder
+# install node
+RUN apk add --update nodejs npm --repository=http://dl-cdn.alpinelinux.org/alpine/edge/main
+
 ARG app_name=logging
 WORKDIR /app
 

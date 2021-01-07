@@ -11,7 +11,6 @@ import {
   Labels,
   useYamlEditor,
   useNotification,
-  StatusBadge,
   useGet,
   useUpdate,
   useDelete,
@@ -20,61 +19,62 @@ import {
 } from 'react-shared';
 import Moment from 'react-moment';
 
-PodList.propTypes = { namespace: PropTypes.string.isRequired };
+DeploymentList.propTypes = { namespace: PropTypes.string.isRequired };
 
-const PodStatus = ({ pod }) => {
-  const phase = pod.status?.phase; //TODO consider statusConditions to calculate status
-  return <StatusBadge autoResolveType>{phase}</StatusBadge>;
-};
+export default function DeploymentList({ namespace }) {
+  const deploymentUrl = `/apis/apps/v1/namespaces/${namespace}/deployments`;
 
-export default function PodList({ namespace }) {
-  const podUrl = `/api/v1/namespaces/${namespace}/pods`;
-
-  const [pods, setPods] = React.useState([]);
+  const [deployments, setDeployments] = React.useState([]);
   const setEditedSpec = useYamlEditor();
   const notification = useNotification();
-  const updatePodMutation = useUpdate(podUrl);
-  const deletePodMutation = useDelete(podUrl);
-  const { loading = true, error } = useGet(podUrl, setPods, namespace);
+  const updateDeploymentMutation = useUpdate(deploymentUrl);
+  const deleteDeploymentMutation = useDelete(deploymentUrl);
+  const { loading = true, error } = useGet(
+    deploymentUrl,
+    setDeployments,
+    namespace,
+  );
 
   useSubscription(
-    'pods',
-    React.useCallback(handlePamelaSubscriptionEvent(setPods), [namespace]),
+    'deployments',
+    React.useCallback(handlePamelaSubscriptionEvent(setDeployments), [
+      namespace,
+    ]),
     { namespace },
   );
 
-  const handleSaveClick = podData => async newYAML => {
+  const handleSaveClick = deploymentData => async newYAML => {
     try {
-      const diff = createPatch(podData, jsyaml.safeLoad(newYAML));
-      const url = podUrl + '/' + podData.metadata.name;
-      await updatePodMutation(url, {
-        name: podData.metadata.name,
+      const diff = createPatch(deploymentData, jsyaml.safeLoad(newYAML));
+      const url = deploymentUrl + '/' + deploymentData.metadata.name;
+      await updateDeploymentMutation(url, {
+        name: deploymentData.metadata.name,
         namespace,
         mergeJson: diff,
       });
-      notification.notifySuccess({ title: 'Succesfully updated Pod' });
+      notification.notifySuccess({ title: 'Succesfully updated Deployment' });
     } catch (e) {
       console.error(e);
       notification.notifyError({
-        title: 'Failed to update the Pod',
+        title: 'Failed to update the Deployment',
         content: e.message,
       });
       throw e;
     }
   };
 
-  async function handlePodDelete(pod) {
-    const url = podUrl + '/' + pod.metadata.name;
+  async function handleDeploymentDelete(deployment) {
+    const url = deploymentUrl + '/' + deployment.metadata.name;
     try {
-      await deletePodMutation(url, {
-        name: pod.metadata.name,
+      await deleteDeploymentMutation(url, {
+        name: deployment.metadata.name,
         namespace,
       });
-      notification.notifySuccess({ title: 'Succesfully deleted Pod' });
+      notification.notifySuccess({ title: 'Succesfully deleted Deployment' });
     } catch (e) {
       console.error(e);
       notification.notifyError({
-        title: 'Failed to delete the Pod',
+        title: 'Failed to delete the Deployment',
         content: e.message,
       });
       throw e;
@@ -84,15 +84,16 @@ export default function PodList({ namespace }) {
   const actions = [
     {
       name: 'Edit',
-      handler: pod => setEditedSpec(pod.json, handleSaveClick(pod.json)),
+      handler: deployment =>
+        setEditedSpec(deployment.json, handleSaveClick(deployment.json)),
     },
     {
       name: 'Delete',
-      handler: handlePodDelete,
+      handler: handleDeploymentDelete,
     },
   ];
 
-  const headerRenderer = () => ['Name', 'Age', 'Labels', 'Status'];
+  const headerRenderer = () => ['Name', 'Age', 'Labels'];
 
   const rowRenderer = entry => [
     <Link>{entry.metadata.name}</Link>,
@@ -103,14 +104,13 @@ export default function PodList({ namespace }) {
     <div style={{ maxWidth: '55em' /*TODO*/ }}>
       <Labels labels={entry.metadata.labels} />
     </div>,
-    <PodStatus pod={entry} />,
   ];
 
   return (
     <GenericList
       textSearchProperties={['metadata.name']}
       actions={actions}
-      entries={pods || []}
+      entries={deployments || []}
       headerRenderer={headerRenderer}
       rowRenderer={rowRenderer}
       serverDataError={error}
