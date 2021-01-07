@@ -20,6 +20,7 @@
     "lint-check": "prettier --config ../../.prettierrc --check \"./src/**/*.{js,jsx,ts,tsx,html,css,json}\""
   },
   "dependencies": {
+    "@babel/runtime-corejs2": "^7.12.5",
     "polished": "^1.8.1",
     "styled-components-modifiers": "^1.0.1"
   },

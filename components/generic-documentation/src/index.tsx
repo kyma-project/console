@@ -25,7 +25,7 @@ import {
   customFirstNode,
 } from './render-engines/markdown/helpers';
 
-import '@kyma-project/asyncapi-react/lib/styles/fiori.css';
+import '@asyncapi/react-component/lib/styles/fiori.css';
 import '@kyma-project/odata-react/lib/styles.css';
 
 import 'fiori-fundamentals/dist/fiori-fundamentals.css';
