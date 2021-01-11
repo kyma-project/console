@@ -10,7 +10,7 @@ import {
 } from 'react-shared';
 import ServiceDetailsHeader from './ServiceDetailsHeader/ServiceDetailsHeader';
 import ServiceApiRules from './ServiceApiRules/ServiceApiRules';
-import ServiceEventTriggers from './ServiceEventTriggers/ServiceEventsWrapper';
+import ServiceEventsWrapper from './ServiceEventTriggers/ServiceEventsWrapper';
 
 ServiceDetails.propTypes = {
   namespaceId: PropTypes.string.isRequired,
@@ -45,7 +45,7 @@ export default function ServiceDetails({ namespaceId, serviceName }) {
   }
   const eventTriggers =
     applicationModuleEnabled && eventingModuleEnabled ? (
-      <ServiceEventTriggers service={service} />
+      <ServiceEventsWrapper service={service} />
     ) : null;
 
   const apiRules = apiGatewayModuleEnabled ? (
