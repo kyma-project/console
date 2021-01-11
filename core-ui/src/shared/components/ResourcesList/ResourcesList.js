@@ -26,7 +26,7 @@ ResourcesList.propTypes = {
 
 export default function ResourcesList({ resource, namespace }) {
   const resourceObject = resource;
-  if (!resource || !resource.kindPlural) {
+  if (resource && !resource.kindPlural) {
     const kind = resource.kind?.toLowerCase();
     resourceObject.kindPlural = resource.kind?.endsWith('s', 'x', 'ch', 'sh')
       ? `${kind}es`
@@ -34,7 +34,7 @@ export default function ResourcesList({ resource, namespace }) {
   }
   return (
     <YamlEditorProvider>
-      <PageHeader title={resourceObject.kindPlural} />
+      <PageHeader title={resourceObject?.kindPlural} />
       <Resources resourceObject={resourceObject} namespace={namespace} />
     </YamlEditorProvider>
   );
