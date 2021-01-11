@@ -21,7 +21,7 @@ describe('PageHeader', () => {
   it('Renders title', () => {
     const { getByText } = render(<PageHeader title="page title" />);
 
-    expect(getByText('page title')).toBeInTheDocument();
+    expect(getByText('Page title')).toBeInTheDocument();
   });
 
   it('Renders actions', () => {

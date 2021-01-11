@@ -156,12 +156,9 @@ export default function App() {
 
 function RoutedResourcesList({ match }) {
   const context = useMicrofrontendContext();
-  const resourceObject = context?.resourceObject;
+  const resource = context?.resource;
   return (
-    <ResourcesList
-      resourceObject={resourceObject}
-      namespace={match.params.namespaceId}
-    />
+    <ResourcesList resource={resource} namespace={match.params.namespaceId} />
   );
 }
 

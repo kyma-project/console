@@ -53,7 +53,7 @@ export function getStaticChildrenNodesForNamespace() {
       viewUrl: config.coreModuleUrl + '/home/namespaces/:namespaceId/pods',
       viewGroup: coreUIViewGroupName,
       context: {
-        resourceObject: { kind: 'Pod', apiVersion: 'v1' }
+        resource: { kind: 'Pod', apiVersion: 'v1' }
       }
     },
     {
@@ -72,7 +72,7 @@ export function getStaticChildrenNodesForNamespace() {
       viewUrl: config.coreModuleUrl + '/home/namespaces/:namespaceId/deployments',
       viewGroup: coreUIViewGroupName,
       context: { 
-        resourceObject: { kind: 'Deployment', apiVersion: 'apps/v1' } 
+        resource: { kind: 'Deployment', apiVersion: 'apps/v1' } 
       }
     },
     {

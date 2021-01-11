@@ -20,25 +20,32 @@ import {
 } from 'react-shared';
 
 ResourcesList.propTypes = {
-  resourceObject: PropTypes.object,
+  resource: PropTypes.object,
   namespace: PropTypes.string.isRequired,
 };
 
-export default function ResourcesList({ resourceObject, namespace }) {
+export default function ResourcesList({ resource, namespace }) {
+  const resourceObject = resource;
+  if (!resource || !resource.kindPlural) {
+    const kind = resource.kind?.toLowerCase();
+    resourceObject.kindPlural = resource.kind?.endsWith('s', 'x', 'ch', 'sh')
+      ? `${kind}es`
+      : `${kind}s`;
+  }
   return (
     <YamlEditorProvider>
-      <PageHeader title={resourceObject.kind} />
+      <PageHeader title={resourceObject.kindPlural} />
       <Resources resourceObject={resourceObject} namespace={namespace} />
     </YamlEditorProvider>
   );
 }
 
 function Resources({ resourceObject, namespace }) {
-  const { apiVersion, kind } = resourceObject;
+  const { apiVersion, kindPlural } = resourceObject;
   const api = apiVersion === 'v1' ? 'api' : 'apis'; //check it
   const resourceUrl = `/${api}/${apiVersion}${
     namespace ? `/namespaces/${namespace}` : ''
-  }/${kind}s`;
+  }/${kindPlural}`;
 
   const [resources, setResources] = React.useState([]);
   const setEditedSpec = useYamlEditor();
@@ -52,7 +59,7 @@ function Resources({ resourceObject, namespace }) {
   );
 
   useSubscription(
-    resourceObject,
+    kindPlural,
     React.useCallback(handlePamelaSubscriptionEvent(setResources), [namespace]),
     { namespace },
   );
