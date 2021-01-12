@@ -32,9 +32,14 @@ export default function ResourcesList({ resource, namespace }) {
       ? `${kind}es`
       : `${kind}s`;
   }
+
+  const capitalizeFirstLetter = string => {
+    return string?.charAt(0).toUpperCase() + string?.slice(1);
+  };
+
   return (
     <YamlEditorProvider>
-      <PageHeader title={resourceObject?.kindPlural} />
+      <PageHeader title={capitalizeFirstLetter(resourceObject?.kindPlural)} />
       <Resources resourceObject={resourceObject} namespace={namespace} />
     </YamlEditorProvider>
   );

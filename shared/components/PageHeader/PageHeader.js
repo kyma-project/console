@@ -4,10 +4,6 @@ import { Panel, Breadcrumb } from 'fundamental-react';
 import './PageHeader.scss';
 import LuigiClient from '@luigi-project/client';
 
-const capitalizeFirstLetter = string => {
-  return string?.charAt(0).toUpperCase() + string?.slice(1);
-};
-
 const Column = ({ title, children, columnSpan }) => {
   const style = columnSpan !== undefined ? { gridColumn: columnSpan } : {};
   return (
@@ -19,7 +15,6 @@ const Column = ({ title, children, columnSpan }) => {
     </div>
   );
 };
-
 const performOnClick = item => {
   if (!item.path) {
     return null;
@@ -68,7 +63,7 @@ export const PageHeader = ({
           </section>
         ) : null}
 
-        <Panel.Head title={capitalizeFirstLetter(title)} aria-label="title" />
+        <Panel.Head title={title} aria-label="title" />
         {/* don't use Panel.Head's description, as it accepts only strings */}
         {description && <p className="description">{description}</p>}
         <section className={`column-wrapper ${columnWrapperClassName}`}>
