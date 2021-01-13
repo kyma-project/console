@@ -37,7 +37,6 @@ export const ModalWithForm = ({
   modalOpeningComponent,
   confirmText,
   invalidPopupMessage,
-  className,
   ...props
 }) => {
   const [isOpen, setOpen] = useState(false);
@@ -99,13 +98,13 @@ export const ModalWithForm = ({
   }
 
   function handleFormSuccess(title, message) {
-    notificationManager.notify({
-      content: message,
-      title: title,
-      color: '#107E3E',
-      icon: 'accept',
-      autoClose: true,
-    });
+    // notificationManager.notify({
+    //   content: message,
+    //   title: title,
+    //   color: '#107E3E',
+    //   icon: 'accept',
+    //   autoClose: true,
+    // });
 
     performRefetch();
   }
@@ -171,7 +170,6 @@ export const ModalWithForm = ({
         </Button>
       )}
       <Modal
-        className={className}
         {...props}
         show={isOpen}
         actions={
@@ -223,7 +221,6 @@ ModalWithForm.propTypes = {
   confirmText: PropTypes.string,
   invalidPopupMessage: PropTypes.string,
   button: CustomPropTypes.button,
-  className: PropTypes.string,
 };
 
 ModalWithForm.defaultProps = {

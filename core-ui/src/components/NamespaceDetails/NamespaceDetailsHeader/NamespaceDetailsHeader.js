@@ -9,17 +9,10 @@ import { useLambdasQuery } from 'components/Lambdas/gql/hooks/queries';
 import CreateLambdaModal from 'components/Lambdas/LambdasList/Lambdas/CreateLambdaModal';
 import { LAMBDAS_LIST } from 'components/Lambdas/constants';
 
-import {
-  PageHeader,
-  handleDelete,
-  LogsLink,
-  useConfig,
-  ModalWithForm,
-} from 'react-shared';
+import { PageHeader, handleDelete, LogsLink, useConfig } from 'react-shared';
 import { Button, Menu, Popover } from 'fundamental-react';
 import NamespaceLabels from './NamespaceLabels/NamespaceLabels';
 import DeployResourceModal from '../DeployResourceModal/DeployResourceModal';
-import CreateWorkloadForm from '../CreateWorkloadForm/CreateWorkloadForm';
 
 import './NamespaceDetailsHeader.scss';
 
@@ -69,21 +62,12 @@ export default function NamespaceDetailsHeader({ namespace }) {
                   serverDataLoading={serverDataLoading}
                   modalOpeningComponent={
                     <Menu.Item>
+                      {' '}
                       {LAMBDAS_LIST.CREATE_MODAL.OPEN_BUTTON.TEXT}
                     </Menu.Item>
                   }
                 />
               )}
-
-              <ModalWithForm
-                title="Add new Deployment"
-                confirmText="Create"
-                className="add-deployment-modal"
-                modalOpeningComponent={<Menu.Item>Create Deployment</Menu.Item>}
-                renderForm={props => (
-                  <CreateWorkloadForm namespaceId={namespace.name} {...props} />
-                )}
-              />
             </Menu.List>
           </Menu>
         }
