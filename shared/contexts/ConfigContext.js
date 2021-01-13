@@ -4,11 +4,7 @@ export const ConfigContext = createContext({});
 
 const DEFAULT_PREFIX = 'REACT_APP_';
 
-export const configFromEnvVariables = (
-  env,
-  fallback = {},
-  prefix = DEFAULT_PREFIX,
-) =>
+export const configFromEnvVariables = (env, prefix, fallback = {}) =>
   Object.keys(env).reduce(
     (acc, prop) =>
       prop.startsWith(prefix)
@@ -17,14 +13,14 @@ export const configFromEnvVariables = (
     fallback,
   );
 
-export const fromConfig = clusterConfig => endpoint => clusterConfig[endpoint];
+const fromConfig = clusterConfig => endpoint => clusterConfig[endpoint];
 
 export const ConfigProvider = ({
   env = process.env,
   children,
   prefix = DEFAULT_PREFIX,
 }) => {
-  const config = configFromEnvVariables(env, window.clusterConfig, prefix);
+  const config = configFromEnvVariables(env, prefix, window.clusterConfig);
   return (
     <ConfigContext.Provider value={{ fromConfig: fromConfig(config) }}>
       {children}

@@ -1,8 +1,6 @@
 REACT_APP_domain="kyma.local"
 REACT_APP_localDomain="console-dev.kyma.local"
 
-REACT_APP_pamelaApiUrl="https://pamela.$REACT_APP_domain"
-
 REACT_APP_graphqlApiUrl="https://console-backend.$REACT_APP_domain/graphql"
 REACT_APP_graphqlApiUrlLocal="http://$REACT_APP_localDomain:3000/graphql"
 

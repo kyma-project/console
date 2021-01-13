@@ -7,7 +7,6 @@ describe('configFromEnvVariables', () => {
         prefix_prop1: '1',
         prefix_prop2: '2',
       },
-      {},
       'prefix_',
     );
     expect(result).toEqual({ prop1: '1', prop2: '2' });
@@ -19,7 +18,6 @@ describe('configFromEnvVariables', () => {
         non_prefix_prop1: '1',
         other_prop: '2',
       },
-      {},
       'prefix_',
     );
     expect(result).toEqual({});
@@ -31,11 +29,11 @@ describe('configFromEnvVariables', () => {
       {
         prefix_prop1: '1',
       },
+      'prefix_',
       {
         prop1: '0',
         prop2: '2',
       },
-      'prefix_',
     );
     expect(result).toEqual({ prop1: '1', prop2: '2' });
   });

@@ -74,7 +74,6 @@
     "react-router-dom": "^4.2.2",
     "react-sticky": "^6.0.3",
     "recompose": "^0.30.0",
-    "rfc6902": "^4.0.1",
     "styled-components": "4.3.2",
     "subscriptions-transport-ws": "^0.9.16"
   },
