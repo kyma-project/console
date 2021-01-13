@@ -13,12 +13,11 @@ export class HttpError extends Error {
 }
 
 export async function throwHttpError(response) {
-  if (response.headers.get('content-type').includes('json')) {
-    try {
-      const parsed = await response.json();
-      return new HttpError(parsed.message || 'Unknown error', parsed.status);
-    } catch (e) {} // proceed to show more generic error
+  try {
+    const parsed = await response.json();
+    if (!parsed.message) return new Error(response.text());
+    return new HttpError(parsed.message, parsed.status);
+  } catch (e) {
+    return new Error(response.text());
   }
-
-  return new Error(await response.text());
 }

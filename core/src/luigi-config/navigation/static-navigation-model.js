@@ -66,8 +66,8 @@ export function getStaticChildrenNodesForNamespace() {
       pathSegment: 'deployments',
       navigationContext: 'deployments',
       label: 'Deployments',
-      viewUrl: config.coreModuleUrl + '/home/namespaces/:namespaceId/deployments',
-      viewGroup: coreUIViewGroupName
+      viewUrl: '/consoleapp.html#/home/namespaces/:namespaceId/deployments',
+      viewGroup: consoleViewGroupName
     },
     {
       category: {

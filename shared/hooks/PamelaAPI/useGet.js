@@ -3,7 +3,7 @@ import { baseUrl, throwHttpError } from './config';
 import { useMicrofrontendContext } from '../../contexts/MicrofrontendContext';
 import { useConfig } from '../../contexts/ConfigContext';
 
-export function useGet(path, onDataReceived) {
+export function useGet(resourceType, onDataReceived, namespace) {
   const [data, setData] = React.useState(null);
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState(null);
@@ -14,7 +14,10 @@ export function useGet(path, onDataReceived) {
     if (!idToken) return;
     setLoading(true);
     try {
-      const urlToFetchFrom = baseUrl(fromConfig) + path;
+      const urlToFetchFrom =
+        baseUrl(fromConfig) +
+        (namespace ? `/namespaces/${namespace}/` : '/') +
+        resourceType;
 
       const response = await fetch(urlToFetchFrom, {
         headers: { Authorization: 'Bearer ' + idToken },
@@ -30,11 +33,11 @@ export function useGet(path, onDataReceived) {
       setError(e);
     }
     setLoading(false);
-  }, [path, onDataReceived, idToken]);
+  }, [resourceType, onDataReceived, idToken]);
 
   React.useEffect(() => {
     refetch();
-  }, [path, refetch]);
+  }, [resourceType, refetch]);
 
   return { data, loading, error, refetch };
 }

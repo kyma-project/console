@@ -6,7 +6,6 @@ export const OAUTH_CLIENTS_TITLE = 'OAuth Clients';
 export const NAMESPACE_DETAILS_TITLE = 'Namespace Details';
 export const NAMESPACES_TITLE = 'Namespaces';
 export const PODS_TITLE = 'Pods';
-export const DEPLOYMENTS_TITLE = 'Deployments';
 export const SERVICES_TITLE = 'Services';
 export const SECRETS_TITLE = 'Secrets';
 
