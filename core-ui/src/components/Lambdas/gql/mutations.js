@@ -71,7 +71,7 @@ export const CREATE_MANY_EVENT_TRIGGERS = gql`
   mutation createManyTriggers(
     $namespace: String!
     $triggers: [TriggerCreateInput!]!
-    $ownerRef: [OwnerReference!]
+    $ownerRef: [OwnerReferenceInput!]
   ) {
     createManyTriggers(
       namespace: $namespace
