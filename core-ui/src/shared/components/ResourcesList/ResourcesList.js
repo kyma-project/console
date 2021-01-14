@@ -25,8 +25,12 @@ ResourcesList.propTypes = {
 };
 
 export default function ResourcesList({ resource, namespace }) {
+  if (!resource) {
+    return; // wait for the context update
+  }
+
   const resourceObject = resource;
-  if (resource && !resource.kindPlural) {
+  if (!resource.kindPlural) {
     const kind = resource.kind?.toLowerCase();
     resourceObject.kindPlural = resource.kind?.endsWith('s', 'x', 'ch', 'sh')
       ? `${kind}es`
@@ -39,7 +43,7 @@ export default function ResourcesList({ resource, namespace }) {
 
   return (
     <YamlEditorProvider>
-      <PageHeader title={capitalizeFirstLetter(resourceObject?.kindPlural)} />
+      <PageHeader title={capitalizeFirstLetter(resourceObject.kindPlural)} />
       <Resources resourceObject={resourceObject} namespace={namespace} />
     </YamlEditorProvider>
   );
@@ -47,7 +51,7 @@ export default function ResourcesList({ resource, namespace }) {
 
 function Resources({ resourceObject, namespace }) {
   const { apiVersion, kindPlural } = resourceObject;
-  const api = apiVersion === 'v1' ? 'api' : 'apis'; //check it
+  const api = apiVersion === 'v1' ? 'api' : 'apis';
   const resourceUrl = `/${api}/${apiVersion}${
     namespace ? `/namespaces/${namespace}` : ''
   }/${kindPlural}`;

@@ -1,15 +1,14 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import { withTitle } from 'react-shared';
-// import { withTitle, useMicrofrontendContext } from 'react-shared';
+import { withTitle, useMicrofrontendContext } from 'react-shared';
 
 import NamespaceDetails from '../NamespaceDetails/NamespaceDetails';
 import NamespaceList from '../NamespaceList/NamespaceList';
+
 import Lambdas from '../Lambdas/Lambdas';
 import LambdaDetails from '../Lambdas/LambdaDetails';
 
 import CreateApiRule from '../ApiRules/CreateApiRule/CreateApiRule';
-
 import ApiRules from 'components/ApiRules/ApiRules';
 import ApiRuleDetails from 'components/ApiRules/ApiRuleDetails/ApiRuleDetails';
 import EditApiRule from 'components/ApiRules/EditApiRule/EditApiRule';
@@ -25,6 +24,7 @@ import GlobalPermissions from 'components/Permissions/PermissionList/GlobalPermi
 import ClusterRoleDetails from 'components/Permissions/RoleDetails/ClusterRoleDetails';
 import NamespacePermissions from 'components/Permissions/PermissionList/NamespacePermissions';
 import RoleDetails from 'components/Permissions/RoleDetails/RoleDetails';
+
 import SecretList from 'components/Secrets/Secrets';
 import SecretDetails from 'components/Secrets/Details/SecretDetails';
 
@@ -58,12 +58,13 @@ export default function App() {
       <Route
         exact
         path="/home/namespaces/:namespaceId/pods"
-        render={withTitle(PODS_TITLE, RoutedPodList)}
+        render={withTitle(PODS_TITLE, RoutedResourcesList)}
       />
+
       <Route
         exact
         path="/home/namespaces/:namespaceId/deployments"
-        render={withTitle(DEPLOYMENTS_TITLE, RoutedDeploymentList)}
+        render={withTitle(DEPLOYMENTS_TITLE, RoutedResourcesList)}
       />
 
       <Route
@@ -155,25 +156,9 @@ export default function App() {
   );
 }
 
-// TODO: Fix the issue of a missing context when using LuigiClient.navigate()
-//
-// function RoutedResourcesList({ match }) {
-//   const context = useMicrofrontendContext();
-//   const resource = context?.resource;
-//   return (
-//     <ResourcesList resource={resource} namespace={match.params.namespaceId} />
-//   );
-// }
-
-function RoutedPodList({ match }) {
-  const resource = { kind: 'Pod', apiVersion: 'v1' };
-  return (
-    <ResourcesList resource={resource} namespace={match.params.namespaceId} />
-  );
-}
-
-function RoutedDeploymentList({ match }) {
-  const resource = { kind: 'Deployment', apiVersion: 'apps/v1' };
+function RoutedResourcesList({ match }) {
+  const context = useMicrofrontendContext();
+  const resource = context?.resource;
   return (
     <ResourcesList resource={resource} namespace={match.params.namespaceId} />
   );
