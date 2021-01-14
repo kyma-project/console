@@ -26,7 +26,7 @@ ResourcesList.propTypes = {
 
 export default function ResourcesList({ resource, namespace }) {
   if (!resource) {
-    return; // wait for the context update
+    return <></>; // wait for the context update
   }
 
   const resourceObject = resource;
