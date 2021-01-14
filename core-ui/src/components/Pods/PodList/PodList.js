@@ -32,7 +32,7 @@ export default function PodList({ namespace }) {
   const updatePodMutation = useUpdate(podUrl);
   const deletePodMutation = useDelete(podUrl);
   const { loading = true, error, data: pods } = useGetList(podUrl, {
-    pollingInterval: 3000,
+    pollingInterval: 1000,
   });
 
   const handleSaveClick = podData => async newYAML => {
