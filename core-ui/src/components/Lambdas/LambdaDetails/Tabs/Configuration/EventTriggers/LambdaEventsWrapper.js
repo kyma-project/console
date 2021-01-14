@@ -9,7 +9,7 @@ import LambdaEventTriggers from './EventTriggersWrapper';
 export default function LambdaEventsWrapper({ lambda }) {
   const { fromConfig } = useConfig();
 
-  if (fromConfig('bebEnabled')) {
+  if (fromConfig('bebEnabled') === 'true') {
     return (
       <BebEventSubscription
         resource={lambda}

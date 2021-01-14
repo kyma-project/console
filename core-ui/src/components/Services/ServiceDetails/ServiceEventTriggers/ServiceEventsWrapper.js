@@ -9,7 +9,7 @@ import ServiceEventTriggers from './ServiceEventTriggers';
 export default function ServiceEventsWrapper({ service }) {
   const { fromConfig } = useConfig();
 
-  if (fromConfig('bebEnabled')) {
+  if (fromConfig('bebEnabled') === 'true') {
     return (
       <BebEventSubscription
         resource={service}
