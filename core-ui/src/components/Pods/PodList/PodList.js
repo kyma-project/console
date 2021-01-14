@@ -35,13 +35,7 @@ export default function PodList({ namespace }) {
   const notification = useNotification();
   const updatePodMutation = useUpdate(podUrl);
   const deletePodMutation = useDelete(podUrl);
-  const { loading = true, error } = useGet(podUrl, setPods, namespace);
-
-  useSubscription(
-    'pods',
-    React.useCallback(handlePamelaSubscriptionEvent(setPods), [namespace]),
-    { namespace },
-  );
+  const { loading = true, error } = useGet(podUrl, setPods);
 
   const handleSaveClick = podData => async newYAML => {
     try {
