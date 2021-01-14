@@ -1,3 +1,3 @@
-export { useGet } from './useGet';
+export { useGetList } from './useGet';
 export { useGenericCreate } from './useGenericCreate';
 export { useDelete, useUpdate } from './useMutation';

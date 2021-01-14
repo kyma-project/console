@@ -12,11 +12,9 @@ import {
   useYamlEditor,
   useNotification,
   StatusBadge,
-  useGet,
+  useGetList,
   useUpdate,
   useDelete,
-  useSubscription,
-  handlePamelaSubscriptionEvent,
 } from 'react-shared';
 import Moment from 'react-moment';
 
@@ -29,13 +27,13 @@ const PodStatus = ({ pod }) => {
 
 export default function PodList({ namespace }) {
   const podUrl = `/api/v1/namespaces/${namespace}/pods`;
-
-  const [pods, setPods] = React.useState([]);
   const setEditedSpec = useYamlEditor();
   const notification = useNotification();
   const updatePodMutation = useUpdate(podUrl);
   const deletePodMutation = useDelete(podUrl);
-  const { loading = true, error } = useGet(podUrl, setPods);
+  const { loading = true, error, data: pods } = useGetList(podUrl, {
+    pollingInterval: 3000,
+  });
 
   const handleSaveClick = podData => async newYAML => {
     try {
