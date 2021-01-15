@@ -31,19 +31,19 @@ export default function PodList({ namespace }) {
   const notification = useNotification();
   const updatePodMutation = useUpdate(podUrl);
   const deletePodMutation = useDelete(podUrl);
-  const { loading = true, error, data: pods } = useGetList(podUrl, {
-    pollingInterval: 1000,
-  });
+  const { loading = true, error, data: pods, silentRefetch } = useGetList(
+    podUrl,
+    {
+      pollingInterval: 3000,
+    },
+  );
 
   const handleSaveClick = podData => async newYAML => {
     try {
       const diff = createPatch(podData, jsyaml.safeLoad(newYAML));
       const url = podUrl + '/' + podData.metadata.name;
-      await updatePodMutation(url, {
-        name: podData.metadata.name,
-        namespace,
-        mergeJson: diff,
-      });
+      await updatePodMutation(url, diff);
+      silentRefetch();
       notification.notifySuccess({ title: 'Succesfully updated Pod' });
     } catch (e) {
       console.error(e);
@@ -76,7 +76,10 @@ export default function PodList({ namespace }) {
   const actions = [
     {
       name: 'Edit',
-      handler: pod => setEditedSpec(pod.json, handleSaveClick(pod.json)),
+      handler: pod => {
+        const { status, ...othePodData } = pod; // remove 'status' property because you can't edit it anyway; TODO: decide if it's good
+        setEditedSpec(othePodData, handleSaveClick(othePodData));
+      },
     },
     {
       name: 'Delete',
