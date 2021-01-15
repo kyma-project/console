@@ -52,7 +52,6 @@ export default function CreateRoleBindingModal({
       subjectName: subject,
       subjectKind: isGroup ? 'Group' : 'User',
     };
-    console.log('params', params);
     try {
       await createBinding(formatRoleBinding(params));
 
