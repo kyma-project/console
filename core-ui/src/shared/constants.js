@@ -49,3 +49,22 @@ export const TRIGGER_SCHEMA = {
 };
 
 export const OAUTH_DOC_URL = '/docs/components/security';
+
+export const EVENT_SUBSCRIPTION_PANEL = {
+  ADD_MODAL: {
+    TITLE: 'Create Event Subscription',
+    OPEN_BUTTON: {
+      TEXT: 'Create Event Subscription',
+    },
+    CONFIRM_BUTTON: {
+      TEXT: 'Save',
+    },
+    CANCEL_BUTTON: {
+      TEXT: 'Close',
+    },
+    NOTIFICATION: {
+      SUCCESS: 'Event subscription created',
+      ERROR: 'Cannot create event subscription',
+    },
+  },
+};

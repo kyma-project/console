@@ -116,12 +116,14 @@ export default function ApiRules({
   const actions = [
     {
       name: 'Edit',
+      disabledHandler: apiRule => !!apiRule.ownerSubscription,
       handler: apiRule => {
         editApiRuleModal(apiRule, inSubView, redirectPath, redirectCtx);
       },
     },
     {
       name: 'Delete',
+      disabledHandler: apiRule => !!apiRule.ownerSubscription,
       handler: apiRule => {
         deleteApiRule(apiRule.name);
       },
