@@ -34,3 +34,5 @@ REACT_APP_namespaceAdminGroupName="runtimeNamespaceAdmin"
 REACT_APP_runtimeAdminGroupName="runtimeAdmin"
 REACT_APP_bebEnabled=false
 
+REACT_APP_apiServerUrl="https://apiserver.$REACT_APP_domain"
+

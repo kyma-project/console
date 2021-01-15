@@ -17,9 +17,12 @@ RoleBindingList.propTypes = { namespaceId: PropTypes.string.isRequired };
 export default function RoleBindingList({ namespaceId }) {
   const notification = useNotification();
 
-  const { data, error, loading } = useQuery(GET_ROLE_BINDINGS, {
-    variables: { namespace: namespaceId },
-  });
+  const { data, error, loading, refetch: refetchRoleBindings } = useQuery(
+    GET_ROLE_BINDINGS,
+    {
+      variables: { namespace: namespaceId },
+    },
+  );
   const [deleteClusterRoleBinding] = useMutation(DELETE_CLUSTER_ROLE_BINDING, {
     refetchQueries: () => [{ query: GET_CLUSTER_ROLE_BINDINGS }],
   });
@@ -67,7 +70,12 @@ export default function RoleBindingList({ namespaceId }) {
   );
   return (
     <GenericList
-      extraHeaderContent={<CreateRoleBindingModal namespaceId={namespaceId} />}
+      extraHeaderContent={
+        <CreateRoleBindingModal
+          namespaceId={namespaceId}
+          refetchRoleBindingsFn={refetchRoleBindings}
+        />
+      }
       title="Role Bindings"
       actions={actions}
       entries={entries}

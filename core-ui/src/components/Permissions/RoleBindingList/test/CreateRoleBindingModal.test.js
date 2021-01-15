@@ -4,6 +4,12 @@ import CreateRoleBindingModal from '../CreateRoleBindingModal';
 import { MockedProvider } from '@apollo/react-testing';
 
 import * as mockData from './mocks';
+const refetchRoleBindingsFn = jest.fn();
+jest.mock('react-shared', () => ({
+  ...jest.requireActual('react-shared'),
+  useConfig: () => ({ fromConfig: () => 'e' }),
+  useMicrofrontendContext: () => ({}),
+}));
 
 describe('CreateRoleBindingModal', () => {
   const { namespace, ...mocks } = mockData;
@@ -11,7 +17,10 @@ describe('CreateRoleBindingModal', () => {
   it('Creates binding', async () => {
     const { getByText, getByPlaceholderText } = render(
       <MockedProvider addTypename={false} mocks={Object.values(mocks)}>
-        <CreateRoleBindingModal namespaceId={namespace} />
+        <CreateRoleBindingModal
+          namespaceId={namespace}
+          refetchRoleBindingsFn={refetchRoleBindingsFn}
+        />
       </MockedProvider>,
     );
 

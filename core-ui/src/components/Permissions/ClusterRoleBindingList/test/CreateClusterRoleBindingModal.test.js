@@ -4,12 +4,20 @@ import CreateClusterRoleBindingModal from '../CreateClusterRoleBindingModal';
 import { MockedProvider } from '@apollo/react-testing';
 
 import * as mocks from './mocks';
+const refetchClusterRoleBindingsFn = jest.fn();
+jest.mock('react-shared', () => ({
+  ...jest.requireActual('react-shared'),
+  useConfig: () => ({ fromConfig: () => '' }),
+  useMicrofrontendContext: () => ({}),
+}));
 
 describe('CreateClusterRoleBindingModal', () => {
   it('Creates binding', async () => {
     const { getByText, getByPlaceholderText } = render(
       <MockedProvider addTypename={false} mocks={Object.values(mocks)}>
-        <CreateClusterRoleBindingModal />
+        <CreateClusterRoleBindingModal
+          refetchClusterRoleBindingsFn={refetchClusterRoleBindingsFn}
+        />
       </MockedProvider>,
     );
     // open modal

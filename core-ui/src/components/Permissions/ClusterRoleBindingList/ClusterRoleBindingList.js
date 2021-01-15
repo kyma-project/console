@@ -10,7 +10,12 @@ import { GET_CLUSTER_ROLE_BINDINGS } from 'gql/queries';
 export default function ClusterRoleBindingList() {
   const notification = useNotification();
 
-  const { data, error, loading } = useQuery(GET_CLUSTER_ROLE_BINDINGS);
+  const {
+    data,
+    error,
+    loading,
+    refetch: refetchClusterRoleBindings,
+  } = useQuery(GET_CLUSTER_ROLE_BINDINGS);
   const [deleteClusterRoleBinding] = useMutation(DELETE_CLUSTER_ROLE_BINDING, {
     refetchQueries: () => [{ query: GET_CLUSTER_ROLE_BINDINGS }],
   });
@@ -39,7 +44,11 @@ export default function ClusterRoleBindingList() {
 
   return (
     <GenericList
-      extraHeaderContent={<CreateClusterRoleBindingModal />}
+      extraHeaderContent={
+        <CreateClusterRoleBindingModal
+          refetchClusterRoleBindingsFn={refetchClusterRoleBindings}
+        />
+      }
       title="Cluster Role Bindings"
       actions={actions}
       entries={entries}
