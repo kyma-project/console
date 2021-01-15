@@ -39,7 +39,6 @@ export default function CreateClusterRoleBindingModal({
 
   const create = async () => {
     try {
-      const name = `${subject}-${role}`;
       const params = {
         name: `${subject}-${role}`,
         kind: 'ClusterRoleBinding',
