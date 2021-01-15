@@ -50,7 +50,6 @@ export default function CreateClusterRoleBindingModal({
 
       await createClusterBinding(formatRoleBinding(params));
       await refetchClusterRoleBindingsFn();
-      // await createClusterRoleBinding({ variables: { name, params } });
       notification.notifySuccess({
         content: 'Cluster Role Binding created',
       });
