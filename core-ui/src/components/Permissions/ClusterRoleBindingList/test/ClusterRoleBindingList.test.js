@@ -5,6 +5,11 @@ import { MockedProvider } from '@apollo/react-testing';
 
 import { clusterRoleBindingsQueryMock } from './mocks';
 
+jest.mock('react-shared', () => ({
+  ...jest.requireActual('react-shared'),
+  useConfig: () => ({ fromConfig: () => '' }),
+  useMicrofrontendContext: () => ({}),
+}));
 describe('ClusterRoleBindingList', () => {
   it('Renders with minimal props', async () => {
     const { findByText } = render(

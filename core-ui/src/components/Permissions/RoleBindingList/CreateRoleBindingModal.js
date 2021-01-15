@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
+import { useCreateBinding, formatRoleBinding } from '../helpers';
 import {
   useNotification,
   Modal,
@@ -17,42 +17,45 @@ import {
   FormInput,
 } from 'fundamental-react';
 
-import { CREATE_ROLE_BINDING } from 'gql/mutations';
-import { GET_ROLE_BINDINGS } from 'gql/queries';
-import { useMutation } from 'react-apollo';
 import RoleCombobox from '../Shared/RoleCombobox/RoleCombobox';
 import InvalidGroupMessage from '../Shared/InvalidGroupMessage';
 
-CreateRoleBindingModal.propTypes = { namespaceId: PropTypes.string.isRequired };
+CreateRoleBindingModal.propTypes = {
+  namespaceId: PropTypes.string.isRequired,
+  refetchRoleBindingsFn: PropTypes.func.isRequired,
+};
 
-export default function CreateRoleBindingModal({ namespaceId }) {
+export default function CreateRoleBindingModal({
+  namespaceId,
+  refetchRoleBindingsFn,
+}) {
   const notification = useNotification();
+  const createBinding = useCreateBinding(
+    `namespaces/${namespaceId}/rolebindings`,
+  );
 
   const [subject, setSubject] = React.useState('');
   const [isGroup, setGroup] = React.useState(false);
   const [role, setRole] = React.useState('');
   const [roleKind, setRoleKind] = React.useState('');
 
-  const [createRoleBinding] = useMutation(CREATE_ROLE_BINDING, {
-    refetchQueries: () => [
-      { query: GET_ROLE_BINDINGS, variables: { namespace: namespaceId } },
-    ],
-  });
-
   const groupValid = !isGroup || isK8SNameValid(subject);
   const canSubmit = !!role && !!subject && groupValid;
 
   const create = async () => {
-    const name = `${subject}-${role}`;
     const params = {
+      name: `${subject}-${role}`,
+      namespace: namespaceId,
+      kind: 'RoleBinding',
       roleName: role,
       roleKind: roleKind,
-      subjects: [{ name: subject, kind: isGroup ? 'Group' : 'User' }],
+      subjectName: subject,
+      subjectKind: isGroup ? 'Group' : 'User',
     };
     try {
-      await createRoleBinding({
-        variables: { name, namespace: namespaceId, params },
-      });
+      await createBinding(formatRoleBinding(params));
+
+      await refetchRoleBindingsFn();
       notification.notifySuccess({
         content: 'Role Binding created',
       });

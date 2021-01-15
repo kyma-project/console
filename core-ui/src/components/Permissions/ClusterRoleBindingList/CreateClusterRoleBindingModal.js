@@ -1,5 +1,7 @@
 import React from 'react';
 
+import PropTypes from 'prop-types';
+import { useCreateBinding, formatRoleBinding } from '../helpers';
 import {
   useNotification,
   Modal,
@@ -16,33 +18,38 @@ import {
   FormInput,
 } from 'fundamental-react';
 
-import { GET_CLUSTER_ROLE_BINDINGS } from 'gql/queries';
-import { CREATE_CLUSTER_ROLE_BINDING } from 'gql/mutations';
-import { useMutation } from 'react-apollo';
 import RoleCombobox from '../Shared/RoleCombobox/RoleCombobox';
 import InvalidGroupMessage from '../Shared/InvalidGroupMessage';
 
-export default function CreateClusterRoleBindingModal() {
+CreateClusterRoleBindingModal.propTypes = {
+  refetchClusterRoleBindingsFn: PropTypes.func.isRequired,
+};
+export default function CreateClusterRoleBindingModal({
+  refetchClusterRoleBindingsFn,
+}) {
   const notification = useNotification();
+  const createClusterBinding = useCreateBinding(`clusterrolebindings`);
+
   const [subject, setSubject] = React.useState('');
   const [isGroup, setGroup] = React.useState(false);
   const [role, setRole] = React.useState('');
-
-  const [createClusterRoleBinding] = useMutation(CREATE_CLUSTER_ROLE_BINDING, {
-    refetchQueries: () => [{ query: GET_CLUSTER_ROLE_BINDINGS }],
-  });
 
   const groupValid = !isGroup || isK8SNameValid(subject);
   const canSubmit = !!role && !!subject && groupValid;
 
   const create = async () => {
     try {
-      const name = `${subject}-${role}`;
       const params = {
+        name: `${subject}-${role}`,
+        kind: 'ClusterRoleBinding',
         roleName: role,
-        subjects: [{ name: subject, kind: isGroup ? 'Group' : 'User' }],
+        roleKind: 'ClusterRole',
+        subjectName: subject,
+        subjectKind: isGroup ? 'Group' : 'User',
       };
-      await createClusterRoleBinding({ variables: { name, params } });
+
+      await createClusterBinding(formatRoleBinding(params));
+      await refetchClusterRoleBindingsFn();
       notification.notifySuccess({
         content: 'Cluster Role Binding created',
       });
