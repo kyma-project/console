@@ -46,6 +46,11 @@ jest.mock('@luigi-project/client', () => {
   };
 });
 
+jest.mock('react-shared', () => ({
+  ...jest.requireActual('react-shared'),
+  useConfig: () => ({ fromConfig: () => false }),
+}));
+
 describe('LambdaDetails', () => {
   it('should render header and tabs', async () => {
     const { getByText } = render(<LambdaDetails lambda={lambdaMock} />);

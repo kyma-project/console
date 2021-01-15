@@ -153,7 +153,7 @@ function Details({ name, ...props }) {
 function OAuth2Details({ config, setConfig }) {
   return (
     <StringListInput
-      list={config.required_scope || []}
+      list={config?.required_scope || []}
       onChange={scopes => setConfig({ required_scope: scopes })}
       isEditMode={true}
       label="Required scope"

@@ -1,20 +1,17 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import { withTitle } from 'react-shared';
+import { withTitle, useMicrofrontendContext } from 'react-shared';
 
 import NamespaceDetails from '../NamespaceDetails/NamespaceDetails';
 import NamespaceList from '../NamespaceList/NamespaceList';
+
 import Lambdas from '../Lambdas/Lambdas';
 import LambdaDetails from '../Lambdas/LambdaDetails';
 
 import CreateApiRule from '../ApiRules/CreateApiRule/CreateApiRule';
-
 import ApiRules from 'components/ApiRules/ApiRules';
 import ApiRuleDetails from 'components/ApiRules/ApiRuleDetails/ApiRuleDetails';
 import EditApiRule from 'components/ApiRules/EditApiRule/EditApiRule';
-
-import Pods from 'components/Pods/Pods';
-import Deployments from 'components/Deployments/Deployments';
 
 import Services from 'components/Services/Services';
 import ServiceDetails from 'components/Services/ServiceDetails/ServiceDetails';
@@ -27,8 +24,11 @@ import GlobalPermissions from 'components/Permissions/PermissionList/GlobalPermi
 import ClusterRoleDetails from 'components/Permissions/RoleDetails/ClusterRoleDetails';
 import NamespacePermissions from 'components/Permissions/PermissionList/NamespacePermissions';
 import RoleDetails from 'components/Permissions/RoleDetails/RoleDetails';
+
 import SecretList from 'components/Secrets/Secrets';
 import SecretDetails from 'components/Secrets/Details/SecretDetails';
+
+import ResourcesList from 'shared/components/ResourcesList/ResourcesList';
 
 import { FUNCTIONS_WINDOW_TITLE } from 'components/Lambdas/constants';
 import {
@@ -58,12 +58,13 @@ export default function App() {
       <Route
         exact
         path="/home/namespaces/:namespaceId/pods"
-        render={withTitle(PODS_TITLE, RoutedPodList)}
+        render={withTitle(PODS_TITLE, RoutedResourcesList)}
       />
+
       <Route
         exact
         path="/home/namespaces/:namespaceId/deployments"
-        render={withTitle(DEPLOYMENTS_TITLE, RoutedDeploymentList)}
+        render={withTitle(DEPLOYMENTS_TITLE, RoutedResourcesList)}
       />
 
       <Route
@@ -155,6 +156,14 @@ export default function App() {
   );
 }
 
+function RoutedResourcesList({ match }) {
+  const context = useMicrofrontendContext();
+  const resource = context?.resource;
+  return (
+    <ResourcesList resource={resource} namespace={match.params.namespaceId} />
+  );
+}
+
 function RoutedNamespaceDetails({ match }) {
   return <NamespaceDetails name={match.params.namespace} />;
 }
@@ -174,13 +183,6 @@ function RoutedOAuthClientDetails({ match }) {
       name={match.params.clientName}
     />
   );
-}
-function RoutedPodList({ match }) {
-  return <Pods namespace={match.params.namespaceId} />;
-}
-
-function RoutedDeploymentList({ match }) {
-  return <Deployments namespace={match.params.namespaceId} />;
 }
 
 function RoutedServicesList({ match }) {

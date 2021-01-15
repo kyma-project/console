@@ -214,6 +214,9 @@ export const GET_API_RULES = gql`
           description
         }
       }
+      ownerSubscription {
+        name
+      }
     }
   }
 `;
@@ -244,6 +247,9 @@ export const GET_API_RULE = gql`
           code
           description
         }
+      }
+      ownerSubscription {
+        name
       }
     }
   }
@@ -384,6 +390,26 @@ export const GET_SECRET_DETAILS = gql`
       labels
       annotations
       json
+    }
+  }
+`;
+
+export const GET_EVENT_SUBSCRIPTIONS = gql`
+  query eventSubscriptions($ownerName: String!, $namespace: String!) {
+    eventSubscriptions(ownerName: $ownerName, namespace: $namespace) {
+      name
+      namespace
+      spec {
+        filter {
+          filters {
+            eventType {
+              property
+              type
+              value
+            }
+          }
+        }
+      }
     }
   }
 `;
