@@ -39,7 +39,7 @@ describe('useLambdaQuery', () => {
         component: (
           <QueryComponent hook={useLambdaQuery} hookInput={hookInput} />
         ),
-        mocks: [LAMBDA_EVENT_SUBSCRIPTION_MOCK(subscriptionVariable)],
+        mocks: [subscriptionMock, subscriptionMock],
       }),
     );
 

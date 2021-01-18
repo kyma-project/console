@@ -36,7 +36,7 @@ describe('LambdaDetailsWrapper', () => {
     const { getByLabelText } = render(
       withApolloMockProvider({
         component: <LambdaDetailsWrapper lambdaName={lambdaMock.name} />,
-        mocks: [subscriptionMock],
+        mocks: [subscriptionMock, subscriptionMock],
       }),
     );
 

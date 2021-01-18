@@ -58,6 +58,7 @@ export const useLambdasQuery = ({ namespace }) => {
   useEffect(() => {
     const observer = apolloClient.subscribe({
       query: LAMBDA_EVENT_SUBSCRIPTION,
+      fetchPolicy: 'no-cache',
       variables,
     });
 

@@ -22,7 +22,7 @@ export const useLambdaQuery = ({ name, namespace }) => {
 
   const { data, error, loading } = useQuery(GET_LAMBDA, {
     variables,
-    fetchPolicy: 'network-only',
+    fetchPolicy: 'no-cache',
   });
 
   useEffect(() => {
@@ -43,6 +43,7 @@ export const useLambdaQuery = ({ name, namespace }) => {
   useEffect(() => {
     const observer = apolloClient.subscribe({
       query: LAMBDA_EVENT_SUBSCRIPTION,
+      fetchPolicy: 'no-cache',
       variables: {
         namespace,
         functionName: name,
