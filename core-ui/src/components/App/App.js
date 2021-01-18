@@ -57,13 +57,7 @@ export default function App() {
 
       <Route
         exact
-        path="/home/namespaces/:namespaceId/pods"
-        render={withTitle(PODS_TITLE, RoutedResourcesList)}
-      />
-
-      <Route
-        exact
-        path="/home/namespaces/:namespaceId/deployments"
+        path="/home/namespaces/:namespaceId/resources/:resourceName"
         render={withTitle(DEPLOYMENTS_TITLE, RoutedResourcesList)}
       />
 
@@ -158,9 +152,13 @@ export default function App() {
 
 function RoutedResourcesList({ match }) {
   const context = useMicrofrontendContext();
-  const resource = context?.resource;
+  const resourceUrl = context?.resourceUrl;
   return (
-    <ResourcesList resource={resource} namespace={match.params.namespaceId} />
+    <ResourcesList
+      resourceUrl={resourceUrl}
+      resourceName={match.params.resourceName}
+      namespace={match.params.namespaceId}
+    />
   );
 }
 

@@ -50,10 +50,10 @@ export function getStaticChildrenNodesForNamespace() {
       pathSegment: 'pods',
       navigationContext: 'pods',
       label: 'Pods',
-      viewUrl: config.coreModuleUrl + '/home/namespaces/:namespaceId/pods',
+      viewUrl: config.coreModuleUrl + '/home/namespaces/:namespaceId/resources/pods',
       viewGroup: coreUIViewGroupName,
       context: {
-        resource: { kind: 'Pod', apiVersion: 'v1' }
+        resourceUrl: '/api/v1/namespaces/:namespaceId/pods'
       }
     },
     {
@@ -69,10 +69,10 @@ export function getStaticChildrenNodesForNamespace() {
       pathSegment: 'deployments',
       navigationContext: 'deployments',
       label: 'Deployments',
-      viewUrl: config.coreModuleUrl + '/home/namespaces/:namespaceId/deployments',
+      viewUrl: config.coreModuleUrl + '/home/namespaces/:namespaceId/resources/deployments',
       viewGroup: coreUIViewGroupName,
       context: { 
-        resource: { kind: 'Deployment', apiVersion: 'apps/v1' } 
+        resourceUrl: '/apis/apps/v1/namespaces/:namespaceId/deployments'
       }
     },
     {

@@ -15,8 +15,6 @@ import {
   useGet,
   useUpdate,
   useDelete,
-  useSubscription,
-  handlePamelaSubscriptionEvent,
 } from 'react-shared';
 
 ResourcesList.propTypes = {
@@ -24,38 +22,27 @@ ResourcesList.propTypes = {
   namespace: PropTypes.string.isRequired,
 };
 
-export default function ResourcesList({ resource, namespace }) {
-  if (!resource) {
+export default function ResourcesList({
+  resourceUrl,
+  resourceName,
+  namespace,
+}) {
+  if (!resourceUrl) {
     return <></>; // wait for the context update
   }
-
-  const resourceObject = resource;
-  if (!resource.kindPlural) {
-    const kind = resource.kind?.toLowerCase();
-    resourceObject.kindPlural = resource.kind?.endsWith('s', 'x', 'ch', 'sh')
-      ? `${kind}es`
-      : `${kind}s`;
-  }
-
-  const capitalizeFirstLetter = string => {
-    return string?.charAt(0).toUpperCase() + string?.slice(1);
-  };
+  const generatedResourceUrl = resourceUrl.includes(':namespaceId')
+    ? resourceUrl.replace(':namespaceId', namespace)
+    : resourceUrl;
 
   return (
     <YamlEditorProvider>
-      <PageHeader title={capitalizeFirstLetter(resourceObject.kindPlural)} />
-      <Resources resourceObject={resourceObject} namespace={namespace} />
+      <PageHeader title={resourceName} />
+      <Resources resourceUrl={generatedResourceUrl} namespace={namespace} />
     </YamlEditorProvider>
   );
 }
 
-function Resources({ resourceObject, namespace }) {
-  const { apiVersion, kindPlural } = resourceObject;
-  const api = apiVersion === 'v1' ? 'api' : 'apis';
-  const resourceUrl = `/${api}/${apiVersion}${
-    namespace ? `/namespaces/${namespace}` : ''
-  }/${kindPlural}`;
-
+function Resources({ resourceUrl, namespace }) {
   const [resources, setResources] = React.useState([]);
   const setEditedSpec = useYamlEditor();
   const notification = useNotification();
@@ -65,12 +52,6 @@ function Resources({ resourceObject, namespace }) {
     resourceUrl,
     setResources,
     namespace,
-  );
-
-  useSubscription(
-    kindPlural,
-    React.useCallback(handlePamelaSubscriptionEvent(setResources), [namespace]),
-    { namespace },
   );
 
   const handleSaveClick = resourceData => async newYAML => {
