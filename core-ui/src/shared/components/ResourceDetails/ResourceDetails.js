@@ -18,11 +18,6 @@ import {
   useDelete,
 } from 'react-shared';
 
-// ResourcesList.propTypes = {
-//   resource: PropTypes.object,
-//   namespace: PropTypes.string.isRequired,
-// };
-
 export default function ResourceDetails({
   resourceUrl,
   resourceType,

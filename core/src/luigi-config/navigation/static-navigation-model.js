@@ -49,7 +49,7 @@ export function getStaticChildrenNodesForNamespace() {
       category: 'Workloads',
       pathSegment: 'pods',
       navigationContext: 'pods',
-      label: 'Pods (generic)',
+      label: 'Pods (extra column)',
       viewUrl:
         config.coreModuleUrl + '/home/namespaces/:namespaceId/resources/pods',
       viewGroup: coreUIViewGroupName,
@@ -69,7 +69,7 @@ export function getStaticChildrenNodesForNamespace() {
                 '/home/namespaces/:namespaceId/resource/pod/:podName',
               // viewGroup: coreUIViewGroupName
               context: {
-                resourceUrl: '/api/v1/namespaces/:namespaceId/pods/:podName'
+                resourceUrl: '/api/v1/namespaces/:namespaceId/pod/:podName'
               }
             }
           ]
@@ -78,12 +78,38 @@ export function getStaticChildrenNodesForNamespace() {
     },
     {
       category: 'Workloads',
-      pathSegment: 'replica-sets',
-      navigationContext: 'replica-sets',
-      label: 'Replica Sets',
-      viewUrl: '/consoleapp.html#/home/namespaces/:namespaceId/replicaSets',
-      viewGroup: consoleViewGroupName
+      pathSegment: 'replicaSets',
+      navigationContext: 'replicaSets',
+      label: 'Replica Sets (predefined)',
+      viewUrl:
+        config.coreModuleUrl +
+        '/home/namespaces/:namespaceId/resources/replicasets',
+      viewGroup: coreUIViewGroupName,
+      keepSelectedForChildren: true,
+      context: {
+        resourceUrl: '/apis/apps/v1/namespaces/:namespaceId/replicasets',
+        hasDetailsView: true
+      },
+      children: [
+        {
+          pathSegment: 'details',
+          children: [
+            {
+              pathSegment: ':replicaSetName',
+              viewUrl:
+                config.coreModuleUrl +
+                '/home/namespaces/:namespaceId/resource/replicaset/:replicaSetName',
+
+              context: {
+                resourceUrl:
+                  '/apis/apps/v1/namespaces/:namespaceId/replicaset/:replicaSetName'
+              }
+            }
+          ]
+        }
+      ]
     },
+
     {
       category: 'Workloads',
       pathSegment: 'deployments',
@@ -96,7 +122,25 @@ export function getStaticChildrenNodesForNamespace() {
       viewGroup: coreUIViewGroupName,
       context: {
         resourceUrl: '/api/v1/namespaces/:namespaceId/deployments'
-      }
+      },
+      children: [
+        {
+          pathSegment: 'details',
+          children: [
+            {
+              pathSegment: ':deploymentName',
+              viewUrl:
+                config.coreModuleUrl +
+                '/home/namespaces/:namespaceId/resource/deployment/:deploymentName',
+
+              context: {
+                resourceUrl:
+                  '/apis/apps/v1/namespaces/:namespaceId/deployment/:deploymentName'
+              }
+            }
+          ]
+        }
+      ]
     },
     {
       category: {

@@ -1,2 +1,3 @@
 export * from './Deployments.list.js';
-export * from './Pods';
+export * from './Deployment.details';
+export * from './Pods.list.js';

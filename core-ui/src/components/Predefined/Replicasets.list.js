@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import LuigiClient from '@luigi-project/client';
+
 import { useGet } from 'react-shared';
 
 const giphy = {
@@ -31,22 +31,12 @@ const SingleDeployment = ({ name }) => {
       }}
     >
       <img style={{ maxWidth: '100%', maxHeight: '16em' }} src={gifUrl}></img>{' '}
-      <h3
-        o
-        onClick={_ =>
-          LuigiClient.linkManager()
-            .fromClosestContext()
-            .navigate('/details/' + name)
-        }
-      >
-        {' '}
-        {name}
-      </h3>
+      <h3> {name}</h3>
     </div>
   );
 };
 
-export const DeploymentsList = ({ resourceUrl, resourceName, namespace }) => {
+export const DeploymentsList = ({ resourceUrl, resourceType, namespace }) => {
   const [resources, setResources] = React.useState([]);
 
   const { loading = true, error } = useGet(

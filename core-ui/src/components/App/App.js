@@ -43,6 +43,8 @@ import {
   DEPLOYMENTS_TITLE,
 } from 'shared/constants';
 
+import * as PredefinedRenderers from 'components/Predefined';
+
 import * as CustomRenderers from 'components/Custom';
 
 export default function App() {
@@ -170,15 +172,15 @@ function RoutedResourcesList({ match }) {
     namespace: match.params.namespaceId,
   };
 
-  const PredefinedRenderer = ResourcesList;
-
-  const customRendererName =
+  const rendererName =
     params.resourceType[0].toUpperCase() +
     params.resourceType.substr(1) +
     'List';
 
-  if (CustomRenderers[customRendererName]) {
-    return CustomRenderers[customRendererName]({
+  const PredefinedRenderer = PredefinedRenderers[rendererName] || ResourcesList;
+
+  if (CustomRenderers[rendererName]) {
+    return CustomRenderers[rendererName]({
       PredefinedRenderer,
       ...params,
     });
@@ -198,7 +200,20 @@ function RoutedResourceDetails({ match }) {
     namespace: match.params.namespaceId,
   };
 
-  const PredefinedRenderer = ResourceDetails;
+  const rendererName =
+    params.resourceType[0].toUpperCase() +
+    params.resourceType.substr(1) +
+    'Details';
+
+  const PredefinedRenderer =
+    PredefinedRenderers[rendererName] || ResourceDetails;
+
+  if (CustomRenderers[rendererName]) {
+    return CustomRenderers[rendererName]({
+      PredefinedRenderer,
+      ...params,
+    });
+  }
 
   return <PredefinedRenderer {...params} />;
 }
