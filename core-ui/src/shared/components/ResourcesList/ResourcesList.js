@@ -54,7 +54,6 @@ function Resources({ resourceObject, namespace }) {
     namespace ? `/namespaces/${namespace}` : ''
   }/${kindPlural}`;
 
-  // const [resources, setResources] = React.useState([]);
   const setEditedSpec = useYamlEditor();
   const notification = useNotification();
   const updateResourceMutation = useUpdate(resourceUrl);
