@@ -24,19 +24,22 @@ ResourcesList.propTypes = {
 
 export default function ResourcesList({
   resourceUrl,
-  resourceName,
+  resourceKind,
   namespace,
 }) {
   if (!resourceUrl) {
     return <></>; // wait for the context update
   }
+
+  const capitalizedresourceKind =
+    resourceKind?.charAt(0).toUpperCase() + resourceKind?.slice(1);
   const generatedResourceUrl = resourceUrl.includes(':namespaceId')
     ? resourceUrl.replace(':namespaceId', namespace)
     : resourceUrl;
 
   return (
     <YamlEditorProvider>
-      <PageHeader title={resourceName} />
+      <PageHeader title={capitalizedresourceKind} />
       <Resources resourceUrl={generatedResourceUrl} namespace={namespace} />
     </YamlEditorProvider>
   );

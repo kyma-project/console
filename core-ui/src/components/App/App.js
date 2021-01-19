@@ -57,8 +57,8 @@ export default function App() {
 
       <Route
         exact
-        path="/home/namespaces/:namespaceId/resources/:resourceName"
-        render={withTitle(DEPLOYMENTS_TITLE, RoutedResourcesList)}
+        path="/home/namespaces/:namespaceId/resources/:resourceKind"
+        render={withTitle(undefined, RoutedResourcesList)}
       />
 
       <Route
@@ -156,7 +156,7 @@ function RoutedResourcesList({ match }) {
   return (
     <ResourcesList
       resourceUrl={resourceUrl}
-      resourceName={match.params.resourceName}
+      resourceKind={match.params.resourceKind}
       namespace={match.params.namespaceId}
     />
   );

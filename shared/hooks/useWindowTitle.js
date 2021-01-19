@@ -14,7 +14,10 @@ export function useWindowTitle(title) {
 
 export function withTitle(title, Component) {
   return props => {
-    setWindowTitle(title);
+    const resourceKind = props?.match?.params?.resourceKind;
+    const capitalizedresourceKind =
+      resourceKind?.charAt(0).toUpperCase() + resourceKind?.slice(1);
+    setWindowTitle(capitalizedresourceKind || title);
     return <Component {...props} />;
   };
 }
