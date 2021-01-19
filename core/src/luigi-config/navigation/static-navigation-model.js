@@ -61,8 +61,11 @@ export function getStaticChildrenNodesForNamespace() {
       pathSegment: 'replica-sets',
       navigationContext: 'replica-sets',
       label: 'Replica Sets',
-      viewUrl: '/consoleapp.html#/home/namespaces/:namespaceId/replicaSets',
-      viewGroup: consoleViewGroupName
+      viewUrl: config.coreModuleUrl + '/home/namespaces/:namespaceId/resources/replicasets',
+      viewGroup: coreUIViewGroupName,
+      context: { 
+        resourceUrl: '/apis/apps/v1/namespaces/:namespaceId/replicasets'
+      }
     },
     {
       category: 'Workloads',

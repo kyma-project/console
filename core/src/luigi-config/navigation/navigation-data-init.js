@@ -84,27 +84,31 @@ export function getNavigationData() {
           if (res) {
             const modules = res.backendModules;
             const subjectRules = res.selfSubjectRules;
-            const cmfs = res.clusterMicroFrontends;
             kymaVersion = (res.versionInfo && res.versionInfo.kymaVersion) ? `Kyma version: ${res.versionInfo.kymaVersion}` : undefined;
             setInitValues(
               (modules && modules.map(m => m.name)) || [],
               subjectRules || []
             );
-
-            if (cmfs && cmfs.length > 0) {
+            
+            const url = 'http://localhost:3001/apis/ui.kyma-project.io/v1alpha1/clustermicrofrontends';
+            return fetchFromKyma(url, token)
+            .then(r => {
+              const cmfs = r.items;
+              if (cmfs && cmfs.length > 0) {
               clusterMicrofrontendNodes = cmfs
-                .filter(cmf => cmf.placement === 'cluster')
+                .filter(cmf => cmf.spec.placement === 'cluster')
                 .map(cmf => {
-                  if (cmf.navigationNodes) {
+                  if (cmf.spec.navigationNodes) {
                     var tree = convertToNavigationTree(
-                      cmf.name,
-                      cmf,
+                      cmf.metadata.name,
+                      cmf.spec,
                       config,
                       navigation,
                       consoleViewGroupName,
                       'cmf-',
                       groups
                     );
+                    console.log(tree)
                     return tree;
                   }
                   return [];
@@ -112,15 +116,15 @@ export function getNavigationData() {
               clusterMicrofrontendNodesForNamespace = cmfs
                 .filter(
                   cmf =>
-                    cmf.placement === 'namespace' ||
-                    cmf.placement === 'environment'
+                    cmf.spec.placement === 'namespace' ||
+                    cmf.spec.placement === 'environment'
                 )
                 .map(cmf => {
                   // console.log(cmf.name, cmf);
-                  if (cmf.navigationNodes) {
+                  if (cmf.spec.navigationNodes) {
                     return convertToNavigationTree(
-                      cmf.name,
-                      cmf,
+                      cmf.metadata.name,
+                      cmf.spec,
                       config,
                       navigation,
                       consoleViewGroupName,
@@ -130,7 +134,9 @@ export function getNavigationData() {
                   }
                   return [];
                 });
-            }
+            };
+              return 
+            }).catch(e=> {console.log(e); return})
           }
         },
         err => {
@@ -190,6 +196,26 @@ function getNamespaces() {
   }).catch(err => {
     console.error('Error while fetching namespaces', err);
   });
+}
+
+const fetchFromKyma = (url, token) => {	
+  return new Promise(function(resolve, reject) {	
+    var xmlHttp = new XMLHttpRequest();	
+    xmlHttp.onreadystatechange = function() {	
+      if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {	
+        resolve(JSON.parse(xmlHttp.response));	
+      } else if (xmlHttp.readyState == 4 && xmlHttp.status != 200) {	
+        if (xmlHttp.status === 401) {	
+          relogin();	
+        }	
+        reject(xmlHttp.response);	
+      }	
+    };	
+
+    xmlHttp.open('GET', url, true);	
+    xmlHttp.setRequestHeader('Authorization', 'Bearer ' + token);	
+    xmlHttp.send(null);	
+  });	
 }
 
 function fetchFromGraphQL(query, variables, gracefully) {
