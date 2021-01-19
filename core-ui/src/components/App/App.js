@@ -42,6 +42,8 @@ import {
   DEPLOYMENTS_TITLE,
 } from 'shared/constants';
 
+import * as CustomRenderers from 'components/Custom';
+
 export default function App() {
   return (
     <Switch>
@@ -153,13 +155,28 @@ export default function App() {
 function RoutedResourcesList({ match }) {
   const context = useMicrofrontendContext();
   const resourceUrl = context?.resourceUrl;
-  return (
-    <ResourcesList
-      resourceUrl={resourceUrl}
-      resourceName={match.params.resourceName}
-      namespace={match.params.namespaceId}
-    />
-  );
+
+  const params = {
+    resourceUrl,
+    resourceName: match.params.resourceName,
+    namespace: match.params.namespaceId,
+  };
+
+  const PredefinedRenderer = ResourcesList;
+
+  const customRendererName =
+    params.resourceName[0].toUpperCase() +
+    params.resourceName.substr(1) +
+    'List';
+
+  if (CustomRenderers[customRendererName]) {
+    return CustomRenderers[customRendererName]({
+      PredefinedRenderer,
+      ...params,
+    });
+  }
+
+  return <PredefinedRenderer {...params} />;
 }
 
 function RoutedNamespaceDetails({ match }) {

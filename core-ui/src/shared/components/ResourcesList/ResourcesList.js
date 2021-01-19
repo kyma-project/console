@@ -23,6 +23,7 @@ ResourcesList.propTypes = {
 };
 
 export default function ResourcesList({
+  customColumns = [],
   resourceUrl,
   resourceName,
   namespace,
@@ -37,12 +38,16 @@ export default function ResourcesList({
   return (
     <YamlEditorProvider>
       <PageHeader title={resourceName} />
-      <Resources resourceUrl={generatedResourceUrl} namespace={namespace} />
+      <Resources
+        resourceUrl={generatedResourceUrl}
+        namespace={namespace}
+        customColumns={customColumns}
+      />
     </YamlEditorProvider>
   );
 }
 
-function Resources({ resourceUrl, namespace }) {
+function Resources({ resourceUrl, namespace, customColumns }) {
   const [resources, setResources] = React.useState([]);
   const setEditedSpec = useYamlEditor();
   const notification = useNotification();
@@ -104,17 +109,22 @@ function Resources({ resourceUrl, namespace }) {
     },
   ];
 
-  const headerRenderer = () => ['Name', 'Age', 'Labels'];
+  const headerRenderer = () => [
+    'Name',
+    'Age',
+    'Labels',
+    ...customColumns.map(col => col.header),
+  ];
 
   const rowRenderer = entry => [
     <Link>{entry.metadata.name}</Link>,
-
     <Moment utc fromNow>
       {entry.metadata.creationTimestamp}
     </Moment>,
     <div style={{ maxWidth: '55em' /*TODO*/ }}>
       <Labels labels={entry.metadata.labels} />
     </div>,
+    ...customColumns.map(col => col.value(entry)),
   ];
 
   return (

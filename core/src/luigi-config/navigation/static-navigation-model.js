@@ -35,7 +35,7 @@ export function getStaticChildrenNodesForNamespace() {
       },
       pathSegment: '_workloads_category_placeholder_',
       hideFromNav: true
-    }, 
+    },
     {
       category: 'Workloads',
       pathSegment: 'details',
@@ -50,7 +50,8 @@ export function getStaticChildrenNodesForNamespace() {
       pathSegment: 'pods',
       navigationContext: 'pods',
       label: 'Pods',
-      viewUrl: config.coreModuleUrl + '/home/namespaces/:namespaceId/resources/pods',
+      viewUrl:
+        config.coreModuleUrl + '/home/namespaces/:namespaceId/resources/pods',
       viewGroup: coreUIViewGroupName,
       context: {
         resourceUrl: '/api/v1/namespaces/:namespaceId/pods'
@@ -69,10 +70,12 @@ export function getStaticChildrenNodesForNamespace() {
       pathSegment: 'deployments',
       navigationContext: 'deployments',
       label: 'Deployments',
-      viewUrl: config.coreModuleUrl + '/home/namespaces/:namespaceId/resources/deployments',
+      viewUrl:
+        config.coreModuleUrl +
+        '/home/namespaces/:namespaceId/resources/deployments',
       viewGroup: coreUIViewGroupName,
-      context: { 
-        resourceUrl: '/apis/apps/v1/namespaces/:namespaceId/deployments'
+      context: {
+        resourceUrl: '/api/v1/namespaces/:namespaceId/deployments'
       }
     },
     {
