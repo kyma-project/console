@@ -49,13 +49,32 @@ export function getStaticChildrenNodesForNamespace() {
       category: 'Workloads',
       pathSegment: 'pods',
       navigationContext: 'pods',
-      label: 'Pods',
+      label: 'Pods (generic)',
       viewUrl:
         config.coreModuleUrl + '/home/namespaces/:namespaceId/resources/pods',
       viewGroup: coreUIViewGroupName,
+      keepSelectedForChildren: true,
       context: {
-        resourceUrl: '/api/v1/namespaces/:namespaceId/pods'
-      }
+        resourceUrl: '/api/v1/namespaces/:namespaceId/pods',
+        hasDetailsView: true
+      },
+      children: [
+        {
+          pathSegment: 'details',
+          children: [
+            {
+              pathSegment: ':podName',
+              viewUrl:
+                config.coreModuleUrl +
+                '/home/namespaces/:namespaceId/resource/pod/:podName',
+              // viewGroup: coreUIViewGroupName
+              context: {
+                resourceUrl: '/api/v1/namespaces/:namespaceId/pods/:podName'
+              }
+            }
+          ]
+        }
+      ]
     },
     {
       category: 'Workloads',
@@ -69,7 +88,8 @@ export function getStaticChildrenNodesForNamespace() {
       category: 'Workloads',
       pathSegment: 'deployments',
       navigationContext: 'deployments',
-      label: 'Deployments',
+      label: 'Deployments (custom)',
+      keepSelectedForChildren: true,
       viewUrl:
         config.coreModuleUrl +
         '/home/namespaces/:namespaceId/resources/deployments',

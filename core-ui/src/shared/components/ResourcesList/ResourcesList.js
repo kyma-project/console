@@ -4,6 +4,7 @@ import jsyaml from 'js-yaml';
 import { Link } from 'fundamental-react';
 import { createPatch } from 'rfc6902';
 import Moment from 'react-moment';
+import LuigiClient from '@luigi-project/client';
 
 import {
   PageHeader,
@@ -25,8 +26,9 @@ ResourcesList.propTypes = {
 export default function ResourcesList({
   customColumns = [],
   resourceUrl,
-  resourceName,
+  resourceType,
   namespace,
+  hasDetailsView,
 }) {
   if (!resourceUrl) {
     return <></>; // wait for the context update
@@ -37,17 +39,18 @@ export default function ResourcesList({
 
   return (
     <YamlEditorProvider>
-      <PageHeader title={resourceName} />
+      <PageHeader title={resourceType} />
       <Resources
         resourceUrl={generatedResourceUrl}
         namespace={namespace}
         customColumns={customColumns}
+        hasDetailsView={hasDetailsView}
       />
     </YamlEditorProvider>
   );
 }
 
-function Resources({ resourceUrl, namespace, customColumns }) {
+function Resources({ resourceUrl, namespace, customColumns, hasDetailsView }) {
   const [resources, setResources] = React.useState([]);
   const setEditedSpec = useYamlEditor();
   const notification = useNotification();
@@ -116,8 +119,22 @@ function Resources({ resourceUrl, namespace, customColumns }) {
     ...customColumns.map(col => col.header),
   ];
 
+  // const NameWrapper=hasDetailsView?Link:
+
   const rowRenderer = entry => [
-    <Link>{entry.metadata.name}</Link>,
+    hasDetailsView ? (
+      <Link
+        onClick={_ =>
+          LuigiClient.linkManager()
+            .fromClosestContext()
+            .navigate('/details/' + entry.metadata.name)
+        }
+      >
+        {entry.metadata.name}
+      </Link>
+    ) : (
+      <b>{entry.metadata.name}</b>
+    ),
     <Moment utc fromNow>
       {entry.metadata.creationTimestamp}
     </Moment>,

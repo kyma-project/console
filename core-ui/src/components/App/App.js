@@ -29,6 +29,7 @@ import SecretList from 'components/Secrets/Secrets';
 import SecretDetails from 'components/Secrets/Details/SecretDetails';
 
 import ResourcesList from 'shared/components/ResourcesList/ResourcesList';
+import ResourceDetails from 'shared/components/ResourceDetails/ResourceDetails';
 
 import { FUNCTIONS_WINDOW_TITLE } from 'components/Lambdas/constants';
 import {
@@ -59,8 +60,14 @@ export default function App() {
 
       <Route
         exact
-        path="/home/namespaces/:namespaceId/resources/:resourceName"
+        path="/home/namespaces/:namespaceId/resources/:resourceType"
         render={withTitle(DEPLOYMENTS_TITLE, RoutedResourcesList)}
+      />
+
+      <Route
+        exact
+        path="/home/namespaces/:namespaceId/resource/:resourceType/:resourceName"
+        component={RoutedResourceDetails}
       />
 
       <Route
@@ -157,16 +164,17 @@ function RoutedResourcesList({ match }) {
   const resourceUrl = context?.resourceUrl;
 
   const params = {
+    hasDetailsView: context?.hasDetailsView,
     resourceUrl,
-    resourceName: match.params.resourceName,
+    resourceType: match.params.resourceType,
     namespace: match.params.namespaceId,
   };
 
   const PredefinedRenderer = ResourcesList;
 
   const customRendererName =
-    params.resourceName[0].toUpperCase() +
-    params.resourceName.substr(1) +
+    params.resourceType[0].toUpperCase() +
+    params.resourceType.substr(1) +
     'List';
 
   if (CustomRenderers[customRendererName]) {
@@ -175,6 +183,22 @@ function RoutedResourcesList({ match }) {
       ...params,
     });
   }
+
+  return <PredefinedRenderer {...params} />;
+}
+
+function RoutedResourceDetails({ match }) {
+  const context = useMicrofrontendContext();
+  const resourceUrl = context?.resourceUrl;
+
+  const params = {
+    resourceUrl,
+    resourceType: match.params.resourceType,
+    resourceName: match.params.resourceName,
+    namespace: match.params.namespaceId,
+  };
+
+  const PredefinedRenderer = ResourceDetails;
 
   return <PredefinedRenderer {...params} />;
 }
