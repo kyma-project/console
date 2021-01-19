@@ -38,8 +38,6 @@ import {
   NAMESPACES_TITLE,
   SERVICES_TITLE,
   SECRETS_TITLE,
-  PODS_TITLE,
-  DEPLOYMENTS_TITLE,
 } from 'shared/constants';
 
 export default function App() {
