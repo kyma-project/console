@@ -30,7 +30,7 @@
     "@kyma-project/components": "./components/shared",
     "@kyma-project/generic-documentation": "./components/generic-documentation",
     "@kyma-project/react-components": "./components/react",
-    "@luigi-project/client": "^1.4.0",
+    "@luigi-project/client": "^1.7.1",
     "@monaco-editor/react": "^3.6.3",
     "@reach/router": "^1.2.1",
     "@types/classnames": "^2.2.9",

@@ -11,6 +11,7 @@ const useMutation = method => {
         method,
         headers: {
           'Content-Type': 'application/json',
+          Accept: 'application/json',
           Authorization: 'Bearer ' + idToken,
         },
         body: JSON.stringify(data),
@@ -24,5 +25,5 @@ const useMutation = method => {
   };
 };
 
-export const useUpdate = useMutation('PUT');
+export const useUpdate = useMutation('PATCH');
 export const useDelete = useMutation('DELETE');
