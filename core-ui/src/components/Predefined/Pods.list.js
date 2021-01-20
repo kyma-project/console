@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const PodsList = ({ PredefinedRenderer, ...otherParams }) => {
+export const PodsList = DefaultRenderer => ({ ...otherParams }) => {
   const customColumns = [
     {
       header: 'Status',
@@ -15,7 +15,7 @@ export const PodsList = ({ PredefinedRenderer, ...otherParams }) => {
 
   return (
     <>
-      <PredefinedRenderer customColumns={customColumns} {...otherParams} />
+      <DefaultRenderer customColumns={customColumns} {...otherParams} />
       <h1
         style={{
           fontSize: '3em',
@@ -24,7 +24,7 @@ export const PodsList = ({ PredefinedRenderer, ...otherParams }) => {
           textShadow: '1px 1px 2px #555',
         }}
       >
-        This is a custom pod list, basing on the generic one
+        This is a custom pod list, based on the generic one
       </h1>
     </>
   );

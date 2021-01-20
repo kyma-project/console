@@ -46,7 +46,12 @@ const SingleDeployment = ({ name }) => {
   );
 };
 
-export const DeploymentsList = ({ resourceUrl, resourceName, namespace }) => {
+export const DeploymentsList = ({
+  PredefinedRenderer,
+  resourceUrl,
+  resourceName,
+  namespace,
+}) => {
   const [resources, setResources] = React.useState([]);
 
   const { loading = true, error } = useGet(
@@ -58,7 +63,7 @@ export const DeploymentsList = ({ resourceUrl, resourceName, namespace }) => {
   return (
     <>
       <h1 style={{ fontSize: '5em', color: 'tomato' }}>
-        This is so custom I don't even have a header
+        I am so custom I don't even have a header
       </h1>
       <div
         style={{

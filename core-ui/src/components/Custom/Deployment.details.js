@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { useGet } from 'react-shared';
 
 export const DeploymentDetails = ({
+  PredefinedRenderer,
   resourceUrl,
   resourceName,
   resourceType,

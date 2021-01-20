@@ -28,8 +28,8 @@ import RoleDetails from 'components/Permissions/RoleDetails/RoleDetails';
 import SecretList from 'components/Secrets/Secrets';
 import SecretDetails from 'components/Secrets/Details/SecretDetails';
 
-import ResourcesList from 'shared/components/ResourcesList/ResourcesList';
-import ResourceDetails from 'shared/components/ResourceDetails/ResourceDetails';
+import GenericResourceList from 'shared/components/ResourcesList/ResourcesList';
+import GenericResourceDetails from 'shared/components/ResourceDetails/ResourceDetails';
 
 import { FUNCTIONS_WINDOW_TITLE } from 'components/Lambdas/constants';
 import {
@@ -63,7 +63,7 @@ export default function App() {
       <Route
         exact
         path="/home/namespaces/:namespaceId/resources/:resourceType"
-        render={withTitle(DEPLOYMENTS_TITLE, RoutedResourcesList)}
+        render={RoutedResourcesList}
       />
 
       <Route
@@ -177,7 +177,11 @@ function RoutedResourcesList({ match }) {
     params.resourceType.substr(1) +
     'List';
 
-  const PredefinedRenderer = PredefinedRenderers[rendererName] || ResourcesList;
+  const DefaultRenderer = GenericResourceList;
+
+  const PredefinedRenderer = PredefinedRenderers[rendererName]
+    ? PredefinedRenderers[rendererName](DefaultRenderer)
+    : DefaultRenderer;
 
   if (CustomRenderers[rendererName]) {
     return CustomRenderers[rendererName]({
@@ -205,15 +209,11 @@ function RoutedResourceDetails({ match }) {
     params.resourceType.substr(1) +
     'Details';
 
-  const PredefinedRenderer =
-    PredefinedRenderers[rendererName] || ResourceDetails;
+  const DefaultRenderer = GenericResourceDetails;
 
-  if (CustomRenderers[rendererName]) {
-    return CustomRenderers[rendererName]({
-      PredefinedRenderer,
-      ...params,
-    });
-  }
+  const PredefinedRenderer = PredefinedRenderers[rendererName]
+    ? PredefinedRenderers[rendererName](DefaultRenderer)
+    : DefaultRenderer;
 
   return <PredefinedRenderer {...params} />;
 }
