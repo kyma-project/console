@@ -152,6 +152,18 @@ function SecretVariableValue({ variable }) {
   if (loading) return null;
   if (error) return `Error: ${error}`;
 
+  if (data.secret === null) {
+    return <span style={{ color: 'red' }}>{'The Secret does not exist!'}</span>;
+  }
+
+  if (data.secret.data[variable.key] === undefined) {
+    return (
+      <span style={{ color: 'red' }}>
+        {'There is no such key in the Secret!'}
+      </span>
+    );
+  }
+
   const value = <span>{data.secret.data[variable.key] || '-'}</span>;
 
   if (isSecretVar) {
@@ -189,6 +201,22 @@ function ConfigMapVariableValue({ variable }) {
 
   if (loading) return null;
   if (error) return `Error: ${error}`;
+
+  if (data.configMap === null) {
+    return (
+      <span style={{ color: 'red' }}>{'The Config Map does not exist!'}</span>
+    );
+  }
+
+  console.log(data.configMap.json.data[variable.key]);
+
+  if (data.configMap.json.data[variable.key] === undefined) {
+    return (
+      <span style={{ color: 'red' }}>
+        {'There is no such key in the Config Map!'}
+      </span>
+    );
+  }
 
   return <span>{data.configMap.json.data[variable.key] || '-'}</span>;
 }
