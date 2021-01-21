@@ -9,7 +9,6 @@ import {
   VARIABLE_VALIDATION,
   VARIABLE_TYPE,
   WARNINGS_VARIABLE_VALIDATION,
-  newVariableModel,
 } from 'components/Lambdas/helpers/lambdaVariables';
 import { ENVIRONMENT_VARIABLES_PANEL } from 'components/Lambdas/constants';
 
@@ -142,7 +141,6 @@ function VariableValue({ variable }) {
 }
 
 function SecretVariableValue({ variable }) {
-  const isSecretVar = variable.type === VARIABLE_TYPE.SECRET;
   const [show, setShow] = useState(false);
 
   const { data, loading, error } = useQuery(GET_SECRET, {
@@ -156,7 +154,7 @@ function SecretVariableValue({ variable }) {
     return <span style={{ color: 'red' }}>{'The Secret does not exist!'}</span>;
   }
 
-  if (data.secret.data[variable.key] === undefined) {
+  if (data.secret.data[variable.resourceKey] === undefined) {
     return (
       <span style={{ color: 'red' }}>
         {'There is no such key in the Secret!'}
@@ -164,34 +162,29 @@ function SecretVariableValue({ variable }) {
     );
   }
 
-  const value = <span>{data.secret.data[variable.key] || '-'}</span>;
+  const value = <span>{data.secret.data[variable.resourceKey] || '-'}</span>;
 
-  if (isSecretVar) {
-    const blurVariable = (
-      <div
-        className={!show ? 'blur-variable' : ''}
-        onClick={_ => setShow(!show)}
+  const blurVariable = (
+    <div className={!show ? 'blur-variable' : ''} onClick={_ => setShow(!show)}>
+      {value}
+    </div>
+  );
+
+  return (
+    <div className="lambda-variable">
+      <Tooltip
+        content={
+          show
+            ? ENVIRONMENT_VARIABLES_PANEL.VARIABLE_TYPE.BINDING_USAGE
+                .HIDE_VALUE_MESSAGE
+            : ENVIRONMENT_VARIABLES_PANEL.VARIABLE_TYPE.BINDING_USAGE
+                .SHOW_VALUE_MESSAGE
+        }
       >
-        {value}
-      </div>
-    );
-    return (
-      <div className="lambda-variable">
-        <Tooltip
-          content={
-            show
-              ? ENVIRONMENT_VARIABLES_PANEL.VARIABLE_TYPE.BINDING_USAGE
-                  .HIDE_VALUE_MESSAGE
-              : ENVIRONMENT_VARIABLES_PANEL.VARIABLE_TYPE.BINDING_USAGE
-                  .SHOW_VALUE_MESSAGE
-          }
-        >
-          {blurVariable}
-        </Tooltip>
-      </div>
-    );
-  }
-  return value;
+        {blurVariable}
+      </Tooltip>
+    </div>
+  );
 }
 
 function ConfigMapVariableValue({ variable }) {
@@ -208,7 +201,7 @@ function ConfigMapVariableValue({ variable }) {
     );
   }
 
-  if (data.configMap.json.data[variable.key] === undefined) {
+  if (data.configMap.json.data[variable.resourceKey] === undefined) {
     return (
       <span style={{ color: 'red' }}>
         {'There is no such key in the Config Map!'}
@@ -216,7 +209,7 @@ function ConfigMapVariableValue({ variable }) {
     );
   }
 
-  return <span>{data.configMap.json.data[variable.key] || '-'}</span>;
+  return <span>{data.configMap.json.data[variable.resourceKey] || '-'}</span>;
 }
 
 function VariableSource({ variable }) {
@@ -228,8 +221,8 @@ function VariableSource({ variable }) {
 }
 
 function VariableSourceKey({ variable }) {
-  if (variable.key) {
-    return <span>{variable.key}</span>;
+  if (variable.resourceKey) {
+    return <span>{variable.resourceKey}</span>;
   }
 
   return <span>{'-'}</span>;
@@ -245,12 +238,16 @@ export default function LambdaEnvs({
     const isConfigMapType = variable.type === VARIABLE_TYPE.CONFIG_MAP;
     const isSecretType = variable.type === VARIABLE_TYPE.SECRET;
 
-    let variableValue = <VariableValue variable={variable} />;
+    let variableValue = <VariableValue key={variable.id} variable={variable} />;
     variable.namespace = lambda.namespace;
     if (isSecretType) {
-      variableValue = <SecretVariableValue variable={variable} />;
+      variableValue = (
+        <SecretVariableValue key={variable.id} variable={variable} />
+      );
     } else if (isConfigMapType) {
-      variableValue = <ConfigMapVariableValue variable={variable} />;
+      variableValue = (
+        <ConfigMapVariableValue key={variable.id} variable={variable} />
+      );
     }
 
     return [

@@ -1,8 +1,5 @@
 import { newVariableModel } from './newVariableModel';
 import { VARIABLE_TYPE, VARIABLE_VALIDATION } from './constants';
-import { useQuery } from '@apollo/react-hooks';
-import { GET_SECRET, GET_SECRETS_LIST } from '../../../../gql/queries';
-import { GET_CONFIG_MAP } from '../../gql/queries';
 
 export function serializeVariables({
   lambdaVariables = [],
@@ -30,7 +27,7 @@ export function serializeVariables({
       let varModel = newVariableModel({
         variable: variable,
         additionalProps: {
-          key: variable.valueFrom.key,
+          resourceKey: variable.valueFrom.key,
           resourceName: variable.valueFrom.name,
         },
       });
