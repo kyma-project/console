@@ -110,11 +110,10 @@ function VariableType({ variable }) {
 
 function VariableValue({ variable, namespace }) {
   const isBindingUsageVar = variable.type === VARIABLE_TYPE.BINDING_USAGE;
-  const isSecretVar = variable.type === VARIABLE_TYPE.SECRET;
   const [show, setShow] = useState(false);
   const value = <span>{variable.value || '-'}</span>;
 
-  if (isBindingUsageVar || isSecretVar) {
+  if (isBindingUsageVar) {
     const blurVariable = (
       <div
         className={!show ? 'blur-variable' : ''}
@@ -143,7 +142,6 @@ function VariableValue({ variable, namespace }) {
 }
 
 function SecretVariableValue({ variable }) {
-  const isBindingUsageVar = variable.type === VARIABLE_TYPE.BINDING_USAGE;
   const isSecretVar = variable.type === VARIABLE_TYPE.SECRET;
   const [show, setShow] = useState(false);
 
@@ -156,7 +154,7 @@ function SecretVariableValue({ variable }) {
 
   const value = <span>{data.secret.data[variable.key] || '-'}</span>;
 
-  if (isBindingUsageVar || isSecretVar) {
+  if (isSecretVar) {
     const blurVariable = (
       <div
         className={!show ? 'blur-variable' : ''}
