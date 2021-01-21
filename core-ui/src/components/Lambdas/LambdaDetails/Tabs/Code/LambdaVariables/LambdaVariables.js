@@ -108,7 +108,7 @@ function VariableType({ variable }) {
   );
 }
 
-function VariableValue({ variable, namespace }) {
+function VariableValue({ variable }) {
   const isBindingUsageVar = variable.type === VARIABLE_TYPE.BINDING_USAGE;
   const [show, setShow] = useState(false);
   const value = <span>{variable.value || '-'}</span>;
