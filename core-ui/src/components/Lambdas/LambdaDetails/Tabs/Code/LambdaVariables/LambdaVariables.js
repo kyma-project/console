@@ -208,8 +208,6 @@ function ConfigMapVariableValue({ variable }) {
     );
   }
 
-  console.log(data.configMap.json.data[variable.key]);
-
   if (data.configMap.json.data[variable.key] === undefined) {
     return (
       <span style={{ color: 'red' }}>
