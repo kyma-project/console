@@ -1,5 +1,8 @@
 import { newVariableModel } from './newVariableModel';
 import { VARIABLE_TYPE, VARIABLE_VALIDATION } from './constants';
+import { useQuery } from '@apollo/react-hooks';
+import { GET_SECRET, GET_SECRETS_LIST } from '../../../../gql/queries';
+import { GET_CONFIG_MAP } from '../../gql/queries';
 
 export function serializeVariables({
   lambdaVariables = [],
@@ -20,12 +23,25 @@ export function serializeVariables({
   const customValueFromVariables = [];
 
   lambdaVariables.forEach(variable => {
-    // at the moment save custom variables with valueFrom field in separate array
-    // we don't support yet defining in UI variables with configMapKeyRef and secretKeyRef
     const isValueFromVariable =
       variable.valueFrom && Object.keys(variable.valueFrom).length;
+
     if (isValueFromVariable) {
-      customValueFromVariables.push(variable);
+      let varModel = newVariableModel({
+        variable: variable,
+        additionalProps: {
+          key: variable.valueFrom.key,
+          resourceName: variable.valueFrom.name,
+        },
+      });
+
+      if (variable.valueFrom.type === 'Secret') {
+        varModel.type = VARIABLE_TYPE.SECRET;
+      } else if (variable.valueFrom.type === 'ConfigMap') {
+        varModel.type = VARIABLE_TYPE.CONFIG_MAP;
+      }
+
+      customValueFromVariables.push(varModel);
       return;
     }
 

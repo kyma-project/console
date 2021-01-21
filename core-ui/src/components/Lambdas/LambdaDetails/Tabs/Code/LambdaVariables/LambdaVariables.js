@@ -9,6 +9,7 @@ import {
   VARIABLE_VALIDATION,
   VARIABLE_TYPE,
   WARNINGS_VARIABLE_VALIDATION,
+  newVariableModel,
 } from 'components/Lambdas/helpers/lambdaVariables';
 import { ENVIRONMENT_VARIABLES_PANEL } from 'components/Lambdas/constants';
 
@@ -16,8 +17,19 @@ import { validateVariables } from './validation';
 
 import './LambdaEnvs.scss';
 import { formatMessage } from 'components/Lambdas/helpers/misc';
+import { useQuery } from '@apollo/react-hooks';
+import { GET_SECRET } from '../../../../../../gql/queries';
+import { GET_CONFIG_MAP } from '../../../../gql/queries';
 
-const headerRenderer = () => ['Variable Name', '', 'Value', 'Type', ''];
+const headerRenderer = () => [
+  'Variable Name',
+  '',
+  'Value',
+  'Resource Name',
+  'Key',
+  'Type',
+  '',
+];
 const textSearchProperties = ['name', 'value', 'type'];
 
 function VariableStatus({ validation }) {
@@ -79,6 +91,16 @@ function VariableType({ variable }) {
     });
   }
 
+  if (variable.type === VARIABLE_TYPE.CONFIG_MAP) {
+    message = ENVIRONMENT_VARIABLES_PANEL.VARIABLE_TYPE.CONFIG_MAP;
+    tooltipTitle = message.TOOLTIP_MESSAGE;
+  }
+
+  if (variable.type === VARIABLE_TYPE.SECRET) {
+    message = ENVIRONMENT_VARIABLES_PANEL.VARIABLE_TYPE.SECRET;
+    tooltipTitle = message.TOOLTIP_MESSAGE;
+  }
+
   return (
     <Tooltip content={tooltipTitle}>
       <Badge>{message.TEXT}</Badge>
@@ -86,12 +108,13 @@ function VariableType({ variable }) {
   );
 }
 
-function VariableValue({ variable }) {
+function VariableValue({ variable, namespace }) {
   const isBindingUsageVar = variable.type === VARIABLE_TYPE.BINDING_USAGE;
+  const isSecretVar = variable.type === VARIABLE_TYPE.SECRET;
   const [show, setShow] = useState(false);
   const value = <span>{variable.value || '-'}</span>;
 
-  if (isBindingUsageVar) {
+  if (isBindingUsageVar || isSecretVar) {
     const blurVariable = (
       <div
         className={!show ? 'blur-variable' : ''}
@@ -119,31 +142,120 @@ function VariableValue({ variable }) {
   return value;
 }
 
+function SecretVariableValue({ variable }) {
+  const isBindingUsageVar = variable.type === VARIABLE_TYPE.BINDING_USAGE;
+  const isSecretVar = variable.type === VARIABLE_TYPE.SECRET;
+  const [show, setShow] = useState(false);
+
+  const { data, loading, error } = useQuery(GET_SECRET, {
+    variables: { namespace: variable.namespace, name: variable.resourceName },
+  });
+
+  if (loading) return null;
+  if (error) return `Error: ${error}`;
+
+  const value = <span>{data.secret.data[variable.key] || '-'}</span>;
+
+  if (isBindingUsageVar || isSecretVar) {
+    const blurVariable = (
+      <div
+        className={!show ? 'blur-variable' : ''}
+        onClick={_ => setShow(!show)}
+      >
+        {value}
+      </div>
+    );
+    return (
+      <div className="lambda-variable">
+        <Tooltip
+          content={
+            show
+              ? ENVIRONMENT_VARIABLES_PANEL.VARIABLE_TYPE.BINDING_USAGE
+                  .HIDE_VALUE_MESSAGE
+              : ENVIRONMENT_VARIABLES_PANEL.VARIABLE_TYPE.BINDING_USAGE
+                  .SHOW_VALUE_MESSAGE
+          }
+        >
+          {blurVariable}
+        </Tooltip>
+      </div>
+    );
+  }
+  return value;
+}
+
+function ConfigMapVariableValue({ variable }) {
+  const { data, loading, error } = useQuery(GET_CONFIG_MAP, {
+    variables: { name: variable.resourceName, namespace: variable.namespace },
+  });
+
+  if (loading) return null;
+  if (error) return `Error: ${error}`;
+
+  return <span>{data.configMap.json.data[variable.key] || '-'}</span>;
+}
+
+function VariableSource({ variable }) {
+  if (variable.resourceName) {
+    return <span>{variable.resourceName}</span>;
+  }
+
+  return <span>{'-'}</span>;
+}
+
+function VariableSourceKey({ variable }) {
+  if (variable.key) {
+    return <span>{variable.key}</span>;
+  }
+
+  return <span>{'-'}</span>;
+}
+
 export default function LambdaEnvs({
   lambda,
   customVariables,
   customValueFromVariables,
   injectedVariables,
 }) {
-  const rowRenderer = variable => [
-    <span>{variable.name}</span>,
-    <span className="sap-icon--arrow-right" />,
-    <VariableValue variable={variable} />,
-    <VariableType variable={variable} />,
-    <VariableStatus validation={variable.validation} />,
-  ];
+  const rowRenderer = variable => {
+    const isConfigMapType = variable.type === VARIABLE_TYPE.CONFIG_MAP;
+    const isSecretType = variable.type === VARIABLE_TYPE.SECRET;
+
+    let variableValue = <VariableValue variable={variable} />;
+    variable.namespace = lambda.namespace;
+    if (isSecretType) {
+      variableValue = <SecretVariableValue variable={variable} />;
+    } else if (isConfigMapType) {
+      variableValue = <ConfigMapVariableValue variable={variable} />;
+    }
+
+    return [
+      <span>{variable.name}</span>,
+      <span className="sap-icon--arrow-right" />,
+      [variableValue],
+      <VariableSource variable={variable} />,
+      <VariableSourceKey variable={variable} />,
+      <VariableType variable={variable} />,
+      <VariableStatus validation={variable.validation} />,
+    ];
+  };
 
   const editEnvsModal = (
     <EditVariablesModal
       lambda={lambda}
       customVariables={customVariables}
-      customValueFromVariables={customValueFromVariables}
+      // customValueFromVariables={customValueFromVariables} allow to edit envs from cm's and secrets https://github.com/kyma-project/kyma/issues/10311
       injectedVariables={injectedVariables}
     />
   );
 
   const entries = [
-    ...validateVariables(customVariables, injectedVariables),
+    ...validateVariables(
+      customVariables,
+      customValueFromVariables,
+      injectedVariables,
+    ),
+    ...customValueFromVariables,
     ...injectedVariables,
   ];
 

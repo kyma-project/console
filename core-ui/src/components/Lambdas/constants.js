@@ -618,6 +618,14 @@ export const ENVIRONMENT_VARIABLES_PANEL = {
       TEXT: 'Custom',
       TOOLTIP_MESSAGE: 'This variable was provided by the user.',
     },
+    CONFIG_MAP: {
+      TEXT: 'Config Map',
+      TOOLTIP_MESSAGE: 'This variable was applied from Config Map.',
+    },
+    SECRET: {
+      TEXT: 'Secret',
+      TOOLTIP_MESSAGE: 'This variable was applied from Secret.',
+    },
     BINDING_USAGE: {
       TEXT: 'Service Binding',
       TOOLTIP_MESSAGE:
