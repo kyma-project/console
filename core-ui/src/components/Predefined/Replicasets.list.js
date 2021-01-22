@@ -1,15 +1,13 @@
 import React, { useState } from 'react';
 
-import { useGet } from 'react-shared';
+import { useGetList } from 'react-shared';
 
 const MySuperPredefinedList = ({ resourceUrl, resourceType, namespace }) => {
-  const [resources, setResources] = React.useState([]);
+  const { loading = true, error, data: resources } = useGetList(resourceUrl, {
+    pollingInterval: 3000,
+  });
 
-  const { loading = true, error } = useGet(
-    `/apis/apps/v1/namespaces/${namespace}/replicasets`,
-    setResources,
-    namespace,
-  );
+  if (!Array.isArray(resources)) return 'Loading';
 
   return (
     <>

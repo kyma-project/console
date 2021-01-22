@@ -1,8 +1,20 @@
 import React from 'react';
 
-export const ReplicasetDetails = ({}) => {
+export const ReplicasetDetails = GenericHeader => ({
+  resourceUrl,
+  resourceType,
+  resourceName,
+  namespace,
+}) => {
+  // const MySuperBindingOfSomethingComponent = getComponentFor(
+  //   'MySuperBindings',
+  //   {},
+  // );
+
   return (
     <>
+      <GenericHeader />
+      {/* <MySuperBindingOfSomethingComponent /> */}
       <img src="https://media.giphy.com/media/CqVNwrLt9KEDK/source.gif"></img>
       <h3
         style={{

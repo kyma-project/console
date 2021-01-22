@@ -16,47 +16,36 @@ import {
   useGetList,
   useUpdate,
   useDelete,
+  CustomColumnsType,
 } from 'react-shared';
 
 ResourcesList.propTypes = {
-  resource: PropTypes.object,
-  namespace: PropTypes.string.isRequired,
+  customColumns: CustomColumnsType,
+  resourceUrl: PropTypes.string.isRequired,
+  resourceType: PropTypes.string.isRequired,
+  namespace: PropTypes.string,
+  hasDetailsView: PropTypes.bool,
+  isCompact: PropTypes.bool,
 };
 
-export default function ResourcesList({
-  customColumns = [],
-  resourceUrl,
-  resourceType,
-  namespace,
-  hasDetailsView,
-}) {
-  if (!resourceUrl) {
+ResourcesList.defaultProps = {
+  customColumns: [],
+};
+
+export default function ResourcesList(props) {
+  if (!props.resourceUrl) {
     return <></>; // wait for the context update
   }
-  const generatedResourceUrl = resourceUrl.includes(':namespaceId')
-    ? resourceUrl.replace(':namespaceId', namespace)
-    : resourceUrl;
 
   return (
     <YamlEditorProvider>
-      <PageHeader title={resourceType} />
-      <Resources
-        resourceUrl={generatedResourceUrl}
-        namespace={namespace}
-        customColumns={customColumns}
-        hasDetailsView={hasDetailsView}
-      />
+      <PageHeader title={props.resourceType} />
+      <Resources {...props} />
     </YamlEditorProvider>
   );
 }
 
 function Resources({ resourceUrl, namespace, customColumns, hasDetailsView }) {
-  const { apiVersion, kindPlural } = resourceObject;
-  const api = apiVersion === 'v1' ? 'api' : 'apis';
-  // const resourceUrl = `/${api}/${apiVersion}${
-  //   namespace ? `/namespaces/${namespace}` : ''
-  // }/${kindPlural}`;
-
   const setEditedSpec = useYamlEditor();
   const notification = useNotification();
   const updateResourceMutation = useUpdate(resourceUrl);
@@ -106,12 +95,10 @@ function Resources({ resourceUrl, namespace, customColumns, hasDetailsView }) {
   const actions = [
     {
       name: 'Edit',
-      handler: resource =>
-        // setEditedSpec(resource.json, handleSaveClick(resource.json)),
-        {
-          const { status, ...otherResourceData } = resource; // remove 'status' property because you can't edit it anyway; TODO: decide if it's good
-          setEditedSpec(otherResourceData, handleSaveClick(otherResourceData));
-        },
+      handler: resource => {
+        const { status, ...otherResourceData } = resource; // remove 'status' property because you can't edit it anyway; TODO: decide if it's good
+        setEditedSpec(otherResourceData, handleSaveClick(otherResourceData));
+      },
     },
     {
       name: 'Delete',
@@ -125,8 +112,6 @@ function Resources({ resourceUrl, namespace, customColumns, hasDetailsView }) {
     'Labels',
     ...customColumns.map(col => col.header),
   ];
-
-  // const NameWrapper=hasDetailsView?Link:
 
   const rowRenderer = entry => [
     hasDetailsView ? (
