@@ -5,9 +5,7 @@ import { Link } from 'fundamental-react';
 import { createPatch } from 'rfc6902';
 import Moment from 'react-moment';
 import LuigiClient from '@luigi-project/client';
-
 import {
-  PageHeader,
   YamlEditorProvider,
   GenericList,
   Labels,
@@ -16,11 +14,12 @@ import {
   useGetList,
   useUpdate,
   useDelete,
-  customColumnsType,
-} from 'react-shared';
+  PageHeader,
+} from '../..';
+import CustomPropTypes from '../../typechecking/CustomPropTypes';
 
 ResourcesList.propTypes = {
-  customColumns: customColumnsType,
+  customColumns: CustomPropTypes.customColumnsType,
   resourceUrl: PropTypes.string.isRequired,
   resourceType: PropTypes.string.isRequired,
   namespace: PropTypes.string,
@@ -32,7 +31,7 @@ ResourcesList.defaultProps = {
   customColumns: [],
 };
 
-export default function ResourcesList(props) {
+export function ResourcesList(props) {
   if (!props.resourceUrl) {
     return <></>; // wait for the context update
   }

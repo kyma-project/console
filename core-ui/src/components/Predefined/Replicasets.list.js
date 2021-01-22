@@ -1,9 +1,9 @@
 import React from 'react';
 import LuigiClient from '@luigi-project/client';
 import { Link } from 'fundamental-react';
-import { useGetList } from 'react-shared';
-import { ResourcesListProps } from 'shared/components/ResourcesList/ResourcesList';
-import { getComponentFor } from 'components/App/App';
+import { useGetList, ResourcesListProps } from 'react-shared';
+// import { ResourcesListProps } from '../../shared/components/ResourcesList/ResourcesList';
+import { getComponentForList } from 'components/App/App';
 
 const MySuperPredefinedList = ({
   resourceUrl,
@@ -15,13 +15,7 @@ const MySuperPredefinedList = ({
     pollingInterval: 3000,
   });
 
-  const ServiceList = getComponentFor('ServicesList', {
-    resourceUrl: `/api/v1/namespaces/kyma-system/services`,
-    resourceType: 'services',
-    namespace: 'kyma-system',
-    isCompact: true,
-  });
-
+  const ServiceList = null;
   if (!Array.isArray(resources)) return 'Loading';
 
   return (

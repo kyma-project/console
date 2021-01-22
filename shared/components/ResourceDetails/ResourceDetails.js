@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { PageHeader, YamlEditorProvider } from 'react-shared';
+import { PageHeader, YamlEditorProvider } from '../..';
 
 ResourceDetails.propTypes = {
   resourceUrl: PropTypes.string.isRequired,
@@ -11,13 +11,13 @@ ResourceDetails.propTypes = {
   // isCompact: PropTypes.bool, // TODO: decide if needed
 };
 
-export default function ResourceDetails(props) {
+export function ResourceDetails(props) {
   if (!props.resourceUrl) {
     return <></>; // wait for the context update
   }
   return (
     <YamlEditorProvider>
-      <PageHeader title={props.resourceName} />
+      {/* <PageHeader title={props.resourceName} /> */}
       <Resource {...props} />
     </YamlEditorProvider>
   );

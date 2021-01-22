@@ -28,6 +28,8 @@ export { HeaderLabelsEditor } from './components/HeaderLabelsEditor/HeaderLabels
 export { LabelSelectorInput } from './components/LabelSelectorInput/LabelSelectorInput';
 export { LogsLink } from './components/LogsLink/LogsLink';
 export * from './components/SideDrawer/SideDrawer';
+export * from './components/ResourcesList/ResourcesList';
+export * from './components/ResourceDetails/ResourceDetails';
 
 export * from './forms';
 export * from './hooks';
@@ -39,13 +41,12 @@ export * from './contexts/YamlEditorContext';
 export * from './utils/apollo';
 export * from './utils/handleSubscriptionArrayEvent';
 export * from './utils/handleSubscriptionEvent';
+export * from './utils/getComponentForResource';
 export * from './components/GenericList/actionHandlers/simpleDelete';
 export * from './components/CredentialForms';
 export * from './constants/constants';
 
 export * from './components/ModalWithForm/ModalWithForm';
 
-import CustomPropTypes from './typechecking/CustomPropTypes';
-export { customColumnsType } from './typechecking/CustomColumns';
-
+import * as CustomPropTypes from './typechecking/CustomPropTypes';
 export { CustomPropTypes };

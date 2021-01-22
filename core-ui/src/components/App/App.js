@@ -1,7 +1,12 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import { withTitle, useMicrofrontendContext } from 'react-shared';
-import LuigiClient from '@luigi-project/client';
+import {
+  withTitle,
+  useMicrofrontendContext,
+  getComponentFor,
+  ResourcesList as GenericResourcesList,
+  ResourceDetails as GenericResourceDetails,
+} from 'react-shared';
 
 import NamespaceDetails from '../NamespaceDetails/NamespaceDetails';
 import NamespaceList from '../NamespaceList/NamespaceList';
@@ -28,9 +33,6 @@ import RoleDetails from 'components/Permissions/RoleDetails/RoleDetails';
 
 import SecretList from 'components/Secrets/Secrets';
 import SecretDetails from 'components/Secrets/Details/SecretDetails';
-
-import GenericResourceList from 'shared/components/ResourcesList/ResourcesList';
-import GenericResourceDetails from 'shared/components/ResourceDetails/ResourceDetails';
 
 import { FUNCTIONS_WINDOW_TITLE } from 'components/Lambdas/constants';
 import {
@@ -158,17 +160,15 @@ export default function App() {
   );
 }
 
-export function getComponentFor(
-  name,
-  params,
-  defaultRenderer = GenericResourceList,
-) {
-  const Renderer = PredefinedRenderers[name]
-    ? PredefinedRenderers[name](defaultRenderer)
-    : defaultRenderer;
+export const getComponentForList = getComponentFor(
+  PredefinedRenderers,
+  GenericResourcesList,
+);
 
-  return <Renderer {...params} />;
-}
+export const getComponentForDetails = getComponentFor(
+  PredefinedRenderers,
+  GenericResourceDetails,
+);
 
 function RoutedResourcesList({ match }) {
   const context = useMicrofrontendContext();
@@ -187,7 +187,7 @@ function RoutedResourcesList({ match }) {
     params.resourceType.substr(1) +
     'List';
 
-  return getComponentFor(rendererName, params, GenericResourceList);
+  return getComponentForList(rendererName, params);
 }
 
 function RoutedResourceDetails({ match }) {
@@ -207,7 +207,7 @@ function RoutedResourceDetails({ match }) {
     params.resourceType.substr(1) +
     'Details';
 
-  return getComponentFor(rendererName, params, GenericResourceDetails);
+  return getComponentForDetails(rendererName, params);
 }
 
 function RoutedNamespaceDetails({ match }) {
