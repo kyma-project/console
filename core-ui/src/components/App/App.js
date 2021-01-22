@@ -1,6 +1,7 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { withTitle, useMicrofrontendContext } from 'react-shared';
+import LuigiClient from '@luigi-project/client';
 
 import NamespaceDetails from '../NamespaceDetails/NamespaceDetails';
 import NamespaceList from '../NamespaceList/NamespaceList';
@@ -39,13 +40,9 @@ import {
   NAMESPACES_TITLE,
   SERVICES_TITLE,
   SECRETS_TITLE,
-  PODS_TITLE,
-  DEPLOYMENTS_TITLE,
 } from 'shared/constants';
 
 import * as PredefinedRenderers from 'components/Predefined';
-
-import * as CustomRenderers from 'components/Custom';
 
 export default function App() {
   return (
@@ -62,13 +59,13 @@ export default function App() {
 
       <Route
         exact
-        path="/home/namespaces/:namespaceId/resources/:resourceType"
-        render={RoutedResourcesList}
+        path="/home/namespaces/:namespaceId/:resourceType"
+        component={RoutedResourcesList}
       />
 
       <Route
         exact
-        path="/home/namespaces/:namespaceId/resource/:resourceType/:resourceName"
+        path="/home/namespaces/:namespaceId/:resourceType/:resourceName"
         component={RoutedResourceDetails}
       />
 
@@ -161,9 +158,22 @@ export default function App() {
   );
 }
 
+export function getComponentFor(
+  name,
+  params,
+  defaultRenderer = GenericResourceList,
+) {
+  const Renderer = PredefinedRenderers[name]
+    ? PredefinedRenderers[name](defaultRenderer)
+    : defaultRenderer;
+
+  return <Renderer {...params} />;
+}
+
 function RoutedResourcesList({ match }) {
   const context = useMicrofrontendContext();
-  const resourceUrl = context?.resourceUrl;
+  const resourceUrl =
+    context?.resourceApiPath + window.location.pathname.replace('/home', ''); //TODO improve it
 
   const params = {
     hasDetailsView: context?.hasDetailsView,
@@ -177,25 +187,13 @@ function RoutedResourcesList({ match }) {
     params.resourceType.substr(1) +
     'List';
 
-  const DefaultRenderer = GenericResourceList;
-
-  const PredefinedRenderer = PredefinedRenderers[rendererName]
-    ? PredefinedRenderers[rendererName](DefaultRenderer)
-    : DefaultRenderer;
-
-  if (CustomRenderers[rendererName]) {
-    return CustomRenderers[rendererName]({
-      PredefinedRenderer,
-      ...params,
-    });
-  }
-
-  return <PredefinedRenderer {...params} />;
+  return getComponentFor(rendererName, params, GenericResourceList);
 }
 
 function RoutedResourceDetails({ match }) {
   const context = useMicrofrontendContext();
-  const resourceUrl = context?.resourceUrl;
+  const resourceUrl =
+    context?.resourceApiPath + window.location.pathname.replace('/home', ''); //TODO improve it
 
   const params = {
     resourceUrl,
@@ -209,13 +207,7 @@ function RoutedResourceDetails({ match }) {
     params.resourceType.substr(1) +
     'Details';
 
-  const DefaultRenderer = GenericResourceDetails;
-
-  const PredefinedRenderer = PredefinedRenderers[rendererName]
-    ? PredefinedRenderers[rendererName](DefaultRenderer)
-    : DefaultRenderer;
-
-  return <PredefinedRenderer {...params} />;
+  return getComponentFor(rendererName, params, GenericResourceDetails);
 }
 
 function RoutedNamespaceDetails({ match }) {
