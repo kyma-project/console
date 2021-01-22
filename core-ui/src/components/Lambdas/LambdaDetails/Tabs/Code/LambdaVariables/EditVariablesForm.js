@@ -33,7 +33,11 @@ export default function EditVariablesForm({
     type: UPDATE_TYPE.VARIABLES,
   });
   const [variables, setVariables] = useState(
-    validateVariables(customVariables, injectedVariables),
+    validateVariables(
+      customVariables,
+      injectedVariables,
+      customValueFromVariables,
+    ),
   );
 
   useEffect(() => {
@@ -93,10 +97,38 @@ export default function EditVariablesForm({
     }));
   }
 
+  function prepareValueFromVariablesMutationInput() {
+    return customValueFromVariables.map(variable => {
+      if (variable.type === 'CONFIG_MAP') {
+        return {
+          name: variable.name,
+          value: '',
+          valueFrom: {
+            type: 'ConfigMap',
+            name: variable.resourceName,
+            key: variable.resourceKey,
+          },
+        };
+      } else if (variable.type === 'SECRET') {
+        return {
+          name: variable.name,
+          value: '',
+          valueFrom: {
+            type: 'Secret',
+            name: variable.resourceName,
+            key: variable.resourceKey,
+          },
+        };
+      }
+    });
+  }
+
   function handleFormSubmit() {
     const preparedVariable = prepareVariablesMutationInput();
+    const preparedValueFromVariables = prepareValueFromVariablesMutationInput();
+
     updateLambdaVariables({
-      env: [...preparedVariable, ...customValueFromVariables],
+      env: [...preparedVariable, ...preparedValueFromVariables],
     });
   }
 

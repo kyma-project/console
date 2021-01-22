@@ -265,7 +265,7 @@ export default function LambdaEnvs({
     <EditVariablesModal
       lambda={lambda}
       customVariables={customVariables}
-      // customValueFromVariables={customValueFromVariables} allow to edit envs from cm's and secrets https://github.com/kyma-project/kyma/issues/10311
+      customValueFromVariables={customValueFromVariables}
       injectedVariables={injectedVariables}
     />
   );

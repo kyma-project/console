@@ -55,6 +55,7 @@ export const useUpdateLambda = ({
       });
 
       if (response.error) {
+        console.log(response.error);
         handleError(response.error);
         return;
       }
