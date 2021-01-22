@@ -3,6 +3,7 @@ import LuigiClient from '@luigi-project/client';
 import { Link } from 'fundamental-react';
 import { useGetList } from 'react-shared';
 import { ResourcesListProps } from 'shared/components/ResourcesList/ResourcesList';
+import { getComponentFor } from 'components/App/App';
 
 const MySuperPredefinedList = ({
   resourceUrl,
@@ -12,6 +13,13 @@ const MySuperPredefinedList = ({
 }) => {
   const { loading = true, error, data: resources } = useGetList(resourceUrl, {
     pollingInterval: 3000,
+  });
+
+  const ServiceList = getComponentFor('ServicesList', {
+    resourceUrl: `/api/v1/namespaces/kyma-system/services`,
+    resourceType: 'services',
+    namespace: 'kyma-system',
+    isCompact: true,
   });
 
   if (!Array.isArray(resources)) return 'Loading';
@@ -45,6 +53,12 @@ const MySuperPredefinedList = ({
           ),
         )}
       </div>
+      <hr style={{ margin: '5em 0', border: '0.5em solid crimson' }} />
+      <h1>
+        And this is a list of services from kyma-system namespace rendered using
+        a generic component
+      </h1>
+      {ServiceList}
     </>
   );
 };

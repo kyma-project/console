@@ -16,11 +16,11 @@ import {
   useGetList,
   useUpdate,
   useDelete,
-  CustomColumnsType,
+  customColumnsType,
 } from 'react-shared';
 
 ResourcesList.propTypes = {
-  customColumns: CustomColumnsType,
+  customColumns: customColumnsType,
   resourceUrl: PropTypes.string.isRequired,
   resourceType: PropTypes.string.isRequired,
   namespace: PropTypes.string,
@@ -39,7 +39,7 @@ export default function ResourcesList(props) {
 
   return (
     <YamlEditorProvider>
-      <PageHeader title={props.resourceType} />
+      {!props.isCompact && <PageHeader title={props.resourceType} />}
       <Resources {...props} />
     </YamlEditorProvider>
   );
