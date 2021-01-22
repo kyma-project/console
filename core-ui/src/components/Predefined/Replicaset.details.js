@@ -6,15 +6,9 @@ export const ReplicasetDetails = GenericHeader => ({
   resourceName,
   namespace,
 }) => {
-  // const MySuperBindingOfSomethingComponent = getComponentFor(
-  //   'MySuperBindings',
-  //   {},
-  // );
-
   return (
     <>
       <GenericHeader />
-      {/* <MySuperBindingOfSomethingComponent /> */}
       <img src="https://media.giphy.com/media/CqVNwrLt9KEDK/source.gif"></img>
       <h3
         style={{

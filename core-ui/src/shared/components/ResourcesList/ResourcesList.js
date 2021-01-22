@@ -45,6 +45,8 @@ export default function ResourcesList(props) {
   );
 }
 
+export const ResourcesListProps = ResourcesList.propTypes;
+
 function Resources({ resourceUrl, namespace, customColumns, hasDetailsView }) {
   const setEditedSpec = useYamlEditor();
   const notification = useNotification();
