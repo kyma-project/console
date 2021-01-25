@@ -43,13 +43,13 @@ describe('serializeVariables', () => {
     expect(customVariable).toEqual(expectedCustomVariable);
 
     const expectedCustomValueFromVariable = {
+      id: customValueFromVariables[0].id,
       name: 'PICO',
-      valueFrom: {
-        type: 'Secret',
-        name: 'secret',
-        key: 'KEY',
-        optional: false,
-      },
+      resourceKey: 'KEY',
+      resourceName: 'secret',
+      type: VARIABLE_TYPE.SECRET,
+      validation: 'NONE',
+      value: '',
     };
     expect(customValueFromVariables[0]).toEqual(
       expectedCustomValueFromVariable,

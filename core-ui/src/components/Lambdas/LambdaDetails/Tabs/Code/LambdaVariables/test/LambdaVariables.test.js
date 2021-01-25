@@ -39,8 +39,30 @@ describe('LambdaVariables + EditVariablesModal + EditVariablesForm', () => {
       value: 'bar',
     },
   });
+  const secretValueFromVariable = newVariableModel({
+    variable: {
+      name: 'BAZ',
+      value: '',
+      resourceName: 'test-secret',
+      resourceKey: 'test-key',
+      namespace: 'default',
+    },
+  });
+  const configMapValueFromVariable = newVariableModel({
+    variable: {
+      name: 'BAZ',
+      value: '',
+      resourceName: 'test-cm',
+      resourceKey: 'test-key',
+      namespace: 'default',
+    },
+  });
 
   const customVariables = [customVariable1, customVariable2];
+  const valueFromVariables = [
+    secretValueFromVariable,
+    configMapValueFromVariable,
+  ];
   const injectedVariables = [
     newVariableModel({
       type: VARIABLE_TYPE.BINDING_USAGE,
@@ -112,6 +134,41 @@ describe('LambdaVariables + EditVariablesModal + EditVariablesForm', () => {
     },
     timeout,
   );
+
+  // it(
+  //   'should render table with valueFrom variables',
+  //   async () => {
+  //     const { container, queryByRole, queryAllByRole, getAllByText } = render(
+  //       <LambdaVariables
+  //         lambda={lambdaMock}
+  //         customVariables={}
+  //         customValueFromVariables={valueFromVariables}
+  //         injectedVariables={}
+  //       />,
+  //     );
+  //
+  //     const table = queryByRole('table');
+  //     expect(table).toBeInTheDocument();
+  //
+  //     expect(queryAllByRole('row')).toHaveLength(4); // header + 3 element;
+  //
+  //     const userVariables = getAllByText(
+  //       ENVIRONMENT_VARIABLES_PANEL.VARIABLE_TYPE.CUSTOM.TEXT,
+  //     );
+  //     expect(userVariables).toHaveLength(2);
+  //
+  //     const serviceBindingVariables = getAllByText(
+  //       ENVIRONMENT_VARIABLES_PANEL.VARIABLE_TYPE.BINDING_USAGE.TEXT,
+  //     );
+  //     expect(serviceBindingVariables).toHaveLength(1);
+  //
+  //     const rowsWithWarningText = getAllByText(
+  //       ENVIRONMENT_VARIABLES_PANEL.WARNINGS.TEXT,
+  //     );
+  //     expect(rowsWithWarningText).toHaveLength(2);
+  //   },
+  //   timeout,
+  // );
 
   it(
     'should show modal after click action button',
