@@ -11,6 +11,7 @@ import { BACKEND_MODULES } from 'components/Lambdas/helpers/misc';
 import { LAMBDA_DETAILS } from 'components/Lambdas/constants';
 
 import LambdaDetails from '../LambdaDetails';
+import { MockedProvider } from '@apollo/react-testing';
 
 // remove it after add 'mutationobserver-shim' to jest config https://github.com/jsdom/jsdom/issues/639
 const mutationObserverMock = jest.fn(function MutationObserver(callback) {
@@ -53,7 +54,11 @@ jest.mock('react-shared', () => ({
 
 describe('LambdaDetails', () => {
   it('should render header and tabs', async () => {
-    const { getByText } = render(<LambdaDetails lambda={lambdaMock} />);
+    const { getByText } = render(
+      <MockedProvider>
+        <LambdaDetails lambda={lambdaMock} />
+      </MockedProvider>,
+    );
 
     expect(getByText(LAMBDA_DETAILS.LABELS.TITLE)).toBeInTheDocument(); // labels column in header
     expect(getByText(LAMBDA_DETAILS.STATUS.TITLE)).toBeInTheDocument(); // status column in header
@@ -66,7 +71,11 @@ describe('LambdaDetails', () => {
   });
 
   it('should not render Configuration tab', async () => {
-    const { queryByText } = render(<LambdaDetails lambda={lambdaMock} />);
+    const { queryByText } = render(
+      <MockedProvider>
+        <LambdaDetails lambda={lambdaMock} />
+      </MockedProvider>,
+    );
 
     expect(
       queryByText(LAMBDA_DETAILS.TABS.CONFIGURATION.TITLE),
