@@ -116,7 +116,7 @@ export default function EditVariablesForm({
           },
         };
       } else {
-        return;
+        return {};
       }
     });
   }
