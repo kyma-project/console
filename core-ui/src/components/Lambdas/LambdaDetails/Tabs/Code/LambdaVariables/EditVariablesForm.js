@@ -99,7 +99,7 @@ export default function EditVariablesForm({
 
   function prepareValueFromVariablesMutationInput() {
     return customValueFromVariables.map(variable => {
-      if (variable.type === 'CONFIG_MAP') {
+      if (variable.type === VARIABLE_TYPE.CONFIG_MAP) {
         return {
           name: variable.name,
           value: '',
@@ -109,7 +109,7 @@ export default function EditVariablesForm({
             key: variable.resourceKey,
           },
         };
-      } else if (variable.type === 'SECRET') {
+      } else if (variable.type === VARIABLE_TYPE.SECRET) {
         return {
           name: variable.name,
           value: '',
