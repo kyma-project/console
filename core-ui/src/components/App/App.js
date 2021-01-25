@@ -71,6 +71,14 @@ export default function App() {
         component={RoutedResourceDetails}
       />
 
+      <Route exact path="/home/:resourceType" component={RoutedResourcesList} />
+
+      <Route
+        exact
+        path="/home/:resourceType/:resourceName"
+        component={RoutedResourceDetails}
+      />
+
       <Route
         exact
         path="/home/namespaces/:namespaceId/services"
