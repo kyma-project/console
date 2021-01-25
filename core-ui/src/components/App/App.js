@@ -179,12 +179,13 @@ export const getComponentForDetails = getComponentFor(
 );
 
 function RoutedResourcesList({ match }) {
-  const context = useMicrofrontendContext();
+  const queryParams = new URLSearchParams(window.location.search);
   const resourceUrl =
-    context?.resourceApiPath + window.location.pathname.replace('/home', ''); //TODO improve it
+    queryParams.get('resourceApiPath') +
+    window.location.pathname.replace('/home', ''); //TODO improve it
 
   const params = {
-    hasDetailsView: context?.hasDetailsView,
+    hasDetailsView: queryParams.get('hasDetailsView') === 'true',
     resourceUrl,
     resourceType: match.params.resourceType,
     namespace: match.params.namespaceId,
