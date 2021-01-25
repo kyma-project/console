@@ -94,29 +94,31 @@ export default function EditVariablesForm({
   }
 
   function prepareValueFromVariablesMutationInput() {
-    return customValueFromVariables.map(variable => {
-      if (variable.type === VARIABLE_TYPE.CONFIG_MAP) {
-        return {
-          name: variable.name,
-          value: '',
-          valueFrom: {
-            type: 'ConfigMap',
-            name: variable.resourceName,
-            key: variable.resourceKey,
-          },
-        };
-      } else if (variable.type === VARIABLE_TYPE.SECRET) {
-        return {
-          name: variable.name,
-          value: '',
-          valueFrom: {
-            type: 'Secret',
-            name: variable.resourceName,
-            key: variable.resourceKey,
-          },
-        };
-      }
-    });
+    return customValueFromVariables
+      .filter(v => v.id !== undefined)
+      .map(variable => {
+        if (variable.type === VARIABLE_TYPE.CONFIG_MAP) {
+          return {
+            name: variable.name,
+            value: '',
+            valueFrom: {
+              type: 'ConfigMap',
+              name: variable.resourceName,
+              key: variable.resourceKey,
+            },
+          };
+        } else if (variable.type === VARIABLE_TYPE.SECRET) {
+          return {
+            name: variable.name,
+            value: '',
+            valueFrom: {
+              type: 'Secret',
+              name: variable.resourceName,
+              key: variable.resourceKey,
+            },
+          };
+        }
+      });
   }
 
   function handleFormSubmit() {

@@ -21,6 +21,7 @@ import {
 export default function LambdaDetails({ lambda, backendModules = [] }) {
   const [bindingUsages, setBindingUsages] = useState([]);
   useLogsView(lambda.UID, lambda.namespace);
+
   const apiRules = backendModulesExist(backendModules, [
     BACKEND_MODULES.API_GATEWAY,
   ]) ? (
