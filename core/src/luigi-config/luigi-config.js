@@ -1,8 +1,7 @@
 import { saveCurrentLocation, getToken } from './navigation/navigation-helpers';
 import { communication } from './communication';
 import { settings } from './settings';
-import { config } from './config';
-import createAuth from './auth';
+import { createAuth } from './auth';
 import {
   navigation,
   getNavigationData,
@@ -11,12 +10,6 @@ import {
 import { onQuotaExceed } from './luigi-event-handlers';
 
 export const NODE_PARAM_PREFIX = `~`;
-
-(function getFreshKeys() {
-  // manually re-fetching keys, since this is a major pain point
-  // until dex has possibility of no-cache
-  return fetch('https://dex.' + config.domain + '/keys', { cache: 'no-cache' });
-})();
 
 (async () => {
   const luigiConfig = {
@@ -41,7 +34,7 @@ export const NODE_PARAM_PREFIX = `~`;
         }
         const token = getToken();
         if (token) {
-          getNavigationData().then(response => {
+          getNavigationData(token).then(response => {
             resolveNavigationNodes(response[0]);
             luigiConfig.settings.sideNavFooterText = response[1];
             Luigi.configChanged('settings');
@@ -57,7 +50,7 @@ export const NODE_PARAM_PREFIX = `~`;
 })();
 
 window.addEventListener('message', e => {
-  if (e.data.msg && e.data.msg === 'console.quotaexceeded') {
+  if (e.data.msg === 'console.quotaexceeded') {
     onQuotaExceed(e.data);
   }
 });

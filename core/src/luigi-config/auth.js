@@ -1,61 +1,53 @@
 import OpenIdConnect from '@luigi-project/plugin-auth-oidc';
-import { config } from './config';
+// import { config } from './config';
 import { parseJWT, getPreviousLocation } from './navigation/navigation-helpers';
 
-async function fetchDexMetadata() {
-    const idpUrl = config.defaultIdpIssuer;
+async function fetchOidcProviderMetadata() {
+  // const idpUrl = config.defaultIdpIssuer;
+  var idpUrl = 'https://kyma.eu.auth0.com'; // todo unhardcode
 
-    try {
-      const response = await fetch(`${idpUrl}/.well-known/openid-configuration`);
-      return await response.json();
-    }
-    catch (e) {
-      alert('Cannot fetch dex metadata');
-      console.error('cannot fetch dex metadata', e);
-    }
+  try {
+    const response = await fetch(`${idpUrl}/.well-known/openid-configuration`);
+    return await response.json();
   }
+  catch (e) {
+    alert('Cannot fetch oidc provider metadata, see log console for more details');
+    console.error('cannot fetch dex metadata', e);
+  }
+}
 
-export default async function createAuth() {
-  const dexMetadata = await fetchDexMetadata();
+export const createAuth = async () => {
+  const providerMetadata = await fetchOidcProviderMetadata();
   return {
     use: 'openIdConnect',
     openIdConnect: {
         idpProvider: OpenIdConnect,
-        authority: 'https://dex.' + config.domain,
-        client_id: 'console',
+        authority: 'https://kyma.eu.auth0.com/', // todo unhardcode
+        client_id: '5W89vBHwn2mu7nT0uzvoN4xCof0h4jtN', // this one too
         scope:
         'audience:server:client_id:kyma-client audience:server:client_id:console openid email profile groups',
-        response_type: 'id_token',
+        response_type: 'code',
+        response_mode: 'query',
         automaticSilentRenew: true,
         loadUserInfo: false,
         logoutUrl: 'logout.html',
         metadata: {
-        ...dexMetadata,
-        end_session_endpoint: 'logout.html',
+          ...providerMetadata,
+          end_session_endpoint: 'logout.html',
         },
-        userInfoFn: (authSettings, authData) => {
-        return new Promise((resolve) => {
-            const userInfo = {};
-            try {
-            const data = parseJWT(authData.idToken)
-            userInfo.name = data.name
-            userInfo.email = data.email
-            } catch (err) {
-            console.error("Could not parse JWT token", err)
-            }
-            resolve(userInfo)
-        })
+        userInfoFn: (_, authData) => {
+          return new Promise((resolve) => {
+              const userInfo = {};
+              try {
+                const data = parseJWT(authData.idToken)
+                userInfo.name = data.name
+                userInfo.email = data.email
+              } catch (err) {
+                console.error("Could not parse JWT token", err)
+              }
+              resolve(userInfo)
+          })
         },
-        profileStorageInterceptorFn: () => {
-        try {
-            const oidcUserStoreKey = `oidc.user:https://dex.${config.domain}:console`;
-            const oidsUserStore = JSON.parse(sessionStorage.getItem(oidcUserStoreKey));
-            oidsUserStore.profile = undefined;
-            sessionStorage.setItem(oidcUserStoreKey, JSON.stringify(oidsUserStore));
-        } catch (e) {
-            console.error("Error parsing oidc user data", e);
-        }
-        }
     },
 
     events: {
@@ -76,6 +68,6 @@ export default async function createAuth() {
         console.log('authErrorHandler 1', err);
         }
     },
-    storage: 'sessionStorage'
-    };
+    storage: 'none',
+  };
 }

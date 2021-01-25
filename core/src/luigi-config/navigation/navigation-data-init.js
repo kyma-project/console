@@ -1,7 +1,7 @@
 import {
-  CONSOLE_INIT_DATA,
-  GET_MICROFRONTENDS,
-  GET_NAMESPACES
+  fetchConsoleInitData,
+  fetchMicrofrontends,
+  fetchNamespaces
 } from './queries';
 import { config } from '../config';
 import {
@@ -73,70 +73,69 @@ export let navigation = {
   })
 };
 
-export function getNavigationData() {
+export function getNavigationData(token) {
   return new Promise(function(resolve, reject) {
+    const groups = getGroups(token);
     let kymaVersion;
-    let token = getToken();
-    let groups = getGroups(token);
-    fetchFromGraphQL(CONSOLE_INIT_DATA, undefined, true)
+
+    fetchConsoleInitData(token)
       .then(
         res => {
-          if (res) {
-            const modules = res.backendModules;
-            const subjectRules = res.selfSubjectRules;
-            const cmfs = res.clusterMicroFrontends;
-            kymaVersion = (res.versionInfo && res.versionInfo.kymaVersion) ? `Kyma version: ${res.versionInfo.kymaVersion}` : undefined;
-            setInitValues(
-              (modules && modules.map(m => m.name)) || [],
-              subjectRules || []
-            );
+          console.log(res);
+          kymaVersion = res.versionInfo && `Kyma version: ${res.versionInfo}`;
+  
+          const cmfs = res.clusterMicroFrontends;
+          setInitValues(
+            res.backendModules,
+            res.selfSubjectRules || []
+          );
 
-            if (cmfs && cmfs.length > 0) {
-              clusterMicrofrontendNodes = cmfs
-                .filter(cmf => cmf.placement === 'cluster')
-                .map(cmf => {
-                  if (cmf.navigationNodes) {
-                    var tree = convertToNavigationTree(
-                      cmf.name,
-                      cmf,
-                      config,
-                      navigation,
-                      consoleViewGroupName,
-                      'cmf-',
-                      groups
-                    );
-                    return tree;
-                  }
-                  return [];
-                });
-              clusterMicrofrontendNodesForNamespace = cmfs
-                .filter(
-                  cmf =>
-                    cmf.placement === 'namespace' ||
-                    cmf.placement === 'environment'
-                )
-                .map(cmf => {
-                  // console.log(cmf.name, cmf);
-                  if (cmf.navigationNodes) {
-                    return convertToNavigationTree(
-                      cmf.name,
-                      cmf,
-                      config,
-                      navigation,
-                      consoleViewGroupName,
-                      'cmf-',
-                      groups
-                    );
-                  }
-                  return [];
-                });
-            }
-          }
+          clusterMicrofrontendNodes = cmfs
+            .filter(cmf => cmf.placement === 'cluster')
+            .map(cmf => {
+              if (cmf.navigationNodes) {
+                var tree = convertToNavigationTree(
+                  cmf.name,
+                  cmf,
+                  config,
+                  navigation,
+                  consoleViewGroupName,
+                  'cmf-',
+                  groups
+                );
+                return tree;
+              }
+              return [];
+            });
+          clusterMicrofrontendNodesForNamespace = cmfs
+            .filter(
+              cmf =>
+                cmf.placement === 'namespace' ||
+                cmf.placement === 'environment'
+            )
+            .map(cmf => {
+              // console.log(cmf.name, cmf);
+              if (cmf.navigationNodes) {
+                return convertToNavigationTree(
+                  cmf.name,
+                  cmf,
+                  config,
+                  navigation,
+                  consoleViewGroupName,
+                  'cmf-',
+                  groups
+                );
+              }
+              return [];
+            });
         },
         err => {
           if (err === 'access denied') {
             clearToken();
             window.location.pathname = '/nopermissions.html';
+          } else {
+            alert('Config init error, see console for more details');
+            console.warn(err);
           }
         }
       )
@@ -179,56 +178,18 @@ export function getNavigationData() {
   });
 }
 
-function getNamespaces() {
-  const options = {
-    showSystemNamespaces:
-      localStorage.getItem('console.showSystemNamespaces') === 'true',
-    withInactiveStatus: false
-  };
-  return fetchFromGraphQL(GET_NAMESPACES, options, false).then(res => {
-    return createNamespacesList(res.namespaces);
-  }).catch(err => {
-    console.error('Error while fetching namespaces', err);
-  });
-}
-
-function fetchFromGraphQL(query, variables, gracefully) {
-  return new Promise(function(resolve, reject) {
-    var xmlHttp = new XMLHttpRequest();
-    xmlHttp.onreadystatechange = function() {
-      if (xmlHttp.readyState !== 4) return;
-      if (xmlHttp.status == 200) {
-        try {
-          const response = JSON.parse(xmlHttp.response);
-          if (response && response.errors) {
-            reject(response.errors[0].message);
-          } else if (response && response.data) {
-            return resolve(response.data);
-          }
-          resolve(response);
-        } catch {
-          reject(xmlHttp.response);
-        }
-      } else {
-        if (xmlHttp.status === 401) {
-          clearToken();
-          window.location.pathname = '/nopermissions.html';
-        }
-        if (!gracefully) {
-          reject(xmlHttp.response);
-        } else {
-          resolve(null);
-        }
-      }
-    };
-
-    const token = getToken();
-
-    xmlHttp.open('POST', config.graphqlApiUrl, true);
-    xmlHttp.setRequestHeader('Authorization', 'Bearer ' + token);
-    xmlHttp.setRequestHeader('Content-Type', 'application/json');
-    xmlHttp.send(JSON.stringify({ query, variables }));
-  });
+async function getNamespaces() {
+  let namespaces;
+  try {
+    namespaces = await fetchNamespaces(getToken());
+  } catch(e) {
+    console.error('Error while fetching namespaces', e);
+    return [];
+  }
+  if (localStorage.getItem('console.showSystemNamespaces') !== 'true') {
+    namespaces = namespaces.filter(ns => !systemNamespaces.includes(ns.name));
+  }
+  return createNamespacesList(namespaces);
 }
 
 function getChildrenNodesForNamespace(context) {
@@ -277,7 +238,7 @@ const getMicrofrontends = async namespace => {
 
   return (
     fromCache ||
-    fetchFromGraphQL(GET_MICROFRONTENDS, { namespace }, true)
+    fetchMicrofrontends(namespace, getToken())
       .then(result => {
         if (!result.microFrontends || !result.microFrontends.length) {
           return [];
