@@ -54,10 +54,7 @@ export default function App() {
         path="/home/namespaces/:namespace/details"
         render={withTitle(NAMESPACE_DETAILS_TITLE, RoutedNamespaceDetails)}
       />
-      <Route
-        path="/namespaces"
-        render={withTitle(NAMESPACES_TITLE, NamespaceList)}
-      />
+      <Route path="/:resourceType" component={RoutedResourcesList} />
 
       <Route
         exact
@@ -80,36 +77,6 @@ export default function App() {
       />
 
       <Route
-        exact
-        path="/home/namespaces/:namespaceId/services"
-        render={withTitle(SERVICES_TITLE, RoutedServicesList)}
-      />
-      <Route
-        path="/home/namespaces/:namespaceId/services/details/:serviceName"
-        render={withTitle(SERVICES_TITLE, RoutedServiceDetails)}
-      />
-
-      <Route
-        path="/home/global-permissions"
-        exact
-        render={withTitle('Global Permissions', GlobalPermissions)}
-      />
-      <Route
-        path="/home/global-permission/roles/:roleName"
-        render={withTitle('Global Permissions', RoutedClusterRoleDetails)}
-      />
-      <Route
-        path="/home/namespaces/:namespaceId/permissions"
-        exact
-        render={withTitle('Permissions', RoutedNamespacePermissions)}
-      />
-      <Route
-        path="/home/namespaces/:namespaceId/permissions/roles/:roleName"
-        exact
-        render={withTitle('Permissions', RoutedRoleDetails)}
-      />
-
-      <Route
         path="/lambdas"
         exact
         render={withTitle(FUNCTIONS_WINDOW_TITLE, Lambdas)}
@@ -117,20 +84,6 @@ export default function App() {
       <Route
         path="/lambda/:name"
         render={withTitle(FUNCTIONS_WINDOW_TITLE, LambdaDetails)}
-      />
-
-      <Route
-        exact
-        path="/home/namespaces/:namespaceId/oauth-clients"
-        render={withTitle(OAUTH_CLIENTS_TITLE, RoutedOAuthClientsList)}
-      />
-      <Route
-        path="/home/namespaces/:namespaceId/oauth-clients/create"
-        render={withTitle(OAUTH_CLIENTS_TITLE, RoutedCreateOAuthClients)}
-      />
-      <Route
-        path="/home/namespaces/:namespaceId/oauth-clients/details/:clientName"
-        render={withTitle(OAUTH_CLIENTS_TITLE, RoutedOAuthClientDetails)}
       />
 
       <Route

@@ -315,7 +315,13 @@ export function getStaticRootNodes(namespaceChildrenNodesResolver) {
     {
       pathSegment: 'workspace',
       label: 'Namespaces',
-      viewUrl: config.coreModuleUrl + '/namespaces',
+      viewUrl:
+        config.coreModuleUrl +
+        '/namespaces?' +
+        toSearchParamsString({
+          resourceApiPath: '/api/v1',
+          hasDetailsView: false
+        }),
       icon: 'dimension',
       viewGroup: coreUIViewGroupName
     },
@@ -368,11 +374,13 @@ export function getStaticRootNodes(namespaceChildrenNodesResolver) {
         icon: 'settings',
         collapsible: true
       },
-      context: {
-        resourceApiPath: '/apis/rbac.authorization.k8s.io/v1',
-        hasDetailsView: false
-      },
-      viewUrl: config.coreModuleUrl + '/home/roles',
+      viewUrl:
+        config.coreModuleUrl +
+        '/home/roles?' +
+        toSearchParamsString({
+          resourceApiPath: '/apis/rbac.authorization.k8s.io/v1',
+          hasDetailsView: false
+        }),
       keepSelectedForChildren: true,
       viewGroup: coreUIViewGroupName,
       children: [
