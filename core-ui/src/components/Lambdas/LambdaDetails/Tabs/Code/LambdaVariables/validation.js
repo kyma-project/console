@@ -7,14 +7,12 @@ import { CONFIG } from 'components/Lambdas/config';
 
 export function validateVariables(
   customVariables = [],
-  customValueFromVariables = [],
   injectedVariables = [],
 ) {
   return customVariables.map((variable, _, array) => {
     const validation = getValidationStatus({
       userVariables: array,
       injectedVariables,
-      customValueFromVariables,
       restrictedVariables: CONFIG.restrictedVariables,
       varName: variable.name,
       varID: variable.id,
@@ -59,7 +57,6 @@ export function validateVariable(variables = [], currentVariable = {}) {
 
 export function getValidationStatus({
   userVariables = [],
-  customValueFromVariables = [],
   injectedVariables = [],
   restrictedVariables = [],
   varName,
@@ -87,9 +84,6 @@ export function getValidationStatus({
   // duplicated
   if (
     userVariables.some(
-      variable => variable.id !== varID && variable.name === varName,
-    ) ||
-    customValueFromVariables.some(
       variable => variable.id !== varID && variable.name === varName,
     )
   ) {

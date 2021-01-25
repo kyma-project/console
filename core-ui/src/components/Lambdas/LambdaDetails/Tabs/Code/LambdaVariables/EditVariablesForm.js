@@ -33,11 +33,7 @@ export default function EditVariablesForm({
     type: UPDATE_TYPE.VARIABLES,
   });
   const [variables, setVariables] = useState(
-    validateVariables(
-      customVariables,
-      injectedVariables,
-      customValueFromVariables,
-    ),
+    validateVariables(customVariables, injectedVariables),
   );
 
   useEffect(() => {

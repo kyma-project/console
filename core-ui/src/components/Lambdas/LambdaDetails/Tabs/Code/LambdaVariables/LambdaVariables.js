@@ -271,11 +271,7 @@ export default function LambdaEnvs({
   );
 
   const entries = [
-    ...validateVariables(
-      customVariables,
-      customValueFromVariables,
-      injectedVariables,
-    ),
+    ...validateVariables(customVariables, injectedVariables),
     ...customValueFromVariables,
     ...injectedVariables,
   ];
