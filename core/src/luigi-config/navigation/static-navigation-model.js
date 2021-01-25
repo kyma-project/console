@@ -48,14 +48,14 @@ export function getStaticChildrenNodesForNamespace() {
     {
       category: 'Workloads',
       pathSegment: 'pods',
-      label: 'Pods (extra column)',
+      label: 'Pods',
       viewUrl: config.coreModuleUrl + '/home/namespaces/:namespaceId/pods',
       viewGroup: coreUIViewGroupName,
       keepSelectedForChildren: true,
       navigationContext: 'pods',
       context: {
         resourceApiPath: '/api/v1',
-        hasDetailsView: true
+        hasDetailsView: false
       },
       children: [
         {
@@ -74,13 +74,13 @@ export function getStaticChildrenNodesForNamespace() {
     {
       category: 'Workloads',
       pathSegment: 'replicasets',
-      label: 'Replica Sets (predefined)',
+      label: 'Replica Sets',
       viewUrl:
         config.coreModuleUrl + '/home/namespaces/:namespaceId/replicasets',
       viewGroup: coreUIViewGroupName,
       keepSelectedForChildren: true,
       context: {
-        hasDetailsView: true,
+        hasDetailsView: false,
         resourceApiPath: '/apis/apps/v1'
       },
       navigationContext: 'replicasets',
@@ -110,7 +110,7 @@ export function getStaticChildrenNodesForNamespace() {
       viewGroup: coreUIViewGroupName,
       context: {
         resourceApiPath: '/apis/apps/v1',
-        hasDetailsView: true
+        hasDetailsView: false
       },
       navigationContext: 'deployments',
       children: [
@@ -136,6 +136,7 @@ export function getStaticChildrenNodesForNamespace() {
       pathSegment: '_discovery_and_network_category_placeholder_',
       hideFromNav: true
     },
+
     {
       category: 'Discovery and Network',
       pathSegment: 'services',
@@ -144,6 +145,11 @@ export function getStaticChildrenNodesForNamespace() {
       viewUrl: config.coreModuleUrl + '/home/namespaces/:namespaceId/services',
       keepSelectedForChildren: true,
       viewGroup: coreUIViewGroupName,
+      navigationContext: 'services',
+      context: {
+        resourceApiPath: '/api/v1',
+        hasDetailsView: false
+      },
       children: [
         {
           pathSegment: 'details',
@@ -186,6 +192,11 @@ export function getStaticChildrenNodesForNamespace() {
         config.coreModuleUrl + '/home/namespaces/:namespaceId/oauth-clients',
       viewGroup: coreUIViewGroupName,
       keepSelectedForChildren: true,
+      navigationContext: 'oauth-clients',
+      context: {
+        resourceApiPath: '/apis/hydra.ory.sh/v1alpha1',
+        hasDetailsView: false
+      },
       children: [
         {
           pathSegment: 'create',
