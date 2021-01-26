@@ -39,10 +39,9 @@ export default function App() {
         render={withTitle(NAMESPACE_DETAILS_TITLE, RoutedNamespaceDetails)}
       />
 
-      <Route path="/home/:resourceType" component={RoutedResourcesList} />
       <Route
         exact
-        path="/home/:resourceType/:resourceName"
+        path="/home/namespaces/:namespaceId/:resourceType/:resourceName"
         component={RoutedResourceDetails}
       />
       <Route
@@ -52,7 +51,7 @@ export default function App() {
       />
       <Route
         exact
-        path="/home/namespaces/:namespaceId/:resourceType/:resourceName"
+        path="/home/:resourceType/:resourceName"
         component={RoutedResourceDetails}
       />
       <Route exact path="/home/:resourceType" component={RoutedResourcesList} />
