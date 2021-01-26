@@ -317,7 +317,7 @@ export function getStaticRootNodes(namespaceChildrenNodesResolver) {
       label: 'Namespaces',
       viewUrl:
         config.coreModuleUrl +
-        '/namespaces?' +
+        '/home/namespaces?' +
         toSearchParamsString({
           resourceApiPath: '/api/v1',
           hasDetailsView: false
@@ -376,7 +376,7 @@ export function getStaticRootNodes(namespaceChildrenNodesResolver) {
       },
       viewUrl:
         config.coreModuleUrl +
-        '/home/roles?' +
+        '/home/clusterroles?' +
         toSearchParamsString({
           resourceApiPath: '/apis/rbac.authorization.k8s.io/v1',
           hasDetailsView: false

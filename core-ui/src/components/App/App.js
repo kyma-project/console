@@ -54,27 +54,24 @@ export default function App() {
         path="/home/namespaces/:namespace/details"
         render={withTitle(NAMESPACE_DETAILS_TITLE, RoutedNamespaceDetails)}
       />
-      <Route path="/:resourceType" component={RoutedResourcesList} />
 
-      <Route
-        exact
-        path="/home/namespaces/:namespaceId/:resourceType"
-        component={RoutedResourcesList}
-      />
-
-      <Route
-        exact
-        path="/home/namespaces/:namespaceId/:resourceType/:resourceName"
-        component={RoutedResourceDetails}
-      />
-
-      <Route exact path="/home/:resourceType" component={RoutedResourcesList} />
-
+      <Route path="/home/:resourceType" component={RoutedResourcesList} />
       <Route
         exact
         path="/home/:resourceType/:resourceName"
         component={RoutedResourceDetails}
       />
+      <Route
+        exact
+        path="/home/namespaces/:namespaceId/:resourceType"
+        component={RoutedResourcesList}
+      />
+      <Route
+        exact
+        path="/home/namespaces/:namespaceId/:resourceType/:resourceName"
+        component={RoutedResourceDetails}
+      />
+      <Route exact path="/home/:resourceType" component={RoutedResourcesList} />
 
       <Route
         path="/lambdas"
