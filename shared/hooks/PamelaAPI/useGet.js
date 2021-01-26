@@ -26,20 +26,13 @@ const useGetHook = processDataFn =>
         const response = await fetch(urlToFetchFrom, {
           headers: { Authorization: 'Bearer ' + idToken },
         });
-
-        if (!response.ok) {
-          processError(await throwHttpError(response));
-          return;
-        }
+        if (!response.ok) throw await throwHttpError(response);
         const payload = await response.json();
 
         if (!isHookMounted.current) return;
-
-        if (typeof onDataReceived === 'function' && isHookMounted.current)
-          onDataReceived(payload.items);
-        if (error && isHookMounted.current) setError(null); // bring back the data and clear the error once the connection started working again
-
-        if (isHookMounted.current) processDataFn(payload, currentData, setData);
+        if (typeof onDataReceived === 'function') onDataReceived(payload.items);
+        if (error) setError(null); // bring back the data and clear the error once the connection started working again
+        processDataFn(payload, currentData, setData);
       } catch (e) {
         processError(e);
       }
