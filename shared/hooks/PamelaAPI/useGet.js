@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import { baseUrl, throwHttpError } from './config';
 import { useMicrofrontendContext } from '../../contexts/MicrofrontendContext';
 import { useConfig } from '../../contexts/ConfigContext';
 
 const useGetHook = processDataFn =>
   function(path, { pollingInterval, onDataReceived }) {
+    const isHookMounted = React.useRef(true);
     const [data, setData] = React.useState(null);
     const [loading, setLoading] = React.useState(true);
     const [error, setError] = React.useState(null);
@@ -12,7 +13,7 @@ const useGetHook = processDataFn =>
     const { fromConfig } = useConfig();
 
     const refetch = (isSilent, currentData) => async () => {
-      if (!idToken) return;
+      if (!idToken || !isHookMounted.current) return;
       if (!isSilent) setLoading(true);
 
       function processError(error) {
@@ -25,31 +26,45 @@ const useGetHook = processDataFn =>
         const response = await fetch(urlToFetchFrom, {
           headers: { Authorization: 'Bearer ' + idToken },
         });
-
+        if (!isHookMounted.current) return;
         if (!response.ok) processError(await throwHttpError(response));
         const payload = await response.json();
+        if (!isHookMounted.current) return;
 
-        if (typeof onDataReceived === 'function') onDataReceived(payload.items);
-        if (error) setError(null); // bring back the data and clear the error once the connection started working again
+        if (typeof onDataReceived === 'function' && isHookMounted.current)
+          onDataReceived(payload.items);
+        if (error && isHookMounted.current) setError(null); // bring back the data and clear the error once the connection started working again
 
-        processDataFn(payload, currentData, setData);
+        if (isHookMounted.current) processDataFn(payload, currentData, setData);
       } catch (e) {
         processError(e);
       }
 
-      if (!isSilent) setLoading(false);
+      if (!isSilent && isHookMounted.current) setLoading(false);
     };
 
-    React.useEffect(() => {
-      if (pollingInterval) {
-        const intervalId = setInterval(refetch(true, data), pollingInterval);
-        return _ => clearInterval(intervalId);
-      }
-    }, [path, pollingInterval, data]);
+    // React.useEffect(() => {
+    //   if (pollingInterval) {
+    //     const intervalId = setInterval(refetch(true, data), pollingInterval);
+    //     return _ => {
+    //       isHookMounted.current = false;
+    //       clearInterval(intervalId);
+    //     };
+    //   }
+    // }, [path, pollingInterval, data]);
 
     React.useEffect(() => {
-      refetch(false, data)();
+      isHookMounted.current = true;
+      console.log('path changed');
+
+      refetch(false, null)();
+      return _ => {
+        if (loading) setLoading(false);
+        isHookMounted.current = false;
+      };
     }, [path]);
+
+    React.useEffect(() => {}, []);
 
     return {
       data,
