@@ -27,7 +27,10 @@ const useGetHook = processDataFn =>
           headers: { Authorization: 'Bearer ' + idToken },
         });
 
-        if (!response.ok) processError(await throwHttpError(response));
+        if (!response.ok) {
+          processError(await throwHttpError(response));
+          return;
+        }
         const payload = await response.json();
 
         if (!isHookMounted.current) return;
