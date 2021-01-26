@@ -5,9 +5,9 @@ import { useConfig } from '../../contexts/ConfigContext';
 
 const useGetHook = processDataFn =>
   function(path, { pollingInterval, onDataReceived }) {
-    const isHookMounted = React.useRef(true);
+    const isHookMounted = React.useRef(true); // becomes 'false' after the hook is unmounted to avoid performing any async actions afterwards
     const [data, setData] = React.useState(null);
-    const [loading, setLoading] = React.useState(true);
+    const [loading, setLoading] = React.useState(false);
     const [error, setError] = React.useState(null);
     const { idToken } = useMicrofrontendContext();
     const { fromConfig } = useConfig();
@@ -26,9 +26,10 @@ const useGetHook = processDataFn =>
         const response = await fetch(urlToFetchFrom, {
           headers: { Authorization: 'Bearer ' + idToken },
         });
-        if (!isHookMounted.current) return;
+
         if (!response.ok) processError(await throwHttpError(response));
         const payload = await response.json();
+
         if (!isHookMounted.current) return;
 
         if (typeof onDataReceived === 'function' && isHookMounted.current)
@@ -43,28 +44,26 @@ const useGetHook = processDataFn =>
       if (!isSilent && isHookMounted.current) setLoading(false);
     };
 
-    // React.useEffect(() => {
-    //   if (pollingInterval) {
-    //     const intervalId = setInterval(refetch(true, data), pollingInterval);
-    //     return _ => {
-    //       isHookMounted.current = false;
-    //       clearInterval(intervalId);
-    //     };
-    //   }
-    // }, [path, pollingInterval, data]);
+    React.useEffect(() => {
+      // POLLING
+      if (!pollingInterval) return;
+
+      const intervalId = setInterval(refetch(true, data), pollingInterval);
+      return _ => {
+        isHookMounted.current = false;
+        clearInterval(intervalId);
+      };
+    }, [path, pollingInterval, data]);
 
     React.useEffect(() => {
+      // INITIAL FETCH
       isHookMounted.current = true;
-      console.log('path changed');
-
-      refetch(false, null)();
+      if (idToken) refetch(false, null)();
       return _ => {
         if (loading) setLoading(false);
         isHookMounted.current = false;
       };
-    }, [path]);
-
-    React.useEffect(() => {}, []);
+    }, [path, idToken]);
 
     return {
       data,
