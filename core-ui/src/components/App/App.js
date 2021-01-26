@@ -9,7 +9,6 @@ import {
 } from 'react-shared';
 
 import NamespaceDetails from '../NamespaceDetails/NamespaceDetails';
-import NamespaceList from '../NamespaceList/NamespaceList';
 
 import Lambdas from '../Lambdas/Lambdas';
 import LambdaDetails from '../Lambdas/LambdaDetails';
@@ -19,28 +18,13 @@ import ApiRules from 'components/ApiRules/ApiRules';
 import ApiRuleDetails from 'components/ApiRules/ApiRuleDetails/ApiRuleDetails';
 import EditApiRule from 'components/ApiRules/EditApiRule/EditApiRule';
 
-import Services from 'components/Services/Services';
-import ServiceDetails from 'components/Services/ServiceDetails/ServiceDetails';
-
-import OAuthClientsList from 'components/OAuthClients/List/OAuthClientsList';
-import CreateOAuthClient from 'components/OAuthClients/Create/CreateOAuthClient';
-import OAuthClientsDetails from 'components/OAuthClients/Details/OAuthClientDetails';
-
-import GlobalPermissions from 'components/Permissions/PermissionList/GlobalPermissions';
-import ClusterRoleDetails from 'components/Permissions/RoleDetails/ClusterRoleDetails';
-import NamespacePermissions from 'components/Permissions/PermissionList/NamespacePermissions';
-import RoleDetails from 'components/Permissions/RoleDetails/RoleDetails';
-
 import SecretList from 'components/Secrets/Secrets';
 import SecretDetails from 'components/Secrets/Details/SecretDetails';
 
 import { FUNCTIONS_WINDOW_TITLE } from 'components/Lambdas/constants';
 import {
   API_RULES_TITLE,
-  OAUTH_CLIENTS_TITLE,
   NAMESPACE_DETAILS_TITLE,
-  NAMESPACES_TITLE,
-  SERVICES_TITLE,
   SECRETS_TITLE,
 } from 'shared/constants';
 
@@ -173,59 +157,12 @@ function RoutedNamespaceDetails({ match }) {
   return <NamespaceDetails name={match.params.namespace} />;
 }
 
-function RoutedOAuthClientsList({ match }) {
-  return <OAuthClientsList namespace={match.params.namespaceId} />;
-}
-
-function RoutedCreateOAuthClients({ match }) {
-  return <CreateOAuthClient namespace={match.params.namespaceId} />;
-}
-
-function RoutedOAuthClientDetails({ match }) {
-  return (
-    <OAuthClientsDetails
-      namespace={match.params.namespaceId}
-      name={match.params.clientName}
-    />
-  );
-}
-
-function RoutedServicesList({ match }) {
-  return <Services namespace={match.params.namespaceId} />;
-}
-
-function RoutedServiceDetails({ match }) {
-  return (
-    <ServiceDetails
-      namespaceId={match.params.namespaceId}
-      serviceName={match.params.serviceName}
-    />
-  );
-}
-
 function RoutedApiRuleDetails({ match }) {
   return <ApiRuleDetails apiName={match.params.apiName} />;
 }
 
 function RoutedEditApiRule({ match }) {
   return <EditApiRule apiName={match.params.apiName} />;
-}
-
-function RoutedNamespacePermissions({ match }) {
-  return <NamespacePermissions namespaceId={match.params.namespaceId} />;
-}
-
-function RoutedRoleDetails({ match }) {
-  return (
-    <RoleDetails
-      roleName={match.params.roleName}
-      namespaceId={match.params.namespaceId}
-    />
-  );
-}
-
-function RoutedClusterRoleDetails({ match }) {
-  return <ClusterRoleDetails roleName={match.params.roleName} />;
 }
 
 function RoutedSecretList({ match }) {

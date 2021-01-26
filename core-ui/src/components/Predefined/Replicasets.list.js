@@ -2,8 +2,6 @@ import React from 'react';
 import LuigiClient from '@luigi-project/client';
 import { Link } from 'fundamental-react';
 import { useGetList, ResourcesListProps } from 'react-shared';
-// import { ResourcesListProps } from '../../shared/components/ResourcesList/ResourcesList';
-import { getComponentForList } from 'components/App/App';
 
 const MySuperPredefinedList = ({
   resourceUrl,
@@ -11,9 +9,12 @@ const MySuperPredefinedList = ({
   namespace,
   hasDetailsView,
 }) => {
-  const { loading = true, error, data: resources } = useGetList(resourceUrl, {
-    pollingInterval: 3000,
-  });
+  const { /*loading = true, error, */ data: resources } = useGetList(
+    resourceUrl,
+    {
+      pollingInterval: 3000,
+    },
+  );
 
   const ServiceList = null;
   if (!Array.isArray(resources)) return 'Loading';

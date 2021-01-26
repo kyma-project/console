@@ -9,7 +9,10 @@ export const ReplicasetDetails = GenericHeader => ({
   return (
     <>
       <GenericHeader />
-      <img src="https://media.giphy.com/media/CqVNwrLt9KEDK/source.gif"></img>
+      <img
+        alt="yes"
+        src="https://media.giphy.com/media/CqVNwrLt9KEDK/source.gif"
+      ></img>
       <h3
         style={{
           fontSize: '5em',
