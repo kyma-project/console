@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Icon, Badge } from 'fundamental-react';
+import { Icon, Badge, FormMessage } from 'fundamental-react';
 import { GenericList, Tooltip } from 'react-shared';
 
 import EditVariablesModal from './EditVariablesModal';
@@ -147,25 +147,38 @@ function SecretVariableValue({ variable }) {
     variables: { namespace: variable.namespace, name: variable.resourceName },
   });
 
-  if (loading) return null;
-  if (error) return `Error: ${error}`;
+  if (loading) {
+    return null;
+  }
+
+  if (error) {
+    console.error(error);
+    return `Error: ${error}`;
+  }
 
   if (data.secret === null) {
-    return <span style={{ color: 'red' }}>{'The Secret does not exist!'}</span>;
+    return (
+      <FormMessage type={'error'}>
+        {ENVIRONMENT_VARIABLES_PANEL.VARIABLE_TYPE.SECRET.ERRORS.NOT_EXIST}
+      </FormMessage>
+    );
   }
 
   if (data.secret.data[variable.resourceKey] === undefined) {
     return (
-      <span style={{ color: 'red' }}>
-        {'There is no such key in the Secret!'}
-      </span>
+      <FormMessage type={'error'}>
+        {ENVIRONMENT_VARIABLES_PANEL.VARIABLE_TYPE.SECRET.ERRORS.KEY_NOT_EXIST}
+      </FormMessage>
     );
   }
 
   const value = <span>{data.secret.data[variable.resourceKey] || '-'}</span>;
 
   const blurVariable = (
-    <div className={!show ? 'blur-variable' : ''} onClick={_ => setShow(!show)}>
+    <div
+      className={!show ? 'blur-variable' : ''}
+      onClick={_ => setShow(state => !state)}
+    >
       {value}
     </div>
   );
@@ -192,20 +205,31 @@ function ConfigMapVariableValue({ variable }) {
     variables: { name: variable.resourceName, namespace: variable.namespace },
   });
 
-  if (loading) return null;
-  if (error) return `Error: ${error}`;
+  if (loading) {
+    return null;
+  }
+
+  if (error) {
+    console.error(error);
+    return `Error: ${error}`;
+  }
 
   if (data.configMap === null) {
     return (
-      <span style={{ color: 'red' }}>{'The Config Map does not exist!'}</span>
+      <FormMessage type={'error'}>
+        {ENVIRONMENT_VARIABLES_PANEL.VARIABLE_TYPE.CONFIG_MAP.ERRORS.NOT_EXIST}
+      </FormMessage>
     );
   }
 
   if (data.configMap.json.data[variable.resourceKey] === undefined) {
     return (
-      <span style={{ color: 'red' }}>
-        {'There is no such key in the Config Map!'}
-      </span>
+      <FormMessage type={'error'}>
+        {
+          ENVIRONMENT_VARIABLES_PANEL.VARIABLE_TYPE.CONFIG_MAP.ERRORS
+            .KEY_NOT_EXIST
+        }
+      </FormMessage>
     );
   }
 
