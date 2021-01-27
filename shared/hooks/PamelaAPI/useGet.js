@@ -45,10 +45,7 @@ const useGetHook = processDataFn =>
       if (!pollingInterval) return;
 
       const intervalId = setInterval(refetch(true, data), pollingInterval);
-      return _ => {
-        isHookMounted.current = false;
-        clearInterval(intervalId);
-      };
+      return _ => clearInterval(intervalId);
     }, [path, pollingInterval, data]);
 
     React.useEffect(() => {
