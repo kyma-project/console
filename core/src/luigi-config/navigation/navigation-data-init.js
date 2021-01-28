@@ -81,7 +81,6 @@ export function getNavigationData(token) {
     fetchConsoleInitData(token)
       .then(
         res => {
-          console.log(res);
           kymaVersion = res.versionInfo && `Kyma version: ${res.versionInfo}`;
   
           const cmfs = res.clusterMicroFrontends;

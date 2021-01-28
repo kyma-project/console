@@ -1,6 +1,6 @@
 import rbacRulesMatched from './rbac-rules-matcher';
 import { config } from './../config';
-import { parseJWT } from './navigation-helpers';
+import parseJWT from "jwt-decode";
 
 const ADMIN_ONLY_PATH_SEGMENTS = [
   'cmf-applications',
