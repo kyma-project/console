@@ -1,6 +1,5 @@
 import rbacRulesMatched from './rbac-rules-matcher';
 import { config } from './../config';
-import parseJWT from "jwt-decode";
 
 const ADMIN_ONLY_PATH_SEGMENTS = [
   'cmf-applications',
@@ -60,13 +59,4 @@ export default function navigationPermissionChecker(nodeToCheckPermissionsFor) {
     checkRequiredBackendModules(nodeToCheckPermissionsFor) &&
     isVisibleForCurrentGroup(nodeToCheckPermissionsFor)
   );
-}
-
-
-export function getGroups(token){
-  try{
-    return parseJWT(token).groups;
-  } catch (e) {
-    console.error("Could not parse groups from current token", e);
-  }
 }

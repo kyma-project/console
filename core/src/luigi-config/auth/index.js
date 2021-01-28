@@ -1,7 +1,8 @@
 import OpenIdConnect from '@luigi-project/plugin-auth-oidc';
-import parseJWT from "jwt-decode";
-import { getAuthParams, inferResponseData } from './auth-params';
+import { getAuthParams } from './auth-params';
 import { getPreviousLocation } from './../navigation/navigation-helpers';
+
+export let groups;
 
 async function fetchOidcProviderMetadata(issuerUrl) {
   try {
@@ -43,17 +44,11 @@ export const createAuth = async () => {
           end_session_endpoint: 'logout.html',
         },
         userInfoFn: (_, authData) => {
-          return new Promise((resolve) => {
-              const userInfo = {};
-              try {
-                const data = parseJWT(authData.idToken)
-                userInfo.name = data.name
-                userInfo.email = data.email
-              } catch (err) {
-                console.error("Could not parse JWT token", err)
-              }
-              resolve(userInfo)
-          })
+          groups = authData.profile['http://k8s/groups'];
+          return Promise.resolve({
+            name: authData.profile.name,
+            email: authData.profile.email
+          });
         },
     },
 
@@ -78,3 +73,5 @@ export const createAuth = async () => {
     storage: 'none',
   };
 }
+
+export * from './auth-params';

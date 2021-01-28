@@ -38,7 +38,6 @@
     "file-saver": "2.0.2",
     "fundamental-ngx": "^0.8.0",
     "jsoneditor": "9.0.5",
-    "jwt-decode": "^3.1.2",
     "lodash": "^4.17.19",
     "ng-click-outside": "^4.0.0",
     "ngx-clipboard": "12.3.1",

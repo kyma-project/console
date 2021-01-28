@@ -13,7 +13,6 @@ import convertToNavigationTree from './microfrontend-converter';
 import navigationPermissionChecker, {
   setInitValues,
   backendModules,
-  getGroups
 } from './permissions';
 
 import {
@@ -23,6 +22,7 @@ import {
   clearToken,
   getToken
 } from './navigation-helpers';
+import { groups } from './../auth';
 
 let clusterMicrofrontendNodes = [];
 let clusterMicrofrontendNodesForNamespace = [];
@@ -75,7 +75,6 @@ export let navigation = {
 
 export function getNavigationData(token) {
   return new Promise(function(resolve, reject) {
-    const groups = getGroups(token);
     let kymaVersion;
 
     fetchConsoleInitData(token)
@@ -233,7 +232,6 @@ const getMicrofrontends = async namespace => {
   const cache = window[cacheName];
   const cacheKey = segmentPrefix + namespace;
   const fromCache = cache[cacheKey];
-  const groups = getGroups(getToken())
 
   return (
     fromCache ||

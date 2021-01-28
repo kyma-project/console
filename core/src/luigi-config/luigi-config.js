@@ -1,14 +1,14 @@
 import { saveCurrentLocation, getToken } from './navigation/navigation-helpers';
 import { communication } from './communication';
 import { settings } from './settings';
-import { createAuth } from './auth/index.js';
+import { createAuth, saveAuthParamsIfPresent } from './auth/index.js';
+
 import {
   navigation,
   getNavigationData,
   resolveNavigationNodes
 } from './navigation/navigation-data-init';
 import { onQuotaExceed } from './luigi-event-handlers';
-import { saveAuthParamsIfPresent } from './auth/auth-params';
 
 export const NODE_PARAM_PREFIX = `~`;
 
