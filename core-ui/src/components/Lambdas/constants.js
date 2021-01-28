@@ -619,7 +619,7 @@ export const ENVIRONMENT_VARIABLES_PANEL = {
       TOOLTIP_MESSAGE: 'This variable was provided by the user.',
     },
     CONFIG_MAP: {
-      TEXT: 'Config Map',
+      TEXT: 'ConfigMap',
       TOOLTIP_MESSAGE: 'This variable was applied from a ConfigMap.',
       ERRORS: {
         NOT_EXIST: 'ConfigMap does not exist.',
