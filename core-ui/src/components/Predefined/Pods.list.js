@@ -24,10 +24,11 @@ const calculatePodState = pod => {
       }
     }
   }
-  return { state: 'Running' };
+  return { status: 'Running' };
 };
 
 const badgeType = status => {
+  console.log(status);
   switch (status) {
     case 'Running':
       return 'success';
