@@ -1,6 +1,6 @@
 const PARAMS_KEY = 'console.auth-params';
 
-function inferResponseData(usePKCE = true) {
+function getResponseParams(usePKCE = true) {
     if (usePKCE) {
         return {
             responseType: 'code',
@@ -15,8 +15,8 @@ export function saveAuthParamsIfPresent(location) {
     const params = new URL(location).searchParams.get('auth');
     if (params) {
         const parsed = JSON.parse(params);
-        const responseData = inferResponseData(parsed.usePKCE);
-        localStorage.setItem(PARAMS_KEY, JSON.stringify({...parsed, ...responseData}));
+        const responseParams = getResponseParams(parsed.usePKCE);
+        localStorage.setItem(PARAMS_KEY, JSON.stringify({...parsed, ...responseParams}));
     }
 }
 
