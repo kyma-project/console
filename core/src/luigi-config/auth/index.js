@@ -11,7 +11,7 @@ async function fetchOidcProviderMetadata(issuerUrl) {
   }
   catch (e) {
     alert('Cannot fetch oidc provider metadata, see log console for more details');
-    console.error('cannot fetch oidc metadata', e);
+    console.error('cannot fetch OIDC metadata', e);
   }
 }
 
