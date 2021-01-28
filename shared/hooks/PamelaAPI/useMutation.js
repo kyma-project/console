@@ -10,7 +10,7 @@ const useMutation = method => {
       const response = await fetch(baseUrl(fromConfig) + url, {
         method,
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json-patch+json',
           Accept: 'application/json',
           Authorization: 'Bearer ' + idToken,
         },
