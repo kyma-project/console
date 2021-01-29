@@ -2,12 +2,7 @@ import React from 'react';
 
 import PropTypes from 'prop-types';
 import { useCreateBinding, formatRoleBinding } from '../helpers';
-import {
-  useNotification,
-  Modal,
-  K8sNameInput,
-  isK8SNameValid,
-} from 'react-shared';
+import { useNotification, Modal } from 'react-shared';
 
 import {
   Button,
@@ -24,6 +19,13 @@ import InvalidGroupMessage from '../Shared/InvalidGroupMessage';
 CreateClusterRoleBindingModal.propTypes = {
   refetchClusterRoleBindingsFn: PropTypes.func.isRequired,
 };
+
+const isGroupNameValid = name => {
+  const kebabCase = /^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$/;
+  const camelCase = /^[a-z][A-Za-z0-9]*[A-Za-z0-9]*$/;
+  return kebabCase.test(name) || camelCase.test(name);
+};
+
 export default function CreateClusterRoleBindingModal({
   refetchClusterRoleBindingsFn,
 }) {
@@ -34,7 +36,7 @@ export default function CreateClusterRoleBindingModal({
   const [isGroup, setGroup] = React.useState(false);
   const [role, setRole] = React.useState('');
 
-  const groupValid = !isGroup || isK8SNameValid(subject);
+  const groupValid = !isGroup || isGroupNameValid(subject);
   const canSubmit = !!role && !!subject && groupValid;
 
   const create = async () => {
@@ -84,23 +86,14 @@ export default function CreateClusterRoleBindingModal({
         <FormRadioItem value="user-group">User Group</FormRadioItem>
       </FormRadioGroup>
       <FormItem style={{ clear: 'both' }}>
-        {isGroup ? (
-          <K8sNameInput
-            kind="User Group"
-            onChange={e => setSubject(e.target.value)}
-          />
-        ) : (
-          <>
-            <FormLabel required>User</FormLabel>
-            <FormInput
-              type="text"
-              value={subject}
-              placeholder="User name"
-              onChange={e => setSubject(e.target.value)}
-              required
-            />
-          </>
-        )}
+        <FormLabel required>{isGroup ? 'User group' : 'User name'}</FormLabel>
+        <FormInput
+          type="text"
+          value={subject}
+          placeholder={`User ${isGroup ? 'group' : 'name'}`}
+          onChange={e => setSubject(e.target.value)}
+          required
+        />
       </FormItem>
       {subject && !groupValid && <InvalidGroupMessage />}
       <FormItem>

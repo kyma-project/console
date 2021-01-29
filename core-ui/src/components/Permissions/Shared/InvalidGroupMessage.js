@@ -3,7 +3,7 @@ import React from 'react';
 import { Alert } from 'fundamental-react';
 
 const invalidGroupMessage =
-  "The user group name has the wrong format. The name must consist of lower case alphanumeric characters, dashes or dots, and must start and end with an alphanumeric character (e.g. 'my-name').";
+  "User group must consist of lower case alphanumeric characters, dashes or dots, and must start and end with an alphanumeric character (e.g. 'my-name'), or it should be in camel case.";
 
 export default function InvalidGroupMessage() {
   return (
