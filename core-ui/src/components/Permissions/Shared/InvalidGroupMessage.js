@@ -3,7 +3,7 @@ import React from 'react';
 import { Alert } from 'fundamental-react';
 
 const invalidGroupMessage =
-  "User group must consist of lower case alphanumeric characters, dashes or dots, and must start and end with an alphanumeric character (e.g. 'my-name'), or it should be in camel case.";
+  "User group must consist of alphanumeric characters, dashes or dots, and must start and end with an alphanumeric character (e.g. 'my-name')";
 
 export default function InvalidGroupMessage() {
   return (
