@@ -22,7 +22,7 @@ CreateClusterRoleBindingModal.propTypes = {
 
 const isGroupNameValid = name => {
   // case-insensitive versions of camel and kebab case
-  const kebabCase = /^[A-Za-z0-9]([A-Z-a-z0-9]*[A-Za-z0-9])?(\.[A-Za-z0-9]([A-Z-a-z0-9]*[A-Za-z0-9])?)*$/;
+  const kebabCase = /^[A-Za-z]([A-Z-a-z0-9]*[A-Za-z0-9])?(\.[A-Za-z0-9]([A-Z-a-z0-9]*[A-Za-z])?)*$/;
   const camelCase = /^[A-Za-z][A-Za-z0-9]*[A-Za-z0-9]*$/;
   return kebabCase.test(name) || camelCase.test(name);
 };
