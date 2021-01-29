@@ -14,17 +14,9 @@ import {
 } from 'fundamental-react';
 
 import RoleCombobox from '../Shared/RoleCombobox/RoleCombobox';
-import InvalidGroupMessage from '../Shared/InvalidGroupMessage';
 
 CreateClusterRoleBindingModal.propTypes = {
   refetchClusterRoleBindingsFn: PropTypes.func.isRequired,
-};
-
-const isGroupNameValid = name => {
-  // case-insensitive versions of camel and kebab case
-  const kebabCase = /^[A-Za-z]([A-Z-a-z0-9]*[A-Za-z0-9])?(\.[A-Za-z0-9]([A-Z-a-z0-9]*[A-Za-z])?)*$/;
-  const camelCase = /^[A-Za-z][A-Za-z0-9]*[A-Za-z0-9]*$/;
-  return kebabCase.test(name) || camelCase.test(name);
 };
 
 export default function CreateClusterRoleBindingModal({
@@ -37,8 +29,7 @@ export default function CreateClusterRoleBindingModal({
   const [isGroup, setGroup] = React.useState(false);
   const [role, setRole] = React.useState('');
 
-  const groupValid = !isGroup || isGroupNameValid(subject);
-  const canSubmit = !!role && !!subject && groupValid;
+  const canSubmit = !!role && !!subject;
 
   const create = async () => {
     try {
@@ -96,7 +87,6 @@ export default function CreateClusterRoleBindingModal({
           required
         />
       </FormItem>
-      {subject && !groupValid && <InvalidGroupMessage />}
       <FormItem>
         <FormLabel required>Role</FormLabel>
         <RoleCombobox setRole={(roleName, _) => setRole(roleName)} />
