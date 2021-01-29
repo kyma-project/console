@@ -1,12 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useCreateBinding, formatRoleBinding } from '../helpers';
-import {
-  useNotification,
-  Modal,
-  K8sNameInput,
-  isK8SNameValid,
-} from 'react-shared';
+import { useNotification, Modal } from 'react-shared';
 
 import {
   Button,
@@ -18,7 +13,6 @@ import {
 } from 'fundamental-react';
 
 import RoleCombobox from '../Shared/RoleCombobox/RoleCombobox';
-import InvalidGroupMessage from '../Shared/InvalidGroupMessage';
 
 CreateRoleBindingModal.propTypes = {
   namespaceId: PropTypes.string.isRequired,
@@ -39,8 +33,7 @@ export default function CreateRoleBindingModal({
   const [role, setRole] = React.useState('');
   const [roleKind, setRoleKind] = React.useState('');
 
-  const groupValid = !isGroup || isK8SNameValid(subject);
-  const canSubmit = !!role && !!subject && groupValid;
+  const canSubmit = !!role && !!subject;
 
   const create = async () => {
     const params = {
@@ -90,25 +83,15 @@ export default function CreateRoleBindingModal({
         <FormRadioItem value="user-group">User Group</FormRadioItem>
       </FormRadioGroup>
       <FormItem style={{ clear: 'both' }}>
-        {isGroup ? (
-          <K8sNameInput
-            kind="User Group"
-            onChange={e => setSubject(e.target.value)}
-          />
-        ) : (
-          <>
-            <FormLabel required>User</FormLabel>
-            <FormInput
-              type="text"
-              value={subject}
-              placeholder="User name"
-              onChange={e => setSubject(e.target.value)}
-              required
-            />
-          </>
-        )}
+        <FormLabel required>{isGroup ? 'User group' : 'User name'}</FormLabel>
+        <FormInput
+          type="text"
+          value={subject}
+          placeholder={`User ${isGroup ? 'group' : 'name'}`}
+          onChange={e => setSubject(e.target.value)}
+          required
+        />
       </FormItem>
-      {subject && !groupValid && <InvalidGroupMessage />}
       <FormItem>
         <FormLabel required>Role</FormLabel>
         <RoleCombobox
