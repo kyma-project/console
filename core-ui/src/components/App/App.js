@@ -35,42 +35,33 @@ export default function App() {
     <Switch>
       <Route path="/preload" component={() => null} />
       <Route
-        path="/home/namespaces/:namespace/details"
+        path="/namespaces/:namespace/details"
         render={withTitle(NAMESPACE_DETAILS_TITLE, RoutedNamespaceDetails)}
       />
 
       <Route
         exact
-        path="/home/namespaces/:namespaceId/:resourceType/:resourceName"
+        path="/namespaces/:namespaceId/:resourceType/:resourceName"
         component={RoutedResourceDetails}
       />
       <Route
         exact
-        path="/home/namespaces/:namespaceId/:resourceType"
+        path="/namespaces/:namespaceId/:resourceType"
         component={RoutedResourcesList}
       />
       <Route
         exact
-        path="/home/:resourceType/:resourceName"
+        path="/:resourceType/:resourceName"
         component={RoutedResourceDetails}
       />
-      <Route exact path="/home/:resourceType" component={RoutedResourcesList} />
 
-      <Route
-        path="/lambdas"
-        exact
-        render={withTitle(FUNCTIONS_WINDOW_TITLE, Lambdas)}
-      />
+      <Route exact path="/:resourceType" component={RoutedResourcesList} />
+
       <Route
         path="/lambda/:name"
         render={withTitle(FUNCTIONS_WINDOW_TITLE, LambdaDetails)}
       />
 
-      <Route
-        exact
-        path="/apirules"
-        render={withTitle(API_RULES_TITLE, ApiRules)}
-      />
       <Route
         exact
         path="/apirules/create"
@@ -85,17 +76,6 @@ export default function App() {
         exact
         path="/apirules/edit/:apiName"
         render={withTitle(API_RULES_TITLE, RoutedEditApiRule)}
-      />
-
-      <Route
-        exact
-        path="/home/namespaces/:namespaceId/secrets"
-        render={withTitle(SECRETS_TITLE, RoutedSecretList)}
-      />
-      <Route
-        exact
-        path="/home/namespaces/:namespaceId/secrets/details/:name"
-        render={withTitle(SECRETS_TITLE, RoutedSecretDetails)}
       />
     </Switch>
   );
@@ -114,8 +94,7 @@ export const getComponentForDetails = getComponentFor(
 function RoutedResourcesList({ match }) {
   const queryParams = new URLSearchParams(window.location.search);
   const resourceUrl =
-    queryParams.get('resourceApiPath') +
-    window.location.pathname.replace('/home', ''); //TODO improve it
+    queryParams.get('resourceApiPath') + window.location.pathname;
 
   const params = {
     hasDetailsView: queryParams.get('hasDetailsView') === 'true',
@@ -133,9 +112,9 @@ function RoutedResourcesList({ match }) {
 }
 
 function RoutedResourceDetails({ match }) {
-  const context = useMicrofrontendContext();
+  const queryParams = new URLSearchParams(window.location.search);
   const resourceUrl =
-    context?.resourceApiPath + window.location.pathname.replace('/home', ''); //TODO improve it
+    queryParams.get('resourceApiPath') + window.location.pathname;
 
   const params = {
     resourceUrl,
