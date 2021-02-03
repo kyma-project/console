@@ -1,4 +1,4 @@
-import { saveCurrentLocation, getToken } from './navigation/navigation-helpers';
+import { saveCurrentLocation, getToken, getPreviousLocation } from './navigation/navigation-helpers';
 import { communication } from './communication';
 import { settings } from './settings';
 import { createAuth, saveAuthParamsIfPresent } from './auth/index.js';
@@ -41,6 +41,11 @@ export const NODE_PARAM_PREFIX = `~`;
             luigiConfig.settings.sideNavFooterText = response[1];
             Luigi.configChanged('settings');
             Luigi.ux().hideAppLoadingIndicator();
+
+            const prevLocation = getPreviousLocation();
+            if (prevLocation) {
+              Luigi.navigation().navigate(prevLocation);
+            }
           });
         } else {
           saveCurrentLocation();

@@ -1,6 +1,5 @@
 import OpenIdConnect from '@luigi-project/plugin-auth-oidc';
 import { getAuthParams } from './auth-params';
-import { getPreviousLocation } from './../navigation/navigation-helpers';
 
 export let groups;
 
@@ -55,12 +54,6 @@ export const createAuth = async () => {
     events: {
         onLogout: () => {
         console.log('onLogout');
-        },
-        onAuthSuccessful: () => {
-        const prevLocation = getPreviousLocation();
-        if (prevLocation) {
-            window.location.replace(prevLocation);
-        }
         },
         onAuthExpired: () => {
         console.log('onAuthExpired');
