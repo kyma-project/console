@@ -52,7 +52,7 @@ export const ReplicasetsDetails = DefaultRenderer => ({ ...otherParams }) => {
 
   return (
     <DefaultRenderer
-      customTables={[PodsList]}
+      customComponents={[PodsList]}
       customColumns={customColumns}
       {...otherParams}
     />

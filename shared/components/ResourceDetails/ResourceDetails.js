@@ -7,7 +7,7 @@ import { Button } from 'fundamental-react';
 import { createPatch } from 'rfc6902';
 import {
   PageHeader,
-  HeaderLabelsEditor,
+  Labels,
   YamlEditorProvider,
   useGet,
   useUpdate,
@@ -19,17 +19,16 @@ import CustomPropTypes from '../../typechecking/CustomPropTypes';
 
 ResourceDetails.propTypes = {
   customColumns: CustomPropTypes.customColumnsType,
-  customTables: PropTypes.array,
+  customComponents: PropTypes.array,
   resourceUrl: PropTypes.string.isRequired,
   resourceType: PropTypes.string.isRequired,
   resourceName: PropTypes.string.isRequired,
   namespace: PropTypes.string,
-  // isCompact: PropTypes.bool, // TODO: decide if needed
 };
 
 ResourceDetails.defaultProps = {
   customColumns: [],
-  customTables: [],
+  customComponents: [],
 };
 
 export function ResourceDetails(props) {
@@ -70,11 +69,12 @@ export function ResourceDetails(props) {
 function Resource({
   silentRefetch,
   resource,
-  customTables,
+  customComponents,
   customColumns,
   resourceUrl,
   resourceType,
   updateResourceMutation,
+  deleteResourceMutation,
   namespace,
   resourceName,
 }) {
@@ -82,7 +82,6 @@ function Resource({
   const notification = useNotification();
 
   const [isEditMode, setEditMode] = React.useState(false);
-  console.log('Resource customTables', customTables);
 
   const breadcrumbs = [
     {
@@ -108,15 +107,21 @@ function Resource({
       <Button onClick={() => openYaml(resource)} option="emphasized">
         Edit YAML
       </Button>
-      <Button onClick={() => deleteClient()} option="light" type="negative">
+      <Button
+        onClick={() => handleResourceDelete(resource)}
+        option="light"
+        type="negative"
+      >
         Delete
       </Button>
     </>
   );
+
   const openYaml = resource => {
     const { status, ...otherResourceData } = resource; // remove 'status' property because you can't edit it anyway; TODO: decide if it's good
     setEditedSpec(otherResourceData, handleSaveClick(otherResourceData));
   };
+
   const handleSaveClick = resourceData => async newYAML => {
     try {
       const diff = createPatch(resourceData, jsyaml.safeLoad(newYAML));
@@ -134,6 +139,25 @@ function Resource({
     }
   };
 
+  async function handleResourceDelete(resource) {
+    try {
+      await deleteResourceMutation(resourceUrl, {
+        name: resource.metadata.name,
+        namespace,
+      });
+      notification.notifySuccess({
+        title: 'Succesfully deleted Resource: ' + resourceType,
+      });
+    } catch (e) {
+      console.error(e);
+      notification.notifyError({
+        title: 'Failed to delete the Resource',
+        content: e.message,
+      });
+      throw e;
+    }
+  }
+
   return (
     <>
       <PageHeader
@@ -141,16 +165,16 @@ function Resource({
         actions={actions}
         breadcrumbItems={breadcrumbs}
       >
-        <HeaderLabelsEditor
-          labels={resource.metadata.labels || {}}
-          onApply={() => {}}
-          columnSpan="1 / 3"
-        />
+        <PageHeader.Column title="Labels" columnSpan="1 / 3">
+          <Labels labels={resource.metadata.labels || {}} />
+        </PageHeader.Column>
+
         <PageHeader.Column title="Age">
           <Moment utc fromNow>
             {resource.metadata.creationTimestamp}
           </Moment>
         </PageHeader.Column>
+
         {customColumns.map(col => (
           <PageHeader.Column title={col.header}>
             {col.value(resource)}
@@ -158,9 +182,7 @@ function Resource({
         ))}
       </PageHeader>
 
-      {customTables.map(obj => (
-        <>{obj} </>
-      ))}
+      {customComponents.map(component => component)}
     </>
   );
 }

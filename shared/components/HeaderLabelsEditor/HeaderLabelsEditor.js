@@ -15,8 +15,9 @@ export function HeaderLabelsEditor({
   labels: originalLabels,
   onApply,
   columnSpan,
+  isEditMode = false,
 }) {
-  const [isEditing, setEditing] = React.useState(false);
+  const [isEditing, setEditing] = React.useState(isEditMode);
   const [editedLabels, setEditedLabels] = React.useState(originalLabels);
 
   const applyEdit = () => {
