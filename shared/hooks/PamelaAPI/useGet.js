@@ -68,7 +68,7 @@ const useGetHook = processDataFn =>
   };
 
 export const useGetList = useGetHook(handleListDataReceived);
-// export const useGet = useGetHook(handleSingleDataReceived); // TODO for a single object
+export const useGet = useGetHook(handleSingleDataReceived);
 
 function handleListDataReceived(newData, oldData, setDataFn) {
   if (
@@ -81,4 +81,15 @@ function handleListDataReceived(newData, oldData, setDataFn) {
     ) // current and received items are the same length but the items might have changed. Compare its resourceVersion to check it.
   )
     setDataFn(newData.items);
+}
+
+function handleSingleDataReceived(newData, oldData, setDataFn) {
+  if (
+    !oldData || // current data is empty and we received some. There's no doubdt we should update.
+    newData.metadata.resourceVersion !== oldData.metadata.resourceVersion
+  ) {
+    // Compare resourceVersion.
+    console.log('!!weszło');
+    setDataFn(newData);
+  }
 }
