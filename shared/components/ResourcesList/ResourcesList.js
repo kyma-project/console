@@ -46,7 +46,13 @@ export function ResourcesList(props) {
 
 export const ResourcesListProps = ResourcesList.propTypes;
 
-function Resources({ resourceUrl, namespace, customColumns, hasDetailsView }) {
+function Resources({
+  resourceUrl,
+  resourceType,
+  namespace,
+  customColumns,
+  hasDetailsView,
+}) {
   const setEditedSpec = useYamlEditor();
   const notification = useNotification();
   const updateResourceMutation = useUpdate(resourceUrl);
@@ -116,13 +122,7 @@ function Resources({ resourceUrl, namespace, customColumns, hasDetailsView }) {
 
   const rowRenderer = entry => [
     hasDetailsView ? (
-      <Link
-        onClick={_ =>
-          LuigiClient.linkManager()
-            .fromClosestContext()
-            .navigate('/details/' + entry.metadata.name)
-        }
-      >
+      <Link onClick={_ => navigateTo(resourceType, entry.metadata.name)}>
         {entry.metadata.name}
       </Link>
     ) : (
@@ -136,6 +136,29 @@ function Resources({ resourceUrl, namespace, customColumns, hasDetailsView }) {
     </div>,
     ...customColumns.map(col => col.value(entry)),
   ];
+
+  function navigateToResourceDetails(resourceName) {
+    LuigiClient.linkManager()
+      .fromClosestContext()
+      .navigate('/details/' + resourceName);
+  }
+
+  function navigateToNamespaceDetails(namespaceName) {
+    LuigiClient.linkManager().navigate(
+      `/home/namespaces/${namespaceName}/details`,
+    );
+    LuigiClient.sendCustomMessage({ id: 'console.refreshNavigation' });
+  }
+
+  function navigateTo(resourceType, name) {
+    switch (resourceType) {
+      case 'namespaces':
+        navigateToNamespaceDetails(name);
+        break;
+      default:
+        navigateToResourceDetails(name);
+    }
+  }
 
   return (
     <GenericList
