@@ -2,7 +2,6 @@ import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import {
   withTitle,
-  useMicrofrontendContext,
   getComponentFor,
   ResourcesList as GenericResourcesList,
   ResourceDetails as GenericResourceDetails,
@@ -34,10 +33,10 @@ export default function App() {
   return (
     <Switch>
       <Route path="/preload" component={() => null} />
-      <Route
-        path="/namespaces/:namespace/details"
-        render={withTitle(NAMESPACE_DETAILS_TITLE, RoutedNamespaceDetails)}
-      />
+      {/* <Route
+        path="/home/namespaces/:namespace/details"
+        render={RoutedResourceDetails}
+      /> */}
 
       <Route
         exact
