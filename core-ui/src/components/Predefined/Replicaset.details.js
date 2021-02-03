@@ -1,5 +1,5 @@
 import React from 'react';
-import getComponentForList from './../App/App';
+import { getComponentForList } from './../App/App';
 export const ReplicasetsDetails = DefaultRenderer => ({ ...otherParams }) => {
   const customColumns = [
     {
@@ -49,12 +49,6 @@ export const ReplicasetsDetails = DefaultRenderer => ({ ...otherParams }) => {
   };
   const rendererName = 'podsList';
   const PodsList = getComponentForList(rendererName, params);
-  const customTables = null;
-  // const customTables = [{
-  //   header: 'pods',
-  //     value:         getComponentForList(rendererName, params)
-
-  // }]
 
   return (
     <DefaultRenderer
