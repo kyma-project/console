@@ -1,28 +1,66 @@
 import React from 'react';
+import getComponentForList from './../App/App';
+export const ReplicasetsDetails = DefaultRenderer => ({ ...otherParams }) => {
+  const customColumns = [
+    {
+      header: 'Limits',
+      value: resource => {
+        const containers = resource.spec.template.spec.containers || [];
+        return (
+          <>
+            {containers.map(c => (
+              <>
+                CPU: {c.resources?.limits?.cpu}
+                <br />
+                Memory: {c.resources?.limits?.memory}
+                <br />
+              </>
+            ))}
+          </>
+        );
+      },
+    },
+    {
+      header: 'Requests',
+      value: resource => {
+        const containers = resource.spec.template.spec.containers || [];
+        return (
+          <>
+            {containers.map(c => (
+              <>
+                CPU: {c.resources?.requests?.cpu}
+                <br />
+                Memory: {c.resources?.requests?.memory}
+                <br />
+              </>
+            ))}
+          </>
+        );
+      },
+    },
+  ];
 
-export const ReplicasetDetails = GenericHeader => ({
-  resourceUrl,
-  resourceType,
-  resourceName,
-  namespace,
-}) => {
+  const params = {
+    hasDetailsView: false,
+    resourceUrl: `/api/v1/namespaces/${otherParams.namespace}/pods`,
+    resourceType: 'pods',
+    namespace: otherParams.namespace,
+    isCompact: true,
+  };
+  const rendererName = 'podsList';
+  const PodsList = getComponentForList(rendererName, params);
+  const customTables = null;
+  // const customTables = [{
+  //   header: 'pods',
+  //     value:         getComponentForList(rendererName, params)
+
+  // }]
+
   return (
-    <>
-      <GenericHeader />
-      <img
-        alt="yes"
-        src="https://media.giphy.com/media/CqVNwrLt9KEDK/source.gif"
-      ></img>
-      <h3
-        style={{
-          fontSize: '5em',
-          color: 'lime',
-          transform: 'scaley(4)',
-          textShadow: '1px 1px 2px #555',
-        }}
-      >
-        replicaset details predefined view
-      </h3>
-    </>
+    <DefaultRenderer
+      customTables={[PodsList]}
+      customColumns={customColumns}
+      {...otherParams}
+    />
   );
 };

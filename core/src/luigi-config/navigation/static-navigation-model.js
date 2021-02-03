@@ -45,7 +45,10 @@ export function getStaticChildrenNodesForNamespace() {
       pathSegment: 'details',
       label: 'Overview',
       order: -1,
-      viewUrl: config.coreModuleUrl + '/home/namespaces/:namespaceId/details',
+      viewUrl: config.coreModuleUrl + '/namespaces/:namespaceId?' +
+      toSearchParamsString({
+        resourceApiPath: '/api/v1',
+      }),
       icon: 'product',
       viewGroup: coreUIViewGroupName
     },
@@ -58,7 +61,7 @@ export function getStaticChildrenNodesForNamespace() {
         '/namespaces/:namespaceId/pods?' +
         toSearchParamsString({
           resourceApiPath: '/api/v1',
-          hasDetailsView: false
+          hasDetailsView: true
         }),
       viewGroup: coreUIViewGroupName,
       keepSelectedForChildren: true,
@@ -71,7 +74,10 @@ export function getStaticChildrenNodesForNamespace() {
               pathSegment: ':podName',
               viewUrl:
                 config.coreModuleUrl +
-                '/home/namespaces/:namespaceId/pods/:podName'
+                '/home/namespaces/:namespaceId/pods/:podName?' +
+                toSearchParamsString({
+                  resourceApiPath: '/api/v1'
+                }),
             }
           ]
         }
@@ -86,7 +92,7 @@ export function getStaticChildrenNodesForNamespace() {
         '/namespaces/:namespaceId/replicasets?' +
         toSearchParamsString({
           resourceApiPath: '/apis/apps/v1',
-          hasDetailsView: false
+          hasDetailsView: true
         }),
       viewGroup: coreUIViewGroupName,
       keepSelectedForChildren: true,
@@ -100,7 +106,10 @@ export function getStaticChildrenNodesForNamespace() {
               pathSegment: ':replicaSetName',
               viewUrl:
                 config.coreModuleUrl +
-                '/home/namespaces/:namespaceId/replicasets/:replicaSetName'
+                '/namespaces/:namespaceId/replicasets/:replicaSetName?' +
+                toSearchParamsString({
+                  resourceApiPath: '/apis/apps/v1',
+                }),
             }
           ]
         }
@@ -320,10 +329,10 @@ export function getStaticRootNodes(namespaceChildrenNodesResolver) {
         '/namespaces?' +
         toSearchParamsString({
           resourceApiPath: '/api/v1',
-          hasDetailsView: false
+          hasDetailsView: true
         }),
       icon: 'dimension',
-      viewGroup: coreUIViewGroupName
+      viewGroup: coreUIViewGroupName,
     },
     {
       pathSegment: 'namespaces',
