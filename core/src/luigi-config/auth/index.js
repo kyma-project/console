@@ -18,7 +18,7 @@ export const createAuth = async () => {
   const params = getAuthParams();
   if (!params) {
     alert("No auth params provided! In future you'll get to login with your service account.");
-    console.log('for now just use query param: ?auth=%7B%22issuerUrl%22%3A%22https%3A%2F%2Fkyma.eu.auth0.com%2F%22%2C%22clientId%22%3A%225W89vBHwn2mu7nT0uzvoN4xCof0h4jtN%22%7D')
+    console.log('for now just use query param: ?auth=EQbwOsCWDO0K4FMBOBVJAbCAuCALALvgA7RYD0ZA1gJ4C2AhgHQJyP1z64AMjAxgPa0yEADQRe6SAgB2-AJIATbBACsAdQAcATgBuAIQASAd2kAmWnADs0gCpc4ALx38AcgBYAHgGF-AMy64bgBW-C4QAL7AQAAA')
     return {};
   }
 
