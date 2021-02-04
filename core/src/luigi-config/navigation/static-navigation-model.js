@@ -45,7 +45,7 @@ export function getStaticChildrenNodesForNamespace() {
       pathSegment: 'details',
       label: 'Overview',
       order: -1,
-      viewUrl: config.coreModuleUrl + '/home/namespaces/:namespaceId/details',
+      viewUrl: config.coreModuleUrl + '/namespaces/:namespaceId/details',
       icon: 'product',
       viewGroup: coreUIViewGroupName
     },
