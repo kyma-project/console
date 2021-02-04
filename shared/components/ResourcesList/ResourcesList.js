@@ -87,10 +87,7 @@ function Resources({
   async function handleResourceDelete(resource) {
     const url = resourceUrl + '/' + resource.metadata.name;
     try {
-      await deleteResourceMutation(url, {
-        name: resource.metadata.name,
-        namespace,
-      });
+      await deleteResourceMutation(url);
       notification.notifySuccess({ title: 'Succesfully deleted Resource' });
     } catch (e) {
       console.error(e);

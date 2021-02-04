@@ -107,11 +107,7 @@ function Resource({
       <Button onClick={() => openYaml(resource)} option="emphasized">
         Edit YAML
       </Button>
-      <Button
-        onClick={() => handleResourceDelete(resource)}
-        option="light"
-        type="negative"
-      >
+      <Button onClick={handleResourceDelete} option="light" type="negative">
         Delete
       </Button>
     </>
@@ -139,12 +135,9 @@ function Resource({
     }
   };
 
-  async function handleResourceDelete(resource) {
+  async function handleResourceDelete() {
     try {
-      await deleteResourceMutation(resourceUrl, {
-        name: resource.metadata.name,
-        namespace,
-      });
+      await deleteResourceMutation(resourceUrl);
       notification.notifySuccess({
         title: 'Succesfully deleted Resource: ' + resourceType,
       });
