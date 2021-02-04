@@ -48,9 +48,7 @@ export function ResourceDetails(props) {
 
   if (loading) return 'Loading...';
   if (error) return `Error: ${error.message}`;
-  console.log('resource', resource, 'resourceUrl', props.resourceUrl);
 
-  console.log('list resourceUrl', props.resourceUrl);
   return (
     <YamlEditorProvider>
       {resource && (

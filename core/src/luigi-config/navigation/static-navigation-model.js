@@ -279,7 +279,7 @@ export function getStaticChildrenNodesForNamespace() {
         '/namespaces/:namespaceId/secrets?' +
         toSearchParamsString({
           resourceApiPath: '/api/v1',
-          hasDetailsView: false
+          hasDetailsView: true
         }),
       viewGroup: coreUIViewGroupName,
       keepSelectedForChildren: true,
@@ -291,7 +291,10 @@ export function getStaticChildrenNodesForNamespace() {
               pathSegment: ':name',
               viewUrl:
                 config.coreModuleUrl +
-                '/home/namespaces/:namespaceId/secrets/details/:name',
+                '/namespaces/:namespaceId/secrets/:name?' +
+                toSearchParamsString({
+                  resourceApiPath: '/api/v1',
+                }),
               viewGroup: coreUIViewGroupName
             }
           ]
@@ -308,9 +311,26 @@ export function getStaticChildrenNodesForNamespace() {
         '/namespaces/:namespaceId/configmaps?' +
         toSearchParamsString({
           resourceApiPath: '/api/v1',
-          hasDetailsView: false
+          hasDetailsView: true
         }),
-      viewGroup: coreUIViewGroupName
+      viewGroup: coreUIViewGroupName,
+      keepSelectedForChildren: true,
+      children: [
+        {
+          pathSegment: 'details',
+          children: [
+            {
+              pathSegment: ':name',
+              viewUrl:
+                config.coreModuleUrl +
+                '/namespaces/:namespaceId/configmaps/:name?' +
+                toSearchParamsString({
+                  resourceApiPath: '/api/v1',
+                }),
+            }
+          ]
+        }
+      ]
     },
     {
       category: { label: 'Experimental', icon: 'lab', collapsible: true },
