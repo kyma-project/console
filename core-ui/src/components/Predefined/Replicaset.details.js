@@ -40,19 +40,27 @@ export const ReplicasetsDetails = DefaultRenderer => ({ ...otherParams }) => {
     },
   ];
 
-  const params = {
+  const PodsList = getComponentForList('podsList', {
     hasDetailsView: false,
     resourceUrl: `/api/v1/namespaces/${otherParams.namespace}/pods`,
     resourceType: 'pods',
     namespace: otherParams.namespace,
     isCompact: true,
-  };
-  const rendererName = 'podsList';
-  const PodsList = getComponentForList(rendererName, params);
+    showTitle: true,
+  });
+
+  const ServiceList = getComponentForList('ServicesList', {
+    hasDetailsView: false,
+    resourceUrl: `/api/v1/namespaces/default/services`,
+    resourceType: 'services',
+    namespace: 'default',
+    isCompact: true,
+    showTitle: true,
+  });
 
   return (
     <DefaultRenderer
-      customComponents={[PodsList]}
+      customComponents={[ServiceList, PodsList]}
       customColumns={customColumns}
       {...otherParams}
     />

@@ -74,7 +74,7 @@ export function getStaticChildrenNodesForNamespace() {
               pathSegment: ':podName',
               viewUrl:
                 config.coreModuleUrl +
-                '/home/namespaces/:namespaceId/pods/:podName?' +
+                '/namespaces/:namespaceId/pods/:podName?' +
                 toSearchParamsString({
                   resourceApiPath: '/api/v1'
                 }),

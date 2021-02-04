@@ -25,10 +25,12 @@ ResourcesList.propTypes = {
   namespace: PropTypes.string,
   hasDetailsView: PropTypes.bool,
   isCompact: PropTypes.bool,
+  showTitle: PropTypes.bool,
 };
 
 ResourcesList.defaultProps = {
   customColumns: [],
+  showTitle: false,
 };
 
 export function ResourcesList(props) {
@@ -52,6 +54,7 @@ function Resources({
   namespace,
   customColumns,
   hasDetailsView,
+  showTitle,
 }) {
   const setEditedSpec = useYamlEditor();
   const notification = useNotification();
@@ -159,9 +162,9 @@ function Resources({
         navigateToResourceDetails(name);
     }
   }
-
   return (
     <GenericList
+      title={showTitle ? resourceType : null}
       textSearchProperties={['metadata.name']}
       actions={actions}
       entries={resources || []}

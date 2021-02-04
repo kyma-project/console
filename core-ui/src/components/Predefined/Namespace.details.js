@@ -8,6 +8,7 @@ export const NamespacesDetails = DefaultRenderer => ({ ...otherParams }) => {
     resourceType: 'limitranges',
     namespace: otherParams.resourceName,
     isCompact: true,
+    showTitle: true,
   };
 
   const LimitrangesList = getComponentForList('limitrangesList', params);
