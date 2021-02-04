@@ -14,6 +14,7 @@ import {
   useDelete,
   useYamlEditor,
   useNotification,
+  navigateToList,
 } from '../..';
 import CustomPropTypes from '../../typechecking/CustomPropTypes';
 
@@ -80,8 +81,6 @@ function Resource({
   const setEditedSpec = useYamlEditor();
   const notification = useNotification();
 
-  const [isEditMode, setEditMode] = React.useState(false);
-
   const breadcrumbs = [
     {
       name: resourceType,
@@ -90,19 +89,8 @@ function Resource({
     },
     { name: '' },
   ];
-  const actions = isEditMode ? (
+  const actions = (
     <>
-      <Button onClick={() => {}} option="emphasized">
-        Save
-      </Button>
-      <Button onClick={() => setEditMode(false)}>Cancel</Button>
-    </>
-  ) : (
-    <>
-      <Button onClick={() => setEditMode(true)} option="emphasized">
-        Edit
-      </Button>
-
       <Button onClick={() => openYaml(resource)} option="emphasized">
         Edit YAML
       </Button>
@@ -140,6 +128,7 @@ function Resource({
       notification.notifySuccess({
         title: 'Succesfully deleted Resource: ' + resourceType,
       });
+      navigateToList(resourceType);
     } catch (e) {
       console.error(e);
       notification.notifyError({
