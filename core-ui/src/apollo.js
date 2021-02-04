@@ -55,15 +55,15 @@ export function createKymaApolloClient(fromConfig, token) {
   const authLink = modifyHeaders([setAuthorization(token)]);
   const authHttpLink = authLink.concat(httpLink);
 
-  const wsLink = new WebSocketLink({
-    token,
-    uri: fromConfig('subscriptionsApiUrl'),
-    options: {
-      reconnect: true,
-    },
-  });
+  // const wsLink = new WebSocketLink({
+  //   token,
+  //   uri: fromConfig('subscriptionsApiUrl'),
+  //   options: {
+  //     reconnect: true,
+  //   },
+  // });
 
-  const link = split(isSubscriptionOperation, wsLink, authHttpLink);
+  const link = split(isSubscriptionOperation, authHttpLink);
 
   return new ApolloClient({
     uri: graphqlApiUrl,
