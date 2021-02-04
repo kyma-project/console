@@ -59,10 +59,9 @@ export const ReplicasetsDetails = DefaultRenderer => ({ ...otherParams }) => {
   });
 
   return (
-    <DefaultRenderer
-      customComponents={[ServiceList, PodsList]}
-      customColumns={customColumns}
-      {...otherParams}
-    />
+    <DefaultRenderer customColumns={customColumns} {...otherParams}>
+      {ServiceList}
+      {PodsList}
+    </DefaultRenderer>
   );
 };

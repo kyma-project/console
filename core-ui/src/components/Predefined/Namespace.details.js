@@ -13,7 +13,5 @@ export const NamespacesDetails = DefaultRenderer => ({ ...otherParams }) => {
 
   const LimitrangesList = getComponentForList('limitrangesList', params);
 
-  return (
-    <DefaultRenderer customComponents={[LimitrangesList]} {...otherParams} />
-  );
+  return <DefaultRenderer {...otherParams}>{LimitrangesList}</DefaultRenderer>;
 };

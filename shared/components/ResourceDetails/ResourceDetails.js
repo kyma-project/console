@@ -19,7 +19,7 @@ import CustomPropTypes from '../../typechecking/CustomPropTypes';
 
 ResourceDetails.propTypes = {
   customColumns: CustomPropTypes.customColumnsType,
-  customComponents: PropTypes.array,
+  children: PropTypes.node,
   resourceUrl: PropTypes.string.isRequired,
   resourceType: PropTypes.string.isRequired,
   resourceName: PropTypes.string.isRequired,
@@ -28,7 +28,6 @@ ResourceDetails.propTypes = {
 
 ResourceDetails.defaultProps = {
   customColumns: [],
-  customComponents: [],
 };
 
 export function ResourceDetails(props) {
@@ -69,7 +68,7 @@ export function ResourceDetails(props) {
 function Resource({
   silentRefetch,
   resource,
-  customComponents,
+  children,
   customColumns,
   resourceUrl,
   resourceType,
@@ -175,7 +174,7 @@ function Resource({
         ))}
       </PageHeader>
 
-      {customComponents.map(component => component)}
+      {children}
     </>
   );
 }
