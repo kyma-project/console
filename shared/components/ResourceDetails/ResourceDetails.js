@@ -21,6 +21,7 @@ import CustomPropTypes from '../../typechecking/CustomPropTypes';
 ResourceDetails.propTypes = {
   customColumns: CustomPropTypes.customColumnsType,
   children: PropTypes.node,
+  customComponents: PropTypes.arrayOf(PropTypes.func),
   resourceUrl: PropTypes.string.isRequired,
   resourceType: PropTypes.string.isRequired,
   resourceName: PropTypes.string.isRequired,
@@ -29,6 +30,7 @@ ResourceDetails.propTypes = {
 
 ResourceDetails.defaultProps = {
   customColumns: [],
+  customComponents: [],
 };
 
 export function ResourceDetails(props) {
@@ -69,6 +71,7 @@ function Resource({
   resource,
   children,
   customColumns,
+  customComponents,
   resourceUrl,
   resourceType,
   updateResourceMutation,
@@ -160,6 +163,8 @@ function Resource({
           </PageHeader.Column>
         ))}
       </PageHeader>
+
+      {customComponents.map(component => component(resource))}
 
       {children}
     </>
