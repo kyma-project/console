@@ -94,7 +94,6 @@ function handleSingleDataReceived(newData, oldData, setDataFn) {
     newData.metadata.resourceVersion !== oldData.metadata.resourceVersion
   ) {
     // Compare resourceVersion.
-    console.log('!!weszło');
     setDataFn(newData);
   }
 }

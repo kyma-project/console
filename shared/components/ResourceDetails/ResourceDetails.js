@@ -1,5 +1,4 @@
 import React from 'react';
-import LuigiClient from '@luigi-project/client';
 import PropTypes from 'prop-types';
 import Moment from 'react-moment';
 import jsyaml from 'js-yaml';
@@ -15,6 +14,7 @@ import {
   useDelete,
   useYamlEditor,
   useNotification,
+  navigateToList,
 } from '../..';
 import CustomPropTypes from '../../typechecking/CustomPropTypes';
 import { handleDelete } from '../GenericList/actionHandlers/simpleDelete';
@@ -22,6 +22,7 @@ import { handleDelete } from '../GenericList/actionHandlers/simpleDelete';
 ResourceDetails.propTypes = {
   customColumns: CustomPropTypes.customColumnsType,
   children: PropTypes.node,
+  customComponents: PropTypes.arrayOf(PropTypes.func),
   resourceUrl: PropTypes.string.isRequired,
   resourceType: PropTypes.string.isRequired,
   resourceName: PropTypes.string.isRequired,
@@ -30,6 +31,7 @@ ResourceDetails.propTypes = {
 
 ResourceDetails.defaultProps = {
   customColumns: [],
+  customComponents: [],
 };
 
 export function ResourceDetails(props) {
@@ -70,6 +72,7 @@ function Resource({
   resource,
   children,
   customColumns,
+  customComponents,
   resourceUrl,
   resourceType,
   updateResourceMutation,
@@ -81,8 +84,6 @@ function Resource({
   const setEditedSpec = useYamlEditor();
   const notification = useNotification();
 
-  const [isEditMode, setEditMode] = React.useState(false);
-
   const breadcrumbs = [
     {
       name: resourceType,
@@ -91,19 +92,8 @@ function Resource({
     },
     { name: '' },
   ];
-  const actions = isEditMode ? (
+  const actions = (
     <>
-      <Button onClick={() => {}} option="emphasized">
-        Save
-      </Button>
-      <Button onClick={() => setEditMode(false)}>Cancel</Button>
-    </>
-  ) : (
-    <>
-      <Button onClick={() => setEditMode(true)} option="emphasized">
-        Edit
-      </Button>
-
       <Button onClick={() => openYaml(resource)} option="emphasized">
         Edit YAML
       </Button>
@@ -141,25 +131,8 @@ function Resource({
       null,
       resourceName,
       () => deleteResourceMutation(resourceUrl),
-      () =>
-        LuigiClient.linkManager()
-          .fromClosestContext()
-          .navigate('/'),
+      () => navigateToList(resourceType),
     );
-    // try {
-    //   await deleteResourceMutation(resourceUrl);
-    //   notification.notifySuccess({
-    //     title: 'Succesfully deleted Resource: ' + resourceType,
-    //   });
-    //   ;
-    // } catch (e) {
-    //   console.error(e);
-    //   notification.notifyError({
-    //     title: 'Failed to delete the Resource',
-    //     content: e.message,
-    //   });
-    //   throw e;
-    // }
   }
 
   return (
@@ -185,6 +158,8 @@ function Resource({
           </PageHeader.Column>
         ))}
       </PageHeader>
+
+      {customComponents.map(component => component(resource))}
 
       {children}
     </>

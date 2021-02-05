@@ -15,6 +15,7 @@ import {
   useUpdate,
   useDelete,
   PageHeader,
+  navigateToDetails,
 } from '../..';
 import CustomPropTypes from '../../typechecking/CustomPropTypes';
 
@@ -121,7 +122,7 @@ function Resources({
 
   const rowRenderer = entry => [
     hasDetailsView ? (
-      <Link onClick={_ => navigateTo(resourceType, entry.metadata.name)}>
+      <Link onClick={_ => navigateToDetails(resourceType, entry.metadata.name)}>
         {entry.metadata.name}
       </Link>
     ) : (
@@ -136,28 +137,6 @@ function Resources({
     ...customColumns.map(col => col.value(entry)),
   ];
 
-  function navigateToResourceDetails(resourceName) {
-    LuigiClient.linkManager()
-      .fromClosestContext()
-      .navigate('/details/' + resourceName);
-  }
-
-  function navigateToNamespaceDetails(namespaceName) {
-    LuigiClient.linkManager().navigate(
-      `/home/namespaces/${namespaceName}/details`,
-    );
-    LuigiClient.sendCustomMessage({ id: 'console.refreshNavigation' });
-  }
-
-  function navigateTo(resourceType, name) {
-    switch (resourceType) {
-      case 'namespaces':
-        navigateToNamespaceDetails(name);
-        break;
-      default:
-        navigateToResourceDetails(name);
-    }
-  }
   return (
     <GenericList
       title={showTitle ? resourceType : null}
