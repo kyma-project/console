@@ -5,6 +5,7 @@ export const ReplicasetsDetails = DefaultRenderer => ({ ...otherParams }) => {
     {
       header: 'Limits',
       value: resource => {
+        console.log(resource);
         const containers = resource.spec.template.spec.containers || [];
         return (
           <>
@@ -47,20 +48,15 @@ export const ReplicasetsDetails = DefaultRenderer => ({ ...otherParams }) => {
     namespace: otherParams.namespace,
     isCompact: true,
     showTitle: true,
-  });
-
-  const ServiceList = getComponentForList('ServicesList', {
-    hasDetailsView: false,
-    resourceUrl: `/api/v1/namespaces/default/services`,
-    resourceType: 'services',
-    namespace: 'default',
-    isCompact: true,
-    showTitle: true,
+    filter: pod =>
+      !!pod.metadata.ownerReferences.find(
+        ref =>
+          ref.kind === 'ReplicaSet' && ref.name === otherParams.resourceName,
+      ),
   });
 
   return (
     <DefaultRenderer customColumns={customColumns} {...otherParams}>
-      {ServiceList}
       {PodsList}
     </DefaultRenderer>
   );

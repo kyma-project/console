@@ -2,7 +2,7 @@ import React from 'react';
 import { getComponentForList } from './../App/App';
 
 export const NamespacesDetails = DefaultRenderer => ({ ...otherParams }) => {
-  const params = {
+  const limitRangesParams = {
     hasDetailsView: false,
     resourceUrl: `/api/v1/namespaces/${otherParams.resourceName}/limitranges`,
     resourceType: 'limitranges',
@@ -11,7 +11,29 @@ export const NamespacesDetails = DefaultRenderer => ({ ...otherParams }) => {
     showTitle: true,
   };
 
-  const LimitrangesList = getComponentForList('limitrangesList', params);
+  const LimitrangesList = getComponentForList(
+    'limitrangesList',
+    limitRangesParams,
+  );
 
-  return <DefaultRenderer {...otherParams}>{LimitrangesList}</DefaultRenderer>;
+  const resourceQuotasParams = {
+    hasDetailsView: false,
+    resourceUrl: `/api/v1/namespaces/${otherParams.resourceName}/resourcequotas`,
+    resourceType: 'resourcequotas',
+    namespace: otherParams.resourceName,
+    isCompact: true,
+    showTitle: true,
+  };
+
+  const ResourceQuotasList = getComponentForList(
+    'resourcequotaslist',
+    resourceQuotasParams,
+  );
+
+  return (
+    <DefaultRenderer {...otherParams}>
+      {LimitrangesList}
+      {ResourceQuotasList}
+    </DefaultRenderer>
+  );
 };

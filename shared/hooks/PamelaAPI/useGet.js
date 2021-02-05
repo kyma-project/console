@@ -4,7 +4,7 @@ import { useMicrofrontendContext } from '../../contexts/MicrofrontendContext';
 import { useConfig } from '../../contexts/ConfigContext';
 
 const useGetHook = processDataFn =>
-  function(path, { pollingInterval, onDataReceived }) {
+  function(path, { pollingInterval, onDataReceived, filter }) {
     const isHookMounted = React.useRef(true); // becomes 'false' after the hook is unmounted to avoid performing any async actions afterwards
     const [data, setData] = React.useState(null);
     const [loading, setLoading] = React.useState(false);
@@ -67,20 +67,25 @@ const useGetHook = processDataFn =>
     };
   };
 
-export const useGetList = useGetHook(handleListDataReceived);
+export const useGetList = filter => useGetHook(handleListDataReceived(filter));
 export const useGet = useGetHook(handleSingleDataReceived);
 
-function handleListDataReceived(newData, oldData, setDataFn) {
-  if (
-    !oldData || // current data is empty and we received some. There's no doubdt we should update.
-    oldData.length !== newData.items.length || // current and received items are different length. We need to update.
-    !newData.items.every(
-      (newItem, index) =>
-        newItem.metadata.resourceVersion ===
-        oldData[index].metadata.resourceVersion,
-    ) // current and received items are the same length but the items might have changed. Compare its resourceVersion to check it.
-  )
-    setDataFn(newData.items);
+function handleListDataReceived(filter) {
+  return (newData, oldData, setDataFn) => {
+    if (filter) {
+      newData.items = newData.items.filter(filter);
+    }
+    if (
+      !oldData || // current data is empty and we received some. There's no doubdt we should update.
+      oldData.length !== newData.items.length || // current and received items are different length. We need to update.
+      !newData.items.every(
+        (newItem, index) =>
+          newItem.metadata.resourceVersion ===
+          oldData[index].metadata.resourceVersion,
+      ) // current and received items are the same length but the items might have changed. Compare its resourceVersion to check it.
+    )
+      setDataFn(newData.items);
+  };
 }
 
 function handleSingleDataReceived(newData, oldData, setDataFn) {

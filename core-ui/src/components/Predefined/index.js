@@ -1,4 +1,6 @@
+export * from './Deployment.details';
 export * from './Replicaset.details';
 export * from './Namespace.details';
 export * from './Replicasets.list';
+export * from './Pods.details.js';
 export * from './Pods.list.js';

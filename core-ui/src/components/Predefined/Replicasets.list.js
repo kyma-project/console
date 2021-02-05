@@ -14,11 +14,10 @@ const MySuperPredefinedList = ({
   hasDetailsView,
 }) => {
   const { /*loading = true, error, */ data: resources } = useGetList(
-    resourceUrl,
-    {
-      pollingInterval: 3000,
-    },
-  );
+    () => true,
+  )(resourceUrl, {
+    pollingInterval: 3000,
+  });
 
   const params = {
     hasDetailsView: false,

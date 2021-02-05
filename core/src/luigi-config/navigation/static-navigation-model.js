@@ -127,7 +127,7 @@ export function getStaticChildrenNodesForNamespace() {
         '/namespaces/:namespaceId/deployments?' +
         toSearchParamsString({
           resourceApiPath: '/apis/apps/v1',
-          hasDetailsView: false
+          hasDetailsView: true
         }),
       viewGroup: coreUIViewGroupName,
       navigationContext: 'deployments',
@@ -139,7 +139,10 @@ export function getStaticChildrenNodesForNamespace() {
               pathSegment: ':deploymentName',
               viewUrl:
                 config.coreModuleUrl +
-                '/home/namespaces/:namespaceId/deployments/:deploymentName'
+                '/namespaces/:namespaceId/deployments/:deploymentName?' +
+                toSearchParamsString({
+                  resourceApiPath: '/apis/apps/v1',
+                }),
             }
           ]
         }
@@ -165,7 +168,7 @@ export function getStaticChildrenNodesForNamespace() {
         '/namespaces/:namespaceId/services?' +
         toSearchParamsString({
           resourceApiPath: '/api/v1',
-          hasDetailsView: false
+          hasDetailsView: true
         }),
       keepSelectedForChildren: true,
       viewGroup: coreUIViewGroupName,
@@ -177,8 +180,11 @@ export function getStaticChildrenNodesForNamespace() {
             {
               pathSegment: ':serviceName',
               viewUrl:
-                config.coreModuleUrl +
-                '/home/namespaces/:namespaceId/services/details/:serviceName',
+              config.coreModuleUrl +
+                '/namespaces/:namespaceId/services/:serviceName?' +
+                toSearchParamsString({
+                  resourceApiPath: '/api/v1',
+                }),
               viewGroup: coreUIViewGroupName
             }
           ]

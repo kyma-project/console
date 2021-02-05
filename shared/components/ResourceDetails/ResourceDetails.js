@@ -1,4 +1,5 @@
 import React from 'react';
+import LuigiClient from '@luigi-project/client';
 import PropTypes from 'prop-types';
 import Moment from 'react-moment';
 import jsyaml from 'js-yaml';
@@ -16,6 +17,7 @@ import {
   useNotification,
 } from '../..';
 import CustomPropTypes from '../../typechecking/CustomPropTypes';
+import { handleDelete } from '../GenericList/actionHandlers/simpleDelete';
 
 ResourceDetails.propTypes = {
   customColumns: CustomPropTypes.customColumnsType,
@@ -47,9 +49,7 @@ export function ResourceDetails(props) {
 
   if (loading) return 'Loading...';
   if (error) return `Error: ${error.message}`;
-  console.log('resource', resource, 'resourceUrl', props.resourceUrl);
 
-  console.log('list resourceUrl', props.resourceUrl);
   return (
     <YamlEditorProvider>
       {resource && (
@@ -76,6 +76,7 @@ function Resource({
   deleteResourceMutation,
   namespace,
   resourceName,
+  filter,
 }) {
   const setEditedSpec = useYamlEditor();
   const notification = useNotification();
@@ -135,19 +136,30 @@ function Resource({
   };
 
   async function handleResourceDelete() {
-    try {
-      await deleteResourceMutation(resourceUrl);
-      notification.notifySuccess({
-        title: 'Succesfully deleted Resource: ' + resourceType,
-      });
-    } catch (e) {
-      console.error(e);
-      notification.notifyError({
-        title: 'Failed to delete the Resource',
-        content: e.message,
-      });
-      throw e;
-    }
+    return await handleDelete(
+      resourceType,
+      null,
+      resourceName,
+      () => deleteResourceMutation(resourceUrl),
+      () =>
+        LuigiClient.linkManager()
+          .fromClosestContext()
+          .navigate('/'),
+    );
+    // try {
+    //   await deleteResourceMutation(resourceUrl);
+    //   notification.notifySuccess({
+    //     title: 'Succesfully deleted Resource: ' + resourceType,
+    //   });
+    //   ;
+    // } catch (e) {
+    //   console.error(e);
+    //   notification.notifyError({
+    //     title: 'Failed to delete the Resource',
+    //     content: e.message,
+    //   });
+    //   throw e;
+    // }
   }
 
   return (

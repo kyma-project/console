@@ -28,7 +28,6 @@ const calculatePodState = pod => {
 };
 
 const badgeType = status => {
-  console.log(status);
   switch (status) {
     case 'Running':
       return 'success';

@@ -92,6 +92,7 @@ export const getComponentForDetails = getComponentFor(
 
 function RoutedResourcesList({ match }) {
   const queryParams = new URLSearchParams(window.location.search);
+  console.log(queryParams);
   const resourceUrl =
     queryParams.get('resourceApiPath') + window.location.pathname;
 

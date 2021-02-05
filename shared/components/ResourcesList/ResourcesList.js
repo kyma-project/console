@@ -26,6 +26,7 @@ ResourcesList.propTypes = {
   hasDetailsView: PropTypes.bool,
   isCompact: PropTypes.bool,
   showTitle: PropTypes.bool,
+  filter: PropTypes.func,
 };
 
 ResourcesList.defaultProps = {
@@ -55,17 +56,15 @@ function Resources({
   customColumns,
   hasDetailsView,
   showTitle,
+  filter,
 }) {
   const setEditedSpec = useYamlEditor();
   const notification = useNotification();
   const updateResourceMutation = useUpdate(resourceUrl);
   const deleteResourceMutation = useDelete(resourceUrl);
-  const {
-    loading = true,
-    error,
-    data: resources,
-    silentRefetch,
-  } = useGetList(resourceUrl, { pollingInterval: 3000 });
+  const { loading = true, error, data: resources, silentRefetch } = useGetList(
+    filter,
+  )(resourceUrl, { pollingInterval: 3000 });
 
   const handleSaveClick = resourceData => async newYAML => {
     try {
