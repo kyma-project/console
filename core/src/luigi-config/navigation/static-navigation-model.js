@@ -46,9 +46,9 @@ export function getStaticChildrenNodesForNamespace() {
       label: 'Overview',
       order: -1,
       viewUrl: config.coreModuleUrl + '/namespaces/:namespaceId?' +
-      toSearchParamsString({
-        resourceApiPath: '/api/v1',
-      }),
+        toSearchParamsString({
+          resourceApiPath: '/api/v1',
+        }),
       icon: 'product',
       viewGroup: coreUIViewGroupName
     },
@@ -180,7 +180,7 @@ export function getStaticChildrenNodesForNamespace() {
             {
               pathSegment: ':serviceName',
               viewUrl:
-              config.coreModuleUrl +
+                config.coreModuleUrl +
                 '/namespaces/:namespaceId/services/:serviceName?' +
                 toSearchParamsString({
                   resourceApiPath: '/api/v1',
