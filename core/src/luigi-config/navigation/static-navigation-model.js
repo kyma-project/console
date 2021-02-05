@@ -219,7 +219,7 @@ export function getStaticChildrenNodesForNamespace() {
         '/namespaces/:namespaceId/oauth2clients?' +
         toSearchParamsString({
           resourceApiPath: '/apis/hydra.ory.sh/v1alpha1',
-          hasDetailsView: false
+          hasDetailsView: true
         }),
       viewGroup: coreUIViewGroupName,
       keepSelectedForChildren: true,
@@ -238,7 +238,10 @@ export function getStaticChildrenNodesForNamespace() {
               pathSegment: ':clientName',
               viewUrl:
                 config.coreModuleUrl +
-                '/home/namespaces/:namespaceId/oauth-clients/details/:clientName',
+                '/namespaces/:namespaceId/oauth2clients/:clientName?' +
+                toSearchParamsString({
+                  resourceApiPath: '/apis/hydra.ory.sh/v1alpha1',
+                }),
               viewGroup: coreUIViewGroupName
             }
           ]
@@ -255,20 +258,23 @@ export function getStaticChildrenNodesForNamespace() {
         '/namespaces/:namespaceId/roles?' +
         toSearchParamsString({
           resourceApiPath: '/apis/rbac.authorization.k8s.io/v1',
-          hasDetailsView: false
+          hasDetailsView: true
         }),
       keepSelectedForChildren: true,
       viewGroup: coreUIViewGroupName,
       navigationContext: 'permissions',
       children: [
         {
-          pathSegment: 'roles',
+          pathSegment: 'details',
           children: [
             {
               pathSegment: ':roleName',
               viewUrl:
                 config.coreModuleUrl +
-                '/home/namespaces/:namespaceId/roles/:roleName',
+                '/namespaces/:namespaceId/roles/:roleName?' +
+                toSearchParamsString({
+                  resourceApiPath: '/apis/rbac.authorization.k8s.io/v1',
+                }),
               viewGroup: coreUIViewGroupName
             }
           ]
@@ -414,20 +420,23 @@ export function getStaticRootNodes(namespaceChildrenNodesResolver) {
         '/clusterroles?' +
         toSearchParamsString({
           resourceApiPath: '/apis/rbac.authorization.k8s.io/v1',
-          hasDetailsView: false
+          hasDetailsView: true
           // limit: 2
         }),
       keepSelectedForChildren: true,
       viewGroup: coreUIViewGroupName,
       children: [
         {
-          pathSegment: 'roles',
+          pathSegment: 'details',
           children: [
             {
               pathSegment: ':roleName',
               viewUrl:
                 config.coreModuleUrl +
-                '/home/global-permission/roles/:roleName',
+                '/clusterroles/:roleName?' +
+                toSearchParamsString({
+                  resourceApiPath: '/apis/rbac.authorization.k8s.io/v1',
+                }),
               viewGroup: coreUIViewGroupName
             }
           ]
