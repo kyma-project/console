@@ -22,23 +22,8 @@
 //   });
 // }
 
-import React from 'react';
-import { useMicrofrontendContext } from 'react-shared';
-
 export default function NamespaceList() {
-  const { idToken } = useMicrofrontendContext();
-  const [namespaces, setNamespaces] = React.useState(null);
-
-  React.useEffect(() => {
-    fetch('http://localhost:3001/api/v1/namespaces/', {
-      headers: { Authorization: 'Bearer ' + idToken },
-    })
-      .then(res => res.json())
-      .then(list => setNamespaces(list.items));
-  }, []);
-
-  return `this is namespace list with (${namespaces?.length ||
-    'some'}) namespaces`;
+  return 'namespace list';
 }
 
 // export default function NamespaceList() {

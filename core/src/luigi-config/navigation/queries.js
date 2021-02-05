@@ -1,4 +1,5 @@
 import { extractKymaVersion } from './util';
+import { config } from './../config';
 
 function createHeaders(token) {
   return { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' };
@@ -38,7 +39,7 @@ export function fetchConsoleInitData(token) {
   }
   // we are doing SSRR query separately as it's requires a request body
   // vide components/console-backend-service/internal/domain/k8s/selfsubjectrules_resolver.go
-  const ssrrQuery = fetch(`http://localhost:3001${'/apis/authorization.k8s.io/v1/selfsubjectrulesreviews'}`, {
+  const ssrrQuery = fetch(`${config.pamelaApiUrl}${'/apis/authorization.k8s.io/v1/selfsubjectrulesreviews'}`, {
     method: 'POST',
     body: JSON.stringify(ssrr),
     headers: createHeaders(token), 
@@ -48,7 +49,7 @@ export function fetchConsoleInitData(token) {
     backendModules,
     clusterMicroFrontends,
     kymaVersion,
-  ].map(({ path, selector }) => fetch(`http://localhost:3001${path}`, {
+  ].map(({ path, selector }) => fetch(`${config.pamelaApiUrl}${path}`, {
     headers: createHeaders(token),
   }).then(res => res.json()).then(selector));
 
@@ -57,13 +58,13 @@ export function fetchConsoleInitData(token) {
 }
 
 export function fetchMicrofrontends(namespaceName, token) {
-  return fetch(`http://localhost:3001/apis/ui.kyma-project.io/v1alpha1/namespaces/${namespaceName}/microfrontends`, {
+  return fetch(`${config.pamelaApiUrl}/apis/ui.kyma-project.io/v1alpha1/namespaces/${namespaceName}/microfrontends`, {
     headers: createHeaders(token),
   }).then(res => res.json()).then(mapMicrofrontends);
 }
 
 export function fetchNamespaces(token) {
-  return fetch('http://localhost:3001/api/v1/namespaces/', {
+  return fetch(`${config.pamelaApiUrl}/api/v1/namespaces/`, {
     headers: createHeaders(token),
   }).then(res => res.json()).then(list => list.items.map(ns => ns.metadata));
 }

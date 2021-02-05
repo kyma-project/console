@@ -5,3 +5,4 @@ export * from './Pods.details.js';
 export * from './Replicaset.details';
 export * from './Secret.details';
 export * from './Pods.list.js';
+export * from './Service.details.js';
