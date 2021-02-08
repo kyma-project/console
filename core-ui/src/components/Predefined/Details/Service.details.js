@@ -1,5 +1,5 @@
 import React from 'react';
-import { getComponentForList } from 'components/App/App';
+import { getComponentForList } from 'shared/abc';
 
 export const ServicesDetails = DefaultRenderer => ({ ...otherParams }) => {
   const ApiRuleList = getComponentForList('apiruleList', {

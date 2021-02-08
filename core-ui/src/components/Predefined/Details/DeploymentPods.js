@@ -1,5 +1,5 @@
 import React from 'react';
-import { getComponentForList } from './../App/App';
+import { getComponentForList } from 'shared/abc';
 import { useGetList } from 'react-shared';
 
 export function DeploymentPods({ namespace, deploymentName }) {

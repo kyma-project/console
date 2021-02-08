@@ -1,5 +1,6 @@
 import React from 'react';
-import { getComponentForList } from './../App/App';
+import { getComponentForList } from 'shared/abc';
+
 export const ReplicasetsDetails = DefaultRenderer => ({ ...otherParams }) => {
   const customColumns = [
     {
