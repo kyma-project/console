@@ -6,7 +6,6 @@ export const ReplicasetsDetails = DefaultRenderer => ({ ...otherParams }) => {
     {
       header: 'Limits',
       value: resource => {
-        console.log(resource);
         const containers = resource.spec.template.spec.containers || [];
         return (
           <>
