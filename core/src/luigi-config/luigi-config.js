@@ -13,7 +13,7 @@ import { onQuotaExceed } from './luigi-event-handlers';
 export const NODE_PARAM_PREFIX = `~`;
 
 (async () => {
-  saveAuthParamsIfPresent(location);
+  await saveAuthParamsIfPresent(location);
   const luigiConfig = {
     auth: await createAuth(),
     communication,
