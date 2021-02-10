@@ -4,7 +4,7 @@ import { onError } from 'apollo-link-error';
 import { ApolloLink } from 'apollo-link';
 import { split } from 'apollo-link';
 
-import { SubscriptionClient } from 'subscriptions-transport-ws';
+// import { SubscriptionClient } from 'subscriptions-transport-ws';
 import { createHttpLink } from 'apollo-link-http';
 import { setContext } from 'apollo-link-context';
 import React, { useEffect, useState } from 'react';
@@ -92,23 +92,23 @@ export const ApolloClientProvider = ({ children, createClient, provider }) => {
   return client && <Provider client={client}>{children}</Provider>;
 };
 
-class WebSocketLink extends ApolloLink {
-  constructor(paramsOrClient) {
-    super();
+// class WebSocketLink extends ApolloLink {
+//   constructor(paramsOrClient) {
+//     super();
 
-    if (paramsOrClient instanceof SubscriptionClient) {
-      this.subscriptionClient = paramsOrClient;
-    } else {
-      this.subscriptionClient = new SubscriptionClient(
-        paramsOrClient.uri,
-        paramsOrClient.options,
-        null,
-        ['graphql-ws', paramsOrClient.token],
-      );
-    }
-  }
+//     if (paramsOrClient instanceof SubscriptionClient) {
+//       this.subscriptionClient = paramsOrClient;
+//     } else {
+//       this.subscriptionClient = new SubscriptionClient(
+//         paramsOrClient.uri,
+//         paramsOrClient.options,
+//         null,
+//         ['graphql-ws', paramsOrClient.token],
+//       );
+//     }
+//   }
 
-  request(operation) {
-    return this.subscriptionClient.request(operation);
-  }
-}
+//   request(operation) {
+//     return this.subscriptionClient.request(operation);
+//   }
+// }

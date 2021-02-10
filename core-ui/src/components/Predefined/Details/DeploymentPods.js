@@ -18,7 +18,7 @@ export function DeploymentPods({ namespace, deploymentName }) {
         ),
     );
     setOwnerReplicaName(ownerReplica?.metadata.name);
-  }, [replicas]);
+  }, [replicas]); // eslint-disable-line react-hooks/exhaustive-deps
 
   if (!ownerReplicaName) {
     return 'Loading...';
