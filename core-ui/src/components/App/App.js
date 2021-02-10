@@ -5,7 +5,10 @@ import { withTitle } from 'react-shared';
 import LambdaDetails from '../Lambdas/LambdaDetails';
 
 import { FUNCTIONS_WINDOW_TITLE } from 'components/Lambdas/constants';
-import { getComponentForList, getComponentForDetails } from 'shared/abc';
+import {
+  getComponentForList,
+  getComponentForDetails,
+} from 'shared/getComponents';
 
 export default function App() {
   return (
