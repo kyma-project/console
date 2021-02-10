@@ -90,7 +90,7 @@ if [ $HOST != "kyma.local" ]; then
 fi
 
 # add new cluster->localhost binding to hosts file
-echo "127.0.0.1 console-dev.$DOMAIN compass-dev.$DOMAIN console-dev.kyma.local localhost"| sudo tee -a /etc/hosts
+echo "127.0.0.1 console-dev.$DOMAIN console-dev.kyma.local localhost"| sudo tee -a /etc/hosts
 
 echo "Added ClusterConfig to Console"
 echo ""

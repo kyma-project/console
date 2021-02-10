@@ -43,7 +43,6 @@ export * from './utils/handleSubscriptionArrayEvent';
 export * from './utils/handleSubscriptionEvent';
 export * from './utils/getComponentForResource';
 export * from './components/GenericList/actionHandlers/simpleDelete';
-export * from './components/CredentialForms';
 export * from './constants/constants';
 
 export * from './components/ModalWithForm/ModalWithForm';

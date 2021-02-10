@@ -1,16 +1,19 @@
 import { extractKymaVersion } from './util';
-import { config } from './../config';
+import { config } from '../config';
 
 function createHeaders(token) {
-  return { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' };
+  return {
+    Authorization: `Bearer ${token}`,
+    'Content-Type': 'application/json'
+  };
 }
 
 function mapMicrofrontends(microFrontendList) {
-  return microFrontendList.items.map(({metadata, spec}) => ({
+  return microFrontendList.items.map(({ metadata, spec }) => ({
     name: metadata.name,
     category: spec.category,
     viewBaseUrl: spec.viewBaseUrl,
-    navigationNodes: spec.navigationNodes,
+    navigationNodes: spec.navigationNodes
   }));
 }
 
@@ -22,49 +25,68 @@ export function fetchConsoleInitData(token) {
 
   const clusterMicroFrontends = {
     path: '/apis/ui.kyma-project.io/v1alpha1/clustermicrofrontends',
-    selector: data => ({ clusterMicroFrontends: data.items.map(cMF => ({ ...cMF.spec, ...cMF.metadata })) }),
-  }
+    selector: data => ({
+      clusterMicroFrontends: data.items.map(cMF => ({
+        ...cMF.spec,
+        ...cMF.metadata
+      }))
+    })
+  };
 
   const kymaVersion = {
     path: '/apis/apps/v1/namespaces/kyma-installer/deployments/kyma-installer',
-    selector: data => ({ versionInfo: extractKymaVersion(data) }),
-  }
+    selector: data => ({ versionInfo: extractKymaVersion(data) })
+  };
 
   const ssrr = {
     typeMeta: {
-      kind: "SelfSubjectRulesReview",
-			aPIVersion: "authorization.k8s.io/v1",
+      kind: 'SelfSubjectRulesReview',
+      aPIVersion: 'authorization.k8s.io/v1'
     },
     spec: { namespace: '*' }
-  }
+  };
   // we are doing SSRR query separately as it's requires a request body
   // vide components/console-backend-service/internal/domain/k8s/selfsubjectrules_resolver.go
-  const ssrrQuery = fetch(`${config.pamelaApiUrl}${'/apis/authorization.k8s.io/v1/selfsubjectrulesreviews'}`, {
-    method: 'POST',
-    body: JSON.stringify(ssrr),
-    headers: createHeaders(token), 
-  }).then(res => res.json()).then(res => ({selfSubjectRules: res.status.resourceRules}));
+  const ssrrQuery = fetch(
+    `${config.pamelaApiUrl}/apis/authorization.k8s.io/v1/selfsubjectrulesreviews`,
+    {
+      method: 'POST',
+      body: JSON.stringify(ssrr),
+      headers: createHeaders(token)
+    }
+  )
+    .then(res => res.json())
+    .then(res => ({ selfSubjectRules: res.status.resourceRules }));
 
-  const promises = [
-    backendModules,
-    clusterMicroFrontends,
-    kymaVersion,
-  ].map(({ path, selector }) => fetch(`${config.pamelaApiUrl}${path}`, {
-    headers: createHeaders(token),
-  }).then(res => res.json()).then(selector));
+  const promises = [backendModules, clusterMicroFrontends, kymaVersion].map(
+    ({ path, selector }) =>
+      fetch(`${config.pamelaApiUrl}${path}`, {
+        headers: createHeaders(token)
+      })
+        .then(res => res.json())
+        .then(selector)
+  );
 
-  return Promise.all([...promises, ssrrQuery])
-    .then(res => Object.assign(...res));
+  return Promise.all([...promises, ssrrQuery]).then(res =>
+    Object.assign(...res)
+  );
 }
 
 export function fetchMicrofrontends(namespaceName, token) {
-  return fetch(`${config.pamelaApiUrl}/apis/ui.kyma-project.io/v1alpha1/namespaces/${namespaceName}/microfrontends`, {
-    headers: createHeaders(token),
-  }).then(res => res.json()).then(mapMicrofrontends);
+  return fetch(
+    `${config.pamelaApiUrl}/apis/ui.kyma-project.io/v1alpha1/namespaces/${namespaceName}/microfrontends`,
+    {
+      headers: createHeaders(token)
+    }
+  )
+    .then(res => res.json())
+    .then(mapMicrofrontends);
 }
 
 export function fetchNamespaces(token) {
   return fetch(`${config.pamelaApiUrl}/api/v1/namespaces/`, {
-    headers: createHeaders(token),
-  }).then(res => res.json()).then(list => list.items.map(ns => ns.metadata));
+    headers: createHeaders(token)
+  })
+    .then(res => res.json())
+    .then(list => list.items.map(ns => ns.metadata));
 }

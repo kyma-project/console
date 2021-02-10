@@ -33,7 +33,6 @@
   "linterOptions": {
     "exclude": [
       "*/node_modules/**/*",
-      "*/compass/**/*",
       "*/add-ons/**",
       "*/components/react/**/*",
       "*/core/**/*",

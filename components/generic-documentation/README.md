@@ -9,4 +9,4 @@ Generic Documentation is a Console-dedicated wrapper for the [Documentation Comp
 - AsyncAPI
 - OData
 
-Generic Documentation provides individual layouts for documents and specifications rendered in the Console under the **docs-ui** (question mark icon on the top navigation panel), **Service Catalog**, and **Compass** views. These layouts are compliant with [Fiori 3 Fundamentals](https://sap.github.io/fundamental/) styling, for example in terms of navigation and tabs. Generic Documentation also downloads specification sources to the Console from such storage systems as MinIO.
+Generic Documentation provides individual layouts for documents and specifications rendered in the Console under the **docs-ui** (question mark icon on the top navigation panel) and **Service Catalog** views. These layouts are compliant with [Fiori 3 Fundamentals](https://sap.github.io/fundamental/) styling, for example in terms of navigation and tabs. Generic Documentation also downloads specification sources to the Console from such storage systems as MinIO.

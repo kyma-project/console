@@ -4,7 +4,6 @@
   "npmClient": "npm",
   "packages": [
     "core",
-    "compass",
     "service-catalog-ui",
     "add-ons",
     "logging",

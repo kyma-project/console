@@ -9,10 +9,6 @@ REACT_APP_graphqlApiUrlLocal="http://$REACT_APP_localDomain:3000/graphql"
 REACT_APP_subscriptionsApiUrl="wss://console-backend.$REACT_APP_domain/graphql"
 REACT_APP_subscriptionsApiUrlLocal="ws://$REACT_APP_localDomain:3000/graphql"
 
-REACT_APP_compassApiUrl="https://compass-gateway.$REACT_APP_domain/director/graphql"
-REACT_APP_compassDefaultTenant="3e64ebae-38b5-46a0-b1ed-9ccee153a0ae"
-REACT_APP_compassAutomaticDefaultScenario=true
-
 REACT_APP_authRedirectUri="http://$REACT_APP_localDomain:4200"
 REACT_APP_consoleClientId="console"
 REACT_APP_orgId="my-org-123"
@@ -25,7 +21,6 @@ REACT_APP_docsModuleUrl="http://$REACT_APP_localDomain:8003"
 REACT_APP_addOnsModuleUrl="http://$REACT_APP_localDomain:8004"
 REACT_APP_coreModuleUrl="http://$REACT_APP_localDomain:8889"
 REACT_APP_logsModuleUrl="http://$REACT_APP_localDomain:8005"
-REACT_APP_compassModuleUrl="http://$REACT_APP_localDomain:8888"
 
 REACT_APP_HELM_BROKER_REPO_URL_PREFIXES="https://|git::|github.com/|bitbucket.org/|http://"
 

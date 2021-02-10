@@ -12,7 +12,6 @@ The Console project consists of the following UI projects:
 - [`Service-Catalog-UI`](./service-catalog-ui) - The UI layer for Service Catalog, Instances and Brokers
 - [`Addons`](./add-ons) - The view for displaying Namespace-scoped and cluster-wide Addons
 - [`Log UI`](./logging) - The logs view
-- [`Compass`](./compass) - The **experimental** view for the [Compass](https://github.com/kyma-incubator/compass/blob/master/README.md) project.
 - [`Tests`](./tests) - Acceptance and end-to-end tests
 
 The Console also includes React and Angular libraries:
@@ -20,7 +19,7 @@ The Console also includes React and Angular libraries:
 - [`React common`](./common) - common functionalities for React applications
 - [`React components`](./components/react) - components for React applications (it will be replaced by `Shared components`)
 - [`Shared components`](./components/shared) - new versions of components for React applications written in TypeScript
-- [`Generic documentation`](./components/generic-documentation) - a React component that uses [`@kyma-project/documentation-component`](https://github.com/kyma-incubator/documentation-component) for displaying documentation and various specifications in the [`Service-Catalog-UI`](./service-catalog-ui), and [`Compass`](./compass) views.
+- [`Generic documentation`](./components/generic-documentation) - a React component that uses [`@kyma-project/documentation-component`](https://github.com/kyma-incubator/documentation-component) for displaying documentation and various specifications in the [`Service-Catalog-UI`](./service-catalog-ui) view.
 
 ## Prerequisites
 

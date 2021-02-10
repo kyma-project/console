@@ -11,7 +11,7 @@ import { TabProps } from '@kyma-project/components';
 import { ClusterAssetGroup, AssetGroup } from '@kyma-project/common';
 
 import { markdownRE, openApiRE, asyncApiRE, odataRE } from './render-engines';
-import { CatalogUILayout, InstancesUILayout, CompassUILayout } from './layouts';
+import { CatalogUILayout, InstancesUILayout } from './layouts';
 import { MarkdownRenderer } from './renderers';
 import {
   disableInternalLinksMutationPlugin,
@@ -68,9 +68,6 @@ function renderContent(type: LayoutType, props?: any): React.ReactNode {
     case LayoutType.INSTANCES_UI: {
       return <InstancesUILayout {...props} renderers={RENDERERS} />;
     }
-    case LayoutType.COMPASS_UI: {
-      return <CompassUILayout renderers={RENDERERS} />;
-    }
     default:
       return null;
   }
@@ -79,7 +76,6 @@ function renderContent(type: LayoutType, props?: any): React.ReactNode {
 export enum LayoutType {
   CATALOG_UI = 'catalog-ui',
   INSTANCES_UI = 'instances-ui',
-  COMPASS_UI = 'compass-ui',
 }
 
 export interface GenericDocumentationProps {
