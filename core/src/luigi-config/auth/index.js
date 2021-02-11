@@ -22,7 +22,7 @@ export const createAuth = async () => {
     return {};
   }
 
-  const { issuerUrl, clientId, responseType, responseMode } = params;
+  const { issuerUrl, clientId, responseType, responseMode, scope } = params;
 
   const providerMetadata = await fetchOidcProviderMetadata(issuerUrl);
   return {
@@ -31,8 +31,7 @@ export const createAuth = async () => {
         idpProvider: OpenIdConnect,
         authority: issuerUrl,
         client_id: clientId,
-        scope:
-        'audience:server:client_id:kyma-client audience:server:client_id:console openid email profile groups',
+        scope: scope,
         response_type: responseType,
         response_mode: responseMode,
         automaticSilentRenew: true,
