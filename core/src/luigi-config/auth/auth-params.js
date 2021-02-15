@@ -10,7 +10,7 @@ function getResponseParams(usePKCE = true) {
             responseMode: 'query',
         };
     } else {
-        return { responseType: 'token id_token' };
+        return { responseType: 'id_token' };
     }
 }
 
@@ -20,10 +20,18 @@ export async function saveAuthParamsIfPresent(location) {
         const decoded = await encoder.decompress(params);
         const parsed = JSON.parse(decoded);
         const responseParams = getResponseParams(parsed.usePKCE);
-        localStorage.setItem(PARAMS_KEY, JSON.stringify({...parsed, ...responseParams}));
+        const scope = getScope(parsed.scope);
+        localStorage.setItem(PARAMS_KEY, JSON.stringify({...parsed, ...responseParams, ...scope}));
     }
 }
 
 export function getAuthParams() {
     return JSON.parse(localStorage.getItem(PARAMS_KEY) || "null");
+}
+
+function getScope(customScope) {
+  const scope = customScope ? customScope : 'audience:server:client_id:kyma-client audience:server:client_id:console openid email profile groups'
+  return {
+      scope: scope
+  };
 }
