@@ -30,7 +30,7 @@ export function getAuthParams() {
 }
 
 function getScope(customScope) {
-  const scope = customScope ? customScope : 'audience:server:client_id:kyma-client audience:server:client_id:console openid email profile groups'
+  const scope = customScope ? customScope : 'openid'
   return {
       scope: scope
   };
