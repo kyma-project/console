@@ -250,9 +250,9 @@ export function getStaticChildrenNodesForNamespace() {
     },
     {
       category: 'Configuration',
-      pathSegment: 'permissions',
-      navigationContext: 'permissions',
-      label: 'Permissions',
+      pathSegment: 'roles',
+      navigationContext: 'roles',
+      label: 'Roles',
       viewUrl:
         config.coreModuleUrl +
         '/namespaces/:namespaceId/roles?' +
@@ -262,7 +262,6 @@ export function getStaticChildrenNodesForNamespace() {
         }),
       keepSelectedForChildren: true,
       viewGroup: coreUIViewGroupName,
-      navigationContext: 'permissions',
       children: [
         {
           pathSegment: 'details',
@@ -272,6 +271,38 @@ export function getStaticChildrenNodesForNamespace() {
               viewUrl:
                 config.coreModuleUrl +
                 '/namespaces/:namespaceId/roles/:roleName?' +
+                toSearchParamsString({
+                  resourceApiPath: '/apis/rbac.authorization.k8s.io/v1',
+                }),
+              viewGroup: coreUIViewGroupName
+            }
+          ]
+        }
+      ]
+    },
+    {
+      category: 'Configuration',
+      pathSegment: 'role-bindings',
+      navigationContext: 'role-bindings',
+      label: 'Role Bindings',
+      viewUrl:
+        config.coreModuleUrl +
+        '/namespaces/:namespaceId/rolebindings?' +
+        toSearchParamsString({
+          resourceApiPath: '/apis/rbac.authorization.k8s.io/v1',
+          hasDetailsView: true
+        }),
+      keepSelectedForChildren: true,
+      viewGroup: coreUIViewGroupName,
+      children: [
+        {
+          pathSegment: 'details',
+          children: [
+            {
+              pathSegment: ':roleBindingName',
+              viewUrl:
+                config.coreModuleUrl +
+                '/namespaces/:namespaceId/roles/:roleBindingName?' +
                 toSearchParamsString({
                   resourceApiPath: '/apis/rbac.authorization.k8s.io/v1',
                 }),
@@ -407,9 +438,9 @@ export function getStaticRootNodes(namespaceChildrenNodesResolver) {
       onNodeActivation: downloadKubeconfig
     },
     {
-      pathSegment: 'global-permissions',
-      navigationContext: 'global-permissions',
-      label: 'Global Permissions',
+      pathSegment: 'cluster-roles',
+      navigationContext: 'cluster-roles',
+      label: 'Cluster Roles',
       category: {
         label: 'Administration',
         icon: 'settings',
@@ -449,6 +480,44 @@ export function getStaticRootNodes(namespaceChildrenNodesResolver) {
           verbs: ['create']
         }
       ]
+    },
+
+    {
+      pathSegment: 'cluster-role-bindings',
+      navigationContext: 'cluster-role-bindings',
+      label: 'Cluster Role Bindings',
+      category: {
+        label: 'Administration',
+        icon: 'settings',
+        collapsible: true
+      },
+      viewUrl:
+        config.coreModuleUrl +
+        '/clusterrolebindings?' +
+        toSearchParamsString({
+          resourceApiPath: '/apis/rbac.authorization.k8s.io/v1',
+          hasDetailsView: true
+        }),
+      keepSelectedForChildren: true,
+      viewGroup: coreUIViewGroupName,
+
+      children: [
+        {
+          pathSegment: 'details',
+          children: [
+            {
+              pathSegment: ':clusterRoleBindingName',
+              viewUrl:
+                config.coreModuleUrl +
+                '/clusterrolebindings/:clusterRoleBindingName?' +
+                toSearchParamsString({
+                  resourceApiPath: '/apis/rbac.authorization.k8s.io/v1',
+                }),
+              viewGroup: coreUIViewGroupName
+            }
+          ]
+        }
+      ],
     },
     {
       category: {
