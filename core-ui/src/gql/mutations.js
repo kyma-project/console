@@ -305,25 +305,6 @@ export const CREATE_RESOURCE = gql`
   }
 `;
 
-export const CREATE_CLUSTER_ROLE_BINDING = gql`
-  mutation createClusterRoleBinding(
-    $name: String!
-    $params: ClusterRoleBindingInput!
-  ) {
-    createClusterRoleBinding(name: $name, params: $params) {
-      name
-    }
-  }
-`;
-
-export const DELETE_CLUSTER_ROLE_BINDING = gql`
-  mutation deleteClusterRoleBinding($name: String!) {
-    deleteClusterRoleBinding(name: $name) {
-      name
-    }
-  }
-`;
-
 export const DELETE_SECRET = gql`
   mutation deleteSecret($namespace: String!, $name: String!) {
     deleteSecret(name: $name, namespace: $namespace) {
@@ -332,29 +313,9 @@ export const DELETE_SECRET = gql`
   }
 `;
 
-export const CREATE_ROLE_BINDING = gql`
-  mutation createRoleBinding(
-    $name: String!
-    $namespace: String!
-    $params: RoleBindingInput!
-  ) {
-    createRoleBinding(name: $name, namespace: $namespace, params: $params) {
-      name
-    }
-  }
-`;
-
 export const UPDATE_SECRET = gql`
   mutation updateSecret($namespace: String!, $name: String!, $secret: JSON!) {
     updateSecret(name: $name, namespace: $namespace, secret: $secret) {
-      name
-    }
-  }
-`;
-
-export const DELETE_ROLE_BINDING = gql`
-  mutation deleteRoleBinding($name: String!, $namespace: String!) {
-    deleteRoleBinding(name: $name, namespace: $namespace) {
       name
     }
   }
