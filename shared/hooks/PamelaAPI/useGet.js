@@ -4,7 +4,7 @@ import { useMicrofrontendContext } from '../../contexts/MicrofrontendContext';
 import { useConfig } from '../../contexts/ConfigContext';
 
 const useGetHook = processDataFn =>
-  function(path, { pollingInterval, onDataReceived, skip }) {
+  function(path, { pollingInterval, onDataReceived, filter }) {
     const isHookMounted = React.useRef(true); // becomes 'false' after the hook is unmounted to avoid performing any async actions afterwards
     const [data, setData] = React.useState(null);
     const [loading, setLoading] = React.useState(false);
@@ -13,7 +13,6 @@ const useGetHook = processDataFn =>
     const { fromConfig } = useConfig();
 
     const refetch = (isSilent, currentData) => async () => {
-      if (skip) return;
       if (!idToken || !isHookMounted.current) return;
       if (!isSilent) setLoading(true);
 
