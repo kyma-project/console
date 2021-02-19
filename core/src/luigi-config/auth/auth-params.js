@@ -17,8 +17,8 @@ function getResponseParams(usePKCE = true) {
 export async function saveAuthParamsIfPresent(location) {
     const params = new URL(location).searchParams.get('auth');
     if (params) {
-        const decoded = await encoder.decompress(params);
-        const parsed = JSON.parse(decoded);
+        const parsed = await encoder.decompress(params);
+        // const parsed = JSON.parse(decoded);
         const responseParams = getResponseParams(parsed.usePKCE);
         localStorage.setItem(PARAMS_KEY, JSON.stringify({...parsed, ...responseParams}));
     }

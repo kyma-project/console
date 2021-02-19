@@ -25,6 +25,7 @@ export function TextFormItem({
   onChange,
   defaultValue,
   inputRef,
+  inputProps,
 }) {
   return (
     <FormItem key={inputKey}>
@@ -40,6 +41,7 @@ export function TextFormItem({
         onChange={onChange}
         autoComplete="off"
         defaultValue={defaultValue}
+        {...inputProps}
       />
     </FormItem>
   );

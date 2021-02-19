@@ -29,6 +29,7 @@ export const LabelSelectorInput = ({
   labels = {},
   readonlyLabels = {},
   onChange,
+  showHelp = true,
 }) => {
   const [isValid, setValid] = useState(true);
   const inputRef = useRef(null);
@@ -91,11 +92,13 @@ export const LabelSelectorInput = ({
     <FormItem>
       <FormLabel>
         Labels
-        <InlineHelp
-          placement="bottom-right"
-          text="A key and value should be separated by a '=', a key cannot be empty, a key/value consists of alphanumeric characters, '-', '_' or '.', and must start and end with an alphanumeric character."
-          className="fd-has-margin-left-tiny"
-        />
+        {showHelp && (
+          <InlineHelp
+            placement="bottom-right"
+            text="A key and value should be separated by a '=', a key cannot be empty, a key/value consists of alphanumeric characters, '-', '_' or '.', and must start and end with an alphanumeric character."
+            className="fd-has-margin-left-tiny"
+          />
+        )}
       </FormLabel>
 
       <div className="fd-form__set">

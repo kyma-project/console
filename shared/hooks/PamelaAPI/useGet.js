@@ -97,3 +97,12 @@ function handleSingleDataReceived(newData, oldData, setDataFn) {
     setDataFn(newData);
   }
 }
+
+export const useSingleGet = () => {
+  const { idToken } = useMicrofrontendContext();
+  const { fromConfig } = useConfig();
+  return url =>
+    fetch(baseUrl(fromConfig) + url, {
+      headers: { Authorization: 'Bearer ' + idToken },
+    });
+};
