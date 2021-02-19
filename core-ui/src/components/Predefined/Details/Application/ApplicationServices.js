@@ -1,16 +1,16 @@
 import React from 'react';
 import { GenericList } from 'react-shared';
 
-export default function ApplicationServices({ spec }) {
+export default function ApplicationServices({ spec: applicationSpec }) {
   const headerRenderer = () => ['Name', 'APIs', 'Events'];
 
-  const entries = spec.services.map(e => ({
+  const entries = applicationSpec.services.map(e => ({
     displayName: e.displayName,
-    evenstCount: e.entries.filter(t => t.type === 'Events').length,
+    eventsCount: e.entries.filter(t => t.type === 'Events').length,
     apisCount: e.entries.filter(t => t.type === 'API').length,
   }));
 
-  const rowRenderer = e => [e.displayName, e.evenstCount, e.apisCount];
+  const rowRenderer = e => [e.displayName, e.apisCount, e.eventsCount];
 
   return (
     <GenericList

@@ -6,61 +6,25 @@ import {
   Menu,
   ComboboxInput,
 } from 'fundamental-react';
-import { Modal, useGetList } from 'react-shared';
+import {
+  Modal,
+  useGetList,
+  usePost,
+  useMicrofrontendContext,
+} from 'react-shared';
+import { BindableServicesList } from './BindableServicesList';
+import { createApplicationBinding } from './createApplicationBinding';
 
-function BigAssServicesList({ services }) {
-  const applicationHasAnyServices = services?.length > 0;
-
-  if (!applicationHasAnyServices) {
-    return (
-      <p className="fd-has-color-text-4 fd-has-margin-top-s fd-has-margin-bottom-s">
-        This Application doesn't expose any Service or Events.
-      </p>
-    );
-  } else {
-    console.log(services.length);
-    return (
-      <ul>
-        {services.map(service => {
-          console.log(service);
-          return <li>{service.displayName}</li>;
-        })}
-      </ul>
-    );
-  }
-}
-
-function CreateBindingForm({ application, namespaceNames }) {
+export default function CreateBindingModal({
+  application,
+  alreadyBoundNamespaces,
+}) {
+  const { systemNamespaces } = useMicrofrontendContext();
+  const [servicesToBind, setServicesToBind] = React.useState([]);
   const [namespaceName, setNamespaceName] = React.useState('');
 
-  return (
-    <FormSet>
-      <FormLabel required>Namespace</FormLabel>
-      <ComboboxInput
-        inputProps={{
-          value: namespaceName,
-          readOnly: true,
-        }}
-        placeholder="Choose namespace..."
-        className="namespace-combobox"
-        menu={
-          <Menu.List className="namespace-combobox__list">
-            {namespaceNames.map(name => (
-              <Menu.Item key={name} onClick={() => setNamespaceName(name)}>
-                {name}
-              </Menu.Item>
-            ))}
-          </Menu.List>
-        }
-      />
-      <FormLabel required>Applications & Events</FormLabel>
-      <BigAssServicesList services={application.spec.services} />
-    </FormSet>
-  );
-}
+  const postRequest = usePost();
 
-export default function CreateBindingModal({ application }) {
-  console.warn('TODO SYSTEM NAMESPACES');
   const { data, loading, error } = useGetList(() => true)(
     '/api/v1/namespaces',
     {},
@@ -72,20 +36,71 @@ export default function CreateBindingModal({ application }) {
     </Button>
   );
 
+  async function createBinding() {
+    const applicationBinding = createApplicationBinding(
+      application,
+      namespaceName,
+      servicesToBind,
+    );
+    try {
+      await postRequest(
+        `/apis/applicationconnector.kyma-project.io/v1alpha1/namespaces/${namespaceName}/applicationmappings`,
+        applicationBinding,
+      );
+    } catch (e) {
+      console.warn(e);
+    }
+  }
+
+  const namespaceNames =
+    data
+      ?.map(n => n.metadata.name)
+      .filter(name => !alreadyBoundNamespaces.includes(name))
+      .filter(name => !systemNamespaces.includes(name)) || [];
+
+  const disabledConfirm = !namespaceName || !servicesToBind.length;
+
   return (
     <Modal
       confirmText="Create"
       cancelText="Cancel"
       title="Create Namespace Binding"
       modalOpeningComponent={modalOpeningComponent}
+      onConfirm={createBinding}
+      disabledConfirm={disabledConfirm}
+      onHide={() => setNamespaceName('')}
     >
       {error && error.message}
       {loading && 'Loading...'}
       {data && (
-        <CreateBindingForm
-          application={application}
-          namespaceNames={data.map(n => n.metadata.name)}
-        />
+        <FormSet>
+          <FormLabel required>Namespace</FormLabel>
+          <ComboboxInput
+            inputProps={{
+              value: namespaceName,
+              readOnly: true,
+            }}
+            placeholder="Choose namespace..."
+            className="namespace-combobox"
+            menu={
+              <Menu.List className="namespace-combobox__list">
+                {namespaceNames.map(name => (
+                  <Menu.Item key={name} onClick={() => setNamespaceName(name)}>
+                    {name}
+                  </Menu.Item>
+                ))}
+                {!namespaceNames.length && (
+                  <Menu.Item>No namespaces to bind</Menu.Item>
+                )}
+              </Menu.List>
+            }
+          />
+          <BindableServicesList
+            services={[]}
+            availableServices={application.spec.services}
+            setServices={setServicesToBind}
+          />
+        </FormSet>
       )}
     </Modal>
   );

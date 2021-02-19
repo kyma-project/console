@@ -1,8 +1,13 @@
 import React from 'react';
+
 import CreateBindingModal from './CreateBindingModal';
-import { GenericList, useGetList } from 'react-shared';
+import EditNamespaceBinding from './EditNamespaceBinding';
+import ServicesBoundModal from './ServicesBoundModal';
+import { GenericList, useGetList, useDelete } from 'react-shared';
 
 export default function NamespaceBindings(application) {
+  const deleteRequest = useDelete();
+
   const { metadata, spec } = application;
   const { data, loading, error } = useGetList(
     aM => aM.metadata.name === metadata.name,
@@ -10,33 +15,36 @@ export default function NamespaceBindings(application) {
     pollingInterval: 3000,
   });
 
-  const headerRenderer = () => ['Name', 'Service & event bindings'];
-
+  const headerRenderer = () => ['Name', 'Service & event bindings', ''];
   const totalBindingsCount = spec.services.flatMap(s => s.entries).length;
-
-  const rowRenderer = ({ metadata }) => [
-    metadata.name,
-    // `${spec.services.length}/${totalBindingsCount}`,
+  const alreadyBoundNamespaces = data?.map(aM => aM.metadata.namespace) || [];
+  const rowRenderer = binding => [
+    <ServicesBoundModal binding={binding} />,
+    `${binding.spec.services.length}/${totalBindingsCount}`,
+    <EditNamespaceBinding binding={binding} application={application} />,
   ];
 
   const actions = [
     {
-      name: 'Unbind',
-      handler: binding => {
-        console.log(binding);
-      },
-    },
-    {
-      name: 'Edit',
-      handler: binding => {
-        console.log(binding);
+      name: 'Delete',
+      handler: async binding => {
+        try {
+          await deleteRequest(binding.metadata.selfLink);
+        } catch (e) {
+          console.warn(e);
+        }
       },
     },
   ];
 
   return (
     <GenericList
-      extraHeaderContent={<CreateBindingModal application={application} />}
+      extraHeaderContent={
+        <CreateBindingModal
+          application={application}
+          alreadyBoundNamespaces={alreadyBoundNamespaces}
+        />
+      }
       actions={actions}
       title="Namespace Bindings"
       showSearchField={false}
