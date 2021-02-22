@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`createApplicationBinding forms valid binding 1`] = `
+Object {
+  "apiVersion": "applicationconnector.kyma-project.io/v1alpha1",
+  "kind": "ApplicationMapping",
+  "metadata": Object {
+    "name": "test-application-name",
+    "namespace": "test-namespace",
+  },
+  "spec": Object {
+    "services": Array [
+      "service1",
+      "service2",
+    ],
+  },
+}
+`;

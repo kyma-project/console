@@ -20,17 +20,15 @@ export function BindableServicesList({
     })),
   );
 
-  const applicationHasAnyServices = servicesList?.length > 0;
-
   React.useEffect(() => {
     if (allServices) {
       setServices(availableServices);
     } else {
       setServices(servicesList.filter(t => t.isChecked));
     }
-  }, [servicesList, allServices]);
+  }, [servicesList, allServices, availableServices, setServices]);
 
-  if (!applicationHasAnyServices) {
+  if (!servicesList || servicesList.length == 0) {
     return (
       <p className="fd-has-color-text-4 fd-has-margin-top-s fd-has-margin-bottom-s">
         This Application doesn't expose any Service or Events.
