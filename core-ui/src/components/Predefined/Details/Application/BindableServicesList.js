@@ -7,6 +7,7 @@ export function BindableServicesList({
   availableServices,
   setServices,
 }) {
+  if (!services) services = [];
   const [allServices, setAllServices] = React.useState(!services.length);
 
   const [servicesList, setServicesList] = React.useState(

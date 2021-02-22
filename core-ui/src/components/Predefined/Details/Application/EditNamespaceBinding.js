@@ -1,31 +1,26 @@
 import React from 'react';
 
 import { BindableServicesList } from './BindableServicesList';
-import { createApplicationBinding } from './createApplicationBinding';
 import { Button, FormSet } from 'fundamental-react';
 import { Modal, useUpdate } from 'react-shared';
+import { createPatch } from 'rfc6902';
 
 export default function EditNamespaceBinding({ application, binding }) {
   const namespace = binding.metadata.namespace;
-
-  const [servicesToBind, setServicesToBind] = React.useState(
-    binding.spec.services,
-  );
-
+  const [servicesToBind, setServicesToBind] = React.useState([]);
   const patchRequest = useUpdate();
-
   const modalOpeningComponent = <Button option="light">Edit</Button>;
 
   async function updateBinding() {
-    const applicationBinding = createApplicationBinding(
-      application,
-      namespace,
-      servicesToBind,
+    const newBinding = JSON.parse(JSON.stringify(binding));
+    newBinding.spec.services = application.spec.services.filter(s =>
+      servicesToBind.find(svc => svc.id === s.id),
     );
+
     try {
       await patchRequest(
-        `/apis/applicationconnector.kyma-project.io/v1alpha1/namespaces/${namespace}/applicationmappings`,
-        { name: application.metadata.name, ...applicationBinding },
+        `/apis/applicationconnector.kyma-project.io/v1alpha1/namespaces/${namespace}/applicationmappings/${application.metadata.name}`,
+        createPatch(binding, newBinding),
       );
     } catch (e) {
       console.warn(e);
@@ -34,12 +29,13 @@ export default function EditNamespaceBinding({ application, binding }) {
 
   return (
     <Modal
-      confirmText="Create"
+      confirmText="Edit"
       cancelText="Cancel"
       title={`Edit Service Class Binding in '${namespace}'`}
       modalOpeningComponent={modalOpeningComponent}
       onConfirm={updateBinding}
-      disabledConfirm={!servicesToBind.length}
+      disabledConfirm={!(servicesToBind || []).length}
+      onShow={() => setServicesToBind(binding.spec.services)}
     >
       <FormSet>
         <BindableServicesList

@@ -7,6 +7,7 @@ export default function ServiceListItem({ service }) {
 
   return (
     <Tooltip
+      tippyProps={{ duration: 0 }}
       placement="left"
       content={
         <>

@@ -16,11 +16,12 @@ export default function ServicesBoundModal({ binding }) {
       modalOpeningComponent={modalOpeningComponent}
     >
       <ul>
-        {binding.spec.services.map(s => (
+        {binding.spec.services?.map(s => (
           <li key={s.id}>
             <ServiceListItem service={s} />
           </li>
         ))}
+        {!binding.spec.services?.length && <p>No bound services found.</p>}
       </ul>
     </Modal>
   );
