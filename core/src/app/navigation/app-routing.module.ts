@@ -40,16 +40,6 @@ const appRoutes: Routes = [
         component: NamespacesContainerComponent,
         data: { navCtx: 'settings' },
         children: [
-<<<<<<< HEAD
-          { path: 'yVirtual', component: PreferencesComponent },
-          { path: 'preferences', component: PreferencesComponent },
-=======
-          { path: 'apps', component: ApplicationsComponent },
-          {
-            path: 'apps/:id',
-            component: ApplicationDetailsComponent
-          },
->>>>>>> a6818c13a4ac2be0e67742de286bba4122903f42
           { path: 'serviceBrokers', component: ServiceBrokersComponent },
         ]
       },
