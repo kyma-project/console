@@ -18,6 +18,7 @@ import {
   navigateToDetails,
 } from '../..';
 import CustomPropTypes from '../../typechecking/CustomPropTypes';
+import ResourcesCreateModal from './ResourcesCreateModal';
 
 ResourcesList.propTypes = {
   customColumns: CustomPropTypes.customColumnsType,
@@ -25,6 +26,7 @@ ResourcesList.propTypes = {
   resourceType: PropTypes.string.isRequired,
   namespace: PropTypes.string,
   hasDetailsView: PropTypes.bool,
+  hasCreateButton: PropTypes.bool,
   isCompact: PropTypes.bool,
   showTitle: PropTypes.bool,
   filter: PropTypes.func,
@@ -56,6 +58,7 @@ function Resources({
   namespace,
   customColumns,
   hasDetailsView,
+  hasCreateButton,
   showTitle,
   filter,
 }) {
@@ -137,6 +140,14 @@ function Resources({
     ...customColumns.map(col => col.value(entry)),
   ];
 
+  const createResourceModal = (
+    <ResourcesCreateModal
+      resourceType={resourceType}
+      resourceUrl={resourceUrl}
+      namespace={namespace}
+    />
+  );
+
   return (
     <GenericList
       title={showTitle ? resourceType : null}
@@ -149,6 +160,7 @@ function Resources({
       serverErrorMessage={error?.message}
       serverDataLoading={loading}
       pagination={{ itemsPerPage: 20, autoHide: true }}
+      extraHeaderContent={hasCreateButton ? createResourceModal : null}
     />
   );
 }

@@ -49,6 +49,7 @@ function RoutedResourcesList({ match }) {
     resourceUrl,
     resourceType: match.params.resourceType,
     namespace: match.params.namespaceId,
+    hasCreateButton: queryParams.get('hasCreateButton') === 'true',
   };
 
   const rendererName =
