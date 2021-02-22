@@ -90,19 +90,6 @@ describe('TokenInterceptor', () => {
     request.flush({ data: 'test' });
   });
 
-  it('shouldnt add Authorization header to request', () => {
-    // given
-    const dexurl = `${AppConfig.authIssuer}/something-else`;
-    http.get(dexurl).subscribe(response => expect(response).toBeTruthy());
-    const request = httpClientMock.expectOne(dexurl);
-
-    // then
-    expect(request.request.headers.get('Authorization')).toBeNull();
-
-    // when
-    request.flush({});
-  });
-
   describe('401 Unauthorized', () => {
     const currDate = 1538040400000;
     const newToken = 1538040400000 - 1000;

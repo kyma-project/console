@@ -3,16 +3,7 @@ import { render, fireEvent } from '@testing-library/react';
 import JwtDetails from '../JwtDetails';
 
 jest.mock('@kyma-project/common', () => ({
-  getApiUrl: key => {
-    let result = '';
-    if (key == 'defaultIdpJwksUri') {
-      result = 'http://dex-service.kyma-system.svc.cluster.local:5556/keys';
-    }
-    if (key == 'defaultIdpIssuer') {
-      result = 'https://dex.kyma.local';
-    }
-    return result;
-  },
+  getApiUrl: () => '',
 }));
 
 const config = {

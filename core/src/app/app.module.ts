@@ -25,7 +25,6 @@ import { DeploymentsComponent } from './content/namespaces/operation/deployments
 import { ReplicaSetsEntryRendererComponent } from './content/namespaces/operation/replica-sets/replica-sets-entry-renderer/replica-sets-entry-renderer.component';
 import { ReplicaSetsHeaderRendererComponent } from './content/namespaces/operation/replica-sets/replica-sets-header-renderer/replica-sets-header-renderer.component';
 import { ReplicaSetsComponent } from './content/namespaces/operation/replica-sets/replica-sets.component';
-import { PreferencesComponent } from './content/settings/preferences/preferences.component';
 import { ServiceBrokersComponent } from './content/settings/service-brokers/service-brokers.component';
 import { ConfirmationModalComponent } from './shared/components/confirmation-modal/confirmation-modal.component';
 import { EditResourceComponent } from './shared/components/edit-resource/edit-resource.component';
@@ -73,7 +72,6 @@ import { WindowTitleService } from 'shared/services/window-title.service';
     DeploymentsComponent,
 
     TimeAgoPipe,
-    PreferencesComponent,
     ServiceBrokersComponent,
     ReplicaSetsComponent,
     ConfigMapsComponent,

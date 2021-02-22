@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pamela
+  labels:
+    app: pamela
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pamela
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: pamela
+    spec:
+      containers:
+        - name: pamela
+          image: wawrzyn321/pamela
+          imagePullPolicy: Always
+          securityContext:
+            allowPrivilegeEscalation: false
+            privileged: false
+          ports:
+            - containerPort: 3001
+              name: http-pamela
+              protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          env:
+            - name: ADDRESS
+              value: '0.0.0.0'
+            - name: NODE_TLS_REJECT_UNAUTHORIZED
+              value: '0'

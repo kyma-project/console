@@ -19,14 +19,12 @@ export class TokenInterceptor implements HttpInterceptor {
     request: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    if (!request.url.startsWith(AppConfig.authIssuer)) {
-      const token = LuigiClient.getEventData().idToken;
-      request = request.clone({
-        setHeaders: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-    }
+    const token = LuigiClient.getEventData().idToken;
+    request = request.clone({
+      setHeaders: {
+        Authorization: `Bearer ${token}`
+      }
+    });
 
     return next.handle(request).pipe(
       tap(

@@ -1,6 +1,7 @@
 import { relogin, getToken } from './navigation/navigation-helpers';
 import { NODE_PARAM_PREFIX } from './luigi-config';
 import { config } from './config';
+import { saveInitParams, getInitParams } from './init-params';
 
 export const communication = {
   customMessagesListeners: {
@@ -15,6 +16,18 @@ export const communication = {
         Luigi.featureToggles().unsetFeatureToggle('showSystemNamespaces');
       }
     },
+    'console.showExperimentalViews': ({ showExperimentalViews }) => {
+      localStorage.setItem(
+        'console.showExperimentalViews',
+        showExperimentalViews
+      );
+    },
+    'console.updateInitParams': (modifiedParams) => {
+      const params = getInitParams();
+      delete modifiedParams.id;
+      saveInitParams({...params, ...modifiedParams });
+      location.reload();
+    },
     'console.refreshNavigation': () => {
       const token = getToken();
       if (token) {
@@ -24,10 +37,8 @@ export const communication = {
       }
     },
     'console.setWindowTitle': ({ title }) => {
-      const prefix = config?.headerTitle || 'Kyma';
-
       const luigiConfig = Luigi.getConfig();
-      luigiConfig.settings.header.title = `${prefix} - ${title}`;
+      luigiConfig.settings.header.title = `Kyma - ${title}`;
       Luigi.configChanged('settings.header');
     },
     'console.silentNavigate': ({ newParams }) => {

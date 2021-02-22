@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service-catalog
+  labels:
+    app: service-catalog
+spec:
+  selector:
+    matchLabels:
+      app: service-catalog
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: service-catalog
+    spec:
+      containers:
+        - name: service-catalog
+          image: eu.gcr.io/kyma-project/service-catalog-ui:PR-2121
+          imagePullPolicy: IfNotPresent
+          resources: {}
+          ports:
+            - containerPort: 80

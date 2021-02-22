@@ -9,7 +9,7 @@ const useGetHook = processDataFn =>
     const [data, setData] = React.useState(null);
     const [loading, setLoading] = React.useState(false);
     const [error, setError] = React.useState(null);
-    const { idToken } = useMicrofrontendContext();
+    const { idToken, k8sApiUrl } = useMicrofrontendContext();
     const { fromConfig } = useConfig();
 
     const refetch = (isSilent, currentData) => async () => {
@@ -24,7 +24,10 @@ const useGetHook = processDataFn =>
       try {
         const urlToFetchFrom = baseUrl(fromConfig) + path;
         const response = await fetch(urlToFetchFrom, {
-          headers: { Authorization: 'Bearer ' + idToken },
+          headers: {
+            Authorization: 'Bearer ' + idToken,
+            'X-Api-Url': k8sApiUrl,
+          },
         });
         if (!response.ok) throw await throwHttpError(response);
         const payload = await response.json();

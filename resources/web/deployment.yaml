@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: console-web
+  labels:
+    app: console
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: console
+  template:
+    metadata:
+      labels:
+        app: console
+    spec:
+      containers:
+        - name: console
+          image: wawrzyn321/console-19-02
+          imagePullPolicy: Always
+          resources: {}
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 6080
+            initialDelaySeconds: 10
+          ports:
+            - containerPort: 6080
+            - containerPort: 8080
+        - name: core-ui
+          image: wawrzyn321/core-ui-16-02
+          imagePullPolicy: Always
+          resources: {}
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 6081
+            initialDelaySeconds: 10
+          ports:
+            - containerPort: 6081
+            - containerPort: 80

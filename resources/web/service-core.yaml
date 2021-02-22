@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: console-core
+  labels:
+    app: console
+spec:
+  ports:
+    - port: 8080
+      name: http-console
+      targetPort: 8080
+    - port: 6080
+      name: status-port-console
+      targetPort: 6080
+  selector:
+    app: console
