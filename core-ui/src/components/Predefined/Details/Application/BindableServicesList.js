@@ -28,7 +28,7 @@ export function BindableServicesList({
     }
   }, [servicesList, allServices, availableServices, setServices]);
 
-  if (!servicesList || servicesList.length == 0) {
+  if (!servicesList || !servicesList.length) {
     return (
       <p className="fd-has-color-text-4 fd-has-margin-top-s fd-has-margin-bottom-s">
         This Application doesn't expose any Service or Events.

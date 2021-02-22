@@ -1,6 +1,5 @@
 import React from 'react';
 import { Labels } from 'react-shared';
-import './Application.scss';
 
 import ApplicationServices from './ApplicationServices';
 import NamespaceBindings from './NamespaceBindings';

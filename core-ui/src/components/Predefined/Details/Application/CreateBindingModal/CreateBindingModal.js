@@ -11,8 +11,10 @@ import {
   useGetList,
   usePost,
   useMicrofrontendContext,
+  useNotification,
 } from 'react-shared';
-import { BindableServicesList } from './BindableServicesList';
+import './CreateBindingModal.scss';
+import { BindableServicesList } from '../BindableServicesList';
 import { createApplicationBinding } from './createApplicationBinding';
 
 export default function CreateBindingModal({
@@ -22,6 +24,7 @@ export default function CreateBindingModal({
   const { systemNamespaces } = useMicrofrontendContext();
   const [servicesToBind, setServicesToBind] = React.useState([]);
   const [namespaceName, setNamespaceName] = React.useState('');
+  const notification = useNotification();
 
   const postRequest = usePost();
 
@@ -47,8 +50,13 @@ export default function CreateBindingModal({
         `/apis/applicationconnector.kyma-project.io/v1alpha1/namespaces/${namespaceName}/applicationmappings`,
         applicationBinding,
       );
+      notification.notifySuccess({ title: 'Binding created' });
     } catch (e) {
       console.warn(e);
+      notification.notifyError({
+        title: 'Failed to create the binding',
+        content: e.message,
+      });
     }
   }
 
@@ -79,6 +87,7 @@ export default function CreateBindingModal({
             inputProps={{
               value: namespaceName,
               readOnly: true,
+              className: 'namespace-combobox__input',
             }}
             placeholder="Choose namespace..."
             className="namespace-combobox"

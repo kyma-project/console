@@ -7,7 +7,7 @@ import {
   usePost,
 } from 'react-shared';
 
-function createApplicationInput({ name, description, labels }) {
+export function createApplicationInput({ name, description, labels }) {
   return {
     apiVersion: 'applicationconnector.kyma-project.io/v1alpha1',
     kind: 'Application',

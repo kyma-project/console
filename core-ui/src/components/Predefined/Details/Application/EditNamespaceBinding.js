@@ -19,7 +19,7 @@ export default function EditNamespaceBinding({ application, binding }) {
 
     try {
       await patchRequest(
-        `/apis/applicationconnector.kyma-project.io/v1alpha1/namespaces/${namespace}/applicationmappings/${application.metadata.name}`,
+        binding.metadata.selfLink,
         createPatch(binding, newBinding),
       );
     } catch (e) {

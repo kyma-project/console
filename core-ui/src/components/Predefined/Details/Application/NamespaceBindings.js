@@ -1,15 +1,22 @@
 import React from 'react';
 
-import CreateBindingModal from './CreateBindingModal';
+import CreateBindingModal from './CreateBindingModal/CreateBindingModal';
 import EditNamespaceBinding from './EditNamespaceBinding';
 import ServicesBoundModal from './ServicesBoundModal';
-import { GenericList, useGetList, useDelete } from 'react-shared';
+import {
+  GenericList,
+  useGetList,
+  useDelete,
+  handleDelete,
+  useNotification,
+} from 'react-shared';
 
 export default function NamespaceBindings(application) {
   const deleteRequest = useDelete();
+  const notification = useNotification();
 
   const { metadata, spec } = application;
-  const { data, loading, error } = useGetList(
+  const { data, loading, error, silentRefetch } = useGetList(
     aM => aM.metadata.name === metadata.name,
   )('/apis/applicationconnector.kyma-project.io/v1alpha1/applicationmappings', {
     pollingInterval: 3000,
@@ -27,13 +34,19 @@ export default function NamespaceBindings(application) {
   const actions = [
     {
       name: 'Delete',
-      handler: async binding => {
-        try {
-          await deleteRequest(binding.metadata.selfLink);
-        } catch (e) {
-          console.warn(e);
-        }
-      },
+      handler: binding =>
+        handleDelete(
+          'Binding',
+          null,
+          binding.metadata.name,
+          () => deleteRequest(binding.metadata.selfLink),
+          () => {
+            silentRefetch();
+            notification.notifySuccess({
+              content: 'Binding deleted',
+            });
+          },
+        ),
     },
   ];
 
