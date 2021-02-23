@@ -13,6 +13,7 @@ export const NamespacesCreate = ({
   resourceType,
   resourceUrl,
   namespace,
+  refetchList,
 }) => {
   const [labels, setLabels] = useState({});
   const request = usePost();
@@ -46,6 +47,7 @@ export const NamespacesCreate = ({
     try {
       await request(resourceUrl, resourceData);
       notification.notifySuccess({ title: 'Succesfully created Resource' });
+      refetchList();
     } catch (e) {
       notification.notifyError({
         title: 'Failed to delete the Resource',

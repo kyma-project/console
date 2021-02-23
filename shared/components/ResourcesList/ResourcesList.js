@@ -180,6 +180,7 @@ function Resources({
             resourceType={resourceType}
             resourceUrl={resourceUrl}
             namespace={namespace}
+            refetchList={silentRefetch}
             {...params}
           />
         ) : null
