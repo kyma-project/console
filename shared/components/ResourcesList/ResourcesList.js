@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import jsyaml from 'js-yaml';
-import { Link } from 'fundamental-react';
+import { Link, Button } from 'fundamental-react';
 import { createPatch } from 'rfc6902';
 import Moment from 'react-moment';
 import {
@@ -17,9 +17,11 @@ import {
   navigateToDetails,
 } from '../..';
 import CustomPropTypes from '../../typechecking/CustomPropTypes';
+import { ModalWithForm } from '../ModalWithForm/ModalWithForm';
 
 ResourcesList.propTypes = {
   customColumns: CustomPropTypes.customColumnsType,
+  createResourceForm: PropTypes.any,
   resourceUrl: PropTypes.string.isRequired,
   resourceType: PropTypes.string.isRequired,
   namespace: PropTypes.string,
@@ -31,6 +33,7 @@ ResourcesList.propTypes = {
 
 ResourcesList.defaultProps = {
   customColumns: [],
+  createResourceForm: null,
   showTitle: false,
 };
 
@@ -55,7 +58,7 @@ function Resources({
   namespace,
   customColumns,
   hasDetailsView,
-  extraHeaderContent,
+  createResourceForm,
   showTitle,
   filter,
 }) {
@@ -137,6 +140,26 @@ function Resources({
     ...customColumns.map(col => col.value(entry)),
   ];
 
+  const ResourceCreateModal = ({ ResourcesCreateForm, ...params }) => {
+    const { resourceType } = params;
+    const modalOpeningComponent = (
+      <Button glyph="add" option="light">
+        Create {resourceType}
+      </Button>
+    );
+
+    return (
+      <ModalWithForm
+        title={`Create ${resourceType}`}
+        modalOpeningComponent={modalOpeningComponent}
+        confirmText="Create"
+        id={`add-${resourceType}-modal`}
+        className="fd-modal--l-size"
+        renderForm={props => <ResourcesCreateForm {...params} {...props} />}
+      />
+    );
+  };
+
   return (
     <GenericList
       title={showTitle ? resourceType : null}
@@ -149,7 +172,16 @@ function Resources({
       serverErrorMessage={error?.message}
       serverDataLoading={loading}
       pagination={{ itemsPerPage: 20, autoHide: true }}
-      extraHeaderContent={extraHeaderContent}
+      extraHeaderContent={
+        createResourceForm ? (
+          <ResourceCreateModal
+            ResourcesCreateForm={createResourceForm}
+            resourceType={resourceType}
+            resourceUrl={resourceUrl}
+            namespace={namespace}
+          />
+        ) : null
+      }
     />
   );
 }

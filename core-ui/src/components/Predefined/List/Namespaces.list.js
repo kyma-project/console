@@ -1,15 +1,11 @@
 import React from 'react';
-import { NamespaceCreateModal, NamespaceCreateForm } from '../Create';
+import { NamespaceCreateForm } from '../Create';
 
 export const NamespacesList = DefaultRenderer => ({ ...otherParams }) => {
-  const extraHeaderContent = (
-    <NamespaceCreateModal
-      ResourcesCreateForm={NamespaceCreateForm}
+  return (
+    <DefaultRenderer
+      createResourceForm={NamespaceCreateForm}
       {...otherParams}
     />
-  );
-
-  return (
-    <DefaultRenderer extraHeaderContent={extraHeaderContent} {...otherParams} />
   );
 };

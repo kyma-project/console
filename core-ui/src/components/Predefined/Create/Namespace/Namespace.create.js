@@ -10,9 +10,10 @@ import {
 export const NamespaceCreateForm = ({
   formElementRef,
   onChange,
-  ...params
+  resourceType,
+  resourceUrl,
+  namespace,
 }) => {
-  const { resourceType, resourceUrl, namespace } = params;
   const [labels, setLabels] = useState({});
   const request = usePost();
   const notification = useNotification();
