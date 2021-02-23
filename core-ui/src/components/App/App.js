@@ -51,12 +51,10 @@ function RoutedResourcesList({ match }) {
     namespace: match.params.namespaceId,
   };
 
-  const rendererName =
-    params.resourceType[0].toUpperCase() +
-    params.resourceType.substr(1) +
-    'List';
+  const rendererName = params.resourceType + 'List';
+  const rendererNameForCreate = params.resourceType + 'Create';
 
-  return getComponentForList(rendererName, params);
+  return getComponentForList(rendererName, rendererNameForCreate, params);
 }
 
 function RoutedResourceDetails({ match }) {

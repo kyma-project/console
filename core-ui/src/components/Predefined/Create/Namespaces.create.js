@@ -7,7 +7,7 @@ import {
   useNotification,
 } from 'react-shared';
 
-export const NamespaceCreateForm = ({
+export const NamespacesCreate = ({
   formElementRef,
   onChange,
   resourceType,

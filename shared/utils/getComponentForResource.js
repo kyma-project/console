@@ -12,9 +12,16 @@ export const getComponentFor = (
   PredefinedRenderersCollection,
   GenericRenderer,
 ) =>
-  function renderComponent(name, params, defaultRenderer = GenericRenderer) {
+  function renderComponent(
+    name,
+    nameForCreate,
+    params,
+    defaultRenderer = GenericRenderer,
+  ) {
     const predefined = findByName(PredefinedRenderersCollection, name);
     const Renderer = predefined ? predefined(defaultRenderer) : defaultRenderer;
+    const CreateFormRenderer =
+      findByName(PredefinedRenderersCollection, nameForCreate) || null;
 
-    return <Renderer {...params} />;
+    return <Renderer createResourceForm={CreateFormRenderer} {...params} />;
   };

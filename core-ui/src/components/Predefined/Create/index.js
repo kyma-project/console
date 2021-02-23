@@ -1,1 +1,1 @@
-export * from './Namespace/Namespace.create.js';
+export * from './Namespaces.create.js';
