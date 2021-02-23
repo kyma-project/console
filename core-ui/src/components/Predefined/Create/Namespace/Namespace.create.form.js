@@ -1,19 +1,21 @@
 import React, { useRef, useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
 
-import { K8sNameInput, LabelSelectorInput, usePost } from '../..';
+import {
+  K8sNameInput,
+  LabelSelectorInput,
+  usePost,
+  useNotification,
+} from 'react-shared';
 
-const ResourcesCreateForm = ({
-  resourceType,
-  resourceUrl,
-  namespace,
+export const NamespaceCreateForm = ({
   formElementRef,
   onChange,
-  onCompleted,
-  onError,
+  ...params
 }) => {
+  const { resourceType, resourceUrl, namespace } = params;
   const [labels, setLabels] = useState({});
   const request = usePost();
+  const notification = useNotification();
   const formValues = {
     name: useRef(null),
   };
@@ -42,9 +44,12 @@ const ResourcesCreateForm = ({
 
     try {
       await request(resourceUrl, resourceData);
-      onCompleted(resourceData.metadata.name);
+      notification.notifySuccess({ title: 'Succesfully created Resource' });
     } catch (e) {
-      onError('ERROR', `Error while creating ${resourceType}: ${e}`);
+      notification.notifyError({
+        title: 'Failed to delete the Resource',
+        content: e.message,
+      });
     }
   }
 
@@ -71,15 +76,3 @@ const ResourcesCreateForm = ({
     </form>
   );
 };
-
-ResourcesCreateForm.propTypes = {
-  resourceType: PropTypes.string.isRequired,
-  resourceUrl: PropTypes.string.isRequired,
-  namespace: PropTypes.string,
-  formElementRef: PropTypes.shape({ current: PropTypes.any }).isRequired, // used to store <form> element reference
-  onChange: PropTypes.func,
-  onError: PropTypes.func, // args: title(string), message(string)
-  onCompleted: PropTypes.func, // args: name(string)
-};
-
-export default ResourcesCreateForm;

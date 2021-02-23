@@ -392,8 +392,7 @@ export function getStaticRootNodes(namespaceChildrenNodesResolver) {
         '/namespaces?' +
         toSearchParamsString({
           resourceApiPath: '/api/v1',
-          hasDetailsView: true,
-          hasCreateButton: true
+          hasDetailsView: true
         }),
       icon: 'dimension',
       viewGroup: coreUIViewGroupName,

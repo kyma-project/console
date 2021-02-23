@@ -3,7 +3,6 @@ import { useMicrofrontendContext } from '../../contexts/MicrofrontendContext';
 import { useConfig } from '../../contexts/ConfigContext';
 
 export const usePost = () => {
-  // console.log('url: ', url, 'data:', data)
   const { idToken } = useMicrofrontendContext();
   const { fromConfig } = useConfig();
   return async (url, data, options) => {
