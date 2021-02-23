@@ -8,7 +8,6 @@ function resolveViewUrl(name, node, spec, config) {
       return spec.viewBaseUrl;
     } else {
       // viewBaseUrl is the ingress name
-      console.log(`https://${spec.viewBaseUrl}.${config.domain}${node.viewUrl}`);
       return `https://${spec.viewBaseUrl}.${config.domain}${node.viewUrl}`;
     }
   } else {

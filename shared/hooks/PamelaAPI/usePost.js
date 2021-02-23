@@ -3,7 +3,7 @@ import { useMicrofrontendContext } from '../../contexts/MicrofrontendContext';
 import { useConfig } from '../../contexts/ConfigContext';
 
 export const usePost = () => {
-  const { idToken } = useMicrofrontendContext();
+  const { idToken, k8sApiUrl } = useMicrofrontendContext();
   const { fromConfig } = useConfig();
   return async (url, data, options) => {
     const response = await fetch(baseUrl(fromConfig) + url, {
@@ -12,6 +12,7 @@ export const usePost = () => {
         'Content-Type': 'application/json',
         Accept: 'application/json',
         Authorization: 'Bearer ' + idToken,
+        'X-Api-Url': k8sApiUrl,
       },
       body: JSON.stringify(data),
     });

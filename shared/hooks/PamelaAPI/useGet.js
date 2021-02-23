@@ -102,10 +102,13 @@ function handleSingleDataReceived(newData, oldData, setDataFn) {
 }
 
 export const useSingleGet = () => {
-  const { idToken } = useMicrofrontendContext();
+  const { idToken, k8sApiUrl } = useMicrofrontendContext();
   const { fromConfig } = useConfig();
   return url =>
     fetch(baseUrl(fromConfig) + url, {
-      headers: { Authorization: 'Bearer ' + idToken },
+      headers: {
+        Authorization: 'Bearer ' + idToken,
+        'X-Api-Url': k8sApiUrl,
+      },
     });
 };
