@@ -57,10 +57,11 @@ function Resources({
   resourceType,
   namespace,
   customColumns,
-  hasDetailsView,
   createResourceForm,
+  hasDetailsView,
   showTitle,
   filter,
+  ...params
 }) {
   const setEditedSpec = useYamlEditor();
   const notification = useNotification();
@@ -179,6 +180,7 @@ function Resources({
             resourceType={resourceType}
             resourceUrl={resourceUrl}
             namespace={namespace}
+            {...params}
           />
         ) : null
       }
