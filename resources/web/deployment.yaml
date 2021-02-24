@@ -18,7 +18,13 @@ spec:
         - name: console
           image: wawrzyn321/console-apps
           imagePullPolicy: Always
-          resources: {}
+          resources:
+            limits:
+              cpu: 100m
+              memory: 30Mi
+            requests:
+              cpu: 1m
+              memory: 6m
           livenessProbe:
             httpGet:
               path: /healthz
@@ -30,7 +36,13 @@ spec:
         - name: core-ui
           image: wawrzyn321/core-ui-apps
           imagePullPolicy: Always
-          resources: {}
+          resources:
+            limits:
+              cpu: 100m
+              memory: 30Mi
+            requests:
+              cpu: 1m
+              memory: 6m
           livenessProbe:
             httpGet:
               path: /healthz
