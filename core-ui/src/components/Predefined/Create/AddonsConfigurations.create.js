@@ -7,11 +7,12 @@ import {
   useNotification,
 } from 'react-shared';
 
-export const NamespacesCreate = ({
+export const AddonsConfigurationsCreate = ({
   formElementRef,
   onChange,
   resourceType,
   resourceUrl,
+  namespace,
   refetchList,
 }) => {
   const [name, setName] = useState('');
@@ -31,8 +32,11 @@ export const NamespacesCreate = ({
     e.preventDefault();
     const k8sLabels = { ...labels };
     const resourceData = {
+      kind: 'AddonsConfiguration',
+      apiVersion: 'addons.kyma-project.io/v1alpha1',
       metadata: {
         name,
+        namespace,
         labels: k8sLabels,
       },
     };

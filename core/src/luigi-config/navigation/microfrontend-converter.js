@@ -1,11 +1,25 @@
 import processNodeForLocalDevelopment from './local-development-node-converter';
 import { hideByNodeCategory } from './navigation-helpers';
 
+function resolveViewUrl(name, node, spec, config) {
+  if (spec.viewBaseUrl) {
+    if (spec.viewBaseUrl.startsWith('http')) {
+      // full url, just return viewBaseUrl
+      return spec.viewBaseUrl;
+    } else {
+      // viewBaseUrl is the ingress name
+      return `https://${spec.viewBaseUrl}.${config.domain}${node.viewUrl}`;
+    }
+  } else {
+    return `https://${name}.${config.domain}${node.viewUrl}`;
+  }
+}
+
 function buildNode(name, node, spec, config, groups) {
   var n = {
     label: node.label,
     pathSegment: node.navigationPath.split('/').pop(),
-    viewUrl: spec.viewBaseUrl ? spec.viewBaseUrl + node.viewUrl : `https://${name}.${config.domain}${node.viewUrl}`,
+    viewUrl: resolveViewUrl(name, node, spec, config),
     hideFromNav:
       node.showInNavigation !== undefined ? !node.showInNavigation : false,
     order: node.order,
