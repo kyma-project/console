@@ -17,16 +17,15 @@ import navigationPermissionChecker, {
 
 import {
   hideDisabledNodes,
-  getSystemNamespaces,
   createNamespacesList,
   clearToken,
   getToken
 } from './navigation-helpers';
-import { groups } from './../auth';
+import { groups } from '../auth';
+import { getInitParams } from '../init-params';
 
 let clusterMicrofrontendNodes = [];
 let clusterMicrofrontendNodesForNamespace = [];
-const systemNamespaces = getSystemNamespaces(config.systemNamespaces);
 
 export let resolveNavigationNodes;
 export let navigation = {
@@ -35,7 +34,7 @@ export let navigation = {
       preloadUrl: '/consoleapp.html#/home/preload'
     },
     _core_ui_: {
-      preloadUrl: config.coreModuleUrl + '/preload'
+      preloadUrl: config.coreUIModuleUrl + '/preload'
     }
   },
   nodeAccessibilityResolver: navigationPermissionChecker,
@@ -44,12 +43,6 @@ export let navigation = {
     parentNodePath: '/home/namespaces', // absolute path
     lazyloadOptions: true, // load options on click instead on page load
     options: getNamespaces,
-    actions: [
-      {
-        label: '+ New Namespace',
-        link: '/home/workspace?~showModal=true'
-      }
-    ]
   },
   profile: {
     logout: {
@@ -75,13 +68,10 @@ export let navigation = {
 
 export function getNavigationData(token) {
   return new Promise(function(resolve, reject) {
-    let kymaVersion;
 
     fetchConsoleInitData(token)
       .then(
         res => {
-          kymaVersion = res.versionInfo && `Kyma version: ${res.versionInfo}`;
-  
           const cmfs = res.clusterMicroFrontends;
           setInitValues(
             res.backendModules,
@@ -139,6 +129,7 @@ export function getNavigationData(token) {
       )
       // 'Finally' not supported by IE and FIREFOX (if 'finally' is needed, update your .babelrc)
       .then(() => {
+        const { k8sApiUrl, bebEnabled, systemNamespaces, disabledNavigationNodes } = getInitParams();
         const nodes = [
           {
             pathSegment: 'home',
@@ -147,9 +138,11 @@ export function getNavigationData(token) {
               idToken: token,
               groups,
               backendModules,
+              bebEnabled,
               systemNamespaces,
               showSystemNamespaces:
-                localStorage.getItem('console.showSystemNamespaces') === 'true'
+                localStorage.getItem('console.showSystemNamespaces') === 'true',
+              k8sApiUrl,
             },
             children: function() {
               const staticNodes = getStaticRootNodes(
@@ -158,7 +151,7 @@ export function getNavigationData(token) {
               const fetchedNodes = [].concat(...clusterMicrofrontendNodes);
               const nodeTree = [...staticNodes, ...fetchedNodes];
               hideDisabledNodes(
-                config.disabledNavigationNodes,
+                disabledNavigationNodes,
                 nodeTree,
                 false
               );
@@ -167,7 +160,7 @@ export function getNavigationData(token) {
           },
         ];
 
-        resolve([nodes, kymaVersion]);
+        resolve(nodes);
       })
       .catch(err => {
         console.error('Config Init Error', err);
@@ -177,6 +170,7 @@ export function getNavigationData(token) {
 }
 
 async function getNamespaces() {
+  const { systemNamespaces } = getInitParams();
   let namespaces;
   try {
     namespaces = await fetchNamespaces(getToken());
@@ -199,12 +193,13 @@ function getChildrenNodesForNamespace(context) {
     Promise.resolve(clusterMicrofrontendNodesForNamespace)
   ])
     .then(function(values) {
+      const { disabledNavigationNodes } = getInitParams();
       var nodeTree = [...staticNodes];
       values.forEach(function(val) {
         nodeTree = [].concat.apply(nodeTree, val);
       });
 
-      hideDisabledNodes(config.disabledNavigationNodes, nodeTree, true);
+      hideDisabledNodes(disabledNavigationNodes, nodeTree, true);
       return nodeTree;
     })
     .catch(err => {

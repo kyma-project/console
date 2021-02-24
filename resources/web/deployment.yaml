@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: console-web
+  labels:
+    app: console
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: console
+  template:
+    metadata:
+      labels:
+        app: console
+    spec:
+      containers:
+        - name: console
+          image: eu.gcr.io/kyma-project/console:PR-2131
+          imagePullPolicy: Always
+          resources:
+            limits:
+              cpu: 100m
+              memory: 30Mi
+            requests:
+              cpu: 1m
+              memory: 6m
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 6080
+            initialDelaySeconds: 10
+          ports:
+            - containerPort: 6080
+            - containerPort: 8080
+        - name: core-ui
+          image: eu.gcr.io/kyma-project/core-ui:PR-2131
+          imagePullPolicy: Always
+          resources:
+            limits:
+              cpu: 100m
+              memory: 30Mi
+            requests:
+              cpu: 1m
+              memory: 6m
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 6081
+            initialDelaySeconds: 10
+          ports:
+            - containerPort: 6081
+            - containerPort: 80

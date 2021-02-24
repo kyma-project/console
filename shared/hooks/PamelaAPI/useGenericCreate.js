@@ -3,7 +3,7 @@ import { useMicrofrontendContext } from '../../contexts/MicrofrontendContext';
 import { useConfig } from '../../contexts/ConfigContext';
 
 export const useGenericCreate = () => {
-  const { idToken } = useMicrofrontendContext();
+  const { idToken, k8sApiUrl } = useMicrofrontendContext();
   const { fromConfig } = useConfig();
   const url = baseUrl(fromConfig) + '/resource';
 
@@ -13,6 +13,7 @@ export const useGenericCreate = () => {
       headers: {
         'Content-Type': 'application/json',
         Authorization: 'Bearer ' + idToken,
+        'X-Api-Url': k8sApiUrl,
       },
       body: JSON.stringify(resource),
     });

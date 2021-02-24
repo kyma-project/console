@@ -1,6 +1,8 @@
 export const LOCAL_STORAGE_NAMESPACE_FILTERS = 'workspace/namespaceFilters';
 export const REFETCH_TIMEOUT = 600;
 
+export const PREFERENCES_TITLE = 'Preferences';
+
 export const ERRORS = {
   SERVER: 'Server error. Contact your cluster admin.',
   RESOURCES_NOT_FOUND: 'There are no related resources yet.',

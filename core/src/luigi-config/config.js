@@ -1,20 +1,12 @@
-var clusterConfig = window['clusterConfig'] || INJECTED_CLUSTER_CONFIG;
-var k8sDomain = (clusterConfig && clusterConfig['domain']) || 'kyma.local';
+const domain = location.hostname.replace(/^console(-dev)?\./, '');
+const isLocalDev = location.hostname.startsWith('console-dev');
 
 export const config = {
-  domain: 'kyma.local',
-  localDomain: 'console-dev.kyma.local',
-  serviceCatalogModuleUrl: 'https://catalog.' + k8sDomain,
-  serviceInstancesModuleUrl: 'https://instances.' + k8sDomain,
-  serviceBrokersModuleUrl: 'https://brokers.' + k8sDomain,
-  docsModuleUrl: 'https://docs.' + k8sDomain,
-  addOnsModuleUrl: 'https://addons.' + k8sDomain,
-  logsModuleUrl: 'https://log-ui.' + k8sDomain,
-  coreModuleUrl: 'https://core-ui.' + k8sDomain,
-  graphqlApiUrl: 'https://console-backend.' + k8sDomain + '/graphql',
-  apiserverUrl: 'https://apiserver.' + k8sDomain,
-  disabledNavigationNodes: '',
-  systemNamespaces:
-    'istio-system knative-eventing knative-serving kube-public kube-system kyma-backup kyma-installer kyma-integration kyma-system natss kube-node-lease kubernetes-dashboard serverless-system',
-  ...clusterConfig
+  domain,
+  localDomain: 'console-dev.' + domain,
+  serviceCatalogModuleUrl: isLocalDev ? 'http://console-dev.'+ domain + ':8000' : 'https://catalog.' + domain,
+  addOnsModuleUrl: isLocalDev ? 'http://console-dev.'+ domain + ':8004' : 'https://addons.' + domain,
+  logsModuleUrl: isLocalDev ? 'http://console-dev.'+ domain + ':8005' : 'https://logs.' + domain,
+  coreUIModuleUrl: isLocalDev ? 'http://console-dev.'+ domain +':8889' : 'https://core-ui.' + domain,
+  pamelaApiUrl: isLocalDev ? 'http://localhost:3001' : 'https://console.' + domain + "/backend",
 };

@@ -116,14 +116,7 @@ const defaultConfig = {
 };
 
 function getConfigValue(field) {
-  const serverlessConfig = window.clusterConfig?.serverless;
-  const defaultValue = defaultConfig[field];
-
-  if (!serverlessConfig) {
-    return defaultValue;
-  }
-
-  return serverlessConfig[field] || defaultValue;
+  return defaultConfig[field];
 }
 
 function loadConfig() {

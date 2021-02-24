@@ -4,7 +4,7 @@ import { useConfig } from '../../contexts/ConfigContext';
 
 const useMutation = method => {
   return options => {
-    const { idToken } = useMicrofrontendContext();
+    const { idToken, k8sApiUrl } = useMicrofrontendContext();
     const { fromConfig } = useConfig();
     return async (url, data) => {
       const response = await fetch(baseUrl(fromConfig) + url, {
@@ -13,6 +13,7 @@ const useMutation = method => {
           'Content-Type': 'application/json-patch+json',
           Accept: 'application/json',
           Authorization: 'Bearer ' + idToken,
+          'X-Api-Url': k8sApiUrl,
         },
         body: JSON.stringify(data),
       });

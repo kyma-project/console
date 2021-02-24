@@ -28,7 +28,6 @@ import { DeploymentsComponent } from './content/namespaces/operation/deployments
 import { ReplicaSetsEntryRendererComponent } from './content/namespaces/operation/replica-sets/replica-sets-entry-renderer/replica-sets-entry-renderer.component';
 import { ReplicaSetsHeaderRendererComponent } from './content/namespaces/operation/replica-sets/replica-sets-header-renderer/replica-sets-header-renderer.component';
 import { ReplicaSetsComponent } from './content/namespaces/operation/replica-sets/replica-sets.component';
-import { PreferencesComponent } from './content/settings/preferences/preferences.component';
 import { EditBindingsModalComponent } from './content/settings/applications/application-details/edit-bindings-modal/edit-binding-modal.component';
 import { BindingsDetailsModalComponent } from './content/settings/applications/application-details/bindings-details-modal/bindings-details-modal.component';
 import { CreateBindingsModalComponent } from './content/settings/applications/application-details/create-bindings-modal/create-binding-modal.component';
@@ -87,7 +86,6 @@ import { WindowTitleService } from 'shared/services/window-title.service';
     TimeAgoPipe,
     ApplicationsComponent,
     ApplicationDetailsComponent,
-    PreferencesComponent,
     ServiceBrokersComponent,
     ReplicaSetsComponent,
     ConfigMapsComponent,

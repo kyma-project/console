@@ -1,5 +1,5 @@
 import OpenIdConnect from '@luigi-project/plugin-auth-oidc';
-import { getAuthParams } from './auth-params';
+import { getInitParams } from './init-params';
 
 export let groups;
 
@@ -15,14 +15,13 @@ async function fetchOidcProviderMetadata(issuerUrl) {
 }
 
 export const createAuth = async () => {
-  const params = getAuthParams();
+  const params = getInitParams();
   if (!params) {
     alert("No auth params provided! In future you'll get to login with your service account.");
-    console.log('for now just use query param: ?auth=EQbwOsCWDO0K4FMBOBVJAbCAuCALALvgA7RYD0ZA1gJ4C2AhgHQJyP1z64AMjAxgPa0yEADQRe6SAgB2-AJIATbBACsAdQAcATgBuAIQASAd2kAmWnADs0gCpc4ALx38AcgBYAHgGF-AMy64bgBW-C4QAL7AQAAA')
     return {};
   }
 
-  const { issuerUrl, clientId, responseType, responseMode } = params;
+  const { issuerUrl, clientId, responseType, responseMode, scope } = params;
 
   const providerMetadata = await fetchOidcProviderMetadata(issuerUrl);
   return {
@@ -31,8 +30,7 @@ export const createAuth = async () => {
         idpProvider: OpenIdConnect,
         authority: issuerUrl,
         client_id: clientId,
-        scope:
-        'audience:server:client_id:kyma-client audience:server:client_id:console openid email profile groups',
+        scope: scope || 'openid',
         response_type: responseType,
         response_mode: responseMode,
         automaticSilentRenew: true,
@@ -66,5 +64,3 @@ export const createAuth = async () => {
     storage: 'none',
   };
 }
-
-export * from './auth-params';

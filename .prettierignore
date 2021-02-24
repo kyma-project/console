@@ -83,5 +83,6 @@ shared/build
 components/angular
 core
 **/public/config/config.js
+pamela/pamela-production.*
 
 **/temp/**

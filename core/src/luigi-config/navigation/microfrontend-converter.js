@@ -1,11 +1,11 @@
 import processNodeForLocalDevelopment from './local-development-node-converter';
 import { hideByNodeCategory } from './navigation-helpers';
 
-function buildNode(node, spec, config, groups) {
+function buildNode(name, node, spec, config, groups) {
   var n = {
     label: node.label,
     pathSegment: node.navigationPath.split('/').pop(),
-    viewUrl: spec.viewBaseUrl ? spec.viewBaseUrl + node.viewUrl : node.viewUrl,
+    viewUrl: spec.viewBaseUrl ? spec.viewBaseUrl + node.viewUrl : `https://${name}.${config.domain}${node.viewUrl}`,
     hideFromNav:
       node.showInNavigation !== undefined ? !node.showInNavigation : false,
     order: node.order,
@@ -29,9 +29,7 @@ function buildNode(node, spec, config, groups) {
     };
   }
 
-  const isLocalDev = window.location.href.startsWith(
-    `http://${config.localDomain}:4200`
-  );
+  const isLocalDev = location.hostname.startsWith('console-dev');
 
   if (isLocalDev && n.viewUrl) {
     n = processNodeForLocalDevelopment(n, spec, config);
@@ -39,17 +37,17 @@ function buildNode(node, spec, config, groups) {
   return n;
 }
 
-function buildNodeWithChildren(specNode, spec, config, groups) {
+function buildNodeWithChildren(name, specNode, spec, config, groups) {
   var parentNodeSegments = specNode.navigationPath.split('/');
-  var children = getDirectChildren(parentNodeSegments, spec, config, groups);
-  var node = buildNode(specNode, spec, config, groups);
+  var children = getDirectChildren(name, parentNodeSegments, spec, config, groups);
+  var node = buildNode(name, specNode, spec, config, groups);
   if (children.length) {
     node.children = children;
   }
   return node;
 }
 
-function getDirectChildren(parentNodeSegments, spec, config, groups) {
+function getDirectChildren(name, parentNodeSegments, spec, config, groups) {
   // process only direct children
   return spec.navigationNodes
     .filter(function(node) {
@@ -61,7 +59,7 @@ function getDirectChildren(parentNodeSegments, spec, config, groups) {
     })
     .map(function mapSecondLevelNodes(node) {
       // map direct children
-      return buildNodeWithChildren(node, spec, config, groups);
+      return buildNodeWithChildren(name, node, spec, config, groups);
     });
 }
 
@@ -86,7 +84,7 @@ export default function convertToNavigationTree(
     })
 
     .map(function processTopLevelNodes(node) {
-      return buildNodeWithChildren(node, spec, config, groups);
+      return buildNodeWithChildren(name, node, spec, config, groups);
     })
     .map(function addSettingsForTopLevelNodes(node) {
       if (spec.category) {
@@ -109,7 +107,7 @@ export default function convertToNavigationTree(
           node.viewGroup = node.navigationContext;
           if (spec.preloadUrl) {
             navigation.viewGroupSettings[node.viewGroup] = {
-              preloadUrl: node.localPreloadUrl || spec.preloadUrl
+              preloadUrl: node.localPreloadUrl || spec.preloadUrl || `https://${name}.${config.domain}/preload`
             };
           }
         }

@@ -4,7 +4,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { NamespacesContainerComponent } from '../content/namespaces/namespaces-container/namespaces-container.component';
 import { DeploymentsComponent } from '../content/namespaces/operation/deployments/deployments.component';
 import { ReplicaSetsComponent } from '../content/namespaces/operation/replica-sets/replica-sets.component';
-import { PreferencesComponent } from '../content/settings/preferences/preferences.component';
 import { ApplicationDetailsComponent } from '../content/settings/applications/application-details/application-details.component';
 import { ApplicationsComponent } from '../content/settings/applications/applications.component';
 import { ServiceBrokersComponent } from '../content/settings/service-brokers/service-brokers.component';
@@ -43,16 +42,12 @@ const appRoutes: Routes = [
         component: NamespacesContainerComponent,
         data: { navCtx: 'settings' },
         children: [
-          { path: 'yVirtual', component: PreferencesComponent },
-          { path: 'preferences', component: PreferencesComponent },
           { path: 'apps', component: ApplicationsComponent },
           {
             path: 'apps/:id',
             component: ApplicationDetailsComponent
           },
           { path: 'serviceBrokers', component: ServiceBrokersComponent },
-          { path: '', redirectTo: 'preferences', pathMatch: 'full' },
-          { path: '**', redirectTo: 'preferences', pathMatch: 'full' }
         ]
       },
       { path: '', pathMatch: 'full', redirectTo: 'namespaces/workspace' },

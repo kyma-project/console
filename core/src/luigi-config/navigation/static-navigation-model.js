@@ -45,7 +45,7 @@ export function getStaticChildrenNodesForNamespace() {
       pathSegment: 'details',
       label: 'Overview',
       order: -1,
-      viewUrl: config.coreModuleUrl + '/namespaces/:namespaceId?' +
+      viewUrl: config.coreUIModuleUrl + '/namespaces/:namespaceId?' +
         toSearchParamsString({
           resourceApiPath: '/api/v1',
         }),
@@ -57,7 +57,7 @@ export function getStaticChildrenNodesForNamespace() {
       pathSegment: 'pods',
       label: 'Pods',
       viewUrl:
-        config.coreModuleUrl +
+        config.coreUIModuleUrl +
         '/namespaces/:namespaceId/pods?' +
         toSearchParamsString({
           resourceApiPath: '/api/v1',
@@ -73,7 +73,7 @@ export function getStaticChildrenNodesForNamespace() {
             {
               pathSegment: ':podName',
               viewUrl:
-                config.coreModuleUrl +
+                config.coreUIModuleUrl +
                 '/namespaces/:namespaceId/pods/:podName?' +
                 toSearchParamsString({
                   resourceApiPath: '/api/v1'
@@ -88,7 +88,7 @@ export function getStaticChildrenNodesForNamespace() {
       pathSegment: 'replicasets',
       label: 'Replica Sets',
       viewUrl:
-        config.coreModuleUrl +
+        config.coreUIModuleUrl +
         '/namespaces/:namespaceId/replicasets?' +
         toSearchParamsString({
           resourceApiPath: '/apis/apps/v1',
@@ -105,7 +105,7 @@ export function getStaticChildrenNodesForNamespace() {
             {
               pathSegment: ':replicaSetName',
               viewUrl:
-                config.coreModuleUrl +
+                config.coreUIModuleUrl +
                 '/namespaces/:namespaceId/replicasets/:replicaSetName?' +
                 toSearchParamsString({
                   resourceApiPath: '/apis/apps/v1',
@@ -123,7 +123,7 @@ export function getStaticChildrenNodesForNamespace() {
       label: 'Deployments',
       keepSelectedForChildren: true,
       viewUrl:
-        config.coreModuleUrl +
+        config.coreUIModuleUrl +
         '/namespaces/:namespaceId/deployments?' +
         toSearchParamsString({
           resourceApiPath: '/apis/apps/v1',
@@ -138,7 +138,7 @@ export function getStaticChildrenNodesForNamespace() {
             {
               pathSegment: ':deploymentName',
               viewUrl:
-                config.coreModuleUrl +
+                config.coreUIModuleUrl +
                 '/namespaces/:namespaceId/deployments/:deploymentName?' +
                 toSearchParamsString({
                   resourceApiPath: '/apis/apps/v1',
@@ -164,7 +164,7 @@ export function getStaticChildrenNodesForNamespace() {
       navigationContext: 'services',
       label: 'Services',
       viewUrl:
-        config.coreModuleUrl +
+        config.coreUIModuleUrl +
         '/namespaces/:namespaceId/services?' +
         toSearchParamsString({
           resourceApiPath: '/api/v1',
@@ -180,7 +180,7 @@ export function getStaticChildrenNodesForNamespace() {
             {
               pathSegment: ':serviceName',
               viewUrl:
-                config.coreModuleUrl +
+                config.coreUIModuleUrl +
                 '/namespaces/:namespaceId/services/:serviceName?' +
                 toSearchParamsString({
                   resourceApiPath: '/api/v1',
@@ -215,7 +215,7 @@ export function getStaticChildrenNodesForNamespace() {
       navigationContext: 'oauth2clients',
       label: 'OAuth Clients',
       viewUrl:
-        config.coreModuleUrl +
+        config.coreUIModuleUrl +
         '/namespaces/:namespaceId/oauth2clients?' +
         toSearchParamsString({
           resourceApiPath: '/apis/hydra.ory.sh/v1alpha1',
@@ -227,7 +227,7 @@ export function getStaticChildrenNodesForNamespace() {
         {
           pathSegment: 'create',
           viewUrl:
-            config.coreModuleUrl +
+            config.coreUIModuleUrl +
             '/home/namespaces/:namespaceId/oauth-clients/create',
           viewGroup: coreUIViewGroupName
         },
@@ -237,7 +237,7 @@ export function getStaticChildrenNodesForNamespace() {
             {
               pathSegment: ':clientName',
               viewUrl:
-                config.coreModuleUrl +
+                config.coreUIModuleUrl +
                 '/namespaces/:namespaceId/oauth2clients/:clientName?' +
                 toSearchParamsString({
                   resourceApiPath: '/apis/hydra.ory.sh/v1alpha1',
@@ -254,7 +254,7 @@ export function getStaticChildrenNodesForNamespace() {
       navigationContext: 'roles',
       label: 'Roles',
       viewUrl:
-        config.coreModuleUrl +
+        config.coreUIModuleUrl +
         '/namespaces/:namespaceId/roles?' +
         toSearchParamsString({
           resourceApiPath: '/apis/rbac.authorization.k8s.io/v1',
@@ -269,7 +269,7 @@ export function getStaticChildrenNodesForNamespace() {
             {
               pathSegment: ':roleName',
               viewUrl:
-                config.coreModuleUrl +
+                config.coreUIModuleUrl +
                 '/namespaces/:namespaceId/roles/:roleName?' +
                 toSearchParamsString({
                   resourceApiPath: '/apis/rbac.authorization.k8s.io/v1',
@@ -318,7 +318,7 @@ export function getStaticChildrenNodesForNamespace() {
       navigationContext: 'secrets',
       label: 'Secrets',
       viewUrl:
-        config.coreModuleUrl +
+        config.coreUIModuleUrl +
         '/namespaces/:namespaceId/secrets?' +
         toSearchParamsString({
           resourceApiPath: '/api/v1',
@@ -333,7 +333,7 @@ export function getStaticChildrenNodesForNamespace() {
             {
               pathSegment: ':name',
               viewUrl:
-                config.coreModuleUrl +
+                config.coreUIModuleUrl +
                 '/namespaces/:namespaceId/secrets/:name?' +
                 toSearchParamsString({
                   resourceApiPath: '/api/v1',
@@ -350,7 +350,7 @@ export function getStaticChildrenNodesForNamespace() {
       navigationContext: 'config-maps',
       label: 'Config Maps',
       viewUrl:
-        config.coreModuleUrl +
+        config.coreUIModuleUrl +
         '/namespaces/:namespaceId/configmaps?' +
         toSearchParamsString({
           resourceApiPath: '/api/v1',
@@ -365,7 +365,7 @@ export function getStaticChildrenNodesForNamespace() {
             {
               pathSegment: ':name',
               viewUrl:
-                config.coreModuleUrl +
+                config.coreUIModuleUrl +
                 '/namespaces/:namespaceId/configmaps/:name?' +
                 toSearchParamsString({
                   resourceApiPath: '/api/v1',
@@ -388,7 +388,7 @@ export function getStaticRootNodes(namespaceChildrenNodesResolver) {
       pathSegment: 'workspace',
       label: 'Namespaces',
       viewUrl:
-        config.coreModuleUrl +
+        config.coreUIModuleUrl +
         '/namespaces?' +
         toSearchParamsString({
           resourceApiPath: '/api/v1',
@@ -427,8 +427,8 @@ export function getStaticRootNodes(namespaceChildrenNodesResolver) {
     {
       pathSegment: 'preferences',
       navigationContext: 'settings',
-      viewUrl: '/consoleapp.html#/home/settings/preferences',
-      viewGroup: consoleViewGroupName,
+      viewUrl: config.coreUIModuleUrl + "/preferences",
+      viewGroup: coreUIViewGroupName,
       hideFromNav: true
     },
     {
@@ -447,7 +447,7 @@ export function getStaticRootNodes(namespaceChildrenNodesResolver) {
         collapsible: true
       },
       viewUrl:
-        config.coreModuleUrl +
+        config.coreUIModuleUrl +
         '/clusterroles?' +
         toSearchParamsString({
           resourceApiPath: '/apis/rbac.authorization.k8s.io/v1',
@@ -463,7 +463,7 @@ export function getStaticRootNodes(namespaceChildrenNodesResolver) {
             {
               pathSegment: ':roleName',
               viewUrl:
-                config.coreModuleUrl +
+                config.coreUIModuleUrl +
                 '/clusterroles/:roleName?' +
                 toSearchParamsString({
                   resourceApiPath: '/apis/rbac.authorization.k8s.io/v1',

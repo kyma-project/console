@@ -1,5 +1,5 @@
 import React from 'react';
-import { useConfig } from 'react-shared';
+import { useMicrofrontendContext } from 'react-shared';
 
 import { createServiceRef } from './helpers';
 
@@ -7,9 +7,9 @@ import BebEventSubscription from 'shared/components/EventSubscriptions/BebEventS
 import ServiceEventTriggers from './ServiceEventTriggers';
 
 export default function ServiceEventsWrapper({ service }) {
-  const { fromConfig } = useConfig();
+  const { bebEnabled } = useMicrofrontendContext();
 
-  if (fromConfig('bebEnabled')) {
+  if (bebEnabled) {
     return (
       <BebEventSubscription
         resource={service}

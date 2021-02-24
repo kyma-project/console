@@ -18,8 +18,8 @@ JwtDetails.propTypes = {
 
 export default function JwtDetails({ config, setConfig, handleFormChanged }) {
   const defaultIDPPreset = {
-    jwksUri: getURL('defaultIdpJwksUri'),
-    issuer: getURL('defaultIdpIssuer'),
+    jwksUri: '',
+    issuer: '',
   };
 
   const emptyIDPPreset = {

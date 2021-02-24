@@ -1,0 +1,10 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - clustermicrofrontend.yaml
+  - deployment.yaml
+  - deployment-service-catalog.yaml
+  - service-core-ui.yaml
+  - service-core.yaml
+  - service-service-catalog.yaml
+  - ingress.yaml

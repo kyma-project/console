@@ -15,14 +15,8 @@ interface Options {
 }
 
 export function createApolloClient({ enableSubscriptions = false }: Options) {
-  const graphqlApiUrl = getApiUrl(
-    process.env.REACT_APP_LOCAL_API ? 'graphqlApiUrlLocal' : 'graphqlApiUrl',
-  );
-  const subscriptionsApiUrl = getApiUrl(
-    process.env.REACT_APP_LOCAL_API
-      ? 'subscriptionsApiUrlLocal'
-      : 'subscriptionsApiUrl',
-  );
+  const graphqlApiUrl = getApiUrl('graphqlApiUrl');
+  const subscriptionsApiUrl = getApiUrl('subscriptionsApiUrl');
 
   const httpLink = createHttpLink({ uri: graphqlApiUrl });
   const authLink = setContext((_, { headers }) => ({
@@ -34,20 +28,18 @@ export function createApolloClient({ enableSubscriptions = false }: Options) {
   const cache = new InMemoryCache();
   const authHttpLink = authLink.concat(httpLink);
   const errorLink = onError(({ graphQLErrors, networkError }) => {
-    if (process.env.REACT_APP_ENV !== 'production') {
-      if (graphQLErrors) {
-        graphQLErrors.map(({ message, locations, path }) =>
-          // tslint:disable-next-line
-          console.error(
-            `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
-          ),
-        );
-      }
+    if (graphQLErrors) {
+      graphQLErrors.map(({ message, locations, path }) =>
+        // tslint:disable-next-line
+        console.error(
+          `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
+        ),
+      );
+    }
 
-      // tslint:disable-next-line
-      if (networkError) {
-        console.error(`[Network error]: ${networkError}`);
-      }
+    // tslint:disable-next-line
+    if (networkError) {
+      console.error(`[Network error]: ${networkError}`);
     }
   });
 

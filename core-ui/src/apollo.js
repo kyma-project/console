@@ -17,17 +17,15 @@ import {
 
 const errorLink = onError(
   ({ operation, response, graphQLErrors, networkError }) => {
-    if (process.env.REACT_APP_ENV !== 'production') {
-      if (graphQLErrors) {
-        graphQLErrors.map(({ message, locations, path }) =>
-          console.log(
-            `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
-          ),
-        );
-      }
-
-      if (networkError) console.log('[Network error]:', networkError);
+    if (graphQLErrors) {
+      graphQLErrors.map(({ message, locations, path }) =>
+        console.log(
+          `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
+        ),
+      );
     }
+
+    if (networkError) console.log('[Network error]:', networkError);
   },
 );
 
@@ -44,9 +42,7 @@ const setHeader = (header, value) => headers => ({
 const setAuthorization = token => setHeader('authorization', `Bearer ${token}`);
 
 export function createKymaApolloClient(fromConfig, token) {
-  const graphqlApiUrl = fromConfig(
-    process.env.REACT_APP_LOCAL_API ? 'graphqlApiUrlLocal' : 'graphqlApiUrl',
-  );
+  const graphqlApiUrl = fromConfig('graphqlApiUrl');
 
   const httpLink = createHttpLink({
     uri: graphqlApiUrl,

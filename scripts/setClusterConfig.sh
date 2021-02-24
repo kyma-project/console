@@ -67,22 +67,6 @@ else
     echo $DOMAIN>>$CLUSTER_HISTORY_REGISTRY_FILE
 fi
 
-
-echo -e "\033[39mSetting config for: \033[36m$1\033[0m"
-echo ""
-
-if [ ! -r $CLUSTER_CONFIG_ORIGINAL ]; then
-    echo -e "\033[91mThe source clusterConfig file is empty or doesn't exist\033[0m"
-    exit 1
-fi
-
-cp -rf $CLUSTER_CONFIG_ORIGINAL $CLUSTER_CONFIG_GEN
-
-# replace variables in .clusterConfig.gen
-sed -i '' "s/REACT_APP_localDomain=.*/REACT_APP_localDomain=\"$LOCALDOMAIN\"/" $CLUSTER_CONFIG_GEN
-sed -i '' "s/REACT_APP_domain=.*/REACT_APP_domain=\"$DOMAIN\"/" $CLUSTER_CONFIG_GEN
-
-
 echo "Root permissions needed to remove previous cluster->localhost bindings in /etc/hosts"
 
 if [ $HOST != "kyma.local" ]; then

@@ -8,7 +8,9 @@ import { requestLogger } from './utils/other';
 
 const app = express();
 app.use(express.raw({ type: '*/*' }));
-app.use(cors({ origin: '*' })); //TODO
+if (process.env.NODE_ENV === 'development') {
+  app.use(cors({ origin: '*' }));
+}
 
 const server = http.createServer(app);
 const kubeconfig = initializeKubeconfig();
@@ -36,8 +38,12 @@ initializeApp(app, kubeconfig)
 
 const handleRequest = httpsAgent => async (req, res) => {
   delete req.headers.host; // remove host in order not to confuse APIServer
+
+  const targetApiServer = req.headers['x-api-url'];
+  delete req.headers['x-api-url'];
+
   const options = {
-    hostname: k8sUrl.hostname,
+    hostname: targetApiServer || k8sUrl.hostname,
     path: req.originalUrl,
     headers: req.headers,
     body: req.body,

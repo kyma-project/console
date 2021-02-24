@@ -1,5 +1,5 @@
 # This Dockerfile must be execute with higher context, because firstly we have to create react components lib with local changes.
-FROM alpine:3.12 AS builder
+FROM alpine:3.13 AS builder
 # install node
 RUN apk add --update nodejs npm --repository=http://dl-cdn.alpinelinux.org/alpine/edge/main
 
@@ -25,13 +25,9 @@ ENV CI true
 RUN cd /app/${app_name} && make build
 
 ### Main image ###
-FROM alpine:3.12
+FROM eu.gcr.io/kyma-project/incubator/console-nginx:f4976fad
+
 ARG app_name=logging
-
-### Install nginx package and remove cache ###
-RUN apk add --update nginx && rm -rf /var/cache/apk/*
-
-LABEL source git@github.com:kyma-project/console.git
 
 COPY ./${app_name}/nginx.conf /etc/nginx/nginx.conf
 COPY --from=builder /app/${app_name}/build var/public
@@ -42,4 +38,4 @@ RUN touch /var/run/nginx.pid && \
 
 EXPOSE 80
 
-CMD ["nginx", "-g", "daemon off;"]
+ENTRYPOINT ["nginx", "-g", "daemon off;"]

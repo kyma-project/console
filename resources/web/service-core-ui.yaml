@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: console-core-ui
+  labels:
+    app: console
+spec:
+  ports:
+    - port: 8080
+      name: http-core-ui
+      targetPort: 80
+    - port: 6081
+      name: status-port-core-ui
+      targetPort: 6081
+  selector:
+    app: console

@@ -3,8 +3,10 @@ import { Route, Switch } from 'react-router-dom';
 import { withTitle } from 'react-shared';
 
 import LambdaDetails from '../Lambdas/LambdaDetails';
+import Preferences from 'components/Preferences/Preferences';
 
 import { FUNCTIONS_WINDOW_TITLE } from 'components/Lambdas/constants';
+import { PREFERENCES_TITLE } from '../../shared/constants';
 import {
   getComponentForList,
   getComponentForDetails,
@@ -14,6 +16,10 @@ export default function App() {
   return (
     <Switch>
       <Route path="/preload" component={() => null} />
+      <Route
+        path="/preferences"
+        render={withTitle(PREFERENCES_TITLE, Preferences)}
+      />
       <Route
         exact
         path="/namespaces/:namespaceId/:resourceType/:resourceName"
