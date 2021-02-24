@@ -12,7 +12,6 @@ export const NamespacesCreate = ({
   onChange,
   resourceType,
   resourceUrl,
-  namespace,
   refetchList,
 }) => {
   const [labels, setLabels] = useState({});
@@ -39,7 +38,6 @@ export const NamespacesCreate = ({
     const resourceData = {
       metadata: {
         name: formValues.name.current.value,
-        namespace: namespace,
         labels: k8sLabels,
       },
     };

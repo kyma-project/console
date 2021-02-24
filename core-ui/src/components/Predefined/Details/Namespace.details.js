@@ -11,10 +11,10 @@ export const NamespacesDetails = DefaultRenderer => ({ ...otherParams }) => {
     showTitle: true,
   };
 
-  const LimitrangesList = getComponentForList(
-    'limitrangesList',
-    limitRangesParams,
-  );
+  const LimitrangesList = getComponentForList({
+    name: 'limitrangesList',
+    params: limitRangesParams,
+  });
 
   const resourceQuotasParams = {
     hasDetailsView: false,
@@ -25,10 +25,10 @@ export const NamespacesDetails = DefaultRenderer => ({ ...otherParams }) => {
     showTitle: true,
   };
 
-  const ResourceQuotasList = getComponentForList(
-    'resourcequotaslist',
-    resourceQuotasParams,
-  );
+  const ResourceQuotasList = getComponentForList({
+    name: 'resourcequotaslist',
+    params: resourceQuotasParams,
+  });
 
   return (
     <DefaultRenderer {...otherParams}>

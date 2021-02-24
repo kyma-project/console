@@ -54,7 +54,11 @@ function RoutedResourcesList({ match }) {
   const rendererName = params.resourceType + 'List';
   const rendererNameForCreate = params.resourceType + 'Create';
 
-  return getComponentForList(rendererName, rendererNameForCreate, params);
+  return getComponentForList({
+    name: rendererName,
+    params,
+    nameForCreate: rendererNameForCreate,
+  });
 }
 
 function RoutedResourceDetails({ match }) {
@@ -74,5 +78,5 @@ function RoutedResourceDetails({ match }) {
     params.resourceType.substr(1) +
     'Details';
 
-  return getComponentForDetails(rendererName, params);
+  return getComponentForDetails({ name: rendererName, params });
 }
