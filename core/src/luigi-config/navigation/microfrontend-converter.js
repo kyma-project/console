@@ -16,17 +16,25 @@ function resolveViewUrl(name, node, spec, config) {
 }
 
 function buildNode(name, node, spec, config, groups) {
-  const { label, order, requiredPermissions } = node;
+  const { 
+    label,
+    showInNavigation,
+    navigationPath,
+    order,
+    requiredPermissions,
+    settings,
+    context
+  } = node;
   let n = {
     label,
-    pathSegment: node.navigationPath.split('/').pop(),
+    pathSegment: navigationPath.split('/').pop(),
     viewUrl: resolveViewUrl(name, node, spec, config),
     hideFromNav:
-      node.showInNavigation !== undefined ? !node.showInNavigation : false,
+      showInNavigation !== undefined ? !showInNavigation : false,
     order,
     context: {
-      settings: node.settings
-        ? { ...node.settings, ...(node.context || {}) }
+      settings: settings
+        ? { ...settings, ...(context || {}) }
         : {}
     },
     requiredPermissions,
@@ -65,7 +73,7 @@ function buildNodeWithChildren(name, specNode, spec, config, groups) {
 function getDirectChildren(name, parentNodeSegments, spec, config, groups) {
   // process only direct children
   return spec.navigationNodes
-    .filter(function(node) {
+    .filter(function (node) {
       var currentNodeSegments = node.navigationPath.split('/');
       var isDirectChild =
         parentNodeSegments.length === currentNodeSegments.length - 1 &&
