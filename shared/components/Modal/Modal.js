@@ -129,7 +129,7 @@ export function Modal({
 
   return (
     <>
-      <div style={{ display: 'inline-block' }} onClick={onOpen}>
+      <div style={{ display: 'contents' }} onClick={onOpen}>
         {modalOpeningComponent}
       </div>
       <FdModal

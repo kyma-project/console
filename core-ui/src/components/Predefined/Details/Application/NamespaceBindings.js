@@ -22,16 +22,21 @@ export default function NamespaceBindings(application) {
     pollingInterval: 3000,
   });
 
-  const headerRenderer = () => ['Name', 'Service & event bindings', ''];
+  const headerRenderer = () => ['Name', 'Service & event bindings'];
   const totalBindingsCount = spec.services.flatMap(s => s.entries).length;
   const alreadyBoundNamespaces = data?.map(aM => aM.metadata.namespace) || [];
   const rowRenderer = binding => [
     <ServicesBoundModal binding={binding} />,
     `${binding.spec.services?.length || 0}/${totalBindingsCount}`,
-    <EditNamespaceBinding binding={binding} application={application} />,
   ];
 
   const actions = [
+    {
+      name: 'Edit',
+      component: binding => (
+        <EditNamespaceBinding binding={binding} application={application} />
+      ),
+    },
     {
       name: 'Delete',
       handler: binding =>
