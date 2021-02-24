@@ -34,7 +34,6 @@ export default function EditNamespaceBinding({ application, binding }) {
       title={`Edit Service Class Binding in '${namespace}'`}
       modalOpeningComponent={modalOpeningComponent}
       onConfirm={updateBinding}
-      disabledConfirm={!(servicesToBind || []).length}
       onShow={() => setServicesToBind(binding.spec.services)}
     >
       <FormSet>

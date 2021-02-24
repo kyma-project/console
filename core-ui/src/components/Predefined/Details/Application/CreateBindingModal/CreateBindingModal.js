@@ -66,8 +66,6 @@ export default function CreateBindingModal({
       .filter(name => !alreadyBoundNamespaces.includes(name))
       .filter(name => !systemNamespaces.includes(name)) || [];
 
-  const disabledConfirm = !namespaceName || !servicesToBind.length;
-
   return (
     <Modal
       confirmText="Create"
@@ -75,7 +73,7 @@ export default function CreateBindingModal({
       title="Create Namespace Binding"
       modalOpeningComponent={modalOpeningComponent}
       onConfirm={createBinding}
-      disabledConfirm={disabledConfirm}
+      disabledConfirm={!namespaceName}
       onHide={() => setNamespaceName('')}
     >
       {error && error.message}

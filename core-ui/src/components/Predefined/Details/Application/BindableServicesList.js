@@ -28,19 +28,14 @@ export function BindableServicesList({
     }
   }, [servicesList, allServices, availableServices, setServices]);
 
-  if (!servicesList || !servicesList.length) {
-    return (
-      <p className="fd-has-color-text-4 fd-has-margin-top-s fd-has-margin-bottom-s">
-        This Application doesn't expose any Service or Events.
-      </p>
-    );
-  }
+  const noServicesMessage = (
+    <p className="fd-has-color-text-4 fd-has-margin-top-s fd-has-margin-bottom-s">
+      This Application doesn't expose any Service or Events.
+    </p>
+  );
 
-  return (
+  const servicesForm = (
     <>
-      <FormLabel required className="fd-has-margin-top-s">
-        Applications & Events
-      </FormLabel>
       <FormItem>
         <Toggle
           checked={allServices}
@@ -68,6 +63,15 @@ export function BindableServicesList({
           })}
         </ul>
       )}
+    </>
+  );
+
+  return (
+    <>
+      <FormLabel required className="fd-has-margin-top-s">
+        Applications & Events
+      </FormLabel>
+      {servicesList?.length ? servicesForm : noServicesMessage}
     </>
   );
 }
