@@ -127,22 +127,27 @@ function Resources({
     ...customColumns.map(col => col.header),
   ];
 
-  const rowRenderer = entry => [
-    hasDetailsView ? (
-      <Link onClick={_ => navigateToDetails(resourceType, entry.metadata.name)}>
-        {entry.metadata.name}
-      </Link>
-    ) : (
-      <b>{entry.metadata.name}</b>
-    ),
-    <Moment utc fromNow>
-      {entry.metadata.creationTimestamp}
-    </Moment>,
-    <div style={{ maxWidth: '55em' /*TODO*/ }}>
-      <Labels labels={entry.metadata.labels} />
-    </div>,
-    ...customColumns.map(col => col.value(entry)),
-  ];
+  const rowRenderer = entry => {
+    console.log(entry);
+    return [
+      hasDetailsView ? (
+        <Link
+          onClick={_ => navigateToDetails(resourceType, entry.metadata.name)}
+        >
+          {entry.metadata.name}
+        </Link>
+      ) : (
+        <b>{entry.metadata.name}</b>
+      ),
+      <Moment utc fromNow>
+        {entry.metadata.creationTimestamp}
+      </Moment>,
+      <div style={{ maxWidth: '55em' /*TODO*/ }}>
+        <Labels labels={entry.metadata.labels || entry.spec.labels} />
+      </div>,
+      ...customColumns.map(col => col.value(entry)),
+    ];
+  };
 
   return (
     <GenericList
