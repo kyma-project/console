@@ -11,9 +11,11 @@ export const Tooltip = ({
   position,
   trigger,
   tippyProps,
+  className,
 }) => {
   return (
     <TippyTooltip
+      className={className}
       html={content}
       position={position}
       trigger={trigger}

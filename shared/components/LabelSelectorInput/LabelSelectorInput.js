@@ -1,7 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import classNames from 'classnames';
 import './LabelSelectorInput.scss';
-import { Token, InlineHelp, FormItem, FormLabel } from 'fundamental-react';
+import { Token, FormItem, FormLabel } from 'fundamental-react';
+import { Tooltip } from './../Tooltip/Tooltip';
 
 const domainSegmentRegexp = '([a-z0-9]([a-z0-9-_]{0,61}[a-z0-9])?)';
 
@@ -29,7 +30,6 @@ export const LabelSelectorInput = ({
   labels = {},
   readonlyLabels = {},
   onChange,
-  showHelp = true,
 }) => {
   const [isValid, setValid] = useState(true);
   const inputRef = useRef(null);
@@ -92,13 +92,12 @@ export const LabelSelectorInput = ({
     <FormItem>
       <FormLabel>
         Labels
-        {showHelp && (
-          <InlineHelp
-            placement="bottom-right"
-            text="A key and value should be separated by a '=', a key cannot be empty, a key/value consists of alphanumeric characters, '-', '_' or '.', and must start and end with an alphanumeric character."
-            className="fd-has-margin-left-tiny"
-          />
-        )}
+        <Tooltip
+          className="fd-has-margin-left-tiny"
+          content="A key and value should be separated by a '=', a key cannot be empty, a key/value consists of alphanumeric characters, '-', '_' or '.', and must start and end with an alphanumeric character."
+        >
+          <span className="fd-inline-help"></span>
+        </Tooltip>
       </FormLabel>
 
       <div className="fd-form__set">

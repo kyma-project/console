@@ -73,7 +73,6 @@ export function CreateApplicationForm({
           }
         />
         <LabelSelectorInput
-          showHelp={false}
           labels={application.labels || {}}
           onChange={labels => setApplication({ ...application, labels })}
         />
