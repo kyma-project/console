@@ -5,7 +5,6 @@ const https = require('https');
 import { initializeKubeconfig } from './utils/kubeconfig';
 import { initializeApp } from './utils/initialization';
 import { requestLogger } from './utils/other';
-import { handleConnectApplicationRequest } from './custom-endpoints/ConnectApplication';
 
 const app = express();
 app.use(express.raw({ type: '*/*' }));
@@ -27,7 +26,6 @@ console.log(`K8s server used: ${k8sUrl}`);
 initializeApp(app, kubeconfig)
   .then(_ => {
     const httpsAgent = app.get('https_agent');
-    app.post('/connect-application', handleConnectApplicationRequest);
     app.use(handleRequest(httpsAgent));
     server.listen(port, address, () => {
       console.log(`👙 PAMELA 👄 server started @ ${port}!`);
