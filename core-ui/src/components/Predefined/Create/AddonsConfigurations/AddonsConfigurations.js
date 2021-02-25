@@ -80,13 +80,12 @@ export const AddonsConfigurations = ({
   const UrlsAdded = () => {
     if (urls.length > 0) {
       return urls.map(url => (
-        <section className="addons-urls-list">
+        <section className="addons-urls-list" key={url}>
           <p>{url}</p>
           <Button
             glyph="delete"
             type="negative"
             onClick={() => handleUrlRemoved(url)}
-            key={url}
           />
         </section>
       ));
@@ -116,7 +115,6 @@ export const AddonsConfigurations = ({
         <FormLabel htmlFor={`${resourceType}-urls`}>URLs</FormLabel>
         <section className="addons-urls-editor">
           <input
-            role="input"
             className="fd-form__control"
             type="text"
             id={`${resourceType}-url-input`}
