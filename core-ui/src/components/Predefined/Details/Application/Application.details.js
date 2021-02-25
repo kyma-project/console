@@ -13,7 +13,7 @@ export const ApplicationsDetails = DefaultRenderer => ({ ...otherParams }) => {
     },
     {
       header: 'Labels',
-      value: app => <Labels labels={app.spec.labels} />,
+      value: app => <Labels labels={app.metadata.labels} />,
     },
   ];
   return (

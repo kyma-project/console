@@ -139,7 +139,7 @@ function Resources({
       {entry.metadata.creationTimestamp}
     </Moment>,
     <div style={{ maxWidth: '55em' /*TODO*/ }}>
-      <Labels labels={entry.metadata.labels || entry.spec.labels} />
+      <Labels labels={entry.metadata.labels} />
     </div>,
     ...customColumns.map(col => col.value(entry)),
   ];

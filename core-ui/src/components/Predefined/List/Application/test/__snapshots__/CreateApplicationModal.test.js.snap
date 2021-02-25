@@ -5,17 +5,17 @@ Object {
   "apiVersion": "applicationconnector.kyma-project.io/v1alpha1",
   "kind": "Application",
   "metadata": Object {
-    "name": "test-app-name",
-  },
-  "spec": Object {
-    "accessLabel": "test-app-name",
-    "description": "test-description",
     "labels": Object {
       "a": "b",
       "c": "d",
       "d": "e",
       "e": "f",
     },
+    "name": "test-app-name",
+  },
+  "spec": Object {
+    "accessLabel": "test-app-name",
+    "description": "test-description",
     "services": Array [],
   },
 }

@@ -13,11 +13,11 @@ export function createApplicationInput({ name, description, labels }) {
     kind: 'Application',
     metadata: {
       name,
+      labels,
     },
     spec: {
       accessLabel: name,
       description,
-      labels,
       services: [],
     },
   };
