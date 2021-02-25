@@ -20,7 +20,6 @@ export const getComponentFor = (
   }) {
     const predefined = findByName(PredefinedRenderersCollection, name);
     const Renderer = predefined ? predefined(defaultRenderer) : defaultRenderer;
-    console.log(nameForCreate);
     const CreateFormRenderer = nameForCreate
       ? findByName(PredefinedRenderersCollection, nameForCreate) || null
       : null;

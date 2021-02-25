@@ -155,7 +155,7 @@ function Resources({
         modalOpeningComponent={modalOpeningComponent}
         confirmText="Create"
         id={`add-${resourceType}-modal`}
-        className="fd-modal--l-size"
+        className="fd-modal--xl-size"
         renderForm={props => <ResourcesCreateForm {...params} {...props} />}
       />
     );

@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-
+import { Button, FormLabel } from 'fundamental-react';
 import {
   K8sNameInput,
   LabelSelectorInput,
   usePost,
   useNotification,
 } from 'react-shared';
+
+import './AddonsConfigurations.create.scss';
 
 export const AddonsConfigurationsCreate = ({
   formElementRef,
@@ -17,20 +19,39 @@ export const AddonsConfigurationsCreate = ({
 }) => {
   const [name, setName] = useState('');
   const [labels, setLabels] = useState({});
+  const [newUrl, setNewUrl] = useState('');
+  const [urls, setUrls] = useState([]);
   const request = usePost();
   const notification = useNotification();
 
-  function handleLabelsChanged(newLabels) {
+  const handleLabelsChanged = newLabels => {
     setLabels(newLabels);
-  }
+  };
 
-  function handleNameChanged(event) {
+  const handleNameChanged = event => {
     setName(event.target.value);
-  }
+  };
 
-  async function handleFormSubmit(e) {
+  const handleUrlChanged = event => {
+    const url = event.target.value;
+    setNewUrl(url);
+  };
+
+  const handleUrlAdded = () => {
+    const allUrls = urls;
+    allUrls.push(newUrl);
+    setUrls(allUrls);
+    setNewUrl('');
+  };
+
+  const handleUrlRemoved = url => {
+    setUrls(urls => urls.filter(u => u !== url));
+  };
+
+  const handleFormSubmit = async e => {
     e.preventDefault();
     const k8sLabels = { ...labels };
+    const repositories = urls.map(url => ({ url }));
     const resourceData = {
       kind: 'AddonsConfiguration',
       apiVersion: 'addons.kyma-project.io/v1alpha1',
@@ -38,6 +59,9 @@ export const AddonsConfigurationsCreate = ({
         name,
         namespace,
         labels: k8sLabels,
+      },
+      spec: {
+        repositories,
       },
     };
 
@@ -51,7 +75,24 @@ export const AddonsConfigurationsCreate = ({
         content: e.message,
       });
     }
-  }
+  };
+
+  const UrlsAdded = () => {
+    if (urls.length > 0) {
+      return urls.map(url => (
+        <section className="addons-urls-list">
+          <p>{url}</p>
+          <Button
+            glyph="delete"
+            type="negative"
+            onClick={() => handleUrlRemoved(url)}
+            key={url}
+          />
+        </section>
+      ));
+    }
+    return <></>;
+  };
 
   return (
     // although HTML spec assigns the role by default to a <form> element, @testing-library ignores it
@@ -72,6 +113,26 @@ export const AddonsConfigurationsCreate = ({
         </div>
 
         <LabelSelectorInput labels={labels} onChange={handleLabelsChanged} />
+        <FormLabel htmlFor={`${resourceType}-urls`}>URLs</FormLabel>
+        <section className="addons-urls-editor">
+          <input
+            role="input"
+            className="fd-form__control"
+            type="text"
+            id={`${resourceType}-url-input`}
+            placeholder="Enter URL"
+            value={newUrl}
+            onChange={handleUrlChanged}
+          />
+          <Button
+            glyph="add"
+            type="positive"
+            disabled={!newUrl}
+            onClick={handleUrlAdded}
+            key={`${resourceType}-url-add`}
+          />
+        </section>
+        <UrlsAdded />
       </div>
     </form>
   );
