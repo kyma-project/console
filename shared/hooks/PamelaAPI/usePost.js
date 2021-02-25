@@ -16,7 +16,9 @@ export const usePost = () => {
       },
       body: JSON.stringify(data),
     });
+
     if (!response.ok) throw await throwHttpError(response);
+
     if (typeof options?.refetch === 'function') options.refetch();
     return await response.json();
   };

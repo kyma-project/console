@@ -100,3 +100,15 @@ function handleSingleDataReceived(newData, oldData, setDataFn) {
     setDataFn(newData);
   }
 }
+
+export const useSingleGet = () => {
+  const { idToken, k8sApiUrl } = useMicrofrontendContext();
+  const { fromConfig } = useConfig();
+  return url =>
+    fetch(baseUrl(fromConfig) + url, {
+      headers: {
+        Authorization: 'Bearer ' + idToken,
+        'X-Api-Url': k8sApiUrl,
+      },
+    });
+};

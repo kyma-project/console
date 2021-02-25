@@ -21,7 +21,8 @@ import { ModalWithForm } from '../ModalWithForm/ModalWithForm';
 
 ResourcesList.propTypes = {
   customColumns: CustomPropTypes.customColumnsType,
-  createResourceForm: PropTypes.any,
+  createResourceForm: PropTypes.node,
+  customHeaderActions: PropTypes.node,
   resourceUrl: PropTypes.string.isRequired,
   resourceType: PropTypes.string.isRequired,
   namespace: PropTypes.string,
@@ -32,6 +33,7 @@ ResourcesList.propTypes = {
 };
 
 ResourcesList.defaultProps = {
+  customHeaderActions: null,
   customColumns: [],
   createResourceForm: null,
   showTitle: false,
@@ -44,7 +46,12 @@ export function ResourcesList(props) {
 
   return (
     <YamlEditorProvider>
-      {!props.isCompact && <PageHeader title={props.resourceType} />}
+      {!props.isCompact && (
+        <PageHeader
+          title={props.resourceType}
+          actions={props.customHeaderActions}
+        />
+      )}
       <Resources {...props} />
     </YamlEditorProvider>
   );

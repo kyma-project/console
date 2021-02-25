@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: console
-          image: eu.gcr.io/kyma-project/console:PR-2131
+          image: wawrzyn321/console-apps
           imagePullPolicy: Always
           resources:
             limits:
@@ -34,7 +34,7 @@ spec:
             - containerPort: 6080
             - containerPort: 8080
         - name: core-ui
-          image: eu.gcr.io/kyma-project/core-ui:PR-2131
+          image: wawrzyn321/core-ui-apps
           imagePullPolicy: Always
           resources:
             limits:

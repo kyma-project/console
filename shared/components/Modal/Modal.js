@@ -122,9 +122,14 @@ export function Modal({
     );
   };
 
+  const modalActions = () => {
+    if (typeof actions === 'function') return actions(onClose);
+    return actions || createActions();
+  };
+
   return (
     <>
-      <div style={{ display: 'inline-block' }} onClick={onOpen}>
+      <div style={{ display: 'contents' }} onClick={onOpen}>
         {modalOpeningComponent}
       </div>
       <FdModal
@@ -133,7 +138,7 @@ export function Modal({
         title={title}
         show={show}
         onClose={onClose}
-        actions={actions || createActions()}
+        actions={modalActions()}
       >
         {children}
       </FdModal>
