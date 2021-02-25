@@ -48,7 +48,8 @@ export default function App() {
 function RoutedResourcesList({ match }) {
   const queryParams = new URLSearchParams(window.location.search);
   const resourceUrl =
-    queryParams.get('resourceApiPath') + window.location.pathname;
+    queryParams.get('resourceApiPath') +
+    window.location.pathname.toLocaleLowerCase();
 
   const params = {
     hasDetailsView: queryParams.get('hasDetailsView') === 'true',
@@ -70,7 +71,8 @@ function RoutedResourcesList({ match }) {
 function RoutedResourceDetails({ match }) {
   const queryParams = new URLSearchParams(window.location.search);
   const resourceUrl =
-    queryParams.get('resourceApiPath') + window.location.pathname;
+    queryParams.get('resourceApiPath') +
+    window.location.pathname.toLocaleLowerCase();
 
   const params = {
     resourceUrl,
@@ -79,10 +81,7 @@ function RoutedResourceDetails({ match }) {
     namespace: match.params.namespaceId,
   };
 
-  const rendererName =
-    params.resourceType[0].toUpperCase() +
-    params.resourceType.substr(1) +
-    'Details';
+  const rendererName = params.resourceType + 'Details';
 
   return getComponentForDetails({ name: rendererName, params });
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import { AddonsConfigurations } from './AddonsConfigurations/AddonsConfigurations.js';
 
-export const AddonsConfigurationsCreate = ({
+export const ClusterAddonsConfigurationsCreate = ({
   formElementRef,
   onChange,
   resourceType,
