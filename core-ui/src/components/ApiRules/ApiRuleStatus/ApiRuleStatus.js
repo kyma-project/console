@@ -26,9 +26,9 @@ export default function ApiRuleStatus({ apiRule }) {
     return null;
   }
 
-  const { code, description } = apiRule.status.APIRuleStatus;
+  const { code, desc } = apiRule.status.APIRuleStatus;
   return (
-    <StatusBadge type={resolveAPIRuleStatus(code)} tooltipContent={description}>
+    <StatusBadge type={resolveAPIRuleStatus(code)} tooltipContent={desc}>
       {code}
     </StatusBadge>
   );
