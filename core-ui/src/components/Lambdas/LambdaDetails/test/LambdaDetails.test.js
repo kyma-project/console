@@ -1,105 +1,106 @@
-import React from 'react';
-import { render, wait } from '@testing-library/react';
+// import React from 'react';
+// import { render, wait } from '@testing-library/react';
 
-import { EVENT_TRIGGER_EVENT_SUBSCRIPTION_MOCK } from 'components/Lambdas/gql/hooks/queries/testMocks';
-import {
-  withApolloMockProvider,
-  lambdaMock,
-} from 'components/Lambdas/helpers/testing';
+// import { EVENT_TRIGGER_EVENT_SUBSCRIPTION_MOCK } from 'components/Lambdas/gql/hooks/queries/testMocks';
+// import {
+//   withApolloMockProvider,
+//   lambdaMock,
+// } from 'components/Lambdas/helpers/testing';
 
-import { BACKEND_MODULES } from 'components/Lambdas/helpers/misc';
-import { LAMBDA_DETAILS } from 'components/Lambdas/constants';
+// import { BACKEND_MODULES } from 'components/Lambdas/helpers/misc';
+// import { LAMBDA_DETAILS } from 'components/Lambdas/constants';
 
-import LambdaDetails from '../LambdaDetails';
+// import LambdaDetails from '../LambdaDetails';
 
-// remove it after add 'mutationobserver-shim' to jest config https://github.com/jsdom/jsdom/issues/639
-const mutationObserverMock = jest.fn(function MutationObserver(callback) {
-  this.observe = jest.fn();
-  this.disconnect = jest.fn();
-  // Optionally add a trigger() method to manually trigger a change
-  this.trigger = mockedMutationsList => {
-    callback(mockedMutationsList, this);
-  };
-});
-global.MutationObserver = mutationObserverMock;
+// // remove it after add 'mutationobserver-shim' to jest config https://github.com/jsdom/jsdom/issues/639
+// const mutationObserverMock = jest.fn(function MutationObserver(callback) {
+//   this.observe = jest.fn();
+//   this.disconnect = jest.fn();
+//   // Optionally add a trigger() method to manually trigger a change
+//   this.trigger = mockedMutationsList => {
+//     callback(mockedMutationsList, this);
+//   };
+// });
+// global.MutationObserver = mutationObserverMock;
 
-jest.mock('@luigi-project/client', () => {
-  return {
-    linkManager: () => ({
-      navigate: () => {},
-      withParams: () => ({
-        openAsSplitView: () => ({
-          expand: () => {},
-          close: () => {},
-        }),
-        pathExists: () => Promise.resolve(true),
-      }),
-    }),
-    addContextUpdateListener: () => {},
-    uxManager: () => ({
-      addBackdrop: () => {},
-      removeBackdrop: () => {},
-    }),
-    getEventData: () => ({
-      backendModules: ['apigateway'],
-    }),
-  };
-});
+// jest.mock('@luigi-project/client', () => {
+//   return {
+//     linkManager: () => ({
+//       navigate: () => {},
+//       withParams: () => ({
+//         openAsSplitView: () => ({
+//           expand: () => {},
+//           close: () => {},
+//         }),
+//         pathExists: () => Promise.resolve(true),
+//       }),
+//     }),
+//     addContextUpdateListener: () => {},
+//     uxManager: () => ({
+//       addBackdrop: () => {},
+//       removeBackdrop: () => {},
+//     }),
+//     getEventData: () => ({
+//       backendModules: ['apigateway'],
+//     }),
+//   };
+// });
 
-jest.mock('react-shared', () => ({
-  ...jest.requireActual('react-shared'),
-  useConfig: () => ({ fromConfig: () => false }),
-}));
+// jest.mock('react-shared', () => ({
+//   ...jest.requireActual('react-shared'),
+//   useConfig: () => ({ fromConfig: () => false }),
+// }));
 
 describe('LambdaDetails', () => {
-  it('should render header and tabs', async () => {
-    const { getByText } = render(<LambdaDetails lambda={lambdaMock} />);
+  test.todo('LambdaDetails');
+  //   it('should render header and tabs', async () => {
+  //     const { getByText } = render(<LambdaDetails lambda={lambdaMock} />);
 
-    expect(getByText(LAMBDA_DETAILS.LABELS.TITLE)).toBeInTheDocument(); // labels column in header
-    expect(getByText(LAMBDA_DETAILS.STATUS.TITLE)).toBeInTheDocument(); // status column in header
-    expect(getByText(lambdaMock.name)).toBeInTheDocument(); // lambda name in breadcrumbs
-    expect(getByText(LAMBDA_DETAILS.TABS.CODE.TITLE)).toBeInTheDocument(); // Code tab under header
-    expect(
-      getByText(LAMBDA_DETAILS.TABS.RESOURCE_MANAGEMENT.TITLE),
-    ).toBeInTheDocument(); // Configuration tab under header
-    await wait(() => {});
-  });
+  //     expect(getByText(LAMBDA_DETAILS.LABELS.TITLE)).toBeInTheDocument(); // labels column in header
+  //     expect(getByText(LAMBDA_DETAILS.STATUS.TITLE)).toBeInTheDocument(); // status column in header
+  //     expect(getByText(lambdaMock.name)).toBeInTheDocument(); // lambda name in breadcrumbs
+  //     expect(getByText(LAMBDA_DETAILS.TABS.CODE.TITLE)).toBeInTheDocument(); // Code tab under header
+  //     expect(
+  //       getByText(LAMBDA_DETAILS.TABS.RESOURCE_MANAGEMENT.TITLE),
+  //     ).toBeInTheDocument(); // Configuration tab under header
+  //     await wait(() => {});
+  //   });
 
-  it('should not render Configuration tab', async () => {
-    const { queryByText } = render(<LambdaDetails lambda={lambdaMock} />);
+  //   it('should not render Configuration tab', async () => {
+  //     const { queryByText } = render(<LambdaDetails lambda={lambdaMock} />);
 
-    expect(
-      queryByText(LAMBDA_DETAILS.TABS.CONFIGURATION.TITLE),
-    ).not.toBeInTheDocument();
-    await wait(() => {});
-  });
+  //     expect(
+  //       queryByText(LAMBDA_DETAILS.TABS.CONFIGURATION.TITLE),
+  //     ).not.toBeInTheDocument();
+  //     await wait(() => {});
+  //   });
 
-  it('should render Configuration tab', async () => {
-    const eventTriggersVariables = {
-      serviceName: lambdaMock.name,
-      namespace: lambdaMock.namespace,
-    };
-    const subscriptionMock = EVENT_TRIGGER_EVENT_SUBSCRIPTION_MOCK(
-      eventTriggersVariables,
-    );
-    const { queryByText } = render(
-      withApolloMockProvider({
-        component: (
-          <LambdaDetails
-            lambda={lambdaMock}
-            backendModules={[
-              BACKEND_MODULES.APPLICATION,
-              BACKEND_MODULES.EVENTING,
-            ]}
-          />
-        ),
-        mocks: [subscriptionMock],
-      }),
-    );
+  //   it('should render Configuration tab', async () => {
+  //     const eventTriggersVariables = {
+  //       serviceName: lambdaMock.name,
+  //       namespace: lambdaMock.namespace,
+  //     };
+  //     const subscriptionMock = EVENT_TRIGGER_EVENT_SUBSCRIPTION_MOCK(
+  //       eventTriggersVariables,
+  //     );
+  //     const { queryByText } = render(
+  //       withApolloMockProvider({
+  //         component: (
+  //           <LambdaDetails
+  //             lambda={lambdaMock}
+  //             backendModules={[
+  //               BACKEND_MODULES.APPLICATION,
+  //               BACKEND_MODULES.EVENTING,
+  //             ]}
+  //           />
+  //         ),
+  //         mocks: [subscriptionMock],
+  //       }),
+  //     );
 
-    expect(
-      queryByText(LAMBDA_DETAILS.TABS.CONFIGURATION.TITLE),
-    ).toBeInTheDocument();
-    await wait(() => {});
-  });
+  //     expect(
+  //       queryByText(LAMBDA_DETAILS.TABS.CONFIGURATION.TITLE),
+  //     ).toBeInTheDocument();
+  //     await wait(() => {});
+  //   });
 });
