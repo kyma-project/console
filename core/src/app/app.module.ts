@@ -1,10 +1,7 @@
-import { ApplicationBindingService } from './content/settings/applications/application-details/application-binding-service';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { ClipboardModule } from 'ngx-clipboard';
-import { EventService } from './content/settings/applications/application-details/services/event.service';
-import { ApplicationsService } from './content/settings/applications/services/applications.service';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppComponent } from './app.component';
@@ -28,13 +25,6 @@ import { DeploymentsComponent } from './content/namespaces/operation/deployments
 import { ReplicaSetsEntryRendererComponent } from './content/namespaces/operation/replica-sets/replica-sets-entry-renderer/replica-sets-entry-renderer.component';
 import { ReplicaSetsHeaderRendererComponent } from './content/namespaces/operation/replica-sets/replica-sets-header-renderer/replica-sets-header-renderer.component';
 import { ReplicaSetsComponent } from './content/namespaces/operation/replica-sets/replica-sets.component';
-import { EditBindingsModalComponent } from './content/settings/applications/application-details/edit-bindings-modal/edit-binding-modal.component';
-import { BindingsDetailsModalComponent } from './content/settings/applications/application-details/bindings-details-modal/bindings-details-modal.component';
-import { CreateBindingsModalComponent } from './content/settings/applications/application-details/create-bindings-modal/create-binding-modal.component';
-import { ApplicationDetailsComponent } from './content/settings/applications/application-details/application-details.component';
-import { ApplicationsEntryRendererComponent } from './content/settings/applications/applications-entry-renderer/applications-entry-renderer.component';
-import { ApplicationsHeaderRendererComponent } from './content/settings/applications/applications-header-renderer/applications-header-renderer.component';
-import { ApplicationsComponent } from './content/settings/applications/applications.component';
 import { ServiceBrokersComponent } from './content/settings/service-brokers/service-brokers.component';
 import { ConfirmationModalComponent } from './shared/components/confirmation-modal/confirmation-modal.component';
 import { EditResourceComponent } from './shared/components/edit-resource/edit-resource.component';
@@ -50,8 +40,6 @@ import { AbstractKubernetesElementListComponent } from './content/namespaces/ope
 import { ServiceBrokerHeaderRendererComponent } from './content/settings/service-brokers/services-header-renderer/service-broker-header-renderer.component';
 import { ServiceBrokerEntryRendererComponent } from './content/settings/service-brokers/services-entry-renderer/service-broker-entry-renderer.component';
 import { Copy2ClipboardModalComponent } from './shared/components/copy2clipboard-modal/copy2clipboard-modal.component';
-import { CreateApplicationModalComponent } from './content/settings/applications/create-application-modal/create-application-modal.component';
-import { EditApplicationModalComponent } from './content/settings/applications/edit-application-modal/edit-application-modal.component';
 import { LabelsInputComponent } from './shared/components/labels-input/labels-input.component';
 import { ConfigMapsComponent } from './content/namespaces/operation/configmaps/configmaps.component';
 import { ConfigMapsEntryRendererComponent } from './content/namespaces/operation/configmaps/configmaps-entry-renderer/configmaps-entry-renderer.component';
@@ -84,8 +72,6 @@ import { WindowTitleService } from 'shared/services/window-title.service';
     DeploymentsComponent,
 
     TimeAgoPipe,
-    ApplicationsComponent,
-    ApplicationDetailsComponent,
     ServiceBrokersComponent,
     ReplicaSetsComponent,
     ConfigMapsComponent,
@@ -98,11 +84,6 @@ import { WindowTitleService } from 'shared/services/window-title.service';
 
     ConfigMapsEntryRendererComponent,
     ConfigMapsHeaderRendererComponent,
-    EditBindingsModalComponent,
-    BindingsDetailsModalComponent,
-    CreateBindingsModalComponent,
-    ApplicationsHeaderRendererComponent,
-    ApplicationsEntryRendererComponent,
     JsonEditorModalComponent,
     GraphqlMutatorModalComponent,
     JsonEditorComponent,
@@ -113,8 +94,6 @@ import { WindowTitleService } from 'shared/services/window-title.service';
     ServiceBrokerEntryRendererComponent,
     ServiceBrokerHeaderRendererComponent,
 
-    CreateApplicationModalComponent,
-    EditApplicationModalComponent,
     LabelsInputComponent,
     StatusLabelComponent,
     TooltipComponent,
@@ -141,11 +120,8 @@ import { WindowTitleService } from 'shared/services/window-title.service';
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
     NamespacesService,
     CurrentNamespaceService,
-    ApplicationsService,
-    EventService,
     K8sResourceEditorService,
     ComponentCommunicationService,
-    ApplicationBindingService,
     GraphQLClientService,
     LuigiClientService,
     GenericHelpersService,
@@ -159,8 +135,6 @@ import { WindowTitleService } from 'shared/services/window-title.service';
 
     ConfigMapsEntryRendererComponent,
     ConfigMapsHeaderRendererComponent,
-    ApplicationsHeaderRendererComponent,
-    ApplicationsEntryRendererComponent,
     ServiceBrokerHeaderRendererComponent,
     ServiceBrokerEntryRendererComponent
   ],

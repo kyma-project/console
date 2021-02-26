@@ -14,13 +14,10 @@ RUN cd /app/${app_name} && \
   make pull-licenses && \
   make build
 
+
 ### Main image ###
-FROM alpine:3.12
+FROM eu.gcr.io/kyma-project/incubator/console-nginx:f4976fad
 
-### Install nginx package and remove cache ###
-RUN apk add --update nginx && rm -rf /var/cache/apk/*
-
-LABEL source git@github.com:kyma-project/console.git
 ARG app_name=core
 
 COPY ./${app_name}/nginx/nginx.conf /etc/nginx/nginx.conf
@@ -35,4 +32,4 @@ RUN touch /var/run/nginx.pid && \
 
 EXPOSE 8080
 
-CMD ["nginx", "-g", "daemon off;"]
+ENTRYPOINT ["nginx", "-g", "daemon off;"]

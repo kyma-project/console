@@ -1,23 +1,46 @@
 import processNodeForLocalDevelopment from './local-development-node-converter';
 import { hideByNodeCategory } from './navigation-helpers';
 
+function resolveViewUrl(name, node, spec, config) {
+  if (spec.viewBaseUrl) {
+    if (spec.viewBaseUrl.startsWith('http')) {
+      // full url, just return viewBaseUrl
+      return spec.viewBaseUrl;
+    } else {
+      // viewBaseUrl is the ingress name
+      return `https://${spec.viewBaseUrl}.${config.domain}${node.viewUrl}`;
+    }
+  } else {
+    return `https://${name}.${config.domain}${node.viewUrl}`;
+  }
+}
+
 function buildNode(name, node, spec, config, groups) {
-  var n = {
-    label: node.label,
-    pathSegment: node.navigationPath.split('/').pop(),
-    viewUrl: spec.viewBaseUrl ? spec.viewBaseUrl + node.viewUrl : `https://${name}.${config.domain}${node.viewUrl}`,
+  const { 
+    label,
+    showInNavigation,
+    navigationPath,
+    order,
+    requiredPermissions,
+    settings,
+    context
+  } = node;
+  let n = {
+    label,
+    pathSegment: navigationPath.split('/').pop(),
+    viewUrl: resolveViewUrl(name, node, spec, config),
     hideFromNav:
-      node.showInNavigation !== undefined ? !node.showInNavigation : false,
-    order: node.order,
+      showInNavigation !== undefined ? !showInNavigation : false,
+    order,
     context: {
-      settings: node.settings
-        ? { ...node.settings, ...(node.context || {}) }
+      settings: settings
+        ? { ...settings, ...(context || {}) }
         : {}
     },
-    requiredPermissions: node.requiredPermissions || undefined
+    requiredPermissions,
   };
 
-  n.context.requiredBackendModules = node.requiredBackendModules || undefined;
+  n.context.requiredBackendModules = node.requiredBackendModules;
   n.context.groups = groups;
 
   if (node.externalLink) {
@@ -50,7 +73,7 @@ function buildNodeWithChildren(name, specNode, spec, config, groups) {
 function getDirectChildren(name, parentNodeSegments, spec, config, groups) {
   // process only direct children
   return spec.navigationNodes
-    .filter(function(node) {
+    .filter(function (node) {
       var currentNodeSegments = node.navigationPath.split('/');
       var isDirectChild =
         parentNodeSegments.length === currentNodeSegments.length - 1 &&

@@ -1,6 +1,7 @@
 import { baseUrl, throwHttpError } from './config';
 import { useMicrofrontendContext } from '../../contexts/MicrofrontendContext';
 import { useConfig } from '../../contexts/ConfigContext';
+
 export const usePost = () => {
   const { idToken, k8sApiUrl } = useMicrofrontendContext();
   const { fromConfig } = useConfig();
