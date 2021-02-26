@@ -16,11 +16,8 @@ const ServicesDropdown = ({
     return 'Loading services...';
   }
 
-  if (error) {
-    return "Couldn't load services list " + error.message;
-  }
-  if (!loading && !data) {
-    return "Couldn't load services list " + error.message;
+  if (error || (!loading && !data)) {
+    return "Couldn't load service list " + error.message;
   }
 
   const defaultService = defaultValue

@@ -23,9 +23,9 @@ import ServicesDropdown from './ServicesDropdown/ServicesDropdown';
 import AccessStrategyForm from './AccessStrategyForm/AccessStrategyForm';
 import { EXCLUDED_SERVICES_LABELS } from 'components/ApiRules/constants';
 import { hasValidMethods } from 'components/ApiRules/accessStrategyTypes';
-import { useGet } from 'react-shared';
+import { useGet, useGetList } from 'react-shared';
 import { SERVICES_URL, API_RULE_URL } from '../constants';
-import { formatMessage } from 'components/Lambdas/helpers/misc';
+import { formatMessage as injectVariables } from 'components/Lambdas/helpers/misc';
 
 export const DEFAULT_GATEWAY = 'kyma-gateway.kyma-system.svc.cluster.local';
 const DOMAIN = getApiUrl('domain');
@@ -80,17 +80,27 @@ export default function ApiRuleForm({
   }
 
   const { data, error, loading = true } = useGet(
-    formatMessage(SERVICES_URL, {
+    injectVariables(SERVICES_URL, {
       namespace: namespace,
     }),
     { pollingInterval: 3000 },
   );
 
+  const { data: filteredServices } = useGetList(service => {
+    let show = true;
+    EXCLUDED_SERVICES_LABELS.forEach(excludedLabel => {
+      if (Object.keys(service?.metadata.labels).includes([excludedLabel])) {
+        show = false;
+      }
+    });
+    return show;
+  })(injectVariables(SERVICES_URL, { namespace }), { pollingInterval: 3000 });
+  console.log('services', filteredServices);
   const services =
     data?.items.filter(service => {
       let show = true;
       EXCLUDED_SERVICES_LABELS.forEach(excludedLabel => {
-        if (Object.keys(service?.metadata?.labels).includes([excludedLabel])) {
+        if (Object.keys(service?.metadata.labels).includes([excludedLabel])) {
           show = false;
         }
       });
@@ -139,7 +149,7 @@ export default function ApiRuleForm({
       metadata: {
         name: formValues.name.current.value,
         namespace: namespace,
-        generation: apiRule?.metadata?.generation || 1,
+        generation: apiRule?.metadata.generation || 1,
       },
       spec: {
         service: {
@@ -168,7 +178,7 @@ export default function ApiRuleForm({
       mutationType === 'create' ? newApiRule : createPatch(apiRule, newApiRule);
 
     await mutation(
-      formatMessage(API_RULE_URL, {
+      injectVariables(API_RULE_URL, {
         name: formValues.name.current.value,
         namespace: namespace,
       }),
@@ -225,9 +235,9 @@ export default function ApiRuleForm({
                         _ref={formValues.name}
                         id="apiRuleName"
                         kind="API Rule"
-                        showHelp={!apiRule?.metadata?.name}
-                        defaultValue={apiRule?.metadata?.name}
-                        disabled={!!apiRule?.metadata?.name}
+                        showHelp={!apiRule?.metadata.name}
+                        defaultValue={apiRule?.metadata.name}
+                        disabled={!!apiRule?.metadata.name}
                       />
                     </FormItem>
                     <FormItem>

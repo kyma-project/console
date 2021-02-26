@@ -2,7 +2,10 @@ import { useEffect } from 'react';
 import { useNotification } from 'react-shared';
 import { useGet } from 'react-shared';
 
-import { formatMessage } from 'components/Lambdas/helpers/misc';
+import {
+  formatMessage,
+  formatMessage as injectVariables,
+} from 'components/Lambdas/helpers/misc';
 import { GQL_QUERIES, SERVICE_URL } from 'components/Lambdas/constants';
 import extractGraphQlErrors from 'shared/graphqlErrorExtractor';
 
@@ -10,11 +13,11 @@ export const useServiceQuery = ({ name, namespace }) => {
   const notificationManager = useNotification();
 
   const { data, error, loading } = useGet(
-    formatMessage(SERVICE_URL, {
+    injectVariables(SERVICE_URL, {
       namespace: namespace,
       name: name,
     }),
-    { pollingInterval: 3000000 },
+    { pollingInterval: 3000 },
   );
   const service = data;
 

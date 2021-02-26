@@ -32,7 +32,7 @@ const popupMessage =
   RESOURCES_MANAGEMENT_PANEL.EDIT_MODAL.CONFIRM_BUTTON.POPUP_MESSAGE;
 
 function getDefaultFormValues(lambda) {
-  const def = {
+  return {
     [inputNames.replicas.preset]: checkReplicasPreset(
       lambda.spec.minReplicas,
       lambda.spec.maxReplicas,
@@ -73,11 +73,9 @@ function getDefaultFormValues(lambda) {
     [inputNames.buildJob.limits.memory]:
       lambda.spec.buildResources.limits.memory || '',
   };
-
-  return def;
 }
 
-export default function ResourcesManagement({ lambda, lambdaUrl }) {
+export default function ResourcesManagement({ lambda }) {
   const defaultValues = getDefaultFormValues(lambda);
 
   const {
@@ -96,7 +94,6 @@ export default function ResourcesManagement({ lambda, lambdaUrl }) {
   const [isEditMode, setIsEditMode] = useState(false);
   const updateLambda = useUpdateLambda({
     lambda,
-    lambdaUrl,
     type: UPDATE_TYPE.RESOURCES_AND_REPLICAS,
   });
 

@@ -23,13 +23,7 @@ export const FunctionsDetails = DefaultRenderer => ({ ...otherParams }) => {
   ];
 
   const Functions = (resource, resourceUrl) => {
-    return (
-      <LambdaDetailsWrapper
-        key="lambdaDetails"
-        lambda={resource}
-        lambdaUrl={resourceUrl}
-      />
-    );
+    return <LambdaDetailsWrapper key="lambdaDetails" lambda={resource} />;
   };
   return (
     <DefaultRenderer

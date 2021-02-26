@@ -17,7 +17,6 @@ export const UPDATE_TYPE = {
 
 export const useUpdateLambda = ({
   lambda,
-  lambdaUrl,
   type = UPDATE_TYPE.GENERAL_CONFIGURATION,
 }) => {
   const notificationManager = useNotification();
@@ -49,7 +48,10 @@ export const useUpdateLambda = ({
 
       const diff = createPatch(lambda, newLambda);
 
-      const response = await updateLambdaMutation(lambdaUrl, diff);
+      const response = await updateLambdaMutation(
+        lambda.metadata.selfLink,
+        diff,
+      );
 
       if (response.error) {
         handleError(response.error);

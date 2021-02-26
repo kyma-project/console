@@ -20,14 +20,13 @@ const ERRORS = {
 const saveText = REPOSITORY_CONFIG_PANEL.SAVE_BUTTON.TEXT;
 const editText = REPOSITORY_CONFIG_PANEL.EDIT_BUTTON.TEXT;
 
-export default function RepositoryConfig({ lambda, lambdaUrl }) {
+export default function RepositoryConfig({ lambda }) {
   const [isEditMode, setIsEditMode] = useState(false);
   const [isValid, setIsValid] = useState(true);
   const [errors, setErrors] = useState([]);
   const [editStatus, setEditStatus] = useState('');
   const updateLambda = useUpdateLambda({
     lambda,
-    lambdaUrl,
     type: UPDATE_TYPE.REPOSITORY_CONFIG,
   });
 

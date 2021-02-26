@@ -16,11 +16,7 @@ import {
   backendModulesExist,
 } from 'components/Lambdas/helpers/misc';
 
-export default function LambdaDetails({
-  lambda,
-  lambdaUrl,
-  backendModules = [],
-}) {
+export default function LambdaDetails({ lambda, backendModules = [] }) {
   const [bindingUsages, setBindingUsages] = useState([]);
   // useLogsView(lambda.UID, lambda.namespace);
 
@@ -57,11 +53,7 @@ export default function LambdaDetails({
           id="lambda-code"
           title={LAMBDA_DETAILS.TABS.CODE.TITLE}
         >
-          <CodeTab
-            lambda={lambda}
-            lambdaUrl={lambdaUrl}
-            bindingUsages={bindingUsages}
-          />
+          <CodeTab lambda={lambda} bindingUsages={bindingUsages} />
         </Tab>
         {configTabShouldRender && (
           <Tab
@@ -79,7 +71,7 @@ export default function LambdaDetails({
           id="lambda-resources"
           title={LAMBDA_DETAILS.TABS.RESOURCE_MANAGEMENT.TITLE}
         >
-          <ResourceManagementTab lambda={lambda} lambdaUrl={lambdaUrl} />
+          <ResourceManagementTab lambda={lambda} />
         </Tab>
       </TabGroup>
     </>

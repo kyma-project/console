@@ -10,7 +10,6 @@ import EditVariablesForm from './EditVariablesForm';
 
 export default function EditVariablesModal({
   lambda,
-  lambdaUrl,
   customVariables,
   customValueFromVariables,
   injectedVariables,
@@ -35,7 +34,6 @@ export default function EditVariablesModal({
         <EditVariablesForm
           {...props}
           lambda={lambda}
-          lambdaUrl={lambdaUrl}
           customVariables={customVariables}
           customValueFromVariables={customValueFromVariables}
           injectedVariables={injectedVariables}

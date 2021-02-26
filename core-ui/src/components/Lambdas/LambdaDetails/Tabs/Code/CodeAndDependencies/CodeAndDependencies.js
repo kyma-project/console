@@ -26,10 +26,9 @@ const DISABLED_CAUSES = {
   NO_CHANGES: 'NO_CHANGES',
 };
 
-export default function CodeAndDependencies({ lambda, lambdaUrl }) {
+export default function CodeAndDependencies({ lambda }) {
   const updateLambda = useUpdateLambda({
     lambda,
-    lambdaUrl,
     type: UPDATE_TYPE.CODE_AND_DEPENDENCIES,
   });
 

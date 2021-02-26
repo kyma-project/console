@@ -6,7 +6,7 @@ import { useConfigData } from 'components/Lambdas/helpers/misc/useConfigData';
 
 import './LambdaDetails.scss';
 
-export default function LambdaDetailsWrapper({ lambda, lambdaUrl }) {
+export default function LambdaDetailsWrapper({ lambda }) {
   useConfigData();
   let content = null;
 
@@ -14,13 +14,7 @@ export default function LambdaDetailsWrapper({ lambda, lambdaUrl }) {
     content = <>Entry not found</>;
   } else {
     const backendModules = LuigiClient.getEventData().backendModules;
-    content = (
-      <LambdaDetails
-        lambda={lambda}
-        lambdaUrl={lambdaUrl}
-        backendModules={backendModules}
-      />
-    );
+    content = <LambdaDetails lambda={lambda} backendModules={backendModules} />;
   }
 
   return <div className="lambda-details">{content}</div>;
