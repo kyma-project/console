@@ -8,7 +8,6 @@ import {
   Button,
 } from 'fundamental-react';
 import './JwtDetails.scss';
-import { getApiUrl as getURL } from '@kyma-project/common';
 
 JwtDetails.propTypes = {
   config: PropTypes.object.isRequired,

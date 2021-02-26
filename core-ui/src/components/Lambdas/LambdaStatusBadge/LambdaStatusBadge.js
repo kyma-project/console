@@ -10,13 +10,88 @@ import {
 import { statusType } from 'components/Lambdas/helpers/lambdas';
 import { formatMessage } from 'components/Lambdas/helpers/misc';
 
-export function LambdaStatusBadge({ status }) {
-  const latestStatus = status.conditions[0]; // TODO Translate status like in console backend components/console-backend-service/internal/domain/serverless/function_converter.go
-  const translatedStatus =
-    latestStatus.status === 'True' && latestStatus.type === 'Running'
-      ? { phase: 'RUNNING', reason: null, message: null }
-      : { phase: 'FAILED', reason: null, message: null };
+function hasTrueType(conditionType, conditions) {
+  let cond = false;
+  conditions.forEach(condition => {
+    if (condition.type === conditionType && condition.status === 'True') {
+      cond = true;
+    }
+  });
+  return cond;
+}
 
+function getReason({ conditionType }) {
+  switch (conditionType) {
+    case 'ConfigurationReady':
+      return 'CONFIG';
+    case 'BuildReady':
+      return 'JOB';
+    case 'Running':
+      return 'SERVICE';
+    default:
+      return 'CONFIG';
+  }
+}
+function getFailedCondition(conditions) {
+  let condition = {};
+  let hasFailed = false;
+  conditions.forEach(cond => {
+    if (cond.status === 'False') {
+      hasFailed = true;
+      condition = cond;
+    }
+  });
+  return { hasFailed, condition };
+}
+function getStatus(status) {
+  if (!status || !status?.conditions.length) {
+    return { phase: 'INITIALIZING', reason: null, message: null };
+  }
+  const functionIsRunning = hasTrueType('Running', status.conditions);
+  const functionConfigCreated = hasTrueType(
+    'ConfigurationReady',
+    status.conditions,
+  );
+  const functionJobFinished = hasTrueType('BuildReady', status.conditions);
+
+  const { hasFailed, condition } = getFailedCondition(status.conditions);
+
+  if (hasFailed) {
+    if (functionIsRunning) {
+      return {
+        phase: 'NEW_REVISION_ERROR',
+        reason: getReason(condition.type),
+        message: condition.message,
+      };
+    } else {
+      return {
+        phase: 'FAILED',
+        reason: getReason(condition.type),
+        message: condition.message,
+      };
+    }
+  }
+
+  let phase;
+  if (functionConfigCreated) {
+    if (functionJobFinished) {
+      if (functionIsRunning) {
+        phase = 'RUNNING';
+      } else {
+        phase = 'DEPLOYING';
+      }
+    } else {
+      phase = 'BUILDING';
+    }
+  } else {
+    phase = 'INITIALIZING';
+  }
+
+  return { phase: phase, reason: null, message: null };
+}
+
+export function LambdaStatusBadge({ status }) {
+  const translatedStatus = getStatus(status);
   const statusPhase = translatedStatus.phase;
 
   const texts = LAMBDA_PHASES[statusPhase];
