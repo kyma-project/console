@@ -25,3 +25,6 @@ yarn-error.log*
 
 pamela-production.js
 pamela-production.js.LICENSE*
+
+/core
+/core-ui

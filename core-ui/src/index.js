@@ -13,7 +13,7 @@ preloadingStrategy(async () => {
   ReactDOM.render(
     <Microfrontend env={process.env}>
       <ApolloClientProvider createClient={createKymaApolloClient}>
-        <BrowserRouter>
+        <BrowserRouter basename="/core-ui">
           <App />
         </BrowserRouter>
       </ApolloClientProvider>

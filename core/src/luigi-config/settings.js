@@ -1,11 +1,9 @@
-import { config } from './config';
-
 export const settings = 
 {
   responsiveNavigation: 'simpleMobileOnly',
   sideNavFooterText: '',
   header: {
-    logo: 'assets/logo.svg',
+    logo: 'core/assets/logo.svg',
     title: 'Kyma',
     favicon: 'favicon.ico',
   }, 

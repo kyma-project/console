@@ -48,7 +48,8 @@ export default function App() {
 function RoutedResourcesList({ match }) {
   const queryParams = new URLSearchParams(window.location.search);
   const resourceUrl =
-    queryParams.get('resourceApiPath') + window.location.pathname;
+    queryParams.get('resourceApiPath') +
+    window.location.pathname.replace(/\/core-ui/, '');
 
   const params = {
     hasDetailsView: queryParams.get('hasDetailsView') === 'true',
@@ -68,7 +69,8 @@ function RoutedResourcesList({ match }) {
 function RoutedResourceDetails({ match }) {
   const queryParams = new URLSearchParams(window.location.search);
   const resourceUrl =
-    queryParams.get('resourceApiPath') + window.location.pathname;
+    queryParams.get('resourceApiPath') +
+    window.location.pathname.replace(/\/core-ui/, '');
 
   const params = {
     resourceUrl,

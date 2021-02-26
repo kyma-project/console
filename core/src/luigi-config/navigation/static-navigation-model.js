@@ -399,7 +399,7 @@ export function getStaticRootNodes(namespaceChildrenNodesResolver) {
     },
     {
       pathSegment: 'namespaces',
-      viewUrl: '/consoleapp.html#/home/namespaces/workspace',
+      viewUrl: config.coreUIModuleUrl + '/namespaces',
       hideFromNav: true,
       viewGroup: coreUIViewGroupName,
       children: [

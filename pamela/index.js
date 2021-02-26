@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const http = require('http');
 const https = require('https');
+const path = require('path');
 import { initializeKubeconfig } from './utils/kubeconfig';
 import { initializeApp } from './utils/initialization';
 import { requestLogger } from './utils/other';
@@ -26,7 +27,18 @@ console.log(`K8s server used: ${k8sUrl}`);
 initializeApp(app, kubeconfig)
   .then(_ => {
     const httpsAgent = app.get('https_agent');
-    app.use(handleRequest(httpsAgent));
+    app.use('/core-ui', express.static(path.join(__dirname, 'core-ui')));
+    app.get('/core-ui/*', (_, res) =>
+      res.sendFile(path.join(__dirname + '/core-ui/index.html')),
+    );
+
+    app.use('/home', (_, res) => res.redirect('/core'));
+    app.use('/core', express.static('core'));
+    // app.get('/core/*', (_, res) =>
+    //   res.sendFile(path.join(__dirname + '/core/index.html')),
+    // );
+    app.use('/backend', handleRequest(httpsAgent));
+    // app.get('/', (_, res) => res.redirect('/core'));
     server.listen(port, address, () => {
       console.log(`👙 PAMELA 👄 server started @ ${port}!`);
     });
@@ -44,7 +56,7 @@ const handleRequest = httpsAgent => async (req, res) => {
 
   const options = {
     hostname: targetApiServer || k8sUrl.hostname,
-    path: req.originalUrl,
+    path: req.originalUrl.replace(/\/backend/, ''),
     headers: req.headers,
     body: req.body,
     agent: httpsAgent,
