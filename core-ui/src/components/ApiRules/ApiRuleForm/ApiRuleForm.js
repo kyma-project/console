@@ -23,7 +23,7 @@ import ServicesDropdown from './ServicesDropdown/ServicesDropdown';
 import AccessStrategyForm from './AccessStrategyForm/AccessStrategyForm';
 import { EXCLUDED_SERVICES_LABELS } from 'components/ApiRules/constants';
 import { hasValidMethods } from 'components/ApiRules/accessStrategyTypes';
-import { useGet, useGetList } from 'react-shared';
+import { useGet } from 'react-shared';
 import { SERVICES_URL, API_RULE_URL } from '../constants';
 import { formatMessage as injectVariables } from 'components/Lambdas/helpers/misc';
 
@@ -86,16 +86,6 @@ export default function ApiRuleForm({
     { pollingInterval: 3000 },
   );
 
-  const { data: filteredServices } = useGetList(service => {
-    let show = true;
-    EXCLUDED_SERVICES_LABELS.forEach(excludedLabel => {
-      if (Object.keys(service?.metadata.labels).includes([excludedLabel])) {
-        show = false;
-      }
-    });
-    return show;
-  })(injectVariables(SERVICES_URL, { namespace }), { pollingInterval: 3000 });
-  console.log('services', filteredServices);
   const services =
     data?.items.filter(service => {
       let show = true;

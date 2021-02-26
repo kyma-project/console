@@ -1,7 +1,6 @@
 import React from 'react';
 
 import ServiceBindings from './ServiceBindings';
-import { useServiceBindingUsagesQuery } from 'components/Lambdas/gql/hooks/queries';
 import { Spinner, useGetList } from 'react-shared';
 import { CONFIG } from 'components/Lambdas/config.js';
 
