@@ -53,6 +53,7 @@ export default function CreateServiceBindingForm({
       b => b.spec.instanceRef.name === selectedServiceInstance,
     );
     setSecrets(bindingsForThisInstance.map(b => b.spec.secretName));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedServiceInstance, availableServiceInstances]);
 
   useEffect(() => {
