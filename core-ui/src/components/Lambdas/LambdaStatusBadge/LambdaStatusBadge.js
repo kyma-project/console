@@ -13,7 +13,7 @@ import { formatMessage } from 'components/Lambdas/helpers/misc';
 function hasTrueType(conditionType, conditions) {
   let cond = false;
   conditions.forEach(condition => {
-    if (condition.type == conditionType && condition.status == 'True') {
+    if (condition.type === conditionType && condition.status === 'True') {
       cond = true;
     }
   });
