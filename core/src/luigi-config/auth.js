@@ -40,7 +40,6 @@ export const createAuth = async () => {
           ...providerMetadata,
           end_session_endpoint: 'logout.html',
         },
-        redirect_uri: '/core',
         userInfoFn: (_, authData) => {
           groups = authData.profile['http://k8s/groups'];
           return Promise.resolve({
