@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+
 import { BrowserRouter } from 'react-router-dom';
 import { preloadingStrategy } from '@kyma-project/common';
 import './index.scss';

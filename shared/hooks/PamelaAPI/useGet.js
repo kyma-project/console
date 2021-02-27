@@ -13,6 +13,7 @@ const useGetHook = processDataFn =>
     const { fromConfig } = useConfig();
 
     const refetch = (isSilent, currentData) => async () => {
+      if (!idToken || !isHookMounted.current) return;
       if (!isSilent) setLoading(true);
 
       function processError(error) {

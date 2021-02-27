@@ -37,7 +37,6 @@ initializeApp(app, kubeconfig)
       npx.setupRoutes(app, handleBackendRequest);
     }
 
-    // app.get('/', (_, res) => res.redirect('/core'));
     server.listen(port, address, () => {
       console.log(`👙 PAMELA 👄 server started @ ${port}!`);
       npx.openBrowser(port);
