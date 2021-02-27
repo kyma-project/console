@@ -18,30 +18,6 @@ body {
   --fd-overlay-background-color: rgba(0, 0, 0, 0.6);	
 }
 
-@font-face {
-  font-family: 'SAP-icons';
-  src: local('SAP-icons'), url('/core-ui/fonts/SAP-icons.woff2') format('woff2'),
-    url('/core-ui/fonts/SAP-icons.woff') format('woff'),
-    url('/core-ui/fonts/SAP-icons.ttf') format('truetype'), local('SAP-icons');
-  font-weight: normal;
-  font-style: normal;
-}
-@font-face {
-  font-family: '72';
-  font-style: normal;
-  font-weight: 400;
-  src: local('72'), url('/core-ui/fonts/72-Regular.woff2') format('woff2'),
-    url('/core-ui/fonts/72-Regular.woff') format('woff');
-}
-
-@font-face {
-  font-family: '72';
-  font-style: normal;
-  font-weight: 700;
-  src: local('72-Bold'), url('/core-ui/fonts/72-Bold.woff2') format('woff2'),
-    url('/core-ui/fonts/72-Bold.woff') format('woff');
-}
-
 .cursor-pointer {
   cursor: pointer;
 }

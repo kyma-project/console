@@ -36,7 +36,7 @@ export const NODE_PARAM_PREFIX = `~`;
         }
         // const token = getToken();
         // if (token) {
-        getNavigationData('').then(response => {
+        getNavigationData('fake-npx-token').then(response => {
 
           resolveNavigationNodes(response);
           Luigi.ux().hideAppLoadingIndicator();

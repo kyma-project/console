@@ -1,15 +1,13 @@
-#!/usr/bin/env node
-
 const express = require('express');
 const cors = require('cors');
 const http = require('http');
 const https = require('https');
-const path = require('path');
+import * as npx from './npx-setup';
 import { initializeKubeconfig } from './utils/kubeconfig';
 import { initializeApp } from './utils/initialization';
 import { requestLogger } from './utils/other';
 
-process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0;
+npx.setupEnv();
 
 const app = express();
 app.use(express.raw({ type: '*/*' }));
@@ -31,20 +29,18 @@ console.log(`K8s server used: ${k8sUrl}`);
 initializeApp(app, kubeconfig)
   .then(_ => {
     const httpsAgent = app.get('https_agent');
-    app.use('/core-ui', express.static(path.join(__dirname, 'core-ui')));
-    app.get('/core-ui/*', (_, res) =>
-      res.sendFile(path.join(__dirname + '/core-ui/index.html')),
-    );
 
-    app.use('/home', (_, res) => res.redirect('/core'));
-    app.use('/core', express.static(path.join(__dirname, 'core')));
-    app.get('/core/*', (_, res) =>
-      res.sendFile(path.join(__dirname + '/core/index.html')),
-    );
-    app.use('/backend', handleRequest(httpsAgent));
+    const handleBackendRequest = handleRequest(httpsAgent);
+    if (false) {
+      app.use(handleBackendRequest);
+    } else {
+      npx.setupRoutes(app, handleBackendRequest);
+    }
+
     // app.get('/', (_, res) => res.redirect('/core'));
     server.listen(port, address, () => {
       console.log(`👙 PAMELA 👄 server started @ ${port}!`);
+      npx.openBrowser(port);
     });
   })
   .catch(err => {
@@ -55,17 +51,22 @@ initializeApp(app, kubeconfig)
 const handleRequest = httpsAgent => async (req, res) => {
   delete req.headers.host; // remove host in order not to confuse APIServer
 
-  const targetApiServer = req.headers['x-api-url'];
+  const path =
+    req.headers['x-api-url'] && req.headers['x-api-url'] !== 'undefined'
+      ? req.headers['x-api-url']
+      : req.originalUrl.replace(/\/backend/, '');
+
   delete req.headers['x-api-url'];
-  req.headers.authorization = `Bearer ${kubeconfig.users[0].token}`;
+
   const options = {
     hostname: k8sUrl.hostname,
-    path: req.originalUrl.replace(/\/backend/, ''),
+    path,
     headers: req.headers,
     body: req.body,
     agent: httpsAgent,
     method: req.method,
   };
+  npx.adjustRequestOptions(options, kubeconfig);
 
   const k8sRequest = https
     .request(options, function(k8sResponse) {

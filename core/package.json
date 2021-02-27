@@ -15,7 +15,7 @@
     "lint": "ng lint --tslint-config tslint.json",
     "buildConfig": ". ../scripts/load-cluster-config.sh && webpack --mode production --config webpack-generateConfig.config",
     "buildConfig:watch": ". ../scripts/load-cluster-config.sh  && webpack -d --config webpack-generateConfig.config --watch",
-    "busola": "rm -rf ../pamela/core && npm run buildConfig && ng build --prod --deploy-url /core --base-href /core --output-path ../pamela/core"
+    "build:npx": "rm -rf ../pamela/core && npm run buildConfig && ng build --prod --output-path ../pamela/core"
   },
   "private": true,
   "dependencies": {

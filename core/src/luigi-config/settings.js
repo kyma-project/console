@@ -3,9 +3,9 @@ export const settings =
   responsiveNavigation: 'simpleMobileOnly',
   sideNavFooterText: '',
   header: {
-    logo: 'core/assets/logo.svg',
+    logo: 'assets/logo.svg',
     title: 'Kyma',
-    favicon: 'core/favicon.ico',
+    favicon: 'favicon.ico',
   }, 
   appLoadingIndicator: {
     hideAutomatically: false
