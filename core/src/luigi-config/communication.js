@@ -29,12 +29,7 @@ export const communication = {
       location.reload();
     },
     'console.refreshNavigation': () => {
-      const token = getToken();
-      if (token) {
-        Luigi.configChanged('navigation.nodes');
-      } else {
-        relogin();
-      }
+      Luigi.configChanged('navigation.nodes');
     },
     'console.setWindowTitle': ({ title }) => {
       const luigiConfig = Luigi.getConfig();

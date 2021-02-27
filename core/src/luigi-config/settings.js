@@ -5,7 +5,7 @@ export const settings =
   header: {
     logo: 'core/assets/logo.svg',
     title: 'Kyma',
-    favicon: 'favicon.ico',
+    favicon: 'core/favicon.ico',
   }, 
   appLoadingIndicator: {
     hideAutomatically: false

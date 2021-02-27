@@ -1,14 +1,16 @@
 {
-  "name": "pamela",
-  "version": "1.0.0",
+  "name": "tets2",
+  "version": "1.0.2",
   "description": "APIserver proxy for Console",
   "main": "backend.index.js",
+  "bin": "pamela-production.js",
   "scripts": {
     "start:kyma": ". ../scripts/load-cluster-config.sh && npm run watch",
     "watch": "NODE_ENV=development nodemon --exec NODE_TLS_REJECT_UNAUTHORIZED=0 babel-node index.js",
     "build": "webpack",
     "start": "NODE_ENV=production node pamela-production.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "busola": "npm run build && sed -i '' '1s;^;#!/usr/bin/env node\\n;' pamela-production.js"
   },
   "keywords": [],
   "author": "",

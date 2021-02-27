@@ -7,6 +7,8 @@ import { initializeKubeconfig } from './utils/kubeconfig';
 import { initializeApp } from './utils/initialization';
 import { requestLogger } from './utils/other';
 
+process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0;
+
 const app = express();
 app.use(express.raw({ type: '*/*' }));
 if (process.env.NODE_ENV === 'development') {
@@ -33,10 +35,10 @@ initializeApp(app, kubeconfig)
     );
 
     app.use('/home', (_, res) => res.redirect('/core'));
-    app.use('/core', express.static('core'));
-    // app.get('/core/*', (_, res) =>
-    //   res.sendFile(path.join(__dirname + '/core/index.html')),
-    // );
+    app.use('/core', express.static(path.join(__dirname, 'core')));
+    app.get('/core/*', (_, res) =>
+      res.sendFile(path.join(__dirname + '/core/index.html')),
+    );
     app.use('/backend', handleRequest(httpsAgent));
     // app.get('/', (_, res) => res.redirect('/core'));
     server.listen(port, address, () => {
@@ -53,9 +55,9 @@ const handleRequest = httpsAgent => async (req, res) => {
 
   const targetApiServer = req.headers['x-api-url'];
   delete req.headers['x-api-url'];
-
+  req.headers.authorization = `Bearer ${kubeconfig.users[0].token}`;
   const options = {
-    hostname: targetApiServer || k8sUrl.hostname,
+    hostname: k8sUrl.hostname,
     path: req.originalUrl.replace(/\/backend/, ''),
     headers: req.headers,
     body: req.body,

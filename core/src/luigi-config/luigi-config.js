@@ -13,10 +13,9 @@ import { onQuotaExceed } from './luigi-event-handlers';
 
 export const NODE_PARAM_PREFIX = `~`;
 
-(async () => {
-  await saveInitParamsIfPresent(location);
+  // await saveInitParamsIfPresent(location);
   const luigiConfig = {
-    auth: await createAuth(),
+    // auth: await createAuth(),
     communication,
     navigation,
     routing: {
@@ -35,25 +34,25 @@ export const NODE_PARAM_PREFIX = `~`;
         } else {
           Luigi.featureToggles().unsetFeatureToggle('showSystemNamespaces');
         }
-        const token = getToken();
-        if (token) {
-          getNavigationData(token).then(response => {
-            resolveNavigationNodes(response);
-            Luigi.ux().hideAppLoadingIndicator();
+        // const token = getToken();
+        // if (token) {
+        getNavigationData('').then(response => {
 
-            const prevLocation = getPreviousLocation();
-            if (prevLocation) {
-              Luigi.navigation().navigate(prevLocation);
-            }
-          });
-        } else {
-          saveCurrentLocation();
-        }
+          resolveNavigationNodes(response);
+          Luigi.ux().hideAppLoadingIndicator();
+
+          const prevLocation = getPreviousLocation();
+          if (prevLocation) {
+            Luigi.navigation().navigate(prevLocation);
+          }
+        });
+        // } else {
+        //   saveCurrentLocation();
+        // }
       }
     }
   };
   Luigi.setConfig(luigiConfig);
-})();
 
 window.addEventListener('message', e => {
   if (e.data.msg === 'console.quotaexceeded') {

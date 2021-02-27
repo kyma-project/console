@@ -34,5 +34,8 @@ export function saveInitParams(params) {
 }
 
 export function getInitParams() {
-    return JSON.parse(localStorage.getItem(PARAMS_KEY) || "null");
+    return {
+        systemNamespaces: ''
+    };
+    // return JSON.parse(localStorage.getItem(PARAMS_KEY) || "null");
 }

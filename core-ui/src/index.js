@@ -7,16 +7,12 @@ import './index.scss';
 import App from './components/App/App';
 import { Microfrontend } from 'react-shared';
 
-import { ApolloClientProvider, createKymaApolloClient } from './apollo';
-
 preloadingStrategy(async () => {
   ReactDOM.render(
     <Microfrontend env={process.env}>
-      <ApolloClientProvider createClient={createKymaApolloClient}>
-        <BrowserRouter basename="/core-ui">
-          <App />
-        </BrowserRouter>
-      </ApolloClientProvider>
+      <BrowserRouter basename="/core-ui">
+        <App />
+      </BrowserRouter>
     </Microfrontend>,
     document.getElementById('root'),
   );

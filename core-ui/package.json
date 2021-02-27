@@ -23,7 +23,7 @@
     "build": "INLINE_RUNTIME_CHUNK=false ../node_modules/.bin/react-scripts build",
     "test": "../node_modules/.bin/react-scripts test",
     "eject": "../node_modules/.bin/react-scripts eject",
-    "busola": "rm -rf ../pamela/core && PUBLIC_URL=/core-ui INLINE_RUNTIME_CHUNK=false ../node_modules/.bin/react-scripts build && mv build ../pamela/core-ui"
+    "busola": "rm -rf ../pamela/core-ui && PUBLIC_URL=/core-ui INLINE_RUNTIME_CHUNK=false ../node_modules/.bin/react-scripts build && mv build ../pamela/core-ui"
   },
   "browserslist": {
     "production": [
