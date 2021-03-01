@@ -64,6 +64,7 @@ const handleRequest = httpsAgent => async (req, res) => {
     body: req.body,
     agent: httpsAgent,
     method: req.method,
+    port: k8sUrl.port || 443,
   };
   npx.adjustRequestOptions(options, kubeconfig);
 
