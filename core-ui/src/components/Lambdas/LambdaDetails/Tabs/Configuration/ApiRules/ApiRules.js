@@ -45,7 +45,7 @@ export default function ApiRules({ lambda }) {
       resourceType="Function"
       inSubView={true}
       redirectCtx="namespaces"
-      redirectPath={`cmf-functions/details/${lambda.metadata.name}`}
+      redirectPath={`functions/details/${lambda.metadata.name}`}
       portForCreate="80"
       headerRenderer={headerRenderer}
       rowRenderer={rowRenderer}

@@ -21,7 +21,7 @@ export default function EditApiRule({ apiName }) {
       namespace,
       name: apiName,
     }),
-    { pollingInterval: 3000000 },
+    { pollingInterval: 0 },
   );
 
   if (loading) {
