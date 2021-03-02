@@ -1,5 +1,6 @@
 import React from 'react';
 import { getComponentForList } from 'shared/getComponents';
+import DeployNewWorkload from './DeployNewWorkload';
 
 export const NamespacesDetails = DefaultRenderer => ({ ...otherParams }) => {
   const limitRangesParams = {
@@ -30,8 +31,11 @@ export const NamespacesDetails = DefaultRenderer => ({ ...otherParams }) => {
     params: resourceQuotasParams,
   });
 
+  const headerActions = (
+    <DeployNewWorkload namespaceName={otherParams.resourceName} />
+  );
   return (
-    <DefaultRenderer {...otherParams}>
+    <DefaultRenderer {...otherParams} headerActions={headerActions}>
       {LimitrangesList}
       {ResourceQuotasList}
     </DefaultRenderer>
