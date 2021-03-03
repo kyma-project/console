@@ -21,7 +21,7 @@ import { ModalWithForm } from '../ModalWithForm/ModalWithForm';
 
 ResourcesList.propTypes = {
   customColumns: CustomPropTypes.customColumnsType,
-  createResourceForm: PropTypes.node,
+  createResourceForm: PropTypes.any,
   customHeaderActions: PropTypes.node,
   resourceUrl: PropTypes.string.isRequired,
   resourceType: PropTypes.string.isRequired,
