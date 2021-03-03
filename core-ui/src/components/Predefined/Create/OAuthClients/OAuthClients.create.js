@@ -4,21 +4,8 @@ import { useGetList, usePost, StringInput, K8sNameInput } from 'react-shared';
 
 import { FormItem, FormLabel } from 'fundamental-react';
 import CheckboxFormControl from './CheckboxFormControl';
-import { grantTypes, responseTypes } from 'components/OAuthClients/common';
+import { grantTypes, responseTypes, emptySpec, validateSpec } from './helpers';
 import { createOAuthClient } from './createOAuthClient';
-
-function validateSpec(spec) {
-  const { grantTypes, responseTypes, scope } = spec;
-  return grantTypes.length >= 1 && responseTypes.length >= 1 && !!scope;
-}
-
-const emptySpec = {
-  name: '',
-  scope: '',
-  responseTypes: [],
-  grantTypes: [],
-  secretName: '',
-};
 
 export const OAuth2ClientsCreate = ({
   namespace,
@@ -39,6 +26,7 @@ export const OAuth2ClientsCreate = ({
   });
   const secretNames = data?.map(s => s.metadata.name) || [];
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   React.useEffect(() => setCustomValid(validateSpec(spec)), [
     spec,
     useCustomSecret,
