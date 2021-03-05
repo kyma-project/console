@@ -12,6 +12,13 @@ export const RoleCombobox = ({ setRole, setRoleKind, namespace }) => {
     setRoleKind(roleKind);
   };
 
+  const rolesUrl = `/apis/rbac.authorization.k8s.io/v1/namespaces/${namespace}/roles`;
+  const {
+    data: roles,
+    loading: rolesLoading = true,
+    error: rolesError,
+  } = useGetList(() => !!namespace)(rolesUrl, { pollingInterval: 3000 });
+
   const clusterRolesUrl = '/apis/rbac.authorization.k8s.io/v1/clusterroles';
   const {
     data: clusterRoles,
@@ -19,24 +26,34 @@ export const RoleCombobox = ({ setRole, setRoleKind, namespace }) => {
     error: clusterRolesError,
   } = useGetList()(clusterRolesUrl, { pollingInterval: 3000 });
 
-  if (clusterRolesLoading) return 'Loading...';
+  if (rolesLoading || clusterRolesLoading) return 'Loading...';
+  if (rolesError) return rolesError.message;
   if (clusterRolesError) return clusterRolesError.message;
 
   const search = name => name.toLowerCase().includes(searchPhrase);
-  const clusterRoleNames = (clusterRoles || [])
+  const rolesNames = (roles || [])
+    .map(role => role.metadata.name)
+    .filter(search);
+  const clusterRolesNames = (clusterRoles || [])
     .map(role => role.metadata.name)
     .filter(search);
 
-  console.log(clusterRoles);
-
-  const allRoles = clusterRoleNames.map(name => (
-    <Menu.Item
-      key={`R_${name}`}
-      onClick={() => chooseRole(name, 'ClusterRole')}
-    >
-      <Token>CR</Token> {name}
-    </Menu.Item>
-  ));
+  const allRoles = rolesNames
+    .map(name => (
+      <Menu.Item key={`R_${name}`} onClick={() => chooseRole(name, 'Role')}>
+        <Token>R</Token> {name}
+      </Menu.Item>
+    ))
+    .concat(
+      clusterRolesNames.map(name => (
+        <Menu.Item
+          key={`CR_${name}`}
+          onClick={() => chooseRole(name, 'ClusterRole')}
+        >
+          <Token>CR</Token> {name}
+        </Menu.Item>
+      )),
+    );
 
   return (
     <ComboboxInput

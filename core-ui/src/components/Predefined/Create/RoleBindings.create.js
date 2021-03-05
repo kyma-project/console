@@ -1,7 +1,7 @@
 import React from 'react';
 import { RoleBindings } from './RoleBindings/RoleBindings.js';
 
-export const ClusterRoleBindingsCreate = ({
+export const RoleBindingsCreate = ({
   formElementRef,
   onChange,
   resourceType,
