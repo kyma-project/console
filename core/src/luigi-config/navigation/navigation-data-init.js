@@ -7,7 +7,6 @@ import { config } from '../config';
 import {
   getStaticChildrenNodesForNamespace,
   getStaticRootNodes,
-  consoleViewGroupName
 } from './static-navigation-model';
 import convertToNavigationTree from './microfrontend-converter';
 import navigationPermissionChecker, {
@@ -30,9 +29,6 @@ let clusterMicrofrontendNodesForNamespace = [];
 export let resolveNavigationNodes;
 export let navigation = {
   viewGroupSettings: {
-    _console_: {
-      preloadUrl: '/consoleapp.html#/home/preload'
-    },
     _core_ui_: {
       preloadUrl: config.coreUIModuleUrl + '/preload'
     }
@@ -87,7 +83,6 @@ export function getNavigationData(token) {
                   cmf,
                   config,
                   navigation,
-                  consoleViewGroupName,
                   'cmf-',
                   groups
                 );
@@ -109,7 +104,6 @@ export function getNavigationData(token) {
                   cmf,
                   config,
                   navigation,
-                  consoleViewGroupName,
                   'cmf-',
                   groups
                 );
@@ -242,7 +236,6 @@ const getMicrofrontends = async namespace => {
               item,
               config,
               navigation,
-              consoleViewGroupName,
               segmentPrefix,
               groups
             );

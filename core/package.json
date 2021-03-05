@@ -3,12 +3,13 @@
   "version": "0.6.1",
   "license": "MIT",
   "scripts": {
-    "start": "webpack-cli serve --mode=development --config=webpack-generateConfig.config.js",
+    "start": "../node_modules/concurrently/bin/concurrently.js \"npm run buildConfig:watch\" \"npm run serve\"",
+    "serve": "webpack serve --mode=development --config=webpack.config.js",
     "start:kyma": ". ../scripts/load-cluster-config.sh && npm run start",
     "build": "npm run buildConfig",
     "test": "../node_modules/.bin/jest",
-    "buildConfig": ". ../scripts/load-cluster-config.sh && webpack --mode production --config webpack-generateConfig.config",
-    "buildConfig:watch": ". ../scripts/load-cluster-config.sh && webpack -d --config webpack-generateConfig.config --watch"
+    "buildConfig": ". ../scripts/load-cluster-config.sh && webpack --mode production --config webpack.config.js",
+    "buildConfig:watch": ". ../scripts/load-cluster-config.sh && webpack --config webpack.config.js --watch"
   },
   "private": true,
   "dependencies": {
@@ -22,8 +23,7 @@
     "@webpack-cli/serve": "^1.3.0",
     "babel-loader": "^8.0.4",
     "webpack": "^4.44.2",
-    "webpack-cli": "^4.3.0",
-    "webpack-dev-server": "^3.11.2"
+    "webpack-cli": "^4.3.0"
   },
   "prettier": {
     "singleQuote": true

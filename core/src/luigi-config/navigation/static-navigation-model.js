@@ -3,7 +3,6 @@ import { getToken } from './navigation-helpers';
 import { saveAs } from 'file-saver';
 
 export const coreUIViewGroupName = '_core_ui_';
-export const consoleViewGroupName = '_console_';
 
 function downloadKubeconfig() {
   const kubeconfigGeneratorUrl = `https://configurations-generator.${config.domain}/kube-config`;
