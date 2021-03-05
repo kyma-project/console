@@ -9,9 +9,9 @@ function downloadKubeconfig() {
   const authHeader = { Authorization: `Bearer ${getToken()}` };
 
   fetch(kubeconfigGeneratorUrl, { headers: authHeader })
-    .then(res => res.blob())
-    .then(config => saveAs(config, 'kubeconfig.yml'))
-    .catch(err => {
+    .then((res) => res.blob())
+    .then((config) => saveAs(config, 'kubeconfig.yml'))
+    .catch((err) => {
       alert('Cannot download kubeconfig.');
       console.warn(err);
     });
@@ -28,28 +28,30 @@ export function getStaticChildrenNodesForNamespace() {
     {
       link: '/home/workspace',
       label: 'Back to Namespaces',
-      icon: 'nav-back'
+      icon: 'nav-back',
     },
     {
       category: {
         label: 'Workloads',
         icon: 'source-code',
-        collapsible: true
+        collapsible: true,
       },
       pathSegment: '_workloads_category_placeholder_',
-      hideFromNav: true
+      hideFromNav: true,
     },
     {
       category: 'Workloads',
       pathSegment: 'details',
       label: 'Overview',
       order: -1,
-      viewUrl: config.coreUIModuleUrl + '/namespaces/:namespaceId?' +
+      viewUrl:
+        config.coreUIModuleUrl +
+        '/namespaces/:namespaceId?' +
         toSearchParamsString({
           resourceApiPath: '/api/v1',
         }),
       icon: 'product',
-      viewGroup: coreUIViewGroupName
+      viewGroup: coreUIViewGroupName,
     },
     {
       category: 'Workloads',
@@ -60,7 +62,7 @@ export function getStaticChildrenNodesForNamespace() {
         '/namespaces/:namespaceId/pods?' +
         toSearchParamsString({
           resourceApiPath: '/api/v1',
-          hasDetailsView: true
+          hasDetailsView: true,
         }),
       viewGroup: coreUIViewGroupName,
       keepSelectedForChildren: true,
@@ -75,12 +77,12 @@ export function getStaticChildrenNodesForNamespace() {
                 config.coreUIModuleUrl +
                 '/namespaces/:namespaceId/pods/:podName?' +
                 toSearchParamsString({
-                  resourceApiPath: '/api/v1'
+                  resourceApiPath: '/api/v1',
                 }),
-            }
-          ]
-        }
-      ]
+            },
+          ],
+        },
+      ],
     },
     {
       category: 'Workloads',
@@ -91,7 +93,7 @@ export function getStaticChildrenNodesForNamespace() {
         '/namespaces/:namespaceId/replicasets?' +
         toSearchParamsString({
           resourceApiPath: '/apis/apps/v1',
-          hasDetailsView: true
+          hasDetailsView: true,
         }),
       viewGroup: coreUIViewGroupName,
       keepSelectedForChildren: true,
@@ -109,10 +111,10 @@ export function getStaticChildrenNodesForNamespace() {
                 toSearchParamsString({
                   resourceApiPath: '/apis/apps/v1',
                 }),
-            }
-          ]
-        }
-      ]
+            },
+          ],
+        },
+      ],
     },
 
     {
@@ -126,7 +128,7 @@ export function getStaticChildrenNodesForNamespace() {
         '/namespaces/:namespaceId/deployments?' +
         toSearchParamsString({
           resourceApiPath: '/apis/apps/v1',
-          hasDetailsView: true
+          hasDetailsView: true,
         }),
       viewGroup: coreUIViewGroupName,
       navigationContext: 'deployments',
@@ -142,19 +144,19 @@ export function getStaticChildrenNodesForNamespace() {
                 toSearchParamsString({
                   resourceApiPath: '/apis/apps/v1',
                 }),
-            }
-          ]
-        }
-      ]
+            },
+          ],
+        },
+      ],
     },
     {
       category: {
         label: 'Discovery and Network',
         icon: 'instance',
-        collapsible: true
+        collapsible: true,
       },
       pathSegment: '_discovery_and_network_category_placeholder_',
-      hideFromNav: true
+      hideFromNav: true,
     },
     {
       category: 'Discovery and Network',
@@ -166,7 +168,7 @@ export function getStaticChildrenNodesForNamespace() {
         '/namespaces/:namespaceId/services?' +
         toSearchParamsString({
           resourceApiPath: '/api/v1',
-          hasDetailsView: true
+          hasDetailsView: true,
         }),
       keepSelectedForChildren: true,
       viewGroup: coreUIViewGroupName,
@@ -183,29 +185,29 @@ export function getStaticChildrenNodesForNamespace() {
                 toSearchParamsString({
                   resourceApiPath: '/api/v1',
                 }),
-              viewGroup: coreUIViewGroupName
-            }
-          ]
-        }
-      ]
+              viewGroup: coreUIViewGroupName,
+            },
+          ],
+        },
+      ],
     },
     {
       category: {
         label: 'Service Management',
         icon: 'add-coursebook',
-        collapsible: true
+        collapsible: true,
       },
       pathSegment: '_service_management_category_placeholder_',
-      hideFromNav: true
+      hideFromNav: true,
     },
     {
       category: {
         label: 'Configuration',
         icon: 'key-user-settings',
-        collapsible: true
+        collapsible: true,
       },
       pathSegment: '_configuration_category_placeholder_',
-      hideFromNav: true
+      hideFromNav: true,
     },
     {
       category: 'Configuration',
@@ -217,7 +219,7 @@ export function getStaticChildrenNodesForNamespace() {
         '/namespaces/:namespaceId/oauth2clients?' +
         toSearchParamsString({
           resourceApiPath: '/apis/hydra.ory.sh/v1alpha1',
-          hasDetailsView: true
+          hasDetailsView: true,
         }),
       viewGroup: coreUIViewGroupName,
       keepSelectedForChildren: true,
@@ -227,7 +229,7 @@ export function getStaticChildrenNodesForNamespace() {
           viewUrl:
             config.coreUIModuleUrl +
             '/home/namespaces/:namespaceId/oauth-clients/create',
-          viewGroup: coreUIViewGroupName
+          viewGroup: coreUIViewGroupName,
         },
         {
           pathSegment: 'details',
@@ -240,11 +242,11 @@ export function getStaticChildrenNodesForNamespace() {
                 toSearchParamsString({
                   resourceApiPath: '/apis/hydra.ory.sh/v1alpha1',
                 }),
-              viewGroup: coreUIViewGroupName
-            }
-          ]
-        }
-      ]
+              viewGroup: coreUIViewGroupName,
+            },
+          ],
+        },
+      ],
     },
     {
       category: 'Configuration',
@@ -256,7 +258,7 @@ export function getStaticChildrenNodesForNamespace() {
         '/namespaces/:namespaceId/roles?' +
         toSearchParamsString({
           resourceApiPath: '/apis/rbac.authorization.k8s.io/v1',
-          hasDetailsView: true
+          hasDetailsView: true,
         }),
       keepSelectedForChildren: true,
       viewGroup: coreUIViewGroupName,
@@ -272,11 +274,11 @@ export function getStaticChildrenNodesForNamespace() {
                 toSearchParamsString({
                   resourceApiPath: '/apis/rbac.authorization.k8s.io/v1',
                 }),
-              viewGroup: coreUIViewGroupName
-            }
-          ]
-        }
-      ]
+              viewGroup: coreUIViewGroupName,
+            },
+          ],
+        },
+      ],
     },
     {
       category: 'Configuration',
@@ -288,7 +290,7 @@ export function getStaticChildrenNodesForNamespace() {
         '/namespaces/:namespaceId/rolebindings?' +
         toSearchParamsString({
           resourceApiPath: '/apis/rbac.authorization.k8s.io/v1',
-          hasDetailsView: true
+          hasDetailsView: true,
         }),
       keepSelectedForChildren: true,
       viewGroup: coreUIViewGroupName,
@@ -304,11 +306,11 @@ export function getStaticChildrenNodesForNamespace() {
                 toSearchParamsString({
                   resourceApiPath: '/apis/rbac.authorization.k8s.io/v1',
                 }),
-              viewGroup: coreUIViewGroupName
-            }
-          ]
-        }
-      ]
+              viewGroup: coreUIViewGroupName,
+            },
+          ],
+        },
+      ],
     },
     {
       category: 'Configuration',
@@ -320,7 +322,7 @@ export function getStaticChildrenNodesForNamespace() {
         '/namespaces/:namespaceId/secrets?' +
         toSearchParamsString({
           resourceApiPath: '/api/v1',
-          hasDetailsView: true
+          hasDetailsView: true,
         }),
       viewGroup: coreUIViewGroupName,
       keepSelectedForChildren: true,
@@ -336,11 +338,11 @@ export function getStaticChildrenNodesForNamespace() {
                 toSearchParamsString({
                   resourceApiPath: '/api/v1',
                 }),
-              viewGroup: coreUIViewGroupName
-            }
-          ]
-        }
-      ]
+              viewGroup: coreUIViewGroupName,
+            },
+          ],
+        },
+      ],
     },
     {
       category: 'Configuration',
@@ -352,7 +354,7 @@ export function getStaticChildrenNodesForNamespace() {
         '/namespaces/:namespaceId/configmaps?' +
         toSearchParamsString({
           resourceApiPath: '/api/v1',
-          hasDetailsView: true
+          hasDetailsView: true,
         }),
       viewGroup: coreUIViewGroupName,
       keepSelectedForChildren: true,
@@ -368,15 +370,15 @@ export function getStaticChildrenNodesForNamespace() {
                 toSearchParamsString({
                   resourceApiPath: '/api/v1',
                 }),
-            }
-          ]
-        }
-      ]
+            },
+          ],
+        },
+      ],
     },
     {
       category: { label: 'Experimental', icon: 'lab', collapsible: true },
-      hideFromNav: true
-    }
+      hideFromNav: true,
+    },
   ];
 }
 
@@ -390,7 +392,7 @@ export function getStaticRootNodes(namespaceChildrenNodesResolver) {
         '/namespaces?' +
         toSearchParamsString({
           resourceApiPath: '/api/v1',
-          hasDetailsView: true
+          hasDetailsView: true,
         }),
       icon: 'dimension',
       viewGroup: coreUIViewGroupName,
@@ -405,35 +407,35 @@ export function getStaticRootNodes(namespaceChildrenNodesResolver) {
           pathSegment: ':namespaceId',
           context: {
             namespaceId: ':namespaceId',
-            environmentId: ':namespaceId'
+            environmentId: ':namespaceId',
           },
           children: namespaceChildrenNodesResolver,
           navigationContext: 'namespaces',
-          defaultChildNode: 'details'
-        }
-      ]
+          defaultChildNode: 'details',
+        },
+      ],
     },
     {
       category: {
         label: 'Integration',
         icon: 'overview-chart',
-        collapsible: true
+        collapsible: true,
       },
       pathSegment: '_integration_category_placeholder_',
-      hideFromNav: true
+      hideFromNav: true,
     },
     {
       pathSegment: 'preferences',
       navigationContext: 'settings',
-      viewUrl: config.coreUIModuleUrl + "/preferences",
+      viewUrl: config.coreUIModuleUrl + '/preferences',
       viewGroup: coreUIViewGroupName,
-      hideFromNav: true
+      hideFromNav: true,
     },
     {
       pathSegment: 'download-kubeconfig',
       navigationContext: 'settings',
       hideFromNav: true,
-      onNodeActivation: downloadKubeconfig
+      onNodeActivation: downloadKubeconfig,
     },
     {
       pathSegment: 'cluster-roles',
@@ -442,14 +444,14 @@ export function getStaticRootNodes(namespaceChildrenNodesResolver) {
       category: {
         label: 'Administration',
         icon: 'settings',
-        collapsible: true
+        collapsible: true,
       },
       viewUrl:
         config.coreUIModuleUrl +
         '/clusterroles?' +
         toSearchParamsString({
           resourceApiPath: '/apis/rbac.authorization.k8s.io/v1',
-          hasDetailsView: true
+          hasDetailsView: true,
           // limit: 2
         }),
       keepSelectedForChildren: true,
@@ -466,18 +468,18 @@ export function getStaticRootNodes(namespaceChildrenNodesResolver) {
                 toSearchParamsString({
                   resourceApiPath: '/apis/rbac.authorization.k8s.io/v1',
                 }),
-              viewGroup: coreUIViewGroupName
-            }
-          ]
-        }
+              viewGroup: coreUIViewGroupName,
+            },
+          ],
+        },
       ],
       requiredPermissions: [
         {
           apiGroup: 'rbac.authorization.k8s.io',
           resource: 'clusterrolebindings',
-          verbs: ['create']
-        }
-      ]
+          verbs: ['create'],
+        },
+      ],
     },
 
     {
@@ -487,14 +489,14 @@ export function getStaticRootNodes(namespaceChildrenNodesResolver) {
       category: {
         label: 'Administration',
         icon: 'settings',
-        collapsible: true
+        collapsible: true,
       },
       viewUrl:
         config.coreUIModuleUrl +
         '/clusterrolebindings?' +
         toSearchParamsString({
           resourceApiPath: '/apis/rbac.authorization.k8s.io/v1',
-          hasDetailsView: true
+          hasDetailsView: true,
         }),
       keepSelectedForChildren: true,
       viewGroup: coreUIViewGroupName,
@@ -511,24 +513,24 @@ export function getStaticRootNodes(namespaceChildrenNodesResolver) {
                 toSearchParamsString({
                   resourceApiPath: '/apis/rbac.authorization.k8s.io/v1',
                 }),
-              viewGroup: coreUIViewGroupName
-            }
-          ]
-        }
+              viewGroup: coreUIViewGroupName,
+            },
+          ],
+        },
       ],
     },
     {
       category: {
         label: 'Diagnostics',
         icon: 'electrocardiogram',
-        collapsible: true
+        collapsible: true,
       },
       pathSegment: '_integration_category_placeholder_',
-      hideFromNav: true
+      hideFromNav: true,
     },
     {
       category: { label: 'Experimental', icon: 'lab', collapsible: true },
-      hideFromNav: true
-    }
+      hideFromNav: true,
+    },
   ];
 }

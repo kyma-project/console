@@ -1,7 +1,7 @@
 import {
   fetchConsoleInitData,
   fetchMicrofrontends,
-  fetchNamespaces
+  fetchNamespaces,
 } from './queries';
 import { config } from '../config';
 import {
@@ -18,7 +18,7 @@ import {
   hideDisabledNodes,
   createNamespacesList,
   clearToken,
-  getToken
+  getToken,
 } from './navigation-helpers';
 import { groups } from '../auth';
 import { getInitParams } from '../init-params';
@@ -30,8 +30,8 @@ export let resolveNavigationNodes;
 export let navigation = {
   viewGroupSettings: {
     _core_ui_: {
-      preloadUrl: config.coreUIModuleUrl + '/preload'
-    }
+      preloadUrl: config.coreUIModuleUrl + '/preload',
+    },
   },
   nodeAccessibilityResolver: navigationPermissionChecker,
   contextSwitcher: {
@@ -42,41 +42,37 @@ export let navigation = {
   },
   profile: {
     logout: {
-      label: 'Logout'
+      label: 'Logout',
     },
     items: [
       {
         icon: 'settings',
         label: 'Preferences',
-        link: '/home/preferences'
+        link: '/home/preferences',
       },
       {
         icon: 'download',
         label: 'Get Kubeconfig',
-        link: '/home/download-kubeconfig'
+        link: '/home/download-kubeconfig',
       },
-    ]
+    ],
   },
   nodes: new Promise((res) => {
     resolveNavigationNodes = res;
-  })
+  }),
 };
 
 export function getNavigationData(token) {
-  return new Promise(function(resolve, reject) {
-
+  return new Promise(function (resolve, reject) {
     fetchConsoleInitData(token)
       .then(
-        res => {
+        (res) => {
           const cmfs = res.clusterMicroFrontends;
-          setInitValues(
-            res.backendModules,
-            res.selfSubjectRules || []
-          );
+          setInitValues(res.backendModules, res.selfSubjectRules || []);
 
           clusterMicrofrontendNodes = cmfs
-            .filter(cmf => cmf.placement === 'cluster')
-            .map(cmf => {
+            .filter((cmf) => cmf.placement === 'cluster')
+            .map((cmf) => {
               if (cmf.navigationNodes) {
                 var tree = convertToNavigationTree(
                   cmf.name,
@@ -92,11 +88,10 @@ export function getNavigationData(token) {
             });
           clusterMicrofrontendNodesForNamespace = cmfs
             .filter(
-              cmf =>
-                cmf.placement === 'namespace' ||
-                cmf.placement === 'environment'
+              (cmf) =>
+                cmf.placement === 'namespace' || cmf.placement === 'environment'
             )
-            .map(cmf => {
+            .map((cmf) => {
               // console.log(cmf.name, cmf);
               if (cmf.navigationNodes) {
                 return convertToNavigationTree(
@@ -111,7 +106,7 @@ export function getNavigationData(token) {
               return [];
             });
         },
-        err => {
+        (err) => {
           if (err === 'access denied') {
             clearToken();
             window.location.pathname = '/nopermissions.html';
@@ -123,7 +118,12 @@ export function getNavigationData(token) {
       )
       // 'Finally' not supported by IE and FIREFOX (if 'finally' is needed, update your .babelrc)
       .then(() => {
-        const { k8sApiUrl, bebEnabled, systemNamespaces, disabledNavigationNodes } = getInitParams();
+        const {
+          k8sApiUrl,
+          bebEnabled,
+          systemNamespaces,
+          disabledNavigationNodes,
+        } = getInitParams();
         const nodes = [
           {
             pathSegment: 'home',
@@ -138,25 +138,21 @@ export function getNavigationData(token) {
                 localStorage.getItem('console.showSystemNamespaces') === 'true',
               k8sApiUrl,
             },
-            children: function() {
+            children: function () {
               const staticNodes = getStaticRootNodes(
                 getChildrenNodesForNamespace
               );
               const fetchedNodes = [].concat(...clusterMicrofrontendNodes);
               const nodeTree = [...staticNodes, ...fetchedNodes];
-              hideDisabledNodes(
-                disabledNavigationNodes,
-                nodeTree,
-                false
-              );
+              hideDisabledNodes(disabledNavigationNodes, nodeTree, false);
               return nodeTree;
-            }
+            },
           },
         ];
 
         resolve(nodes);
       })
-      .catch(err => {
+      .catch((err) => {
         console.error('Config Init Error', err);
         reject(err);
       });
@@ -168,12 +164,12 @@ async function getNamespaces() {
   let namespaces;
   try {
     namespaces = await fetchNamespaces(getToken());
-  } catch(e) {
+  } catch (e) {
     console.error('Error while fetching namespaces', e);
     return [];
   }
   if (localStorage.getItem('console.showSystemNamespaces') !== 'true') {
-    namespaces = namespaces.filter(ns => !systemNamespaces.includes(ns.name));
+    namespaces = namespaces.filter((ns) => !systemNamespaces.includes(ns.name));
   }
   return createNamespacesList(namespaces);
 }
@@ -184,24 +180,24 @@ function getChildrenNodesForNamespace(context) {
 
   return Promise.all([
     getMicrofrontends(namespace),
-    Promise.resolve(clusterMicrofrontendNodesForNamespace)
+    Promise.resolve(clusterMicrofrontendNodesForNamespace),
   ])
-    .then(function(values) {
+    .then(function (values) {
       const { disabledNavigationNodes } = getInitParams();
       var nodeTree = [...staticNodes];
-      values.forEach(function(val) {
+      values.forEach(function (val) {
         nodeTree = [].concat.apply(nodeTree, val);
       });
 
       hideDisabledNodes(disabledNavigationNodes, nodeTree, true);
       return nodeTree;
     })
-    .catch(err => {
+    .catch((err) => {
       const errParsed = JSON.parse(err);
       console.error('Error', errParsed);
       const settings = {
         text: `Namespace ${errParsed.details.name} not found.`,
-        type: 'error'
+        type: 'error',
       };
       LuigiClient.uxManager().showAlert(settings);
     });
@@ -211,7 +207,7 @@ function getChildrenNodesForNamespace(context) {
  * getMicrofrontends
  * @param {string} namespace k8s namespace name
  */
-const getMicrofrontends = async namespace => {
+const getMicrofrontends = async (namespace) => {
   const segmentPrefix = 'mf-';
 
   const cacheName = '_console_mf_cache_';
@@ -225,11 +221,11 @@ const getMicrofrontends = async namespace => {
   return (
     fromCache ||
     fetchMicrofrontends(namespace, getToken())
-      .then(result => {
+      .then((result) => {
         if (!result.microFrontends || !result.microFrontends.length) {
           return [];
         }
-        return result.microFrontends.map(function(item) {
+        return result.microFrontends.map(function (item) {
           if (item.navigationNodes) {
             return convertToNavigationTree(
               item.name,
@@ -243,12 +239,12 @@ const getMicrofrontends = async namespace => {
           return [];
         });
       })
-      .catch(err => {
+      .catch((err) => {
         console.error(`Error fetching Microfrontend ${name}: ${err}`);
         return [];
       })
-      .then(result => {
-        cache[cacheKey] = new Promise(function(resolve) {
+      .then((result) => {
+        cache[cacheKey] = new Promise(function (resolve) {
           resolve(result);
         });
         return result;

@@ -2,19 +2,13 @@ export const hideDisabledNodes = (disabledNavNodes, nodes, namespace) => {
   if (disabledNavNodes !== null && disabledNavNodes !== undefined) {
     const disabledNavNodesArray = disabledNavNodes.split(' ');
     if (disabledNavNodesArray && disabledNavNodesArray.length > 0) {
-      nodes.forEach(node => {
+      nodes.forEach((node) => {
         // namespace node have pattern 'namespace.category.label' or 'namespace.label' if doesn't have category
         // cluster node have pattern 'category.label' or 'label' if doesn't have category
         const nodeCategory = node.category
           ? node.category.label
-            ? node.category.label
-                .split(' ')
-                .join('')
-                .toLowerCase()
-            : node.category
-                .split(' ')
-                .join('')
-                .toLowerCase()
+            ? node.category.label.split(' ').join('').toLowerCase()
+            : node.category.split(' ').join('').toLowerCase()
           : '';
         const categoryId = namespace
           ? nodeCategory
@@ -23,16 +17,13 @@ export const hideDisabledNodes = (disabledNavNodes, nodes, namespace) => {
           : nodeCategory;
 
         const nodeLabel = node.label
-          ? node.label
-              .split(/ |-/)
-              .join('')
-              .toLowerCase()
+          ? node.label.split(/ |-/).join('').toLowerCase()
           : '';
         const nodeId = `${categoryId}${
           categoryId && nodeLabel ? '.' : ''
         }${nodeLabel}`;
 
-        const shouldBeDisabled = element =>
+        const shouldBeDisabled = (element) =>
           element && (element === categoryId || element === nodeId);
         node.hideFromNav =
           disabledNavNodesArray.some(shouldBeDisabled) || node.hideFromNav;
@@ -84,9 +75,8 @@ export const getPreviousLocation = () => {
   return prevLocation;
 };
 
-
 export function hideByNodeCategory(node, showExperimentalCategory) {
-  if (node.category === "Experimental") {
+  if (node.category === 'Experimental') {
     return { ...node, hideFromNav: !showExperimentalCategory };
   } else {
     return node;
@@ -96,28 +86,28 @@ export function hideByNodeCategory(node, showExperimentalCategory) {
 export function createNamespacesList(rawNamespaceNames) {
   var namespaces = [];
   rawNamespaceNames
-  .sort((namespaceA, namespaceB)=>{
-    return namespaceA.name.localeCompare(namespaceB.name);
-  })
-  .map(namespace => {
-    const namespaceName = namespace.name;
-    const alternativeLocation = getCorrespondingNamespaceLocation(
-      namespaceName
-    );
-    namespaces.push({
-      category: 'Namespaces',
-      label: namespaceName,
-      pathValue: alternativeLocation || namespaceName+'/details'
+    .sort((namespaceA, namespaceB) => {
+      return namespaceA.name.localeCompare(namespaceB.name);
+    })
+    .map((namespace) => {
+      const namespaceName = namespace.name;
+      const alternativeLocation = getCorrespondingNamespaceLocation(
+        namespaceName
+      );
+      namespaces.push({
+        category: 'Namespaces',
+        label: namespaceName,
+        pathValue: alternativeLocation || namespaceName + '/details',
+      });
     });
-  });
   return namespaces;
 }
 
 export function setLimitExceededErrorsMessages(limitExceededErrors) {
   let limitExceededErrorscomposed = [];
-  limitExceededErrors.forEach(resource => {
+  limitExceededErrors.forEach((resource) => {
     if (resource.affectedResources && resource.affectedResources.length > 0) {
-      resource.affectedResources.forEach(affectedResource => {
+      resource.affectedResources.forEach((affectedResource) => {
         limitExceededErrorscomposed.push(
           `'${resource.resourceName}' by '${affectedResource}' (${resource.quotaName})`
         );

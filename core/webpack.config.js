@@ -1,31 +1,29 @@
-const CopyWebpackPlugin = require("copy-webpack-plugin");
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const path = require('path');
 
 module.exports = {
   mode: 'production',
   entry: {
-    luigiConfig: './src/luigi-config/luigi-config.js'
+    luigiConfig: './src/luigi-config/luigi-config.js',
   },
   output: {
     filename: '[name].bundle.js',
-    path: path.resolve(__dirname, 'src/assets')
+    path: path.resolve(__dirname, 'src/assets'),
   },
   module: {
     rules: [
       {
         loader: 'babel-loader',
         options: {
-          rootMode: 'root'
-        }
-      }
-    ]
+          rootMode: 'root',
+        },
+      },
+    ],
   },
   plugins: [
-    new CopyWebpackPlugin(
-        [
-          { from: './node_modules/@luigi-project/core', to: 'luigi-core' },
-        ],
-      ),
+    new CopyWebpackPlugin([
+      { from: './node_modules/@luigi-project/core', to: 'luigi-core' },
+    ]),
   ],
   devServer: {
     contentBase: path.join(__dirname, 'src'),
@@ -33,4 +31,4 @@ module.exports = {
     port: 4200,
     disableHostCheck: true, // so that we don't get "Invalid Host header"
   },
-}
+};

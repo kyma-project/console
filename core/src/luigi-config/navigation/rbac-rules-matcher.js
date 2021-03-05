@@ -15,7 +15,7 @@ export default function rbacRulesMatched(
       let atomicVerbPermission = {
         apiGroup: requiredPermission.apiGroup,
         resource: requiredPermission.resource,
-        verbs: [atomicVerb]
+        verbs: [atomicVerb],
       };
       if (
         !matchingVerbRuleFound(selfSubjectRulesReview, atomicVerbPermission)
@@ -27,7 +27,7 @@ export default function rbacRulesMatched(
   return true;
 }
 
-const isNonEmptyArray = array => {
+const isNonEmptyArray = (array) => {
   return (
     array !== null &&
     typeof array !== 'undefined' &&
