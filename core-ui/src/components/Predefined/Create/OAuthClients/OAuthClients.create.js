@@ -76,7 +76,7 @@ export const OAuth2ClientsCreate = ({
       </FormItem>
       <FormItem>
         <FormLabel htmlFor="scope" required className="fd-has-display-block">
-          Scope
+          Scopes
         </FormLabel>
         <StringInput
           stringList={spec.scope.split(' ').filter(scope => scope)}
