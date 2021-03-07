@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: console
-          image: wawrzyn321/console-apps
+          image: wawrzyn321/console-no-ng
           imagePullPolicy: Always
           resources:
             limits:
