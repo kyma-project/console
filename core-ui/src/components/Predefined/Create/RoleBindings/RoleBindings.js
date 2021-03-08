@@ -30,7 +30,7 @@ export const RoleBindings = ({
     e.preventDefault();
     try {
       const params = {
-        kind: `${roleKind}Binding`,
+        kind: namespace ? 'RoleBinding' : 'ClusterRoleBinding',
         metadata: {
           name: `${subject}-${role}`,
         },
