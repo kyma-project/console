@@ -2,10 +2,6 @@ import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
 import JwtDetails from '../JwtDetails';
 
-jest.mock('@kyma-project/common', () => ({
-  getApiUrl: () => '',
-}));
-
 const config = {
   jwks_urls: ['http://jwks_2'],
   trusted_issuers: ['https://issuer_2'],

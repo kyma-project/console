@@ -23,7 +23,7 @@ const ServicesDropdown = ({
   const defaultService = defaultValue
     ? `${defaultValue.name}:${defaultValue.port}`
     : null;
-
+  console.log('serviceName', serviceName, 'services', data);
   const services = serviceName
     ? data.filter(s => s.metadata.name === serviceName)
     : data;

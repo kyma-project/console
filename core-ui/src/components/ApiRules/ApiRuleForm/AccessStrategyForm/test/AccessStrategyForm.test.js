@@ -2,10 +2,6 @@ import React from 'react';
 import { render, fireEvent, queryByText } from '@testing-library/react';
 import AccessStrategyForm from '../AccessStrategyForm';
 
-jest.mock('@kyma-project/common', () => ({
-  getApiUrl: () => '',
-}));
-
 const allowStrategy = {
   path: '/allow',
   methods: [],

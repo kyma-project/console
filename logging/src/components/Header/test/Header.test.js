@@ -7,10 +7,6 @@ import {
   SearchParamsContext,
 } from '../../Logs/SearchParams.reducer';
 
-jest.mock('@kyma-project/common', () => ({
-  getApiUrl: () => 'kyma.local',
-}));
-
 describe('Header', () => {
   it('Shows / hides advanced settings when corresponding button is clicked', () => {
     const mockActions = {
