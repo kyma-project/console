@@ -1,6 +1,7 @@
 import React from 'react';
 import LuigiClient from '@luigi-project/client';
 
+import { useMicrofrontendContext } from 'react-shared';
 import { Link } from 'fundamental-react';
 import { CopiableLink } from 'react-shared';
 
@@ -28,7 +29,8 @@ export function GoToApiRuleDetails({ apiRule }) {
 }
 
 export function CopiableApiRuleHost({ apiRule }) {
-  return <CopiableLink url={getApiRuleUrl(apiRule.spec.service)} />;
+  const k8sApiUrl = useMicrofrontendContext().k8sApiUrl;
+  return <CopiableLink url={getApiRuleUrl(apiRule.spec.service, k8sApiUrl)} />;
 }
 
 export function ApiRuleServiceInfo({ apiRule, withName = true }) {

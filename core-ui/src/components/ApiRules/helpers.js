@@ -1,7 +1,5 @@
-import { getApiUrl } from '@kyma-project/common';
-
-export function getApiRuleUrl(service) {
+export function getApiRuleUrl(service, k8sApiUrl) {
   const host = `https://${service.host}`;
-  const domain = getApiUrl('domain');
+  const domain = k8sApiUrl.replace('api.', '');
   return host.split(`.${domain}`)[0] + `.${domain}`;
 }
