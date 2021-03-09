@@ -24,6 +24,9 @@ export const createAuth = async () => {
   const { issuerUrl, clientId, responseType, responseMode, scope } = params;
 
   const providerMetadata = await fetchOidcProviderMetadata(issuerUrl);
+  let end_session_endpoint = providerMetadata.end_session_endpoint || `${issuerUrl}v2/logout`;
+  end_session_endpoint += `?returnTo=${encodeURI(`${location.origin}/logout.html`)}&client_id=${clientId}&`;
+
   return {
     use: 'openIdConnect',
     openIdConnect: {
@@ -35,10 +38,10 @@ export const createAuth = async () => {
         response_mode: responseMode,
         automaticSilentRenew: true,
         loadUserInfo: false,
-        logoutUrl: 'logout.html',
+        logoutUrl: end_session_endpoint,
         metadata: {
           ...providerMetadata,
-          end_session_endpoint: 'logout.html',
+          end_session_endpoint,
         },
         userInfoFn: (_, authData) => {
           groups = authData.profile['http://k8s/groups'];
