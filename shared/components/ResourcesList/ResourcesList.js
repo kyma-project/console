@@ -30,6 +30,7 @@ ResourcesList.propTypes = {
   isCompact: PropTypes.bool,
   showTitle: PropTypes.bool,
   filter: PropTypes.func,
+  listHeaderActions: PropTypes.node,
 };
 
 ResourcesList.defaultProps = {
@@ -37,6 +38,7 @@ ResourcesList.defaultProps = {
   customColumns: [],
   createResourceForm: null,
   showTitle: false,
+  listHeaderActions: null,
 };
 
 export function ResourcesList(props) {
@@ -68,6 +70,7 @@ function Resources({
   hasDetailsView,
   showTitle,
   filter,
+  listHeaderActions,
   ...params
 }) {
   const setEditedSpec = useYamlEditor();
@@ -181,7 +184,9 @@ function Resources({
       serverDataLoading={loading}
       pagination={{ itemsPerPage: 20, autoHide: true }}
       extraHeaderContent={
-        createResourceForm ? (
+        listHeaderActions ? (
+          listHeaderActions
+        ) : createResourceForm ? (
           <ResourceCreateModal
             ResourcesCreateForm={createResourceForm}
             resourceType={resourceType}

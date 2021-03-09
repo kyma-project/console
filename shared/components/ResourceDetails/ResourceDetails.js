@@ -28,12 +28,14 @@ ResourceDetails.propTypes = {
   resourceName: PropTypes.string.isRequired,
   namespace: PropTypes.string,
   headerActions: PropTypes.node,
+  resourceHeaderActions: PropTypes.arrayOf(PropTypes.func),
 };
 
 ResourceDetails.defaultProps = {
   customColumns: [],
   customComponents: [],
   headerActions: null,
+  resourceHeaderActions: [],
 };
 
 export function ResourceDetails(props) {
@@ -83,6 +85,7 @@ function Resource({
   resourceName,
   filter,
   headerActions,
+  resourceHeaderActions,
 }) {
   const setEditedSpec = useYamlEditor();
   const notification = useNotification();
@@ -98,6 +101,8 @@ function Resource({
   const actions = (
     <>
       {headerActions}
+
+      {resourceHeaderActions.map(resourceAction => resourceAction(resource))}
       <Button onClick={() => openYaml(resource)} option="emphasized">
         Edit YAML
       </Button>

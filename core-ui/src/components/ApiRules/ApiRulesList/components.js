@@ -10,7 +10,7 @@ import { getApiRuleUrl } from 'components/ApiRules/helpers';
 function goToApiRuleDetails(apiRule) {
   LuigiClient.linkManager()
     .fromContext('namespaces')
-    .navigate(`apirules/details/${apiRule.metadata.name}`);
+    .navigate(`cmf-apirules/details/${apiRule.metadata.name}`);
 }
 
 function navigateToService(apiRule) {

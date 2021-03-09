@@ -1,3 +1,4 @@
+export * from './ApiRules.details';
 export * from './Deployment.details';
 export * from './Replicaset.details';
 export * from './Namespace.details';

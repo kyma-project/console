@@ -90,7 +90,10 @@ export default function ApiRuleForm({
     allServices?.filter(service => {
       let show = true;
       EXCLUDED_SERVICES_LABELS.forEach(excludedLabel => {
-        if (Object.keys(service?.metadata.labels).includes([excludedLabel])) {
+        if (
+          service?.metadata?.labels &&
+          Object.keys(service?.metadata?.labels).includes([excludedLabel])
+        ) {
           show = false;
         }
       });
