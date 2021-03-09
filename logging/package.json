@@ -5,8 +5,8 @@
   "dependencies": {},
   "scripts": {
     "start": "PORT=8005 react-scripts start",
-    "start:kyma": ". ../scripts/load-cluster-config.sh && BROWSER=none HOST=console-dev.kyma.local PORT=8005 react-scripts start",
-    "start:kyma:api": ". ../scripts/load-cluster-config.sh && REACT_APP_LOCAL_API=true BROWSER=none HOST=console-dev.kyma.local PORT=8005 react-scripts start",
+    "start:kyma": "BROWSER=none HOST=console-dev.kyma.local PORT=8005 react-scripts start",
+    "start:kyma:api": "REACT_APP_LOCAL_API=true BROWSER=none HOST=console-dev.kyma.local PORT=8005 react-scripts start",
     "build": "INLINE_RUNTIME_CHUNK=false ../node_modules/.bin/react-scripts build",
     "test": "../node_modules/.bin/react-scripts test",
     "eject": "../node_modules/.bin/react-scripts eject"

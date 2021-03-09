@@ -80,7 +80,6 @@ stats.html
 shared/build
 **/react-shared
 
-components/angular
 core
 **/public/config/config.js
 pamela/pamela-production.*

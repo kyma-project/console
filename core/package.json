@@ -5,12 +5,12 @@
   "scripts": {
     "start": "../node_modules/concurrently/bin/concurrently.js \"npm run buildConfig:watch\" \"npm run serve\"",
     "serve": "webpack serve --mode=development --config=webpack.config.js",
-    "start:kyma": ". ../scripts/load-cluster-config.sh && npm run start",
+    "start:kyma": "npm run start",
     "build": "npm run buildConfig",
     "test": "../node_modules/.bin/jest",
     "lint": "prettier -c .",
-    "buildConfig": ". ../scripts/load-cluster-config.sh && webpack --mode production --config webpack.config.js",
-    "buildConfig:watch": ". ../scripts/load-cluster-config.sh && webpack --config webpack.config.js --watch"
+    "buildConfig": "webpack --mode production --config webpack.config.js",
+    "buildConfig:watch": "webpack --config webpack.config.js --watch"
   },
   "private": true,
   "dependencies": {

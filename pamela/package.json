@@ -4,7 +4,7 @@
   "description": "APIserver proxy for Console",
   "main": "backend.index.js",
   "scripts": {
-    "start:kyma": ". ../scripts/load-cluster-config.sh && npm run watch",
+    "start:kyma": "npm run watch",
     "watch": "NODE_ENV=development nodemon --exec NODE_TLS_REJECT_UNAUTHORIZED=0 babel-node index.js",
     "build": "webpack",
     "start": "NODE_ENV=production node pamela-production.js",
