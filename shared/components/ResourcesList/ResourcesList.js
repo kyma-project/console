@@ -21,7 +21,7 @@ import { ModalWithForm } from '../ModalWithForm/ModalWithForm';
 
 ResourcesList.propTypes = {
   customColumns: CustomPropTypes.customColumnsType,
-  createResourceForm: PropTypes.node,
+  createResourceForm: PropTypes.func,
   customHeaderActions: PropTypes.node,
   resourceUrl: PropTypes.string.isRequired,
   resourceType: PropTypes.string.isRequired,
@@ -66,7 +66,7 @@ function Resources({
   resourceType,
   namespace,
   customColumns,
-  createResourceForm,
+  createResourceForm: CreateResourceForm,
   hasDetailsView,
   showTitle,
   filter,
@@ -151,25 +151,30 @@ function Resources({
     ...customColumns.map(col => col.value(entry)),
   ];
 
-  const ResourceCreateModal = ({ ResourcesCreateForm, ...params }) => {
-    const { resourceType } = params;
-    const modalOpeningComponent = (
-      <Button glyph="add" option="light">
-        Create {resourceType}
-      </Button>
-    );
-
-    return (
+  const extraHeaderContent =
+    listHeaderActions ||
+    (CreateResourceForm && (
       <ModalWithForm
         title={`Create ${resourceType}`}
-        modalOpeningComponent={modalOpeningComponent}
+        modalOpeningComponent={
+          <Button glyph="add" option="light">
+            Create {resourceType}
+          </Button>
+        }
         confirmText="Create"
         id={`add-${resourceType}-modal`}
         className="fd-modal--xl-size"
-        renderForm={props => <ResourcesCreateForm {...params} {...props} />}
+        renderForm={props => (
+          <CreateResourceForm
+            resourceType={resourceType}
+            resourceUrl={resourceUrl}
+            namespace={namespace}
+            refetchList={silentRefetch}
+            {...props}
+          />
+        )}
       />
-    );
-  };
+    ));
 
   return (
     <GenericList
@@ -183,20 +188,7 @@ function Resources({
       serverErrorMessage={error?.message}
       serverDataLoading={loading}
       pagination={{ itemsPerPage: 20, autoHide: true }}
-      extraHeaderContent={
-        listHeaderActions ? (
-          listHeaderActions
-        ) : createResourceForm ? (
-          <ResourceCreateModal
-            ResourcesCreateForm={createResourceForm}
-            resourceType={resourceType}
-            resourceUrl={resourceUrl}
-            namespace={namespace}
-            refetchList={silentRefetch}
-            {...params}
-          />
-        ) : null
-      }
+      extraHeaderContent={extraHeaderContent}
     />
   );
 }

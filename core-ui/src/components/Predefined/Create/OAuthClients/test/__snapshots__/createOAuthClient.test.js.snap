@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`createOAuthClient forms valid OAuth2 client 1`] = `
+Object {
+  "apiVersion": "hydra.ory.sh/v1alpha1",
+  "kind": "OAuth2Client",
+  "metadata": Object {
+    "name": "test-client",
+    "namespace": "test-namespace",
+  },
+  "spec": Object {
+    "grantTypes": Array [
+      "Grant",
+      "Michael",
+      "Jessica",
+    ],
+    "responseTypes": Array [
+      "1",
+    ],
+    "scope": "a b",
+    "secretName": "test-secret-name",
+  },
+}
+`;

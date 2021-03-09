@@ -16,7 +16,10 @@ import {
   randomNameGenerator,
   validateResourceName,
 } from 'components/Lambdas/helpers/misc';
-import { functionAvailableLanguages } from 'components/Lambdas/helpers/runtime';
+import {
+  functionAvailableLanguages,
+  nodejs12,
+} from 'components/Lambdas/helpers/runtime';
 
 import { LAMBDAS_LIST } from 'components/Lambdas/constants';
 
@@ -41,13 +44,14 @@ export default function CreateLambdaForm({
 
   const [nameStatus, setNameStatus] = useState('');
   const [name, setName] = useState(randomNameGenerator());
-  const [showRepositoryConfig, setShowRepositoryConfig] = useState(false);
 
   const [labels, setLabels] = useState({});
 
-  const runtimeRef = useRef('');
-  const sourceTypeRef = useRef('');
-  const repositoryRef = useRef('');
+  const [runtime, setRuntime] = React.useState(nodejs12);
+  const [sourceType, setSourceType] = React.useState('');
+  const [repositoryName, setRepositoryName] = React.useState(
+    repositories.length ? repositories[0].metadata.name : '',
+  );
   const referenceRef = useRef('');
   const baseDirRef = useRef('');
 
@@ -79,7 +83,7 @@ export default function CreateLambdaForm({
   }, [errors, setValidity, setInvalidModalPopupMessage]);
 
   useEffect(() => {
-    if (showRepositoryConfig) {
+    if (sourceType) {
       if (!repositories.length) {
         addError(ERRORS.REPOSITORY_URL);
         setValidity(false);
@@ -93,7 +97,7 @@ export default function CreateLambdaForm({
       removeError(ERRORS.REPOSITORY_URL, ERRORS.REFERENCE, ERRORS.BASE_DIR);
     }
   }, [
-    showRepositoryConfig,
+    sourceType,
     setInvalidModalPopupMessage,
     repositories,
     setValidity,
@@ -136,22 +140,12 @@ export default function CreateLambdaForm({
     removeError(ERRORS.BASE_DIR);
   }
 
-  function updateName(event) {
-    setName(event.target.value);
-  }
-
-  function updateSourceType(event) {
-    setShowRepositoryConfig(event.target.value !== '');
-  }
-
   async function handleSubmit() {
     let inputData = {
       labels,
-      runtime:
-        runtimeRef?.current?.value || functionAvailableLanguages.nodejs12,
+      runtime,
     };
-
-    if (sourceTypeRef?.current?.value) {
+    if (sourceType) {
       let reference = referenceRef?.current?.value || null;
       if (typeof reference === 'string') {
         reference = reference.trim();
@@ -164,11 +158,10 @@ export default function CreateLambdaForm({
 
       inputData = {
         ...inputData,
-        sourceType: sourceTypeRef?.current?.value || null,
-        source: repositoryRef?.current?.value || null,
+        type: sourceType,
+        source: repositoryName,
         reference,
         baseDir,
-        dependencies: '',
       };
     }
 
@@ -192,8 +185,8 @@ export default function CreateLambdaForm({
     }),
   );
   const repositoryOptions = repositories.map(repository => ({
-    key: `${repository.name} (${repository.spec.url})`,
-    value: repository.name,
+    key: `${repository.metadata.name} (${repository.spec.url})`,
+    value: repository.metadata.name,
   }));
 
   return (
@@ -207,7 +200,7 @@ export default function CreateLambdaForm({
         id="lambdaName"
         kind="Function"
         value={name}
-        onChange={updateName}
+        onChange={e => setName(e.target.value)}
         nameStatus={nameStatus}
       />
 
@@ -217,25 +210,24 @@ export default function CreateLambdaForm({
       />
 
       <DropdownInput
-        _ref={runtimeRef}
         label={LAMBDAS_LIST.CREATE_MODAL.INPUTS.RUNTIME.LABEL}
         inlineHelp={LAMBDAS_LIST.CREATE_MODAL.INPUTS.RUNTIME.INLINE_HELP}
         options={runtimeOptions}
         id="runtime"
-        defaultValue={functionAvailableLanguages.nodejs12}
+        defaultValue={runtime}
+        onChange={e => setRuntime(e.target.value)}
       />
 
       <DropdownInput
-        _ref={sourceTypeRef}
         label={LAMBDAS_LIST.CREATE_MODAL.INPUTS.SOURCE_TYPE.LABEL}
         inlineHelp={LAMBDAS_LIST.CREATE_MODAL.INPUTS.SOURCE_TYPE.INLINE_HELP}
         options={sourceTypeOptions}
-        defaultValue={undefined}
+        defaultValue={sourceType}
         id="sourceType"
-        onChange={updateSourceType}
+        onChange={e => setSourceType(e.target.value)}
       />
 
-      {showRepositoryConfig &&
+      {sourceType &&
         (!repositories.length ? (
           <Alert dismissible={false} type="information">
             {LAMBDAS_LIST.CREATE_MODAL.ERRORS.NO_REPOSITORY_FOUND}
@@ -243,14 +235,14 @@ export default function CreateLambdaForm({
         ) : (
           <>
             <DropdownInput
-              _ref={repositoryRef}
               label={LAMBDAS_LIST.CREATE_MODAL.INPUTS.REPOSITORY.LABEL}
               inlineHelp={
                 LAMBDAS_LIST.CREATE_MODAL.INPUTS.REPOSITORY.INLINE_HELP
               }
               options={repositoryOptions}
-              id="repository"
-              defaultValue={undefined}
+              id="repositoryName"
+              defaultValue={repositoryName}
+              onChange={e => setRepositoryName(e.target.value)}
             />
 
             <FormInput
