@@ -24,9 +24,9 @@ export const createAuth = async () => {
   const { issuerUrl, clientId, responseType, responseMode, scope } = params;
 
   const providerMetadata = await fetchOidcProviderMetadata(issuerUrl);
-  let end_session_endpoint = providerMetadata.end_session_endpoint || `${issuerUrl}v2/logout`;
-  end_session_endpoint += `?returnTo=${encodeURI(`${location.origin}/logout.html`)}&client_id=${clientId}&`;
-
+  const end_session_endpoint = providerMetadata.end_session_endpoint ||
+    `${issuerUrl}v2/logout?returnTo=${encodeURI(`${location.origin}/logout.html`)}&client_id=${clientId}&`;
+  
   return {
     use: 'openIdConnect',
     openIdConnect: {
