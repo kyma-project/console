@@ -7,19 +7,31 @@ import CreateLambdaModal from 'components/Lambdas/LambdasList/Lambdas/CreateLamb
 export default function DeployNewWorkload({ namespaceName }) {
   const {
     data: functions,
-    functionsError,
-    functionsLoading = true,
+    error: functionsError,
+    loading: functionsLoading = true,
   } = useGetList()(
     `/apis/serverless.kyma-project.io/v1alpha1/namespaces/${namespaceName}/functions`,
     { pollingInterval: 5000 },
   );
   const {
     data: repositories,
-    repositoriesError,
-    repositoriesLoading = true,
+    error: repositoriesError,
+    loading: repositoriesLoading = true,
   } = useGetList()(
     `/apis/serverless.kyma-project.io/v1alpha1/namespaces/${namespaceName}/gitrepositories`,
     { pollingInterval: 5000 },
+  );
+  console.log(
+    'functionsError',
+    functionsError,
+    'functionsLoading',
+    functionsLoading,
+  );
+  console.log(
+    'repositoriesError',
+    repositoriesError,
+    'repositoriesLoading',
+    repositoriesLoading,
   );
 
   const functionNames = (functions || []).map(fn => fn.metadata.name);

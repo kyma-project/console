@@ -30,6 +30,7 @@ ResourcesList.propTypes = {
   isCompact: PropTypes.bool,
   showTitle: PropTypes.bool,
   filter: PropTypes.func,
+  listHeaderActions: PropTypes.node,
 };
 
 ResourcesList.defaultProps = {
@@ -37,6 +38,7 @@ ResourcesList.defaultProps = {
   customColumns: [],
   createResourceForm: null,
   showTitle: false,
+  listHeaderActions: null,
 };
 
 export function ResourcesList(props) {
@@ -68,6 +70,7 @@ function Resources({
   hasDetailsView,
   showTitle,
   filter,
+  listHeaderActions,
   ...params
 }) {
   const setEditedSpec = useYamlEditor();
@@ -148,28 +151,30 @@ function Resources({
     ...customColumns.map(col => col.value(entry)),
   ];
 
-  const extraHeaderContent = CreateResourceForm && (
-    <ModalWithForm
-      title={`Create ${resourceType}`}
-      modalOpeningComponent={
-        <Button glyph="add" option="light">
-          Create {resourceType}
-        </Button>
-      }
-      confirmText="Create"
-      id={`add-${resourceType}-modal`}
-      className="fd-modal--xl-size"
-      renderForm={props => (
-        <CreateResourceForm
-          resourceType={resourceType}
-          resourceUrl={resourceUrl}
-          namespace={namespace}
-          refetchList={silentRefetch}
-          {...props}
-        />
-      )}
-    />
-  );
+  const extraHeaderContent =
+    listHeaderActions ||
+    (CreateResourceForm && (
+      <ModalWithForm
+        title={`Create ${resourceType}`}
+        modalOpeningComponent={
+          <Button glyph="add" option="light">
+            Create {resourceType}
+          </Button>
+        }
+        confirmText="Create"
+        id={`add-${resourceType}-modal`}
+        className="fd-modal--xl-size"
+        renderForm={props => (
+          <CreateResourceForm
+            resourceType={resourceType}
+            resourceUrl={resourceUrl}
+            namespace={namespace}
+            refetchList={silentRefetch}
+            {...props}
+          />
+        )}
+      />
+    ));
 
   return (
     <GenericList
