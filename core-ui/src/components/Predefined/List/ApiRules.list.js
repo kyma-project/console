@@ -6,7 +6,6 @@ import { CopiableApiRuleHost } from 'components/ApiRules/ApiRulesList/components
 import ApiRuleStatus from 'components/ApiRules/ApiRuleStatus/ApiRuleStatus';
 
 export const ApiRulesList = DefaultRenderer => ({ ...otherParams }) => {
-  console.log('otherParams', otherParams);
   const createApiRule = (
     <Button
       glyph="add"
