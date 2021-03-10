@@ -40,5 +40,5 @@ export function DeploymentPods({ namespace, deploymentName }) {
     },
   };
 
-  return getComponentForList('podsList', podListParams);
+  return getComponentForList({ name: 'podsList', params: podListParams });
 }

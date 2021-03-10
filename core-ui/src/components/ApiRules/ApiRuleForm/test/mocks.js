@@ -22,7 +22,7 @@ export const apiRule = () => ({
         methods: ['GET', 'PUT'],
         accessStrategies: [
           {
-            name: 'noop',
+            handler: 'noop',
           },
         ],
       },
@@ -31,7 +31,7 @@ export const apiRule = () => ({
         methods: [],
         accessStrategies: [
           {
-            name: 'allow',
+            handler: 'allow',
           },
         ],
       },

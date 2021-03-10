@@ -80,6 +80,7 @@ export default function LambdaResources({
                 <DropdownInput
                   disabled={disabledForm}
                   options={presetOptions}
+                  defaultValue={defaultPreset}
                   _ref={register}
                   id={inputNames.preset}
                   name={inputNames.preset}

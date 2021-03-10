@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { TabGroup, Tab } from 'fundamental-react';
 
-import LambdaDetailsHeader from './LambdaDetailsHeader/LambdaDetailsHeader';
-
 import CodeTab from './Tabs/Code/CodeTab';
 import ResourceManagementTab from './Tabs/ResourceManagement/ResourceManagementTab';
 
@@ -10,7 +8,7 @@ import LambdaEventsWrapper from './Tabs/Configuration/EventTriggers/LambdaEvents
 import ServiceBindingsWrapper from './Tabs/Configuration/ServiceBindings/ServiceBindingsWrapper';
 import ApiRules from './Tabs/Configuration/ApiRules/ApiRules';
 
-import { useLogsView } from '../helpers/misc';
+// import { useLogsView } from '../helpers/misc';
 
 import { LAMBDA_DETAILS } from 'components/Lambdas/constants';
 import {
@@ -20,7 +18,7 @@ import {
 
 export default function LambdaDetails({ lambda, backendModules = [] }) {
   const [bindingUsages, setBindingUsages] = useState([]);
-  useLogsView(lambda.UID, lambda.namespace);
+  // useLogsView(lambda.UID, lambda.namespace);
 
   const apiRules = backendModulesExist(backendModules, [
     BACKEND_MODULES.API_GATEWAY,
@@ -49,7 +47,6 @@ export default function LambdaDetails({ lambda, backendModules = [] }) {
 
   return (
     <>
-      <LambdaDetailsHeader lambda={lambda} />
       <TabGroup className="lambda-details-tabs">
         <Tab
           key="lambda-code"
@@ -65,7 +62,7 @@ export default function LambdaDetails({ lambda, backendModules = [] }) {
             title={LAMBDA_DETAILS.TABS.CONFIGURATION.TITLE}
           >
             {apiRules}
-            {eventTriggers}
+            {/* {eventTriggers} */}
             {serviceBindings}
           </Tab>
         )}

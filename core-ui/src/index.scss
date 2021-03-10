@@ -177,3 +177,9 @@ li {
     content: none !important;
   }
 }
+
+.clearfix::after {
+  content: "";
+  clear: both;
+  display: table;
+}

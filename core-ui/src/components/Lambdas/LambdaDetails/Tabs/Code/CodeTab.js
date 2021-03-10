@@ -13,13 +13,13 @@ export default function CodeTab({ lambda, bindingUsages }) {
     customValueFromVariables,
     injectedVariables,
   } = serializeVariables({
-    lambdaVariables: lambda.env,
+    lambdaVariables: lambda?.spec?.env,
     bindingUsages,
   });
 
   return (
     <>
-      {isGitSourceType(lambda.sourceType) ? (
+      {isGitSourceType(lambda?.spec?.type) ? (
         <RepositoryConfig lambda={lambda} />
       ) : (
         <CodeAndDependencies lambda={lambda} />

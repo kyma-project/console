@@ -46,7 +46,6 @@ function copyFiles() {
         cp -R "${ROOT_DIR}/${d}" "${PWD}/${TEMP_DIR}/${d}/"
     done
     mkdir -p "${PWD}/${TEMP_DIR}/scripts/"
-    cp -R "${ROOT_DIR}/scripts/load-cluster-config.sh" "${PWD}/${TEMP_DIR}/scripts/"
 }
 
 function main() {

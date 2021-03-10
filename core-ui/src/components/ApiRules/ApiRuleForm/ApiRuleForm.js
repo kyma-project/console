@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { v4 as uuid } from 'uuid';
-import { useQuery } from '@apollo/react-hooks';
+import { createPatch } from 'rfc6902';
 import LuigiClient from '@luigi-project/client';
 import classNames from 'classnames';
 import { K8sNameInput, InputWithSuffix } from 'react-shared';
@@ -14,25 +14,28 @@ import {
   InlineHelp,
   Button,
 } from 'fundamental-react';
+import { supportedMethodsList } from '../accessStrategyTypes';
 
 import './ApiRuleForm.scss';
 import ApiRuleFormHeader from './ApiRuleFormHeader/ApiRuleFormHeader';
-import { GET_SERVICES } from '../../../gql/queries';
 import { getApiUrl } from '@kyma-project/common';
 import ServicesDropdown from './ServicesDropdown/ServicesDropdown';
 import AccessStrategyForm from './AccessStrategyForm/AccessStrategyForm';
 import { EXCLUDED_SERVICES_LABELS } from 'components/ApiRules/constants';
 import { hasValidMethods } from 'components/ApiRules/accessStrategyTypes';
+import { useGetList } from 'react-shared';
+import { SERVICES_URL, API_RULE_URL } from '../constants';
+import { formatMessage as injectVariables } from 'components/Lambdas/helpers/misc';
 
 export const DEFAULT_GATEWAY = 'kyma-gateway.kyma-system.svc.cluster.local';
 const DOMAIN = getApiUrl('domain');
 
 const EMPTY_ACCESS_STRATEGY = {
   path: '',
-  methods: [],
+  methods: supportedMethodsList,
   accessStrategies: [
     {
-      name: 'allow',
+      handler: 'allow',
       config: {},
     },
   ],
@@ -41,6 +44,7 @@ const EMPTY_ACCESS_STRATEGY = {
 ApiRuleForm.propTypes = {
   apiRule: PropTypes.object.isRequired,
   mutation: PropTypes.func.isRequired,
+  mutationType: PropTypes.string,
   saveButtonText: PropTypes.string.isRequired,
   headerTitle: PropTypes.string.isRequired,
   breadcrumbItems: PropTypes.arrayOf(
@@ -54,6 +58,7 @@ ApiRuleForm.propTypes = {
 export default function ApiRuleForm({
   apiRule,
   mutation,
+  mutationType,
   saveButtonText,
   headerTitle,
   breadcrumbItems,
@@ -74,12 +79,23 @@ export default function ApiRuleForm({
     apiRule.spec.service.port = port;
   }
 
-  const servicesQueryResult = useQuery(GET_SERVICES, {
-    variables: {
-      namespace,
-      excludedLabels: EXCLUDED_SERVICES_LABELS,
-    },
-  });
+  const { data: allServices, error, loading = true } = useGetList()(
+    injectVariables(SERVICES_URL, {
+      namespace: namespace,
+    }),
+    { pollingInterval: 3000 },
+  );
+
+  const services =
+    allServices?.filter(service => {
+      let show = true;
+      EXCLUDED_SERVICES_LABELS.forEach(excludedLabel => {
+        if (Object.keys(service?.metadata.labels).includes([excludedLabel])) {
+          show = false;
+        }
+      });
+      return show;
+    }) || [];
 
   React.useEffect(() => setMethodsValid(rules.every(hasValidMethods)), [rules]);
 
@@ -111,7 +127,7 @@ export default function ApiRuleForm({
     e.target.classList.toggle('is-invalid', !isValid);
   }
 
-  function save() {
+  async function save() {
     if (!formRef.current.checkValidity()) {
       return;
     }
@@ -120,10 +136,12 @@ export default function ApiRuleForm({
     );
 
     const variables = {
-      name: formValues.name.current.value,
-      namespace,
-      generation: apiRule.generation,
-      params: {
+      metadata: {
+        name: formValues.name.current.value,
+        namespace: namespace,
+        generation: apiRule?.metadata.generation || 1,
+      },
+      spec: {
         service: {
           host: formValues.hostname.current.value + '.' + DOMAIN,
           name: serviceName,
@@ -133,7 +151,31 @@ export default function ApiRuleForm({
         rules: rules.map(({ renderKey, ...actualRule }) => actualRule),
       },
     };
-    mutation({ variables });
+
+    const newApiRule = {
+      ...apiRule,
+      ...variables,
+      metadata: {
+        ...apiRule.metadata,
+        ...variables.metadata,
+      },
+      spec: {
+        ...apiRule.spec,
+        ...variables.spec,
+      },
+    };
+    const mutationData =
+      mutationType === 'create' ? newApiRule : createPatch(apiRule, newApiRule);
+
+    await mutation(
+      injectVariables(API_RULE_URL, {
+        name: formValues.name.current.value,
+        namespace: namespace,
+      }),
+      mutationData,
+    );
+
+    LuigiClient.uxManager().closeCurrentModal();
   }
 
   function addAccessStrategy() {
@@ -183,9 +225,9 @@ export default function ApiRuleForm({
                         _ref={formValues.name}
                         id="apiRuleName"
                         kind="API Rule"
-                        showHelp={!apiRule.name}
-                        defaultValue={apiRule.name}
-                        disabled={!!apiRule.name}
+                        showHelp={!apiRule?.metadata.name}
+                        defaultValue={apiRule?.metadata.name}
+                        disabled={!!apiRule?.metadata.name}
                       />
                     </FormItem>
                     <FormItem>
@@ -214,7 +256,9 @@ export default function ApiRuleForm({
                       _ref={formValues.service}
                       defaultValue={apiRule.spec.service}
                       serviceName={serviceName}
-                      {...servicesQueryResult}
+                      data={services}
+                      error={error}
+                      loading={loading}
                     />
                   </LayoutGrid>
                 </FormGroup>

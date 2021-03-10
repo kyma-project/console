@@ -1,59 +1,29 @@
-import { useMutation } from '@apollo/react-hooks';
 import LuigiClient from '@luigi-project/client';
 
-import { useNotification } from 'react-shared';
-import { DELETE_API_RULE } from 'gql/mutations';
+import { useDelete, handleDelete } from 'react-shared';
+import { formatMessage as injectVariables } from 'components/Lambdas/helpers/misc';
+import { API_RULE_URL } from '../constants';
 
-import { formatMessage } from 'components/Lambdas/helpers/misc';
-import { GQL_MUTATIONS } from '../constants';
-
-export function useDeleteApiRule(onCompleted) {
+export function useDeleteApiRule() {
   const namespace = LuigiClient.getContext().namespaceId;
 
-  const notificationManager = useNotification();
-  const [deleteAPIRule, opts] = useMutation(DELETE_API_RULE, {
-    onError: handleDeleteError,
-    onCompleted: handleDeleteSuccess,
-  });
+  const deleteAPIRule = useDelete();
 
-  function handleDeleteError(error) {
-    notificationManager.notifyError({
-      content: formatMessage(GQL_MUTATIONS.DELETE_API_RULE.ERROR_MESSAGE, {
-        error: error.message,
-      }),
-    });
-  }
-
-  function handleDeleteSuccess(data) {
-    notificationManager.notifySuccess({
-      content: formatMessage(GQL_MUTATIONS.DELETE_API_RULE.SUCCESS_MESSAGE, {
-        apiRuleName: data.deleteAPIRule.name,
-      }),
-    });
-    if (onCompleted) {
-      onCompleted();
-    }
-  }
-
-  function handleDelete(name) {
-    LuigiClient.uxManager()
-      .showConfirmationModal({
-        header: GQL_MUTATIONS.DELETE_API_RULE.CONFIRM_MODAL.TITLE,
-        body: formatMessage(
-          GQL_MUTATIONS.DELETE_API_RULE.CONFIRM_MODAL.MESSAGE,
-          {
-            apiRuleName: name,
-          },
+  async function handleResourceDelete(name) {
+    return await handleDelete(
+      'apirules',
+      null,
+      name,
+      () =>
+        deleteAPIRule(
+          injectVariables(API_RULE_URL, {
+            namespace: namespace,
+            name: name,
+          }),
         ),
-        buttonConfirm: 'Delete',
-        buttonDismiss: 'Cancel',
-      })
-      .then(() =>
-        deleteAPIRule({
-          variables: { name: name, namespace },
-        }),
-      );
+      () => {},
+    );
   }
 
-  return [handleDelete, opts];
+  return handleResourceDelete;
 }

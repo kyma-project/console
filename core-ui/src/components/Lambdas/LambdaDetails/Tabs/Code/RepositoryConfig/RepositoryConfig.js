@@ -59,8 +59,8 @@ export default function RepositoryConfig({ lambda }) {
       setIsValid(false);
     } else {
       if (
-        referenceRef?.current?.value === lambda.reference &&
-        baseDirRef?.current?.value === lambda.baseDir
+        referenceRef?.current?.value === lambda.spec.reference &&
+        baseDirRef?.current?.value === lambda.spec.baseDir
       ) {
         setEditStatus(REPOSITORY_CONFIG_PANEL.ERRORS.NO_CHANGES);
         setIsValid(false);
@@ -102,8 +102,11 @@ export default function RepositoryConfig({ lambda }) {
     }
 
     updateLambda({
-      reference,
-      baseDir,
+      spec: {
+        ...lambda.spec,
+        reference: reference,
+        baseDir: baseDir,
+      },
     });
     setEditStatus(REPOSITORY_CONFIG_PANEL.ERRORS.NO_CHANGES);
   }
@@ -194,7 +197,7 @@ export default function RepositoryConfig({ lambda }) {
                   REPOSITORY_CONFIG_PANEL.INPUTS.REFERENCE.PLACEHOLDER
                 }
                 validate={validateReference}
-                firstValue={lambda.reference}
+                firstValue={lambda.spec.reference}
               />
             </Panel.Body>
           </Panel>
@@ -219,7 +222,7 @@ export default function RepositoryConfig({ lambda }) {
                   REPOSITORY_CONFIG_PANEL.INPUTS.BASE_DIR.PLACEHOLDER
                 }
                 validate={validateBaseDir}
-                firstValue={lambda.baseDir}
+                firstValue={lambda.spec.baseDir}
               />
             </Panel.Body>
           </Panel>

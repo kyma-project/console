@@ -13,7 +13,7 @@ import { PANEL } from '../constants';
 
 const defaultHeaderRenderer = () => ['Name', 'Host', 'Service', 'Status'];
 const defaultTextSearchProperties = [
-  'name',
+  'metadata.name',
   'spec.service.host',
   'status.apiRuleStatus.code',
 ];
@@ -28,12 +28,12 @@ function editApiRuleModal(
   if (!inSubView) {
     LuigiClient.linkManager()
       .fromContext('namespaces')
-      .navigate(`cmf-apirules/edit/${apiRule.name}`);
+      .navigate(`cmf-apirules/edit/${apiRule.metadata.name}`);
     return;
   }
 
   const formattedTitle = formatMessage(PANEL.EDIT_MODAL.TITLE, {
-    apiRuleName: apiRule.name,
+    apiRuleName: apiRule.metadata.name,
   });
 
   LuigiClient.linkManager()
@@ -45,7 +45,7 @@ function editApiRuleModal(
       redirectCtx: redirectCtx,
       redirectPath: encodeURIComponent(redirectPath),
     })
-    .openAsModal(`cmf-apirules/edit/${apiRule.name}`, {
+    .openAsModal(`cmf-apirules/edit/${apiRule.metadata.name}`, {
       title: formattedTitle,
     });
 }
@@ -67,7 +67,7 @@ function createApiRuleModal(
   LuigiClient.linkManager()
     .fromContext('namespaces')
     .withParams({
-      serviceName: service.name,
+      serviceName: service.metadata.name,
       port: portForCreate,
       openedInModal: true,
       redirectCtx: redirectCtx,
@@ -87,14 +87,6 @@ function exposeButtonText(resourceType) {
   return PANEL.CREATE_BUTTON.TEXT;
 }
 
-function onDeleteSuccess(inSubView) {
-  if (!inSubView) {
-    LuigiClient.linkManager()
-      .fromClosestContext()
-      .navigate('');
-  }
-}
-
 export default function ApiRules({
   service = undefined,
   resourceType = '',
@@ -111,21 +103,21 @@ export default function ApiRules({
   serverDataLoading,
   disableExposeButton = false,
 }) {
-  const [deleteApiRule] = useDeleteApiRule(() => onDeleteSuccess(inSubView));
+  const deleteApiRule = useDeleteApiRule();
 
   const actions = [
     {
       name: 'Edit',
-      disabledHandler: apiRule => !!apiRule.ownerSubscription,
+      disabledHandler: apiRule => !!apiRule.ownerSubscription, // TODO what is this ownerSubscription?
       handler: apiRule => {
-        editApiRuleModal(apiRule, inSubView, redirectPath, redirectCtx);
+        return editApiRuleModal(apiRule, inSubView, redirectPath, redirectCtx);
       },
     },
     {
       name: 'Delete',
-      disabledHandler: apiRule => !!apiRule.ownerSubscription,
+      disabledHandler: apiRule => !!apiRule.ownerSubscription, // TODO what is this ownerSubscription?
       handler: apiRule => {
-        deleteApiRule(apiRule.name);
+        deleteApiRule(apiRule.metadata.name);
       },
     },
   ];

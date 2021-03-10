@@ -21,7 +21,8 @@ FROM eu.gcr.io/kyma-project/incubator/console-nginx:f4976fad
 ARG app_name=core
 
 COPY ./${app_name}/nginx/nginx.conf /etc/nginx/nginx.conf
-COPY --from=builder /app/${app_name}/dist /usr/share/nginx/html/
+COPY --from=builder /app/${app_name}/src /usr/share/nginx/html/
+COPY --from=builder /app/${app_name}/src/assets/luigi-core /usr/share/nginx/html/assets/luigi-core
 COPY --from=builder /app/${app_name}/licenses/ /app/licenses/
 COPY --from=builder /app/${app_name}/nginx/conf.d /etc/nginx/conf.d/
 COPY --from=builder /app/${app_name}/nginx/nginx.conf /etc/nginx/

@@ -96,7 +96,10 @@ export default function EditVariablesForm({
   function handleFormSubmit() {
     const preparedVariable = prepareVariablesMutationInput();
     updateLambdaVariables({
-      env: [...preparedVariable, ...customValueFromVariables],
+      spec: {
+        ...lambda.spec,
+        env: [...preparedVariable, ...customValueFromVariables],
+      },
     });
   }
 

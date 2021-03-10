@@ -29,7 +29,7 @@ export default function AccessStrategyForm({
   canDelete,
   handleFormChanged,
 }) {
-  const selectedType = strategy.accessStrategies[0].name;
+  const selectedType = strategy.accessStrategies[0].handler;
 
   const deleteButtonWrapper = canDelete
     ? component => component
@@ -72,12 +72,14 @@ export default function AccessStrategyForm({
                       accessStrategies: [
                         {
                           ...strategy.accessStrategies[0],
-                          name: e.target.value,
+                          handler: e.target.value,
                         },
                       ],
                     };
                     // strategy type changed, reset current values
-                    if (e.target.value !== strategy.accessStrategies[0].name) {
+                    if (
+                      e.target.value !== strategy.accessStrategies[0].handler
+                    ) {
                       newStrategy.accessStrategies[0].config = {};
                     }
                     setStrategy(newStrategy);
@@ -139,8 +141,8 @@ AccessStrategyForm.propTypes = {
   handleFormChanged: PropTypes.func.isRequired,
 };
 
-function Details({ name, ...props }) {
-  switch (name) {
+function Details({ handler, ...props }) {
+  switch (handler) {
     case accessStrategyTypes.oauth2_introspection.value:
       return <OAuth2Details {...props} />;
     case accessStrategyTypes.jwt.value:

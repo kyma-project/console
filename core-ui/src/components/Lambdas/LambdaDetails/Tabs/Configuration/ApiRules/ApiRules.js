@@ -14,14 +14,14 @@ import { LAMBDA_PHASES } from 'components/Lambdas/constants';
 
 const headerRenderer = () => ['', 'Name', 'Host', 'Status'];
 const textSearchProperties = [
-  'name',
+  'metadata.name',
   'service.host',
   'status.apiRuleStatus.code',
 ];
 
 export default function ApiRules({ lambda }) {
   const { service = undefined } = useServiceQuery({
-    ...lambda,
+    ...lambda.metadata,
   });
 
   const rowRenderer = apiRule => ({
@@ -45,7 +45,7 @@ export default function ApiRules({ lambda }) {
       resourceType="Function"
       inSubView={true}
       redirectCtx="namespaces"
-      redirectPath={`cmf-functions/details/${lambda.name}`}
+      redirectPath={`functions/details/${lambda.metadata.name}`}
       portForCreate="80"
       headerRenderer={headerRenderer}
       rowRenderer={rowRenderer}

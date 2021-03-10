@@ -1,53 +1,66 @@
 import React from 'react';
 import LuigiClient from '@luigi-project/client';
 
-import { GenericList } from 'react-shared';
+import { GenericList, useNotification, useDelete } from 'react-shared';
 import { Link } from 'fundamental-react';
 
-import { useDeleteServiceBindingUsage } from 'components/Lambdas/gql/hooks/mutations';
-
 import CreateServiceBindingModal from './CreateServiceBindingModal';
-
-import { retrieveVariablesFromBindingUsage } from 'components/Lambdas/helpers/lambdaVariables';
 import { SERVICE_BINDINGS_PANEL, ERRORS } from 'components/Lambdas/constants';
 
 import './ServiceBindings.scss';
 
 const headerRenderer = () => ['Instance', 'Environment Variable Names'];
-const textSearchProperties = [
-  'serviceBinding.serviceInstanceName',
-  'serviceBinding.secret.data',
-  'parameters.envPrefix.name',
-  'envs',
-];
+const textSearchProperties = ['serviceBinding.spec.instanceRef.name']; //TODO support searching by env name
 
 export default function ServiceBindings({
   lambda = {},
-  serviceBindingUsages = [],
+  serviceBindingsCombined,
   serverDataError,
   serverDataLoading,
 }) {
-  const deleteServiceBindingUsage = useDeleteServiceBindingUsage({ lambda });
+  const notification = useNotification();
 
-  const renderEnvs = bindingUsage => {
+  const deleteServiceBindingUsage = useDelete();
+  const serviceBindingsWithUsages = serviceBindingsCombined.filter(
+    ({ serviceBindingUsage }) => serviceBindingUsage,
+  );
+
+  const renderEnvs = (secret, prefix = '') => {
+    if (!secret) return 'Loading...'; // the secret is being created and will appear in a moment
     return (
       <>
-        {bindingUsage.envs.map(env => (
-          <div key={env.key}>{env.key}</div>
+        {Object.keys(secret.data).map(k => (
+          <div key={k}>
+            {prefix}
+            {k}
+          </div>
         ))}
       </>
     );
   };
 
+  async function handleServiceBindingUsageDelete({ serviceBindingUsage: u }) {
+    try {
+      await deleteServiceBindingUsage(u.metadata.selfLink);
+      notification.notifySuccess({
+        title: 'Succesfully deleted Service Binding Usage',
+      });
+    } catch (e) {
+      console.error(e);
+      notification.notifyError({
+        title: 'Failed to delete the Service Binding Usage',
+        content: e.message,
+      });
+    }
+  }
+
   const actions = [
     {
       name: 'Delete',
-      handler: bindingUsage => {
-        deleteServiceBindingUsage(bindingUsage);
-      },
+      handler: handleServiceBindingUsageDelete,
     },
   ];
-  const rowRenderer = bindingUsage => [
+  const rowRenderer = ({ secret, serviceBinding, serviceBindingUsage }) => [
     <Link
       className="link"
       data-test-id="service-instance-name"
@@ -55,26 +68,21 @@ export default function ServiceBindings({
         LuigiClient.linkManager()
           .fromContext('namespaces')
           .navigate(
-            `cmf-instances/details/${bindingUsage.serviceBinding.serviceInstanceName}`,
+            `cmf-instances/details/${serviceBinding.spec.instanceRef.name}`,
           )
       }
     >
-      {bindingUsage.serviceBinding.serviceInstanceName}
+      {serviceBinding.spec.instanceRef.name}
     </Link>,
-    renderEnvs(bindingUsage),
+    renderEnvs(secret, serviceBindingUsage.spec.parameters?.envPrefix.name),
   ];
 
   const createServiceBindingModal = (
     <CreateServiceBindingModal
       lambda={lambda}
-      serviceBindingUsages={serviceBindingUsages}
+      serviceBindingsCombined={serviceBindingsCombined}
     />
   );
-
-  const performedBindingUsages = serviceBindingUsages.map(usage => ({
-    ...usage,
-    envs: retrieveVariablesFromBindingUsage(usage),
-  }));
 
   return (
     <GenericList
@@ -84,7 +92,7 @@ export default function ServiceBindings({
       showSearchSuggestion={false}
       extraHeaderContent={createServiceBindingModal}
       actions={actions}
-      entries={performedBindingUsages}
+      entries={serviceBindingsWithUsages}
       headerRenderer={headerRenderer}
       rowRenderer={rowRenderer}
       serverDataError={serverDataError}

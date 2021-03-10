@@ -57,3 +57,8 @@ export const GQL_MUTATIONS = {
     },
   },
 };
+
+export const API_RULES_URL = `/apis/gateway.kyma-project.io/v1alpha1/namespaces/{namespace}/apirules`;
+export const API_RULE_URL = `/apis/gateway.kyma-project.io/v1alpha1/namespaces/{namespace}/apirules/{name}`;
+export const SERVICES_URL = `/api/v1/namespaces/{namespace}/services`;
+export const SERVICE_URL = `/api/v1/namespaces/{namespace}/services/{name}`;

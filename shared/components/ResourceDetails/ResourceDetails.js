@@ -146,24 +146,24 @@ function Resource({
         actions={actions}
         breadcrumbItems={breadcrumbs}
       >
-        <PageHeader.Column title="Labels" columnSpan="1 / 3">
+        <PageHeader.Column key="Labels" title="Labels" columnSpan="1 / 3">
           <Labels labels={resource.metadata.labels || {}} />
         </PageHeader.Column>
 
-        <PageHeader.Column title="Age">
+        <PageHeader.Column key="Age" title="Age">
           <Moment utc fromNow>
             {resource.metadata.creationTimestamp}
           </Moment>
         </PageHeader.Column>
 
         {customColumns.map(col => (
-          <PageHeader.Column title={col.header} key={col.header}>
+          <PageHeader.Column key={col.header} title={col.header}>
             {col.value(resource)}
           </PageHeader.Column>
         ))}
       </PageHeader>
 
-      {customComponents.map(component => component(resource))}
+      {customComponents.map(component => component(resource, resourceUrl))}
 
       {children}
     </>

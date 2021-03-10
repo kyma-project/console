@@ -5,7 +5,7 @@ let selfSubjectRulesReview = [];
 export let backendModules = [];
 
 export function setInitValues(_backendModules, _selfSubjectRulesReview) {
-  backendModules = _backendModules;
+  backendModules = _backendModules.map((bm) => bm.name);
   selfSubjectRulesReview = _selfSubjectRulesReview;
 }
 
@@ -18,7 +18,7 @@ function checkRequiredBackendModules(nodeToCheckPermissionsFor) {
   ) {
     if (backendModules && backendModules.length > 0) {
       nodeToCheckPermissionsFor.context.requiredBackendModules.forEach(
-        module => {
+        (module) => {
           if (hasPermissions && backendModules.indexOf(module) === -1) {
             hasPermissions = false;
           }

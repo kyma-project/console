@@ -302,11 +302,9 @@ function testMinMemory(arg, type = 'function') {
   return compareMemory(CONFIG[`${type}MinResources`]?.memory, arg);
 }
 
-export function checkReplicasPreset(functionReplicas, presets) {
+export function checkReplicasPreset(min, max, presets) {
   const possiblePreset = Object.entries(presets).find(([_, values]) => {
-    return (
-      values.min === functionReplicas.min && values.max === functionReplicas.max
-    );
+    return values.min === min && values.max === max;
   });
   if (possiblePreset) {
     return possiblePreset[0];

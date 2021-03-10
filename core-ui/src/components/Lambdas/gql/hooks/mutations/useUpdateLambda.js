@@ -1,10 +1,10 @@
-import { useMutation } from '@apollo/react-hooks';
-import { useNotification } from 'react-shared';
+import { useNotification, useUpdate } from 'react-shared';
 
-import { UPDATE_LAMBDA } from 'components/Lambdas/gql/mutations';
+import { createPatch } from 'rfc6902';
+
 import extractGraphQlErrors from 'shared/graphqlErrorExtractor';
 
-import { formatMessage, omitTypenames } from 'components/Lambdas/helpers/misc';
+import { formatMessage } from 'components/Lambdas/helpers/misc';
 import { GQL_MUTATIONS } from 'components/Lambdas/constants';
 
 export const UPDATE_TYPE = {
@@ -20,7 +20,7 @@ export const useUpdateLambda = ({
   type = UPDATE_TYPE.GENERAL_CONFIGURATION,
 }) => {
   const notificationManager = useNotification();
-  const [updateLambdaMutation] = useMutation(UPDATE_LAMBDA);
+  const updateLambdaMutation = useUpdate();
 
   function handleError(error) {
     const errorToDisplay = extractGraphQlErrors(error);
@@ -28,7 +28,7 @@ export const useUpdateLambda = ({
     const message = formatMessage(
       GQL_MUTATIONS.UPDATE_LAMBDA[type].ERROR_MESSAGE,
       {
-        lambdaName: lambda.name,
+        lambdaName: lambda.metadata.name,
         error: errorToDisplay,
       },
     );
@@ -41,18 +41,17 @@ export const useUpdateLambda = ({
 
   async function updateLambda(updatedData, userCallback = () => {}) {
     try {
-      const params = {
-        ...prepareUpdateLambdaInput(lambda),
+      const newLambda = {
+        ...lambda,
         ...updatedData,
       };
 
-      const response = await updateLambdaMutation({
-        variables: {
-          name: lambda.name,
-          namespace: lambda.namespace,
-          params,
-        },
-      });
+      const diff = createPatch(lambda, newLambda);
+
+      const response = await updateLambdaMutation(
+        lambda.metadata.selfLink,
+        diff,
+      );
 
       if (response.error) {
         handleError(response.error);
@@ -62,7 +61,7 @@ export const useUpdateLambda = ({
       const message = formatMessage(
         GQL_MUTATIONS.UPDATE_LAMBDA[type].SUCCESS_MESSAGE,
         {
-          lambdaName: lambda.name,
+          lambdaName: lambda.metadata.name,
         },
       );
 
@@ -78,21 +77,3 @@ export const useUpdateLambda = ({
 
   return updateLambda;
 };
-
-export function prepareUpdateLambdaInput(lambda = {}) {
-  const preparedLambda = {
-    labels: lambda.labels || {},
-    source: lambda.source || '',
-    sourceType: lambda.sourceType || '',
-    dependencies: lambda.dependencies || '',
-    resources: lambda.resources || {},
-    buildResources: lambda.buildResources || {},
-    replicas: lambda.replicas || {},
-    env: lambda.env || [],
-    runtime: lambda.runtime || '',
-    reference: lambda.reference || null,
-    baseDir: lambda.baseDir || null,
-  };
-
-  return omitTypenames(preparedLambda);
-}

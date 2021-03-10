@@ -40,3 +40,5 @@ testem.log
 .DS_Store
 Thumbs.db
 pkup.sh
+
+src/assets/luigi-core

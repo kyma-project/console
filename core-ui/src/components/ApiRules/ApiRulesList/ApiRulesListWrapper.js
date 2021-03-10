@@ -1,7 +1,9 @@
 import React from 'react';
 
 import ApiRulesList from './ApiRulesList';
-import { useApiRulesQuery } from 'components/ApiRules/gql/useApiRulesQuery';
+import { useGetList, Spinner } from 'react-shared';
+import { API_RULES_URL } from '../constants';
+import { formatMessage as injectVariables } from 'components/Lambdas/helpers/misc';
 
 export default function ApiRulesListWrapper({
   service = undefined,
@@ -17,10 +19,16 @@ export default function ApiRulesListWrapper({
   textSearchProperties = undefined,
   disableExposeButton = false,
 }) {
-  const { apiRules = [], error, loading } = useApiRulesQuery({
-    namespace: namespace || service?.namespace,
-    serviceName: service?.name,
-  });
+  const { data: apiRulesForThisService, error, loading = true } = useGetList(
+    rule => rule.spec.service.name === service?.metadata.name,
+  )(
+    injectVariables(API_RULES_URL, {
+      namespace: namespace || service?.metadata.namespace,
+    }),
+    { pollingInterval: 3000 },
+  );
+
+  if (!apiRulesForThisService) return <Spinner />;
 
   return (
     <ApiRulesList
@@ -34,7 +42,7 @@ export default function ApiRulesListWrapper({
       headerRenderer={headerRenderer}
       rowRenderer={rowRenderer}
       textSearchProperties={textSearchProperties}
-      apiRules={apiRules}
+      apiRules={apiRulesForThisService}
       serverDataError={error || false}
       serverDataLoading={loading || false}
       disableExposeButton={disableExposeButton}

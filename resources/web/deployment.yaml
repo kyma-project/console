@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: console
-          image: wawrzyn321/console-apps
+          image: eu.gcr.io/kyma-project/console:PR-2143
           imagePullPolicy: Always
           resources:
             limits:

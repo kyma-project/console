@@ -36,12 +36,12 @@ export const DropdownInput = ({
         id={id}
         name={name}
         role="select"
-        defaultValue={df}
+        value={df}
         onChange={onChange}
       >
-        {options.map(option => (
-          <option aria-label="option" key={option.key} value={option.value}>
-            {option.key}
+        {options.map(({ key, value }) => (
+          <option aria-label="option" key={key} value={value}>
+            {key}
           </option>
         ))}
       </FormSelect>

@@ -13,7 +13,7 @@ import './AccessStrategies.scss';
 const headerRenderer = () => ['Path', 'Type', 'Methods'];
 const textSearchProperties = ['path', 'accessStrategies', 'methods'];
 const rowRenderer = strategy => {
-  const selectedType = strategy.accessStrategies[0].name;
+  const selectedType = strategy.accessStrategies[0].handler;
   return [
     <span>{strategy.path}</span>,
     <Badge modifier="filled">

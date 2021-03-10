@@ -41,18 +41,21 @@ export const ReplicasetsDetails = DefaultRenderer => ({ ...otherParams }) => {
     },
   ];
 
-  const PodsList = getComponentForList('podsList', {
-    hasDetailsView: false,
-    resourceUrl: `/api/v1/namespaces/${otherParams.namespace}/pods`,
-    resourceType: 'pods',
-    namespace: otherParams.namespace,
-    isCompact: true,
-    showTitle: true,
-    filter: pod =>
-      !!pod.metadata.ownerReferences.find(
-        ref =>
-          ref.kind === 'ReplicaSet' && ref.name === otherParams.resourceName,
-      ),
+  const PodsList = getComponentForList({
+    name: 'podsList',
+    params: {
+      hasDetailsView: false,
+      resourceUrl: `/api/v1/namespaces/${otherParams.namespace}/pods`,
+      resourceType: 'pods',
+      namespace: otherParams.namespace,
+      isCompact: true,
+      showTitle: true,
+      filter: pod =>
+        !!pod.metadata.ownerReferences.find(
+          ref =>
+            ref.kind === 'ReplicaSet' && ref.name === otherParams.resourceName,
+        ),
+    },
   });
 
   return (

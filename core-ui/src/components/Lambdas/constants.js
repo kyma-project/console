@@ -283,6 +283,7 @@ export const LOGS_AND_METRICS = {
     },
   },
 };
+export const SERVICE_URL = `/api/v1/namespaces/{namespace}/services/{name}`;
 
 export const GQL_QUERIES = {
   LAMBDA: {
@@ -378,7 +379,7 @@ export const GQL_MUTATIONS = {
   },
   CREATE_BINDING_USAGE: {
     SUCCESS_MESSAGE: `Service Binding referencing Service Instance "{serviceInstanceName}" was created.`,
-    ERROR_MESSAGE: `Couldn't create the Service Binding referencing Service Instance "{serviceInstanceName}" due to this error: {error}.`,
+    ERROR_MESSAGE: `Couldn't create the Service Binding referencing Service Instance "{serviceInstanceName}".`,
   },
   DELETE_BINDING_USAGE: {
     SUCCESS_MESSAGE: `Service Binding referencing Service Instance "{serviceInstanceName}" was deleted.`,

@@ -66,7 +66,7 @@ const sampleAPIRule = {
         methods: ['PUT', 'POST', 'GET', 'DELETE'],
         accessStrategies: [
           {
-            name: 'noop',
+            handler: 'noop',
             config: {},
           },
         ],

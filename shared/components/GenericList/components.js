@@ -67,7 +67,6 @@ const DefaultRowRenderer = ({
       />
     </td>
   );
-
   return (
     <tr>
       {cells}

@@ -1,29 +1,40 @@
 import React, { useState } from 'react';
 
 import { Button, Alert } from 'fundamental-react';
-import { Spinner, Tooltip } from 'react-shared';
-
-import { useServiceInstancesQuery } from 'components/Lambdas/gql/hooks/queries';
+import { Spinner, Tooltip, useGetList } from 'react-shared';
 
 import ModalWithForm from 'components/ModalWithForm/ModalWithForm';
 import CreateServiceBindingForm from './CreateServiceBindingForm';
-
 import { SERVICE_BINDINGS_PANEL } from 'components/Lambdas/constants';
 
 export default function CreateServiceBindingModal({
   lambda,
-  serviceBindingUsages,
+  serviceBindingsCombined,
 }) {
   const [popupModalMessage, setPopupModalMessage] = useState('');
+
+  const serviceInstancesAlreadyUsed = serviceBindingsCombined.map(
+    ({ serviceBinding, serviceBindingUsage }) =>
+      serviceBindingUsage && serviceBinding?.spec.instanceRef.name,
+  );
+
+  const isNotAlreadyUsed = serviceInstance =>
+    !serviceInstancesAlreadyUsed.includes(serviceInstance.metadata.name);
+
   const {
-    serviceInstances,
-    loading,
+    loading = true,
     error,
-    refetchServiceInstances,
-  } = useServiceInstancesQuery({
-    namespace: lambda.namespace,
-    serviceBindingUsages,
-  });
+    data: serviceInstances,
+    silentRefetch: refetchServiceInstances,
+  } = useGetList()(
+    `/apis/servicecatalog.k8s.io/v1beta1/namespaces/${lambda.metadata.namespace}/serviceinstances`,
+    {
+      pollingInterval: 3000,
+    },
+  );
+
+  const instancesNotBound = serviceInstances?.filter(isNotAlreadyUsed) || [];
+  const hasAnyInstances = !!instancesNotBound.length;
 
   let fallbackContent = null;
   if (error) {
@@ -38,11 +49,11 @@ export default function CreateServiceBindingModal({
   }
 
   const button = (
-    <Button glyph="add" option="light" disabled={!serviceInstances.length}>
+    <Button glyph="add" option="light" disabled={!hasAnyInstances}>
       {SERVICE_BINDINGS_PANEL.CREATE_MODAL.OPEN_BUTTON.TEXT}
     </Button>
   );
-  const modalOpeningComponent = serviceInstances.length ? (
+  const modalOpeningComponent = hasAnyInstances ? (
     button
   ) : (
     <Tooltip
@@ -66,8 +77,11 @@ export default function CreateServiceBindingModal({
         <CreateServiceBindingForm
           {...props}
           lambda={lambda}
-          serviceInstances={serviceInstances}
+          availableServiceInstances={instancesNotBound}
           setPopupModalMessage={setPopupModalMessage}
+          serviceBindings={serviceBindingsCombined.map(
+            ({ serviceBinding }) => serviceBinding,
+          )}
           refetchServiceInstances={refetchServiceInstances}
         />
       )}

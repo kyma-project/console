@@ -16,8 +16,8 @@ spec:
     spec:
       containers:
         - name: service-catalog
-          image: eu.gcr.io/kyma-project/service-catalog-ui:PR-2121
+          image: eu.gcr.io/kyma-project/service-catalog-ui:PR-2143
           imagePullPolicy: IfNotPresent
           resources: {}
           ports:
-            - containerPort: 80
+            - containerPort: 8080

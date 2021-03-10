@@ -1,4 +1,8 @@
-import { saveCurrentLocation, getToken, getPreviousLocation } from './navigation/navigation-helpers';
+import {
+  saveCurrentLocation,
+  getToken,
+  getPreviousLocation,
+} from './navigation/navigation-helpers';
 import { communication } from './communication';
 import { settings } from './settings';
 import { createAuth } from './auth.js';
@@ -7,7 +11,7 @@ import { saveInitParamsIfPresent } from './init-params';
 import {
   navigation,
   getNavigationData,
-  resolveNavigationNodes
+  resolveNavigationNodes,
 } from './navigation/navigation-data-init';
 import { onQuotaExceed } from './luigi-event-handlers';
 
@@ -20,7 +24,7 @@ export const NODE_PARAM_PREFIX = `~`;
     navigation,
     routing: {
       nodeParamPrefix: NODE_PARAM_PREFIX,
-      skipRoutingForUrlPatterns: [/access_token=/, /id_token=/]
+      skipRoutingForUrlPatterns: [/access_token=/, /id_token=/],
     },
     settings,
     lifecycleHooks: {
@@ -54,7 +58,7 @@ export const NODE_PARAM_PREFIX = `~`;
   };
   Luigi.setConfig(luigiConfig);
 
-window.addEventListener('message', e => {
+window.addEventListener('message', (e) => {
   if (e.data.msg === 'console.quotaexceeded') {
     onQuotaExceed(e.data);
   }

@@ -22,13 +22,13 @@ const resolveAPIRuleStatus = statusCode => {
 };
 
 export default function ApiRuleStatus({ apiRule }) {
-  if (!apiRule.status.apiRuleStatus) {
+  if (!apiRule.status.APIRuleStatus) {
     return null;
   }
 
-  const { code, description } = apiRule.status.apiRuleStatus;
+  const { code, desc } = apiRule.status.APIRuleStatus;
   return (
-    <StatusBadge type={resolveAPIRuleStatus(code)} tooltipContent={description}>
+    <StatusBadge type={resolveAPIRuleStatus(code)} tooltipContent={desc}>
       {code}
     </StatusBadge>
   );

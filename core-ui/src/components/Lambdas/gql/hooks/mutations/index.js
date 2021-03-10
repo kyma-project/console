@@ -5,6 +5,5 @@ export * from './useCreateServiceBindingUsage';
 export * from './useDeleteEventTrigger';
 export * from './useDeleteLambda';
 export * from './useDeleteRepository';
-export * from './useDeleteServiceBindingUsage';
 export * from './useUpdateLambda';
 export * from './useUpdateRepository';

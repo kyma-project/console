@@ -1,11 +1,12 @@
 {
   "name": "tets2",
-  "version": "1.0.7",
+  "version": "1.0.10",
   "description": "APIserver proxy for Console",
   "main": "backend.index.js",
   "bin": "pamela-npx.js",
   "scripts": {
-    "start:kyma": ". ../scripts/load-cluster-config.sh && npm run watch",
+    "start:kyma": "npm run watch",
+    "start:npx": "NODE_ENV=npx nodemon --exec babel-node index.js",
     "watch": "NODE_ENV=development nodemon --exec NODE_TLS_REJECT_UNAUTHORIZED=0 babel-node index.js",
     "build": "webpack",
     "start": "NODE_ENV=production node pamela-production.js",

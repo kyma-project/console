@@ -11,7 +11,7 @@ const allowStrategy = {
   methods: [],
   accessStrategies: [
     {
-      name: 'allow',
+      handler: 'allow',
       config: {},
     },
   ],
@@ -22,7 +22,7 @@ const noopStrategy = {
   methods: ['GET', 'PUT'],
   accessStrategies: [
     {
-      name: 'noop',
+      handler: 'noop',
       config: {},
     },
   ],
@@ -33,7 +33,7 @@ const oauthStrategy = {
   methods: ['GET', 'PUT'],
   accessStrategies: [
     {
-      name: 'oauth2_introspection',
+      handler: 'oauth2_introspection',
       config: {
         required_scope: ['scope1', 'scope2'],
       },
@@ -46,7 +46,7 @@ const jwtStrategy = {
   methods: ['GET', 'PUT'],
   accessStrategies: [
     {
-      name: 'jwt',
+      handler: 'jwt',
       config: {
         jwks_urls: ['http://jwks_1'],
         trusted_issuers: ['https://issuer_1'],

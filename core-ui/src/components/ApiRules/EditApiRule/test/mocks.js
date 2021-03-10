@@ -22,7 +22,7 @@ export const apiRule = {
         methods: ['PUT', 'POST', 'GET', 'DELETE'],
         accessStrategies: [
           {
-            name: 'noop',
+            handler: 'noop',
             config: {},
           },
         ],

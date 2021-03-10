@@ -3,9 +3,7 @@ import PropTypes from 'prop-types';
 import { FormItem, FormLabel, FormInput, Alert } from 'fundamental-react';
 
 import Checkbox from 'components/Lambdas/Checkbox/Checkbox';
-
 import { useCreateServiceBindingUsage } from 'components/Lambdas/gql/hooks/mutations';
-
 import { SERVICE_BINDINGS_PANEL } from 'components/Lambdas/constants';
 
 const checkBoxInputProps = {
@@ -16,7 +14,8 @@ const checkBoxInputProps = {
 
 export default function CreateServiceBindingForm({
   lambda,
-  serviceInstances = [],
+  availableServiceInstances = [],
+  serviceBindings,
   setPopupModalMessage = () => void 0,
   refetchServiceInstances = () => void 0,
   onChange,
@@ -24,9 +23,9 @@ export default function CreateServiceBindingForm({
   setValidity = () => void 0,
   isOpen = false,
 }) {
-  const createServiceBindingUsage = useCreateServiceBindingUsage({ lambda });
+  const createServiceBindingUsageSet = useCreateServiceBindingUsage();
 
-  const [serviceInstanceName, setServiceInstanceName] = useState('');
+  const [selectedServiceInstance, setSelectedServiceInstance] = useState('');
   const [envPrefix, setEnvPrefix] = useState('');
 
   const [createCredentials, setCreateCredentials] = useState(true);
@@ -44,22 +43,21 @@ export default function CreateServiceBindingForm({
   }, [isOpen, refetchServiceInstances]);
 
   useEffect(() => {
-    if (!serviceInstanceName) {
+    if (!selectedServiceInstance) {
       setEnvPrefix('');
       setCreateCredentials(true);
+      setSecrets([]);
+      return;
     }
-
-    const instance = serviceInstances.find(
-      service => service.name === serviceInstanceName,
+    const bindingsForThisInstance = serviceBindings.filter(
+      b => b.spec.instanceRef.name === selectedServiceInstance,
     );
-
-    if (instance) {
-      setSecrets(instance.serviceBindings.items);
-    }
-  }, [serviceInstanceName, serviceInstances]);
+    setSecrets(bindingsForThisInstance.map(b => b.spec.secretName));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedServiceInstance, availableServiceInstances]);
 
   useEffect(() => {
-    if (!serviceInstanceName) {
+    if (!selectedServiceInstance) {
       setPopupModalMessage(
         SERVICE_BINDINGS_PANEL.CREATE_MODAL.CONFIRM_BUTTON.POPUP_MESSAGES
           .NO_SERVICE_INSTANCE_SELECTED,
@@ -79,7 +77,7 @@ export default function CreateServiceBindingForm({
 
     setValidity(true);
   }, [
-    serviceInstanceName,
+    selectedServiceInstance,
     createCredentials,
     existingCredentials,
     setValidity,
@@ -88,12 +86,14 @@ export default function CreateServiceBindingForm({
 
   useEffect(() => {
     setExistingCredentials('');
-  }, [serviceInstanceName, createCredentials]);
+  }, [selectedServiceInstance, createCredentials]);
 
   async function handleFormSubmit(e) {
     e.preventDefault();
     const parameters = {
-      serviceInstanceName: serviceInstanceName,
+      lambdaName: lambda.metadata.name,
+      namespace: lambda.metadata.namespace,
+      serviceInstanceName: selectedServiceInstance,
       serviceBindingUsageParameters: envPrefix
         ? {
             envPrefix: {
@@ -105,15 +105,16 @@ export default function CreateServiceBindingForm({
       existingCredentials: existingCredentials || undefined,
     };
 
-    refetchServiceInstances();
-    await createServiceBindingUsage(parameters);
+    await createServiceBindingUsageSet(parameters);
   }
 
-  const serviceInstancesNames = serviceInstances.map(service => (
-    <option value={service.name} key={service.name}>
-      {service.name}
-    </option>
-  ));
+  const serviceInstancesNames = availableServiceInstances.map(
+    ({ metadata }) => (
+      <option value={metadata.name} key={metadata.name}>
+        {metadata.name}
+      </option>
+    ),
+  );
 
   const noSecretsFound = (
     <Alert dismissible={false} type="information">
@@ -132,8 +133,8 @@ export default function CreateServiceBindingForm({
         <FormLabel htmlFor="serviceInstanceName">Service Instance</FormLabel>
         <select
           id="serviceInstanceName"
-          value={serviceInstanceName}
-          onChange={e => setServiceInstanceName(e.target.value)}
+          value={selectedServiceInstance}
+          onChange={e => setSelectedServiceInstance(e.target.value)}
           required
         >
           <option value=""></option>
@@ -152,7 +153,7 @@ export default function CreateServiceBindingForm({
         />
       </FormItem>
 
-      {serviceInstanceName && (
+      {selectedServiceInstance && (
         <>
           <FormItem key="createCredentials">
             <Checkbox
@@ -174,9 +175,9 @@ export default function CreateServiceBindingForm({
                 required
               >
                 <option value=""></option>
-                {secrets.map(secret => (
-                  <option value={secret.name} key={secret.name}>
-                    {secret.name}
+                {secrets.map(s => (
+                  <option value={s} key={s}>
+                    {s}
                   </option>
                 ))}
               </select>

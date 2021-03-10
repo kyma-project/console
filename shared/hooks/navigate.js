@@ -14,12 +14,13 @@ function navigateToNamespaceDetails(namespaceName) {
 }
 
 export function navigateToDetails(resourceType, name) {
+  const encodedName = encodeURIComponent(name);
   switch (resourceType) {
     case 'namespaces':
-      navigateToNamespaceDetails(name);
+      navigateToNamespaceDetails(encodedName);
       break;
     default:
-      navigateToResourceDetails(name);
+      navigateToResourceDetails(encodedName);
   }
 }
 

@@ -37,12 +37,12 @@ export default function CodeAndDependencies({ lambda }) {
     DISABLED_CAUSES.NO_CHANGES,
   );
 
-  const [code, setCode] = useState(lambda.source);
-  const [controlledCode, setControlledCode] = useState(lambda.source);
+  const [code, setCode] = useState(lambda.spec.source);
+  const [controlledCode, setControlledCode] = useState(lambda.spec.source);
 
-  const [dependencies, setDependencies] = useState(lambda.dependencies);
+  const [dependencies, setDependencies] = useState(lambda.spec.deps);
   const [controllerDependencies, setControlledDependencies] = useState(
-    lambda.dependencies,
+    lambda.spec.deps,
   );
 
   const [debouncedCallback] = useDebouncedCallback(() => {
@@ -63,13 +63,13 @@ export default function CodeAndDependencies({ lambda }) {
 
     const deps = (dependencies || '').trim();
 
-    if (!checkDepsValidity(lambda.runtime, deps)) {
+    if (!checkDepsValidity(lambda.spec.runtime, deps)) {
       setDisabledCause(DISABLED_CAUSES.INVALID_DEPS);
       return;
     }
 
     const isDiff =
-      lambda.source !== code || lambda.dependencies !== dependencies;
+      lambda.spec.source !== code || lambda.spec.deps !== dependencies;
     if (!isDiff) {
       setDisabledCause(DISABLED_CAUSES.NO_CHANGES);
       return;
@@ -86,8 +86,11 @@ export default function CodeAndDependencies({ lambda }) {
 
   function handleSave() {
     updateLambda({
-      source: code,
-      dependencies,
+      spec: {
+        ...lambda.spec,
+        source: code,
+        deps: dependencies,
+      },
     });
     setDisabledCause(DISABLED_CAUSES.NO_CHANGES);
   }
@@ -159,7 +162,7 @@ export default function CodeAndDependencies({ lambda }) {
   const {
     language: monacoEditorLang,
     dependencies: monacoEditorDeps,
-  } = runtimeToMonacoEditorLang(lambda.runtime);
+  } = runtimeToMonacoEditorLang(lambda.spec.runtime);
 
   const tabsData = [
     {
@@ -170,7 +173,7 @@ export default function CodeAndDependencies({ lambda }) {
           id="lambda-code"
           language={monacoEditorLang}
           showDiff={showDiff}
-          originalValue={lambda.source}
+          originalValue={lambda.spec.source}
           value={code}
           controlledValue={controlledCode}
           setValue={setCode}
@@ -187,7 +190,7 @@ export default function CodeAndDependencies({ lambda }) {
           id="lambda-dependencies"
           language={monacoEditorDeps}
           showDiff={showDiff}
-          originalValue={lambda.dependencies}
+          originalValue={lambda.spec.deps}
           value={dependencies}
           controlledValue={controllerDependencies}
           setValue={setDependencies}

@@ -5,7 +5,7 @@ function resolveViewUrl(name, node, spec, config) {
   if (spec.viewBaseUrl) {
     if (spec.viewBaseUrl.startsWith('http')) {
       // full url, just return viewBaseUrl
-      return spec.viewBaseUrl;
+      return `${spec.viewBaseUrl}${node.viewUrl}`;
     } else {
       // viewBaseUrl is the ingress name
       return `https://${spec.viewBaseUrl}.${config.domain}${node.viewUrl}`;
@@ -16,26 +16,23 @@ function resolveViewUrl(name, node, spec, config) {
 }
 
 function buildNode(name, node, spec, config, groups) {
-  const { 
+  const {
     label,
     showInNavigation,
     navigationPath,
     order,
     requiredPermissions,
     settings,
-    context
+    context,
   } = node;
   let n = {
     label,
     pathSegment: navigationPath.split('/').pop(),
     viewUrl: resolveViewUrl(name, node, spec, config),
-    hideFromNav:
-      showInNavigation !== undefined ? !showInNavigation : false,
+    hideFromNav: showInNavigation !== undefined ? !showInNavigation : false,
     order,
     context: {
-      settings: settings
-        ? { ...settings, ...(context || {}) }
-        : {}
+      settings: settings ? { ...settings, ...(context || {}) } : {},
     },
     requiredPermissions,
   };
@@ -48,7 +45,7 @@ function buildNode(name, node, spec, config, groups) {
     delete n.pathSegment;
     n.externalLink = {
       url: node.externalLink,
-      sameWindow: false
+      sameWindow: false,
     };
   }
 
@@ -62,7 +59,13 @@ function buildNode(name, node, spec, config, groups) {
 
 function buildNodeWithChildren(name, specNode, spec, config, groups) {
   var parentNodeSegments = specNode.navigationPath.split('/');
-  var children = getDirectChildren(name, parentNodeSegments, spec, config, groups);
+  var children = getDirectChildren(
+    name,
+    parentNodeSegments,
+    spec,
+    config,
+    groups
+  );
   var node = buildNode(name, specNode, spec, config, groups);
   if (children.length) {
     node.children = children;
@@ -96,7 +99,6 @@ export default function convertToNavigationTree(
   spec,
   config,
   navigation,
-  consoleViewGroupName,
   segmentPrefix,
   groups
 ) {
@@ -120,26 +122,20 @@ export default function convertToNavigationTree(
         node.navigationContext = spec.appName ? spec.appName : name;
         node.viewGroup = node.navigationContext;
 
-        node.navigationContext = spec.appName ? spec.appName : name;
-        if (
-          node.viewUrl &&
-          node.viewUrl.indexOf(window.location.origin + '/') === 0
-        ) {
-          node.viewGroup = consoleViewGroupName;
-        } else {
-          node.viewGroup = node.navigationContext;
-          if (spec.preloadUrl) {
-            navigation.viewGroupSettings[node.viewGroup] = {
-              preloadUrl: node.localPreloadUrl || spec.preloadUrl || `https://${name}.${config.domain}/preload`
-            };
-          }
+        if (spec.preloadUrl) {
+          navigation.viewGroupSettings[node.viewGroup] = {
+            preloadUrl:
+              node.localPreloadUrl ||
+              spec.preloadUrl ||
+              `https://${name}.${config.domain}/preload`,
+          };
         }
 
         node.keepSelectedForChildren = true;
       }
       return node;
     })
-    .map(n => {
+    .map((n) => {
       const showExperimentalViews =
         localStorage.getItem('console.showExperimentalViews') === 'true';
       return hideByNodeCategory(n, showExperimentalViews);

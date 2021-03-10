@@ -1,10 +1,7 @@
 import React from 'react';
-import { useMutation } from '@apollo/react-hooks';
 
-import { useNotification } from 'react-shared';
-import { CREATE_API_RULE } from '../../../gql/mutations';
+import { usePost } from 'react-shared';
 import ApiRuleForm from '../ApiRuleForm/ApiRuleForm';
-import LuigiClient from '@luigi-project/client';
 import { supportedMethodsList } from '../accessStrategyTypes';
 
 const DEFAULT_ACCESS_STRATEGY = {
@@ -12,14 +9,20 @@ const DEFAULT_ACCESS_STRATEGY = {
   methods: supportedMethodsList,
   accessStrategies: [
     {
-      name: 'allow',
+      handler: 'allow',
       config: {},
     },
   ],
 };
 
 const emptyApiRule = {
-  name: '',
+  apiVersion: 'gateway.kyma-project.io/v1alpha1',
+  kind: 'APIRule',
+  metadata: {
+    name: '',
+    namespace: '',
+    generation: 1,
+  },
   spec: {
     service: {
       host: '',
@@ -31,58 +34,7 @@ const emptyApiRule = {
 };
 
 export default function CreateApiRule() {
-  const { redirectPath, redirectCtx = 'namespaces', openedInModal } =
-    LuigiClient.getNodeParams() || {};
-  const [createApiRuleMutation] = useMutation(CREATE_API_RULE, {
-    onError: handleCreateError,
-    onCompleted: handleCreateSuccess,
-  });
-  const notificationManager = useNotification();
-
-  function handleCreateError(error) {
-    if (openedInModal) {
-      LuigiClient.uxManager().closeCurrentModal();
-      // close current modal instead of doing the redirect
-      return;
-    }
-
-    if (redirectPath) {
-      LuigiClient.linkManager()
-        .fromContext(redirectCtx)
-        .navigate(decodeURIComponent(redirectPath));
-      return;
-    }
-
-    notificationManager.notifyError({
-      content: `Could not create API Rule: ${error.message}`,
-    });
-  }
-
-  function handleCreateSuccess(data) {
-    if (openedInModal) {
-      LuigiClient.uxManager().closeCurrentModal();
-      // close current modal instead of doing the redirect
-      return;
-    }
-
-    if (redirectPath) {
-      LuigiClient.linkManager()
-        .fromContext(redirectCtx)
-        .navigate(decodeURIComponent(redirectPath));
-      return;
-    }
-
-    const createdApiRuleData = data.createAPIRule;
-    if (createdApiRuleData) {
-      notificationManager.notifySuccess({
-        content: `API Rule ${createdApiRuleData.name} created successfully`,
-      });
-
-      LuigiClient.linkManager()
-        .fromClosestContext()
-        .navigate(`/details/${createdApiRuleData.name}`);
-    }
-  }
+  const createApiRuleMutation = usePost();
 
   const breadcrumbItems = [{ name: 'API Rules', path: '/' }, { name: '' }];
 
@@ -90,6 +42,7 @@ export default function CreateApiRule() {
     <ApiRuleForm
       apiRule={emptyApiRule}
       mutation={createApiRuleMutation}
+      mutationType="create"
       saveButtonText="Create"
       headerTitle="Create API Rule"
       breadcrumbItems={breadcrumbItems}

@@ -1,34 +1,28 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useMutation, useQuery } from '@apollo/react-hooks';
-import LuigiClient from '@luigi-project/client';
 
-import { Spinner, useNotification } from 'react-shared';
-import { UPDATE_API_RULE } from '../../../gql/mutations';
-import { GET_API_RULE } from '../../../gql/queries';
+import { useGet, useUpdate, useMicrofrontendContext } from 'react-shared';
+import { Spinner } from 'react-shared';
 import ApiRuleForm from '../ApiRuleForm/ApiRuleForm';
 import EntryNotFound from 'components/EntryNotFound/EntryNotFound';
+import { formatMessage as injectVariables } from 'components/Lambdas/helpers/misc';
+import { API_RULE_URL } from '../constants';
 
 EditApiRule.propTypes = {
   apiName: PropTypes.string.isRequired,
 };
 
 export default function EditApiRule({ apiName }) {
-  const { redirectPath, redirectCtx = 'namespaces', openedInModal } =
-    LuigiClient.getNodeParams() || {};
-  const [updateApiRuleMutation] = useMutation(UPDATE_API_RULE, {
-    onError: handleError,
-    onCompleted: handleSuccess,
-  });
-  const notificationManager = useNotification();
+  const updateApiRuleMutation = useUpdate();
+  const { namespaceId: namespace } = useMicrofrontendContext();
 
-  const { error, loading, data } = useQuery(GET_API_RULE, {
-    variables: {
-      namespace: LuigiClient.getEventData().environmentId,
+  const { data, error, loading = true } = useGet(
+    injectVariables(API_RULE_URL, {
+      namespace,
       name: apiName,
-    },
-    fetchPolicy: 'no-cache',
-  });
+    }),
+    { pollingInterval: 0 },
+  );
 
   if (loading) {
     return <Spinner />;
@@ -38,58 +32,8 @@ export default function EditApiRule({ apiName }) {
     return <h1>Couldn't fetch API rule data</h1>;
   }
 
-  if (!data.APIRule || !data.APIRule.spec) {
+  if (!data || !data.spec) {
     return <EntryNotFound entryType="API Rule" entryId={apiName} />;
-  }
-
-  data.APIRule.spec.rules.forEach(rule => {
-    delete rule.__typename;
-    rule.accessStrategies.forEach(as => {
-      delete as.__typename;
-    });
-  });
-
-  function handleError(error) {
-    if (openedInModal) {
-      LuigiClient.uxManager().closeCurrentModal();
-      // close current modal instead of doing the redirect
-      return;
-    }
-    if (redirectPath) {
-      LuigiClient.linkManager()
-        .fromContext(redirectCtx)
-        .navigate(decodeURIComponent(redirectPath));
-      return;
-    }
-
-    notificationManager.notifyError({
-      content: `Could not update API Rule: ${error.message}`,
-    });
-  }
-
-  function handleSuccess(data) {
-    if (openedInModal) {
-      LuigiClient.uxManager().closeCurrentModal();
-      // close current modal instead of doing the redirect
-      return;
-    }
-    if (redirectPath) {
-      LuigiClient.linkManager()
-        .fromContext(redirectCtx)
-        .navigate(decodeURIComponent(redirectPath));
-      return;
-    }
-
-    const editedApiRuleData = data.updateAPIRule;
-    if (editedApiRuleData) {
-      notificationManager.notifySuccess({
-        content: `API Rule ${editedApiRuleData.name} updated successfully`,
-      });
-
-      LuigiClient.linkManager()
-        .fromClosestContext()
-        .navigate(`/details/${apiName}`);
-    }
   }
 
   const breadcrumbItems = [
@@ -100,7 +44,7 @@ export default function EditApiRule({ apiName }) {
 
   return (
     <ApiRuleForm
-      apiRule={data.APIRule}
+      apiRule={data}
       mutation={updateApiRuleMutation}
       saveButtonText="Save"
       headerTitle={`Edit ${apiName}`}
