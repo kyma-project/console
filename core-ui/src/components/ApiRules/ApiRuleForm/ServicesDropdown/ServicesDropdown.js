@@ -23,12 +23,11 @@ const ServicesDropdown = ({
   const defaultService = defaultValue
     ? `${defaultValue.name}:${defaultValue.port}`
     : null;
-  console.log('serviceName', serviceName);
+
   const services =
     serviceName && serviceName !== 'undefined'
       ? data.filter(s => s.metadata.name === serviceName)
       : data;
-  console.log('services after filter', services);
 
   return (
     <FormItem>
@@ -40,7 +39,6 @@ const ServicesDropdown = ({
         required
         defaultValue={defaultService}
       >
-        {console.log('services.length', services.length)}
         {services.length ? (
           services.map(service =>
             service.spec.ports.map(port => (
