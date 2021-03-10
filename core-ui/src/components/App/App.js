@@ -57,6 +57,8 @@ function RoutedEditApiRule({ match }) {
 
 function RoutedResourcesList({ match }) {
   const queryParams = new URLSearchParams(window.location.search);
+
+  // replace for npx routing
   const resourceUrl =
     queryParams.get('resourceApiPath') +
     window.location.pathname.toLocaleLowerCase().replace(/^\/core-ui/, '');
@@ -80,6 +82,7 @@ function RoutedResourcesList({ match }) {
 
 function RoutedResourceDetails({ match }) {
   const queryParams = new URLSearchParams(window.location.search);
+  // replace for npx routing
   const resourceUrl =
     queryParams.get('resourceApiPath') +
     window.location.pathname.toLocaleLowerCase().replace(/^\/core-ui/, '');
