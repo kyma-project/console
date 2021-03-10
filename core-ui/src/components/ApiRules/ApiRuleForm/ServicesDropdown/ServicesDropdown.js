@@ -23,7 +23,7 @@ const ServicesDropdown = ({
   const defaultService = defaultValue
     ? `${defaultValue.name}:${defaultValue.port}`
     : null;
-  console.log('serviceName', serviceName, 'services', data);
+
   const services = serviceName
     ? data.filter(s => s.metadata.name === serviceName)
     : data;
@@ -39,18 +39,23 @@ const ServicesDropdown = ({
         required
         defaultValue={defaultService}
       >
+        {console.log('services.length', services.length)}
         {services.length ? (
-          services.map(service =>
-            service.spec.ports.map(port => (
-              <option
-                aria-label="option"
-                key={service.metadata.name + port.port}
-                value={`${service.metadata.name}:${port.port}`}
-              >
-                {service.metadata.name} (port: {port.port})
-              </option>
-            )),
-          )
+          services.map(service => {
+            console.log('service', service);
+            return service.spec.ports.map(port => {
+              console.log('port', port);
+              return (
+                <option
+                  aria-label="option"
+                  key={service.metadata.name + port.port}
+                  value={`${service.metadata.name}:${port.port}`}
+                >
+                  {service.metadata.name} (port: {port.port})
+                </option>
+              );
+            });
+          })
         ) : (
           <option disabled>No services in this namespace</option>
         )}
