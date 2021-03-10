@@ -50,16 +50,15 @@ initializeApp(app, kubeconfig)
 const handleRequest = httpsAgent => async (req, res) => {
   delete req.headers.host; // remove host in order not to confuse APIServer
 
-  const path =
+  const targetApiServer =
     req.headers['x-api-url'] && req.headers['x-api-url'] !== 'undefined'
       ? req.headers['x-api-url']
-      : req.originalUrl.replace(/\/backend/, '');
-
+      : k8sUrl.hostname;
   delete req.headers['x-api-url'];
 
   const options = {
-    hostname: k8sUrl.hostname,
-    path,
+    hostname: targetApiServer,
+    path: req.originalUrl.replace(/^\/backend/, ''),
     headers: req.headers,
     body: req.body,
     agent: httpsAgent,
