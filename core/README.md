@@ -14,7 +14,7 @@ The Kyma installer comes with the console application. Console is installed toge
 - Run the `./cmd/run.sh` script as described in the README file.
 - Check the status by calling `./scripts/is-installed.sh` script.
 
-Now you can access Console by name from the browser at `https://console.kyma.local`. A dedicated Docker container serves this application from inside the Kyma cluster.
+Now you can access Console by name from the browser at [`https://console.kyma.local`](https://console.kyma.local). A dedicated Docker container serves this application from inside the Kyma cluster.
 
 ### Import the TLS cerificate
 
