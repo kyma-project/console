@@ -34,7 +34,7 @@ function buildNode(name, node, spec, config, groups) {
     context: {
       settings: settings ? { ...settings, ...(context || {}) } : {},
     },
-    requiredPermissions
+    requiredPermissions,
   };
 
   n.context.requiredBackendModules = node.requiredBackendModules;
@@ -76,7 +76,7 @@ function buildNodeWithChildren(name, specNode, spec, config, groups) {
 function getDirectChildren(name, parentNodeSegments, spec, config, groups) {
   // process only direct children
   return spec.navigationNodes
-    .filter(function(node) {
+    .filter(function (node) {
       var currentNodeSegments = node.navigationPath.split('/');
       var isDirectChild =
         parentNodeSegments.length === currentNodeSegments.length - 1 &&
@@ -127,7 +127,7 @@ export default function convertToNavigationTree(
             preloadUrl:
               node.localPreloadUrl ||
               spec.preloadUrl ||
-              `https://${name}.${config.domain}/preload`
+              `https://${name}.${config.domain}/preload`,
           };
         }
 
