@@ -99,14 +99,7 @@ export default function ApiRuleForm({
       });
       return show;
     }) || [];
-  console.log(
-    'services',
-    services,
-    'allServices',
-    allServices,
-    'excludedLabel',
-    EXCLUDED_SERVICES_LABELS,
-  );
+
   React.useEffect(() => setMethodsValid(rules.every(hasValidMethods)), [rules]);
 
   const formRef = useRef(null);
