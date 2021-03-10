@@ -25,7 +25,7 @@ const ServicesDropdown = ({
     : null;
   console.log('serviceName', serviceName);
   const services =
-    serviceName && serviceName !== undefined
+    serviceName && serviceName !== 'undefined'
       ? data.filter(s => s.metadata.name === serviceName)
       : data;
   console.log('services after filter', services);

@@ -10,6 +10,7 @@ import {
 } from 'components/ApiRules/ApiRulesList/components';
 import ApiRuleStatus from 'components/ApiRules/ApiRuleStatus/ApiRuleStatus';
 import AccessStrategies from 'components/ApiRules/AccessStrategies/AccessStrategies';
+import { formatMessage } from 'components/Lambdas/helpers/misc';
 
 export const ApiRulesDetails = DefaultRenderer => ({ ...otherParams }) => {
   const customColumns = [
@@ -32,6 +33,9 @@ export const ApiRulesDetails = DefaultRenderer => ({ ...otherParams }) => {
   };
 
   const editApiRule = apirule => {
+    const formattedTitle = formatMessage(PANEL.EDIT_MODAL.TITLE, {
+      apiRuleName: apirule.metadata.name,
+    });
     return (
       <Button
         glyph="add"
@@ -47,7 +51,7 @@ export const ApiRulesDetails = DefaultRenderer => ({ ...otherParams }) => {
               redirectPath: encodeURIComponent('cmf-apirules/'),
             })
             .openAsModal(`cmf-apirules/edit/${apirule.metadata.name}`, {
-              title: PANEL.CREATE_MODAL.TITLE,
+              title: formattedTitle,
             })
         }
       >
