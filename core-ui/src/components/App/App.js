@@ -59,7 +59,7 @@ function RoutedResourcesList({ match }) {
   const queryParams = new URLSearchParams(window.location.search);
   const resourceUrl =
     queryParams.get('resourceApiPath') +
-    window.location.pathname.toLocaleLowerCase().replace(/\/core-ui/, '');
+    window.location.pathname.toLocaleLowerCase().replace(/^\/core-ui/, '');
 
   const params = {
     hasDetailsView: queryParams.get('hasDetailsView') === 'true',
@@ -82,7 +82,7 @@ function RoutedResourceDetails({ match }) {
   const queryParams = new URLSearchParams(window.location.search);
   const resourceUrl =
     queryParams.get('resourceApiPath') +
-    window.location.pathname.toLocaleLowerCase().replace(/\/core-ui/, '');
+    window.location.pathname.toLocaleLowerCase().replace(/^\/core-ui/, '');
   const decodedResourceUrl = decodeURIComponent(resourceUrl);
   const decodedResourceName = decodeURIComponent(match.params.resourceName);
 
