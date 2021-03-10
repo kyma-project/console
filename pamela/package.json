@@ -1,6 +1,6 @@
 {
   "name": "tets2",
-  "version": "1.0.10",
+  "version": "1.0.12",
   "description": "APIserver proxy for Console",
   "main": "backend.index.js",
   "bin": "pamela-npx.js",

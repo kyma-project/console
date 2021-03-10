@@ -43,11 +43,10 @@ function runIfNpx(fn) {
   };
 }
 
-const fns = Object.fromEntries(
-  [setupEnv, setupRoutes, openBrowser, adjustRequestOptions].map(fn => [
-    fn.name,
-    runIfNpx(fn),
-  ]),
-);
-
-export default { ...fns, isNpxEnv };
+export default {
+  setupEnv: runIfNpx(setupEnv),
+  setupRoutes: runIfNpx(setupRoutes),
+  openBrowser: runIfNpx(openBrowser),
+  adjustRequestOptions: runIfNpx(adjustRequestOptions),
+  isNpxEnv,
+};
