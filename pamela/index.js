@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const http = require('http');
 const https = require('https');
-import * as npx from './npx-setup';
+import npx from './npx-setup';
 import { initializeKubeconfig } from './utils/kubeconfig';
 import { initializeApp } from './utils/initialization';
 import { requestLogger } from './utils/other';
@@ -31,10 +31,10 @@ initializeApp(app, kubeconfig)
     const httpsAgent = app.get('https_agent');
 
     const handleBackendRequest = handleRequest(httpsAgent);
-    if (false) {
-      app.use(handleBackendRequest);
-    } else {
+    if (npx.isNpxEnv()) {
       npx.setupRoutes(app, handleBackendRequest);
+    } else {
+      app.use(handleBackendRequest);
     }
 
     server.listen(port, address, () => {

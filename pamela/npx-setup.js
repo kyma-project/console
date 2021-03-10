@@ -2,17 +2,15 @@ const path = require('path');
 const open = require('open');
 const express = require('express');
 
-export function setupEnv() {
+function setupEnv() {
   process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0;
 }
 
-export function setupRoutes(app, handleBackendRequest) {
+function setupRoutes(app, handleBackendRequest) {
   app.use('/core-ui', express.static(path.join(__dirname, 'core-ui')));
   app.get('/core-ui/*', (_, res) =>
     res.sendFile(path.join(__dirname + '/core-ui/index.html')),
   );
-
-  app.use('/home', (_, res) => res.redirect('/core'));
 
   app.use('/backend', handleBackendRequest);
 
@@ -22,13 +20,34 @@ export function setupRoutes(app, handleBackendRequest) {
   );
 }
 
-export function openBrowser(port) {
+function openBrowser(port) {
   open(`http://localhost:${port}/`);
 }
 
-export function adjustRequestOptions(options, kubeconfig) {
+function adjustRequestOptions(options, kubeconfig) {
   options.headers = {
     ...options.headers,
     authorization: `Bearer ${kubeconfig.users[0].token}`,
   };
 }
+
+function isNpxEnv() {
+  return process.env.NODE_ENV === 'npx';
+}
+
+function runIfNpx(fn) {
+  return (...args) => {
+    if (isNpxEnv()) {
+      fn(...args);
+    }
+  };
+}
+
+const fns = Object.fromEntries(
+  [setupEnv, setupRoutes, openBrowser, adjustRequestOptions].map(fn => [
+    fn.name,
+    runIfNpx(fn),
+  ]),
+);
+
+export default { ...fns, isNpxEnv };
