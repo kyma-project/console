@@ -75,6 +75,7 @@ export let navigation = {
 
 export function getNavigationData() {
   return new Promise(function(resolve, reject) {
+    let kymaVersion;
     let token = getToken();
     let groups = getGroups(token);
     fetchFromGraphQL(CONSOLE_INIT_DATA, undefined, true)
@@ -84,6 +85,7 @@ export function getNavigationData() {
             const modules = res.backendModules;
             const subjectRules = res.selfSubjectRules;
             const cmfs = res.clusterMicroFrontends;
+            kymaVersion = (res.versionInfo && res.versionInfo.kymaVersion) ? `Kyma version: ${res.versionInfo.kymaVersion}` : undefined;
             setInitValues(
               (modules && modules.map(m => m.name)) || [],
               subjectRules || []
@@ -168,7 +170,7 @@ export function getNavigationData() {
           },
         ];
 
-        resolve(nodes);
+        resolve([nodes, kymaVersion]);
       })
       .catch(err => {
         console.error('Config Init Error', err);

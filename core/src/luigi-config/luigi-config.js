@@ -42,7 +42,9 @@ export const NODE_PARAM_PREFIX = `~`;
         const token = getToken();
         if (token) {
           getNavigationData().then(response => {
-            resolveNavigationNodes(response);
+            resolveNavigationNodes(response[0]);
+            luigiConfig.settings.sideNavFooterText = response[1];
+            Luigi.configChanged('settings');
             Luigi.ux().hideAppLoadingIndicator();
           });
         } else {
