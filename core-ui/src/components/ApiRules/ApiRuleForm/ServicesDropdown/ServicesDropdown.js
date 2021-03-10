@@ -27,6 +27,7 @@ const ServicesDropdown = ({
   const services = serviceName
     ? data.filter(s => s.metadata.name === serviceName)
     : data;
+  console.log('services after filter', data);
 
   return (
     <FormItem>
