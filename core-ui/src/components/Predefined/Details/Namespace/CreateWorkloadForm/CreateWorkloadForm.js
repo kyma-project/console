@@ -1,7 +1,7 @@
 import React from 'react';
 import LuigiClient from '@luigi-project/client';
 
-import { useGenericCreate } from 'react-shared';
+import { usePost } from 'react-shared';
 
 import './CreateWorkloadForm.scss';
 import BasicData from './BasicData';
@@ -20,7 +20,7 @@ export default function CreateWorkloadForm({
   onCompleted,
   onError,
 }) {
-  const createResource = useGenericCreate();
+  const postRequest = usePost();
   const [deployment, setDeployment] = React.useState(
     createDeploymentTemplate(namespaceId),
   );
@@ -28,7 +28,10 @@ export default function CreateWorkloadForm({
   const handleFormSubmit = async () => {
     let createdResource = null;
     try {
-      createdResource = await createResource(formatDeployment(deployment));
+      createdResource = await postRequest(
+        `/apis/apps/v1/namespaces/${namespaceId}/deployments/`,
+        formatDeployment(deployment),
+      );
     } catch (e) {
       console.log(e);
       onError('Cannot create deployment', e.message);
@@ -38,7 +41,10 @@ export default function CreateWorkloadForm({
 
     try {
       if (deployment.createService && createdResourceUID) {
-        await createResource(formatService(deployment, createdResourceUID));
+        await postRequest(
+          `/api/v1/namespaces/${namespaceId}/services`,
+          formatService(deployment, createdResourceUID),
+        );
       }
       onCompleted(deployment.name, 'Deployment created');
       LuigiClient.linkManager()

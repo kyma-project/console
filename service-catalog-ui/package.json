@@ -9,7 +9,7 @@
     "start": "BROWSER=none PORT=8000 HOST=console-dev.kyma.local ../node_modules/.bin/react-scripts start",
     "start:kyma": "npm run start",
     "build": "INLINE_RUNTIME_CHUNK=false ../node_modules/.bin/react-scripts build",
-    "test": "../node_modules/.bin/react-scripts test"
+    "test": "echo We have no tests at this moment"
   },
   "eslintConfig": {
     "extends": "react-app"

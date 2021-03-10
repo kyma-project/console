@@ -83,11 +83,13 @@ function RoutedResourceDetails({ match }) {
   const resourceUrl =
     queryParams.get('resourceApiPath') +
     window.location.pathname.toLocaleLowerCase();
+  const decodedResourceUrl = decodeURIComponent(resourceUrl);
+  const decodedResourceName = decodeURIComponent(match.params.resourceName);
 
   const params = {
-    resourceUrl,
+    resourceUrl: decodedResourceUrl,
     resourceType: match.params.resourceType,
-    resourceName: match.params.resourceName,
+    resourceName: decodedResourceName,
     namespace: match.params.namespaceId,
   };
 

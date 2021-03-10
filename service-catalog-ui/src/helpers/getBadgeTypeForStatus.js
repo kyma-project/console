@@ -1,5 +1,6 @@
 export const getBadgeTypeForStatus = status => {
   switch (status) {
+    case 'READY':
     case 'RUNNING':
       return 'success';
     case 'PROVISIONING':

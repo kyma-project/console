@@ -1,5 +1,5 @@
 import { randomNamesGenerator } from '@kyma-project/common';
-import builder from 'builder';
+// import builder from 'builder';
 
 export const getDocumentsTypes = (items, docsSortedByType) => {
   let documentsTypes = [];
@@ -14,11 +14,13 @@ export const getDocumentsTypes = (items, docsSortedByType) => {
 };
 
 export const getResourceDisplayName = resource => {
-  if (!resource) {
-    return null;
-  }
+  if (!resource) return null;
 
-  return resource.displayName || resource.externalName || resource.name;
+  return (
+    resource.spec.externalMetadata?.displayName ||
+    resource.spec.externalName ||
+    resource.metadata.name
+  );
 };
 
 export const getDescription = resource => {
@@ -56,7 +58,8 @@ export function isStringValueEqualToTrue(value) {
 }
 
 export const backendModuleExists = name => {
-  return builder.getBackendModules().includes(name);
+  return true;
+  // return builder.getBackendModules().includes(name);
 };
 
 export const processDocFilename = arg => {
@@ -113,11 +116,14 @@ export class DocsProcessor {
 }
 
 export function isAddon(serviceClass) {
-  return serviceClass.labels && serviceClass.labels.local === 'true';
+  return serviceClass.spec.externalMetadata?.labels?.local === 'true';
 }
 
 export function isService(serviceClass) {
-  return !serviceClass.labels || serviceClass.labels.local !== 'true';
+  return (
+    !serviceClass.spec.externalMetadata?.labels ||
+    serviceClass.spec.externalMetadata?.labels.local !== 'true'
+  );
 }
 
 function getServiceClass(instance) {

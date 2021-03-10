@@ -1,17 +1,5 @@
 import gql from 'graphql-tag';
 
-export const CREATE_LAMBDA = gql`
-  mutation createFunction(
-    $name: String!
-    $namespace: String!
-    $params: FunctionMutationInput!
-  ) {
-    createFunction(name: $name, namespace: $namespace, params: $params) {
-      name
-    }
-  }
-`;
-
 export const UPDATE_LAMBDA = gql`
   mutation updateFunction(
     $name: String!

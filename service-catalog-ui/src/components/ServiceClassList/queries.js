@@ -1,38 +1,5 @@
 import gql from 'graphql-tag';
 
-const serviceClassesQGL = `
-  name
-  description
-  displayName
-  externalName
-  imageUrl
-  providerDisplayName
-  tags
-  labels
-  plans{
-    name
-  }
-`;
-
-export const getAllServiceClasses = gql`
-  query serviceClasses($namespace: String!) {
-    clusterServiceClasses {
-      ${serviceClassesQGL}
-      instances(namespace: $namespace) {
-        name
-      }
-      activated(namespace: $namespace)
-    }
-    serviceClasses(namespace: $namespace) {
-      ${serviceClassesQGL}
-      instances {
-        name
-      }
-      activated
-    }
-  }
-`;
-
 const activeTagsFiltersQGL = `
   first
   isMore
