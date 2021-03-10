@@ -7,6 +7,7 @@ import { communication } from './communication';
 import { settings } from './settings';
 import { createAuth } from './auth.js';
 import { saveInitParamsIfPresent } from './init-params';
+import { config } from './config';
 
 import {
   navigation,
@@ -17,9 +18,10 @@ import { onQuotaExceed } from './luigi-event-handlers';
 
 export const NODE_PARAM_PREFIX = `~`;
 
-  // await saveInitParamsIfPresent(location);
+(async () => {
+  await saveInitParamsIfPresent(location);
   const luigiConfig = {
-    // auth: await createAuth(),
+    auth: !config.isNpx && (await createAuth()),
     communication,
     navigation,
     routing: {
@@ -38,25 +40,25 @@ export const NODE_PARAM_PREFIX = `~`;
         } else {
           Luigi.featureToggles().unsetFeatureToggle('showSystemNamespaces');
         }
-        // const token = getToken();
-        // if (token) {
-        getNavigationData('fake-npx-token').then(response => {
+        const token = getToken();
+        if (token) {
+          getNavigationData(token).then((response) => {
+            resolveNavigationNodes(response);
+            Luigi.ux().hideAppLoadingIndicator();
 
-          resolveNavigationNodes(response);
-          Luigi.ux().hideAppLoadingIndicator();
-
-          const prevLocation = getPreviousLocation();
-          if (prevLocation) {
-            Luigi.navigation().navigate(prevLocation);
-          }
-        });
-        // } else {
-        //   saveCurrentLocation();
-        // }
-      }
-    }
+            const prevLocation = getPreviousLocation();
+            if (prevLocation) {
+              Luigi.navigation().navigate(prevLocation);
+            }
+          });
+        } else {
+          saveCurrentLocation();
+        }
+      },
+    },
   };
   Luigi.setConfig(luigiConfig);
+})();
 
 window.addEventListener('message', (e) => {
   if (e.data.msg === 'console.quotaexceeded') {

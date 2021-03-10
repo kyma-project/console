@@ -1,4 +1,5 @@
 import createEncoder from 'json-url';
+import { config } from './config';
 
 const PARAMS_KEY = 'console.init-params';
 const encoder = createEncoder('lzstring');
@@ -19,6 +20,8 @@ function createSystemNamespacesList(namespaces) {
 }
 
 export async function saveInitParamsIfPresent(location) {
+  if (config.isNpx) return;
+
   const params = new URL(location).searchParams.get('init');
   if (params) {
     const decoded = await encoder.decompress(params);
@@ -31,13 +34,13 @@ export async function saveInitParamsIfPresent(location) {
 }
 
 export function saveInitParams(params) {
+  if (config.isNpx) return;
   localStorage.setItem(PARAMS_KEY, JSON.stringify(params));
 }
 
 export function getInitParams() {
-    return {
-        systemNamespaces: ''
-    };
-    // return JSON.parse(localStorage.getItem(PARAMS_KEY) || "null");
-  // return JSON.parse(localStorage.getItem(PARAMS_KEY) || 'null');
+  if (config.isNpx) {
+    return { systemNamespaces: '' };
+  }
+  return JSON.parse(localStorage.getItem(PARAMS_KEY) || 'null');
 }
