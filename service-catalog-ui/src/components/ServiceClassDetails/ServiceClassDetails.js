@@ -1,23 +1,7 @@
 import React from 'react';
-import {
-  serviceClassConstants,
-  createInstanceConstants,
-} from 'helpers/constants';
-
-import ServiceClassTabs from './ServiceClassTabs/ServiceClassTabs';
-import CreateInstanceModal from './CreateInstanceModal/CreateInstanceModal.container';
+import LuigiClient from '@luigi-project/client';
 import { Button } from 'fundamental-react';
 
-import { isStringValueEqualToTrue } from 'helpers';
-import './ServiceClassDetails.scss';
-import { ServiceClassDetailsWrapper, EmptyList } from './styled';
-import LuigiClient from '@luigi-project/client';
-import {
-  getResourceDisplayName,
-  getDescription,
-  backendModuleExists,
-} from 'helpers';
-import ServiceClassDetailsHeader from './ServiceClassDetailsHeader/ServiceClassDetailsHeader.component';
 import {
   Tooltip,
   Spinner,
@@ -25,7 +9,18 @@ import {
   useGetList,
   useGet,
   useMicrofrontendContext,
+  ResourceNotFound,
 } from 'react-shared';
+
+import './ServiceClassDetails.scss';
+import {
+  getResourceDisplayName,
+  getDescription,
+  isStringValueEqualToTrue,
+} from 'helpers';
+import { createInstanceConstants } from 'helpers/constants';
+import CreateInstanceModal from './CreateInstanceModal/CreateInstanceModal.container';
+import ServiceClassDetailsHeader from './ServiceClassDetailsHeader/ServiceClassDetailsHeader.component';
 
 export default function ServiceClassDetails({ name }) {
   const { namespaceId } = useMicrofrontendContext();
@@ -54,20 +49,18 @@ export default function ServiceClassDetails({ name }) {
 
   if (error) {
     return (
-      <EmptyList>{serviceClassConstants.errorServiceClassDetails}</EmptyList>
+      <ResourceNotFound
+        resource={resourceType}
+        breadcrumb="Catalog"
+        path="/"
+        fromClosestContext={true}
+      />
     );
   }
 
-  if (loading) {
-    return (
-      <EmptyList>
-        <Spinner />
-      </EmptyList>
-    );
+  if (loading || !serviceClass) {
+    return <Spinner />;
   }
-
-  if (!serviceClass)
-    return <EmptyList>{serviceClassConstants.noClassText}</EmptyList>;
 
   const serviceClassDisplayName = getResourceDisplayName(serviceClass);
   const serviceClassDescription = getDescription(serviceClass);
@@ -102,47 +95,34 @@ export default function ServiceClassDetails({ name }) {
   );
 
   return (
-    <>
-      <ServiceClassDetailsHeader
-        serviceClassDisplayName={serviceClassDisplayName}
-        providerDisplayName={providerDisplayName}
-        creationTimestamp={creationTimestamp}
-        documentationUrl={documentationUrl}
-        supportUrl={supportUrl}
-        imageUrl={imageUrl}
-        tags={tags}
-        labels={labels}
-        description={serviceClassDescription}
-        isProvisionedOnlyOnce={isProvisionedOnlyOnce}
-        serviceClassName={name}
-      >
-        <ModalWithForm
-          title={`Provision the ${serviceClassDisplayName}${' '}
-                    ${
-                      resourceType === 'ClusterServiceClass'
-                        ? 'Cluster Service Class'
-                        : 'Service Class'
-                    }${' '}
-                    in the ${namespaceId} Namespace`}
-          modalOpeningComponent={modalOpeningComponent}
-          id="add-instance-modal"
-          item={serviceClass}
-          renderForm={props => (
-            <CreateInstanceModal
-              {...props}
-              documentationUrl={documentationUrl}
-            />
-          )}
-        />
-      </ServiceClassDetailsHeader>
-
-      {/* <ServiceClassDetailsWrapper phoneRows>
-        {backendModuleExists('rafter') && (
-          <ServiceClassTabs
-            serviceClass={serviceClass}
-          />
+    <ServiceClassDetailsHeader
+      serviceClassDisplayName={serviceClassDisplayName}
+      providerDisplayName={providerDisplayName}
+      creationTimestamp={creationTimestamp}
+      documentationUrl={documentationUrl}
+      supportUrl={supportUrl}
+      imageUrl={imageUrl}
+      tags={tags}
+      labels={labels}
+      description={serviceClassDescription}
+      isProvisionedOnlyOnce={isProvisionedOnlyOnce}
+      serviceClassName={name}
+    >
+      <ModalWithForm
+        title={`Provision the ${serviceClassDisplayName}${' '}
+                  ${
+                    resourceType === 'ClusterServiceClass'
+                      ? 'Cluster Service Class'
+                      : 'Service Class'
+                  }${' '}
+                  in the ${namespaceId} Namespace`}
+        modalOpeningComponent={modalOpeningComponent}
+        id="add-instance-modal"
+        item={serviceClass}
+        renderForm={props => (
+          <CreateInstanceModal {...props} documentationUrl={documentationUrl} />
         )}
-      </ServiceClassDetailsWrapper> */}
-    </>
+      />
+    </ServiceClassDetailsHeader>
   );
 }
