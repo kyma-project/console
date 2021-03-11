@@ -1,4 +1,4 @@
-window.addEventListener('load', _ => {
+window.addEventListener('load', (_) => {
   try {
     document.getElementById('btn-login').onclick = login;
   } catch {}

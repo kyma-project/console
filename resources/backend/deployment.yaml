@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
         - name: pamela
-          image: wawrzyn321/pamela
+          image: eu.gcr.io/kyma-project/pamela:PR-2136
           imagePullPolicy: Always
           securityContext:
             allowPrivilegeEscalation: false

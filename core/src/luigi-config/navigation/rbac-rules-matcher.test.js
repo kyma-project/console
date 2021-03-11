@@ -38,10 +38,10 @@ const groupB_resourceB = {
   resource: 'resourceB',
 };
 
-const require = verbs => {
+const require = (verbs) => {
   return {
     verbs,
-    from: resource => {
+    from: (resource) => {
       return Object.assign({ verbs }, resource);
     },
   };
@@ -59,19 +59,19 @@ describe('rbacRulesMatched', () => {
       expect(rbacRulesMatched([], null)).toBe(true);
     });
     test('resolves true for null selfsubjectreview rules', () => {
-      expect(rbacRulesMatched([require(['get']).from(groupA_resourceA)], null)).toBe(
-        true,
-      );
+      expect(
+        rbacRulesMatched([require(['get']).from(groupA_resourceA)], null)
+      ).toBe(true);
     });
     test('resolves true for undefined selfsubjectreviewrules rules', () => {
       expect(
-        rbacRulesMatched([require(['get']).from(groupA_resourceA)], undefined),
+        rbacRulesMatched([require(['get']).from(groupA_resourceA)], undefined)
       ).toBe(true);
     });
     test('resolves true for empty selfsubjectreviewrules rules', () => {
-      expect(rbacRulesMatched([require(['get']).from(groupA_resourceA)], [])).toBe(
-        true,
-      );
+      expect(
+        rbacRulesMatched([require(['get']).from(groupA_resourceA)], [])
+      ).toBe(true);
     });
   });
 
@@ -83,43 +83,38 @@ describe('rbacRulesMatched', () => {
             require(['get']).from(groupA_resourceA),
             require(['maskopatol']).from({ apiGroup: 'foo', resource: 'bar' }),
           ],
-          [allowEverything],
-        ),
+          [allowEverything]
+        )
       ).toBe(true);
     });
 
     test('resolves false when groupB:foo:{CREATE} is required and all is allowed but in groupA', () => {
       expect(
         rbacRulesMatched(
-          [
-            require(['create']).from({apiGroup: 'groupB', resource: 'foo'}),
-          ],
+          [require(['create']).from({ apiGroup: 'groupB', resource: 'foo' })],
           [
             {
               apiGroups: ['groupA'],
               resources: ['*'],
               verbs: ['*'],
-            }
-          ],
-        ),
+            },
+          ]
+        )
       ).toBe(false);
     });
-
 
     test('resolves true when groupA:foo:{CREATE} is required and all is allowed in groupA:*:*', () => {
       expect(
         rbacRulesMatched(
-          [
-            require(['create']).from({apiGroup: 'groupA', resource: 'foo'}),
-          ],
+          [require(['create']).from({ apiGroup: 'groupA', resource: 'foo' })],
           [
             {
               apiGroups: ['groupA'],
               resources: ['*'],
               verbs: ['*'],
-            }
-          ],
-        ),
+            },
+          ]
+        )
       ).toBe(true);
     });
   });
@@ -129,32 +124,32 @@ describe('rbacRulesMatched', () => {
       expect(
         rbacRulesMatched(
           [require(['get']).from(groupA_resourceA)],
-          [allowGetListWatchA],
-        ),
+          [allowGetListWatchA]
+        )
       ).toBe(true);
     });
     test('resolves true when groupA:resourceA:{LIST} is required and { GET, LIST, WATCH } is allowed', () => {
       expect(
         rbacRulesMatched(
           [require(['list']).from(groupA_resourceA)],
-          [allowGetListWatchA],
-        ),
+          [allowGetListWatchA]
+        )
       ).toBe(true);
     });
     test('resolves true when groupA:resourceA:{WATCH} is required and { GET, LIST, WATCH } is allowed', () => {
       expect(
         rbacRulesMatched(
           [require(['watch']).from(groupA_resourceA)],
-          [allowGetListWatchA],
-        ),
+          [allowGetListWatchA]
+        )
       ).toBe(true);
     });
     test('resolves true when groupA:resourceA:{GET,LIST} is required and { GET, LIST, WATCH } is allowed', () => {
       expect(
         rbacRulesMatched(
           [require(['get', 'list']).from(groupA_resourceA)],
-          [allowGetListWatchA],
-        ),
+          [allowGetListWatchA]
+        )
       ).toBe(true);
     });
   });
@@ -164,8 +159,8 @@ describe('rbacRulesMatched', () => {
       expect(
         rbacRulesMatched(
           [require(['update']).from(groupA_resourceA)],
-          [allowGetListWatchA],
-        ),
+          [allowGetListWatchA]
+        )
       ).toBe(false);
     });
     test('resolves false when groupA:resourceA:{UPDATE} is required and only { GET, LIST, WATCH } and { DELETE } is allowed', () => {
@@ -179,8 +174,8 @@ describe('rbacRulesMatched', () => {
               resources: ['resourceA'],
               verbs: ['delete'],
             },
-          ],
-        ),
+          ]
+        )
       ).toBe(false);
     });
   });
@@ -190,8 +185,8 @@ describe('rbacRulesMatched', () => {
       expect(
         rbacRulesMatched(
           [require(['get', 'list', 'update']).from(groupA_resourceA)],
-          [allowGetListWatchA],
-        ),
+          [allowGetListWatchA]
+        )
       ).toBe(false);
     });
 
@@ -199,8 +194,8 @@ describe('rbacRulesMatched', () => {
       expect(
         rbacRulesMatched(
           [require(['get', 'list', 'update']).from(groupA_resourceA)],
-          [allowGetListWatchA, allowUpdateA],
-        ),
+          [allowGetListWatchA, allowUpdateA]
+        )
       ).toBe(true);
     });
   });
@@ -213,8 +208,8 @@ describe('rbacRulesMatched', () => {
             require(['update']).from(groupA_resourceA),
             require(['get']).from(groupA_resourceA),
           ],
-          [allowGetListWatchA],
-        ),
+          [allowGetListWatchA]
+        )
       ).toBe(false);
     });
 
@@ -225,8 +220,8 @@ describe('rbacRulesMatched', () => {
             require(['update']).from(groupA_resourceA),
             require(['get']).from(groupA_resourceA),
           ],
-          [allowGetListWatchA, allowUpdateA],
-        ),
+          [allowGetListWatchA, allowUpdateA]
+        )
       ).toBe(true);
     });
 
@@ -237,8 +232,8 @@ describe('rbacRulesMatched', () => {
             require(['get', 'list']).from(groupA_resourceA),
             require(['get']).from(groupB_resourceB),
           ],
-          [allowGetListWatchA],
-        ),
+          [allowGetListWatchA]
+        )
       ).toBe(false);
     });
 
@@ -249,8 +244,8 @@ describe('rbacRulesMatched', () => {
             require(['get', 'list']).from(groupA_resourceA),
             require(['get']).from(groupB_resourceB),
           ],
-          [allowGetListWatchAB],
-        ),
+          [allowGetListWatchAB]
+        )
       ).toBe(true);
     });
 
@@ -267,8 +262,8 @@ describe('rbacRulesMatched', () => {
               resources: ['resourceA', 'resourceB'],
               verbs: ['delete'],
             },
-          ],
-        ),
+          ]
+        )
       ).toBe(false);
     });
 
@@ -289,9 +284,9 @@ describe('rbacRulesMatched', () => {
               apiGroups: ['groupB'],
               resources: ['resourceB'],
               verbs: ['create'],
-            }
-          ],
-        ),
+            },
+          ]
+        )
       ).toBe(false);
     });
   });

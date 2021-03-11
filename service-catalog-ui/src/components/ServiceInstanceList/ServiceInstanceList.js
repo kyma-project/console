@@ -1,27 +1,27 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import LuigiClient from '@luigi-project/client';
-import { useMutation, useQuery } from '@apollo/react-hooks';
 import {
   instancesTabUtils,
   NotificationMessage,
   ThemeWrapper,
 } from '@kyma-project/react-components';
-import { Tab, Tabs, Spinner, Tooltip } from 'react-shared';
+import {
+  Tab,
+  Tabs,
+  Spinner,
+  Tooltip,
+  useGetList,
+  useMicrofrontendContext,
+  useDelete,
+  useNotification,
+} from 'react-shared';
 import { Identifier } from 'fundamental-react';
 
-import { getAllServiceInstances } from 'helpers/instancesGQL/queries';
-import { deleteServiceInstance } from 'helpers/instancesGQL/mutations';
-import { SERVICE_INSTANCE_EVENT_SUBSCRIPTION } from 'helpers/instancesGQL/subscriptions';
 import { serviceInstanceConstants } from 'helpers/constants';
-
-import {
-  determineAvailableLabels,
-  determineDisplayedInstances,
-} from 'helpers/search';
+import { determineDisplayedInstances } from 'helpers/search';
 
 import ServiceInstanceTable from './ServiceInstanceTable/ServiceInstanceTable.component';
 import ServiceInstanceToolbar from './ServiceInstanceToolbar/ServiceInstanceToolbar.component';
-import { handleInstanceEventOnList } from 'helpers/instancesGQL/events';
 
 import {
   EmptyList,
@@ -58,80 +58,45 @@ const status = (data, id) => {
 };
 
 export default function ServiceInstancesList() {
-  const [serviceInstances, setServiceInstances] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
-  const [activeLabelFilters, setActiveLabelFilters] = useState([]);
+  const { namespaceId } = useMicrofrontendContext();
+  const sendDeleteRequest = useDelete();
+  const notificationManager = useNotification();
 
-  const [deleteServiceInstanceMutation] = useMutation(deleteServiceInstance);
-
-  const {
-    data: queryData,
-    loading: queryLoading,
-    error: queryError,
-    subscribeToMore,
-  } = useQuery(getAllServiceInstances, {
-    variables: {
-      namespace: LuigiClient.getContext().namespaceId,
+  const { loading, error, data: serviceInstances } = useGetList()(
+    `/apis/servicecatalog.k8s.io/v1beta1/namespaces/${namespaceId}/serviceinstances`,
+    {
+      pollingInterval: 3100,
     },
-  });
+  );
 
-  useEffect(() => {
-    return subscribeToMore({
-      variables: {
-        namespace: LuigiClient.getContext().namespaceId,
-      },
-      document: SERVICE_INSTANCE_EVENT_SUBSCRIPTION,
-      updateQuery: (prev, { subscriptionData }) => {
-        if (
-          !subscriptionData.data ||
-          !subscriptionData.data.serviceInstanceEvent
-        ) {
-          return prev;
-        }
-
-        return handleInstanceEventOnList(
-          prev,
-          subscriptionData.data.serviceInstanceEvent,
-        );
-      },
-    });
-  }, [subscribeToMore]);
-
-  useEffect(() => {
-    if (queryData && queryData.serviceInstances) {
-      setServiceInstances([...queryData.serviceInstances]);
-    }
-  }, [queryData]);
-
-  if (queryLoading)
+  if (loading)
     return (
       <EmptyList>
         <Spinner />
       </EmptyList>
     );
-  if (queryError)
+
+  if (error || !serviceInstances)
     return (
       <EmptyList>
         An error occurred while loading Service Instances List
       </EmptyList>
     );
 
-  const handleDelete = instanceName => {
-    deleteServiceInstanceMutation({
-      variables: {
-        namespace: LuigiClient.getContext().namespaceId,
-        name: instanceName,
-      },
-    });
-  };
-
-  const handleLabelChange = (labelId, checked) => {
-    if (checked) {
-      setActiveLabelFilters([...activeLabelFilters, labelId]);
-    } else {
-      setActiveLabelFilters(
-        [...activeLabelFilters].filter(label => label !== labelId),
+  const handleDelete = async instanceName => {
+    try {
+      await sendDeleteRequest(
+        `/apis/servicecatalog.k8s.io/v1beta1/namespaces/${namespaceId}/serviceinstances/${instanceName}`,
       );
+      notificationManager.notifySuccess({
+        content: 'Succesfully deleted ' + instanceName,
+      });
+    } catch (e) {
+      notificationManager.notifyError({
+        title: 'Failed to delete the Service Instance',
+        content: e.message,
+      });
     }
   };
 
@@ -140,13 +105,6 @@ export default function ServiceInstancesList() {
       <ServiceInstanceToolbar
         searchQuery={searchQuery}
         searchFn={setSearchQuery}
-        onLabelChange={handleLabelChange}
-        activeLabelFilters={activeLabelFilters}
-        availableLabels={determineAvailableLabels(
-          serviceInstances,
-          determineSelectedTab(),
-          searchQuery,
-        )}
         serviceInstancesExists={serviceInstances.length > 0}
       />
 
@@ -167,7 +125,6 @@ export default function ServiceInstancesList() {
               serviceInstances,
               serviceInstanceConstants.servicesIndex,
               searchQuery,
-              activeLabelFilters,
             ).length,
             'services-status',
           )}
@@ -185,7 +142,6 @@ export default function ServiceInstancesList() {
                 serviceInstances,
                 serviceInstanceConstants.servicesIndex,
                 searchQuery,
-                activeLabelFilters,
               )}
               deleteServiceInstance={handleDelete}
               type="services"
@@ -198,7 +154,6 @@ export default function ServiceInstancesList() {
               serviceInstances,
               serviceInstanceConstants.addonsIndex,
               searchQuery,
-              activeLabelFilters,
             ).length,
             'addons-status',
           )}
@@ -216,7 +171,6 @@ export default function ServiceInstancesList() {
                 serviceInstances,
                 serviceInstanceConstants.addonsIndex,
                 searchQuery,
-                activeLabelFilters,
               )}
               deleteServiceInstance={handleDelete}
               type="addons"

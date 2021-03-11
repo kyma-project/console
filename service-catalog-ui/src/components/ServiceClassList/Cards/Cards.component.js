@@ -7,7 +7,11 @@ import Card from './Card.component';
 
 import { getResourceDisplayName, isStringValueEqualToTrue } from 'helpers';
 
-const Cards = ({ items }) => {
+const filterInstancesForClass = serviceClass => instance =>
+  instance.spec.clusterServiceClassRef?.name === serviceClass.metadata.name ||
+  instance.spec.serviceClassRef?.name === serviceClass.metadata.name;
+
+const Cards = ({ items, serviceInstances }) => {
   const goToDetails = item => {
     const documentationPerPlan =
       item.labels &&
@@ -28,18 +32,25 @@ const Cards = ({ items }) => {
       .navigate(path);
   };
 
-  return items.map(item => (
-    <Card
-      key={item.name}
-      onClick={() => goToDetails(item)}
-      title={getResourceDisplayName(item)}
-      company={item.providerDisplayName}
-      description={item.description}
-      imageUrl={item.imageUrl}
-      labels={item.labels}
-      numberOfInstances={item.instances.length}
-    />
-  ));
+  return items.map(item => {
+    const externalMetadata = item.spec.externalMetadata || {};
+    const instancesOfThisClass = serviceInstances
+      ? serviceInstances.filter(filterInstancesForClass(item))
+      : [];
+
+    return (
+      <Card
+        key={item.metadata.uid}
+        onClick={() => goToDetails(item)}
+        title={getResourceDisplayName(item)}
+        company={externalMetadata.providerDisplayName}
+        description={item.spec.description}
+        imageUrl={externalMetadata.imageUrl}
+        labels={externalMetadata.labels}
+        numberOfInstances={instancesOfThisClass.length}
+      />
+    );
+  });
 };
 
 Cards.propTypes = {

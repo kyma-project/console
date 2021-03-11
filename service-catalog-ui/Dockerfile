@@ -36,5 +36,5 @@ COPY ./${app_name}/nginx.conf /etc/nginx/nginx.conf
 COPY --from=builder /app/${app_name}/build var/public
 COPY --from=builder /app/${app_name}/licenses/ /app/licenses/
 
-EXPOSE 80
+EXPOSE 8080
 ENTRYPOINT ["nginx", "-g", "daemon off;"]

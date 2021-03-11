@@ -10,10 +10,12 @@ import { Microfrontend } from 'react-shared';
 import { ApolloClientProvider, createKymaApolloClient } from './apollo';
 
 preloadingStrategy(async () => {
+  const isNpx = window.location.origin === 'http://localhost:3001';
+
   ReactDOM.render(
     <Microfrontend env={process.env}>
       <ApolloClientProvider createClient={createKymaApolloClient}>
-        <BrowserRouter>
+        <BrowserRouter basename={isNpx ? '/core-ui' : '/'}>
           <App />
         </BrowserRouter>
       </ApolloClientProvider>

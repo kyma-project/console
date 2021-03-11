@@ -13,10 +13,11 @@ export default function processNodeForLocalDevelopment(node, spec, config) {
     `https://console.${domain}`
   );
   let isNodeClusterMicroFrontend = false;
-  const nodePreloadUrl = spec.preloadUrl || `https://${name}.${config.domain}/preload`;
+  const nodePreloadUrl =
+    spec.preloadUrl || `https://${name}.${config.domain}/preload`;
 
   const clusterMicroFrontendDomainBinding = localDevDomainBindings.find(
-    domainBinding => {
+    (domainBinding) => {
       return node.viewUrl.startsWith(
         `https://${domainBinding.startsWith}.${domain}`
       );

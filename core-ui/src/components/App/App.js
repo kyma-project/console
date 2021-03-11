@@ -57,9 +57,11 @@ function RoutedEditApiRule({ match }) {
 
 function RoutedResourcesList({ match }) {
   const queryParams = new URLSearchParams(window.location.search);
+
+  // replace for npx routing
   const resourceUrl =
     queryParams.get('resourceApiPath') +
-    window.location.pathname.toLocaleLowerCase();
+    window.location.pathname.toLocaleLowerCase().replace(/^\/core-ui/, '');
 
   const params = {
     hasDetailsView: queryParams.get('hasDetailsView') === 'true',
@@ -80,9 +82,10 @@ function RoutedResourcesList({ match }) {
 
 function RoutedResourceDetails({ match }) {
   const queryParams = new URLSearchParams(window.location.search);
+  // replace for npx routing
   const resourceUrl =
     queryParams.get('resourceApiPath') +
-    window.location.pathname.toLocaleLowerCase();
+    window.location.pathname.toLocaleLowerCase().replace(/^\/core-ui/, '');
   const decodedResourceUrl = decodeURIComponent(resourceUrl);
   const decodedResourceName = decodeURIComponent(match.params.resourceName);
 

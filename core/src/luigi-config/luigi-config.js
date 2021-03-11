@@ -1,13 +1,18 @@
-import { saveCurrentLocation, getToken, getPreviousLocation } from './navigation/navigation-helpers';
+import {
+  saveCurrentLocation,
+  getToken,
+  getPreviousLocation,
+} from './navigation/navigation-helpers';
 import { communication } from './communication';
 import { settings } from './settings';
 import { createAuth } from './auth.js';
 import { saveInitParamsIfPresent } from './init-params';
+import { config } from './config';
 
 import {
   navigation,
   getNavigationData,
-  resolveNavigationNodes
+  resolveNavigationNodes,
 } from './navigation/navigation-data-init';
 import { onQuotaExceed } from './luigi-event-handlers';
 
@@ -16,12 +21,12 @@ export const NODE_PARAM_PREFIX = `~`;
 (async () => {
   await saveInitParamsIfPresent(location);
   const luigiConfig = {
-    auth: await createAuth(),
+    auth: !config.isNpx && (await createAuth()),
     communication,
     navigation,
     routing: {
       nodeParamPrefix: NODE_PARAM_PREFIX,
-      skipRoutingForUrlPatterns: [/access_token=/, /id_token=/]
+      skipRoutingForUrlPatterns: [/access_token=/, /id_token=/],
     },
     settings,
     lifecycleHooks: {
@@ -37,7 +42,7 @@ export const NODE_PARAM_PREFIX = `~`;
         }
         const token = getToken();
         if (token) {
-          getNavigationData(token).then(response => {
+          getNavigationData(token).then((response) => {
             resolveNavigationNodes(response);
             Luigi.ux().hideAppLoadingIndicator();
 
@@ -49,13 +54,13 @@ export const NODE_PARAM_PREFIX = `~`;
         } else {
           saveCurrentLocation();
         }
-      }
-    }
+      },
+    },
   };
   Luigi.setConfig(luigiConfig);
 })();
 
-window.addEventListener('message', e => {
+window.addEventListener('message', (e) => {
   if (e.data.msg === 'console.quotaexceeded') {
     onQuotaExceed(e.data);
   }

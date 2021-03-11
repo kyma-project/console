@@ -7,5 +7,5 @@ export const getClusterConfig = () => ({
   subscriptionsApiUrl: `wss://console-backend.${domain}/graphql`,
   pamelaApiUrl: isLocalDev
     ? 'http://localhost:3001'
-    : 'https://' + domain + '/backend',
+    : `${location.protocol}//${location.host}/backend`,
 });

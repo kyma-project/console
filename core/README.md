@@ -14,26 +14,24 @@ The Kyma installer comes with the console application. Console is installed toge
 - Run the `./cmd/run.sh` script as described in the README file.
 - Check the status by calling `./scripts/is-installed.sh` script.
 
-Now you can access Console by name from the browser at https://console.kyma.local. A dedicated Docker container serves this application from inside the Kyma cluster.
+Now you can access Console by name from the browser at [`https://console.kyma.local`](https://console.kyma.local). A dedicated Docker container serves this application from inside the Kyma cluster.
 
 ### Import the TLS cerificate
 
 Kyma comes with a built-in [TLS certificate](https://github.com/kyma-project/kyma/tree/master/installation/certs/workspace/raw) for the `kyma.local` domain. This certificate is self-signed. So web browsers do not trust it by default. To improve your development experience, import this certificate into your operating system and mark it as trusted. Otherwise, you have to accept self-signed certificates explicitly in the browser before you can access the applications hosted in the `kyma.local` domain.
-
 
 ## Development
 
 To simplify development, set up another instance of the Console application served directly from your machine. The following section provides you with a step-by-step guide to set up the Console application for development. Keep Kyma running. You need it as a backing service for your local instance of Console. Follow these steps:
 
 - Clone this repository
-- Run `cd core` to change to the `core` directory 
+- Run `cd core` to change to the `core` directory
 - Run `npm install`
 - Run `npm i ng-cli` to install angular CLI
 - Update your `/etc/hosts` file to include `127.0.0.1 console-dev.kyma.local`
 - Run the command `npm start` to serve the console locally,
 - Access the local instance of Console in the browser at `http://console-dev.kyma.local:4200`
 - Login to Console as `admin@kyma.cx`
-
 
 ### Code style
 
@@ -70,4 +68,3 @@ Run `ng test` to run the unit tests through [Karma](https://karma-runner.github.
 ### Run ng linter
 
 Run `ng lint` to run the static code quality analysis.
-
