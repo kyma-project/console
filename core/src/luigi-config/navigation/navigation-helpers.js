@@ -44,7 +44,8 @@ export const shouldShowSystemNamespaces = () => {
 export const saveCurrentLocation = () => {
   if (!window.location.hash) {
     const location = window.location.pathname;
-    localStorage.setItem('console.location', location);
+    const params = window.location.search;
+    localStorage.setItem('console.location', location + params);
   }
 };
 
