@@ -15,6 +15,7 @@ import {
   useDelete,
   PageHeader,
   navigateToDetails,
+  navigateToFixedPathResourceDetails,
 } from '../..';
 import CustomPropTypes from '../../typechecking/CustomPropTypes';
 import { ModalWithForm } from '../ModalWithForm/ModalWithForm';
@@ -27,6 +28,7 @@ ResourcesList.propTypes = {
   resourceType: PropTypes.string.isRequired,
   namespace: PropTypes.string,
   hasDetailsView: PropTypes.bool,
+  fixedPath: PropTypes.bool,
   isCompact: PropTypes.bool,
   showTitle: PropTypes.bool,
   filter: PropTypes.func,
@@ -68,6 +70,7 @@ function Resources({
   customColumns,
   createResourceForm: CreateResourceForm,
   hasDetailsView,
+  fixedPath,
   showTitle,
   filter,
   listHeaderActions,
@@ -136,7 +139,17 @@ function Resources({
 
   const rowRenderer = entry => [
     hasDetailsView ? (
-      <Link onClick={_ => navigateToDetails(resourceType, entry.metadata.name)}>
+      <Link
+        onClick={_ =>
+          fixedPath
+            ? navigateToFixedPathResourceDetails(
+                namespace,
+                resourceType,
+                entry.metadata.name,
+              )
+            : navigateToDetails(resourceType, entry.metadata.name)
+        }
+      >
         {entry.metadata.name}
       </Link>
     ) : (

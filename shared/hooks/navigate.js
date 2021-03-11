@@ -6,6 +6,16 @@ function navigateToResourceDetails(resourceName) {
     .navigate('/details/' + resourceName);
 }
 
+export function navigateToFixedPathResourceDetails(
+  namespaceName,
+  resourceType,
+  resourceName,
+) {
+  LuigiClient.linkManager().navigate(
+    `/home/namespaces/${namespaceName}/cmf-${resourceType}/details/${resourceName}`,
+  );
+}
+
 function navigateToNamespaceDetails(namespaceName) {
   LuigiClient.linkManager().navigate(
     `/home/namespaces/${namespaceName}/details`,
@@ -14,6 +24,16 @@ function navigateToNamespaceDetails(namespaceName) {
 }
 
 export function navigateToDetails(resourceType, name) {
+  const encodedName = encodeURIComponent(name);
+  switch (resourceType) {
+    case 'namespaces':
+      navigateToNamespaceDetails(encodedName);
+      break;
+    default:
+      navigateToResourceDetails(encodedName);
+  }
+}
+export function navigateFromDetailsToDetails(resourceType, name) {
   const encodedName = encodeURIComponent(name);
   switch (resourceType) {
     case 'namespaces':

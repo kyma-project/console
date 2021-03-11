@@ -5,7 +5,8 @@ export const ServicesDetails = DefaultRenderer => ({ ...otherParams }) => {
   const ApiRuleList = getComponentForList({
     name: 'apiruleList',
     params: {
-      hasDetailsView: false,
+      hasDetailsView: true,
+      fixedPath: true,
       resourceUrl: `/apis/gateway.kyma-project.io/v1alpha1/namespaces/${otherParams.namespace}/apirules`,
       resourceType: 'apirules',
       namespace: otherParams.namespace,
