@@ -1,5 +1,4 @@
 import React from 'react';
-import { Button } from 'fundamental-react';
 import { useGetList } from 'react-shared';
 
 import { CreateRepositoryModal } from 'components/Lambdas/LambdasList/Repositories/RepositoryModal';
@@ -21,11 +20,6 @@ export default function CreateNewRepository({ namespaceName }) {
     repositoriesError,
     'repositoriesLoading',
     repositoriesLoading,
-  );
-  const control = (
-    <Button option="light" className="fd-has-margin-right-tiny" glyph="add">
-      Connect Repository
-    </Button>
   );
 
   const lambdaModal = (
