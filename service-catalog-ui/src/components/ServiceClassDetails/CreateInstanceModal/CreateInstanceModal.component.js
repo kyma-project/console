@@ -34,7 +34,7 @@ CreateInstanceModal.propTypes = {
 };
 
 const parseDefaultIntegerValues = plan => {
-  const schema = (plan && plan.instanceCreateParameterSchema) || null;
+  const schema = plan.spec.instanceCreateParameterSchema || null;
   if (schema && schema.properties) {
     const schemaProps = schema.properties;
     Object.keys(schemaProps).forEach(key => {
@@ -49,9 +49,9 @@ const parseDefaultIntegerValues = plan => {
 };
 
 const getInstanceCreateParameterSchema = (plans, currentPlan) => {
-  const schema = plans.find(e => e.name === currentPlan) || plans[0]?.name;
-
-  return (schema && schema.instanceCreateParameterSchema) || {};
+  const schema =
+    plans?.find(e => e.metadata.name === currentPlan) || plans[0]?.name;
+  return schema?.spec.instanceCreateParameterSchema || {};
 };
 
 const PlanColumnContent = ({
@@ -102,21 +102,11 @@ export default function CreateInstanceModal({
   documentationUrl,
   plans,
 }) {
-  const [
-    customParametersProvided,
-    setCustomParametersProvided,
-  ] = React.useState(false);
   const notificationManager = useNotification();
   const postRequest = usePost();
-
-  // plans?.forEach(plan => {
-  //   parseDefaultIntegerValues(plan);
-  // });
-  const defaultName =
-    `${item.spec.externalName}-${randomNameGenerator()}` ||
-    randomNameGenerator();
-  const plan = plans[0]?.name;
-
+  const [customParametersProvided, setCustomParametersProvided] = useState(
+    false,
+  );
   const [instanceCreateParameters, setInstanceCreateParameters] = useState({});
   useEffect(() => {
     setCustomValid(true);
@@ -125,6 +115,29 @@ export default function CreateInstanceModal({
 
     // eslint-disable-next-line
   }, []);
+
+  plans.forEach(plan => {
+    parseDefaultIntegerValues(plan);
+  });
+  const plan = plans[0]?.metadata.name;
+  const [
+    instanceCreateParameterSchema,
+    setInstanceCreateParameterSchema,
+  ] = useState(getInstanceCreateParameterSchema(plans, plan));
+  const formValues = {
+    name: useRef(null),
+    plan: useRef(plan),
+    labels: useRef(null),
+  };
+
+  const defaultName =
+    `${item.spec.externalName}-${randomNameGenerator()}` ||
+    randomNameGenerator();
+
+  const instanceCreateParameterSchemaExists =
+    instanceCreateParameterSchema &&
+    (instanceCreateParameterSchema.$ref ||
+      instanceCreateParameterSchema.properties);
 
   async function createInstance({ name, namespace, inputData }) {
     const input = createInstanceInput(name, namespace, inputData);
@@ -147,21 +160,6 @@ export default function CreateInstanceModal({
       });
     }
   }
-
-  const [
-    instanceCreateParameterSchema,
-    setInstanceCreateParameterSchema,
-  ] = useState(getInstanceCreateParameterSchema(plans, plan));
-
-  const instanceCreateParameterSchemaExists =
-    instanceCreateParameterSchema &&
-    (instanceCreateParameterSchema.$ref ||
-      instanceCreateParameterSchema.properties);
-  const formValues = {
-    name: useRef(null),
-    plan: useRef(plan),
-    labels: useRef(null),
-  };
 
   const handlePlanChange = e => {
     const newParametersSchema = getInstanceCreateParameterSchema(
@@ -190,39 +188,31 @@ export default function CreateInstanceModal({
 
   async function handleFormSubmit(e) {
     e.preventDefault();
-    try {
-      const currentPlan =
-        plans?.find(e => e.name === formValues.plan.current.value) ||
-        (plans?.length && plans[0]);
-      const labels =
-        formValues.labels.current.value === ''
-          ? []
-          : formValues.labels.current.value
-              .replace(/\s+/g, '')
-              .toLowerCase()
-              .split(',');
-      const isClusterServiceClass = item.__typename === 'ClusterServiceClass';
-      const variables = {
-        name: formValues.name.current.value,
-        namespace: LuigiClient.getContext().namespaceId,
-        externalServiceClassName: item.externalName,
-        externalPlanName: currentPlan && currentPlan.externalName,
-        classClusterWide: isClusterServiceClass,
-        planClusterWide: isClusterServiceClass,
-        labels,
-        parameterSchema: instanceCreateParameters,
-      };
+    const currentPlan =
+      plans?.find(e => e.name === formValues.plan.current.value) ||
+      (plans?.length && plans[0]);
+    const labels =
+      formValues.labels.current.value === ''
+        ? []
+        : formValues.labels.current.value
+            .replace(/\s+/g, '')
+            .toLowerCase()
+            .split(',');
+    const isClusterServiceClass = item.__typename === 'ClusterServiceClass';
+    const variables = {
+      externalServiceClassName: item.externalName,
+      externalPlanName: currentPlan && currentPlan.externalName,
+      classClusterWide: isClusterServiceClass,
+      planClusterWide: isClusterServiceClass,
+      labels,
+      parameterSchema: instanceCreateParameters,
+    };
 
-      await createInstance({
-        variables,
-      });
-      onCompleted(variables.name, `Instance created succesfully`);
-      LuigiClient.linkManager()
-        .fromContext('namespaces')
-        .navigate(`cmf-instances/details/${variables.name}`);
-    } catch (e) {
-      onError(`The instance could not be created succesfully`, e.message || ``);
-    }
+    await createInstance({
+      name: formValues.name.current.value,
+      namespace: LuigiClient.getContext().namespaceId,
+      inputData: variables,
+    });
   }
 
   return (
