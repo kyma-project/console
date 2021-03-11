@@ -1,6 +1,6 @@
 {
-  "name": "tets2",
-  "version": "1.0.12",
+  "name": "@kyma-project/busola",
+  "version": "0.0.1-rc.1",
   "description": "APIserver proxy for Console",
   "main": "backend.index.js",
   "bin": "pamela-npx.js",
