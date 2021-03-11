@@ -9,6 +9,7 @@ import { createServiceInstance } from './mutations';
 
 import './CreateInstanceModal.scss';
 import { getResourceDisplayName, randomNameGenerator } from 'helpers';
+import { usePost, useNotification } from 'react-shared';
 
 import {
   CustomPropTypes,
@@ -17,6 +18,7 @@ import {
   CopiableLink,
 } from 'react-shared';
 
+import { createInstanceInput } from './CreateInstanceInput.js';
 const SERVICE_PLAN_SHAPE = PropTypes.shape({
   name: PropTypes.string.isRequired,
   displayName: PropTypes.string.isRequired,
@@ -29,9 +31,6 @@ CreateInstanceModal.propTypes = {
   formElementRef: PropTypes.shape({ current: PropTypes.any }).isRequired,
   jsonSchemaFormRef: PropTypes.shape({ current: PropTypes.any }).isRequired,
   item: PropTypes.object,
-
-  checkInstanceExistQuery: PropTypes.object.isRequired,
-  preselectedPlan: SERVICE_PLAN_SHAPE,
 };
 
 const parseDefaultIntegerValues = plan => {
@@ -50,52 +49,40 @@ const parseDefaultIntegerValues = plan => {
 };
 
 const getInstanceCreateParameterSchema = (plans, currentPlan) => {
-  const schema = plans.find(e => e.name === currentPlan) || plans[0].name;
+  const schema = plans.find(e => e.name === currentPlan) || plans[0]?.name;
 
   return (schema && schema.instanceCreateParameterSchema) || {};
 };
 
 const PlanColumnContent = ({
-  preselectedPlan,
   defaultPlan,
   onPlanChange,
   dropdownRef,
   allPlans,
 }) => {
-  if (preselectedPlan)
-    return (
-      <>
-        <FormLabel htmlFor="plan">Plan (preselected)</FormLabel>
-        <p className="fd-has-font-weight-light">
-          {preselectedPlan.displayName}
-        </p>
-      </>
-    );
-  else
-    return (
-      <>
-        <FormLabel required htmlFor="plan">
-          Plan
-        </FormLabel>
-        <select
-          id="plan"
-          aria-label="plan-selector"
-          ref={dropdownRef}
-          defaultValue={defaultPlan}
-          onChange={onPlanChange}
-        >
-          {allPlans.map((p, i) => (
-            <option key={['plan', i].join('_')} value={p.name}>
-              {getResourceDisplayName(p)}
-            </option>
-          ))}
-        </select>
-      </>
-    );
+  return (
+    <>
+      <FormLabel required htmlFor="plan">
+        Plan
+      </FormLabel>
+      <select
+        id="plan"
+        aria-label="plan-selector"
+        ref={dropdownRef}
+        defaultValue={defaultPlan}
+        onChange={onPlanChange}
+      >
+        {allPlans.map((p, i) => (
+          <option key={['plan', i].join('_')} value={p.name}>
+            {getResourceDisplayName(p)}
+          </option>
+        ))}
+      </select>
+    </>
+  );
 };
 
 PlanColumnContent.proTypes = {
-  preselectedPlan: SERVICE_PLAN_SHAPE,
   defaultPlan: SERVICE_PLAN_SHAPE,
   onPlanChange: PropTypes.func.isRequired,
   dropdownRef: CustomPropTypes.ref.isRequired,
@@ -112,21 +99,23 @@ export default function CreateInstanceModal({
   formElementRef,
   jsonSchemaFormRef,
   item,
-  checkInstanceExistQuery,
-  preselectedPlan,
   documentationUrl,
+  plans,
 }) {
   const [
     customParametersProvided,
     setCustomParametersProvided,
   ] = React.useState(false);
-  const plans = (item && item.plans) || [];
-  plans.forEach(plan => {
-    parseDefaultIntegerValues(plan);
-  });
+  const notificationManager = useNotification();
+  const postRequest = usePost();
+
+  // plans?.forEach(plan => {
+  //   parseDefaultIntegerValues(plan);
+  // });
   const defaultName =
-    `${item.externalName}-${randomNameGenerator()}` || randomNameGenerator();
-  const plan = preselectedPlan ? preselectedPlan.name : plans[0].name;
+    `${item.spec.externalName}-${randomNameGenerator()}` ||
+    randomNameGenerator();
+  const plan = plans[0]?.name;
 
   const [instanceCreateParameters, setInstanceCreateParameters] = useState({});
   useEffect(() => {
@@ -136,6 +125,28 @@ export default function CreateInstanceModal({
 
     // eslint-disable-next-line
   }, []);
+
+  async function createInstance({ name, namespace, inputData }) {
+    const input = createInstanceInput(name, namespace, inputData);
+    try {
+      await postRequest(
+        `/apis/servicecatalog.k8s.io/v1beta1/namespaces/${namespace}/serviceinstances`,
+        input,
+      );
+
+      notificationManager.notifySuccess({
+        content: `Resource created succesfully`,
+      });
+
+      LuigiClient.linkManager()
+        .fromContext('namespaces')
+        .navigate(`cmf-instances/details/${name}`);
+    } catch (err) {
+      notificationManager.notifyError({
+        content: `Failed to create a Resource due to: ${err}`,
+      });
+    }
+  }
 
   const [
     instanceCreateParameterSchema,
@@ -152,22 +163,6 @@ export default function CreateInstanceModal({
     labels: useRef(null),
   };
 
-  const [createInstance] = useMutation(createServiceInstance);
-
-  const instanceAlreadyExists = name => {
-    return checkInstanceExistQuery.serviceInstances
-      .map(instance => instance.name)
-      .includes(name);
-  };
-
-  const onFormChange = formEvent => {
-    formValues.name.current.setCustomValidity(
-      instanceAlreadyExists(formValues.name.current.value)
-        ? 'Instance with this name already exists.'
-        : '',
-    );
-    onChange(formEvent);
-  };
   const handlePlanChange = e => {
     const newParametersSchema = getInstanceCreateParameterSchema(
       plans,
@@ -197,9 +192,8 @@ export default function CreateInstanceModal({
     e.preventDefault();
     try {
       const currentPlan =
-        preselectedPlan ||
-        plans.find(e => e.name === formValues.plan.current.value) ||
-        (plans.length && plans[0]);
+        plans?.find(e => e.name === formValues.plan.current.value) ||
+        (plans?.length && plans[0]);
       const labels =
         formValues.labels.current.value === ''
           ? []
@@ -236,8 +230,8 @@ export default function CreateInstanceModal({
       <form
         ref={formElementRef}
         style={{ width: '47em' }}
-        onChange={onFormChange}
-        onLoad={onFormChange}
+        onChange={onChange}
+        onLoad={onChange}
         onSubmit={handleFormSubmit}
         id="createInstanceForm"
       >
@@ -260,7 +254,6 @@ export default function CreateInstanceModal({
             </div>
             <div className="column">
               <PlanColumnContent
-                preselectedPlan={preselectedPlan}
                 defaultPlan={plan}
                 onPlanChange={handlePlanChange}
                 dropdownRef={formValues.plan}

@@ -19,7 +19,7 @@ import {
   isStringValueEqualToTrue,
 } from 'helpers';
 import { createInstanceConstants } from 'helpers/constants';
-import CreateInstanceModal from './CreateInstanceModal/CreateInstanceModal.container';
+import CreateInstanceModal from './CreateInstanceModal/CreateInstanceModal.component';
 import ServiceClassDetailsHeader from './ServiceClassDetailsHeader/ServiceClassDetailsHeader.component';
 
 export default function ServiceClassDetails({ name }) {
@@ -39,13 +39,29 @@ export default function ServiceClassDetails({ name }) {
 
   const resourceTypeLowercase =
     resourceType?.charAt(0).toLowerCase() + resourceType?.slice(1);
-  const labelSelector = `?labelSelector=servicecatalog.k8s.io/spec.${resourceTypeLowercase}Ref.name%3D${name}`;
+  const label =
+    serviceClass?.metadata.labels['servicecatalog.k8s.io/spec.externalID'];
+  const labelSelector = `?labelSelector=servicecatalog.k8s.io/spec.${resourceTypeLowercase}Ref.name%3D${label}`;
   const { data: serviceInstances } = useGetList()(
     `/apis/servicecatalog.k8s.io/v1beta1/namespaces/${namespaceId}/serviceinstances${labelSelector}`,
     {
       pollingInterval: 3200,
     },
   );
+
+  const servicePlansUrl = `/apis/servicecatalog.k8s.io/v1beta1/namespaces/${namespaceId}/serviceplans${labelSelector}`;
+  const clusterServicePlansUrl = `/apis/servicecatalog.k8s.io/v1beta1/clusterserviceplans${labelSelector}`;
+  const plansUrl =
+    resourceType === 'ClusterServiceClass'
+      ? clusterServicePlansUrl
+      : servicePlansUrl;
+  const { data: servicePlans } = useGetList()(plansUrl, {
+    pollingInterval: 3500,
+  });
+
+  // notificationManager.notifyError({
+  //   content: `Failed to get a list of instances due to: ${err}`,
+  // });
 
   if (error) {
     return (
@@ -120,7 +136,11 @@ export default function ServiceClassDetails({ name }) {
         id="add-instance-modal"
         item={serviceClass}
         renderForm={props => (
-          <CreateInstanceModal {...props} documentationUrl={documentationUrl} />
+          <CreateInstanceModal
+            {...props}
+            plans={servicePlans || []}
+            documentationUrl={documentationUrl}
+          />
         )}
       />
     </ServiceClassDetailsHeader>
