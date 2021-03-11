@@ -85,11 +85,7 @@ const ServiceClassInfo = ({
         </Tile>
         <Tile>
           <Tile.Content title={serviceClassTileTitles.lastUpdate}>
-            <Moment
-              unix
-              format="MMM DD, YYYY"
-              data-e2e-id="service-last-update"
-            >
+            <Moment utc format="MMM DD, YYYY" data-e2e-id="service-last-update">
               {creationTimestamp}
             </Moment>
           </Tile.Content>
@@ -159,7 +155,7 @@ const ServiceClassInfo = ({
 };
 
 ServiceClassInfo.propTypes = {
-  creationTimestamp: PropTypes.number.isRequired,
+  creationTimestamp: PropTypes.string.isRequired,
   documentationUrl: PropTypes.string,
   imageUrl: PropTypes.string,
   tags: PropTypes.arrayOf(PropTypes.string),

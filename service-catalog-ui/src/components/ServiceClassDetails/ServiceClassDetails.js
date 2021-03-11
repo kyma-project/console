@@ -1,17 +1,12 @@
-import React, { useState, useEffect } from 'react';
-
-import { useQuery } from '@apollo/react-hooks';
-import { getServiceClass } from './queries';
-import PropTypes from 'prop-types';
+import React from 'react';
 import {
   serviceClassConstants,
   createInstanceConstants,
-  filterExtensions,
 } from 'helpers/constants';
 
 import ServiceClassTabs from './ServiceClassTabs/ServiceClassTabs';
 import CreateInstanceModal from './CreateInstanceModal/CreateInstanceModal.container';
-import { Identifier, Button } from 'fundamental-react';
+import { Button } from 'fundamental-react';
 
 import { isStringValueEqualToTrue } from 'helpers';
 import './ServiceClassDetails.scss';
@@ -24,145 +19,80 @@ import {
 } from 'helpers';
 import ServiceClassDetailsHeader from './ServiceClassDetailsHeader/ServiceClassDetailsHeader.component';
 import {
-  DOCUMENTATION_PER_PLAN_LABEL,
-  DOCUMENTATION_PER_PLAN_DESCRIPTION,
-} from 'helpers/constants';
-import { Tooltip, Spinner, ModalWithForm } from 'react-shared';
-import { sortByDisplayName } from 'helpers/sorting';
+  Tooltip,
+  Spinner,
+  ModalWithForm,
+  useGetList,
+  useGet,
+  useMicrofrontendContext,
+} from 'react-shared';
 
-export const PlanSelector = ({ allPlans, currentlySelected, onPlanChange }) => {
-  return (
-    <select
-      defaultValue={currentlySelected && currentlySelected.name}
-      onChange={onPlanChange}
-      aria-label="plan-selector"
-    >
-      {allPlans.map(p => (
-        <option value={p.name} key={p.name}>
-          {p.displayName}
-        </option>
-      ))}
-    </select>
-  );
-};
+export default function ServiceClassDetails({ name }) {
+  const { namespaceId } = useMicrofrontendContext();
+  const { resourceType } = LuigiClient.getNodeParams();
 
-PlanSelector.propTypes = {
-  allPlans: PropTypes.arrayOf(PropTypes.object).isRequired,
-  currentlySelected: PropTypes.object,
-  onPlanChange: PropTypes.func.isRequired,
-};
-
-export default function ServiceClassDetails({ name, plan }) {
-  const namespace = LuigiClient.getContext().namespaceId;
-  const [currentPlan, setCurrentPlan] = useState(null);
-
-  const {
-    data: queryData,
-    loading: queryLoading,
-    error: queryError,
-  } = useQuery(getServiceClass, {
-    variables: {
-      namespace,
-      name,
-      fileExtensions: filterExtensions,
+  const serviceClassUrl = `/apis/servicecatalog.k8s.io/v1beta1/namespaces/${namespaceId}/serviceclasses/${name}`;
+  const clusterServiceClassUrl = `/apis/servicecatalog.k8s.io/v1beta1/clusterserviceclasses/${name}`;
+  const { data: serviceClass, loading = true, error } = useGet(
+    resourceType === 'ClusterServiceClass'
+      ? clusterServiceClassUrl
+      : serviceClassUrl,
+    {
+      pollingInterval: 3000,
     },
-    fetchPolicy: 'no-cache',
-  });
+  );
 
-  useEffect(() => {
-    if (!currentPlan || currentPlan.name === plan) return;
+  if (error) {
+    return (
+      <EmptyList>{serviceClassConstants.errorServiceClassDetails}</EmptyList>
+    );
+  }
 
-    LuigiClient.linkManager()
-      .fromClosestContext()
-      .navigate(`/details/${name}/plan/${currentPlan.name}`, '', false);
-  }, [currentPlan, name, plan]);
-
-  if (queryLoading)
+  if (loading) {
     return (
       <EmptyList>
         <Spinner />
       </EmptyList>
     );
-
-  if (queryError)
-    return (
-      <EmptyList>{serviceClassConstants.errorServiceClassDetails}</EmptyList>
-    );
-
-  const serviceClass = queryData.clusterServiceClass || queryData.serviceClass;
+  }
 
   if (!serviceClass)
     return <EmptyList>{serviceClassConstants.noClassText}</EmptyList>;
 
   const serviceClassDisplayName = getResourceDisplayName(serviceClass);
-
   const serviceClassDescription = getDescription(serviceClass);
 
-  const isProvisionedOnlyOnce =
-    serviceClass.labels &&
-    serviceClass.labels.provisionOnlyOnce &&
-    isStringValueEqualToTrue(serviceClass.labels.provisionOnlyOnce);
+  const tags = serviceClass.spec.tags;
+  const externalLabels = serviceClass.spec.externalMetadata.labels;
+  const internalLabels = serviceClass.metadata.labels;
+  const labels = { ...externalLabels, ...internalLabels };
+  const providerDisplayName =
+    serviceClass.spec.externalMetadata.providerDisplayName;
+  const creationTimestamp = serviceClass.metadata.creationTimestamp;
+  const documentationUrl = serviceClass.spec.externalMetadata.documentationUrl;
+  const supportUrl = serviceClass.spec.externalMetadata.supportUrl;
+  const imageUrl = serviceClass.spec.externalMetadata.imageUrl;
+  const isProvisionedOnlyOnce = isStringValueEqualToTrue(
+    labels?.provisionOnlyOnce,
+  );
 
-  const buttonText = isProvisionedOnlyOnce
-    ? serviceClass.activated
-      ? createInstanceConstants.buttonText.provisionOnlyOnceActive
-      : createInstanceConstants.buttonText.provisionOnlyOnce
-    : createInstanceConstants.buttonText.standard;
-
-  const {
-    providerDisplayName,
-    creationTimestamp,
-    documentationUrl,
-    supportUrl,
-    imageUrl,
-    tags,
-    labels,
-    plans,
-  } = serviceClass;
-
-  function handlePlanChange(e) {
-    setCurrentPlan(plans.find(p => p.name === e.target.value));
-  }
-
-  const isAPIpackage =
-    labels && labels[DOCUMENTATION_PER_PLAN_LABEL] === 'true';
-  if (isAPIpackage && !currentPlan) {
-    const planToSet = plans.find(p => p.name === plan);
-    if (planToSet) setCurrentPlan(planToSet);
-    else {
-      //TODO: redrection to the plan selection view?
-      LuigiClient.uxManager().showAlert({
-        type: 'error',
-        text:
-          'The provided plan name is wrong. Please make sure you selected the right one.',
-      });
-
-      return (
-        <section className="fd-section">
-          <Button
-            glyph="nav-back"
-            onClick={() =>
-              LuigiClient.linkManager()
-                .fromClosestContext()
-                .navigate('/')
-            }
-          >
-            Go back to the Catalog
-          </Button>
-        </section>
-      );
-    }
-  }
+  const buttonText =
+    // // isProvisionedOnlyOnce
+    // //   ? serviceClass.activated
+    // //     ? createInstanceConstants.buttonText.provisionOnlyOnceActive
+    // //     : createInstanceConstants.buttonText.provisionOnlyOnce
+    // //   :
+    createInstanceConstants.buttonText.standard;
 
   const modalOpeningComponent = (
-    <Tooltip content={createInstanceConstants.provisionOnlyOnceInfo}>
-      <Button
-        disabled={isProvisionedOnlyOnce && serviceClass.activated}
-        glyph="add"
-      >
-        {buttonText}
-      </Button>
-    </Tooltip>
+    // <Tooltip content={createInstanceConstants.provisionOnlyOnceInfo}>
+    <Button
+      // disabled={isProvisionedOnlyOnce && serviceClass.activated}
+      glyph="add"
+    >
+      {buttonText}
+    </Button>
+    // </Tooltip>
   );
 
   return (
@@ -178,29 +108,8 @@ export default function ServiceClassDetails({ name, plan }) {
         labels={labels}
         description={serviceClassDescription}
         isProvisionedOnlyOnce={isProvisionedOnlyOnce}
-        isAPIpackage={isAPIpackage}
-        planSelector={
-          isAPIpackage && (
-            <PlanSelector
-              allPlans={plans.sort(sortByDisplayName)}
-              currentlySelected={currentPlan}
-              onPlanChange={handlePlanChange}
-            />
-          )
-        }
-        plansCount={plans.length}
         serviceClassName={name}
       >
-        {isAPIpackage && (
-          <Tooltip content={DOCUMENTATION_PER_PLAN_DESCRIPTION}>
-            <Identifier
-              id="docs-per-plan-icon"
-              glyph="sap-box"
-              label="docs-per-plan-icon"
-              size="s"
-            />
-          </Tooltip>
-        )}
         <ModalWithForm
           title={`Provision the ${serviceClass.displayName}${' '}
                     ${
@@ -208,28 +117,26 @@ export default function ServiceClassDetails({ name, plan }) {
                         ? 'Cluster Service Class'
                         : 'Service Class'
                     }${' '}
-                    in the ${namespace} Namespace`}
+                    in the ${namespaceId} Namespace`}
           modalOpeningComponent={modalOpeningComponent}
           id="add-instance-modal"
           item={serviceClass}
           renderForm={props => (
             <CreateInstanceModal
               {...props}
-              preselectedPlan={currentPlan}
               documentationUrl={documentationUrl}
             />
           )}
         />
       </ServiceClassDetailsHeader>
 
-      <ServiceClassDetailsWrapper phoneRows>
+      {/* <ServiceClassDetailsWrapper phoneRows>
         {backendModuleExists('rafter') && (
           <ServiceClassTabs
             serviceClass={serviceClass}
-            currentPlan={isAPIpackage ? currentPlan : undefined}
           />
         )}
-      </ServiceClassDetailsWrapper>
+      </ServiceClassDetailsWrapper> */}
     </>
   );
 }
