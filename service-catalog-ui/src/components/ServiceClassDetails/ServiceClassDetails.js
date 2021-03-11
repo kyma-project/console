@@ -42,6 +42,16 @@ export default function ServiceClassDetails({ name }) {
     },
   );
 
+  const resourceTypeLowercase =
+    resourceType?.charAt(0).toLowerCase() + resourceType?.slice(1);
+  const labelSelector = `?labelSelector=servicecatalog.k8s.io/spec.${resourceTypeLowercase}Ref.name%3D${name}`;
+  const { data: serviceInstances } = useGetList()(
+    `/apis/servicecatalog.k8s.io/v1beta1/namespaces/${namespaceId}/serviceinstances${labelSelector}`,
+    {
+      pollingInterval: 3200,
+    },
+  );
+
   if (error) {
     return (
       <EmptyList>{serviceClassConstants.errorServiceClassDetails}</EmptyList>
@@ -63,36 +73,32 @@ export default function ServiceClassDetails({ name }) {
   const serviceClassDescription = getDescription(serviceClass);
 
   const tags = serviceClass.spec.tags;
-  const externalLabels = serviceClass.spec.externalMetadata.labels;
+  const externalLabels = serviceClass.spec.externalMetadata?.labels;
   const internalLabels = serviceClass.metadata.labels;
   const labels = { ...externalLabels, ...internalLabels };
   const providerDisplayName =
-    serviceClass.spec.externalMetadata.providerDisplayName;
+    serviceClass.spec.externalMetadata?.providerDisplayName;
   const creationTimestamp = serviceClass.metadata.creationTimestamp;
-  const documentationUrl = serviceClass.spec.externalMetadata.documentationUrl;
-  const supportUrl = serviceClass.spec.externalMetadata.supportUrl;
-  const imageUrl = serviceClass.spec.externalMetadata.imageUrl;
+  const documentationUrl = serviceClass.spec.externalMetadata?.documentationUrl;
+  const supportUrl = serviceClass.spec.externalMetadata?.supportUrl;
+  const imageUrl = serviceClass.spec.externalMetadata?.imageUrl;
   const isProvisionedOnlyOnce = isStringValueEqualToTrue(
     labels?.provisionOnlyOnce,
   );
+  const isActivated = serviceInstances?.items?.length > 0;
 
-  const buttonText =
-    // // isProvisionedOnlyOnce
-    // //   ? serviceClass.activated
-    // //     ? createInstanceConstants.buttonText.provisionOnlyOnceActive
-    // //     : createInstanceConstants.buttonText.provisionOnlyOnce
-    // //   :
-    createInstanceConstants.buttonText.standard;
+  const buttonText = isProvisionedOnlyOnce
+    ? isActivated
+      ? createInstanceConstants.buttonText.provisionOnlyOnceActive
+      : createInstanceConstants.buttonText.provisionOnlyOnce
+    : createInstanceConstants.buttonText.standard;
 
   const modalOpeningComponent = (
-    // <Tooltip content={createInstanceConstants.provisionOnlyOnceInfo}>
-    <Button
-      // disabled={isProvisionedOnlyOnce && serviceClass.activated}
-      glyph="add"
-    >
-      {buttonText}
-    </Button>
-    // </Tooltip>
+    <Tooltip content={createInstanceConstants.provisionOnlyOnceInfo}>
+      <Button disabled={isProvisionedOnlyOnce && isActivated} glyph="add">
+        {buttonText}
+      </Button>
+    </Tooltip>
   );
 
   return (
@@ -111,9 +117,9 @@ export default function ServiceClassDetails({ name }) {
         serviceClassName={name}
       >
         <ModalWithForm
-          title={`Provision the ${serviceClass.displayName}${' '}
+          title={`Provision the ${serviceClassDisplayName}${' '}
                     ${
-                      serviceClass.__typename === 'ClusterServiceClass'
+                      resourceType === 'ClusterServiceClass'
                         ? 'Cluster Service Class'
                         : 'Service Class'
                     }${' '}
