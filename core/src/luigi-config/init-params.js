@@ -40,7 +40,7 @@ export function saveInitParams(params) {
 
 export function getInitParams() {
   if (config.isNpx) {
-    return { systemNamespaces: '' };
+    return { systemNamespaces: '', k8sApiUrl: '' };
   }
   return JSON.parse(localStorage.getItem(PARAMS_KEY) || 'null');
 }
