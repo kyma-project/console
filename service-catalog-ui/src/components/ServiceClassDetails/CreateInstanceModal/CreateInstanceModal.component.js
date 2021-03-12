@@ -1,11 +1,9 @@
 import React, { useRef, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { FormItem, FormLabel, Icon, InlineHelp, Link } from 'fundamental-react';
-import { useMutation } from '@apollo/react-hooks';
 import * as LuigiClient from '@luigi-project/client';
 
 import SchemaData from './SchemaData.component';
-import { createServiceInstance } from './mutations';
 
 import './CreateInstanceModal.scss';
 import { getResourceDisplayName, randomNameGenerator } from 'helpers';
@@ -18,7 +16,6 @@ import {
   CopiableLink,
 } from 'react-shared';
 
-import { createInstanceInput } from './CreateInstanceInput.js';
 const SERVICE_PLAN_SHAPE = PropTypes.shape({
   name: PropTypes.string.isRequired,
   displayName: PropTypes.string.isRequired,
@@ -144,7 +141,17 @@ export default function CreateInstanceModal({
       instanceCreateParameterSchema.properties);
 
   async function createInstance({ name, namespace, inputData }) {
-    const input = createInstanceInput(name, namespace, inputData);
+    const input = {
+      apiVersion: 'servicecatalog.k8s.io/v1beta1',
+      kind: 'ServiceInstance',
+      metadata: {
+        name,
+        namespace,
+      },
+      spec: inputData,
+    };
+
+    console.log(input);
     try {
       await postRequest(
         `/apis/servicecatalog.k8s.io/v1beta1/namespaces/${namespace}/serviceinstances`,
@@ -155,9 +162,9 @@ export default function CreateInstanceModal({
         content: `Resource created succesfully`,
       });
 
-      LuigiClient.linkManager()
-        .fromContext('namespaces')
-        .navigate(`cmf-instances/details/${name}`);
+      // LuigiClient.linkManager()
+      //   .fromContext('namespaces')
+      //   .navigate(`cmf-instances/details/${name}`);
     } catch (err) {
       notificationManager.notifyError({
         content: `Failed to create a Resource due to: ${err}`,
@@ -202,20 +209,39 @@ export default function CreateInstanceModal({
             .replace(/\s+/g, '')
             .toLowerCase()
             .split(',');
-    const isClusterServiceClass = item.__typename === 'ClusterServiceClass';
-    const variables = {
-      externalServiceClassName: item.externalName,
-      externalPlanName: currentPlan && currentPlan.externalName,
-      classClusterWide: isClusterServiceClass,
-      planClusterWide: isClusterServiceClass,
+    const isClusterServiceClass = item.kind === 'ClusterServiceClass';
+
+    const specSC = {
       labels,
-      parameterSchema: instanceCreateParameters,
+      serviceClassExternalName: item.spec.externalName,
+      serviceClassRef: {
+        name: item.metadata.name,
+      },
+      servicePlanExternalName: currentPlan && currentPlan.spec.externalName,
+      servicePlanRef: {
+        name: currentPlan.metadata.name,
+      },
+      parameters: instanceCreateParameters,
+    };
+
+    const specCSC = {
+      labels,
+      clusterServiceClassExternalName: item.spec.externalName,
+      clusterServiceClassRef: {
+        name: item.metadata.name,
+      },
+      clusterServicePlanExternalName:
+        currentPlan && currentPlan.spec.externalName,
+      clusterServicePlanRef: {
+        name: currentPlan.metadata.name,
+      },
+      parameters: instanceCreateParameters,
     };
 
     await createInstance({
       name: formValues.name.current.value,
       namespace: LuigiClient.getContext().namespaceId,
-      inputData: variables,
+      inputData: isClusterServiceClass ? specCSC : specSC,
     });
   }
 
