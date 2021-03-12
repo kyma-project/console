@@ -117,12 +117,15 @@ export class DocsProcessor {
   }
 }
 
-export function isAddon(labels) {
-  return labels?.local === 'true';
+export function isAddon(serviceClass) {
+  return serviceClass.spec.externalMetadata?.labels?.local === 'true';
 }
 
-export function isService(labels) {
-  return labels || labels.local !== 'true';
+export function isService(serviceClass) {
+  return (
+    !serviceClass.spec.externalMetadata?.labels ||
+    serviceClass.spec.externalMetadata?.labels.local !== 'true'
+  );
 }
 
 function getServiceClass(instance) {

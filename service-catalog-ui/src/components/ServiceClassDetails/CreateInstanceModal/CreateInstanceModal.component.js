@@ -93,9 +93,9 @@ PlanColumnContent.proTypes = {
 const isNonNullObject = o => typeof o === 'object' && !!o;
 
 export default function CreateInstanceModal({
-  onCompleted,
+  // onCompleted,
   onChange,
-  onError,
+  // onError,
   setCustomValid,
   formElementRef,
   jsonSchemaFormRef,
@@ -103,6 +103,7 @@ export default function CreateInstanceModal({
   documentationUrl,
   plans,
 }) {
+  // TODO This still need to be tuned up and tested out after switching to busola
   const notificationManager = useNotification();
   const postRequest = usePost();
   const [customParametersProvided, setCustomParametersProvided] = useState(
@@ -154,7 +155,6 @@ export default function CreateInstanceModal({
       spec: inputData,
     };
 
-    console.log(input);
     try {
       await postRequest(
         `/apis/servicecatalog.k8s.io/v1beta1/namespaces/${namespace}/serviceinstances`,
@@ -165,9 +165,9 @@ export default function CreateInstanceModal({
         content: `Resource created succesfully`,
       });
 
-      // LuigiClient.linkManager()
-      //   .fromContext('namespaces')
-      //   .navigate(`cmf-instances/details/${name}`);
+      LuigiClient.linkManager()
+        .fromContext('namespaces')
+        .navigate(`cmf-instances/details/${name}`);
     } catch (err) {
       notificationManager.notifyError({
         content: `Failed to create a Resource due to: ${err}`,

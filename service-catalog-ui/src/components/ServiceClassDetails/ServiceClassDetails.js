@@ -23,6 +23,8 @@ import CreateInstanceModal from './CreateInstanceModal/CreateInstanceModal.compo
 import ServiceClassDetailsHeader from './ServiceClassDetailsHeader/ServiceClassDetailsHeader.component';
 
 export default function ServiceClassDetails({ name }) {
+  // TODO This still need to be tuned up and tested out after switching to busola
+
   const { namespaceId } = useMicrofrontendContext();
   const { resourceType } = LuigiClient.getNodeParams();
 
