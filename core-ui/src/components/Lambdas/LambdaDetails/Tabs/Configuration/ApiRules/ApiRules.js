@@ -36,7 +36,7 @@ export default function ApiRules({ lambda }) {
   });
 
   const disableExposeButton = !(
-    !!service || lambda.status.phase === LAMBDA_PHASES.RUNNING.TYPE
+    !!service || lambda?.status?.phase === LAMBDA_PHASES.RUNNING.TYPE
   );
 
   return (

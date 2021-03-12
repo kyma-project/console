@@ -15,12 +15,6 @@ export default function CreateNewRepository({ namespaceName }) {
   const repositoryNames = (repositories || []).map(r => r.name);
   const serverDataError = repositoriesError;
   const serverDataLoading = repositoriesLoading;
-  console.log(
-    'repositoriesError',
-    repositoriesError,
-    'repositoriesLoading',
-    repositoriesLoading,
-  );
 
   const lambdaModal = (
     <CreateRepositoryModal

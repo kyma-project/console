@@ -21,18 +21,6 @@ export default function DeployNewWorkload({ namespaceName }) {
     `/apis/serverless.kyma-project.io/v1alpha1/namespaces/${namespaceName}/gitrepositories`,
     { pollingInterval: 5000 },
   );
-  console.log(
-    'functionsError',
-    functionsError,
-    'functionsLoading',
-    functionsLoading,
-  );
-  console.log(
-    'repositoriesError',
-    repositoriesError,
-    'repositoriesLoading',
-    repositoriesLoading,
-  );
 
   const functionNames = (functions || []).map(fn => fn.metadata.name);
   const serverDataError = functionsError || repositoriesError;

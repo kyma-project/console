@@ -1,18 +1,14 @@
-import { useMutation } from '@apollo/react-hooks';
-import { useNotification } from 'react-shared';
+import { useNotification, usePost } from 'react-shared';
 
-import { CREATE_REPOSITORY } from 'components/Lambdas/gql/mutations';
 import extractGraphQlErrors from 'shared/graphqlErrorExtractor';
 
 import { formatMessage } from 'components/Lambdas/helpers/misc';
 
 import { GQL_MUTATIONS } from 'components/Lambdas/constants';
 
-export const useCreateRepository = ({
-  onSuccessCallback = () => void 0,
-} = {}) => {
+export const useCreateRepository = () => {
   const notificationManager = useNotification();
-  const [createRepositoryMutation] = useMutation(CREATE_REPOSITORY);
+  const postRequest = usePost();
 
   function handleError(name, error) {
     const errorToDisplay = extractGraphQlErrors(error);
@@ -33,18 +29,18 @@ export const useCreateRepository = ({
 
   async function createRepository({ name, namespace, spec }) {
     try {
-      const response = await createRepositoryMutation({
-        variables: {
-          name,
-          namespace,
+      await postRequest(
+        `/apis/serverless.kyma-project.io/v1alpha1/namespaces/${namespace}/gitrepositories/${name}`,
+        {
+          apiVersion: 'serverless.kyma-project.io/v1alpha1',
+          kind: 'GitRepository',
+          metadata: {
+            name,
+            namespace,
+          },
           spec: spec,
         },
-      });
-
-      if (response.error) {
-        handleError(name, response.error);
-        return;
-      }
+      );
 
       const message = formatMessage(
         GQL_MUTATIONS.CREATE_REPOSITORY.SUCCESS_MESSAGE,
@@ -56,10 +52,6 @@ export const useCreateRepository = ({
       notificationManager.notifySuccess({
         content: message,
       });
-
-      if (onSuccessCallback && typeof onSuccessCallback === 'function') {
-        onSuccessCallback();
-      }
     } catch (err) {
       handleError(name, err);
     }

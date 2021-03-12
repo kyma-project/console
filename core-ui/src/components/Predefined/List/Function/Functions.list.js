@@ -9,7 +9,6 @@ export const FunctionsList = DefaultRenderer => ({ ...otherParams }) => {
       .fromContext('namespaces')
       .navigate(`cmf-gitrepositories`);
   }
-
   const headerActions = (
     <Button option="light" onClick={goToGitRepositories}>
       Connected repositories
@@ -17,7 +16,7 @@ export const FunctionsList = DefaultRenderer => ({ ...otherParams }) => {
   );
 
   const listActions = (
-    <CreateNewFunction namespaceName={otherParams.resourceName} />
+    <CreateNewFunction namespaceName={otherParams.namespace} />
   );
 
   return (

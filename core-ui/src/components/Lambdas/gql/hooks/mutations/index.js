@@ -4,6 +4,4 @@ export * from './useCreateRepository';
 export * from './useCreateServiceBindingUsage';
 export * from './useDeleteEventTrigger';
 export * from './useDeleteLambda';
-export * from './useDeleteRepository';
 export * from './useUpdateLambda';
-export * from './useUpdateRepository';

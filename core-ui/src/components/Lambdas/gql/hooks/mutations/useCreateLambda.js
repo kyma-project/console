@@ -1,7 +1,6 @@
-import { useNotification } from 'react-shared';
+import { useNotification, usePost } from 'react-shared';
 import LuigiClient from '@luigi-project/client';
 
-import { usePost } from 'react-shared';
 import { createLambdaInput } from './createLambdaInput';
 
 import { formatMessage } from 'components/Lambdas/helpers/misc';
