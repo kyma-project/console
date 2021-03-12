@@ -140,11 +140,14 @@ export default function CreateInstanceModal({
     (instanceCreateParameterSchema.$ref ||
       instanceCreateParameterSchema.properties);
 
-  async function createInstance({ name, namespace, inputData }) {
+  async function createInstance({ name, namespace, labels, inputData }) {
     const input = {
       apiVersion: 'servicecatalog.k8s.io/v1beta1',
       kind: 'ServiceInstance',
       metadata: {
+        annotations: {
+          tags: labels,
+        },
         name,
         namespace,
       },
@@ -208,10 +211,7 @@ export default function CreateInstanceModal({
     const labels =
       formValues.labels.current.value === ''
         ? []
-        : formValues.labels.current.value
-            .replace(/\s+/g, '')
-            .toLowerCase()
-            .split(',');
+        : formValues.labels.current.value.replace(/\s+/g, '').toLowerCase();
     const isClusterServiceClass = item.kind === 'ClusterServiceClass';
 
     const specSC = {
@@ -244,6 +244,7 @@ export default function CreateInstanceModal({
     await createInstance({
       name: formValues.name.current.value,
       namespace: LuigiClient.getContext().namespaceId,
+      labels,
       inputData: isClusterServiceClass ? specCSC : specSC,
     });
   }
