@@ -25,10 +25,7 @@ function openBrowser(port) {
 }
 
 function adjustRequestOptions(options, kubeconfig) {
-  options.headers = {
-    ...options.headers,
-    authorization: `Bearer ${kubeconfig.users[0].token}`,
-  };
+  kubeconfig.applyToRequest(options);
 }
 
 function isNpxEnv() {

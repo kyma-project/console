@@ -7,6 +7,9 @@ function resolveViewUrl(name, node, spec, config) {
       // full url, just return viewBaseUrl
       return `${spec.viewBaseUrl}${node.viewUrl}`;
     } else {
+      if (location.origin === 'http://localhost:3001') { // handle npx mode
+        return `${location.origin}/${spec.viewBaseUrl}${node.viewUrl}`;
+      }
       // viewBaseUrl is the ingress name
       return `https://${spec.viewBaseUrl}.${config.domain}${node.viewUrl}`;
     }

@@ -1,6 +1,6 @@
 {
   "name": "@kyma-project/busola",
-  "version": "0.0.1-rc.1",
+  "version": "0.0.1-rc.2",
   "description": "APIserver proxy for Console",
   "main": "backend.index.js",
   "bin": "pamela-npx.js",
