@@ -200,7 +200,10 @@ export default function CreateInstanceModal({
   async function handleFormSubmit(e) {
     e.preventDefault();
     const currentPlan =
-      plans?.find(e => e.name === formValues.plan.current.value) ||
+      plans?.find(
+        e =>
+          e.spec.externalMetadata.displayName === formValues.plan.current.value,
+      ) ||
       (plans?.length && plans[0]);
     const labels =
       formValues.labels.current.value === ''
