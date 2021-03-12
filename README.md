@@ -94,6 +94,15 @@ If you want to watch changes in the React libraries, run this command in a new t
 npm run watch:libraries
 ```
 
+## npx mode
+
+To build and run the Console for `npx` mode:
+
+- Run `npm run build` in `/shared`.
+- Run `npm run build:npx` in `/core`, `/core-ui` and `/pamela`.
+- Export a kubeconfig in your terminal.
+- Run `node pamela-npx.js` in `/pamela` to start the app.
+
 ## Development
 
 Once you start Kyma with Console locally, you can start development. All modules have hot-reload enabled therefore you can edit the code real time and see the changes in your browser.
