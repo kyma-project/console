@@ -21,7 +21,6 @@ export default function CreateNewRepository({ namespaceName }) {
       repositoryNames={repositoryNames}
       serverDataError={serverDataError || false}
       serverDataLoading={serverDataLoading || false}
-      onSuccessCallback={() => {}}
     />
   );
 

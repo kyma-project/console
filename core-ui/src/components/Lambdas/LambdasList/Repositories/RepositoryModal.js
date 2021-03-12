@@ -13,7 +13,6 @@ export function CreateRepositoryModal({
   repositoryNames = [],
   serverDataError = false,
   serverDataLoading = false,
-  onSuccessCallback,
 }) {
   const createRepository = useCreateRepository();
   const [invalidModalPopupMessage, setInvalidModalPopupMessage] = useState('');
@@ -41,7 +40,6 @@ export function CreateRepositoryModal({
           {...props}
           onSubmitAction={createRepository}
           repositoryNames={repositoryNames}
-          onSuccessCallback={onSuccessCallback}
           setInvalidModalPopupMessage={setInvalidModalPopupMessage}
           formType={FORM_TYPE.CREATE}
         />
