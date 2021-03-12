@@ -50,7 +50,11 @@ const parseDefaultIntegerValues = plan => {
 
 const getInstanceCreateParameterSchema = (plans, currentPlan) => {
   const schema =
-    plans?.find(e => e.metadata.name === currentPlan) || plans[0]?.name;
+    plans?.find(
+      e =>
+        e.spec.externalMetadata?.displayName === currentPlan ||
+        e.metadata.name === currentPlan,
+    ) || plans[0]?.name;
   return schema?.spec.instanceCreateParameterSchema || {};
 };
 
