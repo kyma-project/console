@@ -34,5 +34,12 @@ export const determineDisplayedItems = (serviceClasses, searchQuery) => {
     );
   });
 
-  return [searched.filter(isService), searched.filter(isAddon)];
+  return [
+    searched.filter(item => {
+      return isService(item.spec.externalMetadata?.labels);
+    }),
+    searched.filter(item => {
+      return isAddon(item.spec.externalMetadata?.labels);
+    }),
+  ];
 };
