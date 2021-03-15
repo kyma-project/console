@@ -11,8 +11,10 @@ import {
 import ApiRuleStatus from 'components/ApiRules/ApiRuleStatus/ApiRuleStatus';
 import AccessStrategies from 'components/ApiRules/AccessStrategies/AccessStrategies';
 import { formatMessage } from 'components/Lambdas/helpers/misc';
+import { useGetGatewayDomain as getGatewayDomain } from 'components/ApiRules/useGetGatewayDomain/useGetGatewayDomain';
 
 export const ApiRulesDetails = DefaultRenderer => ({ ...otherParams }) => {
+  const { domain } = getGatewayDomain();
   const customColumns = [
     {
       header: 'Status',
@@ -24,7 +26,9 @@ export const ApiRulesDetails = DefaultRenderer => ({ ...otherParams }) => {
     },
     {
       header: 'Host',
-      value: resource => <CopiableApiRuleHost apiRule={resource} />,
+      value: resource => (
+        <CopiableApiRuleHost apiRule={resource} domain={domain} />
+      ),
     },
   ];
 

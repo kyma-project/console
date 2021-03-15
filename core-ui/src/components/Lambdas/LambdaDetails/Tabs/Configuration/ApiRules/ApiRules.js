@@ -11,6 +11,7 @@ import ApiRulesListWrapper from 'components/ApiRules/ApiRulesList/ApiRulesListWr
 
 import { useServiceQuery } from 'components/Lambdas/gql/hooks/queries';
 import { LAMBDA_PHASES } from 'components/Lambdas/constants';
+import { useGetGatewayDomain } from 'components/ApiRules/useGetGatewayDomain/useGetGatewayDomain';
 
 const headerRenderer = () => ['', 'Name', 'Host', 'Status'];
 const textSearchProperties = [
@@ -20,6 +21,7 @@ const textSearchProperties = [
 ];
 
 export default function ApiRules({ lambda }) {
+  const { domain } = useGetGatewayDomain();
   const { service = undefined } = useServiceQuery({
     ...lambda.metadata,
   });
@@ -27,7 +29,7 @@ export default function ApiRules({ lambda }) {
   const rowRenderer = apiRule => ({
     cells: [
       <GoToApiRuleDetails apiRule={apiRule} />,
-      <CopiableApiRuleHost apiRule={apiRule} />,
+      <CopiableApiRuleHost apiRule={apiRule} domain={domain} />,
       <ApiRuleStatus apiRule={apiRule} />,
     ],
     collapseContent: <ApiRuleAccessStrategiesList apiRule={apiRule} />,
