@@ -55,30 +55,6 @@ export const DELETE_REPOSITORY = gql`
   }
 `;
 
-export const CREATE_MANY_EVENT_TRIGGERS = gql`
-  mutation createManyTriggers(
-    $namespace: String!
-    $triggers: [TriggerCreateInput!]!
-    $ownerRef: [OwnerReference!]
-  ) {
-    createManyTriggers(
-      namespace: $namespace
-      triggers: $triggers
-      ownerRef: $ownerRef
-    ) {
-      name
-    }
-  }
-`;
-
-export const DELETE_ONE_EVENT_TRIGGER = gql`
-  mutation deleteTrigger($namespace: String!, $triggerName: String!) {
-    deleteTrigger(namespace: $namespace, triggerName: $triggerName) {
-      name
-    }
-  }
-`;
-
 export const DELETE_API_RULE = gql`
   mutation deleteAPIRule($name: String!, $namespace: String!) {
     deleteAPIRule(name: $name, namespace: $namespace) {

@@ -1,235 +1,150 @@
-import React, { useState, useEffect } from 'react';
-
-import { useQuery } from '@apollo/react-hooks';
-import { getServiceClass } from './queries';
-import PropTypes from 'prop-types';
-import {
-  serviceClassConstants,
-  createInstanceConstants,
-  filterExtensions,
-} from 'helpers/constants';
-
-import ServiceClassTabs from './ServiceClassTabs/ServiceClassTabs';
-import CreateInstanceModal from './CreateInstanceModal/CreateInstanceModal.container';
-import { Identifier, Button } from 'fundamental-react';
-
-import { isStringValueEqualToTrue } from 'helpers';
-import './ServiceClassDetails.scss';
-import { ServiceClassDetailsWrapper, EmptyList } from './styled';
+import React from 'react';
 import LuigiClient from '@luigi-project/client';
+import { Button } from 'fundamental-react';
+
+import {
+  Tooltip,
+  Spinner,
+  ModalWithForm,
+  useGetList,
+  useGet,
+  useMicrofrontendContext,
+  ResourceNotFound,
+} from 'react-shared';
+
+import './ServiceClassDetails.scss';
 import {
   getResourceDisplayName,
   getDescription,
-  backendModuleExists,
+  isStringValueEqualToTrue,
 } from 'helpers';
+import { createInstanceConstants } from 'helpers/constants';
+import CreateInstanceModal from './CreateInstanceModal/CreateInstanceModal.component';
 import ServiceClassDetailsHeader from './ServiceClassDetailsHeader/ServiceClassDetailsHeader.component';
-import {
-  DOCUMENTATION_PER_PLAN_LABEL,
-  DOCUMENTATION_PER_PLAN_DESCRIPTION,
-} from 'helpers/constants';
-import { Tooltip, Spinner, ModalWithForm } from 'react-shared';
-import { sortByDisplayName } from 'helpers/sorting';
 
-export const PlanSelector = ({ allPlans, currentlySelected, onPlanChange }) => {
-  return (
-    <select
-      defaultValue={currentlySelected && currentlySelected.name}
-      onChange={onPlanChange}
-      aria-label="plan-selector"
-    >
-      {allPlans.map(p => (
-        <option value={p.name} key={p.name}>
-          {p.displayName}
-        </option>
-      ))}
-    </select>
-  );
-};
+export default function ServiceClassDetails({ name }) {
+  // TODO This still need to be tuned up and tested out after switching to busola
 
-PlanSelector.propTypes = {
-  allPlans: PropTypes.arrayOf(PropTypes.object).isRequired,
-  currentlySelected: PropTypes.object,
-  onPlanChange: PropTypes.func.isRequired,
-};
+  const { namespaceId } = useMicrofrontendContext();
+  const { resourceType } = LuigiClient.getNodeParams();
 
-export default function ServiceClassDetails({ name, plan }) {
-  const namespace = LuigiClient.getContext().namespaceId;
-  const [currentPlan, setCurrentPlan] = useState(null);
-
-  const {
-    data: queryData,
-    loading: queryLoading,
-    error: queryError,
-  } = useQuery(getServiceClass, {
-    variables: {
-      namespace,
-      name,
-      fileExtensions: filterExtensions,
+  const serviceClassUrl = `/apis/servicecatalog.k8s.io/v1beta1/namespaces/${namespaceId}/serviceclasses/${name}`;
+  const clusterServiceClassUrl = `/apis/servicecatalog.k8s.io/v1beta1/clusterserviceclasses/${name}`;
+  const { data: serviceClass, loading = true, error } = useGet(
+    resourceType === 'ClusterServiceClass'
+      ? clusterServiceClassUrl
+      : serviceClassUrl,
+    {
+      pollingInterval: 3000,
     },
-    fetchPolicy: 'no-cache',
+  );
+
+  const resourceTypeLowercase =
+    resourceType?.charAt(0).toLowerCase() + resourceType?.slice(1);
+  const label =
+    serviceClass?.metadata.labels['servicecatalog.k8s.io/spec.externalID'];
+  const labelSelector = `?labelSelector=servicecatalog.k8s.io/spec.${resourceTypeLowercase}Ref.name%3D${label}`;
+  const { data: serviceInstances } = useGetList()(
+    `/apis/servicecatalog.k8s.io/v1beta1/namespaces/${namespaceId}/serviceinstances${labelSelector}`,
+    {
+      pollingInterval: 3200,
+    },
+  );
+
+  const servicePlansUrl = `/apis/servicecatalog.k8s.io/v1beta1/namespaces/${namespaceId}/serviceplans${labelSelector}`;
+  const clusterServicePlansUrl = `/apis/servicecatalog.k8s.io/v1beta1/clusterserviceplans${labelSelector}`;
+  const plansUrl =
+    resourceType === 'ClusterServiceClass'
+      ? clusterServicePlansUrl
+      : servicePlansUrl;
+  const { data: servicePlans } = useGetList()(plansUrl, {
+    pollingInterval: 3500,
   });
 
-  useEffect(() => {
-    if (!currentPlan || currentPlan.name === plan) return;
+  // notificationManager.notifyError({
+  //   content: `Failed to get a list of instances due to: ${err}`,
+  // });
 
-    LuigiClient.linkManager()
-      .fromClosestContext()
-      .navigate(`/details/${name}/plan/${currentPlan.name}`, '', false);
-  }, [currentPlan, name, plan]);
-
-  if (queryLoading)
+  if (error) {
     return (
-      <EmptyList>
-        <Spinner />
-      </EmptyList>
+      <ResourceNotFound
+        resource={resourceType}
+        breadcrumb="Catalog"
+        path="/"
+        fromClosestContext={true}
+      />
     );
+  }
 
-  if (queryError)
-    return (
-      <EmptyList>{serviceClassConstants.errorServiceClassDetails}</EmptyList>
-    );
-
-  const serviceClass = queryData.clusterServiceClass || queryData.serviceClass;
-
-  if (!serviceClass)
-    return <EmptyList>{serviceClassConstants.noClassText}</EmptyList>;
+  if (loading || !serviceClass) {
+    return <Spinner />;
+  }
 
   const serviceClassDisplayName = getResourceDisplayName(serviceClass);
-
   const serviceClassDescription = getDescription(serviceClass);
 
-  const isProvisionedOnlyOnce =
-    serviceClass.labels &&
-    serviceClass.labels.provisionOnlyOnce &&
-    isStringValueEqualToTrue(serviceClass.labels.provisionOnlyOnce);
+  const tags = serviceClass.spec.tags;
+  const externalLabels = serviceClass.spec.externalMetadata?.labels;
+  const internalLabels = serviceClass.metadata.labels;
+  const labels = { ...externalLabels, ...internalLabels };
+  const providerDisplayName =
+    serviceClass.spec.externalMetadata?.providerDisplayName;
+  const creationTimestamp = serviceClass.metadata.creationTimestamp;
+  const documentationUrl = serviceClass.spec.externalMetadata?.documentationUrl;
+  const supportUrl = serviceClass.spec.externalMetadata?.supportUrl;
+  const imageUrl = serviceClass.spec.externalMetadata?.imageUrl;
+  const isProvisionedOnlyOnce = isStringValueEqualToTrue(
+    labels?.provisionOnlyOnce,
+  );
+  const isActivated = serviceInstances?.items?.length > 0;
 
   const buttonText = isProvisionedOnlyOnce
-    ? serviceClass.activated
+    ? isActivated
       ? createInstanceConstants.buttonText.provisionOnlyOnceActive
       : createInstanceConstants.buttonText.provisionOnlyOnce
     : createInstanceConstants.buttonText.standard;
 
-  const {
-    providerDisplayName,
-    creationTimestamp,
-    documentationUrl,
-    supportUrl,
-    imageUrl,
-    tags,
-    labels,
-    plans,
-  } = serviceClass;
-
-  function handlePlanChange(e) {
-    setCurrentPlan(plans.find(p => p.name === e.target.value));
-  }
-
-  const isAPIpackage =
-    labels && labels[DOCUMENTATION_PER_PLAN_LABEL] === 'true';
-  if (isAPIpackage && !currentPlan) {
-    const planToSet = plans.find(p => p.name === plan);
-    if (planToSet) setCurrentPlan(planToSet);
-    else {
-      //TODO: redrection to the plan selection view?
-      LuigiClient.uxManager().showAlert({
-        type: 'error',
-        text:
-          'The provided plan name is wrong. Please make sure you selected the right one.',
-      });
-
-      return (
-        <section className="fd-section">
-          <Button
-            glyph="nav-back"
-            onClick={() =>
-              LuigiClient.linkManager()
-                .fromClosestContext()
-                .navigate('/')
-            }
-          >
-            Go back to the Catalog
-          </Button>
-        </section>
-      );
-    }
-  }
-
   const modalOpeningComponent = (
     <Tooltip content={createInstanceConstants.provisionOnlyOnceInfo}>
-      <Button
-        disabled={isProvisionedOnlyOnce && serviceClass.activated}
-        glyph="add"
-      >
+      <Button disabled={isProvisionedOnlyOnce && isActivated} glyph="add">
         {buttonText}
       </Button>
     </Tooltip>
   );
 
   return (
-    <>
-      <ServiceClassDetailsHeader
-        serviceClassDisplayName={serviceClassDisplayName}
-        providerDisplayName={providerDisplayName}
-        creationTimestamp={creationTimestamp}
-        documentationUrl={documentationUrl}
-        supportUrl={supportUrl}
-        imageUrl={imageUrl}
-        tags={tags}
-        labels={labels}
-        description={serviceClassDescription}
-        isProvisionedOnlyOnce={isProvisionedOnlyOnce}
-        isAPIpackage={isAPIpackage}
-        planSelector={
-          isAPIpackage && (
-            <PlanSelector
-              allPlans={plans.sort(sortByDisplayName)}
-              currentlySelected={currentPlan}
-              onPlanChange={handlePlanChange}
-            />
-          )
-        }
-        plansCount={plans.length}
-        serviceClassName={name}
-      >
-        {isAPIpackage && (
-          <Tooltip content={DOCUMENTATION_PER_PLAN_DESCRIPTION}>
-            <Identifier
-              id="docs-per-plan-icon"
-              glyph="sap-box"
-              label="docs-per-plan-icon"
-              size="s"
-            />
-          </Tooltip>
-        )}
-        <ModalWithForm
-          title={`Provision the ${serviceClass.displayName}${' '}
-                    ${
-                      serviceClass.__typename === 'ClusterServiceClass'
-                        ? 'Cluster Service Class'
-                        : 'Service Class'
-                    }${' '}
-                    in the ${namespace} Namespace`}
-          modalOpeningComponent={modalOpeningComponent}
-          id="add-instance-modal"
-          item={serviceClass}
-          renderForm={props => (
-            <CreateInstanceModal
-              {...props}
-              preselectedPlan={currentPlan}
-              documentationUrl={documentationUrl}
-            />
-          )}
-        />
-      </ServiceClassDetailsHeader>
-
-      <ServiceClassDetailsWrapper phoneRows>
-        {backendModuleExists('rafter') && (
-          <ServiceClassTabs
-            serviceClass={serviceClass}
-            currentPlan={isAPIpackage ? currentPlan : undefined}
+    <ServiceClassDetailsHeader
+      serviceClassDisplayName={serviceClassDisplayName}
+      providerDisplayName={providerDisplayName}
+      creationTimestamp={creationTimestamp}
+      documentationUrl={documentationUrl}
+      supportUrl={supportUrl}
+      imageUrl={imageUrl}
+      tags={tags}
+      labels={labels}
+      description={serviceClassDescription}
+      isProvisionedOnlyOnce={isProvisionedOnlyOnce}
+      serviceClassName={name}
+    >
+      <ModalWithForm
+        title={`Provision the ${serviceClassDisplayName}${' '}
+                  ${
+                    resourceType === 'ClusterServiceClass'
+                      ? 'Cluster Service Class'
+                      : 'Service Class'
+                  }${' '}
+                  in the ${namespaceId} Namespace`}
+        modalOpeningComponent={modalOpeningComponent}
+        id="add-instance-modal"
+        item={serviceClass}
+        renderForm={props => (
+          <CreateInstanceModal
+            {...props}
+            plans={servicePlans || []}
+            documentationUrl={documentationUrl}
           />
         )}
-      </ServiceClassDetailsWrapper>
-    </>
+      />
+    </ServiceClassDetailsHeader>
   );
 }

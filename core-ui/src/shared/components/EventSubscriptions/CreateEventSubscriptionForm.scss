@@ -1,0 +1,18 @@
+.create-event-subscription-form {
+  display: grid;
+  grid-template-columns: 1fr 2px 1.5fr;
+  grid-gap: 1.5em;
+
+  &--divider {
+    background-color: var(--fd-color-neutral-3);
+  }
+
+  .icon {
+    color: var(--fd-color-action-1, #0a6ed1);
+    margin-right: 0.5em;
+  }
+
+  @media screen and (max-width: 768px) {
+    display: block;
+  }
+}

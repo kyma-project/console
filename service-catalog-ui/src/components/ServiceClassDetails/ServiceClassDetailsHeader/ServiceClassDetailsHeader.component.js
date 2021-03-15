@@ -51,7 +51,7 @@ const ServiceClassDetailsHeader = ({
         <Breadcrumb>
           <Breadcrumb.Item
             name={`${serviceClassConstants.title} - ${
-              isService({ labels }) ? 'Services' : 'Add-Ons'
+              isService(labels) ? 'Services' : 'Add-Ons'
             }`}
             url="#"
             onClick={goToList}
@@ -91,7 +91,7 @@ const ServiceClassDetailsHeader = ({
 };
 
 ServiceClassDetailsHeader.propTypes = {
-  creationTimestamp: PropTypes.number.isRequired,
+  creationTimestamp: PropTypes.string.isRequired,
   description: PropTypes.string,
   serviceClassDisplayName: PropTypes.string.isRequired,
   providerDisplayName: PropTypes.string,

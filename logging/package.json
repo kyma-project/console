@@ -2,7 +2,6 @@
   "name": "logging",
   "version": "0.1.0",
   "private": true,
-  "dependencies": {},
   "scripts": {
     "start": "PORT=8005 react-scripts start",
     "start:kyma": "BROWSER=none HOST=console-dev.kyma.local PORT=8005 react-scripts start",

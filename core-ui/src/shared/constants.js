@@ -21,7 +21,7 @@ export const EVENT_TRIGGERS_PANEL = {
     },
   },
   ADD_MODAL: {
-    TITLE: 'Add Event Trigger',
+    TITLE: 'Add Event Subscription',
     OPEN_BUTTON: {
       TEXT: 'Add Event Trigger',
       NOT_ENTRIES_POPUP_MESSAGE:
@@ -30,7 +30,7 @@ export const EVENT_TRIGGERS_PANEL = {
     },
     CONFIRM_BUTTON: {
       TEXT: 'Add',
-      INVALID_POPUP_MESSAGE: 'At least one Event must be checked.',
+      INVALID_POPUP_MESSAGE: 'The eventType field must have a proper value.',
     },
   },
 };

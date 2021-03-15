@@ -7,7 +7,7 @@ import { Tooltip } from '../Tooltip/Tooltip';
 import CustomPropTypes from '../../typechecking/CustomPropTypes';
 
 const isFormValid = (formRef, reportValidity = false) => {
-  if (!formRef || !formRef.current) return true;
+  if (!formRef || !formRef.current) return false;
 
   if (reportValidity && typeof formRef.current.reportValidity === 'function') {
     // for IE
@@ -61,12 +61,9 @@ export const ModalWithForm = ({
     }
   }
 
-  // useEffect(() => {
-  //   setTimeout(() => checkAllForms(true));
-  // });
-
   function setOpenStatus(status) {
     if (status) {
+      checkAllForms(false);
       LuigiClient.uxManager().addBackdrop();
     } else {
       LuigiClient.uxManager().removeBackdrop();

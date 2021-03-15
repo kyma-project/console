@@ -4,7 +4,7 @@ import { TabGroup, Tab } from 'fundamental-react';
 import CodeTab from './Tabs/Code/CodeTab';
 import ResourceManagementTab from './Tabs/ResourceManagement/ResourceManagementTab';
 
-import LambdaEventsWrapper from './Tabs/Configuration/EventTriggers/LambdaEventsWrapper';
+import EventSubscriptionsWrapper from './Tabs/Configuration/EventSubscriptions/EventSubscriptionsWrapper';
 import ServiceBindingsWrapper from './Tabs/Configuration/ServiceBindings/ServiceBindingsWrapper';
 import ApiRules from './Tabs/Configuration/ApiRules/ApiRules';
 
@@ -26,11 +26,11 @@ export default function LambdaDetails({ lambda, backendModules = [] }) {
     <ApiRules lambda={lambda} />
   ) : null;
 
-  const eventTriggers = backendModulesExist(backendModules, [
+  const eventSubscriptions = backendModulesExist(backendModules, [
     BACKEND_MODULES.APPLICATION,
     BACKEND_MODULES.EVENTING,
   ]) ? (
-    <LambdaEventsWrapper lambda={lambda} />
+    <EventSubscriptionsWrapper lambda={lambda} />
   ) : null;
 
   const serviceBindings = backendModulesExist(backendModules, [
@@ -43,7 +43,8 @@ export default function LambdaDetails({ lambda, backendModules = [] }) {
     />
   ) : null;
 
-  const configTabShouldRender = apiRules || eventTriggers || serviceBindings;
+  const configTabShouldRender =
+    apiRules || eventSubscriptions || serviceBindings;
 
   return (
     <>
@@ -62,7 +63,7 @@ export default function LambdaDetails({ lambda, backendModules = [] }) {
             title={LAMBDA_DETAILS.TABS.CONFIGURATION.TITLE}
           >
             {apiRules}
-            {/* {eventTriggers} */}
+            {eventSubscriptions}
             {serviceBindings}
           </Tab>
         )}

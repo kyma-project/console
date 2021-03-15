@@ -52,7 +52,7 @@ const App = () => (
 );
 
 const RoutedCatalogDetails = ({ match }) => (
-  <ServiceClassDetails name={match.params.name} plan={match.params.plan} />
+  <ServiceClassDetails name={match.params.name} />
 );
 
 const RoutedServicePlanList = ({ match }) => (

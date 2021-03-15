@@ -8,6 +8,7 @@ export const InputWithPrefix = ({
   onChange,
   value,
   replacePrefix,
+  _ref,
   ...props
 }) => {
   if (replacePrefix && value.startsWith(prefix)) {
@@ -28,6 +29,7 @@ export const InputWithPrefix = ({
     <div className="input-with-prefix">
       <span className="input-with-prefix__prefix">{prefix}</span>
       <input
+        ref={_ref}
         data-prefix={prefix}
         role="input"
         className="fd-form__control"
@@ -43,6 +45,7 @@ export const InputWithPrefix = ({
 };
 
 InputWithPrefix.propTypes = {
+  _ref: PropTypes.object,
   prefix: PropTypes.string.isRequired,
   required: PropTypes.bool,
   onChange: PropTypes.func,

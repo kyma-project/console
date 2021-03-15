@@ -14,21 +14,24 @@ const filterInstancesForClass = serviceClass => instance =>
 const Cards = ({ items, serviceInstances }) => {
   const goToDetails = item => {
     const documentationPerPlan =
-      item.labels &&
-      isStringValueEqualToTrue(item.labels[DOCUMENTATION_PER_PLAN_LABEL]);
+      item.spec.labels &&
+      isStringValueEqualToTrue(item.spec.labels[DOCUMENTATION_PER_PLAN_LABEL]);
 
-    let path = `details/${item.name}`;
+    let path = `details/${item.metadata.name}`;
 
     if (documentationPerPlan) {
       if (item.plans.length > 1) {
-        path = `details/${item.name}/plans`;
+        path = `details/${item.metadata.name}/plans`;
       } else {
-        path = `details/${item.name}/plan/${item.plans[0].name}`;
+        path = `details/${item.metadata.name}/plan/${item.plans[0].name}`;
       }
     }
 
     LuigiClient.linkManager()
       .fromClosestContext()
+      .withParams({
+        resourceType: item.kind,
+      })
       .navigate(path);
   };
 
