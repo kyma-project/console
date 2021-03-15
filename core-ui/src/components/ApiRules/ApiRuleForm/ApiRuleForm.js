@@ -22,9 +22,10 @@ import ServicesDropdown from './ServicesDropdown/ServicesDropdown';
 import AccessStrategyForm from './AccessStrategyForm/AccessStrategyForm';
 import { EXCLUDED_SERVICES_LABELS } from 'components/ApiRules/constants';
 import { hasValidMethods } from 'components/ApiRules/accessStrategyTypes';
-import { useGetList, useMicrofrontendContext } from 'react-shared';
+import { useGetList } from 'react-shared';
 import { SERVICES_URL, API_RULE_URL } from '../constants';
 import { formatMessage as injectVariables } from 'components/Lambdas/helpers/misc';
+import { useGetGatewayDomain } from '../useGetGatewayDomain/useGetGatewayDomain';
 
 export const DEFAULT_GATEWAY = 'kyma-gateway.kyma-system.svc.cluster.local';
 
@@ -61,8 +62,11 @@ export default function ApiRuleForm({
   headerTitle,
   breadcrumbItems,
 }) {
-  const k8sApiUrl = useMicrofrontendContext().k8sApiUrl;
-  const domain = k8sApiUrl.replace('api.', '');
+  const {
+    domain,
+    error: domainError,
+    loading: domainLoading,
+  } = useGetGatewayDomain();
   const namespace = LuigiClient.getEventData().environmentId;
   const { serviceName, port, openedInModal = false } =
     LuigiClient.getNodeParams() || {};
@@ -131,6 +135,9 @@ export default function ApiRuleForm({
   }
 
   async function save() {
+    if (domainError || domainLoading) {
+      return false;
+    }
     if (!formRef.current.checkValidity()) {
       return;
     }

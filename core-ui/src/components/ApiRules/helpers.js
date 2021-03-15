@@ -1,5 +1,4 @@
-export function getApiRuleUrl(service, k8sApiUrl) {
+export function getApiRuleUrl(service, domain) {
   const host = `https://${service.host}`;
-  const domain = k8sApiUrl.replace('api.', '');
   return host.split(`.${domain}`)[0] + `.${domain}`;
 }

@@ -4,8 +4,11 @@ import LuigiClient from '@luigi-project/client';
 import { PANEL } from '../../ApiRules/constants';
 import { CopiableApiRuleHost } from 'components/ApiRules/ApiRulesList/components';
 import ApiRuleStatus from 'components/ApiRules/ApiRuleStatus/ApiRuleStatus';
+import { useGetGatewayDomain as getGatewayDomain } from 'components/ApiRules/useGetGatewayDomain/useGetGatewayDomain';
 
 export const ApiRulesList = DefaultRenderer => ({ ...otherParams }) => {
+  const { domain } = getGatewayDomain();
+
   const createApiRule = (
     <Button
       glyph="add"
@@ -31,7 +34,9 @@ export const ApiRulesList = DefaultRenderer => ({ ...otherParams }) => {
   const customColumns = [
     {
       header: 'Host',
-      value: apiRule => <CopiableApiRuleHost apiRule={apiRule} />,
+      value: apiRule => (
+        <CopiableApiRuleHost apiRule={apiRule} domain={domain} />
+      ),
     },
     {
       header: 'Status',
