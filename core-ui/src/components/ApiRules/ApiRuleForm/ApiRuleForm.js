@@ -249,18 +249,22 @@ export default function ApiRuleForm({
                           and must start and end with an alphanumeric character (e.g. 'my-name1')."
                         />
                       </FormLabel>
-                      <InputWithSuffix
-                        defaultValue={apiRule.spec.service.host.replace(
-                          `.${domain}`,
-                          '',
-                        )}
-                        id="hostname"
-                        suffix={domain}
-                        placeholder="Enter the hostname"
-                        required
-                        pattern="^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$"
-                        _ref={formValues.hostname}
-                      />
+                      {domainLoading ? (
+                        'Loading...'
+                      ) : (
+                        <InputWithSuffix
+                          defaultValue={apiRule.spec.service.host.replace(
+                            `.${domain}`,
+                            '',
+                          )}
+                          id="hostname"
+                          suffix={domain}
+                          placeholder="Enter the hostname"
+                          required
+                          pattern="^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$"
+                          _ref={formValues.hostname}
+                        />
+                      )}
                     </FormItem>
                     <ServicesDropdown
                       _ref={formValues.service}

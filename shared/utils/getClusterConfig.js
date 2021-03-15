@@ -1,7 +1,7 @@
 const domain = location.hostname.replace(/^console(-dev)?\./, '');
 
 function getPamelaApiUrl() {
-  if (location.hostname === 'http://localhost:3001') {
+  if (location.origin === 'http://localhost:3001') {
     return 'http://localhost:3001/backend'; // npx
   } else if (
     location.hostname.startsWith('console-dev') ||
