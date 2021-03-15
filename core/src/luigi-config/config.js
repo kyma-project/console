@@ -1,6 +1,11 @@
 const domain = location.hostname.replace(/^console(-dev)?\./, '');
 const isNpx = location.origin === 'http://localhost:3001';
-const isLocalDev = location.hostname.startsWith('console-dev');
+const isLocalDev =
+  location.hostname.startsWith('console-dev') ||
+  location.hostname.startsWith('localhost');
+const localDomain = location.hostname.startsWith('console-dev')
+  ? 'http://console-dev.' + domain
+  : 'http://localhost';
 
 export let config;
 
@@ -19,18 +24,18 @@ if (isNpx) {
   config = {
     domain,
     isNpx,
-    localDomain: 'console-dev.' + domain,
+    localDomain,
     serviceCatalogModuleUrl: isLocalDev
-      ? 'http://console-dev.' + domain + ':8000'
+      ? localDomain + ':8000'
       : 'https://catalog.' + domain,
     addOnsModuleUrl: isLocalDev
-      ? 'http://console-dev.' + domain + ':8004'
+      ? localDomain + ':8004'
       : 'https://addons.' + domain,
     logsModuleUrl: isLocalDev
-      ? 'http://console-dev.' + domain + ':8005'
+      ? localDomain + ':8005'
       : 'https://logs.' + domain,
     coreUIModuleUrl: isLocalDev
-      ? 'http://console-dev.' + domain + ':8889'
+      ? localDomain + ':8889'
       : 'https://core-ui.' + domain,
     pamelaApiUrl: isLocalDev
       ? 'http://localhost:3001'

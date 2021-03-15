@@ -53,7 +53,9 @@ function buildNode(name, node, spec, config, groups) {
     };
   }
 
-  const isLocalDev = location.hostname.startsWith('console-dev');
+  const isLocalDev =
+    location.hostname.startsWith('console-dev') ||
+    location.hostname.startsWith('localhost');
 
   if (isLocalDev && n.viewUrl) {
     n = processNodeForLocalDevelopment(n, spec, config);
