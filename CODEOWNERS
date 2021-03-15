@@ -1,17 +1,9 @@
 # Default owners of the repository
-* @akucharska @dariadomagala @parostatkiem @kwiatekus @Wawrzyn321
-
-/catalog/ @akucharska @dariadomagala @parostatkiem @kwiatekus @Wawrzyn321
-/instances/ @akucharska @dariadomagala @parostatkiem @kwiatekus @Wawrzyn321
-/brokers/ @akucharska @dariadomagala @parostatkiem @kwiatekus @Wawrzyn321
-/components/react/ @aerfio @m00g3n @magicmatatjahu @pPrecel @akucharska @dariadomagala @parostatkiem @kwiatekus @Wawrzyn321
-/core/ @dariadomagala @parostatkiem @akucharska @kwiatekus @Wawrzyn321
-/tests/ @akucharska @dariadomagala @parostatkiem @kwiatekus @Wawrzyn321
-/core-ui/src/components/Lambdas/ @aerfio @m00g3n @pPrecel @magicmatatjahu
+* @akucharska @dariadomagala @parostatkiem @Wawrzyn321
 
 # Owners of all .md files in the repository
 *.md @kazydek @klaudiagrz @mmitoraj @majakurcius @alexandra-simeonova @superojla
 /core-ui/src/components/Lambdas/constants.js @kazydek @klaudiagrz @bszwarc @mmitoraj @majakurcius @alexandra-simeonova
 
 # Owners of config file for MILV - milv.config.yaml
-milv.config.yaml @aerfio @m00g3n @magicmatatjahu @pPrecel
+milv.config.yaml @aerfio @m00g3n @magicmatatjahu @pPrecel @akucharska @dariadomagala @parostatkiem @Wawrzyn321
