@@ -8,7 +8,7 @@ import {
 describe('prettyRuntime', () => {
   test.each([
     ['python38', 'Python 3.8'],
-    ['nodejs10', 'Node.js 10'],
+    ['nodejs10', 'Node.js 10 (Deprecated)'],
     ['nodejs12', 'Node.js 12'],
     [undefined, 'Unknown: undefined'],
     [null, 'Unknown: null'],
