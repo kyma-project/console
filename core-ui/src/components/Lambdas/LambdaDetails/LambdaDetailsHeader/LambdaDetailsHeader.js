@@ -58,7 +58,7 @@ export default function LambdaDetailsHeader({ lambda }) {
         <PageHeader.Column title={LAMBDA_DETAILS.RUNTIME.TEXT}>
           {prettyRuntime(lambda.runtime)}
           {lambda.runtime === 'nodejs10' && (
-            <InlineHelp placement="bottom-right" text="Upgrade to runtime Node.js 12 or newer to reconcile the Function" />
+            <InlineHelp placement="bottom-right" text="Use kubectl to upgrade Function's runtime to Node.js 12 or newer to reconcile the Function" />
           )}
         </PageHeader.Column>
         {isGitSourceType(lambda.sourceType) && (
