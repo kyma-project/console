@@ -17,12 +17,12 @@ export const functionAvailableLanguages = {
 };
 
 export const prettyRuntime = runtime => {
-  if (runtime === 'nodejs10'){
-    return 'Node.js 10 (Unsupported)'
+  if (runtime === 'nodejs10') {
+    return 'Node.js 10 (Unsupported)';
   } else {
-  return functionAvailableLanguages[runtime] || `Unknown: ${runtime}`;
+    return functionAvailableLanguages[runtime] || `Unknown: ${runtime}`;
   }
-}
+};
 
 export const runtimeToMonacoEditorLang = runtime => {
   switch (runtime) {

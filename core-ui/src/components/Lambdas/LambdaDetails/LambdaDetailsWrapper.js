@@ -25,15 +25,14 @@ export default function LambdaDetailsWrapper({ lambdaName }) {
     content = <EntryNotFound entryType="Lambda" entryId={lambdaName} />;
   } else {
     const backendModules = LuigiClient.getEventData().backendModules;
-     if(lambda.runtime==='nodejs10'){
-       LuigiClient
-       .uxManager()
-       .showAlert({
-        text: "This Function runtime is no longer supported. Use kubectl to change runtime to nodejs12 or newer.",
+    if (lambda.runtime === 'nodejs10') {
+      LuigiClient.uxManager().showAlert({
+        text:
+          'This Function runtime is no longer supported. Use kubectl to change runtime to nodejs12 or newer.',
         type: 'warning',
-        closeAfter: 10000
-       });
-     }
+        closeAfter: 10000,
+      });
+    }
     content = <LambdaDetails lambda={lambda} backendModules={backendModules} />;
   }
 
