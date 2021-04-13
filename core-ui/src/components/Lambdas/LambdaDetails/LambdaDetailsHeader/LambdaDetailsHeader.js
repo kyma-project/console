@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Button } from 'fundamental-react';
+import { Button, InlineHelp } from 'fundamental-react';
 import { PageHeader } from 'react-shared';
 
 import { useDeleteLambda } from 'components/Lambdas/gql/hooks/mutations';
@@ -57,6 +57,12 @@ export default function LambdaDetailsHeader({ lambda }) {
         </PageHeader.Column>
         <PageHeader.Column title={LAMBDA_DETAILS.RUNTIME.TEXT}>
           {prettyRuntime(lambda.runtime)}
+          {lambda.runtime === 'nodejs10' && (
+            <InlineHelp
+              placement="bottom-right"
+              text="Use kubectl to upgrade Function's runtime to Node.js 12 or newer to reconcile the Function"
+            />
+          )}
         </PageHeader.Column>
         {isGitSourceType(lambda.sourceType) && (
           <PageHeader.Column title={LAMBDA_DETAILS.REPOSITORY.TEXT}>

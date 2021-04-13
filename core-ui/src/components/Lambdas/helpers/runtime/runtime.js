@@ -2,7 +2,6 @@ import { CONFIG } from 'components/Lambdas/config';
 import { formatMessage } from 'components/Lambdas/helpers/misc';
 
 import {
-  PRETTY_RUNTIME_NODEJS10_NAME,
   PRETTY_RUNTIME_NODEJS12_NAME,
   PRETTY_RUNTIME_PYTHON38_NAME,
 } from '../../constants';
@@ -14,12 +13,16 @@ export const python38 = 'python38';
 export const functionAvailableLanguages = {
   // order of those keys is the same as order of available runtimes shown in Create Lambda Modal
   [nodejs12]: PRETTY_RUNTIME_NODEJS12_NAME,
-  [nodejs10]: PRETTY_RUNTIME_NODEJS10_NAME,
   [python38]: PRETTY_RUNTIME_PYTHON38_NAME,
 };
 
-export const prettyRuntime = runtime =>
-  functionAvailableLanguages[runtime] || `Unknown: ${runtime}`;
+export const prettyRuntime = runtime => {
+  if (runtime === 'nodejs10') {
+    return 'Node.js 10 (Unsupported)';
+  } else {
+    return functionAvailableLanguages[runtime] || `Unknown: ${runtime}`;
+  }
+};
 
 export const runtimeToMonacoEditorLang = runtime => {
   switch (runtime) {
