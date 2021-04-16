@@ -9,12 +9,14 @@ import { Spinner } from 'react-shared';
 import LambdaDetails from './LambdaDetails';
 
 import './LambdaDetails.scss';
+import { useNotification } from '../../../../../shared';
 
 export default function LambdaDetailsWrapper({ lambdaName }) {
   const { lambda, error, loading } = useLambdaQuery({
     name: lambdaName,
     namespace: LuigiClient.getEventData().environmentId,
   });
+  const notificationManager = useNotification();
 
   let content = null;
   if (loading) {
@@ -26,11 +28,11 @@ export default function LambdaDetailsWrapper({ lambdaName }) {
   } else {
     const backendModules = LuigiClient.getEventData().backendModules;
     if (lambda.runtime === 'nodejs10') {
-      LuigiClient.uxManager().showAlert({
-        text:
+      notificationManager.notify({
+        content:
           'This Function runtime is no longer supported. Use kubectl to change runtime to nodejs12 or newer.',
+        title: 'Nodejs10 is no longer supported',
         type: 'warning',
-        closeAfter: 10000,
       });
     }
     content = <LambdaDetails lambda={lambda} backendModules={backendModules} />;
