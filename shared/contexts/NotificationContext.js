@@ -41,6 +41,19 @@ export const NotificationProvider = ({
       };
       notify(notificationProps, visibilityTime);
     },
+    notifyWarning: function(
+      notificationProps,
+      visibilityTime = defaultErrorVisibilityTime,
+    ) {
+      notificationProps = {
+        title: 'Warning',
+        type: 'warning',
+        icon: 'warning',
+        autoClose: true,
+        ...notificationProps,
+      };
+      notify(notificationProps, visibilityTime);
+    },
     notifyError: function(
       notificationProps,
       visibilityTime = defaultErrorVisibilityTime,
