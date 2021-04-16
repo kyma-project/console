@@ -27,7 +27,7 @@ export default function LambdaDetailsWrapper({ lambdaName }) {
   } else {
     const backendModules = LuigiClient.getEventData().backendModules;
     if (lambda.runtime === 'nodejs10') {
-      notificationManager.notify({
+      notificationManager.notifyError({
         content:
           'This Function runtime is no longer supported. Use kubectl to change runtime to nodejs12 or newer.',
         title: 'Nodejs10 is no longer supported',
