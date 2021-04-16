@@ -73,7 +73,7 @@ export const useCreateLambda = ({ redirect = true }) => {
   return createLambda;
 };
 
-export function prepareCreateLambdaInput(name, runtime = 'nodejs12') {
+export function prepareCreateLambdaInput(name, runtime = 'nodejs14') {
   return {
     labels: {},
     source: CONFIG.defaultLambdaCodeAndDeps[runtime].code,
