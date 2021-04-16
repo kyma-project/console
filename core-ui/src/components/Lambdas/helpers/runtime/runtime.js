@@ -14,8 +14,8 @@ export const python38 = 'python38';
 
 export const functionAvailableLanguages = {
   // order of those keys is the same as order of available runtimes shown in Create Lambda Modal
-  [nodejs12]: PRETTY_RUNTIME_NODEJS12_NAME,
   [nodejs14]: PRETTY_RUNTIME_NODEJS14_NAME,
+  [nodejs12]: PRETTY_RUNTIME_NODEJS12_NAME,
   [python38]: PRETTY_RUNTIME_PYTHON38_NAME,
 };
 
@@ -58,7 +58,7 @@ export const getDefaultDependencies = (name, runtime) => {
     case nodejs10:
       return !name
         ? ''
-        : formatMessage(CONFIG.defaultLambdaCodeAndDeps.nodejs12.deps, {
+        : formatMessage(CONFIG.defaultLambdaCodeAndDeps.nodejs14.deps, {
             lambdaName: name,
           });
     default:
