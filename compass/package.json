@@ -10,7 +10,7 @@
     "jsoneditor": "^9.0.3",
     "lodash": "^4.17.21",
     "react-ace": "^7.0.4",
-    "sanitize-html": "^1.22.1",
+    "sanitize-html": "^2.3.2",
     "xml-js": "^1.6.11"
   },
   "scripts": {
