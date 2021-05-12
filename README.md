@@ -29,7 +29,7 @@ The Console also includes React and Angular libraries:
 
 ## Installation
 
-1. Install [Kyma](https://kyma-project.io/docs/master/root/kyma/#installation-install-kyma-locally) as a backing service for your local instance of Console. Make sure you import certificates into your operating system and mark them as trusted. Otherwise, you cannot access the applications hosted in the `kyma.local` domain.
+1. Install [Kyma](https://kyma-project.io/docs/root/kyma/#installation-install-kyma-locally) as a backing service for your local instance of Console. Make sure you import certificates into your operating system and mark them as trusted. Otherwise, you cannot access the applications hosted in the `kyma.local` domain.
 
 2. Install Console dependencies. To install dependencies for the root and all UI projects, and prepare symlinks for local libraries within this repository, run the following command:
 

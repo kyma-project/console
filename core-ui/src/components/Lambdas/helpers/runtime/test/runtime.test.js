@@ -8,7 +8,6 @@ import {
 describe('prettyRuntime', () => {
   test.each([
     ['python38', 'Python 3.8'],
-    ['nodejs10', 'Node.js 10 (Deprecated)'],
     ['nodejs12', 'Node.js 12'],
     [undefined, 'Unknown: undefined'],
     [null, 'Unknown: null'],
@@ -22,8 +21,8 @@ describe('prettyRuntime', () => {
 describe('runtimeToMonacoEditorLang', () => {
   test.each([
     ['python38', { language: 'python', dependencies: 'plaintext' }],
-    ['nodejs10', { language: 'javascript', dependencies: 'json' }],
     ['nodejs12', { language: 'javascript', dependencies: 'json' }],
+    ['nodejs14', { language: 'javascript', dependencies: 'json' }],
     ['', { language: 'plaintext', dependencies: 'plaintext' }],
     [undefined, { language: 'plaintext', dependencies: 'plaintext' }],
     [null, { language: 'plaintext', dependencies: 'plaintext' }],
@@ -38,7 +37,7 @@ describe('getDefaultDependencies', () => {
     ['test-name', 'python38', ''],
     [
       'test-name',
-      'nodejs10',
+      'nodejs14',
       `{ 
   "name": "test-name",
   "version": "1.0.0",
@@ -55,8 +54,8 @@ describe('getDefaultDependencies', () => {
 }`,
     ],
     [null, 'python38', ''],
-    [undefined, 'nodejs10', ''],
     [undefined, 'nodejs12', ''],
+    [undefined, 'nodejs14', ''],
     ['', 'nodejs12', ``],
   ])('.getDefaultDependencies(%s, %s)', (name, runtime, expected) => {
     const result = getDefaultDependencies(name, runtime);

@@ -148,7 +148,7 @@ export default function CreateLambdaForm({
     let inputData = {
       labels,
       runtime:
-        runtimeRef?.current?.value || functionAvailableLanguages.nodejs12,
+        runtimeRef?.current?.value || functionAvailableLanguages.nodejs14,
     };
 
     if (sourceTypeRef?.current?.value) {
@@ -222,7 +222,7 @@ export default function CreateLambdaForm({
         inlineHelp={LAMBDAS_LIST.CREATE_MODAL.INPUTS.RUNTIME.INLINE_HELP}
         options={runtimeOptions}
         id="runtime"
-        defaultValue={functionAvailableLanguages.nodejs12}
+        defaultValue={functionAvailableLanguages.nodejs14}
       />
 
       <DropdownInput
