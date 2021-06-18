@@ -3,7 +3,6 @@
 FROM alpine:3.13.5 AS builder
 # install node
 RUN apk add --update nodejs npm
-RUN npm -v
 
 ARG app_name=core-ui
 WORKDIR /app
