@@ -1,8 +1,9 @@
 # This Dockerfile must be execute with higher context, because firstly we have to create react components lib with local changes.
 # If you want to build image without local changes of react components, delete 16 line of code.
-FROM alpine:3.14.0 AS builder
+FROM alpine:3.13.5 AS builder
 # install node
 RUN apk add --update nodejs npm
+RUN npm -v
 
 ARG app_name=core-ui
 WORKDIR /app
@@ -14,9 +15,8 @@ RUN apk update && \
 
 # Install root and app dependencies
 COPY . /app
-RUN cd /app/${app_name} && \
-  make resolve && \
-  make verify
+RUN cd /app/${app_name} && make resolve
+RUN cd /app/${app_name} && make verify
 
 
 # Set env variables
