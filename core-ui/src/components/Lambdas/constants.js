@@ -63,6 +63,7 @@ export const LAMBDA_PHASES = {
 export const PRETTY_RUNTIME_NODEJS12_NAME = 'Node.js 12';
 export const PRETTY_RUNTIME_NODEJS14_NAME = 'Node.js 14';
 export const PRETTY_RUNTIME_PYTHON38_NAME = 'Python 3.8';
+export const PRETTY_RUNTIME_PYTHON39_NAME = 'Python 3.9';
 
 export const LAMBDA_ERROR_PHASES = [
   LAMBDA_PHASES.FAILED.TYPE,

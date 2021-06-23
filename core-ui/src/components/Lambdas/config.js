@@ -51,6 +51,11 @@ const defaultCodeAndDeps = {
     return "Hello World"`,
     deps: '',
   },
+  python39: {
+    code: `def main(event, context):
+    return "Hello World"`,
+    deps: '',
+  },
 };
 
 const defaultTriggerSubscriber = {

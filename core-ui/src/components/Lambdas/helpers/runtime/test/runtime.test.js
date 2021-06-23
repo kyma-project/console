@@ -8,6 +8,7 @@ import {
 describe('prettyRuntime', () => {
   test.each([
     ['python38', 'Python 3.8'],
+    ['python39', 'Python 3.9'],
     ['nodejs12', 'Node.js 12'],
     [undefined, 'Unknown: undefined'],
     [null, 'Unknown: null'],
@@ -21,6 +22,7 @@ describe('prettyRuntime', () => {
 describe('runtimeToMonacoEditorLang', () => {
   test.each([
     ['python38', { language: 'python', dependencies: 'plaintext' }],
+    ['python39', { language: 'python', dependencies: 'plaintext' }],
     ['nodejs12', { language: 'javascript', dependencies: 'json' }],
     ['nodejs14', { language: 'javascript', dependencies: 'json' }],
     ['', { language: 'plaintext', dependencies: 'plaintext' }],
