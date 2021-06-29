@@ -82,10 +82,12 @@ export default function BebEventSubscription({ resource, createResourceRef }) {
         type: filter.eventType.value,
       })),
     );
-    const entries = filters.map(filter => ({
-      ...findFilterInEvents(filter, events),
-      subscriptionName: filter.subscriptionName,
-    }));
+    const entries = filters
+      .filter(filter => findFilterInEvents(filter, events))
+      .map(filter => ({
+        ...findFilterInEvents(filter, events),
+        subscriptionName: filter.subscriptionName,
+      }));
     entries.sort((a, b) => a.eventType.localeCompare(b.eventType));
     setEntries(entries);
   }, [eventSubscriptions, events]);
